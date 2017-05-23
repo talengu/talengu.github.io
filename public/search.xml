@@ -1,6 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[人脸识别]]></title>
+    <url>%2Fpublic%2F2017%2F05%2F22%2Fopencv%2Fface_recognition%2F</url>
+    <content type="text"><![CDATA[概要：人脸识别项目，利用opencv。 要求：利用线性回归模型实现人脸识别任务，需有GUI界面输入人脸图像，返回对应的人的名字。指导教师提供基础代码学生需依据教师指导完成系统其他部分。学生需具备一定的线性代数基础及程序设计经验，难度较低。代码放在百度网盘了见https://pan.baidu.com/s/1mgFVOEW 链接（SRC）基于稀疏表示的人脸识别 人脸识别技术大总结——Face Detection &amp; Alignment http://www.leiphone.com/news/201608/MFDbG6TghCWDDOHq.html http://www.36dsj.com/archives/27284 初步设想概念线性回归模型给的论文阅读笔记]]></content>
+      <categories>
+        <category>计算机视觉</category>
+      </categories>
+      <tags>
+        <tag>opencv</tag>
+        <tag>人脸识别</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[Ubuntu完全教程]]></title>
+    <url>%2Fpublic%2F2017%2F05%2F22%2Fopencv%2Fubuntu%2F</url>
+    <content type="text"><![CDATA[概要：一个好的Ubuntu教程，选取重要的记录原文链接]]></content>
+      <categories>
+        <category>操作系统</category>
+      </categories>
+      <tags>
+        <tag>Ubuntu</tag>
+        <tag>Linux</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[Kinect开发]]></title>
+    <url>%2Fpublic%2F2017%2F05%2F22%2Fkinect%2F</url>
+    <content type="text"><![CDATA[概要：Kinect SDK V2.0重点记录 微软官方ReferenceKinect for Windows C++ Reference CameraSpacePointA 3D location in camera space. defined12345typedef struct _CameraSpacePoint &#123; float X; float Y; float Z;&#125; CameraSpacePoint; Members Members X component in camera space. Y component in camera space. Z component in camera space. RemarksCamera space refers to the 3D coordinate system used by Kinect. The coordinate system is defined as follows: The origin (x=0, y=0, z=0) is located at the center of the IR sensor on Kinect X grows to the sensor’s left Y grows up (note that this direction is based on the sensor’s tilt) Z grows out in the direction the sensor is facing 1 unit = 1 meter MapColorFrameToCameraSpace MethodICoordinateMapper-&gt;MapColorFrameToCameraSpace Method Uses the color frame data to map the entire frame from color space to camera space. Syntax1234567public:HRESULT MapColorFrameToCameraSpace( UINT depthDataPointCount, const UINT16 *depthFrameData, UINT cameraPointCount, CameraSpacePoint *cameraSpacePoints) Parameters Parameters Type depthDataPointCount UINT The number of depth data points. depthFrameData UINT16 [in] The full image data from a depth frame. cameraPointCount UINT The number of camera points. cameraSpacePoints CameraSpacePoint [out] The array of mapped camera points that will be filled. Return value HRESULT Returns S_OK if successful; otherwise, returns a failure code. RemarksThe cameraPoints array should be the same size of the number of color frame pixels. 1920x1080 IDepthFrame::AccessUnderlyingBuffer MethodGets a pointer to the depth frame data. link Syntax12345public:HRESULT AccessUnderlyingBuffer( UINT *capacity, UINT16 **buffer) Parameters Parameters Type capacity UINT [out] When this method returns, contains the size of the frame data buffer in bytes. buffer UINT16 [out] When this method returns, contains the pointer to the depth frame data. Return value HRESULT Returns S_OK if successful; otherwise, returns a failure code. RemarksThe capcity is not size in bytes, it is the count of UINT16. 1*(((DWORD *)(m_pDepthRGBX))+i) = *(pBuffer+i);]]></content>
+      <categories>
+        <category>计算机视觉</category>
+      </categories>
+      <tags>
+        <tag>Kinect</tag>
+        <tag>Opencv</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[【翻译】daugman算法]]></title>
+    <url>%2Fpublic%2F2017%2F05%2F21%2Ftranslations%2Fdaugman%2F</url>
+    <content type="text"><![CDATA[概要：daugman算法是虹膜是识别的经典算法。 John.Daugman的 剑桥主页虹膜识别介绍 Introduction to Iris Recognition 文章Daugman, J. (1993) “High confidence visual recognition of persons by a test of statistical independence.” IEEE Transactions on Pattern Analysis and Machine Intelligence, vol. 15(11), pp. 1148-1161. PDF link 翻译High Confidence Visual Recognition of Persons by a Test of Statistical IndependenceJohn G. Daugman 通过统计独立实验的高可信的人类视觉识别算法 摘要 - 基于独立性统计检验的失败，描述了快速视觉认知个人身份的方法。人脸上最独特的表型特征是眼睛上虹膜的细致纹理：对人类样本样本中的统计学复杂性的估计显示出与几百个独立自由度的变化。虹膜小梁网纹理表现形态学随机性确保了来自不同眼睛的两种编码图案的统计学独立性测试几乎可以肯定地通过，当比较的代码来源于同一只眼睛时，相同的测试几乎肯定失败。一个人的可见纹理“ 实时视频图像中的虹膜被编码成多尺度正交2-D Gabor小波系数的紧凑序列，其最高有效位包括256字节的“虹膜代码”。统计学决策理论根据独家对比完整的虹膜代码，以每秒4000次的速度生成识别决策，包括决定置信水平的计算。在这种比较中经验观察到的分布意味着当采用一种能够使错误接受和错误拒绝率相等的决策标准时，理论上的“交叉”错误率为131 000。在典型情况下，考虑到虹膜代码协议的平均观察程度，决策置信水平正式对应于约 $10^{31}$ 中的条件假接受概率 关键字 - 图像分析，统计模式识别，生物识别，统计判定理论，2-D Gabor滤波器，小波，纹理分析，形态发生。 介绍设计可靠的生物特征识别的机械方法已经有一段历史了。在维多利亚女王那个时代举例， 图像分析A 标定虹膜的操作B Assessing Image Quality, Eyelid Occlusion, and Possibility of ArtificeC 2-D Gabor滤波器D Doubly Dimensionless Projected Polar Coordinate System]]></content>
+      <categories>
+        <category>计算机视觉</category>
+      </categories>
+      <tags>
+        <tag>虹膜识别</tag>
+        <tag>翻译</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[编程心得记录]]></title>
     <url>%2Fpublic%2F2017%2F05%2F21%2Fprograming%2F</url>
     <content type="text"><![CDATA[概要：记录编程路上的小坑大坑【原创】 资料Google 开源项目风格指南 (中文版) link]]></content>
@@ -14,7 +62,7 @@
   <entry>
     <title><![CDATA[虹膜识别基于opencv]]></title>
     <url>%2Fpublic%2F2017%2F05%2F15%2Fopencv%2Firis_opencv%2F</url>
-    <content type="text"><![CDATA[概要：虹膜识别项目，利用opencv。 资料1.利用MFC及OpenCV读入摄像头并显示画面link2.利用opencv的objdetect模块检测摄像头中的人脸3.虹膜图像分割（一）内圆检测link4.虹膜图像分割（二）外圆检测link]]></content>
+    <content type="text"><![CDATA[概要：虹膜识别项目，利用opencv。 资料1.利用MFC及OpenCV读入摄像头并显示画面link2.利用opencv的objdetect模块检测摄像头中的人脸3.虹膜图像分割（一）内圆检测link4.虹膜图像分割（二）外圆检测link 虹膜识别系统包含硬件和软件两大模块虹膜图像获取装置和虹膜识别算法,分别对应于图像获取和模式匹配这两个基本问题。 发展历程追溯至19世纪80年代。1885年，Alphonsebertillon将利用生物特征识别个体的思路应用在巴黎的刑事监狱中，当时所用的生物特征包括：耳朵的大小、脚的长度、虹膜等。1987年，眼科专家Aran Safir和Leonardflom首次提出利用虹膜图像进行自动虹膜识别的概念，到1991年，美国洛斯阿拉莫斯国家实验室的Johnson实现了一个自动虹膜识别系统。1993年，John Daugman实现了一个高性能的自动虹膜识别原型系统。 DAUGMAN算法今天，大部分的自动虹膜识别系统使用DAUGMAN核心算法。虹膜是位于眼睛黑色瞳孔和白色巩膜之间的圆环状部分，总体上呈现一种由里到外的放射状结构，由相当复杂的纤维组织构成，包含有很多相互交错的类似于斑点、细丝、冠状、条纹、隐窝等细节特征，这些特征在出生之前就以随机组合的方式确定下来了，一旦形成终生不变。 虹膜识别的准确性是各种生物识别中最高的。采集从直径11mm的虹膜上，Dr.Daugman的算法用3.4个字节的数据来代表每平方毫米的虹膜信息，这样，一个虹膜约有266个量化特征点，而一般的生物识别技术只有13个到60个特征点。266个量化特征点的虹膜识别算法在众多虹膜识别技术资料中都有讲述，在算法和人类眼部特征允许的情况下，Dr.Daugman指出，通过他的算法可获得173个二进制自由度的独立特征点。在生物识别技术中，这个特征点的数量是相当大的。 算法第一步是通过一个距离眼睛3英寸的精密相机来确定虹膜的位置。当相机对准眼睛后，算法逐渐将焦距对准虹膜左右两侧，确定虹膜的外沿，这种水平方法受 到了眼睑的阻碍。算法同时将焦距对准虹膜的内沿（即瞳孔）并排除眼液和细微组织的影响。 单色相机利用可见光和红外线，红外线定位在700-900mm的范围内（这是IR技术的低限，美国眼科学会在他们对macularcysts研究中使用同样的范围。） 在虹膜的上方，算法通过二维Gabor子波的方法来细分和重组虹膜图象，第一个细分的部分被称为phasor，要理解二维gabor子波的原理需要很深的数学知识。 精确度虹膜识别技术是精确度最高的生物识别技术，具体描述如下：两个不同的虹膜信息有75%匹配信息的可能性是1:106等错率：1:1200000两个不同的虹膜产生相同虹膜代码的可能性是1:1052 录入和识别虹膜的定位可在1秒钟之内完成，产生虹膜代码的时间也仅需1秒的时间，数据库的检索时间也相当快。处理器速度是大规模检索的一个瓶颈，另外网络和硬件设备的性能也制约着检索的速度。由于虹膜识别技术采用的是单色成像技术，因此一些图像很难把它从瞳孔的图像中分离出来。但是虹膜识别技术所采用的算法允许图像质量在某种程度上有所变化。相同的虹膜所产生的虹膜代码也有25%的变化，这听起来好像是这一技术的致命弱点，但在识别过程中，这种虹膜代码的变化只占整个虹膜代码的10%，它所占代码的比例是相当小的。]]></content>
       <categories>
         <category>计算机视觉</category>
       </categories>
