@@ -57,5 +57,13 @@ gentie_productKey: #your-gentie-product-key
 ## 编写规范
 以后再补充～
 
-
+## Ubuntu16.04安装
+```
+apt install npm,nodejs-legacy
+npm install hexo-cli -g
+hexo init blog
+cd blog
+npm install
+hexo server
+```
 CopyLeft Here
