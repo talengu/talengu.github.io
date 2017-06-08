@@ -71,7 +71,7 @@
 <link href="/public/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Kinect,Opencv," />
+  <meta name="keywords" content="Kinect,视线估计," />
 
 
 
@@ -87,21 +87,17 @@
 
 
 
-<meta name="description" content="概要：Kinect SDK V2.0重点记录">
-<meta name="keywords" content="Kinect,Opencv">
+<meta name="description" content="记录算法 c语言代码">
+<meta name="keywords" content="Kinect,视线估计">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Kinect开发">
-<meta property="og:url" content="https://talengu.github.io/2017/05/22/kinect/index.html">
+<meta property="og:title" content="视线估计算法">
+<meta property="og:url" content="https://talengu.github.io/2017/05/28/gaze_estimation/into/index.html">
 <meta property="og:site_name" content="思考·行动">
-<meta property="og:description" content="概要：Kinect SDK V2.0重点记录">
-<<<<<<< Updated upstream
-<meta property="og:updated_time" content="2017-06-06T14:45:15.662Z">
-=======
-<meta property="og:updated_time" content="2017-05-24T02:40:16.000Z">
->>>>>>> Stashed changes
+<meta property="og:description" content="记录算法 c语言代码">
+<meta property="og:updated_time" content="2017-05-28T14:38:58.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Kinect开发">
-<meta name="twitter:description" content="概要：Kinect SDK V2.0重点记录">
+<meta name="twitter:title" content="视线估计算法">
+<meta name="twitter:description" content="记录算法 c语言代码">
 
 
 
@@ -129,13 +125,13 @@
 
 
 
-  <link rel="canonical" href="https://talengu.github.io/2017/05/22/kinect/"/>
+  <link rel="canonical" href="https://talengu.github.io/2017/05/28/gaze_estimation/into/"/>
 
 
 
 
 
-  <title> Kinect开发 | 思考·行动 </title>
+  <title> 视线估计算法 | 思考·行动 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -298,7 +294,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://talengu.github.io/public/2017/05/22/kinect/">
+    <link itemprop="mainEntityOfPage" href="https://talengu.github.io/public/2017/05/28/gaze_estimation/into/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="小成">
@@ -319,7 +315,7 @@
             
             
               
-                Kinect开发
+                视线估计算法
               
             
           </h1>
@@ -334,8 +330,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-22T16:00:04+08:00">
-                2017-05-22
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-28T16:00:04+08:00">
+                2017-05-28
               </time>
             
 
@@ -375,7 +371,7 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a class="cloud-tie-join-count" href="/public/2017/05/22/kinect/#comments" itemprop="discussionUrl">
+                <a class="cloud-tie-join-count" href="/public/2017/05/28/gaze_estimation/into/#comments" itemprop="discussionUrl">
                   <span class="post-comments-count join-count" itemprop="commentCount"></span>
                 </a>
               </span>
@@ -403,112 +399,29 @@
 
       
         <blockquote>
-<p>概要：<br>Kinect SDK V2.0重点记录</p>
+<p>记录算法 c语言代码</p>
 </blockquote>
 <a id="more"></a>
-<h2 id="微软官方Reference"><a href="#微软官方Reference" class="headerlink" title="微软官方Reference"></a>微软官方Reference</h2><p><a href="https://msdn.microsoft.com/en-us/library/hh855364.aspx" target="_blank" rel="external">Kinect for Windows C++ Reference</a></p>
-<h2 id="CameraSpacePoint"><a href="#CameraSpacePoint" class="headerlink" title="CameraSpacePoint"></a>CameraSpacePoint</h2><p>A 3D location in camera space.</p>
-<h3 id="defined"><a href="#defined" class="headerlink" title="defined"></a>defined</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> _<span class="title">CameraSpacePoint</span> &#123;</span></div><div class="line">    <span class="keyword">float</span> X;</div><div class="line">    <span class="keyword">float</span> Y;</div><div class="line">    <span class="keyword">float</span> Z;</div><div class="line">&#125; CameraSpacePoint;</div></pre></td></tr></table></figure>
-<h3 id="Members"><a href="#Members" class="headerlink" title="Members"></a>Members</h3><table>
+<p>$$<br>\begin{cases}<br>k1=\left| \overrightarrow{cp}\right| \\<br>\cos{\theta}=\frac{\overrightarrow{cp} \cdot \overrightarrow{cg}}{\left|\overrightarrow{cp}\right|<br>\left| \overrightarrow{cg}\right|}<br>\end{cases}<br>$$</p>
+<table>
 <thead>
 <tr>
-<th style="text-align:center">Members</th>
-<th style="text-align:left"></th>
+<th style="text-align:left">Header One</th>
+<th style="text-align:left">Header Two</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style="text-align:center">X</td>
-<td style="text-align:left">component in camera space.</td>
+<td style="text-align:left">水平   5° y=0 在xoz平面</td>
+<td style="text-align:left">Item Two</td>
 </tr>
 <tr>
-<td style="text-align:center">Y</td>
-<td style="text-align:left">component in camera space.</td>
-</tr>
-<tr>
-<td style="text-align:center">Z</td>
-<td style="text-align:left">component in camera space.</td>
+<td style="text-align:left">竖直 1.5° x=0 在yoz平面</td>
+<td style="text-align:left">Item Two</td>
 </tr>
 </tbody>
 </table>
-<h3 id="Remarks"><a href="#Remarks" class="headerlink" title="Remarks"></a>Remarks</h3><p>Camera space refers to the 3D coordinate system used by Kinect. The coordinate system is defined as follows:</p>
-<ul>
-<li>The origin (x=0, y=0, z=0) is located at the center of the IR sensor on Kinect</li>
-<li>X grows to the sensor’s left</li>
-<li>Y grows up (note that this direction is based on the sensor’s tilt)</li>
-<li>Z grows out in the direction the sensor is facing</li>
-<li>1 unit = 1 meter</li>
-</ul>
-<h2 id="MapColorFrameToCameraSpace-Method"><a href="#MapColorFrameToCameraSpace-Method" class="headerlink" title="MapColorFrameToCameraSpace Method"></a>MapColorFrameToCameraSpace Method</h2><p><a href="https://msdn.microsoft.com/en-us/library/microsoft.kinect.kinect.icoordinatemapper_methods.aspx" target="_blank" rel="external">ICoordinateMapper</a>-&gt;<a href="https://msdn.microsoft.com/en-us/library/microsoft.kinect.kinect.icoordinatemapper.mapcolorframetocameraspace.aspx" target="_blank" rel="external">MapColorFrameToCameraSpace Method</a></p>
-<p>Uses the color frame data to map the entire frame from color space to camera space.</p>
-<h3 id="Syntax"><a href="#Syntax" class="headerlink" title="Syntax"></a>Syntax</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span>:</div><div class="line"><span class="function">HRESULT <span class="title">MapColorFrameToCameraSpace</span><span class="params">(</span></span></div><div class="line">         UINT depthDataPointCount,</div><div class="line">         <span class="keyword">const</span> UINT16 *depthFrameData,</div><div class="line">         UINT cameraPointCount,</div><div class="line">         CameraSpacePoint *cameraSpacePoints</div><div class="line">)</div></pre></td></tr></table></figure>
-<h3 id="Parameters"><a href="#Parameters" class="headerlink" title="Parameters"></a>Parameters</h3><table>
-<thead>
-<tr>
-<th style="text-align:center">Parameters</th>
-<th style="text-align:center">Type</th>
-<th style="text-align:left"></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">depthDataPointCount</td>
-<td style="text-align:center">UINT</td>
-<td style="text-align:left">The number of depth data points.</td>
-</tr>
-<tr>
-<td style="text-align:center">depthFrameData</td>
-<td style="text-align:center">UINT16</td>
-<td style="text-align:left">[in] The full image data from a depth frame.</td>
-</tr>
-<tr>
-<td style="text-align:center">cameraPointCount</td>
-<td style="text-align:center">UINT</td>
-<td style="text-align:left">The number of camera points.</td>
-</tr>
-<tr>
-<td style="text-align:center">cameraSpacePoints</td>
-<td style="text-align:center">CameraSpacePoint</td>
-<td style="text-align:left">[out] The array of mapped camera points that will be filled.</td>
-</tr>
-<tr>
-<td style="text-align:center">Return value</td>
-<td style="text-align:center">HRESULT</td>
-<td style="text-align:left">Returns S_OK if successful; otherwise, returns a failure code.</td>
-</tr>
-</tbody>
-</table>
-<h3 id="Remarks-1"><a href="#Remarks-1" class="headerlink" title="Remarks"></a>Remarks</h3><p>The cameraPoints array should be the same size of the number of color frame pixels. 1920x1080</p>
-<h2 id="IDepthFrame-AccessUnderlyingBuffer-Method"><a href="#IDepthFrame-AccessUnderlyingBuffer-Method" class="headerlink" title="IDepthFrame::AccessUnderlyingBuffer Method"></a>IDepthFrame::AccessUnderlyingBuffer Method</h2><p>Gets a pointer to the depth frame data.  <a href="https://msdn.microsoft.com/en-us/library/microsoft.kinect.kinect.idepthframe.accessunderlyingbuffer.aspx" target="_blank" rel="external">link</a></p>
-<h3 id="Syntax-1"><a href="#Syntax-1" class="headerlink" title="Syntax"></a>Syntax</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span>:</div><div class="line"><span class="function">HRESULT <span class="title">AccessUnderlyingBuffer</span><span class="params">(</span></span></div><div class="line">         UINT *capacity,</div><div class="line">         UINT16 **buffer</div><div class="line">)</div></pre></td></tr></table></figure>
-<h3 id="Parameters-1"><a href="#Parameters-1" class="headerlink" title="Parameters"></a>Parameters</h3><table>
-<thead>
-<tr>
-<th style="text-align:center">Parameters</th>
-<th style="text-align:center">Type</th>
-<th style="text-align:left"></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">capacity</td>
-<td style="text-align:center">UINT</td>
-<td style="text-align:left">[out] When this method returns, contains the size of the frame data buffer in bytes.</td>
-</tr>
-<tr>
-<td style="text-align:center">buffer</td>
-<td style="text-align:center">UINT16</td>
-<td style="text-align:left">[out] When this method returns, contains the pointer to the depth frame data.</td>
-</tr>
-<tr>
-<td style="text-align:center">Return value</td>
-<td style="text-align:center">HRESULT</td>
-<td style="text-align:left">Returns S_OK if successful; otherwise, returns a failure code.</td>
-</tr>
-</tbody>
-</table>
-<h3 id="Remarks-2"><a href="#Remarks-2" class="headerlink" title="Remarks"></a>Remarks</h3><p>The capcity is not size in bytes, it is the count of UINT16.</p>
-<h2 id="IFaceFrameResult-Interface"><a href="#IFaceFrameResult-Interface" class="headerlink" title="IFaceFrameResult Interface"></a>IFaceFrameResult Interface</h2><p>Represents a face frame result. <a href="https://msdn.microsoft.com/en-us/library/microsoft.kinect.face.ifaceframeresult.aspx" target="_blank" rel="external">link</a></p>
+<h2 id="计算夹角公式代码"><a href="#计算夹角公式代码" class="headerlink" title="计算夹角公式代码"></a>计算夹角公式代码</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"stdio.h"</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"math.h"</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">define</span> PI 3.141592653</span></div><div class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> _<span class="title">Point3</span></span></div><div class="line">&#123;</div><div class="line">    <span class="keyword">float</span> x;</div><div class="line">    <span class="keyword">float</span> y;</div><div class="line">    <span class="keyword">float</span> z;</div><div class="line">&#125;Point3;</div><div class="line"><span class="function">Point3 <span class="title">test_vetor</span><span class="params">(Point3 _in_a,Point3 _in_b)</span></span></div><div class="line">&#123;</div><div class="line">    Point3 _out_c;</div><div class="line">    _out_c.x=_in_b.x-_in_a.x;</div><div class="line">    _out_c.y=_in_b.y-_in_a.y;</div><div class="line">    _out_c.z=_in_b.z-_in_a.z;</div><div class="line">    <span class="keyword">return</span> _out_c;</div><div class="line">&#125;</div><div class="line"><span class="function"><span class="keyword">float</span> <span class="title">test_distance</span><span class="params">(Point3 _in_a)</span> </span>&#123;</div><div class="line">    <span class="keyword">return</span> <span class="built_in">sqrt</span>((_in_a.x)*(_in_a.x)+(_in_a.y)*(_in_a.y)+(_in_a.z)*(_in_a.z));</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">float</span> <span class="title">test_angle</span><span class="params">(Point3 p,Point3 g,Point3 c)</span> </span>&#123;</div><div class="line">    Point3 cg=test_vetor(c,g);</div><div class="line">    Point3 cp=test_vetor(c,p);</div><div class="line">    <span class="keyword">float</span> a=cg.x*cp.x+cg.y*cp.y+cg.z*cp.z;</div><div class="line">    <span class="keyword">float</span> tmp=a/test_distance(cg)/test_distance(cp);</div><div class="line">    <span class="keyword">return</span> <span class="built_in">acos</span>(tmp)/PI;</div><div class="line"></div><div class="line">&#125;</div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span> <span class="keyword">const</span> *argv[])</span> </span>&#123;</div><div class="line">    <span class="comment">//计算OP与OQ的夹角</span></div><div class="line">    Point3 O=&#123;<span class="number">1</span>,<span class="number">0</span>,<span class="number">0</span>&#125;;</div><div class="line">    Point3 P=&#123;<span class="number">0</span>,<span class="number">1</span>,<span class="number">0</span>&#125;;</div><div class="line">    Point3 Q=&#123;<span class="number">0</span>,<span class="number">0</span>,<span class="number">1</span>&#125;;</div><div class="line"></div><div class="line">    <span class="built_in">printf</span>(<span class="string">"%f PI\n"</span>,test_angle(Q,P,O));</div><div class="line">    <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 
       
     </div>
@@ -540,7 +453,7 @@
           
             <a href="/public/tags/Kinect/" rel="tag"># Kinect</a>
           
-            <a href="/public/tags/Opencv/" rel="tag"># Opencv</a>
+            <a href="/public/tags/视线估计/" rel="tag"># 视线估计</a>
           
         </div>
       
@@ -553,8 +466,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/public/2017/05/21/translations/daugman/" rel="next" title="【翻译】daugman算法">
-                <i class="fa fa-chevron-left"></i> 【翻译】daugman算法
+              <a href="/public/2017/05/22/opencv/face_recognition/" rel="next" title="人脸识别">
+                <i class="fa fa-chevron-left"></i> 人脸识别
               </a>
             
           </div>
@@ -562,10 +475,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/public/2017/05/22/opencv/ubuntu/" rel="prev" title="Ubuntu完全教程">
-                Ubuntu完全教程 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -716,7 +625,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#微软官方Reference"><span class="nav-number">1.</span> <span class="nav-text">微软官方Reference</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CameraSpacePoint"><span class="nav-number">2.</span> <span class="nav-text">CameraSpacePoint</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#defined"><span class="nav-number">2.1.</span> <span class="nav-text">defined</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Members"><span class="nav-number">2.2.</span> <span class="nav-text">Members</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Remarks"><span class="nav-number">2.3.</span> <span class="nav-text">Remarks</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MapColorFrameToCameraSpace-Method"><span class="nav-number">3.</span> <span class="nav-text">MapColorFrameToCameraSpace Method</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Syntax"><span class="nav-number">3.1.</span> <span class="nav-text">Syntax</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Parameters"><span class="nav-number">3.2.</span> <span class="nav-text">Parameters</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Remarks-1"><span class="nav-number">3.3.</span> <span class="nav-text">Remarks</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#IDepthFrame-AccessUnderlyingBuffer-Method"><span class="nav-number">4.</span> <span class="nav-text">IDepthFrame::AccessUnderlyingBuffer Method</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Syntax-1"><span class="nav-number">4.1.</span> <span class="nav-text">Syntax</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Parameters-1"><span class="nav-number">4.2.</span> <span class="nav-text">Parameters</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Remarks-2"><span class="nav-number">4.3.</span> <span class="nav-text">Remarks</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#IFaceFrameResult-Interface"><span class="nav-number">5.</span> <span class="nav-text">IFaceFrameResult Interface</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#计算夹角公式代码"><span class="nav-number">1.</span> <span class="nav-text">计算夹角公式代码</span></a></li></ol></div>
             
 
           </div>

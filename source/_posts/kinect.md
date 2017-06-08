@@ -96,7 +96,6 @@ HRESULT AccessUnderlyingBuffer(
 ### Remarks
 The capcity is not size in bytes, it is the count of UINT16.
 
-```c++
-*(((DWORD *)(m_pDepthRGBX))+i) = *(pBuffer+i);
 
-```
+## IFaceFrameResult Interface
+Represents a face frame result. [link](https://msdn.microsoft.com/en-us/library/microsoft.kinect.face.ifaceframeresult.aspx)

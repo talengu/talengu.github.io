@@ -26,7 +26,9 @@ comments: true
 设水平杆$QP$绕$z$轴以$\omega\, rad/s$ 的角速度旋转，并设开始旋转的时间长度为$t$ 秒，
 则$P(r\cos{\omega t}, r\sin{\omega t}, q)$  
 
- $$\overrightarrow{OQ}=(0, 0, q) \qquad \overrightarrow{QP}=(r\cos{\omega t}, r\sin{\omega t}, 0)$$
+ $$
+ \overrightarrow{OQ}=(0, 0, q) \qquad \overrightarrow{QP}=(r\cos{\omega t}, r\sin{\omega t}, 0)
+ $$
 
 
 我们知道 $\overrightarrow{QP}$ 与斜杆 $L$ 垂直，假设 $\overrightarrow{OQ}$ 与斜杆 $L$ 成固定角 $\theta$ ，设 $L$ 的方向向量 $\overrightarrow{s}=(A, B, C)$
