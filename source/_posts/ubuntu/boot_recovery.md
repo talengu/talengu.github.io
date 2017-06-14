@@ -37,7 +37,7 @@ exit
 sudo vim /etc/default/grub
 ```
 其中的“GRUB_DEFAULT=0”为设置默认启动项。系统启动菜单Windows10的启动项在第5项，修改为4（GRUB启动项是从0开始的）。  
-![GRUB修改](http://jingyan.baidu.com/album/f71d60379e16021ab641d1ab.html?picindex=5)
+![GRUB修改](http://c.hiphotos.baidu.com/exp/w=500/sign=3805fd3b67d0f703e6b295dc38fa5148/d52a2834349b033be9a357f610ce36d3d539bdf7.jpg)
 
 ## 去除多余GRUB启动项（直接）
 [link](https://zhidao.baidu.com/question/472571337.html)  

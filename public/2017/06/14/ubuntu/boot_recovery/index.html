@@ -94,12 +94,12 @@
 <meta property="og:url" content="https://talengu.github.io/2017/06/14/ubuntu/boot_recovery/index.html">
 <meta property="og:site_name" content="思考·行动">
 <meta property="og:description" content="概要：修复ubuntu引导，修改ubuntu盘的大小参考：http://www.cnblogs.com/jloveu/p/Ubuntu-partition-expansion-record.html我直接用Ubuntu live，里面自带gparted分区工具，还有grub修复工具">
-<meta property="og:image" content="http://jingyan.baidu.com/album/f71d60379e16021ab641d1ab.html?picindex=5">
-<meta property="og:updated_time" content="2017-06-13T17:17:59.000Z">
+<meta property="og:image" content="http://c.hiphotos.baidu.com/exp/w=500/sign=3805fd3b67d0f703e6b295dc38fa5148/d52a2834349b033be9a357f610ce36d3d539bdf7.jpg">
+<meta property="og:updated_time" content="2017-06-14T05:32:47.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ubuntu引导修复">
 <meta name="twitter:description" content="概要：修复ubuntu引导，修改ubuntu盘的大小参考：http://www.cnblogs.com/jloveu/p/Ubuntu-partition-expansion-record.html我直接用Ubuntu live，里面自带gparted分区工具，还有grub修复工具">
-<meta name="twitter:image" content="http://jingyan.baidu.com/album/f71d60379e16021ab641d1ab.html?picindex=5">
+<meta name="twitter:image" content="http://c.hiphotos.baidu.com/exp/w=500/sign=3805fd3b67d0f703e6b295dc38fa5148/d52a2834349b033be9a357f610ce36d3d539bdf7.jpg">
 
 
 
@@ -405,7 +405,7 @@
 </blockquote>
 <h2 id="修复启动"><a href="#修复启动" class="headerlink" title="修复启动"></a>修复启动</h2><p>执行以下命令（以root身份）：<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">mkdir /tmp/mydir</div><div class="line">mount /dev/sda8 /tmp/mydir  (注：其中的`/dev/sda8`为我的`/`分区标识，根据自己情况修改为自己的`/`分区标识)</div><div class="line">mount /dev/sda11 /tmp/mydir/boot  (注：同上，`/dev/sda11`为`/boot`分区标识)</div><div class="line">mount --bind /dev /tmp/mydir/dev</div><div class="line">mount --bind /proc /tmp/mydir/proc</div><div class="line">mount --bind /sys /tmp/mydir/sys</div><div class="line">chroot /tmp/mydir  (此步可能输出一些信息，可以无视)</div><div class="line">grub-install /dev/sda  (注：其中的`/dev/sda`为`/`分区所在硬盘的标识)</div><div class="line">exit</div></pre></td></tr></table></figure></p>
 <h2 id="修改Ubuntu多系统的默认启动顺序"><a href="#修改Ubuntu多系统的默认启动顺序" class="headerlink" title="修改Ubuntu多系统的默认启动顺序"></a>修改Ubuntu多系统的默认启动顺序</h2><p><a href="http://jingyan.baidu.com/article/f71d60379e16021ab641d1ab.html" target="_blank" rel="external">link</a><br>打开该配置文件”/etc/default/grub”<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo vim /etc/default/grub</div></pre></td></tr></table></figure></p>
-<p>其中的“GRUB_DEFAULT=0”为设置默认启动项。系统启动菜单Windows10的启动项在第5项，修改为4（GRUB启动项是从0开始的）。<br><img src="http://jingyan.baidu.com/album/f71d60379e16021ab641d1ab.html?picindex=5" alt="GRUB修改"></p>
+<p>其中的“GRUB_DEFAULT=0”为设置默认启动项。系统启动菜单Windows10的启动项在第5项，修改为4（GRUB启动项是从0开始的）。<br><img src="http://c.hiphotos.baidu.com/exp/w=500/sign=3805fd3b67d0f703e6b295dc38fa5148/d52a2834349b033be9a357f610ce36d3d539bdf7.jpg" alt="GRUB修改"></p>
 <h2 id="去除多余GRUB启动项（直接）"><a href="#去除多余GRUB启动项（直接）" class="headerlink" title="去除多余GRUB启动项（直接）"></a>去除多余GRUB启动项（直接）</h2><p><a href="https://zhidao.baidu.com/question/472571337.html" target="_blank" rel="external">link</a><br>注释掉“/boot/grub/grub.cfg”中对应<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo gedit /boot/grub/grub.cfg</div></pre></td></tr></table></figure></p>
 
       
