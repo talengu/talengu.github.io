@@ -14,6 +14,7 @@ tags:
 [中文V2](https://git-scm.com/book/zh/v2)  
 [英文V2](https://git-scm.com/book/en/v2)  
 本文中的链接多为中文版。
+> 未完待续
 
 暂停一下。我已经完成了初步了解。
 手机上用 pocket git 和MarkDownX

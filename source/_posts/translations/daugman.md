@@ -13,6 +13,7 @@ comments: true
 > daugman算法是虹膜是识别的经典算法。  
 >  John.Daugman的  [剑桥主页](http://www.cl.cam.ac.uk/~jgd1000/)  
 > 虹膜识别介绍 [Introduction to Iris Recognition](http://www.cl.cam.ac.uk/~jgd1000/iris_recognition.html)
+> 未完待续
 
 <!-- more -->
 ## 文章
