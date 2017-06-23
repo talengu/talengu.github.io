@@ -59,8 +59,8 @@ gentie_productKey: #your-gentie-product-key
 
 ## Ubuntu16.04安装
 ```
-apt install npm,nodejs-legacy
-npm install hexo-cli -g
+sudo apt install npm nodejs-legacy
+sudo npm install hexo-cli -g
 hexo init blog
 cd blog
 npm install
