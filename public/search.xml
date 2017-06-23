@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[在ubuntu平台上编译opencv]]></title>
+    <url>%2Fpublic%2F2017%2F06%2F23%2Fopencv%2Fopencv_ubuntu%2F</url>
+    <content type="text"><![CDATA[概要：在ubuntu环境下编译opencvlink 在cmakewen文件里添加12find_package(OpenCV REQUIRED)target_link_libraries(项目名 $&#123;OpenCV_LIBS&#125;)]]></content>
+      <categories>
+        <category>计算机视觉</category>
+      </categories>
+      <tags>
+        <tag>Ubuntu</tag>
+        <tag>OpenCv</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[ubuntu引导修复]]></title>
     <url>%2Fpublic%2F2017%2F06%2F14%2Fubuntu%2Fboot_recovery%2F</url>
     <content type="text"><![CDATA[概要：修复ubuntu引导，修改ubuntu盘的大小参考：http://www.cnblogs.com/jloveu/p/Ubuntu-partition-expansion-record.html我直接用Ubuntu live，里面自带gparted分区工具，还有grub修复工具 修复启动执行以下命令（以root身份）：123456789mkdir /tmp/mydirmount /dev/sda8 /tmp/mydir (注：其中的`/dev/sda8`为我的`/`分区标识，根据自己情况修改为自己的`/`分区标识)mount /dev/sda11 /tmp/mydir/boot (注：同上，`/dev/sda11`为`/boot`分区标识)mount --bind /dev /tmp/mydir/devmount --bind /proc /tmp/mydir/procmount --bind /sys /tmp/mydir/syschroot /tmp/mydir (此步可能输出一些信息，可以无视)grub-install /dev/sda (注：其中的`/dev/sda`为`/`分区所在硬盘的标识)exit 修改Ubuntu多系统的默认启动顺序link打开该配置文件”/etc/default/grub”1sudo vim /etc/default/grub 其中的“GRUB_DEFAULT=0”为设置默认启动项。系统启动菜单Windows10的启动项在第5项，修改为4（GRUB启动项是从0开始的）。 去除多余GRUB启动项（直接）link注释掉“/boot/grub/grub.cfg”中对应1sudo gedit /boot/grub/grub.cfg]]></content>
