@@ -1,0 +1,997 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/public/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/public/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/public/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Git,Progit," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/public/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="概要：git官方教程书籍，有空的时候阅读一下并做笔记供以后参考。书的链接：中文V2英文V2本文中的链接多为中文版。未完待续  暂停一下。我已经完成了初步了解。手机上用 pocket git 和MarkDownX">
+<meta name="keywords" content="Git,Progit">
+<meta property="og:type" content="article">
+<meta property="og:title" content="阅读Progit">
+<meta property="og:url" content="https://talengu.github.io/2016/12/01/project_github/read_progit/index.html">
+<meta property="og:site_name" content="思考·行动">
+<meta property="og:description" content="概要：git官方教程书籍，有空的时候阅读一下并做笔记供以后参考。书的链接：中文V2英文V2本文中的链接多为中文版。未完待续  暂停一下。我已经完成了初步了解。手机上用 pocket git 和MarkDownX">
+<meta property="og:image" content="https://git-scm.com/book/en/v2/book/01-introduction/images/areas.png">
+<meta property="og:image" content="https://git-scm.com/book/en/v2/book/02-git-basics/images/lifecycle.png">
+<meta property="og:updated_time" content="2017-06-14T05:46:14.557Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="阅读Progit">
+<meta name="twitter:description" content="概要：git官方教程书籍，有空的时候阅读一下并做笔记供以后参考。书的链接：中文V2英文V2本文中的链接多为中文版。未完待续  暂停一下。我已经完成了初步了解。手机上用 pocket git 和MarkDownX">
+<meta name="twitter:image" content="https://git-scm.com/book/en/v2/book/01-introduction/images/areas.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/public/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://talengu.github.io/2016/12/01/project_github/read_progit/"/>
+
+
+
+
+
+  <title> 阅读Progit | 思考·行动 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/public/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">思考·行动</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">路漫漫其修远兮，吾将上下而求索</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/public/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/public/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/public/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/public/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocapitalize="off" autocomplete="off" autocorrect="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://talengu.github.io/public/2016/12/01/project_github/read_progit/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="小成">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://avatars1.githubusercontent.com/u/10290923?v=3&s=460">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="思考·行动">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                阅读Progit
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-12-01T12:39:04+08:00">
+                2016-12-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/public/categories/技术书籍阅读/" itemprop="url" rel="index">
+                    <span itemprop="name">技术书籍阅读</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a class="cloud-tie-join-count" href="/public/2016/12/01/project_github/read_progit/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count join-count" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>概要：<br>git官方教程书籍，有空的时候阅读一下并做笔记供以后参考。<br>书的链接：<br><a href="https://git-scm.com/book/zh/v2" target="_blank" rel="external">中文V2</a><br><a href="https://git-scm.com/book/en/v2" target="_blank" rel="external">英文V2</a><br>本文中的链接多为中文版。<br>未完待续</p>
+</blockquote>
+<p>暂停一下。我已经完成了初步了解。<br>手机上用 pocket git 和MarkDownX<br><a id="more"></a></p>
+<h2 id="1-起步"><a href="#1-起步" class="headerlink" title="1. 起步"></a>1. 起步</h2><h3 id="1-1-关于版本控制"><a href="#1-1-关于版本控制" class="headerlink" title="1.1 关于版本控制"></a>1.1 关于版本控制</h3><h3 id="1-2-Git-简史"><a href="#1-2-Git-简史" class="headerlink" title="1.2 Git 简史"></a>1.2 Git 简史</h3><p>版本控制有单机版本控制、集中版本控制、分布式版本控制。git简史诞生于 2005 年。</p>
+<h3 id="1-3-Git-基础"><a href="#1-3-Git-基础" class="headerlink" title="1.3 Git 基础"></a>1.3 Git 基础</h3><p>Git 和其它版本控制系统（包括 Subversion 和近似工具）的主要差别在于对待数据的方法。直接快照，而非差异比较。<br>Git使用SHA-1 散列保证项目完整性。一般只增加内容。<br><strong><a href="https://git-scm.com/book/zh/v2/起步-Git-基础" target="_blank" rel="external">文件三个状态</a></strong> ：已提交（committed）、已修改（modified）和已暂存（staged)</p>
+<ul>
+<li>三个工作区域：Git 仓库、工作目录以及暂存区域。<br><img src="https://git-scm.com/book/en/v2/book/01-introduction/images/areas.png" width="300" height="130" alt="文件的生命周期" align="center"></li>
+</ul>
+<h3 id="1-4-命令行"><a href="#1-4-命令行" class="headerlink" title="1.4 命令行"></a>1.4 命令行</h3><h3 id="1-5-安装-Git"><a href="#1-5-安装-Git" class="headerlink" title="1.5 安装 Git"></a>1.5 安装 Git</h3><p>官网<a href="http://git-scm.com/download/win" target="_blank" rel="external">windows官网下载</a><br>github客户端<a href="https://windows.github.com/" target="_blank" rel="external">windows github</a></p>
+<h3 id="1-6-初次运行-Git-前的配置"><a href="#1-6-初次运行-Git-前的配置" class="headerlink" title="1.6 初次运行 Git 前的配置"></a>1.6 初次运行 Git 前的配置</h3><p>检查配置。可以使用 git config –list 命令来列出所有 Git 当时能找到的配置。由于存在全局、用户、项目多个地方配置。Git 会使用它找到的每一个变量的最后一个配置。</p>
+<p>Git 自带一个 git config 的工具来帮助设置控制 Git 外观和行为的配置变量。全局、用户、项目三级。项目的配置权利最大。   <code>一般配置用户的配置。</code> 一定要配置，所有操作都会被记录。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ git config --global user.name &quot;John Doe&quot;</div><div class="line">$ git config --global user.email johndoe@example.com</div></pre></td></tr></table></figure></p>
+<p>选择文本编辑器，当 Git 需要你输入信息时会调用它。 如果未配置，Git 会使用操作系统默认的文本编辑器，通常是 Vim。 如果你想使用不同的文本编辑器，例如 Emacs，可以这样做：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ git config --global core.editor emacs</div><div class="line">全部输出</div></pre></td></tr></table></figure></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">$ git config --list</div><div class="line">　　user.name=John Doe</div><div class="line">　　user.email=johndoe@example.com</div><div class="line">　　color.status=auto</div><div class="line">　　color.branch=auto</div><div class="line">　　color.interactive=auto</div><div class="line">　　color.diff=auto</div><div class="line">单独检查 git config &lt;key&gt;</div><div class="line">$ git config user.name</div><div class="line">　　John Doe</div></pre></td></tr></table></figure>
+<h3 id="1-7-获取帮助"><a href="#1-7-获取帮助" class="headerlink" title="1.7 获取帮助"></a>1.7 获取帮助</h3><p>获取帮助。如果你觉得手册或者本书的内容还不够用，你可以尝试在 Freenode IRC 服务器（ irc.freenode.net ）的 #git 或 #github 频道寻求帮助。这些频道经常有上百人在线，他们都精通 Git 并且乐于助人。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ git help &lt;verb&gt;</div><div class="line">$ git &lt;verb&gt; --help</div><div class="line">$ man git-&lt;verb&gt;</div></pre></td></tr></table></figure></p>
+<h3 id="1-8-总结"><a href="#1-8-总结" class="headerlink" title="1.8 总结"></a>1.8 总结</h3><p>git下载与配置<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">git config</div><div class="line">git help</div></pre></td></tr></table></figure></p>
+<h2 id="2-Git-基础"><a href="#2-Git-基础" class="headerlink" title="2. Git 基础"></a>2. Git 基础</h2><blockquote>
+<p> 阐述 Git 的基本使用——包含你在使用 Git 时可能遇到的 80% 的情形。能够克隆仓库、查看项目历史、修改文件和贡献更改。   </p>
+</blockquote>
+<h3 id="2-1-获取-Git-仓库"><a href="#2-1-获取-Git-仓库" class="headerlink" title="2.1 获取 Git 仓库"></a>2.1 获取 Git 仓库</h3><p>git本地初始化<br>进入项目目录并输入：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ git init</div></pre></td></tr></table></figure></p>
+<p>该命令将创建一个名为 .git 的子目录，仅仅初始化，项目里的文件还没被跟踪。</p>
+<h3 id="2-2-记录每次更新到仓库"><a href="#2-2-记录每次更新到仓库" class="headerlink" title="2.2 记录每次更新到仓库"></a>2.2 记录每次更新到仓库</h3><ul>
+<li>通过 git add 命令来实现对指定文件的跟踪，然后执行 git commit 提交：<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ git add *.c</div><div class="line">$ git add LICENSE</div><div class="line">$ git commit -m &apos;initial project version&apos;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>git add 命令使用文件或目录的路径作为参数；如果参数是目录的路径，该命令将递归地跟踪该目录下的 <strong>所有文件</strong> 。</p>
+<ul>
+<li>克隆现有的库。克隆仓库的命令格式是 git clone [url] 。 比如，<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ git clone https://github.com/libgit2/libgit2</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>这会在当前目录下创建名为 “libgit2” 的目录。 <strong>自定义本地仓库名字</strong> ，可以使用如下命令：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ git clone https://github.com/libgit2/libgit2 mylibgit</div></pre></td></tr></table></figure></p>
+<p>例子使用的是 https:// 协议，不过也可使用 git:// 协议或者 <strong> SSH 传输协议</strong>，如 user@server:path/to/repo.git 。</p>
+<ul>
+<li><a href="https://git-scm.com/book/zh/v2/Git-基础-记录每次更新到仓库" target="_blank" rel="external">Git 时文件的生命周期</a><br><img src="https://git-scm.com/book/en/v2/book/02-git-basics/images/lifecycle.png" width="400" height="130" alt="文件的生命周期" align="center"></li>
+</ul>
+<h3 id="2-3-查看提交历史"><a href="#2-3-查看提交历史" class="headerlink" title="2.3 查看提交历史"></a>2.3 查看提交历史</h3><ul>
+<li>检查当前文件状态<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git status</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>在使用命令 git add 开始跟踪一个文件后。在 Changes to be committed 这行下面的，就说明是已暂存状态。</p>
+<ul>
+<li>状态简览<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">$ git status -s</div><div class="line">　　M README</div><div class="line">　　MM Rakefile</div><div class="line">　　A lib/git.rb</div><div class="line">　　M lib/simplegit.rb</div><div class="line">　　?? LICENSE.txt</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>新添加的未跟踪文件前面有 ?? 标记，新添加到暂存区中的文件前面有 A 标记，修改过的文件前面有 M 标记。<br>M 有两个可以出现的位置，出现在右边的 M 表示该文件被修改了但是还没放入暂存区，出现在靠左边的 M 表示该文件被修改了并放入了暂存区。</p>
+<h3 id="2-4-撤消操作"><a href="#2-4-撤消操作" class="headerlink" title="2.4 撤消操作"></a>2.4 撤消操作</h3><h3 id="2-5-远程仓库的使用"><a href="#2-5-远程仓库的使用" class="headerlink" title="2.5 远程仓库的使用"></a>2.5 远程仓库的使用</h3><h3 id="2-7-Git-别名"><a href="#2-7-Git-别名" class="headerlink" title="2.7 Git 别名"></a>2.7 Git 别名</h3><h3 id="2-8-总结"><a href="#2-8-总结" class="headerlink" title="2.8 总结"></a>2.8 总结</h3><p>配置并初始化一个仓库（repository）、开始或停止跟踪（track）文件、暂存（stage）或提交（commit)更改。 配置 Git 来忽略指定的文件和文件模式、迅速而简单地撤销错误操作、浏览项目的历史版本以及不同提交（commits）间的差异、向远程仓库推送（push）以及从远程仓库拉取（pull）文件。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">$ git init</div><div class="line">$ git add *.c</div><div class="line">$ git commit -m &apos;initial project version&apos;</div><div class="line">$ git clone &lt;remote dir&gt; &lt;本地文件夹名&gt;</div></pre></td></tr></table></figure></p>
+<h2 id="3-Git-分支"><a href="#3-Git-分支" class="headerlink" title="3. Git 分支"></a>3. Git 分支</h2><h3 id="3-1-分支简介"><a href="#3-1-分支简介" class="headerlink" title="3.1 分支简介"></a>3.1 分支简介</h3><h3 id="3-2-分支的新建与合并"><a href="#3-2-分支的新建与合并" class="headerlink" title="3.2 分支的新建与合并"></a>3.2 分支的新建与合并</h3><h3 id="3-3-分支管理"><a href="#3-3-分支管理" class="headerlink" title="3.3 分支管理"></a>3.3 分支管理</h3><h3 id="3-4-分支开发工作流"><a href="#3-4-分支开发工作流" class="headerlink" title="3.4 分支开发工作流"></a>3.4 分支开发工作流</h3><h3 id="3-5-远程分支"><a href="#3-5-远程分支" class="headerlink" title="3.5 远程分支"></a>3.5 远程分支</h3><h3 id="3-6-变基"><a href="#3-6-变基" class="headerlink" title="3.6 变基"></a>3.6 变基</h3><h3 id="3-7-总结"><a href="#3-7-总结" class="headerlink" title="3.7 总结"></a>3.7 总结</h3><h2 id="4-服务器上的-Git"><a href="#4-服务器上的-Git" class="headerlink" title="4. 服务器上的 Git"></a>4. 服务器上的 Git</h2><p>4.1 协议<br>4.2 在服务器上搭建 Git<br>4.3 生成 SSH 公钥<br>4.4 配置服务器<br>4.5 Git 守护进程<br>4.6 Smart HTTP<br>4.7 GitWeb<br>4.8 GitLab<br>4.9 第三方托管的选择<br>4.10 总结</p>
+<h2 id="5-分布式-Git"><a href="#5-分布式-Git" class="headerlink" title="5. 分布式 Git"></a>5. 分布式 Git</h2><p>5.1 分布式工作流程<br>5.2 向一个项目贡献<br>5.3 维护项目<br>5.4 总结</p>
+<h2 id="6-GitHub"><a href="#6-GitHub" class="headerlink" title="6. GitHub"></a>6. GitHub</h2><p>6.1 账户的创建和配置<br>6.2 对项目做出贡献<br>6.3 维护项目<br>6.4 管理组织<br>6.5 脚本 GitHub<br>6.6 总结</p>
+<h2 id="7-Git-工具"><a href="#7-Git-工具" class="headerlink" title="7. Git 工具"></a>7. Git 工具</h2><p>7.1 选择修订版本<br>7.2 交互式暂存<br>7.3 储藏与清理<br>7.4 签署工作<br>7.5 搜索<br>7.6 重写历史<br>7.7 重置揭密<br>7.8 高级合并<br>7.9 Rerere<br>7.10 使用 Git 调试<br>7.11 子模块<br>7.12 打包<br>7.13 替换<br>7.14 凭证存储<br>7.15 总结</p>
+<h2 id="8-自定义-Git"><a href="#8-自定义-Git" class="headerlink" title="8. 自定义 Git"></a>8. 自定义 Git</h2><p>8.1 配置 Git<br>8.2 Git 属性<br>8.3 Git 钩子<br>8.4 使用强制策略的一个例子<br>8.5 总结</p>
+<h2 id="9-Git-与其他系统"><a href="#9-Git-与其他系统" class="headerlink" title="9. Git 与其他系统"></a>9. Git 与其他系统</h2><p>9.1 作为客户端的 Git<br>9.2 迁移到 Git<br>9.3 总结</p>
+<h2 id="10-Git-内部原理"><a href="#10-Git-内部原理" class="headerlink" title="10. Git 内部原理"></a>10. Git 内部原理</h2><p>10.1 底层命令和高层命令<br>10.2 Git 对象<br>10.3 Git 引用<br>10.4 包文件<br>10.5 引用规格<br>10.6 传输协议<br>10.7 维护与数据恢复<br>10.8 环境变量<br>10.9 总结</p>
+<h2 id="附录"><a href="#附录" class="headerlink" title="附录"></a>附录</h2><p>A1. 其它环境中的 Git<br>A1.1 图形界面<br>A1.2 Visual Studio 中的 Git<br>A1.3 Eclipse 中的 Git<br>A1.4 Bash 中的 Git<br>A1.5 Zsh 中的 Git<br>A1.6 Powershell 中的 Git<br>A1.7 总结<br>A2. 将 Git 嵌入你的应用<br>A2.1 命令行 Git 方式<br>A2.2 Libgit2<br>A2.3 JGit<br>A3. Git 命令<br>A3.1 设置与配置<br>A3.2 获取与创建项目<br>A3.3 快照基础<br>A3.4 分支与合并<br>A3.5 项目分享与更新<br>A3.6 检查与比较<br>A3.7 调试<br>A3.8 补丁<br>A3.9 邮件<br>A3.10 外部系统<br>A3.11 管理<br>A3.12 底层命令</p>
+<h2 id="版权说明"><a href="#版权说明" class="headerlink" title="版权说明"></a>版权说明</h2><p>The entire Pro Git book, written by Scott Chacon and Ben Straub and published by Apress, is available here. All content is licensed under the Creative Commons Attribution Non Commercial Share Alike 3.0 license. Print versions of the book are available on Amazon.com.</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/public/tags/Git/" rel="tag"># Git</a>
+          
+            <a href="/public/tags/Progit/" rel="tag"># Progit</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/public/2015/06/14/DSP/dsp_filter/" rel="next" title="DSP滤波程序">
+                <i class="fa fa-chevron-left"></i> DSP滤波程序
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/public/2016/12/22/build_blog/" rel="prev" title="个人主页搭建">
+                个人主页搭建 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="https://avatars1.githubusercontent.com/u/10290923?v=3&s=460"
+               alt="小成" />
+          <p class="site-author-name" itemprop="name">小成</p>
+           
+              <p class="site-description motion-element" itemprop="description">站在巨人的肩膀上</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/public/archives">
+                <span class="site-state-item-count">18</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/public/categories/index.html">
+                <span class="site-state-item-count">12</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/public/tags/index.html">
+                <span class="site-state-item-count">28</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/talengu" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://talengu.github.io/public/2015/01/01/About/#more" target="_blank" title="About">
+                  
+                    <i class="fa fa-fw fa-diamond"></i>
+                  
+                  About
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-起步"><span class="nav-number">1.</span> <span class="nav-text">1. 起步</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-关于版本控制"><span class="nav-number">1.1.</span> <span class="nav-text">1.1 关于版本控制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-Git-简史"><span class="nav-number">1.2.</span> <span class="nav-text">1.2 Git 简史</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-Git-基础"><span class="nav-number">1.3.</span> <span class="nav-text">1.3 Git 基础</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-4-命令行"><span class="nav-number">1.4.</span> <span class="nav-text">1.4 命令行</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-5-安装-Git"><span class="nav-number">1.5.</span> <span class="nav-text">1.5 安装 Git</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-6-初次运行-Git-前的配置"><span class="nav-number">1.6.</span> <span class="nav-text">1.6 初次运行 Git 前的配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-7-获取帮助"><span class="nav-number">1.7.</span> <span class="nav-text">1.7 获取帮助</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-8-总结"><span class="nav-number">1.8.</span> <span class="nav-text">1.8 总结</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-Git-基础"><span class="nav-number">2.</span> <span class="nav-text">2. Git 基础</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-获取-Git-仓库"><span class="nav-number">2.1.</span> <span class="nav-text">2.1 获取 Git 仓库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-记录每次更新到仓库"><span class="nav-number">2.2.</span> <span class="nav-text">2.2 记录每次更新到仓库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-查看提交历史"><span class="nav-number">2.3.</span> <span class="nav-text">2.3 查看提交历史</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-4-撤消操作"><span class="nav-number">2.4.</span> <span class="nav-text">2.4 撤消操作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-5-远程仓库的使用"><span class="nav-number">2.5.</span> <span class="nav-text">2.5 远程仓库的使用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-7-Git-别名"><span class="nav-number">2.6.</span> <span class="nav-text">2.7 Git 别名</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-8-总结"><span class="nav-number">2.7.</span> <span class="nav-text">2.8 总结</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-Git-分支"><span class="nav-number">3.</span> <span class="nav-text">3. Git 分支</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-分支简介"><span class="nav-number">3.1.</span> <span class="nav-text">3.1 分支简介</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-分支的新建与合并"><span class="nav-number">3.2.</span> <span class="nav-text">3.2 分支的新建与合并</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-分支管理"><span class="nav-number">3.3.</span> <span class="nav-text">3.3 分支管理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-4-分支开发工作流"><span class="nav-number">3.4.</span> <span class="nav-text">3.4 分支开发工作流</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-5-远程分支"><span class="nav-number">3.5.</span> <span class="nav-text">3.5 远程分支</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-6-变基"><span class="nav-number">3.6.</span> <span class="nav-text">3.6 变基</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-7-总结"><span class="nav-number">3.7.</span> <span class="nav-text">3.7 总结</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-服务器上的-Git"><span class="nav-number">4.</span> <span class="nav-text">4. 服务器上的 Git</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-分布式-Git"><span class="nav-number">5.</span> <span class="nav-text">5. 分布式 Git</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-GitHub"><span class="nav-number">6.</span> <span class="nav-text">6. GitHub</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-Git-工具"><span class="nav-number">7.</span> <span class="nav-text">7. Git 工具</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8-自定义-Git"><span class="nav-number">8.</span> <span class="nav-text">8. 自定义 Git</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#9-Git-与其他系统"><span class="nav-number">9.</span> <span class="nav-text">9. Git 与其他系统</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#10-Git-内部原理"><span class="nav-number">10.</span> <span class="nav-text">10. Git 内部原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#附录"><span class="nav-number">11.</span> <span class="nav-text">附录</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#版权说明"><span class="nav-number">12.</span> <span class="nav-text">版权说明</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2015 - 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">小成</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/public/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/public/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/public/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/public/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/public/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/public/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/public/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/public/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/public/js/src/affix.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/public/js/src/schemes/pisces.js?v=5.1.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/public/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/public/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/public/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+    
+    <script>
+      var cloudTieConfig = {
+        url: document.location.href, 
+        sourceId: "",
+        productKey: "9b8cf9eabeb743c2aa064ec220795336",
+        target: "cloud-tie-wrapper"
+      };
+    </script>
+    <script src="https://img1.ws.126.net/f2e/tie/yun/sdk/loader.js"></script>
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+      search_path = "search.xml";
+    }
+    var path = "/public/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.popup').toggle();
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+      $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = $( "entry", xmlResponse ).map(function() {
+            return {
+              title: $( "title", this ).text(),
+              content: $("content",this).text(),
+              url: $( "url" , this).text()
+            };
+          }).get();
+          var $input = document.getElementById(search_id);
+          var $resultContent = document.getElementById(content_id);
+          $input.addEventListener('input', function(){
+            var matchcounts = 0;
+            var str='<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length > 1) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var content_index = [];
+                var data_title = data.title.trim().toLowerCase();
+                var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                var data_url = decodeURIComponent(data.url);
+                var index_title = -1;
+                var index_content = -1;
+                var first_occur = -1;
+                // only match artiles with not empty titles and contents
+                if(data_title != '') {
+                  keywords.forEach(function(keyword, i) {
+                    index_title = data_title.indexOf(keyword);
+                    index_content = data_content.indexOf(keyword);
+                    if( index_title >= 0 || index_content >= 0 ){
+                      isMatch = true;
+                      if (i == 0) {
+                        first_occur = index_content;
+                      }
+                    }
+
+                  });
+                }
+                // show search results
+                if (isMatch) {
+                  matchcounts += 1;
+                  str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                  var content = data.content.trim().replace(/<[^>]+>/g,"");
+                  if (first_occur >= 0) {
+                    // cut out 100 characters
+                    var start = first_occur - 20;
+                    var end = first_occur + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if(start == 0){
+                      end = 50;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    var match_content = content.substring(start, end);
+                    // highlight all keywords
+                    keywords.forEach(function(keyword){
+                      var regS = new RegExp(keyword, "gi");
+                      match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                    });
+
+                    str += "<p class=\"search-result\">" + match_content +"...</p>"
+                  }
+                  str += "</li>";
+                }
+              })};
+            str += "</ul>";
+            if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+            if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+            $resultContent.innerHTML = str;
+          });
+          proceedsearch();
+        }
+      });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+</body>
+</html>
