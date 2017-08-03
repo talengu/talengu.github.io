@@ -11,8 +11,8 @@ comments: true
 ---
 
 > 概要：
-> jupyter notebook的安装
-
+> jupyter notebook的安装  
+> jupyter server安装 [link](https://zhuanlan.zhihu.com/p/23110830)
 
 <!-- more -->
 
