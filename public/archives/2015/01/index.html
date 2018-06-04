@@ -594,16 +594,17 @@
 
 
   
-    
-    <script>
-      var cloudTieConfig = {
-        url: document.location.href, 
-        sourceId: "",
-        productKey: "9b8cf9eabeb743c2aa064ec220795336",
-        target: "cloud-tie-wrapper"
-      };
-    </script>
-    <script src="https://img1.ws.126.net/f2e/tie/yun/sdk/loader.js"></script>
+
+
+
+
+
+  
+
+
+
+
+
   
 
 
@@ -611,7 +612,29 @@
 
 
 
-
+   
+   
+   
+   
+   <link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">
+   <script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script>
+   
+       <script type="text/javascript">
+           function ShowGitment(){
+               document.getElementById("gitment-display-button").style.display = "none";
+               document.getElementById("gitment-container").style.display = "block";
+               var gitment = new Gitment({
+                   id: document.location.href, 
+                   owner: 'talengu',
+                   repo: 'talengu.github.io',
+                   oauth: {
+                       client_id: '315ada12fed7a0ffb6b7',
+                       client_secret: '5f15e644005fabee93cc7f50d70c78c57dce0e86',
+                   }});
+               gitment.render('gitment-container');
+           }
+       </script>
+   
 
 
 

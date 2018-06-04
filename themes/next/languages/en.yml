@@ -84,6 +84,8 @@ cheers:
 
 keep_on: Keep on posting.
 
+gitmentbutton: Show comments from Gitment
+
 symbol:
   comma: ', '
   period: '. '

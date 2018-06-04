@@ -305,7 +305,18 @@ disqus:
 #hypercomments_id:
 
 # Gentie productKey
-gentie_productKey: 9b8cf9eabeb743c2aa064ec220795336
+# gentie_productKey: 9b8cf9eabeb743c2aa064ec220795336
+
+# Gitment
+# Introduction: https://imsun.net/posts/gitment-introduction/
+# ref: https://blog.csdn.net/yanzi1225627/article/details/77890414
+gitment:
+  enable: true
+  githubID: talengu
+  repo: talengu.github.io
+  ClientID: 315ada12fed7a0ffb6b7
+  ClientSecret: 5f15e644005fabee93cc7f50d70c78c57dce0e86
+  lazy: true
 
 # changyan
 changyan:
