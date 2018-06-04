@@ -1,0 +1,3 @@
+[submodule "blog_source"]
+	path = source
+	url = https://github.com/talengu/blog_source
