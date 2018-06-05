@@ -23,7 +23,7 @@
                document.getElementById("gitment-display-button").style.display = "none";
                document.getElementById("gitment-container").style.display = "block";
                var gitment = new Gitment({
-                   id: document.location.href, 
+                   id: window.location.pathname, 
                    owner: '{{owner}}',
                    repo: '{{repo}}',
                    oauth: {

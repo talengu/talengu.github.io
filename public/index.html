@@ -711,9 +711,9 @@
                document.getElementById("gitment-display-button").style.display = "none";
                document.getElementById("gitment-container").style.display = "block";
                var gitment = new Gitment({
-                   id: document.location.href, 
+                   id: window.location.pathname, 
                    owner: 'talengu',
-                   repo: 'https://github.com/talengu/talengu.github.io',
+                   repo: 'talengu.github.io',
                    oauth: {
                        client_id: '315ada12fed7a0ffb6b7',
                        client_secret: '5f15e644005fabee93cc7f50d70c78c57dce0e86',
