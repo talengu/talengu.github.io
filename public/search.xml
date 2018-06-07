@@ -1,6 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[个人主页搭建]]></title>
+    <url>%2Fpublic%2F2016%2F12%2F22%2Fbuild_blog%2F</url>
+    <content type="text"><![CDATA[概要：博客搭建的记录与分享，主要用了Hexo，NexT主题和Gitment评论系统。 小技巧，在文章中使用&lt;!-- more --&gt;手动进行截断，Hexo 提供的方式。下面就是用这个截断的～～ 安装Hexo Ubuntu16.04安装 123456$ sudo apt install npm nodejs-legacy$ sudo npm install hexo-cli -g$ hexo init blog$ cd blog$ npm install$ hexo server Hexo中文网站 安装NexT按官网教程NexT安装，官网安装和配置教程比较好。http://theme-next.iissnan.com/getting-started.html NexT的Github项目https://github.com/iissnan/hexo-theme-next NexT开发者的博客http://notes.iissnan.com 安装完的目录结构12345678910111213.├── node_modules # nodejs的目录├── public # 输出网站目录├── scaffolds # hexo 的一些预设模版├── source # 独立submodule├── themes # 主题 里面也有主题的配置文件不要与项目的配置文件搞混├── README.md├── _config.yml # 整个项目配置文件├── db.json├── index.html。 # 用于跳转到public下└── package.json5 directories, 5 files 将source 文件夹作为一个submodule 用 git submodule123# 对于我来说$ cd path/to/your/github.io/project$ git submodule add https://github.com/talengu/blog_source source 我启用的配置Local Search MathJax$\frac{d}{dx}c^n=nx^{n-1}$ Gitment 评论功能123456# 安装gitment$ npm install gitment --save要修改theme/next 下文件参考：https://blog.csdn.net/yanzi1225627/article/details/77890414 图片 github上有项目图片就从项目中链接过来，比如头像就是我github的头像 重要的图片存在本项目中 图标网站 http://fontawesome.io or https://www.easyicon.net/ 编写规范以后再补充～ CopyLeft Here]]></content>
+      <categories>
+        <category>博客搭建</category>
+      </categories>
+      <tags>
+        <tag>Hexo</tag>
+        <tag>NexT</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[Windows笔记本开共享wifi]]></title>
+    <url>%2Fpublic%2F2015%2F04%2F14%2Fshare_win_wifi%2F</url>
+    <content type="text"><![CDATA[网上有很多用笔记本设置无线热点的批处理，我中和了一下。复制下面代码到记事本，改后缀为bat就行了。[改一下你自己定义的ssid和key] 12345678910111213141516171819202122232425@echo offset mssid=GTC::网络名字set mkey=123456789::大于八位密码echo ***********************************************echo 打开承载网络 1echo 关闭承载网络 2echo 承载网络信息 3echo 设置网络信息 setecho 退出 eecho （网络名字、密码可在源文件中改）echo （请以管理员身份打开!!!）echo ***********************************************:startset /p var=请选择:if %var%==1 netsh wlan start hostednetwork &amp;&amp; echo 网络名字:%mssid% 密码:%mkey% &amp;&amp; GOTO startif %var%==2 netsh wlan stop hostednetwork &amp;&amp; GOTO startif %var%==3 netsh wlan show hostednetwork &amp;&amp; echo 网络名字:%mssid% 密码:%mkey% &amp;&amp; GOTO startif %var%==set netsh wlan set hostednetwork mode=allow ssid=%mssid% key=%mkey% &amp;&amp; echo 网络名字:%mssid% 密码:%mkey% &amp;&amp; GOTO startif %var%==e pause]]></content>
+      <categories>
+        <category>Windows脚本</category>
+      </categories>
+      <tags>
+        <tag>共享wifi</tag>
+        <tag>cmd</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[关于]]></title>
     <url>%2Fpublic%2F2015%2F01%2F01%2FAbout%2F</url>
     <content type="text"><![CDATA[欢迎来到这里～ 不忘初心活波严谨感谢The Internet And The World. 联系方式 QQmail: tianchenggu@qq.com Gmail: talenapp@gmail.com]]></content>
