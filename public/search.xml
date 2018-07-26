@@ -3,7 +3,7 @@
   <entry>
     <title><![CDATA[个人主页搭建]]></title>
     <url>%2Fpublic%2F2016%2F12%2F22%2Fbuild_blog%2F</url>
-    <content type="text"><![CDATA[概要：博客搭建的记录与分享，主要用了Hexo，NexT主题和Gitment评论系统。 小技巧，在文章中使用&lt;!-- more --&gt;手动进行截断，Hexo 提供的方式。下面就是用这个截断的～～ 安装Hexo Ubuntu16.04安装 123456$ sudo apt install npm nodejs-legacy$ sudo npm install hexo-cli -g$ hexo init blog$ cd blog$ npm install$ hexo server Hexo中文网站 安装NexT按官网教程NexT安装，官网安装和配置教程比较好。http://theme-next.iissnan.com/getting-started.html NexT的Github项目https://github.com/iissnan/hexo-theme-next NexT开发者的博客http://notes.iissnan.com 安装完的目录结构12345678910111213.├── node_modules # nodejs的目录├── public # 输出网站目录├── scaffolds # hexo 的一些预设模版├── source # 独立submodule├── themes # 主题 里面也有主题的配置文件不要与项目的配置文件搞混├── README.md├── _config.yml # 整个项目配置文件├── db.json├── index.html。 # 用于跳转到public下└── package.json5 directories, 5 files 将source 文件夹作为一个submodule 用 git submodule123# 对于我来说$ cd path/to/your/github.io/project$ git submodule add https://github.com/talengu/blog_source source 我启用的配置Local Search MathJax$\frac{d}{dx}c^n=nx^{n-1}$ Gitment 评论功能123456# 安装gitment$ npm install gitment --save要修改theme/next 下文件参考：https://blog.csdn.net/yanzi1225627/article/details/77890414 图片 github上有项目图片就从项目中链接过来，比如头像就是我github的头像 重要的图片存在本项目中 图标网站 http://fontawesome.io or https://www.easyicon.net/ 编写规范以后再补充～ CopyLeft Here]]></content>
+    <content type="text"><![CDATA[概要：博客搭建的记录与分享，主要用了Hexo，NexT主题和Gitment评论系统。 小技巧，在文章中使用&lt;!-- more --&gt;手动进行截断，Hexo 提供的方式。下面就是用这个截断的～～ 安装Hexo Ubuntu16.04安装 123456$ sudo apt install npm nodejs-legacy$ sudo npm install hexo-cli -g$ hexo init blog$ cd blog$ npm install$ hexo server Hexo中文网站 安装NexT按官网教程NexT安装，官网安装和配置教程比较好。http://theme-next.iissnan.com/getting-started.html NexT的Github项目https://github.com/iissnan/hexo-theme-next NexT开发者的博客http://notes.iissnan.com 安装完的目录结构12345678910111213.├── node_modules # nodejs的目录├── public # 输出网站目录├── scaffolds # hexo 的一些预设模版├── source # 独立submodule├── themes # 主题 里面也有主题的配置文件不要与项目的配置文件搞混├── README.md├── _config.yml # 整个项目配置文件├── db.json├── index.html。 # 用于跳转到public下└── package.json5 directories, 5 files 将source 文件夹作为一个submodule 用 git submodule123# 对于我来说$ cd path/to/your/github.io/project$ git submodule add https://github.com/talengu/blog_source source 在生成静态网站下面操作都在 path/to/your/github.io/project12345678910111213# clone 项目$ git clone https://github.com/talengu/talengu.github.io$ git submodule init$ git submodule update# 切换到最新的submodule$ cd source$ git merge origin/master$ git submodule update# 执行npm按照，由于已经生成它会按照package.json文件自动安装# 没有npm的话 安装 https://nodejs.org/en/download/$ npm install 我启用的配置Local Search MathJax$\frac{d}{dx}c^n=nx^{n-1}$ Gitment 评论功能123456# 安装gitment$ npm install gitment --save要修改theme/next 下文件参考：https://blog.csdn.net/yanzi1225627/article/details/77890414 图片 github上有项目图片就从项目中链接过来，比如头像就是我github的头像 重要的图片存在本项目中 图标网站 http://fontawesome.io or https://www.easyicon.net/ 编写规范以后再补充～ CopyLeft Here]]></content>
       <categories>
         <category>博客搭建</category>
       </categories>
@@ -25,9 +25,9 @@
       </tags>
   </entry>
   <entry>
-    <title><![CDATA[关于]]></title>
+    <title><![CDATA[序言]]></title>
     <url>%2Fpublic%2F2015%2F01%2F01%2FAbout%2F</url>
-    <content type="text"><![CDATA[欢迎来到这里～ 不忘初心活波严谨感谢The Internet And The World. 联系方式 QQmail: tianchenggu@qq.com Gmail: talenapp@gmail.com]]></content>
+    <content type="text"><![CDATA[欢迎来到这里～ 博客这个东西很好玩，体现出一个人很多个性的东西。看了好多书籍的序，我想也为我的博客写个序。开篇名义，本博客主要记录学习工作中的知识点和生活的休闲杂记。记忆这东西很神奇，莫名其妙地记住一些事，但也不知不觉丢了些东西。在互联网或者说移动互联网之前，人们的记事方式更多的是纸质的，学习也是按照课本一页页去掌握，如今竞争的压力，信息的爆炸，技术信息发布平台多样，信息短快乱，工作与学习所用的知识点越来越多，越来越细，碎片化地学习无法避免的。 如何去记录这些碎片的知识，整理归纳的方法设计，已经迫在眉睫了。在Github上搭建一个带版本控制和评论功能的博客，我认为是个不错的想法。利用Markdown写文档比较方便，不需涉及很多格式的问题，风格想换就换，各个博客平台也支持这种语法方式。git对文本的版本控制比较舒服，我可以在多个终端进行编写，同步方便，合并后利用hexo框架就可以发布。在评论支持方面以前使用的是网易云跟帖，但这个功能网易关了，现在使用的Gitment，利用github的isuue功能的评论框架，现在仅支持github用户登录评论，但就用户面来说，我觉得够了，我写的这些博客主要是给自己看的。 对我博客的寄语。希望利用博客建立个人有效的知识体系，锻炼写文章的水平，留下生活中有趣的事物，同时传递出有趣的想法，有效的和各位大牛交流相关领域的经验，在互联网村里共同成长与进步。 人是一棵会思考的芦苇，并有一个有趣的灵魂。 不忘初心，活波严谨。 感谢The Internet And The World. 联系方式 QQmail: tianchenggu@qq.com Gmail: talenapp@gmail.com]]></content>
       <categories>
         <category>博客搭建</category>
       </categories>
