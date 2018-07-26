@@ -92,10 +92,9 @@
 <meta property="og:type" content="article">
 <meta property="og:title" content="Windows笔记本开共享wifi">
 <meta property="og:url" content="https://talengu.github.io/2015/04/14/share_win_wifi/index.html">
-<meta property="og:site_name" content="思考·行动">
+<meta property="og:site_name" content="温风·如酒">
 <meta property="og:description" content="网上有很多用笔记本设置无线热点的批处理，我中和了一下。复制下面代码到记事本，改后缀为bat就行了。[改一下你自己定义的ssid和key]">
-<meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-07-16T06:08:01.951Z">
+<meta property="og:updated_time" content="2018-06-04T17:56:10.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Windows笔记本开共享wifi">
 <meta name="twitter:description" content="网上有很多用笔记本设置无线热点的批处理，我中和了一下。复制下面代码到记事本，改后缀为bat就行了。[改一下你自己定义的ssid和key]">
@@ -132,7 +131,7 @@
 
 
 
-  <title> Windows笔记本开共享wifi | 思考·行动 </title>
+  <title> Windows笔记本开共享wifi | 温风·如酒 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -168,12 +167,12 @@
     <div class="custom-logo-site-title">
       <a href="/public/"  class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
-        <span class="site-title">思考·行动</span>
+        <span class="site-title">温风·如酒</span>
         <span class="logo-line-after"><i></i></span>
       </a>
     </div>
       
-        <p class="site-subtitle">路漫漫其修远兮，吾将上下而求索</p>
+        <p class="site-subtitle"></p>
       
   </div>
 
@@ -304,7 +303,7 @@
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="思考·行动">
+      <meta itemprop="name" content="温风·如酒">
     </span>
 
     
@@ -329,15 +328,23 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-04-14T12:39:04-04:00">
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-04-14T12:39:04+08:00">
                 2015-04-14
               </time>
             
 
             
+              <span class="post-meta-divider">|</span>
+            
 
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2018-06-05T01:56:10+08:00">
+                2018-06-05
+              </time>
             
           </span>
 
@@ -349,8 +356,6 @@
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
               </span>
-              
-                <span class="post-meta-item-text">分类于</span>
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
@@ -393,7 +398,7 @@
 <p>网上有很多用笔记本设置无线热点的批处理，我中和了一下。<br>复制下面代码到记事本，改后缀为bat就行了。<br>[改一下你自己定义的ssid和key]</p>
 </blockquote>
 <a id="more"></a>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">@echo off</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">set mssid=GTC</span><br><span class="line">::网络名字</span><br><span class="line">set mkey=123456789</span><br><span class="line">::大于八位密码</span><br><span class="line"></span><br><span class="line">echo ***********************************************</span><br><span class="line">echo              打开承载网络  1</span><br><span class="line">echo              关闭承载网络  2</span><br><span class="line">echo              承载网络信息  3</span><br><span class="line">echo              设置网络信息  set</span><br><span class="line">echo              退出          e</span><br><span class="line">echo        （网络名字、密码可在源文件中改）</span><br><span class="line">echo           （请以管理员身份打开!!!）</span><br><span class="line">echo ***********************************************</span><br><span class="line">:start</span><br><span class="line">set /p var=请选择:</span><br><span class="line">if %var%==1 netsh wlan start hostednetwork &amp;&amp; echo 网络名字:%mssid% 密码:%mkey% &amp;&amp; GOTO start</span><br><span class="line">if %var%==2 netsh wlan stop hostednetwork &amp;&amp; GOTO start</span><br><span class="line">if %var%==3 netsh wlan show hostednetwork &amp;&amp; echo 网络名字:%mssid% 密码:%mkey% &amp;&amp; GOTO start</span><br><span class="line">if %var%==set netsh wlan set hostednetwork mode=allow ssid=%mssid% key=%mkey% &amp;&amp; echo 网络名字:%mssid% 密码:%mkey% &amp;&amp; GOTO start</span><br><span class="line">if %var%==e pause</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">@echo off</div><div class="line"></div><div class="line"></div><div class="line">set mssid=GTC</div><div class="line">::网络名字</div><div class="line">set mkey=123456789</div><div class="line">::大于八位密码</div><div class="line"></div><div class="line">echo ***********************************************</div><div class="line">echo              打开承载网络  1</div><div class="line">echo              关闭承载网络  2</div><div class="line">echo              承载网络信息  3</div><div class="line">echo              设置网络信息  set</div><div class="line">echo              退出          e</div><div class="line">echo        （网络名字、密码可在源文件中改）</div><div class="line">echo           （请以管理员身份打开!!!）</div><div class="line">echo ***********************************************</div><div class="line">:start</div><div class="line">set /p var=请选择:</div><div class="line">if %var%==1 netsh wlan start hostednetwork &amp;&amp; echo 网络名字:%mssid% 密码:%mkey% &amp;&amp; GOTO start</div><div class="line">if %var%==2 netsh wlan stop hostednetwork &amp;&amp; GOTO start</div><div class="line">if %var%==3 netsh wlan show hostednetwork &amp;&amp; echo 网络名字:%mssid% 密码:%mkey% &amp;&amp; GOTO start</div><div class="line">if %var%==set netsh wlan set hostednetwork mode=allow ssid=%mssid% key=%mkey% &amp;&amp; echo 网络名字:%mssid% 密码:%mkey% &amp;&amp; GOTO start</div><div class="line">if %var%==e pause</div></pre></td></tr></table></figure>
 
       
     </div>
@@ -438,8 +443,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/public/2015/01/01/About/" rel="next" title="关于 序">
-                <i class="fa fa-chevron-left"></i> 关于 序
+              <a href="/public/2015/01/01/About/" rel="next" title="序言">
+                <i class="fa fa-chevron-left"></i> 序言
               </a>
             
           </div>
@@ -510,7 +515,7 @@
                alt="小成" />
           <p class="site-author-name" itemprop="name">小成</p>
            
-              <p class="site-description motion-element" itemprop="description">站在巨人的肩膀上</p>
+              <p class="site-description motion-element" itemprop="description"></p>
           
         </div>
         <nav class="site-state motion-element">
@@ -529,7 +534,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/public/categories/index.html">
-                <span class="site-state-item-count">15</span>
+                <span class="site-state-item-count">16</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -540,7 +545,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/public/tags/index.html">
-                <span class="site-state-item-count">39</span>
+                <span class="site-state-item-count">40</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -563,9 +568,9 @@
               </span>
             
               <span class="links-of-author-item">
-                <a href="https://talengu.github.io/public/2015/01/01/About/#more" target="_blank" title="About">
+                <a href="/public/2015/01/01/About" target="_blank" title="About">
                   
-                    <i class="fa fa-fw fa-diamond"></i>
+                    <i class="fa fa-fw fa-globe"></i>
                   
                   About
                 </a>
