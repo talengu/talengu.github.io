@@ -4,9 +4,9 @@
 
 # Site
 title: 温风·如酒
-subtitle: 
+subtitle:
 # 路漫漫其修远兮，吾将上下而求索
-description: 
+description:
 # 站在巨人的肩膀上
 author: 小成
 language: zh-Hans
@@ -68,10 +68,10 @@ pagination_dir: page
 #  hexo-generator-search
 
 #Feed Atom
-#feed:
-#  type: atom
-#  path: atom.xml
-#  limit: 20
+feed:
+ type: atom
+ path: atom.xml
+ limit: 20
 
 ##Search talen cancel
 #search:
