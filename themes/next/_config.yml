@@ -249,7 +249,7 @@ post_wordcount:
 
 # Declare license on posts
 post_copyright:
-  enable: false
+  enable: true
   license: CC BY-NC-SA 3.0
   license_url: https://creativecommons.org/licenses/by-nc-sa/3.0/
 
@@ -318,6 +318,11 @@ gitment:
   ClientID: 315ada12fed7a0ffb6b7
   ClientSecret: 5f15e644005fabee93cc7f50d70c78c57dce0e86
   lazy: true
+
+# GitHub Corners
+gitcorner:
+  enable: true
+  githublink: https://github.com/talengu
 
 # changyan
 changyan:
