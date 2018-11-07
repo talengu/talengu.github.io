@@ -308,6 +308,14 @@ disqus:
 # Gentie productKey
 # gentie_productKey: 9b8cf9eabeb743c2aa064ec220795336
 
+# code copy btn https://www.jianshu.com/p/3e9d614c1e77
+codecopy:
+  enable: true
+
+# tags to add icon
+pagetag:
+  enable: false
+
 # Gitment
 # Introduction: https://imsun.net/posts/gitment-introduction/
 # ref: https://blog.csdn.net/yanzi1225627/article/details/77890414
@@ -318,11 +326,13 @@ gitment:
   ClientID: 315ada12fed7a0ffb6b7
   ClientSecret: 5f15e644005fabee93cc7f50d70c78c57dce0e86
   lazy: true
+  uselocal: true
 
 # GitHub Corners
 gitcorner:
   enable: true
   githublink: https://github.com/talengu
+
 
 # changyan
 changyan:
@@ -420,7 +430,7 @@ leancloud_visitors:
 # Get more information on http://ibruce.info/2015/04/04/busuanzi/
 busuanzi_count:
   # count values only if the other configs are false
-  enable: false
+  enable: true
   # custom uv span for the whole site
   site_uv: true
   site_uv_header: <i class="fa fa-user"></i>
@@ -431,7 +441,8 @@ busuanzi_count:
   site_pv_footer:
   # custom pv span for one page only
   page_pv: true
-  page_pv_header: <i class="fa fa-file-o"></i>
+  #page_pv_header: <i class="fa fa-file-o"></i>
+  page_pv_header: <i class="fa fa-user"></i>
   page_pv_footer:
 
 

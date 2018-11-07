@@ -45,10 +45,15 @@
     {% endif %}
 
   </div>
-
   {% include '_scripts/vendors.swig' %} {% include '_scripts/commons.swig' %} {% set scheme_script = '_scripts/schemes/' + theme.scheme | lower + '.swig' %} {% include scheme_script %} {% block script_extra %}{% endblock %} {% include '_scripts/boostrap.swig'
   %} {% include '_third-party/comments/index.swig' %} {% include '_third-party/search/index.swig' %} {% include '_third-party/analytics/lean-analytics.swig' %} {% include '_third-party/seo/baidu-push.swig' %} {% include '_third-party/mathjax.swig' %}
   {% include '_third-party/exturl.swig' %}
+
+  <!-- 代码块复制功能 -->
+  {% if theme.codecopy.enable %}
+  <script type="text/javascript" src="{{config.root}}js/src/clipboard.min.js"></script>
+  <script type="text/javascript" src="{{config.root}}js/src/clipboard-use.js"></script>
+  {% endif %}
 </body>
 
 </html>

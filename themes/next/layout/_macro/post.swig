@@ -334,7 +334,11 @@
       {% if post.tags and post.tags.length and not is_index %}
         <div class="post-tags">
           {% for tag in post.tags %}
+          {% if theme.pagetag.enable%}
+            <a href="{{ url_for(tag.path) }}" rel="tag"><i class="fa fa-tag"></i> {{ tag.name }}</a>
+            {% else %}
             <a href="{{ url_for(tag.path) }}" rel="tag"># {{ tag.name }}</a>
+          {% endif%}
           {% endfor %}
         </div>
       {% endif %}
