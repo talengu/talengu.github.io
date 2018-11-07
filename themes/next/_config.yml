@@ -327,6 +327,9 @@ gitment:
   ClientSecret: 5f15e644005fabee93cc7f50d70c78c57dce0e86
   lazy: true
   uselocal: true
+  usecss:
+  # https://github.com/imsun/gitment/issues/170
+  usejs: https://www.wenjunjiang.win/js/gitment.js
 
 # GitHub Corners
 gitcorner:
