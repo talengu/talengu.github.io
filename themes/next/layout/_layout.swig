@@ -54,6 +54,10 @@
   <script type="text/javascript" src="{{config.root}}js/src/clipboard.min.js"></script>
   <script type="text/javascript" src="{{config.root}}js/src/clipboard-use.js"></script>
   {% endif %}
+  <!-- 不定期出现的小猫 -->
+  {% if page.cat2D %}
+   {{ live2d() }}
+  {% endif %}
 </body>
 
 </html>

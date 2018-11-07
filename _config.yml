@@ -87,13 +87,14 @@ search:
 ## lived2d
 ## https://github.com/EYHN/hexo-helper-live2d
 ## npm install --save hexo-helper-live2d
+## npm install --save live2d-widget-model-hijiki
 ## models https://github.com/xiazeyu/live2d-widget-models
 ## models demo :https://huaji8.top/post/live2d-plugin-2.0/
 
 live2d:
-  enable: false
+  enable: true
   scriptFrom: https://cdn.jsdelivr.net/npm/live2d-widget@3.x/lib/L2Dwidget.min.js
-  tagMode: false
+  tagMode: true
   log: false
   model:
     use: live2d-widget-model-hijiki

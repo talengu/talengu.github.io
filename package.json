@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "hexo": {
-    "version": "3.3.6"
+    "version": "3.8.0"
   },
   "dependencies": {
     "gitment": "0.0.3",
@@ -19,6 +19,7 @@
     "hexo-renderer-marked": "^0.2.10",
     "hexo-renderer-stylus": "^0.3.1",
     "hexo-server": "^0.2.0",
+    "live2d-widget-model-hijiki": "^1.0.5",
     "package.json": "^2.0.1"
   }
 }
