@@ -8,9 +8,9 @@
         <category>读书笔记</category>
       </categories>
       <tags>
+        <tag>神话</tag>
         <tag>希腊罗马神话</tag>
         <tag>语言文化</tag>
-        <tag>神话</tag>
       </tags>
   </entry>
   <entry>
@@ -94,8 +94,8 @@
         <category>数学问题</category>
       </categories>
       <tags>
-        <tag>Latex</tag>
         <tag>空间解析几何</tag>
+        <tag>Latex</tag>
         <tag>Math</tag>
       </tags>
   </entry>
@@ -156,9 +156,9 @@
         <category>常用脚本</category>
       </categories>
       <tags>
+        <tag>Windows脚本</tag>
         <tag>共享wifi</tag>
         <tag>cmd</tag>
-        <tag>Windows脚本</tag>
       </tags>
   </entry>
   <entry>
