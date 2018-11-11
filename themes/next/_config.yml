@@ -159,7 +159,9 @@ social_icons:
 # Sidebar Avatar
 # in theme directory(source/images): /images/avatar.jpg
 # in site  directory(source/uploads): /uploads/avatar.jpg
-avatar: https://avatars1.githubusercontent.com/u/10290923?v=3&s=460
+avatar: 
+  url: https://avatars1.githubusercontent.com/u/10290923?v=3&s=460
+  rounded: true
 
 
 # Table Of Contents in the Sidebar
