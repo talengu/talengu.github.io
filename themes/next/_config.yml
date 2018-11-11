@@ -157,11 +157,17 @@ social_icons:
 # 可以在这找图标http://fontawesome.io
 
 # Sidebar Avatar
-# in theme directory(source/images): /images/avatar.jpg
-# in site  directory(source/uploads): /uploads/avatar.jpg
-avatar: 
-  url: https://avatars1.githubusercontent.com/u/10290923?v=3&s=460
+avatar:
+  # in theme directory(source/images): /images/avatar.gif
+  # in site  directory(source/uploads): /uploads/avatar.gif
+  # You can also use other linking images.
+  url: https://avatars1.githubusercontent.com/u/10290923?v=3&s=460 #/images/avatar.gif
+  # If true, the avatar would be dispalyed in circle.
   rounded: true
+  # The value of opacity should be choose from 0 to 1 to set the opacity of the avatar.
+  opacity: 1
+  # If true, the avatar would be rotated with the cursor.
+  rotated: false
 
 
 # Table Of Contents in the Sidebar
