@@ -85,13 +85,13 @@
 
 
 
-<meta name="description" content="概要：博客搭建的记录与分享，主要用了Hexo，NexT主题和Gitment评论系统。这里记录了我从头到尾的安装流程，和使用过程中的改进。如果想方便使用的话，后面会给个独立的hexo theme，放到github 项目上。 使用新版本的NexT v6 主题即可，有些功能如gitment已经实现。对于图片的使用可能会出现问题。仅需看看我下面的2.2小节。怕麻烦的同学，下面内容就不用看了，现在的v6支">
+<meta name="description" content="概要：博客搭建的记录与分享，主要用了Hexo，NexT主题和Gitment评论系统。这里记录了我从头到尾的安装流程，和使用过程中的改进。如果想方便使用的话，后面会给个独立的hexo theme，放到github 项目上。   使用新版本的NexT v6 主题即可，有些功能如gitment已经实现。对于图片的使用可能会出现问题。仅需看看我下面的2.2小节。怕麻烦的同学，下面内容就不用看了，现在的v">
 <meta name="keywords" content="Hexo,NexT">
 <meta property="og:type" content="article">
 <meta property="og:title" content="个人主页搭建">
 <meta property="og:url" content="https://talengu.github.io/2016/12/22/build_blog/index.html">
 <meta property="og:site_name" content="温风·如酒">
-<meta property="og:description" content="概要：博客搭建的记录与分享，主要用了Hexo，NexT主题和Gitment评论系统。这里记录了我从头到尾的安装流程，和使用过程中的改进。如果想方便使用的话，后面会给个独立的hexo theme，放到github 项目上。 使用新版本的NexT v6 主题即可，有些功能如gitment已经实现。对于图片的使用可能会出现问题。仅需看看我下面的2.2小节。怕麻烦的同学，下面内容就不用看了，现在的v6支">
+<meta property="og:description" content="概要：博客搭建的记录与分享，主要用了Hexo，NexT主题和Gitment评论系统。这里记录了我从头到尾的安装流程，和使用过程中的改进。如果想方便使用的话，后面会给个独立的hexo theme，放到github 项目上。   使用新版本的NexT v6 主题即可，有些功能如gitment已经实现。对于图片的使用可能会出现问题。仅需看看我下面的2.2小节。怕麻烦的同学，下面内容就不用看了，现在的v">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://talengu.github.io/public/2016/12/22/build_blog/image-20181112002650646.png">
 <meta property="og:image" content="https://talengu.github.io/public/2016/12/22/build_blog/typora_image.png">
@@ -100,7 +100,7 @@
 <meta property="og:updated_time" content="2018-11-11T17:28:49.904Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="个人主页搭建">
-<meta name="twitter:description" content="概要：博客搭建的记录与分享，主要用了Hexo，NexT主题和Gitment评论系统。这里记录了我从头到尾的安装流程，和使用过程中的改进。如果想方便使用的话，后面会给个独立的hexo theme，放到github 项目上。 使用新版本的NexT v6 主题即可，有些功能如gitment已经实现。对于图片的使用可能会出现问题。仅需看看我下面的2.2小节。怕麻烦的同学，下面内容就不用看了，现在的v6支">
+<meta name="twitter:description" content="概要：博客搭建的记录与分享，主要用了Hexo，NexT主题和Gitment评论系统。这里记录了我从头到尾的安装流程，和使用过程中的改进。如果想方便使用的话，后面会给个独立的hexo theme，放到github 项目上。   使用新版本的NexT v6 主题即可，有些功能如gitment已经实现。对于图片的使用可能会出现问题。仅需看看我下面的2.2小节。怕麻烦的同学，下面内容就不用看了，现在的v">
 <meta name="twitter:image" content="https://talengu.github.io/public/2016/12/22/build_blog/image-20181112002650646.png">
 
 
@@ -433,6 +433,8 @@
       
         <blockquote>
 <p>概要：<br>博客搭建的记录与分享，主要用了Hexo，NexT主题和Gitment评论系统。<br>这里记录了我从头到尾的安装流程，和使用过程中的改进。<br>如果想方便使用的话，后面会给个独立的hexo theme，放到github 项目上。</p>
+</blockquote>
+<blockquote>
 <p>使用新版本的NexT v6 主题即可，有些功能如gitment已经实现。对于图片的使用可能会出现问题。仅需看看我下面的2.2小节。怕麻烦的同学，下面内容就不用看了，现在的v6支持的很好。2018.10</p>
 <p>我现在还是使用的是<code>version: 5.1.0</code>。</p>
 </blockquote>
@@ -478,7 +480,7 @@
 <p>图片必须放到和md文件名字一样的同名字文件夹。<br>如使用Typora软件写md的话，设置一下image保存路径即可，如下。</p>
 <p><img src="/public/2016/12/22/build_blog/typora_image.png" alt="typora_image"></p>
 </blockquote>
-<h3 id="2-3-代码复制"><a href="#2-3-代码复制" class="headerlink" title="2.3 代码复制"></a>2.3 代码复制</h3><p>为了提高博客代码块的用户体验，仅仅代码高亮还不行，最好还能一键复制代码。故此文将讲述 Hexo NexT 主题博客的代码块复制功能配置。转(Hexo NexT 代码块复制功能)[<a href="https://www.jianshu.com/p/3e9d614c1e77" target="_blank" rel="noopener">https://www.jianshu.com/p/3e9d614c1e77</a>]</p>
+<h3 id="2-3-代码复制"><a href="#2-3-代码复制" class="headerlink" title="2.3 代码复制"></a>2.3 代码复制</h3><p>为了提高博客代码块的用户体验，仅仅代码高亮还不行，最好还能一键复制代码。故此文将讲述 Hexo NexT 主题博客的代码块复制功能配置。转(Hexo NexT 代码块复制功能)[<a href="https://www.jianshu.com/p/3e9d614c1e77]" target="_blank" rel="noopener">https://www.jianshu.com/p/3e9d614c1e77]</a></p>
 <h4 id="2-3-1-下载-clipboard-js"><a href="#2-3-1-下载-clipboard-js" class="headerlink" title="2.3.1 下载 clipboard.js"></a>2.3.1 下载 clipboard.js</h4><p>三方插件 clipboardjs ，相关介绍和兼容性<a href="https://clipboardjs.com/" target="_blank" rel="noopener">它主页</a>或 <a href="https://github.com/zenorocha/clipboard.js" target="_blank" rel="noopener">github</a> 上看。</p>
 <p><strong>下载地址：</strong></p>
 <ul>
@@ -718,7 +720,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/public/archives">
-                <span class="site-state-item-count">15</span>
+                <span class="site-state-item-count">16</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -740,7 +742,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/public/tags/index.html">
-                <span class="site-state-item-count">64</span>
+                <span class="site-state-item-count">67</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>

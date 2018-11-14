@@ -1,0 +1,1141 @@
+<!doctype html>    
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/public/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/public/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/public/css/main.css?v=5.1.0" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="OpenCV,Hand Keypoint Detection,DeepLearning,">
+
+
+
+
+
+  <link rel="alternate" href="/public/atom.xml" title="温风·如酒" type="application/atom+xml">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/public/images/favicon_blog.png?v=5.1.0">
+
+
+
+
+
+
+<meta name="description" content="我的翻译里面带了好多英文对应，为了我以后写作服务，请读者朋友原谅。:cat: :cat:原文地址 https://www.learnopencv.com/hand-keypoint-detection-using-deep-learning-and-opencv/ 重要结论： 作者github代码 HandPosetip：仅下载一个文件夹会比较快 svn checkout https://git">
+<meta name="keywords" content="OpenCV,Hand Keypoint Detection,DeepLearning">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[译] Hand Keypoint Detection using Deep Learning and OpenCV">
+<meta property="og:url" content="https://talengu.github.io/2018/11/13/cv/HandKeypointDetection/index.html">
+<meta property="og:site_name" content="温风·如酒">
+<meta property="og:description" content="我的翻译里面带了好多英文对应，为了我以后写作服务，请读者朋友原谅。:cat: :cat:原文地址 https://www.learnopencv.com/hand-keypoint-detection-using-deep-learning-and-opencv/ 重要结论： 作者github代码 HandPosetip：仅下载一个文件夹会比较快 svn checkout https://git">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://www.learnopencv.com/wp-content/uploads/2018/10/handpose-detection-architecture-1024x306.jpg">
+<meta property="og:image" content="https://www.learnopencv.com/wp-content/uploads/2018/09/handpose-demo-keypoints.jpg">
+<meta property="og:image" content="https://www.learnopencv.com/wp-content/uploads/2018/10/handpose-heatmap-thumbtip.jpg">
+<meta property="og:image" content="https://www.learnopencv.com/wp-content/uploads/2018/10/handpose-heatmap-little.jpg">
+<meta property="og:image" content="https://www.learnopencv.com/wp-content/uploads/2018/05/hand-output-Keypoints.jpg">
+<meta property="og:image" content="https://www.learnopencv.com/wp-content/uploads/2018/10/hand-output-keypoints.jpg">
+<meta property="og:image" content="https://www.learnopencv.com/wp-content/uploads/2018/05/hand-output-Skeleton.jpg">
+<meta property="og:image" content="https://www.learnopencv.com/wp-content/uploads/2018/10/hand-output-skeleton.jpg">
+<meta property="og:image" content="https://www.52cv.net/wp-content/uploads/2018/10/handpose-detection-architecture-1024x306-1024x306.jpg">
+<meta property="og:image" content="https://www.52cv.net/wp-content/uploads/2018/10/hand-output-Keypoints1.jpg">
+<meta property="og:image" content="https://www.52cv.net/wp-content/uploads/2018/10/微信图片_20181010004455.png">
+<meta property="og:image" content="https://www.52cv.net/wp-content/uploads/2018/10/微信图片_20181010003802.png">
+<meta property="og:image" content="https://www.52cv.net/wp-content/uploads/2018/10/微信图片_201810100038021.png">
+<meta property="og:image" content="https://www.52cv.net/wp-content/uploads/2018/10/微信图片_201810100038022.png">
+<meta property="og:image" content="https://www.52cv.net/wp-content/uploads/2018/10/微信图片_201810100038023.png">
+<meta property="og:updated_time" content="2018-11-14T05:57:32.716Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="[译] Hand Keypoint Detection using Deep Learning and OpenCV">
+<meta name="twitter:description" content="我的翻译里面带了好多英文对应，为了我以后写作服务，请读者朋友原谅。:cat: :cat:原文地址 https://www.learnopencv.com/hand-keypoint-detection-using-deep-learning-and-opencv/ 重要结论： 作者github代码 HandPosetip：仅下载一个文件夹会比较快 svn checkout https://git">
+<meta name="twitter:image" content="https://www.learnopencv.com/wp-content/uploads/2018/10/handpose-detection-architecture-1024x306.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/public/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":true},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://talengu.github.io/2018/11/13/cv/HandKeypointDetection/">
+
+
+
+
+
+  <title> [译] Hand Keypoint Detection using Deep Learning and OpenCV | 温风·如酒 </title>
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+    
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+    
+
+
+<a href="https://github.com/talengu" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewbox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"/><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"/><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"/></svg></a>
+<style>
+  .github-corner:hover .octo-arm {
+    animation: octocat-wave 560ms ease-in-out
+  }
+
+  @keyframes octocat-wave {
+    0%,
+    100% {
+      transform: rotate(0)
+    }
+    20%,
+    60% {
+      transform: rotate(-25deg)
+    }
+    40%,
+    80% {
+      transform: rotate(10deg)
+    }
+  }
+
+  @media (max-width:500px) {
+    .github-corner:hover .octo-arm {
+      animation: none
+    }
+    .github-corner .octo-arm {
+      animation: octocat-wave 560ms ease-in-out
+    }
+  }
+</style>
+
+
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/public/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">温风·如酒</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/public/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/public/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/public/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/public/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocapitalize="off" autocomplete="off" autocorrect="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope="" itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://talengu.github.io/public/2018/11/13/cv/HandKeypointDetection/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="小成">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://avatars1.githubusercontent.com/u/10290923?v=3&s=460">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="温风·如酒">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                [译] Hand Keypoint Detection using Deep Learning and OpenCV
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-11-13T00:00:00+08:00">
+                2018-11-13
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2018-11-14T13:57:32+08:00">
+                2018-11-14
+              </time>
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/public/categories/博客转载/" itemprop="url" rel="index">
+                    <span itemprop="name">博客转载</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/public/categories/博客转载/cv/" itemprop="url" rel="index">
+                    <span itemprop="name">cv</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-user"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>我的翻译里面带了好多英文对应，为了我以后写作服务，请读者朋友原谅。:cat: :cat:<br>原文地址 <a href="https://www.learnopencv.com/hand-keypoint-detection-using-deep-learning-and-opencv/" target="_blank" rel="noopener">https://www.learnopencv.com/hand-keypoint-detection-using-deep-learning-and-opencv/</a></p>
+<p>重要结论：</p>
+<p>作者github代码 <a href="https://github.com/spmallick/learnopencv/tree/master/HandPose" target="_blank" rel="noopener">HandPose</a><br>tip：仅下载一个文件夹会比较快 <code>svn checkout https://github.com/spmallick/learnopencv/trunk/HandPose</code></p>
+<p>代码说明：为了使文章显得简洁一些，在文中只提供关键的代码片段。在github项目中详细代码，包括。。。。。</p>
+</blockquote>
+<a id="more"></a>
+<center><iframe width="100%" height="360" frameborder="0" src="http://v.qq.com/iframe/player.html?vid=a0738qjijoe&tiny=0&auto=0" allowfullscreen></iframe></center>
+
+
+<p>Hand Keypoint detection is the process of finding the joints on the fingers as well as the finger-tips in a given image. It is similar to finding keypoints on Face ( a.k.a <a herf="/facemark-facial-landmark-detection-using-opencv/">Facial Landmark Detection</a> ) or Body ( a.k.a <a href="/deep-learning-based-human-pose-estimation-using-opencv-cpp-python/">Human Body Pose Estimation</a> ), but, different from Hand Detection since in that case, we treat the whole hand as one object.</p>
+<p>In our previous blog posts on Pose estimation – <a href="/deep-learning-based-human-pose-estimation-using-opencv-cpp-python/">Single Person</a>, <a href="/multi-person-pose-estimation-in-opencv-using-openpose/">Multi-Person</a>, we had discussed how to use deep learning models in OpenCV to extract body pose in an image or video.</p>
+<p>The researchers at CMU Perceptual Computing Lab have also released models for keypoint detection of Hand and Face along with the body. The Hand Keypoint detector is based on <strong><a href="https://arxiv.org/pdf/1704.07809.pdf" target="_blank" rel="noopener">this paper</a></strong>. We will take a quick look at the network architecture and then share code in C++ and Python for predicting hand keypoints using OpenCV.</p>
+<h2 id="1-背景"><a href="#1-背景" class="headerlink" title="1. 背景"></a>1. 背景</h2><p><a href="/wp-content/uploads/2018/10/handpose-detection-architecture.jpg"><img src="https://www.learnopencv.com/wp-content/uploads/2018/10/handpose-detection-architecture-1024x306.jpg" alt=""></a></p>
+<p><a href="https://arxiv.org/pdf/1704.07809.pdf" target="_blank" rel="noopener">[Image taken from the paper]</a></p>
+<p>They start with a small set of labelled hand images and use a neural network ( <a href="https://arxiv.org/pdf/1602.00134.pdf" target="_blank" rel="noopener">Convolutional Pose Machines</a> – similar to Body Pose ) to get rough estimates of the hand keypoints. They have a huge multi-view system set up to take images from different view-points or angles comprising of <strong>31 HD cameras</strong>.</p>
+<p>They pass these images through the detector to get many rough keypoint predictions. Once you get the detected keypoints of the same hand from different views, Keypoint triangulation is performed to get the 3D location of the keypoints. The 3D location of keypoints is used to robustly predict the keypoints through reprojection from 3D to 2D. This is especially crucial for images where keypoints are difficult to predict. This way they get a much improved detector in a few iterations.</p>
+<p>In summary, they use keypoint detectors and multi-view images to come up with an improved detector. The detection architecture used is similar to the one used for body pose. The main source of improvement is the multi-view images for the labelled set of images.</p>
+<p>The model produces 22 keypoints. The hand has 21 points while the 22nd point signifies the background. The points are as shown below:</p>
+<p><a href="/wp-content/uploads/2018/09/handpose-demo-keypoints.jpg"><img src="https://www.learnopencv.com/wp-content/uploads/2018/09/handpose-demo-keypoints.jpg" alt=""></a></p>
+<p>Let us see how to use the model in OpenCV.</p>
+<h2 id="2-代码"><a href="#2-代码" class="headerlink" title="2.  代码"></a>2.  代码</h2><p>Code for Hand Keypoint Detection</p>
+<h3 id="2-1-Download-model-for-Hand-Keypoint"><a href="#2-1-Download-model-for-Hand-Keypoint" class="headerlink" title="2.1. Download model for Hand Keypoint"></a>2.1. Download model for Hand Keypoint</h3><p>First thing is to download the model weights file. The config file has been provided with the code. You can either use the getModels.sh script to download the file to the hand/ folder. Go to the code folder and run the following command from the Terminal.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo chmod a+x getModels.sh</span><br><span class="line">./getModels.sh</span><br></pre></td></tr></table></figure>
+<p>You can also download the model from <strong><a href="http://posefs1.perception.cs.cmu.edu/OpenPose/models/hand/pose_iter_102000.caffemodel" target="_blank" rel="noopener">this link</a></strong>. Please put the model in the hand/ folder after downloading.</p>
+<h3 id="2-2-Load-Model-and-Image"><a href="#2-2-Load-Model-and-Image" class="headerlink" title="2.2. Load Model and Image"></a>2.2. Load Model and Image</h3><p>First, we will load the image and the model into memory. Make sure you have the model downloaded and in the correct folder as specified in the variable.</p>
+<h4 id="C"><a href="#C" class="headerlink" title="C++"></a>C++</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">string</span> protoFile = <span class="string">"hand/pose_deploy.prototxt"</span>;</span><br><span class="line"><span class="built_in">string</span> weightsFile = <span class="string">"hand/pose_iter_102000.caffemodel"</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> nPoints = <span class="number">22</span>;</span><br><span class="line"></span><br><span class="line"><span class="built_in">string</span> imageFile = <span class="string">"hand.jpg"</span>;</span><br><span class="line"></span><br><span class="line">Mat frame = imread(imageFile);</span><br><span class="line">Net net = readNetFromCaffe(protoFile, weightsFile);</span><br></pre></td></tr></table></figure>
+<h4 id="Python"><a href="#Python" class="headerlink" title="Python"></a>Python</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">protoFile = <span class="string">"hand/pose_deploy.prototxt"</span></span><br><span class="line">weightsFile = <span class="string">"hand/pose_iter_102000.caffemodel"</span></span><br><span class="line">nPoints = <span class="number">22</span></span><br><span class="line"></span><br><span class="line">frame = cv2.imread(<span class="string">"hand.jpg"</span>)</span><br><span class="line">net = cv2.dnn.readNetFromCaffe(protoFile, weightsFile)</span><br></pre></td></tr></table></figure>
+<h3 id="2-3-Get-Predictions"><a href="#2-3-Get-Predictions" class="headerlink" title="2.3. Get Predictions"></a>2.3. Get Predictions</h3><p>We convert the BGR image to blob so that it can be fed to the network. Then we do a forward pass to get the predictions.</p>
+<h4 id="C-1"><a href="#C-1" class="headerlink" title="C++"></a>C++</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Mat inpBlob = blobFromImage(frame, <span class="number">1.0</span> / <span class="number">255</span>, Size(inWidth, inHeight), Scalar(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>), <span class="literal">false</span>, <span class="literal">false</span>);</span><br><span class="line"></span><br><span class="line">net.setInput(inpBlob);</span><br><span class="line"></span><br><span class="line">Mat output = net.forward();</span><br></pre></td></tr></table></figure>
+<h4 id="Python-1"><a href="#Python-1" class="headerlink" title="Python"></a>Python</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">inpBlob = cv2.dnn.blobFromImage(frame, <span class="number">1.0</span> / <span class="number">255</span>, (inWidth, inHeight),</span><br><span class="line">                          (<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>), swapRB=<span class="keyword">False</span>, crop=<span class="keyword">False</span>)</span><br><span class="line"></span><br><span class="line">net.setInput(inpBlob)</span><br><span class="line"></span><br><span class="line">output = net.forward()</span><br></pre></td></tr></table></figure>
+<h3 id="2-4-Show-Detections"><a href="#2-4-Show-Detections" class="headerlink" title="2.4. Show Detections"></a>2.4. Show Detections</h3><p>The output has 22 matrices with each matrix being the Probability Map of a keypoint. Given below is the probability heatmap superimposed on the original image for the keypoint belonging to the tip of thumb and base of little finger.</p>
+<p><a href="/wp-content/uploads/2018/10/handpose-heatmap-thumbtip.jpg"><img src="https://www.learnopencv.com/wp-content/uploads/2018/10/handpose-heatmap-thumbtip.jpg" alt=""></a></p>
+<p><a href="/wp-content/uploads/2018/10/handpose-heatmap-little.jpg"><img src="https://www.learnopencv.com/wp-content/uploads/2018/10/handpose-heatmap-little.jpg" alt=""></a></p>
+<p>For finding the exact keypoints, first, we scale the probabilty map to the size of the original image. Then find the location of the keypoint by finding the maxima of the probability map. This is done using the <strong>minmaxLoc</strong> function in OpenCV. We draw the detected points along with the numbering on the image.</p>
+<h4 id="C-2"><a href="#C-2" class="headerlink" title="C++"></a>C++</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// find the position of the body parts</span></span><br><span class="line"><span class="built_in">vector</span>&lt;Point&gt; points(nPoints);</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> n=<span class="number">0</span>; n &lt; nPoints; n++)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// Probability map of corresponding body's part.</span></span><br><span class="line">    <span class="function">Mat <span class="title">probMap</span><span class="params">(H, W, CV_32F, output.ptr(<span class="number">0</span>,n))</span></span>;</span><br><span class="line">    resize(probMap, probMap, Size(frameWidth, frame_width));</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Point maxLoc;</span><br><span class="line"><span class="keyword">double</span> prob;</span><br><span class="line">minMaxLoc(probMap, <span class="number">0</span>, &amp;prob, <span class="number">0</span>, &amp;maxLoc);</span><br><span class="line"><span class="keyword">if</span> (prob &gt; thresh)</span><br><span class="line">&#123;</span><br><span class="line">    circle(frameCopy, cv::Point((<span class="keyword">int</span>)maxLoc.x, (<span class="keyword">int</span>)maxLoc.y), <span class="number">8</span>, Scalar(<span class="number">0</span>,<span class="number">255</span>,<span class="number">255</span>), <span class="number">-1</span>);</span><br><span class="line">    cv::putText(frameCopy, cv::format(<span class="string">"%d"</span>, n), cv::Point((<span class="keyword">int</span>)maxLoc.x, (<span class="keyword">int</span>)maxLoc.y), cv::FONT_HERSHEY_COMPLEX, <span class="number">1</span>, cv::Scalar(<span class="number">0</span>, <span class="number">0</span>, <span class="number">255</span>), <span class="number">2</span>);</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line">points[n] = maxLoc;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">imshow(<span class="string">"Output-Keypoints"</span>, frameCopy);</span><br></pre></td></tr></table></figure>
+<h4 id="Python-2"><a href="#Python-2" class="headerlink" title="Python"></a>Python</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">points = []</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(nPoints):</span><br><span class="line">    <span class="comment"># confidence map of corresponding body's part.</span></span><br><span class="line">    probMap = output[<span class="number">0</span>, i, :, :]</span><br><span class="line">    probMap = cv2.resize(probMap, (frameWidth, frameHeight))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># Find global maxima of the probMap.</span></span><br><span class="line">minVal, prob, minLoc, point = cv2.minMaxLoc(probMap)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> prob &gt; threshold :</span><br><span class="line">    cv2.circle(frameCopy, (int(point[<span class="number">0</span>]), int(point[<span class="number">1</span>])), <span class="number">8</span>, (<span class="number">0</span>, <span class="number">255</span>, <span class="number">255</span>), thickness=<span class="number">-1</span>, lineType=cv2.FILLED)</span><br><span class="line">    cv2.putText(frameCopy, <span class="string">"&#123;&#125;"</span>.format(i), (int(point[<span class="number">0</span>]), int(point[<span class="number">1</span>])), cv2.FONT_HERSHEY_SIMPLEX, <span class="number">1</span>, (<span class="number">0</span>, <span class="number">0</span>, <span class="number">255</span>), <span class="number">2</span>, lineType=cv2.LINE_AA)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Add the point to the list if the probability is greater than the threshold</span></span><br><span class="line">    points.append((int(point[<span class="number">0</span>]), int(point[<span class="number">1</span>])))</span><br><span class="line"><span class="keyword">else</span> :</span><br><span class="line">    points.append(<span class="keyword">None</span>)cv2.imshow(<span class="string">'Output-Keypoints'</span>, frameCopy)</span><br></pre></td></tr></table></figure>
+<p><a href="/wp-content/uploads/2018/05/hand-output-Keypoints.jpg"><img src="https://www.learnopencv.com/wp-content/uploads/2018/05/hand-output-Keypoints.jpg" alt=""></a></p>
+<p><a href="/wp-content/uploads/2018/10/hand-output-keypoints.jpg"><img src="https://www.learnopencv.com/wp-content/uploads/2018/10/hand-output-keypoints.jpg" alt=""></a></p>
+<center>Sample Result with keypoints numbered using the Hand keypoint Detector</center>
+
+<h3 id="2-5-Draw-Skeleton"><a href="#2-5-Draw-Skeleton" class="headerlink" title="2.5. Draw Skeleton"></a>2.5. Draw Skeleton</h3><p>We will use the detected points to get the skeleton formed by the keypoints and draw them on the image.</p>
+<h4 id="C-3"><a href="#C-3" class="headerlink" title="C++"></a>C++</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> nPairs = <span class="keyword">sizeof</span>(POSE_PAIRS)/<span class="keyword">sizeof</span>(POSE_PAIRS[<span class="number">0</span>]);</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> n = <span class="number">0</span>; n &lt; nPairs; n++)</span><br><span class="line">&#123;</span><br><span class="line">​    <span class="comment">// lookup 2 connected body/hand parts</span></span><br><span class="line">​    Point2f partA = points[POSE_PAIRS[n][<span class="number">0</span>]];</span><br><span class="line">​    Point2f partB = points[POSE_PAIRS[n][<span class="number">1</span>]];</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (partA.x&lt;=<span class="number">0</span> || partA.y&lt;=<span class="number">0</span> || partB.x&lt;=<span class="number">0</span> || partB.y&lt;=<span class="number">0</span>)</span><br><span class="line">    <span class="keyword">continue</span>;</span><br><span class="line"></span><br><span class="line">line(frame, partA, partB, Scalar(<span class="number">0</span>,<span class="number">255</span>,<span class="number">255</span>), <span class="number">8</span>);</span><br><span class="line">circle(frame, partA, <span class="number">8</span>, Scalar(<span class="number">0</span>,<span class="number">0</span>,<span class="number">255</span>), <span class="number">-1</span>);</span><br><span class="line">circle(frame, partB, <span class="number">8</span>, Scalar(<span class="number">0</span>,<span class="number">0</span>,<span class="number">255</span>), <span class="number">-1</span>);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">imshow(<span class="string">"Output-Skeleton"</span>, frame);</span><br></pre></td></tr></table></figure>
+<h4 id="Python-3"><a href="#Python-3" class="headerlink" title="Python"></a>Python</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Draw Skeleton</span></span><br><span class="line"><span class="keyword">for</span> pair <span class="keyword">in</span> POSE_PAIRS:</span><br><span class="line">    partA = pair[<span class="number">0</span>]</span><br><span class="line">    partB = pair[<span class="number">1</span>]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> points[partA] <span class="keyword">and</span> points[partB]:</span><br><span class="line">    cv2.line(frame, points[partA], points[partB], (<span class="number">0</span>, <span class="number">255</span>, <span class="number">255</span>), <span class="number">2</span>)</span><br><span class="line">    cv2.circle(frame, points[partA], <span class="number">8</span>, (<span class="number">0</span>, <span class="number">0</span>, <span class="number">255</span>), thickness=<span class="number">-1</span>, lineType=cv2.FILLED)</span><br><span class="line"></span><br><span class="line">cv2.imshow(<span class="string">'Output-Skeleton'</span>, frame)</span><br></pre></td></tr></table></figure>
+<p><a href="/wp-content/uploads/2018/05/hand-output-Skeleton.jpg"><img src="https://www.learnopencv.com/wp-content/uploads/2018/05/hand-output-Skeleton.jpg" alt=""></a></p>
+<p><a href="/wp-content/uploads/2018/10/hand-output-skeleton.jpg"><img src="https://www.learnopencv.com/wp-content/uploads/2018/10/hand-output-skeleton.jpg" alt=""></a></p>
+<center>Result showing the skeleton obtained by joining the keypoint pairs</center>
+
+<blockquote>
+<p>One thing to note is that the detector expects a bounding box around the hand to predict the keypoints. Thus, for better results, the hand should be close to the camera or it should be cropped using a hand detector and then fed to the network.<br>Also, the code given can detect only one hand at a time. You can easily port it to detecting multiple hands with the help of the probability maps and applying some heuristics.</p>
+</blockquote>
+<h2 id="3-应用"><a href="#3-应用" class="headerlink" title="3. 应用"></a>3. 应用</h2><p>The model just discussed can be used in many practical applications such as:</p>
+<ul>
+<li>Gesture Recognition</li>
+<li>Sign Language understanding for disabled</li>
+<li>Activity Recognition based on Hand</li>
+</ul>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p>1. <a href="https://www.pexels.com/photo/white-laptop-female-hand-note-pen-phone-desk-6471/" target="_blank" rel="noopener">[Image used in the post]</a><br>2. <a href="https://arxiv.org/pdf/1704.07809.pdf" target="_blank" rel="noopener">[Hand Keypoint Detection Paper]</a><br>3. <a href="https://github.com/CMU-Perceptual-Computing-Lab/openpose/tree/master/models/hand" target="_blank" rel="noopener">[Hand Keypoint Detection model]</a><br>4. <a href="https://www.youtube.com/watch?v=b0eQNN4BJGU" target="_blank" rel="noopener">[Link to demo video]</a><br>5. <a href="http://csr.bu.edu/asl/asllvd/annotate/index.html" target="_blank" rel="noopener">[Link to american sign language video]</a><br>6. <a href="https://en.wikipedia.org/wiki/Hand#/media/File:Human-Hands-Front-Back.jpg" target="_blank" rel="noopener">[Hand Image from Wikipedia]</a></p>
+<p>前几日分享了 learnopencv.com 博主 Satya Mallick 发表的关于 OpenCV Mask RCNN 实例分割的博文（详见：），展示了 OpenCV 作为 DNN 推断工具的简单用法。<br>昨日 Satya Mallick 又发表了使用 OpenCV 调用 OpenPose 工程中的手部关键点检测（hand pose estimation）模型的文章，对于想要使用手部关键点检测做手势识别、手语识别、抽烟检测等工程开发的朋友来说这是一个非常简单的上手教程。<br>先来看看作者发布的视频效果：</p>
+<center><iframe width="100%" height="360" frameborder="0" src="http://v.qq.com/iframe/player.html?vid=a0738qjijoe&tiny=0&auto=0" allowfullscreen></iframe></center>
+
+<p>在大部分情况下还是不错的，但也出现了少数帧关键点跳变的情况。</p>
+<h2 id="1-算法思想"><a href="#1-算法思想" class="headerlink" title="1. 算法思想"></a>1. 算法思想</h2><p>该文中作者使用的算法模型是 CMU Perceptual Computing Lab 开源的集合人体、人脸、手部关键点检测的开源库 OpenPose，其中手部关键点检测（Hand Keypoint detector）算法来自 CVPR2017 的论文《Hand Keypoint Detection in Single Images using Multiview Bootstrapping》。<br>人手在 3D 空间由于视角不同、灵活的精细动作等原因，较难得到精确标注的数据集。在该论文中，作者提出了一种称之为 Multiview Bootstrapping 的手部关键点检测迭代改进算法，实现了具有较高精度的检测算法。     <img src="https://www.52cv.net/wp-content/uploads/2018/10/handpose-detection-architecture-1024x306-1024x306.jpg" alt=""><br>如上图所示，作者提出首先使用少量标注的含有人手关键点的数据集训练 Convolutional Pose Machines 神经网络，使用 31 个不同视角的高清摄像头拍摄人手，用上述检测模型初步检测关键点，将这些关键点根据摄像机的位姿构建三角（triangulation），得到关键点的 3D 位置，再将计算得到的 3D 点位置重投影到每一幅不同视角的 2D 图像，再使用这些 2D 图像和关键点标注训练检测模型网络，经过几次迭代，即可以得到较为精确的手部关键点检测模型。<br>原论文中提出的模型可生成 22 个关键点，其中 21 个点是人手部的，第 22 个点代表着背景。下图展示了人手部的 21 个关键点位置。<br><img src="https://www.52cv.net/wp-content/uploads/2018/10/hand-output-Keypoints1.jpg" alt=""></p>
+<h2 id="2-OpenCV-手部关键点检测主要流程"><a href="#2-OpenCV-手部关键点检测主要流程" class="headerlink" title="2. OpenCV 手部关键点检测主要流程"></a>2. OpenCV 手部关键点检测主要流程</h2><p>1）下载模型<br>运行开源工程中的 getModels.sh 下载模型，</p>
+<p><img src="https://www.52cv.net/wp-content/uploads/2018/10/微信图片_20181010004455.png" alt=""><br>或者直接在网址：<br><a href="http://posefs1.perception.cs.cmu.edu/OpenPose/models/hand/pose_iter_102000.caffemodel" target="_blank" rel="noopener">http://posefs1.perception.cs.cmu.edu/OpenPose/models/hand/pose_iter_102000.caffemodel</a><br>下载。将模型放到 “hand/” 文件夹下。</p>
+<p>2）加载模型和图像<br>使用 OpenCV DNN 函数 <strong>readNetFromCaffe 函数</strong>加载模型权重。<br><img src="https://www.52cv.net/wp-content/uploads/2018/10/微信图片_20181010003802.png" alt=""></p>
+<p>3）推断预测<br><strong>blobFromImage</strong> 将图像转为 <strong>blob</strong>,<strong>forward</strong> 函数实现网络推断。<br><img src="https://www.52cv.net/wp-content/uploads/2018/10/微信图片_201810100038021.png" alt=""></p>
+<p>4）获取关键点精确位置并显示<br>上述网络计算的结果是 22 个矩阵，每个矩阵代表某个特定关键点最可能出现在图像中哪个位置的热图，需要调用 <strong>minmaxLoc</strong> 函数找到精确位置，进而将其画出并标注序号。<br><img src="https://www.52cv.net/wp-content/uploads/2018/10/微信图片_201810100038022.png" alt=""></p>
+<p>5）画出骨架<br><img src="https://www.52cv.net/wp-content/uploads/2018/10/微信图片_201810100038023.png" alt=""></p>
+<p>视频效果：</p>
+<center><iframe width="100%" height="360" frameborder="0" src="http://v.qq.com/iframe/player.html?vid=a0738qjijoe&tiny=0&auto=0" allowfullscreen></iframe></center>
+
+<h2 id="3-去抖"><a href="#3-去抖" class="headerlink" title="3. 去抖"></a>3. 去抖</h2><p>从视频中可以看出关键点有抖动，且有部分帧出现关键点跳变，如何让其更稳定呢？</p>
+<p>在该博文评论区，某大佬提出使用 Savgol 滤波器对数据进行平滑可以得到较满意的结果。<br>看看效果如何：</p>
+<center><iframe width="100%" height="360" frameborder="0" src="http://v.qq.com/iframe/player.html?vid=c07388bnird&tiny=0&auto=0" allowfullscreen></iframe></center>
+
+
+<p>是不是感觉立刻好了很多？</p>
+<p><strong>关键点平滑代码：</strong><br><a href="https://stackoverflow.com/questions/52450681/how-can-i-use-smoothing-techniques-to-remove-jitter-in-pose-estimation/" target="_blank" rel="noopener">https://stackoverflow.com/questions/52450681/how-can-i-use-smoothing-techniques-to-remove-jitter-in-pose-estimation/</a></p>
+<p><strong>原博文地址：</strong><br><a href="https://www.learnopencv.com/hand-keypoint-detection-using-deep-learning-and-opencv/" target="_blank" rel="noopener">https://www.learnopencv.com/hand-keypoint-detection-using-deep-learning-and-opencv/</a><br><strong>代码地址：</strong><br><a href="https://github.com/spmallick/learnopencv/tree/master/HandPose" target="_blank" rel="noopener">https://github.com/spmallick/learnopencv/tree/master/HandPose</a></p>
+<p>转载请注明：《<a href="https://www.52cv.net/?p=1494" target="_blank" rel="noopener">OpenCV 深度学习手部关键点检测（手势识别）代码示例</a>》</p>
+<h2 id="TODO"><a href="#TODO" class="headerlink" title="TODO"></a>TODO</h2><p>合并上面的工作</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+  <ul class="post-copyright">
+    <li class="post-copyright-author">
+      <strong>本文作者：</strong>
+      小成
+    </li>
+    <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://talengu.github.io/public/2018/11/13/cv/HandKeypointDetection/" title="[译] Hand Keypoint Detection using Deep Learning and OpenCV">https://talengu.github.io/public/2018/11/13/cv/HandKeypointDetection/</a>
+    </li>
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong>
+      本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+
+
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+          
+            <a href="/public/tags/OpenCV/" rel="tag"># OpenCV</a>
+          
+          
+          
+            <a href="/public/tags/Hand-Keypoint-Detection/" rel="tag"># Hand Keypoint Detection</a>
+          
+          
+          
+            <a href="/public/tags/DeepLearning/" rel="tag"># DeepLearning</a>
+          
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/public/2018/11/12/cv/FaceDetectionComparison/" rel="next" title="[译] Face Detection – OpenCV, Dlib and Deep Learning ( C++ / Python )">
+                <i class="fa fa-chevron-left"></i> [译] Face Detection – OpenCV, Dlib and Deep Learning ( C++ / Python )
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+ 
+  <div class="comments" id="comments">
+    
+       
+         <div onclick="ShowGitment()" id="gitment-display-button">显示 Gitment 评论</div>
+         <div id="gitment-container" style="display:none"></div>
+         
+    
+  </div>
+
+
+        </div>
+         
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="https://avatars1.githubusercontent.com/u/10290923?v=3&s=460" alt="小成">
+          <p class="site-author-name" itemprop="name">小成</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/public/archives">
+                <span class="site-state-item-count">16</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/public/categories/index.html">
+                <span class="site-state-item-count">23</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/public/tags/index.html">
+                <span class="site-state-item-count">67</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/public/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/talengu" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="/public/2015/01/01/About" target="_blank" title="About">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  About
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-背景"><span class="nav-text">1. 背景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-代码"><span class="nav-text">2.  代码</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-Download-model-for-Hand-Keypoint"><span class="nav-text">2.1. Download model for Hand Keypoint</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-Load-Model-and-Image"><span class="nav-text">2.2. Load Model and Image</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#C"><span class="nav-text">C++</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Python"><span class="nav-text">Python</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-Get-Predictions"><span class="nav-text">2.3. Get Predictions</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#C-1"><span class="nav-text">C++</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Python-1"><span class="nav-text">Python</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-4-Show-Detections"><span class="nav-text">2.4. Show Detections</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#C-2"><span class="nav-text">C++</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Python-2"><span class="nav-text">Python</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-5-Draw-Skeleton"><span class="nav-text">2.5. Draw Skeleton</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#C-3"><span class="nav-text">C++</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Python-3"><span class="nav-text">Python</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-应用"><span class="nav-text">3. 应用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-text">参考</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-算法思想"><span class="nav-text">1. 算法思想</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-OpenCV-手部关键点检测主要流程"><span class="nav-text">2. OpenCV 手部关键点检测主要流程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-去抖"><span class="nav-text">3. 去抖</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#TODO"><span class="nav-text">TODO</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+ 
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy;  2015 - 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">小成</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+ 
+<div class="busuanzi-count">
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+ 
+      </div>
+    </footer>
+
+    
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i> 
+      <span id="scrollpercent"><span>0</span>%</span>
+      
+    </div>
+    
+
+  </div>
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/public/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/public/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/public/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/public/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/public/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/public/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+ 
+
+
+  <script type="text/javascript" src="/public/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/public/js/src/motion.js?v=5.1.0"></script>
+
+  
+
+
+  <script type="text/javascript" src="/public/js/src/affix.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/public/js/src/schemes/pisces.js?v=5.1.0"></script>
+
+ 
+  <script type="text/javascript" src="/public/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/public/js/src/post-details.js?v=5.1.0"></script>
+
+ 
+
+
+  <script type="text/javascript" src="/public/js/src/bootstrap.js?v=5.1.0"></script>
+
+ 
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+   
+   
+   
+   
+   
+   <link rel="stylesheet" href="/public/lib/gitment/default.css">
+   <!-- "/public/lib/gitment/gitment.browser.js"-->
+   <script src="https://www.wenjunjiang.win/js/gitment.js"></script>
+   
+   
+       <script type="text/javascript">
+           function ShowGitment(){
+               document.getElementById("gitment-display-button").style.display = "none";
+               document.getElementById("gitment-container").style.display = "block";
+               var gitment = new Gitment({
+                   id: window.location.pathname,
+                   owner: 'talengu',
+                   repo: 'talengu.github.io',
+                   oauth: {
+                       client_id: '315ada12fed7a0ffb6b7',
+                       client_secret: '5f15e644005fabee93cc7f50d70c78c57dce0e86',
+                   }});
+               gitment.render('gitment-container');
+           }
+       </script>
+   
+
+
+ 
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+      search_path = "search.xml";
+    }
+    var path = "/public/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.popup').toggle();
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+      $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = $( "entry", xmlResponse ).map(function() {
+            return {
+              title: $( "title", this ).text(),
+              content: $("content",this).text(),
+              url: $( "url" , this).text()
+            };
+          }).get();
+          var $input = document.getElementById(search_id);
+          var $resultContent = document.getElementById(content_id);
+          $input.addEventListener('input', function(){
+            var matchcounts = 0;
+            var str='<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length > 1) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var content_index = [];
+                var data_title = data.title.trim().toLowerCase();
+                var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                var data_url = decodeURIComponent(data.url);
+                var index_title = -1;
+                var index_content = -1;
+                var first_occur = -1;
+                // only match artiles with not empty titles and contents
+                if(data_title != '') {
+                  keywords.forEach(function(keyword, i) {
+                    index_title = data_title.indexOf(keyword);
+                    index_content = data_content.indexOf(keyword);
+                    if( index_title >= 0 || index_content >= 0 ){
+                      isMatch = true;
+                      if (i == 0) {
+                        first_occur = index_content;
+                      }
+                    }
+
+                  });
+                }
+                // show search results
+                if (isMatch) {
+                  matchcounts += 1;
+                  str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                  var content = data.content.trim().replace(/<[^>]+>/g,"");
+                  if (first_occur >= 0) {
+                    // cut out 100 characters
+                    var start = first_occur - 20;
+                    var end = first_occur + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if(start == 0){
+                      end = 50;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    var match_content = content.substring(start, end);
+                    // highlight all keywords
+                    keywords.forEach(function(keyword){
+                      var regS = new RegExp(keyword, "gi");
+                      match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                    });
+
+                    str += "<p class=\"search-result\">" + match_content +"...</p>"
+                  }
+                  str += "</li>";
+                }
+              })};
+            str += "</ul>";
+            if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+            if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+            $resultContent.innerHTML = str;
+          });
+          proceedsearch();
+        }
+      });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+
+
+ 
+ 
+ 
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+
+  <!-- 代码块复制功能 -->
+  
+  <script type="text/javascript" src="/public/js/src/clipboard.min.js"></script>
+  <script type="text/javascript" src="/public/js/src/clipboard-use.js"></script>
+  
+  <!-- 不定期出现的小猫 -->
+  
+</body>
+
+</html>

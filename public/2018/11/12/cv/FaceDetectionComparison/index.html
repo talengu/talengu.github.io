@@ -67,7 +67,7 @@
 <link href="/public/css/main.css?v=5.1.0" rel="stylesheet" type="text/css">
 
 
-  <meta name="keywords" content="OpenCV,Dlib,">
+  <meta name="keywords" content="Face Detection,OpenCV,Dlib,">
 
 
 
@@ -86,7 +86,7 @@
 
 
 <meta name="description" content="我的翻译里面带了好多英文对应，为了我以后写作服务，请读者朋友原谅。:cat: :cat:原文地址 https://www.learnopencv.com/face-detection-opencv-dlib-and-deep-learning-c-python/ 重要结论：在多数场景中，我们提前不知道图片大小，因此 选用 OpenCV – DNN 相当快也很精确，甚至对于小人脸也不错，各种人脸角">
-<meta name="keywords" content="OpenCV,Dlib">
+<meta name="keywords" content="Face Detection,OpenCV,Dlib">
 <meta property="og:type" content="article">
 <meta property="og:title" content="[译] Face Detection – OpenCV, Dlib and Deep Learning ( C++ &#x2F; Python )">
 <meta property="og:url" content="https://talengu.github.io/2018/11/12/cv/FaceDetectionComparison/index.html">
@@ -109,7 +109,7 @@
 <meta property="og:image" content="https://www.learnopencv.com/wp-content/uploads/2018/10/fd-occlusion-result2.jpg">
 <meta property="og:image" content="https://www.learnopencv.com/wp-content/uploads/2018/10/fd-occlusion-result3.jpg">
 <meta property="og:image" content="https://secure.gravatar.com/avatar/708995cd13fb5756f6bc418aecb23b78?s=250&d=mm&r=g">
-<meta property="og:updated_time" content="2018-11-12T13:49:48.880Z">
+<meta property="og:updated_time" content="2018-11-12T16:36:53.761Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="[译] Face Detection – OpenCV, Dlib and Deep Learning ( C++ &#x2F; Python )">
 <meta name="twitter:description" content="我的翻译里面带了好多英文对应，为了我以后写作服务，请读者朋友原谅。:cat: :cat:原文地址 https://www.learnopencv.com/face-detection-opencv-dlib-and-deep-learning-c-python/ 重要结论：在多数场景中，我们提前不知道图片大小，因此 选用 OpenCV – DNN 相当快也很精确，甚至对于小人脸也不错，各种人脸角">
@@ -386,8 +386,8 @@
                 <i class="fa fa-calendar-check-o"></i>
               </span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2018-11-12T21:49:48+08:00">
-                2018-11-12
+              <time title="更新于" itemprop="dateModified" datetime="2018-11-13T00:36:53+08:00">
+                2018-11-13
               </time>
             
           </span>
@@ -403,8 +403,8 @@
               
               
                 <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/public/categories/人脸检测/" itemprop="url" rel="index">
-                    <span itemprop="name">人脸检测</span>
+                  <a href="/public/categories/博客转载/" itemprop="url" rel="index">
+                    <span itemprop="name">博客转载</span>
                   </a>
                 </span>
 
@@ -414,8 +414,8 @@
                 
               
                 <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/public/categories/人脸检测/博客转载/" itemprop="url" rel="index">
-                    <span itemprop="name">博客转载</span>
+                  <a href="/public/categories/博客转载/cv/" itemprop="url" rel="index">
+                    <span itemprop="name">cv</span>
                   </a>
                 </span>
 
@@ -459,7 +459,6 @@
 <p>重要结论：在多数场景中，我们提前不知道图片大小，因此 选用 OpenCV – DNN 相当快也很精确，甚至对于小人脸也不错，各种人脸角度也可以。选用这个在大多情况下是最优的。</p>
 <p>作者github代码 <a href="https://github.com/spmallick/learnopencv/tree/master/FaceDetectionComparison" target="_blank" rel="noopener">FaceDetectionComparison</a> </p>
 <p>代码说明：为了使文章显得简洁一些，在文中只提供关键的代码片段。在github项目中详细代码，包括每个方法独立的代码和整合在一起的cpp和py文件（run-all.py 和 run-all.cpp），同时里面也有运行代码所使用的人脸检测模型。</p>
-<p>还有个作者给的Youtube视频，可能打不开，在下面。</p>
 </blockquote>
 <p>在这篇文章中，作者讨论使用了OpenCV或Dlib的多种人脸检测的代码，并给出性能分析。作者使用的 Face Detector 包括以下四个，后面分别给出 c++ 和 python 实现。</p>
 <ol>
@@ -470,7 +469,7 @@
 </ol>
 <p>作者限于篇幅没有对对理论进行深入解读，只讨论框架的使用，同时分享一些应用上的选择权衡的经验。</p>
 <a id="more"></a>
-<center><iframe width="640" height="480" src="https://www.youtube.com/embed/kKaU6JFRu5g" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe></center>
+<center><iframe width="100%" height="360" frameborder="0" src="http://v.qq.com/iframe/player.html?vid=k07615vrzj8&tiny=0&auto=0" allowfullscreen></iframe></center>
 
 
 <blockquote>
@@ -500,7 +499,7 @@
 <h4 id="C-1"><a href="#C-1" class="headerlink" title="C++"></a>C++</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">string</span> caffeConfigFile = <span class="string">"./deploy.prototxt"</span>;</span><br><span class="line"><span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">string</span> caffeWeightFile = <span class="string">"./res10_300x300_ssd_iter_140000_fp16.caffemodel"</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">string</span> tensorflowConfigFile = <span class="string">"./opencv_face_detector.pbtxt"</span>;</span><br><span class="line"><span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">string</span> tensorflowWeightFile = <span class="string">"./opencv_face_detector_uint8.pb"</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta"># <span class="meta-keyword">ifdef</span> CAFFE</span></span><br><span class="line"></span><br><span class="line">  Net net = cv::dnn::readNetFromCaffe(caffeConfigFile, caffeWeightFile);</span><br><span class="line"></span><br><span class="line"><span class="meta"># <span class="meta-keyword">else</span></span></span><br><span class="line"></span><br><span class="line">  Net net = cv::dnn::readNetFromTensorflow(tensorflowWeightFile, tensorflowConfigFile);</span><br><span class="line"></span><br><span class="line"><span class="meta"># <span class="meta-keyword">endif</span></span></span><br></pre></td></tr></table></figure>
 <p>caffe 和 Tensorflow 框架加载模型的代码。使用 Float 16 的 Caffe 模型，需要 caffemodel 和 prototxt 文件。使用 8 bit quantized 的 Tensorflow 模型，需要 Tensorflow 配置文件和模型。</p>
 <h4 id="Python-2"><a href="#Python-2" class="headerlink" title="Python"></a>Python</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">blob = cv2.dnn.blobFromImage(frameOpencvDnn, <span class="number">1.0</span>, (<span class="number">300</span>, <span class="number">300</span>), [<span class="number">104</span>, <span class="number">117</span>, <span class="number">123</span>], <span class="keyword">False</span>, <span class="keyword">False</span>)</span><br><span class="line"></span><br><span class="line">net.setInput(blob)</span><br><span class="line">detections = net.forward()</span><br><span class="line">bboxes = []</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(detections.shape[<span class="number">2</span>]):</span><br><span class="line">    confidence = detections[<span class="number">0</span>, <span class="number">0</span>, i, <span class="number">2</span>]</span><br><span class="line">    <span class="keyword">if</span> confidence &gt; conf_threshold:</span><br><span class="line">        x1 = int(detections[<span class="number">0</span>, <span class="number">0</span>, i, <span class="number">3</span>] * frameWidth)</span><br><span class="line">        y1 = int(detections[<span class="number">0</span>, <span class="number">0</span>, i, <span class="number">4</span>] * frameHeight)</span><br><span class="line">        x2 = int(detections[<span class="number">0</span>, <span class="number">0</span>, i, <span class="number">5</span>] * frameWidth)</span><br><span class="line">        y2 = int(detections[<span class="number">0</span>, <span class="number">0</span>, i, <span class="number">6</span>] * frameHeight)</span><br></pre></td></tr></table></figure>
-<h4 id="C-2"><a href="#C-2" class="headerlink" title="C++"></a>C++</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> CAFFE</span></span><br><span class="line">cv::Mat inputBlob = cv::dnn::blobFromImage(frameOpenCVDNN, inScaleFactor, cv::Size(inWidth, inHeight), meanVal, <span class="literal">false</span>, <span class="literal">false</span>);</span><br><span class="line"><span class="meta">#<span class="meta-keyword">else</span></span></span><br><span class="line">cv::Mat inputBlob = cv::dnn::blobFromImage(frameOpenCVDNN, inScaleFactor, cv::Size(inWidth, inHeight), meanVal, <span class="literal">true</span>, <span class="literal">false</span>);</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line"></span><br><span class="line">net.setInput(inputBlob, <span class="string">"data"</span>);</span><br><span class="line">cv::Mat detection = net.forward(<span class="string">"detection_out"</span>);</span><br><span class="line"></span><br><span class="line">cv::Mat detectionMat(detection.size[2], detection.size[3], CV_32F, detection.ptr&lt;float&gt;());</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; detectionMat.rows; i++)</span><br><span class="line">&#123;</span><br><span class="line">     <span class="keyword">float</span> confidence = detectionMat.at&lt;<span class="keyword">float</span>&gt;(i, <span class="number">2</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (confidence &gt; confidenceThreshold)</span><br><span class="line">    &#123;</span><br><span class="line">         <span class="keyword">int</span> x1 = <span class="keyword">static_cast</span>&lt;<span class="keyword">int</span>&gt;(detectionMat.at&lt;<span class="keyword">float</span>&gt;(i, <span class="number">3</span>) * frameWidth);</span><br><span class="line">         <span class="keyword">int</span> y1 = <span class="keyword">static_cast</span>&lt;<span class="keyword">int</span>&gt;(detectionMat.at&lt;<span class="keyword">float</span>&gt;(i, <span class="number">4</span>) * frameHeight);</span><br><span class="line">         <span class="keyword">int</span> x2 = <span class="keyword">static_cast</span>&lt;<span class="keyword">int</span>&gt;(detectionMat.at&lt;<span class="keyword">float</span>&gt;(i, <span class="number">5</span>) * frameWidth);</span><br><span class="line">         <span class="keyword">int</span> y2 = <span class="keyword">static_cast</span>&lt;<span class="keyword">int</span>&gt;(detectionMat.at&lt;<span class="keyword">float</span>&gt;(i, <span class="number">6</span>) * frameHeight);</span><br><span class="line"></span><br><span class="line">        cv::rectangle(frameOpenCVDNN, cv::Point(x1, y1), cv::Point(x2, y2), cv::Scalar(<span class="number">0</span>, <span class="number">255</span>, <span class="number">0</span>), <span class="number">2</span>, <span class="number">4</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="C-2"><a href="#C-2" class="headerlink" title="C++"></a>C++</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> CAFFE</span></span><br><span class="line">cv::Mat inputBlob = cv::dnn::blobFromImage(frameOpenCVDNN, inScaleFactor, cv::Size(inWidth, inHeight), meanVal, <span class="literal">false</span>, <span class="literal">false</span>);</span><br><span class="line"><span class="meta">#<span class="meta-keyword">else</span></span></span><br><span class="line">cv::Mat inputBlob = cv::dnn::blobFromImage(frameOpenCVDNN, inScaleFactor, cv::Size(inWidth, inHeight), meanVal, <span class="literal">true</span>, <span class="literal">false</span>);</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line"></span><br><span class="line">net.setInput(inputBlob, <span class="string">"data"</span>);</span><br><span class="line">cv::Mat detection = net.forward(<span class="string">"detection_out"</span>);</span><br><span class="line"></span><br><span class="line">cv::<span class="function">Mat <span class="title">detectionMat</span><span class="params">(detection.size[<span class="number">2</span>], detection.size[<span class="number">3</span>], CV_32F, detection.ptr&lt;<span class="keyword">float</span>&gt;())</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; detectionMat.rows; i++)</span><br><span class="line">&#123;</span><br><span class="line">     <span class="keyword">float</span> confidence = detectionMat.at&lt;<span class="keyword">float</span>&gt;(i, <span class="number">2</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (confidence &gt; confidenceThreshold)</span><br><span class="line">    &#123;</span><br><span class="line">         <span class="keyword">int</span> x1 = <span class="keyword">static_cast</span>&lt;<span class="keyword">int</span>&gt;(detectionMat.at&lt;<span class="keyword">float</span>&gt;(i, <span class="number">3</span>) * frameWidth);</span><br><span class="line">         <span class="keyword">int</span> y1 = <span class="keyword">static_cast</span>&lt;<span class="keyword">int</span>&gt;(detectionMat.at&lt;<span class="keyword">float</span>&gt;(i, <span class="number">4</span>) * frameHeight);</span><br><span class="line">         <span class="keyword">int</span> x2 = <span class="keyword">static_cast</span>&lt;<span class="keyword">int</span>&gt;(detectionMat.at&lt;<span class="keyword">float</span>&gt;(i, <span class="number">5</span>) * frameWidth);</span><br><span class="line">         <span class="keyword">int</span> y2 = <span class="keyword">static_cast</span>&lt;<span class="keyword">int</span>&gt;(detectionMat.at&lt;<span class="keyword">float</span>&gt;(i, <span class="number">6</span>) * frameHeight);</span><br><span class="line"></span><br><span class="line">        cv::rectangle(frameOpenCVDNN, cv::Point(x1, y1), cv::Point(x2, y2), cv::Scalar(<span class="number">0</span>, <span class="number">255</span>, <span class="number">0</span>), <span class="number">2</span>, <span class="number">4</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>在上面的代码里面，图像转为blob输入进network里，利用前向传播函数forward()，得到一个4-D matrix。 #TODO :这里不是很理解，代码跑起来看一下？？？</p>
 <ul>
 <li>The 3rd dimension iterates over the detected faces. (i is the iterator over the number of faces)</li>
@@ -608,7 +607,8 @@
 <p>Since feeding high resolution images is not possible to these algorithms (for computation speed), HoG / MMOD detectors might fail when you scale down the image. On the other hand, OpenCV-DNN method can be used for these since it detects small faces.</p>
 <p>有任何建议，欢迎在下面评论。<br>Have any other suggestions? Please mention in the comments and we’ll update the post with them!</p>
 <h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="https://github.com/opencv/opencv/blob/master/modules/dnn/misc/face_detector_accuracy.py" target="_blank" rel="noopener">[FDDB Comparison code]</a><br><a href="http://blog.dlib.net/2016/10/easily-create-high-quality-object.html" target="_blank" rel="noopener">[Dlib Blog]</a><br><a href="http://dlib.net/cnn_face_detector.py.html" target="_blank" rel="noopener">[dlib mmod python example]</a><br><a href="http://dlib.net/dnn_mmod_face_detection_ex.cpp.html" target="_blank" rel="noopener">[dlib mmod cpp example]</a><br><a href="https://github.com/opencv/opencv/tree/master/samples/dnn/face_detector" target="_blank" rel="noopener">[OpenCV DNN Face detector]</a><br><a href="https://docs.opencv.org/3.4/d7/d8b/tutorial_py_face_detection.html" target="_blank" rel="noopener">[Haar Based Face Detector]</a></p>
-<h2 id="TODOS"><a href="#TODOS" class="headerlink" title="TODOS"></a>TODOS</h2><p>来，看看这个是博客大佬的图片，是不是很熟悉？膜拜一哈。</p>
+<h2 id="TODOS"><a href="#TODOS" class="headerlink" title="TODOS"></a>TODOS</h2><p>文章作者是 <a href="https://www.learnopencv.com/author/vikas/" target="_blank" rel="noopener">VIKAS GUPTA</a> </p>
+<p>来，看看这个是站长大佬的图片，是不是很熟悉？膜拜一哈。</p>
 <p><img src="https://secure.gravatar.com/avatar/708995cd13fb5756f6bc418aecb23b78?s=250&amp;d=mm&amp;r=g" alt="blog_author"></p>
 <p>我订阅后文章后，作者发的邮件内容，并没有给文章页的代码。</p>
 <ul>
@@ -623,9 +623,9 @@
 </li>
 </ul>
 <ul>
-<li>[x] 翻译</li>
-<li>[ ] 代码运行</li>
-<li>[ ] 根据该作者的博客继续翻译，学习，向大佬致敬。</li>
+<li style="list-style: none"><input type="checkbox" checked> 翻译</li>
+<li style="list-style: none"><input type="checkbox"> 代码运行</li>
+<li style="list-style: none"><input type="checkbox"> 根据该作者的博客继续翻译，学习，向大佬致敬。</li>
 </ul>
 
       
@@ -674,6 +674,10 @@
         <div class="post-tags">
           
           
+            <a href="/public/tags/Face-Detection/" rel="tag"># Face Detection</a>
+          
+          
+          
             <a href="/public/tags/OpenCV/" rel="tag"># OpenCV</a>
           
           
@@ -701,6 +705,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/public/2018/11/13/cv/HandKeypointDetection/" rel="prev" title="[译] Hand Keypoint Detection using Deep Learning and OpenCV">
+                [译] Hand Keypoint Detection using Deep Learning and OpenCV <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -773,7 +781,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/public/archives">
-                <span class="site-state-item-count">15</span>
+                <span class="site-state-item-count">16</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -795,7 +803,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/public/tags/index.html">
-                <span class="site-state-item-count">64</span>
+                <span class="site-state-item-count">67</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
