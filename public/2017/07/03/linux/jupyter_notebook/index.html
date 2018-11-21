@@ -93,7 +93,7 @@
 <meta property="og:site_name" content="温风·如酒">
 <meta property="og:description" content="概要：jupyter notebook的安装">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-11-12T10:29:13.447Z">
+<meta property="og:updated_time" content="2018-11-21T17:35:21.758Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Jupyter notebook的配置">
 <meta name="twitter:description" content="概要：jupyter notebook的安装">
@@ -369,8 +369,8 @@
                 <i class="fa fa-calendar-check-o"></i>
               </span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2018-11-12T18:29:13+08:00">
-                2018-11-12
+              <time title="更新于" itemprop="dateModified" datetime="2018-11-22T01:35:21+08:00">
+                2018-11-22
               </time>
             
           </span>
@@ -471,14 +471,36 @@
 </tr>
 </tbody>
 </table>
-<h2 id="2-使用的技巧"><a href="#2-使用的技巧" class="headerlink" title="2. 使用的技巧"></a>2. 使用的技巧</h2><h3 id="基本操作"><a href="#基本操作" class="headerlink" title="基本操作"></a>基本操作</h3><ul>
-<li><p>快捷键</p>
-<p>| 在非激活状态即是蓝颜色的边框 | 内容               |<br>| —————————- | —————— |<br>| A                            | insert cell above  |<br>| B                            | insert cell below  |<br>| H                            | 查看帮助           |<br>| ⌃↩(ctrl + enter)             | run selected cells |</p>
-</li>
-</ul>
-<h3 id="技巧"><a href="#技巧" class="headerlink" title="技巧"></a>技巧</h3><p>主要是画图、显示视频和音频的方法。</p>
+<h2 id="2-使用的技巧"><a href="#2-使用的技巧" class="headerlink" title="2. 使用的技巧"></a>2. 使用的技巧</h2><h3 id="2-1-基本操作"><a href="#2-1-基本操作" class="headerlink" title="2.1 基本操作"></a>2.1 基本操作</h3><p><strong>快捷键</strong></p>
+<table>
+<thead>
+<tr>
+<th>在非激活状态即是蓝颜色的边框</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A</td>
+<td>insert cell above</td>
+</tr>
+<tr>
+<td>B</td>
+<td>insert cell below</td>
+</tr>
+<tr>
+<td>H</td>
+<td>查看帮助</td>
+</tr>
+<tr>
+<td>⌃↩(ctrl + enter)</td>
+<td>run selected cells</td>
+</tr>
+</tbody>
+</table>
+<h3 id="2-2-技巧"><a href="#2-2-技巧" class="headerlink" title="2.2 技巧"></a>2.2 技巧</h3><p>主要是画图、显示视频和音频的方法。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 图片</span></span><br><span class="line">%%HTML</span><br><span class="line">&lt;img src=<span class="string">"xxx.jpg"</span>  alt=<span class="string">"title"</span> /&gt;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 视频</span></span><br><span class="line">%%HTML</span><br><span class="line">&lt;video width=<span class="string">"330"</span> height=<span class="string">"150"</span> controls&gt;</span><br><span class="line">&lt;source src=<span class="string">"out_all.mp4"</span> type=<span class="string">"video/mp4"</span>&gt;</span><br><span class="line">&lt;/video&gt;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 语音</span></span><br><span class="line">%%HTML</span><br><span class="line">&lt;audio src=<span class="string">"out.wav"</span> controls=<span class="string">"controls"</span>&gt;</span><br><span class="line">Your browser does <span class="keyword">not</span> support the audio element.</span><br><span class="line">&lt;/audio&gt;</span><br><span class="line"></span><br><span class="line"><span class="comment"># html t是html的字符串</span></span><br><span class="line"><span class="keyword">from</span> IPython.core.display <span class="keyword">import</span> HTML</span><br><span class="line">HTML(str(t))</span><br></pre></td></tr></table></figure>
-<h3 id="其他技巧"><a href="#其他技巧" class="headerlink" title="其他技巧"></a>其他技巧</h3><h4 id="修复视频文件"><a href="#修复视频文件" class="headerlink" title="修复视频文件"></a>修复视频文件</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fix_use_ffmpeg</span><span class="params">(in_name, out_name,message=<span class="string">""</span>)</span>:</span></span><br><span class="line">    <span class="keyword">import</span> os</span><br><span class="line">    <span class="keyword">if</span> os.path.isfile(out_name):</span><br><span class="line">    os.remove(out_name)</span><br><span class="line">    cmd = <span class="string">'ffmpeg -i %s %s'</span> % (in_name, out_name)</span><br><span class="line">    log_lines = os.popen(cmd).readlines()</span><br><span class="line">    print(message,<span class="string">"ok"</span>)</span><br></pre></td></tr></table></figure>
+<h3 id="2-3-其他技巧"><a href="#2-3-其他技巧" class="headerlink" title="2.3 其他技巧"></a>2.3 其他技巧</h3><h4 id="修复视频文件"><a href="#修复视频文件" class="headerlink" title="修复视频文件"></a>修复视频文件</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fix_use_ffmpeg</span><span class="params">(in_name, out_name,message=<span class="string">""</span>)</span>:</span></span><br><span class="line">    <span class="keyword">import</span> os</span><br><span class="line">    <span class="keyword">if</span> os.path.isfile(out_name):</span><br><span class="line">    os.remove(out_name)</span><br><span class="line">    cmd = <span class="string">'ffmpeg -i %s %s'</span> % (in_name, out_name)</span><br><span class="line">    log_lines = os.popen(cmd).readlines()</span><br><span class="line">    print(message,<span class="string">"ok"</span>)</span><br></pre></td></tr></table></figure>
 <h4 id="加载自己的模块文件"><a href="#加载自己的模块文件" class="headerlink" title="加载自己的模块文件"></a>加载自己的模块文件</h4><p>出于性能考虑，每个模块在每个解释器会话中只导入一遍。因此，如果你修改了你的模块，需要重启解释器；或者，如果你就是想交互式的测试这么一个模块，可以用 imp.reload() 重新加载，例如 <code>import imp; imp.reload(modulename)</code></p>
 <h4 id="导出pdf支持中文"><a href="#导出pdf支持中文" class="headerlink" title="导出pdf支持中文"></a>导出pdf支持中文</h4><p>Jupyter Notebook 输出PDF中文支持 <a href="https://www.jianshu.com/p/c3f660188766" target="_blank" rel="noopener">link</a></p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /usr/<span class="built_in">local</span>/lib/python3.6/site-packages/nbconvert/templates/latex</span><br><span class="line"></span><br><span class="line"><span class="comment"># 在里面的模版中添加，前提是安装好了texlive</span></span><br><span class="line">% add</span><br><span class="line">\usepackage&#123;ctex&#125;</span><br></pre></td></tr></table></figure>
@@ -720,7 +742,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-安装与配置"><span class="nav-text">1. 安装与配置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#安装jupyter"><span class="nav-text">安装jupyter</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置文件修改"><span class="nav-text">配置文件修改</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装插件-nbextensions"><span class="nav-text">安装插件 nbextensions</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-使用的技巧"><span class="nav-text">2. 使用的技巧</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#基本操作"><span class="nav-text">基本操作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#技巧"><span class="nav-text">技巧</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#其他技巧"><span class="nav-text">其他技巧</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#修复视频文件"><span class="nav-text">修复视频文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#加载自己的模块文件"><span class="nav-text">加载自己的模块文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#导出pdf支持中文"><span class="nav-text">导出pdf支持中文</span></a></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-安装与配置"><span class="nav-text">1. 安装与配置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#安装jupyter"><span class="nav-text">安装jupyter</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置文件修改"><span class="nav-text">配置文件修改</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装插件-nbextensions"><span class="nav-text">安装插件 nbextensions</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-使用的技巧"><span class="nav-text">2. 使用的技巧</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-基本操作"><span class="nav-text">2.1 基本操作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-技巧"><span class="nav-text">2.2 技巧</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-其他技巧"><span class="nav-text">2.3 其他技巧</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#修复视频文件"><span class="nav-text">修复视频文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#加载自己的模块文件"><span class="nav-text">加载自己的模块文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#导出pdf支持中文"><span class="nav-text">导出pdf支持中文</span></a></li></ol></li></ol></li></ol></div>
             
 
           </div>
