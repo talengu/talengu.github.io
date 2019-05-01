@@ -100,7 +100,7 @@
 <meta property="og:image" content="https://talengu.github.io/public/2016/12/22/build_blog/image-20181122020200453.png">
 <meta property="og:image" content="https://talengu.github.io/public/2016/12/22/build_blog/image-20181122020427248.png">
 <meta property="og:image" content="https://talengu.github.io/public/2016/12/22/build_blog/image-20181122021516212.png">
-<meta property="og:updated_time" content="2018-11-21T18:17:02.463Z">
+<meta property="og:updated_time" content="2019-04-14T08:37:34.283Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="个人主页搭建">
 <meta name="twitter:description" content="概要：博客搭建的记录与分享，主要用了Hexo，NexT主题和Gitment评论系统。这里记录了我从头到尾的安装流程，和使用过程中的改进。如果想方便使用的话，后面会给个独立的hexo theme，放到github 项目上。   使用新版本的NexT v6 主题即可，有些功能如gitment已经实现。对于图片的使用可能会出现问题。仅需看看我下面的2.2小节。怕麻烦的同学，下面内容就不用看了，现在的v">
@@ -377,8 +377,8 @@
                 <i class="fa fa-calendar-check-o"></i>
               </span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2018-11-22T02:17:02+08:00">
-                2018-11-22
+              <time title="更新于" itemprop="dateModified" datetime="2019-04-14T16:37:34+08:00">
+                2019-04-14
               </time>
             
           </span>
@@ -507,8 +507,7 @@
 <blockquote>
 <p>在新版本NexT v6里面已经支持gitment了所以你只要在github上注册一下 OAuth Application ，填上<strong>Client ID</strong> 和 <strong>Client Secret</strong>.即可</p>
 </blockquote>
-<p>####2.4.2 修改<code>themes/next/_config.yml</code></p>
-<p>在其中添加:</p>
+<h4 id="2-4-2-修改themes-next-config-yml"><a href="#2-4-2-修改themes-next-config-yml" class="headerlink" title="2.4.2 修改themes/next/_config.yml"></a>2.4.2 修改<code>themes/next/_config.yml</code></h4><p>在其中添加:</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"># Gitment</span><br><span class="line"># Introduction: https://imsun.net/posts/gitment-introduction/</span><br><span class="line">gitment:</span><br><span class="line">  enable: true</span><br><span class="line">  githubID: yourid</span><br><span class="line">  repo: yourrepo</span><br><span class="line">  ClientID: yourid</span><br><span class="line">  ClientSecret: yoursecret</span><br><span class="line">  lazy: true</span><br></pre></td></tr></table></figure>
 <p><strong>注意: 格式要正确，该空格的一定要空格。所有的 yourXXX 都换成自己的.</strong></p>
 <p>在主题的<code>en.yml</code>增加:</p>
@@ -729,7 +728,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/public/archives">
-                <span class="site-state-item-count">18</span>
+                <span class="site-state-item-count">16</span>
                 <span class="site-state-item-name">博客</span>
               </a>
             </div>
@@ -740,7 +739,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/public/categories/index.html">
-                <span class="site-state-item-count">26</span>
+                <span class="site-state-item-count">27</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -751,7 +750,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/public/tags/index.html">
-                <span class="site-state-item-count">70</span>
+                <span class="site-state-item-count">72</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -813,7 +812,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-安装"><span class="nav-text">1. 安装</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-简易安装使用"><span class="nav-text">1.1 简易安装使用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-从头安装"><span class="nav-text">1.2 从头安装</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-配置"><span class="nav-text">2. 配置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-NexT官网的设置"><span class="nav-text">2.1 NexT官网的设置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-markdown图片"><span class="nav-text">2.2 markdown图片</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-代码复制"><span class="nav-text">2.3 代码复制</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-1-下载-clipboard-js"><span class="nav-text">2.3.1 下载 clipboard.js</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-2-clipboardjs-使用"><span class="nav-text">2.3.2 clipboardjs 使用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-3-引用"><span class="nav-text">2.3.3 引用</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-4-Gitment-评论功能"><span class="nav-text">2.4 Gitment 评论功能</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-4-1-注册-OAuth-Application"><span class="nav-text">2.4.1 注册 OAuth Application</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-4-3-修改主题layout-partials-comments-swig"><span class="nav-text">2.4.3 修改主题layout/_partials/comments.swig</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-4-4-增加gitment-swig"><span class="nav-text">2.4.4 增加gitment.swig</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-4-5-添加gitment-styl"><span class="nav-text">2.4.5 添加gitment.styl</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-4-6-易错点"><span class="nav-text">2.4.6 易错点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-4-7-参考文档"><span class="nav-text">2.4.7 参考文档</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-5-copyright文字添加"><span class="nav-text">2.5 copyright文字添加</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-6-RSS-可选"><span class="nav-text">2.6 RSS (可选)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-7-添加-fork-me-github"><span class="nav-text">2.7 添加 fork me github</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#TODO"><span class="nav-text">TODO:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#博客编写规范"><span class="nav-text">博客编写规范</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-text">参考</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-安装"><span class="nav-text">1. 安装</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-简易安装使用"><span class="nav-text">1.1 简易安装使用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-从头安装"><span class="nav-text">1.2 从头安装</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-配置"><span class="nav-text">2. 配置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-NexT官网的设置"><span class="nav-text">2.1 NexT官网的设置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-markdown图片"><span class="nav-text">2.2 markdown图片</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-代码复制"><span class="nav-text">2.3 代码复制</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-1-下载-clipboard-js"><span class="nav-text">2.3.1 下载 clipboard.js</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-2-clipboardjs-使用"><span class="nav-text">2.3.2 clipboardjs 使用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-3-引用"><span class="nav-text">2.3.3 引用</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-4-Gitment-评论功能"><span class="nav-text">2.4 Gitment 评论功能</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-4-1-注册-OAuth-Application"><span class="nav-text">2.4.1 注册 OAuth Application</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-4-2-修改themes-next-config-yml"><span class="nav-text">2.4.2 修改themes/next/_config.yml</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-4-3-修改主题layout-partials-comments-swig"><span class="nav-text">2.4.3 修改主题layout/_partials/comments.swig</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-4-4-增加gitment-swig"><span class="nav-text">2.4.4 增加gitment.swig</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-4-5-添加gitment-styl"><span class="nav-text">2.4.5 添加gitment.styl</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-4-6-易错点"><span class="nav-text">2.4.6 易错点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-4-7-参考文档"><span class="nav-text">2.4.7 参考文档</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-5-copyright文字添加"><span class="nav-text">2.5 copyright文字添加</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-6-RSS-可选"><span class="nav-text">2.6 RSS (可选)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-7-添加-fork-me-github"><span class="nav-text">2.7 添加 fork me github</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#TODO"><span class="nav-text">TODO:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#博客编写规范"><span class="nav-text">博客编写规范</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-text">参考</span></a></li></ol></div>
             
 
           </div>
@@ -835,7 +834,7 @@
         <div class="copyright">
   
   &copy;  2015 - 
-  <span itemprop="copyrightYear">2018</span>
+  <span itemprop="copyrightYear">2019</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

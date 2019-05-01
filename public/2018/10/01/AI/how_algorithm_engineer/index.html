@@ -107,7 +107,7 @@
 <meta property="og:image" content="https://talengu.github.io/public/2018/10/01/AI/how_algorithm_engineer/clip_image025.gif">
 <meta property="og:image" content="https://talengu.github.io/public/2018/10/01/AI/how_algorithm_engineer/clip_image027.gif">
 <meta property="og:image" content="https://talengu.github.io/public/2018/10/01/AI/how_algorithm_engineer/clip_image029.gif">
-<meta property="og:updated_time" content="2018-11-22T11:30:39.216Z">
+<meta property="og:updated_time" content="2018-11-27T09:44:59.732Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="怎样成为一名优秀的算法工程师">
 <meta name="twitter:description" content="转载 原创： AI学习与实践平台TODO: 看完里面的文章，对每篇文章做个总结，实验+文章。  1. 导言 怎样成为一名优秀的算法工程师？这是很多从事人工智能学术研究和产品研发的同学都关心的一个问题。面对市场对人才的大量需求与供给的严重不足，以及高薪水的诱惑，越来越多的人开始学习这个方向的技术，或者打算向人工智能转型。市面上各种鱼龙混杂的培训班以及误导人的文章会把很多初学者带入歧途，浮躁的跟风将">
@@ -384,8 +384,8 @@
                 <i class="fa fa-calendar-check-o"></i>
               </span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2018-11-22T19:30:39+08:00">
-                2018-11-22
+              <time title="更新于" itemprop="dateModified" datetime="2018-11-27T17:44:59+08:00">
+                2018-11-27
               </time>
             
           </span>
@@ -527,7 +527,22 @@
 <h2 id="4-机器学习与深度学习的知识"><a href="#4-机器学习与深度学习的知识" class="headerlink" title="4. 机器学习与深度学习的知识"></a>4. 机器学习与深度学习的知识</h2><p>在说完了数学和编程基础之后，下面我来看核心的内容，机器学习和深度学习知识。机器学习是现阶段解决很多人工智能问题的核心方法，尤其是深度学习，因此它们是算法工程师的核心知识。在这里有一个问题：是否需要先学机器学习，还是直接学深度学习？如果是一个专业的算法工程师，我的建议是先学机器学习。至少，你要知道机器学习中的基本概念， 过拟合，生成模型，ROC曲线等，上来就看深度学习，如没有背景知识你将不知所云。另外，神经网络只是机器学习中的一类方法，对于很多问题，其他机器学习算法如logistic回归，随机森林，GBDT，决策树等还在被大规模使用，因此你不要把自己局限在神经网络的小圈子里。</p>
 <h3 id="4-1-ML和DP的教材"><a href="#4-1-ML和DP的教材" class="headerlink" title="4.1 ML和DP的教材"></a>4.1 ML和DP的教材</h3><p>首先来看机器学习，这方面的教材很多，周志华老师的机器学习，李航老师的统计学习方法是国内的经典。这里我们介绍国外的经典教材，首先是PRML：</p>
 <p><img src="/public/2018/10/01/AI/how_algorithm_engineer/clip_image023.gif" alt="BE2D3D5817344DE0831B718D3F891899.jpeg"></p>
+<p>PRML 下载地址 <a href="https://www.microsoft.com/en-us/research/publication/pattern-recognition-machine-learning/" target="_blank" rel="noopener">link</a></p>
 <p>此书深厚，内容全面，涵盖了有监督学习，无监督学习的主要方法，理论推导和证明详细深入，是机器学习的经典。此外还有模式分类这本书，在这里不详细介绍。</p>
+<p>本书主要内容包括：<br><strong>第一章：简介</strong><br>概率论、模型选择、决策理论、信息理论</p>
+<p><strong>第二章：概率分布</strong><br>二元变量、多项变量、高斯分布、指数分布族、非参数方法</p>
+<p><strong>第三章：线性模型回归问题</strong><br>线性基函数模型、偏置方差分解、贝叶斯线性回归、贝叶斯模型比较、The Evidence Approximation、固定基函数的局限性</p>
+<p><strong>第四章：线性模型分类问题</strong><br>判别函数、概率生成模型、概率判别模型、拉普拉斯逼近、贝叶斯逻辑回归</p>
+<p><strong>第五章：神经网络</strong><br>前馈神经网络、网络训练、误差反向传播、Hessian矩阵、神经网络的正则化、混合密度网络、贝叶斯神经网络</p>
+<p><strong>第六章：Kernel方法</strong><br>对偶表示、构造核、径向基函数网络、高斯过程</p>
+<p><strong>第七章：Sparse Kernel Machines</strong><br>最大边缘分类器、相关向量机</p>
+<p><strong>第八章：图模型</strong><br>贝叶斯网络、条件独立性、马尔科夫随机场、图模型的推理</p>
+<p><strong>第九章：混合模型和EM</strong><br>K-means聚类、高斯混合、EM算法</p>
+<p><strong>第十章：近似推断</strong><br>变分推断、高斯的变分混合、变分线性回归、指数族分布、局部变分方法、变分logistic回归、Expectation Propagation</p>
+<p><strong>第十一章：采样方法</strong><br>基本采样算法、马尔科夫链蒙特卡洛、吉布斯采样、切片采样、混合蒙特卡洛算法、估计划分函数</p>
+<p><strong>第十二章：连续潜在变数</strong><br>主成分分析，Probabilistic PCA，Kernel PCA，非线性潜变量模型</p>
+<p><strong>第十三章：序列数据</strong><br>马尔可夫模型，隐马尔可夫模型，Linear Dynamical Systems</p>
+<p><strong>第十四章：混合模型</strong><br>贝叶斯模型平均法，Committees，Boosting，基于树的模型，条件混合模型</p>
 <p>深度学习目前最权威的教程是下面这本书：</p>
 <p><img src="/public/2018/10/01/AI/how_algorithm_engineer/clip_image025.gif" alt="A39AD50565E141F89B08C93CCD7DEDFC.jpeg"></p>
 <p>它涵盖了深度学习的方方面面，从理论到工程，但美中不足的是对应于介绍的相对较少。</p>
@@ -750,7 +765,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/public/archives">
-                <span class="site-state-item-count">18</span>
+                <span class="site-state-item-count">16</span>
                 <span class="site-state-item-name">博客</span>
               </a>
             </div>
@@ -761,7 +776,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/public/categories/index.html">
-                <span class="site-state-item-count">26</span>
+                <span class="site-state-item-count">27</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -772,7 +787,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/public/tags/index.html">
-                <span class="site-state-item-count">70</span>
+                <span class="site-state-item-count">72</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -856,7 +871,7 @@
         <div class="copyright">
   
   &copy;  2015 - 
-  <span itemprop="copyrightYear">2018</span>
+  <span itemprop="copyrightYear">2019</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

@@ -94,7 +94,7 @@
 <meta property="og:description" content="概要：修复ubuntu引导，修改ubuntu盘的大小参考：http://www.cnblogs.com/jloveu/p/Ubuntu-partition-expansion-record.html我直接用Ubuntu live，里面自带gparted分区工具，还有grub修复工具">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://talengu.github.io/public/2017/06/14/linux/boot_recovery/boot_file.png">
-<meta property="og:updated_time" content="2018-11-07T14:38:21.078Z">
+<meta property="og:updated_time" content="2019-03-24T01:43:53.102Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ubuntu引导修复">
 <meta name="twitter:description" content="概要：修复ubuntu引导，修改ubuntu盘的大小参考：http://www.cnblogs.com/jloveu/p/Ubuntu-partition-expansion-record.html我直接用Ubuntu live，里面自带gparted分区工具，还有grub修复工具">
@@ -371,8 +371,8 @@
                 <i class="fa fa-calendar-check-o"></i>
               </span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2018-11-07T22:38:21+08:00">
-                2018-11-07
+              <time title="更新于" itemprop="dateModified" datetime="2019-03-24T09:43:53+08:00">
+                2019-03-24
               </time>
             
           </span>
@@ -431,8 +431,10 @@
         <blockquote>
 <p>概要：<br>修复ubuntu引导，修改ubuntu盘的大小<br>参考：<a href="http://www.cnblogs.com/jloveu/p/Ubuntu-partition-expansion-record.html" target="_blank" rel="noopener">http://www.cnblogs.com/jloveu/p/Ubuntu-partition-expansion-record.html</a><br>我直接用Ubuntu live，里面自带gparted分区工具，还有grub修复工具<br><a id="more"></a></p>
 </blockquote>
-<h2 id="修复启动"><a href="#修复启动" class="headerlink" title="修复启动"></a>修复启动</h2><p>执行以下命令（以root身份）：<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">mkdir /tmp/mydir</span><br><span class="line">mount /dev/sda8 /tmp/mydir  (注：其中的`/dev/sda8`为我的`/`分区标识，根据自己情况修改为自己的`/`分区标识)</span><br><span class="line">mount /dev/sda11 /tmp/mydir/boot  (注：同上，`/dev/sda11`为`/boot`分区标识)</span><br><span class="line">mount --bind /dev /tmp/mydir/dev</span><br><span class="line">mount --bind /proc /tmp/mydir/proc</span><br><span class="line">mount --bind /sys /tmp/mydir/sys</span><br><span class="line">chroot /tmp/mydir  (此步可能输出一些信息，可以无视)</span><br><span class="line">grub-install /dev/sda  (注：其中的`/dev/sda`为`/`分区所在硬盘的标识)</span><br><span class="line">exit</span><br></pre></td></tr></table></figure></p>
-<h2 id="修改Ubuntu多系统的默认启动顺序"><a href="#修改Ubuntu多系统的默认启动顺序" class="headerlink" title="修改Ubuntu多系统的默认启动顺序"></a>修改Ubuntu多系统的默认启动顺序</h2><p><a href="http://jingyan.baidu.com/article/f71d60379e16021ab641d1ab.html" target="_blank" rel="noopener">link</a><br>打开该配置文件”/etc/default/grub”<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo vim /etc/default/grub</span><br></pre></td></tr></table></figure></p>
+<h2 id="修复启动"><a href="#修复启动" class="headerlink" title="修复启动"></a>修复启动</h2><p>对于使用gpt的格式的硬盘，ubuntu不要用uefi来安装。gpt还要生成一个bootgios的分区，很重要。</p>
+<p>执行以下命令（以root身份）：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">mkdir /tmp/mydir</span><br><span class="line">mount /dev/sda8 /tmp/mydir  (注：其中的`/dev/sda8`为我的`/`分区标识，根据自己情况修改为自己的`/`分区标识)</span><br><span class="line">mount /dev/sda11 /tmp/mydir/boot  (注：同上，`/dev/sda11`为`/boot`分区标识)</span><br><span class="line">mount --bind /dev /tmp/mydir/dev</span><br><span class="line">mount --bind /proc /tmp/mydir/proc</span><br><span class="line">mount --bind /sys /tmp/mydir/sys</span><br><span class="line">chroot /tmp/mydir  (此步可能输出一些信息，可以无视)</span><br><span class="line">grub-install /dev/sda  (注：其中的`/dev/sda`为`/`分区所在硬盘的标识)</span><br><span class="line">exit</span><br></pre></td></tr></table></figure>
+<h2 id="修改Ubuntu多系统的默认启动顺序"><a href="#修改Ubuntu多系统的默认启动顺序" class="headerlink" title="修改Ubuntu多系统的默认启动顺序"></a>修改Ubuntu多系统的默认启动顺序</h2><p><a href="http://jingyan.baidu.com/article/f71d60379e16021ab641d1ab.html" target="_blank" rel="noopener">link</a><br>打开该配置文件”/etc/default/grub”<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo vim /etc/default/grub</span><br><span class="line">sudo update-grub</span><br></pre></td></tr></table></figure></p>
 <p>其中的“GRUB_DEFAULT=0”为设置默认启动项。系统启动菜单Windows10的启动项在第5项，修改为4（GRUB启动项是从0开始的）。<br><img src="/public/2017/06/14/linux/boot_recovery/boot_file.png" alt="GRUB修改"></p>
 <h2 id="去除多余GRUB启动项（直接）"><a href="#去除多余GRUB启动项（直接）" class="headerlink" title="去除多余GRUB启动项（直接）"></a>去除多余GRUB启动项（直接）</h2><p><a href="https://zhidao.baidu.com/question/472571337.html" target="_blank" rel="noopener">link</a><br>注释掉“/boot/grub/grub.cfg”中对应<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo gedit /boot/grub/grub.cfg</span><br></pre></td></tr></table></figure></p>
 
@@ -570,7 +572,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/public/archives">
-                <span class="site-state-item-count">18</span>
+                <span class="site-state-item-count">16</span>
                 <span class="site-state-item-name">博客</span>
               </a>
             </div>
@@ -581,7 +583,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/public/categories/index.html">
-                <span class="site-state-item-count">26</span>
+                <span class="site-state-item-count">27</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -592,7 +594,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/public/tags/index.html">
-                <span class="site-state-item-count">70</span>
+                <span class="site-state-item-count">72</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -676,7 +678,7 @@
         <div class="copyright">
   
   &copy;  2015 - 
-  <span itemprop="copyrightYear">2018</span>
+  <span itemprop="copyrightYear">2019</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
