@@ -1,3 +1,4 @@
+{% if page.math %}
 {% if theme.mathjax.enable %}
   {% if not theme.mathjax.per_page or (page.total or page.mathjax) %}
     <script type="text/x-mathjax-config">
@@ -18,6 +19,11 @@
         }
       });
     </script>
+    <!--  
     <script type="text/javascript" src="{{ theme.mathjax.cdn }}"></script>
+    -->
+    <script type="text/javascript" src="{{ theme.mathjax.cdn1 }}"></script>
+    <script type="text/javascript" src="{{ theme.mathjax.cdn2 }}"></script>
   {% endif %}
+{% endif %}
 {% endif %}

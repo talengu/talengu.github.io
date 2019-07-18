@@ -108,7 +108,7 @@
 <meta property="og:image" content="https://talengu.github.io/public/2019/07/17/AI/regulation_baysian/0-20190610174921016.png">
 <meta property="og:image" content="https://talengu.github.io/public/2019/07/17/AI/regulation_baysian/0-20190610174920968.png">
 <meta property="og:image" content="https://talengu.github.io/public/2019/07/17/AI/regulation_baysian/0-20190610174921029.png">
-<meta property="og:updated_time" content="2019-07-17T13:03:36.397Z">
+<meta property="og:updated_time" content="2019-07-18T01:42:19.911Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="正则化【一】机器学习中的正则化">
 <meta name="twitter:description" content="前言 本系列文章我们将讨论正则化技术在机器学习和深度学习的应用。本文为该系列的第一篇，主要介绍机器学习的正则化的概念，原理和应用实例。 正则化 技术广泛应用再机器学习和深度学习算法中，本质作用是防止过拟合、提高模型泛化能力。过拟合简单理解就是训练的算法模型太过复杂了，过分考虑了当前样本结构。 在早期的机器学习领域一般只是将范数惩罚叫做正则化技术。而在深度学习领域认为，能够显著减少方差，而不过度增加">
@@ -385,8 +385,8 @@
                 <i class="fa fa-calendar-check-o"></i>
               </span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2019-07-17T21:03:36+08:00">
-                2019-07-17
+              <time title="更新于" itemprop="dateModified" datetime="2019-07-18T09:42:19+08:00">
+                2019-07-18
               </time>
             
           </span>
@@ -467,16 +467,18 @@
 <p><img src="/public/2019/07/17/AI/regulation_baysian/1563350068097.png" alt="1563350068097"></p>
 <p><div align="center"> Fig 1. 泛化误差与偏差和方差的关系</div><br>​        从 Fig 1 可以看出，随着训练程度加深，模型复杂度会增加，偏差减少，方差增大，而泛化误差呈现U型变化。对于一个“好的系统”通常要求误差小，正则化的作用即为适当的控制模型复杂度，从而使得<strong>泛化误差曲线</strong>取最小值。</p>
 <p><strong>(2)</strong> <strong>正则化等价于带约束的目标函数中的约束项</strong></p>
-<p>以平方误差损失和L2范数为例，优化问题的数学模型如下：<br>$$<br>J(\theta)=\sum_{i=1}^{n}(y_i-\theta^Tx_i)^2<br>\tag{3}<br>$$<br>$$<br>s.t.{\left | \theta \right |}<em>2^2 \leq C<br>\tag{4}<br>$$<br>针对上述约束条件的优化问题，采用拉格朗日乘积算子法可以转化为无约束化问题，即<br>$$<br>J(\theta)=\sum</em>{i=1}^{n}(y_i-w^Tx_i)^2 + \lambda({\left | \theta \right |}_2^2-C)<br>\tag{5}<br>$$</p>
+<p>以平方误差损失和L2范数为例，优化问题的数学模型如下：<br>$$<br>J(\theta)=\sum_{i=1}^{n}(y_i-\theta^Tx_i)^2<br>\tag{3}<br>$$<br>$$<br>{s.t.}{|| \theta ||}_2^2 \leq C\\<br>\tag{4}<br>$$</p>
+<p>针对上述约束条件的优化问题，采用拉格朗日乘积算子法可以转化为无约束化问题，即<br>$$<br>J(\theta)=\sum_{i=1}^{n}(y_i-w^Tx_i)^2 + \lambda({|| \theta ||}_2^2-C)<br>\tag{5}<br>$$</p>
 <p>由于参数 $C$ 为常数，可以忽略，故上述公式和标准的正则化 公式完全一致。</p>
 <p><strong>(3)</strong> <strong>从贝叶斯角度考虑</strong></p>
 <p>正则项等价于引入参数的模型先验概率，可以简单理解为对最大似然估计引入先验概率，从而转化为最大后验估计，其中的先验概率即对于正则项（这部分内容后面详细讲解）。</p>
 <h2 id="2-基本概念"><a href="#2-基本概念" class="headerlink" title="2 基本概念"></a>2 基本概念</h2><p>正则化也可以成为规则化、权重衰减技术，不同的领域叫法不一样，数学上常用范数实现，例如L1和L2范数，统计学领域叫做惩罚项、罚因子。</p>
 <p>下面给出范数的数学公式，方便以后分析：</p>
-<p>​    (1) $p$ 范数：<br>$$<br>Lp=(\sum_{i=1}^{n}{\left | x_i \right |}^p)^{\frac{1}{p}}<br>\tag{6}<br>$$<br>​    (2) $L0$ 范数：0 范数表示向量中非零元素的个数（即为其稀疏度）</p>
-<p>​    (3) $L1$ 范数：即向量元素绝对值之和，$p$ 范数取1，即为1范数<br>$$<br>{\left |x  \right |}<em>1=\sum</em>{i=1}^{n}\left | x_i \right |<br>\tag{7}<br>$$<br>​    (4) $L2$ 范数：即向量元素绝对值的平方和再开发，也称欧几里得距离，$p$ 范数取2，即为2范数<br>$$<br>{\left |x  \right |}<em>2=\sqrt{\sum</em>{i=1}^{n}\left | x_i \right |^2}<br>\tag{8}<br>$$</p>
-<p>​    (5) $\infty $ 范数：即所有向量元素的绝对值中的最大值，$p$ 范数取 $\infty $，即为 $\infty $ 范数<br>$$<br>{\left |x  \right |}_{\infty }=\underset{i}{\max}{\left | x_i \right |}<br>\tag{9}<br>$$</p>
-<p>​    (6) $-\infty $ 范数：即所有向量元素绝对值中的最小值，$p$ 范数取$-\infty $，即为 $-\infty $ 范数<br>$$<br>{\left |x  \right |}_{-\infty }=\underset{i}{\min}{\left | x_i \right |}<br>\tag{10}<br>$$<br><strong>图形描述</strong></p>
+<p>​    (1) $p$ 范数：<br>$$<br>Lp=(\sum_{i=1}^{n}{|| x_i ||}^p)^{\frac{1}{p}}<br>\tag{6}<br>$$<br>​    (2) $L0$ 范数：0 范数表示向量中非零元素的个数（即为其稀疏度）</p>
+<p>​    (3) $L1$ 范数：即向量元素绝对值之和，$p$ 范数取1，即为1范数<br>$$<br>{||x||}_1=\sum^n_1 {|| x_i || }<br>\tag{7}<br>$$</p>
+<p>​    (4) $L2$ 范数：即向量元素绝对值的平方和再开发，也称欧几里得距离，$p$ 范数取2，即为2范数<br>$$<br>{||x||}_{2}=\sqrt{\sum^{n}_1|| x_i ||^2}<br>\tag{8}<br>$$</p>
+<p>​    (5) $\infty $ 范数：即所有向量元素的绝对值中的最大值，$p$ 范数取 $\infty $，即为 $\infty $ 范数<br>$$<br>{||x  ||}_{\infty }=\underset{i}{\max}{\left | x_i \right |}<br>\tag{9}<br>$$</p>
+<p>​    (6) $-\infty $ 范数：即所有向量元素绝对值中的最小值，$p$ 范数取$-\infty $，即为 $-\infty $ 范数<br>$$<br>{||x  ||}_{-\infty }=\underset{i}{\min}{\left | x_i \right |}<br>\tag{10}<br>$$<br><strong>图形描述</strong></p>
 <p>​        从 Fig 2、Fig 3 图可以看出：q(p)越小，曲线越贴近坐标轴，q(p)越大，曲线越远离坐标轴，并且棱角越明显，当q(p)取0时候，是完全和坐标轴贴合，当q(p)取无穷的时候，呈现正方体形状。同时也可以看出，采用不同的范数作为正则项，会得到完全不同的算法模型结果，故而对于不同要求的模型，应该采用不同的范数作为正则项。</p>
 <p><img src="/public/2019/07/17/AI/regulation_baysian/1563354053269.png" alt="1563354053269"></p>
 <p><div align="center"> Fig 2. 向量长度为2维的范数约束</div><br><img src="/public/2019/07/17/AI/regulation_baysian/1563354456894.png" alt="1563354456894"></p>
@@ -485,7 +487,7 @@
 <h3 id="简单数值假设分析法"><a href="#简单数值假设分析法" class="headerlink" title="简单数值假设分析法"></a>简单数值假设分析法</h3><p>​        此处以L2范数讲解，下面的各图形来自吴恩达的机器学习课程。</p>
 <p><img src="/public/2019/07/17/AI/regulation_baysian/image-20190619002115576.png" alt="image-20190619002115576"></p>
 <p><div align="center"> Fig 4. 不同参数下的曲线拟合结果</div><br>​        左边的曲线拟合是欠拟合，中间的曲线拟合是刚好合适，右边的曲线拟合是过拟合。对于右边的拟合曲线，有<br>$$<br>h_{\theta}(x)={\theta}_0+{\theta}_0 x_1 +{\theta}_2 x_2^2 +{\theta}_3 x_3^3 +{\theta}_4 x_4^4<br>\tag{11}<br>$$<br>​        从上式可以看出，由于$\theta_3$和$\theta_4$对应了高阶，导致拟合曲线是4阶曲线，出现了过拟合。正则化的目的为适当缩减$\theta_3$和$\theta_4$的值，例如都为0.0001，则上述曲线本质上等价与<br>$$<br>h_{\theta}(x)={\theta}_0 + {\theta}_1 x_1 +{\theta}_2 x_2^2<br>\tag{12}<br>$$<br>​        也就是变成了中间的刚好合适的拟合曲线。对于$\theta_3$ 和$\theta_4$增加 L2 正则项后的代价函数表达式为：<br>$$<br>J(\theta)= \underset{\theta}{\min}\frac{1}{n}\sum_{i=1}^{n}((h_{\theta}(x_i)-y_i)+1000{\theta}_3^2 + 1000 {\theta}_4^2)<br>\tag{13}<br>$$<br>​        从上式可以看出，$\theta_3^2$ 和 $\theta_4^2$ 均大于 0，其乘上了1000，要 $J(\theta)$ 是最小，则会迫使模型学习到的$\theta_3$ 和 $\theta_4$ 会非常小，因为只有在$\theta_3$ 和 $\theta_4$ 会非常小的情况下整个代价函数值才会取的较小值。在实际开发中，是对所有参数进行正则化，为了使代价函数尽可能的小，所有的参数 $\theta$ 的值（不包括 $\theta_0$）都会在一定程度上减小，但是减小程度会不一样，从而实现了权重衰减、简化模型复杂度的作用。</p>
-<h3 id="图形分析法"><a href="#图形分析法" class="headerlink" title="图形分析法"></a>图形分析法</h3><p>​        此处采用L1和L2范数讲解：<br><strong>(1) L2 范数正则</strong><br>$$<br>J(\beta)=\sum_{i=1}^{n}(y_i-{\beta}^T x_i)^2 + \lambda {\left | {\beta} \right |}_2^2<br>\tag{14}<br>$$<br><img src="/public/2019/07/17/AI/regulation_baysian/1563366078400.png" alt="1563366078400"></p>
+<h3 id="图形分析法"><a href="#图形分析法" class="headerlink" title="图形分析法"></a>图形分析法</h3><p>​        此处采用L1和L2范数讲解：<br><strong>(1) L2 范数正则</strong><br>$$<br>J(\beta)=\sum_{i=1}^{n}(y_i-{\beta}^T x_i)^2 + \lambda {|| {\beta} ||}_2^2<br>\tag{14}<br>$$<br><img src="/public/2019/07/17/AI/regulation_baysian/1563366078400.png" alt="1563366078400"></p>
 <p><div align="center"> Fig 5. L2 范数与代价函数的寻优图示</div><br>​        在 Fig 5 中，蓝色的圆形空间表示 L2 范数空间，设为 $\beta_1^2 + \beta_2^2 = r^2$，可以看出，当 $r$ 从 0 逐渐增大时候，该圆形也逐渐增大，红色的线表示原始代价函数解空间即 $\sum_{i=1}^{n}(y_i-\beta^T x_i)^2$，此处为了方便绘图，设参数只有2维。红色圆环上的任何一点都表示一个可行解即代表一组$\beta_1$、$\beta_2$，其中任何一个红色圆环上面的$\beta_1$，$\beta_2$对应的代价函数值一样（可以简单理解为等值线），$\hat{\beta}$ 代表最佳解空间。</p>
 <h3 id="1-2-定义和方法分类"><a href="#1-2-定义和方法分类" class="headerlink" title="1.2 定义和方法分类"></a>1.2 定义和方法分类</h3><p>根本目的本质：防止过拟合，提高模型泛化能力。</p>
 <p>正则化技术分类：<br><strong>狭义上</strong>（不同地方叫法不同）</p>
@@ -1085,6 +1087,7 @@
  
  
  
+
   
     <script type="text/x-mathjax-config">
       MathJax.Hub.Config({
@@ -1104,8 +1107,13 @@
         }
       });
     </script>
-    <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!--  
+    <script type="text/javascript" src=""></script>
+    -->
+    <script type="text/javascript" src="//cdn.staticfile.org/mathjax/2.4.0/MathJax.js"></script>
+    <script type="text/javascript" src="//cdn.staticfile.org/mathjax/2.4.0/config/TeX-AMS-MML_HTMLorMML.js"></script>
   
+
 
 
   
