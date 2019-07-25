@@ -85,13 +85,13 @@
 
 
 
-<meta name="description" content="前言 本系列文章我们将讨论正则化技术在机器学习和深度学习的应用。本文为该系列的第一篇，主要介绍机器学习的正则化的概念，原理和应用实例。 正则化 技术广泛应用再机器学习和深度学习算法中，本质作用是防止过拟合、提高模型泛化能力。过拟合简单理解就是训练的算法模型太过复杂了，过分考虑了当前样本结构。 在早期的机器学习领域一般只是将范数惩罚叫做正则化技术。而在深度学习领域认为，能够显著减少方差，而不过度增加">
+<meta name="description" content="前言本系列文章我们将讨论正则化技术在机器学习和深度学习的应用。本文为该系列的第一篇，主要介绍机器学习的正则化的概念，原理和应用实例。 正则化 技术广泛应用再机器学习和深度学习算法中，本质作用是防止过拟合、提高模型泛化能力。过拟合简单理解就是训练的算法模型太过复杂了，过分考虑了当前样本结构。 在早期的机器学习领域一般只是将范数惩罚叫做正则化技术。而在深度学习领域认为，能够显著减少方差，而不过度增加偏">
 <meta name="keywords" content="AI,ML">
 <meta property="og:type" content="article">
 <meta property="og:title" content="正则化【一】机器学习中的正则化">
 <meta property="og:url" content="https://talengu.github.io/2019/07/17/AI/regulation_baysian/index.html">
 <meta property="og:site_name" content="荷塘·清韵">
-<meta property="og:description" content="前言 本系列文章我们将讨论正则化技术在机器学习和深度学习的应用。本文为该系列的第一篇，主要介绍机器学习的正则化的概念，原理和应用实例。 正则化 技术广泛应用再机器学习和深度学习算法中，本质作用是防止过拟合、提高模型泛化能力。过拟合简单理解就是训练的算法模型太过复杂了，过分考虑了当前样本结构。 在早期的机器学习领域一般只是将范数惩罚叫做正则化技术。而在深度学习领域认为，能够显著减少方差，而不过度增加">
+<meta property="og:description" content="前言本系列文章我们将讨论正则化技术在机器学习和深度学习的应用。本文为该系列的第一篇，主要介绍机器学习的正则化的概念，原理和应用实例。 正则化 技术广泛应用再机器学习和深度学习算法中，本质作用是防止过拟合、提高模型泛化能力。过拟合简单理解就是训练的算法模型太过复杂了，过分考虑了当前样本结构。 在早期的机器学习领域一般只是将范数惩罚叫做正则化技术。而在深度学习领域认为，能够显著减少方差，而不过度增加偏">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://talengu.github.io/public/2019/07/17/AI/regulation_baysian/1563350068097.png">
 <meta property="og:image" content="https://talengu.github.io/public/2019/07/17/AI/regulation_baysian/1563354053269.png">
@@ -108,10 +108,10 @@
 <meta property="og:image" content="https://talengu.github.io/public/2019/07/17/AI/regulation_baysian/0-20190610174921016.png">
 <meta property="og:image" content="https://talengu.github.io/public/2019/07/17/AI/regulation_baysian/0-20190610174920968.png">
 <meta property="og:image" content="https://talengu.github.io/public/2019/07/17/AI/regulation_baysian/0-20190610174921029.png">
-<meta property="og:updated_time" content="2019-07-19T02:38:05.822Z">
+<meta property="og:updated_time" content="2019-07-25T03:28:06.070Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="正则化【一】机器学习中的正则化">
-<meta name="twitter:description" content="前言 本系列文章我们将讨论正则化技术在机器学习和深度学习的应用。本文为该系列的第一篇，主要介绍机器学习的正则化的概念，原理和应用实例。 正则化 技术广泛应用再机器学习和深度学习算法中，本质作用是防止过拟合、提高模型泛化能力。过拟合简单理解就是训练的算法模型太过复杂了，过分考虑了当前样本结构。 在早期的机器学习领域一般只是将范数惩罚叫做正则化技术。而在深度学习领域认为，能够显著减少方差，而不过度增加">
+<meta name="twitter:description" content="前言本系列文章我们将讨论正则化技术在机器学习和深度学习的应用。本文为该系列的第一篇，主要介绍机器学习的正则化的概念，原理和应用实例。 正则化 技术广泛应用再机器学习和深度学习算法中，本质作用是防止过拟合、提高模型泛化能力。过拟合简单理解就是训练的算法模型太过复杂了，过分考虑了当前样本结构。 在早期的机器学习领域一般只是将范数惩罚叫做正则化技术。而在深度学习领域认为，能够显著减少方差，而不过度增加偏">
 <meta name="twitter:image" content="https://talengu.github.io/public/2019/07/17/AI/regulation_baysian/1563350068097.png">
 
 
@@ -385,8 +385,8 @@
                 <i class="fa fa-calendar-check-o"></i>
               </span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2019-07-19T10:38:05+08:00">
-                2019-07-19
+              <time title="更新于" itemprop="dateModified" datetime="2019-07-25T11:28:06+08:00">
+                2019-07-25
               </time>
             
           </span>
@@ -453,8 +453,7 @@
       
 
       
-        <p><strong>前言</strong></p>
-<p>本系列文章我们将讨论<strong>正则化技术在机器学习和深度学习的应用</strong>。本文为该系列的第一篇，主要介绍<strong>机器学习的正则化的概念，原理和应用实例</strong>。</p>
+        <p><strong>前言</strong><br>本系列文章我们将讨论<strong>正则化技术在机器学习和深度学习的应用</strong>。本文为该系列的第一篇，主要介绍<strong>机器学习的正则化的概念，原理和应用实例</strong>。</p>
 <p><a href="https://en.wikipedia.org/wiki/Regularization_(mathematics)" target="_blank" rel="noopener">正则化</a> 技术广泛应用再机器学习和深度学习算法中，本质作用是<strong>防止过拟合、提高模型泛化能力</strong>。过拟合简单理解就是训练的算法模型太过复杂了，过分考虑了当前样本结构。</p>
 <p>在早期的机器学习领域一般只是将范数惩罚叫做正则化技术。而在深度学习领域认为，能够显著减少方差，而不过度增加偏差的策略都可以认为是正则化技术。故<strong>推广的正则化技术</strong>还有：扩增样本集、早停止、Dropout、集成学习、多任务学习、对抗训练、参数共享等。(具体见“花书 第七章 <a href="http://www.deeplearningbook.org/contents/regularization.html" target="_blank" rel="noopener">Regularization for Deep Learning</a>”，会在下一次文章中重点分析)。</p>
 <a id="more"></a>
@@ -598,6 +597,10 @@
 
           <div class="post-nav-prev post-nav-item">
             
+              <a href="/public/2019/07/21/readings/xingxiangmeixue/" rel="prev" title="《形象美学》摘录笔记">
+                《形象美学》摘录笔记 <i class="fa fa-chevron-right"></i>
+              </a>
+            
           </div>
         </div>
       
@@ -669,7 +672,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/public/archives">
-                <span class="site-state-item-count">17</span>
+                <span class="site-state-item-count">19</span>
                 <span class="site-state-item-name">博客</span>
               </a>
             </div>
@@ -680,7 +683,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/public/categories/index.html">
-                <span class="site-state-item-count">29</span>
+                <span class="site-state-item-count">30</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -691,7 +694,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/public/tags/index.html">
-                <span class="site-state-item-count">72</span>
+                <span class="site-state-item-count">75</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -1087,6 +1090,34 @@
  
  
  
+
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <!--  
+    <script type="text/javascript" src=""></script>
+    -->
+    <script type="text/javascript" src="//cdn.staticfile.org/mathjax/2.4.0/MathJax.js"></script>
+    <script type="text/javascript" src="//cdn.staticfile.org/mathjax/2.4.0/config/TeX-AMS-MML_HTMLorMML.js"></script>
+  
+
+
 
   
 
