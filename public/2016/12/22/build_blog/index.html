@@ -100,7 +100,7 @@
 <meta property="og:image" content="https://talengu.github.io/public/2016/12/22/build_blog/image-20181122020200453.png">
 <meta property="og:image" content="https://talengu.github.io/public/2016/12/22/build_blog/image-20181122020427248.png">
 <meta property="og:image" content="https://talengu.github.io/public/2016/12/22/build_blog/image-20181122021516212.png">
-<meta property="og:updated_time" content="2019-07-25T02:05:55.936Z">
+<meta property="og:updated_time" content="2019-07-25T04:19:32.331Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="个人主页搭建">
 <meta name="twitter:description" content="前言本文主要内容为博客搭建的记录与分享，我采用了Hexo博客框架，NexT主题和Gitment评论系统。本文中记录了我博客的安装流程和使用过程中的改进细节。 对Next主题版本的一些说明：我使用的是version: 5.1.0。而使用新版本的NexT v6 主题的同学，有些功能如gitment已经实现，可以直接使用V6。此V6版本对于图片的使用可能会出现问题。仅需看看我下面的2.2小节。 有时间我">
@@ -377,7 +377,7 @@
                 <i class="fa fa-calendar-check-o"></i>
               </span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2019-07-25T10:05:55+08:00">
+              <time title="更新于" itemprop="dateModified" datetime="2019-07-25T12:19:32+08:00">
                 2019-07-25
               </time>
             
@@ -549,6 +549,10 @@
 <figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">&#123;% if theme.post_copyright.enable %&#125;</span><br><span class="line">&#123;% if page.copyright %&#125; <span class="comment">&lt;!-- 加上page md文件头部使能--&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">ul</span> <span class="attr">class</span>=<span class="string">"post-copyright"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">li</span> <span class="attr">class</span>=<span class="string">"post-copyright-author"</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">strong</span>&gt;</span>&#123;&#123; __('post.copyright.author') + __('symbol.colon') &#125;&#125;<span class="tag">&lt;/<span class="name">strong</span>&gt;</span></span><br><span class="line">      &#123;&#123; config.author &#125;&#125;</span><br><span class="line">    <span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">li</span> <span class="attr">class</span>=<span class="string">"post-copyright-link"</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">strong</span>&gt;</span>&#123;&#123; __('post.copyright.link') + __('symbol.colon') &#125;&#125;<span class="tag">&lt;/<span class="name">strong</span>&gt;</span></span><br><span class="line">      <span class="comment">&lt;!-- url的修正，可能要根据你的情况修改--&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"&#123;&#123; config.url &#125;&#125;&#123;&#123; config.root &#125;&#125;&#123;&#123; post.path &#125;&#125;"</span> <span class="attr">title</span>=<span class="string">"&#123;&#123; post.title &#125;&#125;"</span>&gt;</span>&#123;&#123; config.url &#125;&#125;&#123;&#123; config.root &#125;&#125;&#123;&#123; post.path &#125;&#125;<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">li</span> <span class="attr">class</span>=<span class="string">"post-copyright-license"</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">strong</span>&gt;</span>&#123;&#123; __('post.copyright.license_title') + __('symbol.colon') &#125;&#125; <span class="tag">&lt;/<span class="name">strong</span>&gt;</span></span><br><span class="line">      &#123;&#123; __('post.copyright.license_content', theme.post_copyright.license_url, theme.post_copyright.license) &#125;&#125;</span><br><span class="line">    <span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">ul</span>&gt;</span></span><br><span class="line">&#123;% endif %&#125;</span><br><span class="line">&#123;% endif %&#125;</span><br></pre></td></tr></table></figure>
 <h3 id="2-6-RSS-可选"><a href="#2-6-RSS-可选" class="headerlink" title="2.6 RSS (可选)"></a>2.6 RSS (可选)</h3><p>对一些网站的feed 的订阅 如rss，使用来进行订阅网站的rss，现在一些网站已经没有rss服务，google也停掉了google rss reader的项目，所以看你的喜好。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 安装hexo-generator-feed</span></span><br><span class="line">npm install hexo-generator-feed --save</span><br><span class="line"><span class="comment"># 在_config.yml 启用feed</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>tips: 由于我博客在public文件夹下，导致hexo-generator-feed生成的地址不对。<br>在node_modules/hexo-generator-feed/lib/generator.js` 第35行下面添加一行:</p>
+</blockquote>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">url += <span class="string">'public/'</span></span><br></pre></td></tr></table></figure>
 <h3 id="2-7-添加-fork-me-github"><a href="#2-7-添加-fork-me-github" class="headerlink" title="2.7 添加 fork me github"></a>2.7 添加 fork me github</h3><p>效果</p>
 <p><img src="/public/2016/12/22/build_blog/image-20181122020200453.png" alt="image-20181122020200453"></p>
 <p>在<a href="https://github.com/blog/273-github-ribbons" target="_blank" rel="noopener">GitHub Ribbons</a>或<a href="http://tholman.com/github-corners/" target="_blank" rel="noopener">GitHub Corners</a>选择一款你喜欢的挂饰。比如下面的 github corners 在<code>your-url</code>填上你的 url 。</p>
@@ -727,7 +731,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/public/archives">
-                <span class="site-state-item-count">19</span>
+                <span class="site-state-item-count">20</span>
                 <span class="site-state-item-name">博客</span>
               </a>
             </div>
