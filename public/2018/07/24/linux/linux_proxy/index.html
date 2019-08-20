@@ -85,19 +85,19 @@
 
 
 
-<meta name="description" content="前言 最近要下载一个在youtube上的数据库，用来训练模型，国内下载比较慢。我使用wget方式下载，速度取决于你的机器连接vps的网速。本文的主要内容，实现shadowsocks 代理 ，tsocks 代理工具使用，结合一些下载工具wget 和axel就可以快速下载了。 12# 举个栗子$ tsocks wget -c https://www.dropbox.com/s/minpyv59crdi">
+<meta name="description" content="前言 最近要下载一个在youtube上的数据库，用来训练神经网络。走国内通道下载比较慢。于是，我使用了vps代理方式下载，速度取决于你的机器连接vps的网速。本文的主要内容有，实现shadowsocks 代理 ，tsocks 代理工具使用，可组合使用的一些下载工具如wget 和axel等。 12# 举个栗子$ tsocks wget -c https://www.dropbox.com/s/min">
 <meta name="keywords" content="Ubuntu,proxy代理">
 <meta property="og:type" content="article">
 <meta property="og:title" content="linux代理的使用">
 <meta property="og:url" content="https://talengu.github.io/2018/07/24/linux/linux_proxy/index.html">
 <meta property="og:site_name" content="荷塘·清韵">
-<meta property="og:description" content="前言 最近要下载一个在youtube上的数据库，用来训练模型，国内下载比较慢。我使用wget方式下载，速度取决于你的机器连接vps的网速。本文的主要内容，实现shadowsocks 代理 ，tsocks 代理工具使用，结合一些下载工具wget 和axel就可以快速下载了。 12# 举个栗子$ tsocks wget -c https://www.dropbox.com/s/minpyv59crdi">
+<meta property="og:description" content="前言 最近要下载一个在youtube上的数据库，用来训练神经网络。走国内通道下载比较慢。于是，我使用了vps代理方式下载，速度取决于你的机器连接vps的网速。本文的主要内容有，实现shadowsocks 代理 ，tsocks 代理工具使用，可组合使用的一些下载工具如wget 和axel等。 12# 举个栗子$ tsocks wget -c https://www.dropbox.com/s/min">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://talengu.github.io/public/2018/07/24/linux/linux_proxy/1565246896718.png">
-<meta property="og:updated_time" content="2019-08-08T16:25:13.998Z">
+<meta property="og:updated_time" content="2019-08-09T02:37:52.833Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="linux代理的使用">
-<meta name="twitter:description" content="前言 最近要下载一个在youtube上的数据库，用来训练模型，国内下载比较慢。我使用wget方式下载，速度取决于你的机器连接vps的网速。本文的主要内容，实现shadowsocks 代理 ，tsocks 代理工具使用，结合一些下载工具wget 和axel就可以快速下载了。 12# 举个栗子$ tsocks wget -c https://www.dropbox.com/s/minpyv59crdi">
+<meta name="twitter:description" content="前言 最近要下载一个在youtube上的数据库，用来训练神经网络。走国内通道下载比较慢。于是，我使用了vps代理方式下载，速度取决于你的机器连接vps的网速。本文的主要内容有，实现shadowsocks 代理 ，tsocks 代理工具使用，可组合使用的一些下载工具如wget 和axel等。 12# 举个栗子$ tsocks wget -c https://www.dropbox.com/s/min">
 <meta name="twitter:image" content="https://talengu.github.io/public/2018/07/24/linux/linux_proxy/1565246896718.png">
 
 
@@ -371,7 +371,7 @@
                 <i class="fa fa-calendar-check-o"></i>
               </span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2019-08-09T00:25:13+08:00">
+              <time title="更新于" itemprop="dateModified" datetime="2019-08-09T10:37:52+08:00">
                 2019-08-09
               </time>
             
@@ -428,14 +428,15 @@
       
 
       
-        <p><strong>前言</strong><br> 最近要下载一个在youtube上的数据库，用来训练模型，国内下载比较慢。我使用wget方式下载，速度取决于你的机器连接vps的网速。本文的主要内容，实现shadowsocks 代理 ，tsocks 代理工具使用，结合一些下载工具wget 和axel就可以快速下载了。</p>
+        <p><strong>前言</strong><br> 最近要下载一个在youtube上的数据库，用来训练神经网络。走国内通道下载比较慢。于是，我使用了vps代理方式下载，速度取决于你的机器连接vps的网速。本文的主要内容有，实现shadowsocks 代理 ，tsocks 代理工具使用，可组合使用的一些下载工具如wget 和axel等。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 举个栗子</span></span><br><span class="line">$ tsocks wget -c https://www.dropbox.com/s/minpyv59crdifk9/datasets.zip</span><br></pre></td></tr></table></figure>
-<p>嗯嗯，速度还不错！<br><img src="/public/2018/07/24/linux/linux_proxy/1565246896718.png" alt="1565246896718"></p>
+<p>嗯嗯，这个速度还不错！</p>
+<p><img src="/public/2018/07/24/linux/linux_proxy/1565246896718.png" alt="1565246896718"></p>
 <p><strong>声明</strong>：本文以科学研究为目的，请勿滥用。</p>
 <a id="more"></a>
-<h2 id="Shadowsocks"><a href="#Shadowsocks" class="headerlink" title="Shadowsocks"></a>Shadowsocks</h2><p><strong>Shadowsocks</strong>是一个轻量级socks5代理工具。在linux平台<strong>安装 Shadowsocks</strong>，可以使用 python 提供的包管理工具 pip，如下。</p>
+<h2 id="Shadowsocks"><a href="#Shadowsocks" class="headerlink" title="Shadowsocks"></a>Shadowsocks</h2><p><strong>Shadowsocks</strong>是一个轻量级socks5代理工具。在linux平台，我们可使用 python 提供的包管理工具 pip <strong>安装 Shadowsocks</strong> ，如下。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># pip 安装 Shadowsocks</span></span><br><span class="line">$ pip install shadowsocks</span><br><span class="line"></span><br><span class="line"><span class="comment"># 或者</span></span><br><span class="line">$ pip install git+https://github.com/shadowsocks/shadowsocks.git@master</span><br></pre></td></tr></table></figure>
-<p>pip安装完之后，可能重启终端，我们就有ssserver和sslocal小工具了。下面配置server或者client。一般，server配置在国外的vps上，client配置在本地国内机器上。</p>
+<p>pip安装完之后，可能要重启终端，我们就有ssserver和sslocal小工具了。下面配置server或者client。一般，server配置在国外的vps上，client配置在本地国内机器上。</p>
 <p>PS：其他平台安装 参考 shadowsocks官方 <a href="https://github.com/shadowsocks/shadowsocks/tree/master#install" target="_blank" rel="noopener">install</a></p>
 <h3 id="配置-Shadowsocks-server"><a href="#配置-Shadowsocks-server" class="headerlink" title="配置 Shadowsocks server"></a>配置 Shadowsocks server</h3><p>按下面的三步走，即可。</p>
 <ul>
@@ -558,8 +559,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/public/2018/07/12/linux/bash_bashrc/" rel="next" title="bashrc与vimrc的配置">
-                <i class="fa fa-chevron-left"></i> bashrc与vimrc的配置
+              <a href="/public/2018/07/12/linux/bash_bashrc/" rel="next" title="终端中bash、vim、tmux等的配置">
+                <i class="fa fa-chevron-left"></i> 终端中bash、vim、tmux等的配置
               </a>
             
           </div>
@@ -643,7 +644,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/public/archives">
-                <span class="site-state-item-count">20</span>
+                <span class="site-state-item-count">21</span>
                 <span class="site-state-item-name">博客</span>
               </a>
             </div>
@@ -665,7 +666,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/public/tags/index.html">
-                <span class="site-state-item-count">75</span>
+                <span class="site-state-item-count">78</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>

@@ -85,13 +85,13 @@
 
 
 
-<meta name="description" content="我的翻译里面带了好多英文对应，为了我以后写作服务，请读者朋友原谅。:cat: :cat:原文地址 https://www.learnopencv.com/face-detection-opencv-dlib-and-deep-learning-c-python/ 重要结论：在多数场景中，我们提前不知道图片大小，因此 选用 OpenCV – DNN 相当快也很精确，甚至对于小人脸也不错，各种人脸角">
+<meta name="description" content="前言本文为翻译文章。原文地址 https://www.learnopencv.com/face-detection-opencv-dlib-and-deep-learning-c-python/  在这篇文章中，作者讨论使用了OpenCV或Dlib的多种人脸检测的代码，并给出性能分析。作者使用的 Face Detector 包括以下四个，后面分别给出 c++ 和 python 实现。  OpenC">
 <meta name="keywords" content="OpenCV,Face Detection,Dlib">
 <meta property="og:type" content="article">
 <meta property="og:title" content="[译] Face Detection – OpenCV, Dlib and Deep Learning ( C++ &#x2F; Python )">
 <meta property="og:url" content="https://talengu.github.io/2018/11/12/cv/FaceDetectionComparison/index.html">
 <meta property="og:site_name" content="荷塘·清韵">
-<meta property="og:description" content="我的翻译里面带了好多英文对应，为了我以后写作服务，请读者朋友原谅。:cat: :cat:原文地址 https://www.learnopencv.com/face-detection-opencv-dlib-and-deep-learning-c-python/ 重要结论：在多数场景中，我们提前不知道图片大小，因此 选用 OpenCV – DNN 相当快也很精确，甚至对于小人脸也不错，各种人脸角">
+<meta property="og:description" content="前言本文为翻译文章。原文地址 https://www.learnopencv.com/face-detection-opencv-dlib-and-deep-learning-c-python/  在这篇文章中，作者讨论使用了OpenCV或Dlib的多种人脸检测的代码，并给出性能分析。作者使用的 Face Detector 包括以下四个，后面分别给出 c++ 和 python 实现。  OpenC">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://www.learnopencv.com/wp-content/uploads/2018/10/face-detection-coco-comparison.jpg">
 <meta property="og:image" content="https://www.learnopencv.com/wp-content/uploads/2018/10/fd-acc-result1-e1539872861105.jpg">
@@ -109,10 +109,10 @@
 <meta property="og:image" content="https://www.learnopencv.com/wp-content/uploads/2018/10/fd-occlusion-result2.jpg">
 <meta property="og:image" content="https://www.learnopencv.com/wp-content/uploads/2018/10/fd-occlusion-result3.jpg">
 <meta property="og:image" content="https://secure.gravatar.com/avatar/708995cd13fb5756f6bc418aecb23b78?s=250&d=mm&r=g">
-<meta property="og:updated_time" content="2019-07-27T18:22:18.114Z">
+<meta property="og:updated_time" content="2019-08-20T13:44:21.410Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="[译] Face Detection – OpenCV, Dlib and Deep Learning ( C++ &#x2F; Python )">
-<meta name="twitter:description" content="我的翻译里面带了好多英文对应，为了我以后写作服务，请读者朋友原谅。:cat: :cat:原文地址 https://www.learnopencv.com/face-detection-opencv-dlib-and-deep-learning-c-python/ 重要结论：在多数场景中，我们提前不知道图片大小，因此 选用 OpenCV – DNN 相当快也很精确，甚至对于小人脸也不错，各种人脸角">
+<meta name="twitter:description" content="前言本文为翻译文章。原文地址 https://www.learnopencv.com/face-detection-opencv-dlib-and-deep-learning-c-python/  在这篇文章中，作者讨论使用了OpenCV或Dlib的多种人脸检测的代码，并给出性能分析。作者使用的 Face Detector 包括以下四个，后面分别给出 c++ 和 python 实现。  OpenC">
 <meta name="twitter:image" content="https://www.learnopencv.com/wp-content/uploads/2018/10/face-detection-coco-comparison.jpg">
 
 
@@ -386,8 +386,8 @@
                 <i class="fa fa-calendar-check-o"></i>
               </span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2019-07-28T02:22:18+08:00">
-                2019-07-28
+              <time title="更新于" itemprop="dateModified" datetime="2019-08-20T21:44:21+08:00">
+                2019-08-20
               </time>
             
           </span>
@@ -454,12 +454,7 @@
       
 
       
-        <blockquote>
-<p>我的翻译里面带了好多英文对应，为了我以后写作服务，请读者朋友原谅。:cat: :cat:<br>原文地址 <a href="https://www.learnopencv.com/face-detection-opencv-dlib-and-deep-learning-c-python/" target="_blank" rel="noopener">https://www.learnopencv.com/face-detection-opencv-dlib-and-deep-learning-c-python/</a></p>
-<p>重要结论：在多数场景中，我们提前不知道图片大小，因此 选用 OpenCV – DNN 相当快也很精确，甚至对于小人脸也不错，各种人脸角度也可以。选用这个在大多情况下是最优的。</p>
-<p>作者github代码 <a href="https://github.com/spmallick/learnopencv/tree/master/FaceDetectionComparison" target="_blank" rel="noopener">FaceDetectionComparison</a> </p>
-<p>代码说明：为了使文章显得简洁一些，在文中只提供关键的代码片段。在github项目中详细代码，包括每个方法独立的代码和整合在一起的cpp和py文件（run-all.py 和 run-all.cpp），同时里面也有运行代码所使用的人脸检测模型。</p>
-</blockquote>
+        <p><strong>前言</strong><br>本文为翻译文章。原文地址 <a href="https://www.learnopencv.com/face-detection-opencv-dlib-and-deep-learning-c-python/" target="_blank" rel="noopener">https://www.learnopencv.com/face-detection-opencv-dlib-and-deep-learning-c-python/</a> </p>
 <p>在这篇文章中，作者讨论使用了OpenCV或Dlib的多种人脸检测的代码，并给出性能分析。作者使用的 Face Detector 包括以下四个，后面分别给出 c++ 和 python 实现。</p>
 <ol>
 <li>OpenCV 的 Haar Cascade Face Detector</li>
@@ -468,10 +463,10 @@
 <li>Dlib 的 Deep Learning based Face Detector</li>
 </ol>
 <p>作者限于篇幅没有对对理论进行深入解读，只讨论框架的使用，同时分享一些应用上的选择权衡的经验。</p>
+<p>结论：在多数场景中，我们提前不知道图片大小，因此 选用 OpenCV – DNN 相当快也很精确，甚至对于小人脸也不错，各种人脸角度也可以。选用这个在大多情况下是最优的。</p>
+<p><a href="https://github.com/spmallick/learnopencv/tree/master/FaceDetectionComparison" target="_blank" rel="noopener">code FaceDetectionComparison</a> 说明：为了使文章显得简洁一些，在文中只提供关键的代码片段。在github项目中详细代码，包括每个方法独立的代码和整合在一起的cpp和py文件（run-all.py 和 run-all.cpp），同时里面也有运行代码所使用的人脸检测模型。</p>
 <a id="more"></a>
-<center><iframe width="100%" height="360" frameborder="0" src="http://v.qq.com/iframe/player.html?vid=k07615vrzj8&tiny=0&auto=0" allowfullscreen></iframe></center>
-
-
+<p><center><iframe width="100%" height="360" frameborder="0" src="http://v.qq.com/iframe/player.html?vid=k07615vrzj8&tiny=0&auto=0" allowfullscreen></iframe></center></p>
 <blockquote>
 <p>实验的图片尺寸是  image size 300×300</p>
 </blockquote>
@@ -528,7 +523,7 @@
 <p>大概以上，这个方法多数情况可以工作，除了下面的情况。</p>
 <h3 id="缺点-1"><a href="#缺点-1" class="headerlink" title="缺点"></a>缺点</h3><ol>
 <li>主要缺点对小人脸不识别。由于训练在最小 80×80 的数据集上，要确保你的使用环境，不然的话你要自己再训练一下小人脸。</li>
-<li>人脸框经常去掉了人额头一部分，有时脸颊一部分。<br>（part of forehead and even part of chin sometimes）</li>
+<li>人脸框经常去掉了人额头一部分，有时脸颊一部分。<br> （part of forehead and even part of chin sometimes）</li>
 <li>在明显的遮挡情况下效果不好</li>
 <li>在测量和极端不正面的脸情况不工作，像向上看，和向下看的情况。</li>
 </ol>
@@ -706,8 +701,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/public/2019/07/17/AI/regulation_baysian/" rel="prev" title="正则化【一】机器学习中的正则化">
-                正则化【一】机器学习中的正则化 <i class="fa fa-chevron-right"></i>
+              <a href="/public/2019/02/05/readings/nobel_maodun_literature/" rel="prev" title="茅盾文学奖、诺贝尔文学奖">
+                茅盾文学奖、诺贝尔文学奖 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -781,7 +776,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/public/archives">
-                <span class="site-state-item-count">20</span>
+                <span class="site-state-item-count">21</span>
                 <span class="site-state-item-name">博客</span>
               </a>
             </div>
@@ -803,7 +798,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/public/tags/index.html">
-                <span class="site-state-item-count">75</span>
+                <span class="site-state-item-count">78</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>

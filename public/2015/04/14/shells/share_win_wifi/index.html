@@ -85,18 +85,18 @@
 
 
 
-<meta name="description" content="网上有很多用笔记本设置无线热点的批处理，我中和了一下。复制下面代码到记事本，改后缀为bat就行了。[改一下你自己定义的ssid和key]">
+<meta name="description" content="前言网上有很多用笔记本设置无线热点的批处理，我中和了一下。复制下面代码到记事本，改后缀为bat就行了。其中，mssid和mkey可自定义">
 <meta name="keywords" content="Windows脚本,共享wifi,cmd">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Windows笔记本开共享wifi">
 <meta property="og:url" content="https://talengu.github.io/2015/04/14/shells/share_win_wifi/index.html">
 <meta property="og:site_name" content="荷塘·清韵">
-<meta property="og:description" content="网上有很多用笔记本设置无线热点的批处理，我中和了一下。复制下面代码到记事本，改后缀为bat就行了。[改一下你自己定义的ssid和key]">
+<meta property="og:description" content="前言网上有很多用笔记本设置无线热点的批处理，我中和了一下。复制下面代码到记事本，改后缀为bat就行了。其中，mssid和mkey可自定义">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-11-07T14:45:08.730Z">
+<meta property="og:updated_time" content="2019-08-20T13:44:21.418Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Windows笔记本开共享wifi">
-<meta name="twitter:description" content="网上有很多用笔记本设置无线热点的批处理，我中和了一下。复制下面代码到记事本，改后缀为bat就行了。[改一下你自己定义的ssid和key]">
+<meta name="twitter:description" content="前言网上有很多用笔记本设置无线热点的批处理，我中和了一下。复制下面代码到记事本，改后缀为bat就行了。其中，mssid和mkey可自定义">
 
 
 
@@ -369,8 +369,8 @@
                 <i class="fa fa-calendar-check-o"></i>
               </span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2018-11-07T22:45:08+08:00">
-                2018-11-07
+              <time title="更新于" itemprop="dateModified" datetime="2019-08-20T21:44:21+08:00">
+                2019-08-20
               </time>
             
           </span>
@@ -426,9 +426,7 @@
       
 
       
-        <blockquote>
-<p>网上有很多用笔记本设置无线热点的批处理，我中和了一下。<br>复制下面代码到记事本，改后缀为bat就行了。<br>[改一下你自己定义的ssid和key]</p>
-</blockquote>
+        <p><strong>前言</strong><br>网上有很多用笔记本设置无线热点的批处理，我中和了一下。复制下面代码到记事本，改后缀为bat就行了。其中，mssid和mkey可自定义</p>
 <a id="more"></a>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">@echo off</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">set mssid=GTC</span><br><span class="line">::网络名字</span><br><span class="line">set mkey=123456789</span><br><span class="line">::大于八位密码</span><br><span class="line"></span><br><span class="line">echo ***********************************************</span><br><span class="line">echo              打开承载网络  1</span><br><span class="line">echo              关闭承载网络  2</span><br><span class="line">echo              承载网络信息  3</span><br><span class="line">echo              设置网络信息  set</span><br><span class="line">echo              退出          e</span><br><span class="line">echo        （网络名字、密码可在源文件中改）</span><br><span class="line">echo           （请以管理员身份打开!!!）</span><br><span class="line">echo ***********************************************</span><br><span class="line">:start</span><br><span class="line">set /p var=请选择:</span><br><span class="line">if %var%==1 netsh wlan start hostednetwork &amp;&amp; echo 网络名字:%mssid% 密码:%mkey% &amp;&amp; GOTO start</span><br><span class="line">if %var%==2 netsh wlan stop hostednetwork &amp;&amp; GOTO start</span><br><span class="line">if %var%==3 netsh wlan show hostednetwork &amp;&amp; echo 网络名字:%mssid% 密码:%mkey% &amp;&amp; GOTO start</span><br><span class="line">if %var%==set netsh wlan set hostednetwork mode=allow ssid=%mssid% key=%mkey% &amp;&amp; echo 网络名字:%mssid% 密码:%mkey% &amp;&amp; GOTO start</span><br><span class="line">if %var%==e pause</span><br></pre></td></tr></table></figure>
 
@@ -561,7 +559,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/public/archives">
-                <span class="site-state-item-count">20</span>
+                <span class="site-state-item-count">21</span>
                 <span class="site-state-item-name">博客</span>
               </a>
             </div>
@@ -583,7 +581,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/public/tags/index.html">
-                <span class="site-state-item-count">75</span>
+                <span class="site-state-item-count">78</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
