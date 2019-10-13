@@ -100,7 +100,7 @@
 <meta property="og:image" content="https://talengu.github.io/public/2016/12/22/build_blog/image-20181122020200453.png">
 <meta property="og:image" content="https://talengu.github.io/public/2016/12/22/build_blog/image-20181122020427248.png">
 <meta property="og:image" content="https://talengu.github.io/public/2016/12/22/build_blog/image-20181122021516212.png">
-<meta property="og:updated_time" content="2019-10-06T11:53:54.944Z">
+<meta property="og:updated_time" content="2019-10-13T05:18:04.453Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="个人主页搭建">
 <meta name="twitter:description" content="前言本文主要内容为博客搭建的记录与分享，我采用了Hexo博客框架，NexT主题和Gitment评论系统。本文中记录了我博客的安装流程和使用过程中的改进细节。 对Next主题版本的一些说明：我使用的是version: 5.1.0。而使用新版本的NexT v6 主题的同学，有些功能如gitment已经实现，可以直接使用V6。此V6版本对于图片的使用可能会出现问题。仅需看看我下面的2.2小节。 有时间我">
@@ -377,8 +377,8 @@
                 <i class="fa fa-calendar-check-o"></i>
               </span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2019-10-06T19:53:54+08:00">
-                2019-10-06
+              <time title="更新于" itemprop="dateModified" datetime="2019-10-13T13:18:04+08:00">
+                2019-10-13
               </time>
             
           </span>
@@ -553,6 +553,7 @@
 <p>tips: 由于我博客在public文件夹下，导致hexo-generator-feed生成的地址不对。<br>在node_modules/hexo-generator-feed/lib/generator.js` 第35行下面添加一行:</p>
 </blockquote>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">url += <span class="string">'public/'</span></span><br></pre></td></tr></table></figure>
+<p>可用此脚本替换 <code>sed -i &quot;36c url += &#39;public/&#39;&quot; node_modules/hexo-generator-feed/lib/generator.js</code></p>
 <h3 id="2-7-添加-fork-me-github"><a href="#2-7-添加-fork-me-github" class="headerlink" title="2.7 添加 fork me github"></a>2.7 添加 fork me github</h3><p>效果</p>
 <p><img src="/public/2016/12/22/build_blog/image-20181122020200453.png" alt="image-20181122020200453"></p>
 <p>在<a href="https://github.com/blog/273-github-ribbons" target="_blank" rel="noopener">GitHub Ribbons</a>或<a href="http://tholman.com/github-corners/" target="_blank" rel="noopener">GitHub Corners</a>选择一款你喜欢的挂饰。比如下面的 github corners 在<code>your-url</code>填上你的 url 。</p>
