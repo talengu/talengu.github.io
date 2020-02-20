@@ -663,6 +663,7 @@
 </tr>
 </tbody>
 </table>
+<p><a href="https://mp.weixin.qq.com/s/j-siAAyFx2wa2sc4k0qZyQ" target="_blank" rel="noopener"> 中国作家网 第十届茅盾文学奖揭晓（附5位获奖作家介绍）</a></p>
 <a id="more"></a>
 <p><strong>第九届茅盾文学奖获奖篇目 (2011—2014)</strong></p>
 <table>
@@ -2165,26 +2166,29 @@
       </tags>
   </entry>
   <entry>
-    <title>数学 - 一个空间解析几何问题</title>
+    <title>为什么正好经过这个空隙？</title>
     <url>/public/2017/05/05/math/math_q1/</url>
-    <content><![CDATA[<p><strong>前言</strong><br>偶然看到的一个问题，好久没做空间解析几何的题目。试着练习一下，顺便练习一下Latex输入公式。</p>
-<p>如果有错误或更好的解答，欢迎在下面回复。转载请注明出处。</p>
-<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p><img src="/public/2017/05/05/math/math_q1/math_q1_show.gif" alt="动图"></p>
-<p><div align="center"> <b>Fig 1.  为什么会经过这个空隙？</b></div><br><a id="more"></a></p>
-<h2 id="解答"><a href="#解答" class="headerlink" title="解答"></a>解答</h2><p>首先建立空间直角坐标系，$P$ 点为水平杆与斜杆的交点，$Q$点为垂直杆与水平杆的交点，<br>将斜杆标记为 $L$，假设 $OQ=q$ ，$QP=r$ 。</p>
-<p>再设水平杆 $ QP $ 绕 $ z $ 轴以 $ \omega\, rad/s $ 的角速度旋转，并设开始旋转的时间长度为$t$ 秒，<br>则 $P$ 点坐标为 $ (r\cos{\omega t}, r\sin{\omega t}, q) $<br>$$<br>\overrightarrow{OQ}=(0, 0, q) \qquad \overrightarrow{QP}=(r\cos{\omega t}, r\sin{\omega t}, 0)<br>\tag{1}<br>$$</p>
-<p>我们知道 $\overrightarrow{QP}$ 与斜杆 $L$ 垂直，假设 $\overrightarrow{OQ}$ 与斜杆 $L$ 成固定角 $\theta$ ，设 $L$ 的方向向量 $\overrightarrow{S}=(a, b, c)$</p>
-<p>斜杆 $L$ 代表的直线：<br>$$<br>\frac{x-r\cos{\omega t}}{a}=\frac{y-r\sin{\omega t}}{b}=\frac{z-q}{c}<br>\tag{2}<br>$$</p>
-<p>$$<br>\begin{cases}<br>0=\overrightarrow{QP} \cdot \overrightarrow{S} \\<br>\cos{\theta}=\frac{\overrightarrow{OQ} \cdot \overrightarrow{S}}{\left|\overrightarrow{OQ}\right| \left| \overrightarrow{S}\right|}<br>\end{cases}<br>$$</p>
-<p>$$<br>\frac{a}{c}=\frac{-\sin{\omega t}}{\cos{\omega t}}<br>$$</p>
-<p>$$<br>b^{2}(\tan{\theta})^{2}=a^{2}+c^{2}<br>$$</p>
-<p>$$<br>\frac{b^{2}}{c^{2}}=\frac{1}{(\tan{\theta})^{2}(\cos{\omega t})^{2}}<br>$$</p>
-<p>为了求直线组 $L$ 与 $xoy$ 平面相交的图形，我们令 $z=0$<br>$$<br>\frac{x-r\cos{\omega t}}{a}=\frac{y-q}{b}=\frac{-r\sin{\omega t}}{c}<br>$$</p>
-<p>$$<br>\begin{cases}<br>\frac{a}{c}=\frac{1}{(\tan{\theta})^{2}(\cos{\omega t})^{2}}\\<br>\frac{x-r\cos{\omega t}}{a}=\frac{-r\sin{\omega t}}{c}<br>\end{cases}<br>$$</p>
-<p>$$<br>\cos{tx}=r\<br>(\cos{\omega t})^{2}=\frac{r^{2}}{x^{2}}\<br>(\sin{\omega t})^{2}=\frac{x^{2}-r^{2}}{x^{2}}<br>$$</p>
-<p>$$<br>\begin{cases}<br>\frac{b^{2}}{c^{2}}=\frac{1}{(\tan{\theta})^{2}(\cos{\omega t})^{2}}\\<br>\frac{y-q}{b}=\frac{-r\sin{\omega t}}{c}<br>\end{cases}<br>$$</p>
-<p>消去 $ (\cos{\omega t})^{2} $ 和 $ (\sin{\omega t})^{2} $</p>
-<p>最后，得 $ x^{2}-(\tan{\theta})^{2}(y-q)^{2}=r^{2} $ ，易知为双曲线方程，所以在 $ xoy $ 平面相交得图形为双曲线。</p>
+    <content><![CDATA[<p><strong>前言</strong><br>偶然看到的一个问题，如图1，为什么正好经过这个空隙？我们用空间解析几何来解一下吧。</p>
+<p><img src="/public/2017/05/05/math/math_q1/math_q1_show.gif" alt="动图"></p>
+<div align="center"> 图1 为什么会经过这个空隙？</div><br><a id="more"></a><br><br>## 解答<br><br>如图2，建立空间直角坐标系$xyz$，原点记为 $O$ ， $P$  点为水平杆与斜杆的交点， $Q$ 点为垂直杆与水平杆的交点， 将斜杆标记为 $L$ 。<br><br><img src="/public/2017/05/05/math/math_q1/v2-80ac80b8031d5782412f4f4ef4e22a1a_b.jpeg" alt="img"><br><div align="center"> 图2 建立空间直角坐标系</div>
+
+<p>设 $OQ=q$  ， $QP=r$  。$Q$ 点坐标为 $(0, 0, q)$  。</p>
+<p>设水平杆  $QP$  绕  $z$   轴以  $\omega\, rad/s$  的角速度旋转，并设从开始旋转到现在的时长为 $t$  秒， 则  $P$  点坐标为 $(r\cos{\omega t}, r\sin{\omega t}, q)$  。</p>
+<p>由 $Q$、$P$ 两点坐标得：</p>
+<p>$$<br>\overrightarrow{OQ}=(0, 0, q) \qquad \overrightarrow{QP}=(r\cos{\omega t}, r\sin{\omega t}, 0) \tag{1}<br>$$</p>
+<p>设 $L$ 的方向向量 $\overrightarrow{S}=(a, b, c) $，由 $L$ 的方向向量 $\overrightarrow{S}$ 和 $P$ 点得，得斜杆  $L$  代表的直线方程：<br>$$<br>\frac{x-r\cos{\omega t}}{a}=\frac{y-r\sin{\omega t}}{b}=\frac{z-q}{c} \tag{2}<br>$$</p>
+<p>我们知道 $\overrightarrow{QP}$ 与斜杆 $L$ 垂直，假设 $\overrightarrow{OQ}$ 与斜杆 $L$ 成固定角 $ \theta$ ，得：<br>$$<br> \begin{cases} 0=\overrightarrow{QP} \cdot \overrightarrow{S} \ \cos{\theta}=\frac{\overrightarrow{OQ} \cdot \overrightarrow{S}}{\left|\overrightarrow{OQ}\right| \left| \overrightarrow{S}\right|} \end{cases} \tag{3}<br>$$</p>
+<p>把 $\overrightarrow{QP}$， $\overrightarrow{S}$， $\overrightarrow{OQ}$ 代入 式(3)，得<br>$$<br> \begin{cases}  \frac{a}{b}=\frac{-\sin{\omega t}}{\cos{\omega t}} \ c^{2}(\tan{\theta})^{2}=a^{2}+b^{2}  \end{cases} \tag{4}<br>$$</p>
+<p>式（4）中第2条等式两边除以 $b^2$ ，再化简得：<br>$$<br> \frac{c^{2}}{b^{2}}=\frac{1}{(\tan{\theta})^{2}(\cos{\omega t})^{2}} \tag{5}<br>$$</p>
+<p>求直线组 $L$ 与 $xoz$ 平面相交的图形，即回答这个缝隙的形状为什么是图1 中这样的曲线。我们令 $y=0$ ，代入直线公式(2) 得：<br>$$<br> \frac{x-r\cos{\omega t}}{a}=\frac{-r\sin{\omega t}}{b} =\frac{z-q}{c} \tag{6}<br>$$<br>由式（4）（5）（6）得到方程组（7）。<br>$$<br> \begin{cases} \frac{a}{b}=\frac{-\sin{\omega t}}{\cos{\omega t}}\  \frac{x-r\cos{\omega t}}{a}=\frac{-r\sin{\omega t}}{b} \  \frac{c^2}{b^2}=\frac{1}{(\tan{\theta})^{2}(\cos{\omega t})^{2}}\  \frac{-r\sin{\omega t}}{b} =\frac{z-q}{c}  \end{cases}  \tag{7}<br>$$</p>
+<p>由式（7）中上面两个等式，消去a，b得：<br>$$<br>\frac{-\sin{\omega t}}{\cos{\omega t}}=\frac{x-r\cos{\omega t}}{-r\sin{\omega t}}=\frac{a}{b} \tag{8}<br>$$<br>$$<br>x \cos{\omega t}=r   \tag{9}<br>$$</p>
+<p>由式（7）中下面两个等式，消去b，c得：<br>$$<br>\frac{1}{(\tan{\theta})^2(\cos{\omega t})^2}<br>= \frac{(z-q)^2}{(-r\sin{\omega t})^2}<br>=\frac{c^2}{b^2} \tag{10}<br>$$</p>
+<p>$$<br>\frac{(-r\sin{\omega t})^2}{(\tan{\theta})^2(\cos{\omega t})^2}<br>= {(z-q)}^2 \tag{11}<br>$$</p>
+<p>由利用式（9），可消去式（11）中的 $(\sin{\omega t})^{2}$  和 $(\cos{\omega t})^{2}$  得：<br>$$<br>x^{2}-(\tan{\theta})^{2}(z-q)^{2}=r^{2} \tag{12}<br>$$<br>易知，为双曲线方程，所以在  xoz 平面相交得图形为双曲线。</p>
+<hr>
+<p>欢迎观众老爷们评论回复，一键三连。</p>
+<p>更多有趣问题，欢迎关注投稿 <a href="https://zhuanlan.zhihu.com/shuxuemanyou" target="_blank" rel="noopener"><strong>知乎小成 - 数学漫游专栏</strong></a>，<br>我们聚焦生活中的数与形的小小问题们。</p>
+<p>转载请注明出处，谢谢！</p>
 ]]></content>
       <categories>
         <category>数学</category>
