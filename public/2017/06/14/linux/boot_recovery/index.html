@@ -94,7 +94,7 @@
 <meta property="og:description" content="前言本文记录修复ubuntu引导，并修改ubuntu盘的大小过程。参考：http://www.cnblogs.com/jloveu/p/Ubuntu-partition-expansion-record.html工具：Ubuntu 的live U盘，带有gparted分区工具，和grub修复工具">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://talengu.github.io/public/2017/06/14/linux/boot_recovery/boot_file.png">
-<meta property="og:updated_time" content="2019-10-06T11:53:54.948Z">
+<meta property="og:updated_time" content="2017-06-14T08:00:04.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ubuntu引导修复">
 <meta name="twitter:description" content="前言本文记录修复ubuntu引导，并修改ubuntu盘的大小过程。参考：http://www.cnblogs.com/jloveu/p/Ubuntu-partition-expansion-record.html工具：Ubuntu 的live U盘，带有gparted分区工具，和grub修复工具">
@@ -371,8 +371,8 @@
                 <i class="fa fa-calendar-check-o"></i>
               </span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2019-10-06T19:53:54+08:00">
-                2019-10-06
+              <time title="更新于" itemprop="dateModified" datetime="2017-06-14T16:00:04+08:00">
+                2017-06-14
               </time>
             
           </span>
@@ -436,6 +436,40 @@
 <h2 id="修改Ubuntu多系统的默认启动顺序"><a href="#修改Ubuntu多系统的默认启动顺序" class="headerlink" title="修改Ubuntu多系统的默认启动顺序"></a>修改Ubuntu多系统的默认启动顺序</h2><p><a href="http://jingyan.baidu.com/article/f71d60379e16021ab641d1ab.html" target="_blank" rel="noopener">link</a><br>打开该配置文件”/etc/default/grub”<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo vim /etc/default/grub</span><br><span class="line">sudo update-grub</span><br></pre></td></tr></table></figure></p>
 <p>其中的“GRUB_DEFAULT=0”为设置默认启动项。系统启动菜单Windows10的启动项在第5项，修改为4（GRUB启动项是从0开始的）。<br><img src="/public/2017/06/14/linux/boot_recovery/boot_file.png" alt="GRUB修改"></p>
 <h2 id="去除多余GRUB启动项（直接）"><a href="#去除多余GRUB启动项（直接）" class="headerlink" title="去除多余GRUB启动项（直接）"></a>去除多余GRUB启动项（直接）</h2><p><a href="https://zhidao.baidu.com/question/472571337.html" target="_blank" rel="noopener">link</a><br>注释掉“/boot/grub/grub.cfg”中对应<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo gedit /boot/grub/grub.cfg</span><br></pre></td></tr></table></figure></p>
+<h2 id="Ubuntu下如何修复Grub引导"><a href="#Ubuntu下如何修复Grub引导" class="headerlink" title="Ubuntu下如何修复Grub引导"></a>Ubuntu下如何修复Grub引导</h2><p><a href="https://mp.weixin.qq.com/s/NDZPPA-0FhqSzRndQOhNEw" target="_blank" rel="noopener">link</a></p>
+<p>本文以 Ubuntu Live CD 修复 Grub 引导为例，已在 /dev/sda3 安装 Fedora。</p>
+<p>　　首先制作 Ubuntu 启动 USB</p>
+<p>　　复制代码代码如下：<br>　　<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">　　sudo dd if=ubuntu-13.10-desktop-amd64.iso of=/dev/sdb </span><br><span class="line">　　#/dev/sdb 为 USB 盘符</span><br></pre></td></tr></table></figure></p>
+<p>　　<br>　1.使用启动 USB 进入 Ubuntu 试用环境</p>
+<p>　2.查看硬盘分区状况，获取 Linux 系统安装分区编号<br>　　代码如下：</p>
+<p>　　sudo fdisk -l</p>
+<p>查看输出结果，然后根据文件类型和分区大小来判定 Linux 系统安装在哪块硬盘和安装的分区。我的电脑是在 /dev/sda3 安装了 Fedora。</p>
+<p>　　或者，打开 Gparted 图形化工具来查看分区信息也可以。</p>
+<p>　　挂载 Fedora 安装分区</p>
+<p><strong>3.已知 Fedora 安装在了 /dev/sda3 上，所以我们可以用下面命令来挂载 Fedora 安装分区。你需要将 /dev/sda3 换成自己的 Linux 安装分区。</strong></p>
+<p>　　代码如下：</p>
+<p>　　sudo mount /dev/sda3 /mnt</p>
+<p><strong>4.挂载其他所需的目录（使用 –bind）</strong></p>
+<p>　　代码如下：</p>
+<p>　　sudo mount –bind /dev /mnt/dev</p>
+<p>　　sudo mount –bind /proc /mnt/proc</p>
+<p>　　sudo mount –bind /sys /mnt/sys</p>
+<p><strong>5.Chroot 到硬盘上的 Linux 系统</strong></p>
+<p>　　代码如下：</p>
+<p>　　sudo chroot /mnt</p>
+<p>　　<strong>6.安装&amp;更新 Grub</strong></p>
+<p>　　代码如下：</p>
+<p>　　grub2-install /dev/sda</p>
+<p>　　grub2-mkconfig -o /boot/grub2/grub.cfg</p>
+<p>　　<strong>7.Grub 已经修复成功，我们还需要退出 chroot 环境、卸载已经挂载的设备与目录：</strong></p>
+<p>　　代码如下：</p>
+<p>　　exit #退出 chroot 环境</p>
+<p>　　sudo umount /mnt/dev</p>
+<p>　　sudo umount /mnt/proc</p>
+<p>　　sudo umount /mnt/sys</p>
+<p>　　sudo umount /mnt</p>
+<p>　　<strong>8.重启！</strong></p>
+<p>　　上面就是使用Ubuntu LiveCD修复grub的方法介绍了，如果你在使用双系统安装windows中出现Grub引导错误，不妨使用该方法进行修复吧。</p>
 
       
     </div>
@@ -571,7 +605,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/public/archives">
-                <span class="site-state-item-count">21</span>
+                <span class="site-state-item-count">22</span>
                 <span class="site-state-item-name">博客</span>
               </a>
             </div>
@@ -582,7 +616,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/public/categories/index.html">
-                <span class="site-state-item-count">30</span>
+                <span class="site-state-item-count">26</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -593,7 +627,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/public/tags/index.html">
-                <span class="site-state-item-count">78</span>
+                <span class="site-state-item-count">67</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -655,7 +689,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#修复启动"><span class="nav-text">修复启动</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#修改Ubuntu多系统的默认启动顺序"><span class="nav-text">修改Ubuntu多系统的默认启动顺序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#去除多余GRUB启动项（直接）"><span class="nav-text">去除多余GRUB启动项（直接）</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#修复启动"><span class="nav-text">修复启动</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#修改Ubuntu多系统的默认启动顺序"><span class="nav-text">修改Ubuntu多系统的默认启动顺序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#去除多余GRUB启动项（直接）"><span class="nav-text">去除多余GRUB启动项（直接）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Ubuntu下如何修复Grub引导"><span class="nav-text">Ubuntu下如何修复Grub引导</span></a></li></ol></div>
             
 
           </div>
@@ -677,7 +711,7 @@
         <div class="copyright">
   
   &copy;  2015 - 
-  <span itemprop="copyrightYear">2019</span>
+  <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
