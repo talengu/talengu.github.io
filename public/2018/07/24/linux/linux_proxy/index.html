@@ -428,71 +428,92 @@
       
 
       
-        <p><strong>前言</strong><br> 最近要下载一个在youtube上的数据库，用来训练神经网络。走国内通道下载比较慢。于是，我使用了vps代理方式下载，速度取决于你的机器连接vps的网速。本文的主要内容有，实现shadowsocks 代理 ，tsocks 代理工具使用，可组合使用的一些下载工具如wget 和axel等。</p>
+        <p><strong>前言</strong><br>
+最近要下载一个在youtube上的数据库，用来训练神经网络。走国内通道下载比较慢。于是，我使用了vps代理方式下载，速度取决于你的机器连接vps的网速。本文的主要内容有，实现shadowsocks 代理 ，tsocks 代理工具使用，可组合使用的一些下载工具如wget 和axel等。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 举个栗子</span></span><br><span class="line">$ tsocks wget -c https://www.dropbox.com/s/minpyv59crdifk9/datasets.zip</span><br></pre></td></tr></table></figure>
 <p>嗯嗯，这个速度还不错！</p>
 <p><img src="/public/2018/07/24/linux/linux_proxy/1565246896718.png" alt="1565246896718"></p>
 <p><strong>声明</strong>：本文以科学研究为目的，请勿滥用。</p>
 <a id="more"></a>
-<h2 id="1-Shadowsocks"><a href="#1-Shadowsocks" class="headerlink" title="1 Shadowsocks"></a>1 Shadowsocks</h2><p><strong>Shadowsocks</strong>是一个轻量级socks5代理工具。在linux平台，我们可使用 python 提供的包管理工具 pip <strong>安装 Shadowsocks</strong> ，如下。</p>
+<h2 id="1-Shadowsocks"><a class="header-anchor" href="#1-Shadowsocks">¶</a>1 Shadowsocks</h2>
+<p><strong>Shadowsocks</strong>是一个轻量级socks5代理工具。在linux平台，我们可使用 python 提供的包管理工具 pip <strong>安装 Shadowsocks</strong> ，如下。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># pip 安装 Shadowsocks</span></span><br><span class="line">$ pip install shadowsocks</span><br><span class="line"></span><br><span class="line"><span class="comment"># 或者</span></span><br><span class="line">$ pip install git+https://github.com/shadowsocks/shadowsocks.git@master</span><br></pre></td></tr></table></figure>
 <p>pip安装完之后，可能要重启终端，我们就有ssserver和sslocal小工具了。下面配置server或者client。一般，server配置在国外的vps上，client配置在本地国内机器上。</p>
 <p>PS：其他平台安装 参考 shadowsocks官方 <a href="https://github.com/shadowsocks/shadowsocks/tree/master#install" target="_blank" rel="noopener">install</a></p>
-<h3 id="1-1-配置-Shadowsocks-server"><a href="#1-1-配置-Shadowsocks-server" class="headerlink" title="1.1 配置 Shadowsocks server"></a>1.1 配置 Shadowsocks server</h3><p>按下面的三步走，即可。</p>
+<h3 id="1-1-配置-Shadowsocks-server"><a class="header-anchor" href="#1-1-配置-Shadowsocks-server">¶</a>1.1 配置 Shadowsocks server</h3>
+<p>按下面的三步走，即可。</p>
 <ul>
-<li><p>通过ssh连接到（Virtual Private Server）vps上，或者本地打开终端。</p>
+<li>
+<p>通过ssh连接到（Virtual Private Server）vps上，或者本地打开终端。</p>
 </li>
-<li><p>新建一个<strong>server_shadowsocks.json</strong>文件，内容如下：</p>
+<li>
+<p>新建一个<strong>server_shadowsocks.json</strong>文件，内容如下：</p>
+</li>
+</ul>
 <figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"server"</span>:<span class="string">"0.0.0.0"</span>,</span><br><span class="line">    <span class="attr">"server_port"</span>:<span class="number">443</span>,</span><br><span class="line">    <span class="attr">"local_address"</span>: <span class="string">"127.0.0.1"</span>,</span><br><span class="line">    <span class="attr">"local_port"</span>:<span class="number">1080</span>,</span><br><span class="line">    <span class="attr">"password"</span>:<span class="string">"密码"</span>,</span><br><span class="line">    <span class="attr">"timeout"</span>:<span class="number">300</span>,</span><br><span class="line">    <span class="attr">"method"</span>:<span class="string">"aes-256-cfb"</span>,</span><br><span class="line">    <span class="attr">"fast_open"</span>: <span class="literal">false</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>执行<code>ssserver -c server_shadowsocks.json</code></p>
-</li>
+<ul>
+<li>执行<code>ssserver -c server_shadowsocks.json</code></li>
 </ul>
 <p>说一点: 由于我们的下载任务是临时的，开个screen（终端复用工具）放在后台。当然你也可以设置为开机自启动，这里不再赘述。</p>
-<h3 id="1-2-配置-Shadowsocks-client"><a href="#1-2-配置-Shadowsocks-client" class="headerlink" title="1.2 配置 Shadowsocks client"></a>1.2 配置 Shadowsocks client</h3><ul>
-<li><p>通过ssh连接到机器上，或者本地打开终端。</p>
+<h3 id="1-2-配置-Shadowsocks-client"><a class="header-anchor" href="#1-2-配置-Shadowsocks-client">¶</a>1.2 配置 Shadowsocks client</h3>
+<ul>
+<li>
+<p>通过ssh连接到机器上，或者本地打开终端。</p>
 </li>
-<li><p>新建文件 <strong>client_shadowsocks.json</strong></p>
-<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">        <span class="attr">"server"</span>:<span class="string">"服务器ip或域名"</span>,</span><br><span class="line">        <span class="attr">"server_port"</span>:<span class="number">443</span>,</span><br><span class="line">        <span class="attr">"local_address"</span>:<span class="string">"127.0.0.1"</span>,</span><br><span class="line">        <span class="attr">"local_port"</span>:<span class="number">1280</span>,</span><br><span class="line">        <span class="attr">"password"</span>:<span class="string">"密码"</span>,</span><br><span class="line">        <span class="attr">"timeout"</span>:<span class="number">300</span>,</span><br><span class="line">        <span class="attr">"method"</span>:<span class="string">"aes-256-cfb"</span>,</span><br><span class="line">        <span class="attr">"fast_open"</span>:<span class="literal">false</span>,</span><br><span class="line">        <span class="attr">"workers"</span>:<span class="number">1</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>执行<code>sslocal -c client_shadowsocks.json</code>。</p>
+<li>
+<p>新建文件 <strong>client_shadowsocks.json</strong></p>
 </li>
 </ul>
-<p>说一点：推荐使用screen方式放在后台。当然也可以使用-d 参数放在后台运行。<br><code>sslocal -c client_shadowsocks.json -d start</code></p>
-<h2 id="2-tsocks"><a href="#2-tsocks" class="headerlink" title="2 tsocks"></a>2 tsocks</h2><p>有些linux工具可能没有proxy的代理功能，或者不支持sock5代理，而用tsocks可以很好的解决这些问题。<strong>tsocks</strong> 是个终端代理工具，可以直接连接shadowsocks提供socks 5代理端口，有点类似于proxychains。</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">        <span class="attr">"server"</span>:<span class="string">"服务器ip或域名"</span>,</span><br><span class="line">        <span class="attr">"server_port"</span>:<span class="number">443</span>,</span><br><span class="line">        <span class="attr">"local_address"</span>:<span class="string">"127.0.0.1"</span>,</span><br><span class="line">        <span class="attr">"local_port"</span>:<span class="number">1280</span>,</span><br><span class="line">        <span class="attr">"password"</span>:<span class="string">"密码"</span>,</span><br><span class="line">        <span class="attr">"timeout"</span>:<span class="number">300</span>,</span><br><span class="line">        <span class="attr">"method"</span>:<span class="string">"aes-256-cfb"</span>,</span><br><span class="line">        <span class="attr">"fast_open"</span>:<span class="literal">false</span>,</span><br><span class="line">        <span class="attr">"workers"</span>:<span class="number">1</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>执行<code>sslocal -c client_shadowsocks.json</code>。</li>
+</ul>
+<p>说一点：推荐使用screen方式放在后台。当然也可以使用-d 参数放在后台运行。<br>
+<code>sslocal -c client_shadowsocks.json -d start</code></p>
+<h2 id="2-tsocks"><a class="header-anchor" href="#2-tsocks">¶</a>2 tsocks</h2>
+<p>有些linux工具可能没有proxy的代理功能，或者不支持sock5代理，而用tsocks可以很好的解决这些问题。<strong>tsocks</strong> 是个终端代理工具，可以直接连接shadowsocks提供socks 5代理端口，有点类似于proxychains。</p>
 <p>下面简单介绍下安装与使用：</p>
 <ul>
-<li>安装<strong>tsocks</strong><ul>
+<li>安装<strong>tsocks</strong>
+<ul>
 <li>linux安装tsocks 命令：<code>apt install tsocks</code></li>
 <li>mac 安装参考 <a href="https://github.com/Anakros/homebrew-tsocks" target="_blank" rel="noopener">homebrew-tsocks</a></li>
 </ul>
 </li>
 <li><strong>开启上面Shadowsocks的client</strong>放在后台。</li>
-<li>修改tsocks 配置文件，在<code>/etc/tsocks.conf</code>  文件的最后添加：<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">local = 192.168.1.0/255.255.255.0</span><br><span class="line">server = 127.0.0.1</span><br><span class="line">server_type = 5</span><br><span class="line">server_port = 1080</span><br></pre></td></tr></table></figure>
-</li>
+<li>修改tsocks 配置文件，在<code>/etc/tsocks.conf</code>  文件的最后添加：</li>
 </ul>
-<h2 id="3-Demo：代理使用"><a href="#3-Demo：代理使用" class="headerlink" title="3 Demo：代理使用"></a>3 Demo：代理使用</h2><h3 id="3-1-使用-tsocks"><a href="#3-1-使用-tsocks" class="headerlink" title="3.1 使用 tsocks"></a>3.1 使用 tsocks</h3><p>在所需代理的命令前加个tsocks就行，如：<br><code>tsocks wget -c xxxx</code>,<code>tsocks axel -n 10 -av xxxx</code>,<code>tsocks curl xxx</code></p>
-<h3 id="3-2-使用-youtube-dl"><a href="#3-2-使用-youtube-dl" class="headerlink" title="3.2 使用 youtube-dl"></a>3.2 使用 youtube-dl</h3><p>youtube-dl是批量下载youtube视频的好工具。youtube-dl 可以指定 proxy，<strong>可以不使用tsocks</strong>。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">local = 192.168.1.0/255.255.255.0</span><br><span class="line">server = 127.0.0.1</span><br><span class="line">server_type = 5</span><br><span class="line">server_port = 1080</span><br></pre></td></tr></table></figure>
+<h2 id="3-Demo：代理使用"><a class="header-anchor" href="#3-Demo：代理使用">¶</a>3 Demo：代理使用</h2>
+<h3 id="3-1-使用-tsocks"><a class="header-anchor" href="#3-1-使用-tsocks">¶</a>3.1 使用 tsocks</h3>
+<p>在所需代理的命令前加个tsocks就行，如：<br>
+<code>tsocks wget -c xxxx</code>,<code>tsocks axel -n 10 -av xxxx</code>,<code>tsocks curl xxx</code></p>
+<h3 id="3-2-使用-youtube-dl"><a class="header-anchor" href="#3-2-使用-youtube-dl">¶</a>3.2 使用 youtube-dl</h3>
+<p>youtube-dl是批量下载youtube视频的好工具。youtube-dl 可以指定 proxy，<strong>可以不使用tsocks</strong>。</p>
 <ul>
-<li><p>安装youtube-dl </p>
+<li>安装youtube-dl</li>
+</ul>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install --upgrade youtube-dl</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>使用举个例子</p>
 <ul>
-<li><p>下载youtube视频 </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">URL=https://www.youtube.com/playlist?list=PLLbeS1kM6teJqdFzw1ICHfa4a1y0hg8Ax</span><br><span class="line">./youtube-dl --proxy socks5://127.0.0.1:1280 $&#123;URL&#125;</span><br><span class="line"># 在 client_shadowsocks.json 的 local_port 设置为1280，这儿也为1280</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>下载里面的mp3</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">youtube-dl -x --audio-format mp3 https://www.youtube.com/watch?v=xpVfcZ0ZcFM</span><br></pre></td></tr></table></figure>
+<li>
+<p>使用举个例子</p>
+<ul>
+<li>下载youtube视频</li>
+</ul>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">URL=https://www.youtube.com/playlist?list=PLLbeS1kM6teJqdFzw1ICHfa4a1y0hg8Ax</span><br><span class="line">./youtube-dl --proxy socks5://127.0.0.1:1280 $&#123;URL&#125;</span><br><span class="line"># 在 client_shadowsocks.json 的 local_port 设置为1280，这儿也为1280</span><br></pre></td></tr></table></figure>
+<ul>
+<li>下载里面的mp3</li>
+</ul>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">youtube-dl -x --audio-format mp3 https://www.youtube.com/watch?v=xpVfcZ0ZcFM</span><br></pre></td></tr></table></figure>
 </li>
 </ul>
-</li>
-</ul>
-<p><strong>youtube-dl 中待解决的问题？</strong><br>想只下载一个视频中的一部分，不用下载整个视频，太费vps流量了。暂未找到解决办法，我找到的一个跟问题很相似的issue，有朋友会整的，望告诉一下。<a href="https://github.com/rg3/youtube-dl/issues/4821" target="_blank" rel="noopener">is it possible to download only desired time interval?</a></p>
-<h3 id="3-3-使用-axel"><a href="#3-3-使用-axel" class="headerlink" title="3.3 使用 axel"></a>3.3 使用 axel</h3><p>axel多线程下载。</p>
+<p><strong>youtube-dl 中待解决的问题？</strong><br>
+想只下载一个视频中的一部分，不用下载整个视频，太费vps流量了。暂未找到解决办法，我找到的一个跟问题很相似的issue，有朋友会整的，望告诉一下。<a href="https://github.com/rg3/youtube-dl/issues/4821" target="_blank" rel="noopener">is it possible to download only desired time interval?</a></p>
+<h3 id="3-3-使用-axel"><a class="header-anchor" href="#3-3-使用-axel">¶</a>3.3 使用 axel</h3>
+<p>axel多线程下载。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tsocks axel -n 3 -a https://www.dropbox.com/s/minpyv59crdifk9/datasets.zip</span><br></pre></td></tr></table></figure>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">-n 3 : 3个线程下载</span><br><span class="line">-a   : 有个进度条</span><br></pre></td></tr></table></figure>
-<p>其他方式：下载脚本 axel-bash.sh</p>
+<p>其他方式：下载脚本 <a href="http://axel-bash.sh" target="_blank" rel="noopener">axel-bash.sh</a></p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/bin/sh -e  </span></span><br><span class="line"><span class="comment"># usage:  ./axel-batch.sh the-download-url.list  </span></span><br><span class="line">cat <span class="variable">$1</span> | <span class="keyword">while</span> <span class="built_in">read</span> LINE  </span><br><span class="line"><span class="keyword">do</span>  </span><br><span class="line">	<span class="keyword">if</span> [ -n <span class="string">"<span class="variable">$LINE</span>"</span> ]; <span class="keyword">then</span>  </span><br><span class="line">	axel -n 3 -a `<span class="built_in">echo</span> <span class="variable">$LINE</span>`  </span><br><span class="line">	<span class="keyword">fi</span>  </span><br><span class="line"><span class="keyword">done</span></span><br></pre></td></tr></table></figure>
 
       
@@ -655,7 +676,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/public/categories/index.html">
-                <span class="site-state-item-count">26</span>
+                <span class="site-state-item-count">27</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -728,7 +749,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-Shadowsocks"><span class="nav-text">1 Shadowsocks</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-配置-Shadowsocks-server"><span class="nav-text">1.1 配置 Shadowsocks server</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-配置-Shadowsocks-client"><span class="nav-text">1.2 配置 Shadowsocks client</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-tsocks"><span class="nav-text">2 tsocks</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-Demo：代理使用"><span class="nav-text">3 Demo：代理使用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-使用-tsocks"><span class="nav-text">3.1 使用 tsocks</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-使用-youtube-dl"><span class="nav-text">3.2 使用 youtube-dl</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-使用-axel"><span class="nav-text">3.3 使用 axel</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-Shadowsocks"><span class="nav-text">¶1 Shadowsocks</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-配置-Shadowsocks-server"><span class="nav-text">¶1.1 配置 Shadowsocks server</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-配置-Shadowsocks-client"><span class="nav-text">¶1.2 配置 Shadowsocks client</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-tsocks"><span class="nav-text">¶2 tsocks</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-Demo：代理使用"><span class="nav-text">¶3 Demo：代理使用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-使用-tsocks"><span class="nav-text">¶3.1 使用 tsocks</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-使用-youtube-dl"><span class="nav-text">¶3.2 使用 youtube-dl</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-使用-axel"><span class="nav-text">¶3.3 使用 axel</span></a></li></ol></li></ol></div>
             
 
           </div>
