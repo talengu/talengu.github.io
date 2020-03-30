@@ -331,7 +331,7 @@ pagetag:
 # ref: https://blog.csdn.net/yanzi1225627/article/details/77890414
 # themes/next/layout/_third-party/comments/gitment.swig
 gitment:
-  enable: true
+  enable: false
   githubID: talengu
   repo: talengu.github.io
   ClientID: 315ada12fed7a0ffb6b7
@@ -344,7 +344,21 @@ gitment:
   local_css: lib/gitment/default.css
   remote_js: https://www.wenjunjiang.win/js/gitment.js
 
-   
+# https://iochen.com/2018/01/06/use-gitalk-in-hexo/
+gitalk:
+  enable: true
+  ClientID: 315ada12fed7a0ffb6b7
+  ClientSecret: 5f15e644005fabee93cc7f50d70c78c57dce0e86
+  repo: talengu.github.io
+  owner: talengu
+  adminUser: "['talengu']"
+  ID: location.pathname
+  labels: "['Gitalk']"
+  perPage: 15
+  pagerDirection: last
+  createIssueManually: true
+  distractionFreeMode: false
+
 
 
 # GitHub Corners
