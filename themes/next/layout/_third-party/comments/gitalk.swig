@@ -20,5 +20,4 @@
         })
         gitalk.render('gitalk-container')           
        </script>
-
 {% endif %}

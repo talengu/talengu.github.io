@@ -36,7 +36,9 @@
          <div id="gitment-container" style="display:none"></div>
        {% else %}
          <div id="gitment-container"></div>
-       {% endif %}  
+       {% endif %} 
+    {% elseif theme.gitalk.enable %}
+        <div id="gitalk-container"></div> 
     {% endif %}
   </div>
 {% endif %}
