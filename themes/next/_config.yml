@@ -339,12 +339,14 @@ gitment:
   lazy: true
   
   # https://github.com/imsun/gitment/issues/170
-  uselocal: true  # false NOT OK
-    css: lib/gitment/default.css
-    # I download the https://www.wenjunjiang.win/js/gitment.js as win_gitment.js
-    # opt: lib/gitment/gitment.browser.js NOW HAS trouble
-    # opt: lib/gitment/gitment.browser.js
-    js: lib/gitment/win_gitment.js
+  # themes/next/layout/_third-party/comments/gitment.swig
+  uselocal_css: true  
+  local_css: lib/gitment/default.css
+
+  remote_js: https://www.wenjunjiang.win/js/gitment.js
+
+   
+
 
 # GitHub Corners
 gitcorner:

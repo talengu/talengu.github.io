@@ -4,14 +4,15 @@
    {% set cid = theme.gitment.ClientID %}
    {% set cs = theme.gitment.ClientSecret %}
    {% if theme.gitment.uselocal%}
-   <link rel="stylesheet" href="{{config.root}}{{theme.gitment.uselocal.css}}">
-   <!-- "{{config.root}}lib/gitment/gitment.browser.js" https://www.wenjunjiang.win/js/gitment.js -->
-     <script src="{{config.root}}{{theme.gitment.uselocal.js}}"></script>
+    <link rel="stylesheet" href="{{config.root}}{{theme.gitment.local_css}}">
+    <!-- "{{config.root}}lib/gitment/gitment.browser.js"  -->
+        <script src="{{theme.gitment.remote_js}}"></script>
      
    {% else %}
-   <link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">
-   <script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script>
+        <link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">
+        <script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script>
    {% endif %}
+
    {% if not theme.gitment.lazy %}
        <script type="text/javascript">
            var gitment = new Gitment({
