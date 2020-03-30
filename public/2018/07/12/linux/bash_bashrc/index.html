@@ -426,12 +426,12 @@
       
 
       
-        <p><strong>前言</strong><br>
+        <p><strong>前言</strong>
 使用终端有一段时间了，现在主力的平台是Ubuntu16.04，本文对bash、vim、tmux配置的一些记录。</p>
 <a id="more"></a>
 <p>在<code>cd ~</code>下建立talen_bashrc文件</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"> HOME_BASHRC=xxxx/talen_bashrc</span><br><span class="line"> alias vimbashrc='vim $HOME_BASHRC &amp;&amp; source $HOME_BASHRC'</span><br><span class="line"><span class="meta">#</span><span class="bash"> files</span></span><br><span class="line"> alias countfiles='echo "total num: " &amp;&amp; ls | wc -l &amp;&amp; du -sh'</span><br><span class="line"> alias ll='ls -htrlF --time-style="+%H:%M %Y/%m/%d"'</span><br><span class="line"> alias dum='du -a -d 1 -m |sort -nr'</span><br><span class="line"> alias dug='df -h /dev/sdbxxx &amp;&amp; du -BG -d 1 --time |sort -nr'</span><br><span class="line"></span><br><span class="line"> alias pi='pip install -i https://pypi.tuna.tsinghua.edu.cn/simple'</span><br><span class="line"> alias gpuwatch='watch -n 1 nvidia-smi'</span><br><span class="line"></span><br><span class="line"> alias gitm='git commit -m'</span><br><span class="line"> alias gits='git status -s'</span><br><span class="line"></span><br><span class="line"> export PYTHONPATH=$PYTHONPATH:xxxxxxx</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> vimrc</span></span><br><span class="line"> export MYVIMRC=xxxx/.vim/.vimrc</span><br><span class="line"> export VIMINIT="let &amp;rtp='xxxx/.vim,' . &amp;rtp</span><br><span class="line"> so $MYVIMRC"</span><br></pre></td></tr></table></figure>
-<p>python环境使用的是anaconda（或者minicoonda）添加激活环境。<br>
+<p>python环境使用的是anaconda（或者minicoonda）添加激活环境。
 在<code>~/.bashrc</code>中加入</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">alias talen='source xxx/talen_bashrc &amp;&amp; source activate xxx/envs'</span><br><span class="line">alias utalen='source deactivate'</span><br></pre></td></tr></table></figure>
 <p>github <a href="https://github.com/talengu/vim/blob/master/bashrc" target="_blank" rel="noopener">bashrc</a></p>
@@ -530,11 +530,6 @@
 
  
   <div class="comments" id="comments">
-    
-       
-         <div onclick="ShowGitment()" id="gitment-display-button">显示 Gitment 评论</div>
-         <div id="gitment-container" style="display:none"></div>
-         
     
   </div>
 
@@ -810,34 +805,29 @@
 
 
 
-   
-   
-   
-   
-   
-    <link rel="stylesheet" href="/public/lib/gitment/default.css">
-    <!-- "/public/lib/gitment/gitment.browser.js"  -->
-        <script src="https://www.wenjunjiang.win/js/gitment.js"></script>
-     
-   
 
-   
-       <script type="text/javascript">
-           function ShowGitment(){
-               document.getElementById("gitment-display-button").style.display = "none";
-               document.getElementById("gitment-container").style.display = "block";
-               var gitment = new Gitment({
-                   id: window.location.pathname,
-                   owner: 'talengu',
-                   repo: 'talengu.github.io',
-                   oauth: {
-                       client_id: '315ada12fed7a0ffb6b7',
-                       client_secret: '5f15e644005fabee93cc7f50d70c78c57dce0e86',
-                   }});
-               gitment.render('gitment-container');
-           }
+
+
+  <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+
+  <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+
+   <script type="text/javascript">
+        var gitalk = new Gitalk({
+          clientID: '315ada12fed7a0ffb6b7',
+          clientSecret: '5f15e644005fabee93cc7f50d70c78c57dce0e86',
+          repo: 'talengu.github.io',
+          owner: 'talengu',
+          admin: ['talengu'],
+          id: location.pathname,
+          labels: ['Gitalk'],
+          perPage: 15,
+          pagerDirection: 'last',
+          createIssueManually: true,
+          distractionFreeMode: false
+        })
+        gitalk.render('gitalk-container')           
        </script>
-   
 
 
  

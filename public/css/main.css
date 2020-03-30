@@ -1696,7 +1696,7 @@ pre .javascript .function {
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background: #6b9e0a;
+  background: #ff79c2;
 }
 .links-of-blogroll {
   font-size: 13px;
@@ -2264,6 +2264,14 @@ pre .javascript .function {
 #gitment-display-button:hover {
   color: #fff;
   background: #0a9caf;
+}
+.gt-header a,
+.gt-comments a,
+.gt-popup a {
+  border-bottom: none;
+}
+.gt-container .gt-popup .gt-action.is--active:before {
+  top: 0.7em;
 }
 .use-motion .post {
   opacity: 0;

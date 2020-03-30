@@ -426,7 +426,7 @@
       
 
       
-        <p><strong>前言</strong><br>
+        <p><strong>前言</strong>
 网上有很多用笔记本设置无线热点的批处理，我中和了一下。复制下面代码到记事本，改后缀为bat就行了。其中，mssid和mkey可自定义</p>
 <a id="more"></a>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">@echo off</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">set mssid=GTC</span><br><span class="line">::网络名字</span><br><span class="line">set mkey=123456789</span><br><span class="line">::大于八位密码</span><br><span class="line"></span><br><span class="line">echo ***********************************************</span><br><span class="line">echo              打开承载网络  1</span><br><span class="line">echo              关闭承载网络  2</span><br><span class="line">echo              承载网络信息  3</span><br><span class="line">echo              设置网络信息  set</span><br><span class="line">echo              退出          e</span><br><span class="line">echo        （网络名字、密码可在源文件中改）</span><br><span class="line">echo           （请以管理员身份打开!!!）</span><br><span class="line">echo ***********************************************</span><br><span class="line">:start</span><br><span class="line">set /p var=请选择:</span><br><span class="line">if %var%==1 netsh wlan start hostednetwork &amp;&amp; echo 网络名字:%mssid% 密码:%mkey% &amp;&amp; GOTO start</span><br><span class="line">if %var%==2 netsh wlan stop hostednetwork &amp;&amp; GOTO start</span><br><span class="line">if %var%==3 netsh wlan show hostednetwork &amp;&amp; echo 网络名字:%mssid% 密码:%mkey% &amp;&amp; GOTO start</span><br><span class="line">if %var%==set netsh wlan set hostednetwork mode=allow ssid=%mssid% key=%mkey% &amp;&amp; echo 网络名字:%mssid% 密码:%mkey% &amp;&amp; GOTO start</span><br><span class="line">if %var%==e pause</span><br></pre></td></tr></table></figure>
@@ -520,11 +520,6 @@
 
  
   <div class="comments" id="comments">
-    
-       
-         <div onclick="ShowGitment()" id="gitment-display-button">显示 Gitment 评论</div>
-         <div id="gitment-container" style="display:none"></div>
-         
     
   </div>
 
@@ -800,34 +795,29 @@
 
 
 
-   
-   
-   
-   
-   
-    <link rel="stylesheet" href="/public/lib/gitment/default.css">
-    <!-- "/public/lib/gitment/gitment.browser.js"  -->
-        <script src="https://www.wenjunjiang.win/js/gitment.js"></script>
-     
-   
 
-   
-       <script type="text/javascript">
-           function ShowGitment(){
-               document.getElementById("gitment-display-button").style.display = "none";
-               document.getElementById("gitment-container").style.display = "block";
-               var gitment = new Gitment({
-                   id: window.location.pathname,
-                   owner: 'talengu',
-                   repo: 'talengu.github.io',
-                   oauth: {
-                       client_id: '315ada12fed7a0ffb6b7',
-                       client_secret: '5f15e644005fabee93cc7f50d70c78c57dce0e86',
-                   }});
-               gitment.render('gitment-container');
-           }
+
+
+  <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+
+  <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+
+   <script type="text/javascript">
+        var gitalk = new Gitalk({
+          clientID: '315ada12fed7a0ffb6b7',
+          clientSecret: '5f15e644005fabee93cc7f50d70c78c57dce0e86',
+          repo: 'talengu.github.io',
+          owner: 'talengu',
+          admin: ['talengu'],
+          id: location.pathname,
+          labels: ['Gitalk'],
+          perPage: 15,
+          pagerDirection: 'last',
+          createIssueManually: true,
+          distractionFreeMode: false
+        })
+        gitalk.render('gitalk-container')           
        </script>
-   
 
 
  

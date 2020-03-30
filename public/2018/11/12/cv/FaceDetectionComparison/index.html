@@ -454,7 +454,7 @@
       
 
       
-        <p><strong>前言</strong><br>
+        <p><strong>前言</strong>
 本文为翻译文章。原文地址 <a href="https://www.learnopencv.com/face-detection-opencv-dlib-and-deep-learning-c-python/" target="_blank" rel="noopener">https://www.learnopencv.com/face-detection-opencv-dlib-and-deep-learning-c-python/</a></p>
 <p>在这篇文章中，作者讨论使用了OpenCV或Dlib的多种人脸检测的代码，并给出性能分析。作者使用的 Face Detector 包括以下四个，后面分别给出 c++ 和 python 实现。</p>
 <ol>
@@ -541,7 +541,7 @@
 <h3 id="缺点-2"><a class="header-anchor" href="#缺点-2">¶</a>缺点</h3>
 <ol>
 <li>主要缺点对小人脸不识别。由于训练在最小 80×80 的数据集上，要确保你的使用环境，不然的话你要自己再训练一下小人脸。</li>
-<li>人脸框经常去掉了人额头一部分，有时脸颊一部分。<br>
+<li>人脸框经常去掉了人额头一部分，有时脸颊一部分。
 （part of forehead and even part of chin sometimes）</li>
 <li>在明显的遮挡情况下效果不好</li>
 <li>在测量和极端不正面的脸情况不工作，像向上看，和向下看的情况。</li>
@@ -574,16 +574,16 @@
 <p>作者评估这四个模型使用的是 FDDB 数据库，其中评估OpenCV-DNN 脚本为 <a href="https://github.com/opencv/opencv/blob/master/modules/dnn/misc/face_detector_accuracy.py" target="_blank" rel="noopener">OpenCV face_detector_accuracy.py</a>.</p>
 <p>作者发现奇怪的结果。Dlib 的结果比 Haar OpenCV还要低，然而实际从图片上效果比较好。下图是这四个方法的精度得分（ Precision scores）。</p>
 <p><img src="https://www.learnopencv.com/wp-content/uploads/2018/10/face-detection-coco-comparison.jpg" alt></p>
-<p>指标说明（Metric）：<br>
-AP_50 = Precision when overlap between Ground Truth and predicted bounding box is at least 50% (IoU = 50%)<br>
-AP_75 = Precision when overlap between Ground Truth and predicted bounding box is at least 75% (IoU = 75%)<br>
-AP_Small = Average Precision for small size faces (Average of IoU = 50% to 95%)<br>
-AP_medium = Average Precision for medium size faces (Average of IoU = 50% to 95%)<br>
-AP_Large = Average Precision for large size faces (Average of IoU = 50% to 95%)<br>
+<p>指标说明（Metric）：
+AP_50 = Precision when overlap between Ground Truth and predicted bounding box is at least 50% (IoU = 50%)
+AP_75 = Precision when overlap between Ground Truth and predicted bounding box is at least 75% (IoU = 75%)
+AP_Small = Average Precision for small size faces (Average of IoU = 50% to 95%)
+AP_medium = Average Precision for medium size faces (Average of IoU = 50% to 95%)
+AP_Large = Average Precision for large size faces (Average of IoU = 50% to 95%)
 mAP = Average precision across different IoU (Average of IoU = 50% to 95%)</p>
 <p><strong>作者最近的发现评估过程对 Dlib 不够公平，科学。</strong></p>
 <h3 id="5-1-评估过程出错了，分析的二个原因！"><a class="header-anchor" href="#5-1-评估过程出错了，分析的二个原因！">¶</a>5.1. 评估过程出错了，分析的二个原因！</h3>
-<p>根据我们的分析，Dlib拿到低的精度的原因如下：<br>
+<p>根据我们的分析，Dlib拿到低的精度的原因如下：
 <strong>第一个主要原因是训练dlib的是标准数据库没有加标签（annotations）</strong>。数据库图片是由dlib作者自己切的，因此可以发现同样是人脸检测的框，同OpenCV 中的两个方法 OpenCV-Haar 或者 OpenCV-DNN 相比，dlib的方法会裁掉额头一部分或者脸颊一部分（forehead chin）。下面的图中可以看到。</p>
 <p><img src="https://www.learnopencv.com/wp-content/uploads/2018/10/fd-acc-result1-e1539872861105.jpg" alt></p>
 <p><img src="https://www.learnopencv.com/wp-content/uploads/2018/10/fd-acc-result2-e1539872827875.jpg" alt></p>
@@ -596,10 +596,10 @@ mAP = Average precision across different IoU (Average of IoU = 50% to 95%)</p>
 <p>我们使用 300x300 图像做的对比实验。Dlib 的 MMOD 模型可以利用上GPU，但是OpenCV方法对 NVIDIA GPUs 支持还没有。所以我们评估对比这些方法在CPU上，但我们也给出 GPU 版本 MMOD 结果。</p>
 <p>(这段话以后写论文的时候可以用到，保留:cat:) We used a 300×300 image for the comparison of the methods. The MMOD detector can be run on a GPU, but the support for NVIDIA GPUs in OpenCV is still not there. So, we evaluate the methods on CPU only and also report result for MMOD on GPU as well as CPU.</p>
 <h3 id="硬件的配置"><a class="header-anchor" href="#硬件的配置">¶</a>硬件的配置</h3>
-<p>Processor : Intel Core i7 6850K – 6 Core<br>
-RAM : 32 GB<br>
-GPU : NVIDIA GTX 1080 Ti with 11 GB RAM<br>
-OS : Linux 16.04 LTS<br>
+<p>Processor : Intel Core i7 6850K – 6 Core
+RAM : 32 GB
+GPU : NVIDIA GTX 1080 Ti with 11 GB RAM
+OS : Linux 16.04 LTS
 Programming Language : Python</p>
 <p>我们跑了10次，每次对图片进行10000趟测试得总时间，然后对这10次取平均。下面的柱状图是结果。We run each method 10000 times on the given image and take 10 such iterations and average the time taken. Given below are the results.</p>
 <p><img src="https://www.learnopencv.com/wp-content/uploads/2018/10/face-detection-speed-comparison.jpg" alt></p>
@@ -648,14 +648,14 @@ Programming Language : Python</p>
 <p>High resolution images</p>
 <p>对于这些方法来说，高分辨图像都有点难度，计算时间比较长。可能采用的方法是resize图像 （ scale down the image），HoG / MMOD方法可能就识别不出了，但是可以使用 OpenCV-DNN 尝试一下。我认为也可以将图片分割开再识别呀，嘻嘻。</p>
 <p>Since feeding high resolution images is not possible to these algorithms (for computation speed), HoG / MMOD detectors might fail when you scale down the image. On the other hand, OpenCV-DNN method can be used for these since it detects small faces.</p>
-<p>有任何建议，欢迎在下面评论。<br>
+<p>有任何建议，欢迎在下面评论。
 Have any other suggestions? Please mention in the comments and we’ll update the post with them!</p>
 <h2 id="参考"><a class="header-anchor" href="#参考">¶</a>参考</h2>
-<p><a href="https://github.com/opencv/opencv/blob/master/modules/dnn/misc/face_detector_accuracy.py" target="_blank" rel="noopener">[FDDB Comparison code]</a><br>
-<a href="http://blog.dlib.net/2016/10/easily-create-high-quality-object.html" target="_blank" rel="noopener">[Dlib Blog]</a><br>
-<a href="http://dlib.net/cnn_face_detector.py.html" target="_blank" rel="noopener">[dlib mmod python example]</a><br>
-<a href="http://dlib.net/dnn_mmod_face_detection_ex.cpp.html" target="_blank" rel="noopener">[dlib mmod cpp example]</a><br>
-<a href="https://github.com/opencv/opencv/tree/master/samples/dnn/face_detector" target="_blank" rel="noopener">[OpenCV DNN Face detector]</a><br>
+<p><a href="https://github.com/opencv/opencv/blob/master/modules/dnn/misc/face_detector_accuracy.py" target="_blank" rel="noopener">[FDDB Comparison code]</a>
+<a href="http://blog.dlib.net/2016/10/easily-create-high-quality-object.html" target="_blank" rel="noopener">[Dlib Blog]</a>
+<a href="http://dlib.net/cnn_face_detector.py.html" target="_blank" rel="noopener">[dlib mmod python example]</a>
+<a href="http://dlib.net/dnn_mmod_face_detection_ex.cpp.html" target="_blank" rel="noopener">[dlib mmod cpp example]</a>
+<a href="https://github.com/opencv/opencv/tree/master/samples/dnn/face_detector" target="_blank" rel="noopener">[OpenCV DNN Face detector]</a>
 <a href="https://docs.opencv.org/3.4/d7/d8b/tutorial_py_face_detection.html" target="_blank" rel="noopener">[Haar Based Face Detector]</a></p>
 <h2 id="TODOS"><a class="header-anchor" href="#TODOS">¶</a>TODOS</h2>
 <p>文章作者是 <a href="https://www.learnopencv.com/author/vikas/" target="_blank" rel="noopener">VIKAS GUPTA</a></p>
@@ -789,11 +789,6 @@ Have any other suggestions? Please mention in the comments and we’ll update th
 
  
   <div class="comments" id="comments">
-    
-       
-         <div onclick="ShowGitment()" id="gitment-display-button">显示 Gitment 评论</div>
-         <div id="gitment-container" style="display:none"></div>
-         
     
   </div>
 
@@ -1094,34 +1089,29 @@ Have any other suggestions? Please mention in the comments and we’ll update th
 
 
 
-   
-   
-   
-   
-   
-    <link rel="stylesheet" href="/public/lib/gitment/default.css">
-    <!-- "/public/lib/gitment/gitment.browser.js"  -->
-        <script src="https://www.wenjunjiang.win/js/gitment.js"></script>
-     
-   
 
-   
-       <script type="text/javascript">
-           function ShowGitment(){
-               document.getElementById("gitment-display-button").style.display = "none";
-               document.getElementById("gitment-container").style.display = "block";
-               var gitment = new Gitment({
-                   id: window.location.pathname,
-                   owner: 'talengu',
-                   repo: 'talengu.github.io',
-                   oauth: {
-                       client_id: '315ada12fed7a0ffb6b7',
-                       client_secret: '5f15e644005fabee93cc7f50d70c78c57dce0e86',
-                   }});
-               gitment.render('gitment-container');
-           }
+
+
+  <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+
+  <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+
+   <script type="text/javascript">
+        var gitalk = new Gitalk({
+          clientID: '315ada12fed7a0ffb6b7',
+          clientSecret: '5f15e644005fabee93cc7f50d70c78c57dce0e86',
+          repo: 'talengu.github.io',
+          owner: 'talengu',
+          admin: ['talengu'],
+          id: location.pathname,
+          labels: ['Gitalk'],
+          perPage: 15,
+          pagerDirection: 'last',
+          createIssueManually: true,
+          distractionFreeMode: false
+        })
+        gitalk.render('gitalk-container')           
        </script>
-   
 
 
  

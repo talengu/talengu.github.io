@@ -437,7 +437,7 @@
 <p>对我博客的寄语。希望利用博客建立个人有效的知识体系，锻炼写文章的水平，留下生活中有趣的事物，同时传递出有趣的想法，有效的和各位大牛交流相关领域的经验，在互联网村里共同成长与进步。</p>
 <p>人是一棵会思考的芦苇，并有一个有趣的灵魂。</p>
 <p>不忘初心，活波严谨。</p>
-<p><strong>感谢</strong><br>
+<p><strong>感谢</strong>
 The Internet And The World.</p>
 <p><strong>联系方式</strong></p>
 <ul>
@@ -454,7 +454,7 @@ The Internet And The World.</p>
 </ul>
 <p><strong>TODOS</strong></p>
 <p>Keep It Simple Stupid.</p>
-<p>Standing on Shoulders of Giants.<br>
+<p>Standing on Shoulders of Giants.
 Thank you !!!</p>
 
       
@@ -534,11 +534,6 @@ Thank you !!!</p>
 
  
   <div class="comments" id="comments">
-    
-       
-         <div onclick="ShowGitment()" id="gitment-display-button">显示 Gitment 评论</div>
-         <div id="gitment-container" style="display:none"></div>
-         
     
   </div>
 
@@ -814,34 +809,29 @@ Thank you !!!</p>
 
 
 
-   
-   
-   
-   
-   
-    <link rel="stylesheet" href="/public/lib/gitment/default.css">
-    <!-- "/public/lib/gitment/gitment.browser.js"  -->
-        <script src="https://www.wenjunjiang.win/js/gitment.js"></script>
-     
-   
 
-   
-       <script type="text/javascript">
-           function ShowGitment(){
-               document.getElementById("gitment-display-button").style.display = "none";
-               document.getElementById("gitment-container").style.display = "block";
-               var gitment = new Gitment({
-                   id: window.location.pathname,
-                   owner: 'talengu',
-                   repo: 'talengu.github.io',
-                   oauth: {
-                       client_id: '315ada12fed7a0ffb6b7',
-                       client_secret: '5f15e644005fabee93cc7f50d70c78c57dce0e86',
-                   }});
-               gitment.render('gitment-container');
-           }
+
+
+  <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+
+  <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+
+   <script type="text/javascript">
+        var gitalk = new Gitalk({
+          clientID: '315ada12fed7a0ffb6b7',
+          clientSecret: '5f15e644005fabee93cc7f50d70c78c57dce0e86',
+          repo: 'talengu.github.io',
+          owner: 'talengu',
+          admin: ['talengu'],
+          id: location.pathname,
+          labels: ['Gitalk'],
+          perPage: 15,
+          pagerDirection: 'last',
+          createIssueManually: true,
+          distractionFreeMode: false
+        })
+        gitalk.render('gitalk-container')           
        </script>
-   
 
 
  

@@ -427,7 +427,7 @@
 
       
         <p><strong>前言</strong></p>
-<p>本文整理了一下我在使用ubuntu过程中的一些小技巧。<br>
+<p>本文整理了一下我在使用ubuntu过程中的一些小技巧。
 推荐一个好的Ubuntu教程.<a href="http://www.cnblogs.com/dutlei/archive/2012/11/20/2778327.html" target="_blank" rel="noopener">原文链接</a></p>
 <p>Linux有很多分支，Ubuntu的使用安装比较方便.Ubuntu 16.04 LTS</p>
 <a id="more"></a>
@@ -435,7 +435,7 @@
 <h3 id="窗口颜色设置浅绿色"><a class="header-anchor" href="#窗口颜色设置浅绿色">¶</a>窗口颜色设置浅绿色</h3>
 <p>窗口编程浅绿色  <a href="http://jingyan.baidu.com/article/ff42efa9195eb8c19e2202ec.html" target="_blank" rel="noopener">link</a></p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd /usr/share/themes/Ambiance/gtk-3.0</span><br><span class="line">sudo gedit gtk-main.css</span><br></pre></td></tr></table></figure>
-<p>编辑该文件,将base_color <code>#ffffff</code>修改成 <code>#CCE8CF</code><br>
+<p>编辑该文件,将base_color <code>#ffffff</code>修改成 <code>#CCE8CF</code>
 对应RGB  48,19,36</p>
 <h2 id="2-常用环境"><a class="header-anchor" href="#2-常用环境">¶</a>2  常用环境</h2>
 <h3 id="安装jdk"><a class="header-anchor" href="#安装jdk">¶</a>安装jdk</h3>
@@ -459,7 +459,7 @@
 <p>高分屏字体大小，Settings-&gt;Themes-&gt;your stylesheet</p>
 <figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">atom-pane</span> &#123;</span><br><span class="line">     <span class="attribute">font-size</span>: <span class="number">16px</span>;</span><br><span class="line"> &#125;</span><br><span class="line"> <span class="selector-class">.command-palette</span> &#123;</span><br><span class="line">    <span class="attribute">font-size</span>: <span class="number">16px</span>;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
 <h3 id="图标设置"><a class="header-anchor" href="#图标设置">¶</a>图标设置</h3>
-<p>对于一些绿化软件来说没有图标，我们可以手动创建一个图标。<br>
+<p>对于一些绿化软件来说没有图标，我们可以手动创建一个图标。
 在/usr/share/applications目录下创建eclipse启动器配置文件</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd /usr/share/applications</span><br><span class="line">vim eclipse.desktop</span><br></pre></td></tr></table></figure>
 <p>编辑eclipse.desktop并保存。简单的配置示例：</p>
@@ -468,9 +468,9 @@
 <h3 id="关闭错误报告"><a class="header-anchor" href="#关闭错误报告">¶</a>关闭错误报告</h3>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 关闭烦人的错误报告</span></span><br><span class="line">sudo gedit /etc/default/apport</span><br></pre></td></tr></table></figure>
 <h3 id="CPU-100-占用"><a class="header-anchor" href="#CPU-100-占用">¶</a>CPU 100%占用</h3>
-<p>gvfsd-smb-browse CPU 100%占用<br>
-我没有修改，它就自己停了，可以在mointer里中止这个进程<br>
-地址<br>
+<p>gvfsd-smb-browse CPU 100%占用
+我没有修改，它就自己停了，可以在mointer里中止这个进程
+地址
 <a href="http://tieba.baidu.com/p/4505730863" target="_blank" rel="noopener">http://tieba.baidu.com/p/4505730863</a></p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cd /usr/lib/gvfs</span><br><span class="line"><span class="meta">#</span><span class="bash"> 将gvfsd-smb-brows权限改成744，取消普通用户的执行权限，</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 也挺有意思，暂时没引发别的问题</span></span><br></pre></td></tr></table></figure>
 
@@ -555,11 +555,6 @@
 
  
   <div class="comments" id="comments">
-    
-       
-         <div onclick="ShowGitment()" id="gitment-display-button">显示 Gitment 评论</div>
-         <div id="gitment-container" style="display:none"></div>
-         
     
   </div>
 
@@ -860,34 +855,29 @@
 
 
 
-   
-   
-   
-   
-   
-    <link rel="stylesheet" href="/public/lib/gitment/default.css">
-    <!-- "/public/lib/gitment/gitment.browser.js"  -->
-        <script src="https://www.wenjunjiang.win/js/gitment.js"></script>
-     
-   
 
-   
-       <script type="text/javascript">
-           function ShowGitment(){
-               document.getElementById("gitment-display-button").style.display = "none";
-               document.getElementById("gitment-container").style.display = "block";
-               var gitment = new Gitment({
-                   id: window.location.pathname,
-                   owner: 'talengu',
-                   repo: 'talengu.github.io',
-                   oauth: {
-                       client_id: '315ada12fed7a0ffb6b7',
-                       client_secret: '5f15e644005fabee93cc7f50d70c78c57dce0e86',
-                   }});
-               gitment.render('gitment-container');
-           }
+
+
+  <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+
+  <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+
+   <script type="text/javascript">
+        var gitalk = new Gitalk({
+          clientID: '315ada12fed7a0ffb6b7',
+          clientSecret: '5f15e644005fabee93cc7f50d70c78c57dce0e86',
+          repo: 'talengu.github.io',
+          owner: 'talengu',
+          admin: ['talengu'],
+          id: location.pathname,
+          labels: ['Gitalk'],
+          perPage: 15,
+          pagerDirection: 'last',
+          createIssueManually: true,
+          distractionFreeMode: false
+        })
+        gitalk.render('gitalk-container')           
        </script>
-   
 
 
  
