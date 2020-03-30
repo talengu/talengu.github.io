@@ -428,7 +428,7 @@
       
 
       
-        <p><strong>前言</strong><br>
+        <p><strong>前言</strong>
 最近要下载一个在youtube上的数据库，用来训练神经网络。走国内通道下载比较慢。于是，我使用了vps代理方式下载，速度取决于你的机器连接vps的网速。本文的主要内容有，实现shadowsocks 代理 ，tsocks 代理工具使用，可组合使用的一些下载工具如wget 和axel等。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 举个栗子</span></span><br><span class="line">$ tsocks wget -c https://www.dropbox.com/s/minpyv59crdifk9/datasets.zip</span><br></pre></td></tr></table></figure>
 <p>嗯嗯，这个速度还不错！</p>
@@ -468,7 +468,7 @@
 <ul>
 <li>执行<code>sslocal -c client_shadowsocks.json</code>。</li>
 </ul>
-<p>说一点：推荐使用screen方式放在后台。当然也可以使用-d 参数放在后台运行。<br>
+<p>说一点：推荐使用screen方式放在后台。当然也可以使用-d 参数放在后台运行。
 <code>sslocal -c client_shadowsocks.json -d start</code></p>
 <h2 id="2-tsocks"><a class="header-anchor" href="#2-tsocks">¶</a>2 tsocks</h2>
 <p>有些linux工具可能没有proxy的代理功能，或者不支持sock5代理，而用tsocks可以很好的解决这些问题。<strong>tsocks</strong> 是个终端代理工具，可以直接连接shadowsocks提供socks 5代理端口，有点类似于proxychains。</p>
@@ -486,7 +486,7 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">local = 192.168.1.0/255.255.255.0</span><br><span class="line">server = 127.0.0.1</span><br><span class="line">server_type = 5</span><br><span class="line">server_port = 1080</span><br></pre></td></tr></table></figure>
 <h2 id="3-Demo：代理使用"><a class="header-anchor" href="#3-Demo：代理使用">¶</a>3 Demo：代理使用</h2>
 <h3 id="3-1-使用-tsocks"><a class="header-anchor" href="#3-1-使用-tsocks">¶</a>3.1 使用 tsocks</h3>
-<p>在所需代理的命令前加个tsocks就行，如：<br>
+<p>在所需代理的命令前加个tsocks就行，如：
 <code>tsocks wget -c xxxx</code>,<code>tsocks axel -n 10 -av xxxx</code>,<code>tsocks curl xxx</code></p>
 <h3 id="3-2-使用-youtube-dl"><a class="header-anchor" href="#3-2-使用-youtube-dl">¶</a>3.2 使用 youtube-dl</h3>
 <p>youtube-dl是批量下载youtube视频的好工具。youtube-dl 可以指定 proxy，<strong>可以不使用tsocks</strong>。</p>
@@ -507,7 +507,7 @@
   <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">youtube-dl -x --audio-format mp3 https://www.youtube.com/watch?v=xpVfcZ0ZcFM</span><br></pre></td></tr></table></figure>
 </li>
 </ul>
-<p><strong>youtube-dl 中待解决的问题？</strong><br>
+<p><strong>youtube-dl 中待解决的问题？</strong>
 想只下载一个视频中的一部分，不用下载整个视频，太费vps流量了。暂未找到解决办法，我找到的一个跟问题很相似的issue，有朋友会整的，望告诉一下。<a href="https://github.com/rg3/youtube-dl/issues/4821" target="_blank" rel="noopener">is it possible to download only desired time interval?</a></p>
 <h3 id="3-3-使用-axel"><a class="header-anchor" href="#3-3-使用-axel">¶</a>3.3 使用 axel</h3>
 <p>axel多线程下载。</p>
@@ -616,11 +616,6 @@
 
  
   <div class="comments" id="comments">
-    
-       
-         <div onclick="ShowGitment()" id="gitment-display-button">显示 Gitment 评论</div>
-         <div id="gitment-container" style="display:none"></div>
-         
     
   </div>
 
@@ -921,34 +916,29 @@
 
 
 
-   
-   
-   
-   
-   
-    <link rel="stylesheet" href="/public/lib/gitment/default.css">
-    <!-- "/public/lib/gitment/gitment.browser.js"  -->
-        <script src="https://www.wenjunjiang.win/js/gitment.js"></script>
-     
-   
 
-   
-       <script type="text/javascript">
-           function ShowGitment(){
-               document.getElementById("gitment-display-button").style.display = "none";
-               document.getElementById("gitment-container").style.display = "block";
-               var gitment = new Gitment({
-                   id: window.location.pathname,
-                   owner: 'talengu',
-                   repo: 'talengu.github.io',
-                   oauth: {
-                       client_id: '315ada12fed7a0ffb6b7',
-                       client_secret: '5f15e644005fabee93cc7f50d70c78c57dce0e86',
-                   }});
-               gitment.render('gitment-container');
-           }
+
+
+  <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+
+  <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+
+   <script type="text/javascript">
+        var gitalk = new Gitalk({
+          clientID: '315ada12fed7a0ffb6b7',
+          clientSecret: '5f15e644005fabee93cc7f50d70c78c57dce0e86',
+          repo: 'talengu.github.io',
+          owner: 'talengu',
+          admin: ['talengu'],
+          id: location.pathname,
+          labels: ['Gitalk'],
+          perPage: 15,
+          pagerDirection: 'last',
+          createIssueManually: true,
+          distractionFreeMode: false
+        })
+        gitalk.render('gitalk-container')           
        </script>
-   
 
 
  

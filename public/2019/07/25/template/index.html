@@ -491,10 +491,10 @@
 <p>从表1中得出，2018年年末城镇人口占总人口的59.58%，乡村人口占总人口的40.42%，城镇人口大比例超过乡村人口。</p>
 <h3 id="2-3-公式"><a class="header-anchor" href="#2-3-公式">¶</a>2.3 公式</h3>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$$</span><br><span class="line">f=w_1 x_1 + w_2 x_2</span><br><span class="line">\tag&#123;1&#125;</span><br><span class="line">$$</span><br></pre></td></tr></table></figure>
-<p>数学Tex代码渲染成下面的公式，见公式（1）。公式可以在网站<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup> 进行可视化编写。<br>
-$$<br>
-f=w_1 x_1 + w_2 x_2<br>
-\tag{1}<br>
+<p>数学Tex代码渲染成下面的公式，见公式（1）。公式可以在网站<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup> 进行可视化编写。
+$$
+f=w_1 x_1 + w_2 x_2
+\tag{1}
 $$</p>
 <h4 id="定理证明"><a class="header-anchor" href="#定理证明">¶</a>定理证明</h4>
 <p><strong>定理 3.1</strong> 如果时域混合场积分方程是时域电场积分方程与时域磁场积分方程的线性组合……</p>
@@ -646,11 +646,6 @@ $$</p>
 
  
   <div class="comments" id="comments">
-    
-       
-         <div onclick="ShowGitment()" id="gitment-display-button">显示 Gitment 评论</div>
-         <div id="gitment-container" style="display:none"></div>
-         
     
   </div>
 
@@ -951,34 +946,29 @@ $$</p>
 
 
 
-   
-   
-   
-   
-   
-    <link rel="stylesheet" href="/public/lib/gitment/default.css">
-    <!-- "/public/lib/gitment/gitment.browser.js"  -->
-        <script src="https://www.wenjunjiang.win/js/gitment.js"></script>
-     
-   
 
-   
-       <script type="text/javascript">
-           function ShowGitment(){
-               document.getElementById("gitment-display-button").style.display = "none";
-               document.getElementById("gitment-container").style.display = "block";
-               var gitment = new Gitment({
-                   id: window.location.pathname,
-                   owner: 'talengu',
-                   repo: 'talengu.github.io',
-                   oauth: {
-                       client_id: '315ada12fed7a0ffb6b7',
-                       client_secret: '5f15e644005fabee93cc7f50d70c78c57dce0e86',
-                   }});
-               gitment.render('gitment-container');
-           }
+
+
+  <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+
+  <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+
+   <script type="text/javascript">
+        var gitalk = new Gitalk({
+          clientID: '315ada12fed7a0ffb6b7',
+          clientSecret: '5f15e644005fabee93cc7f50d70c78c57dce0e86',
+          repo: 'talengu.github.io',
+          owner: 'talengu',
+          admin: ['talengu'],
+          id: location.pathname,
+          labels: ['Gitalk'],
+          perPage: 15,
+          pagerDirection: 'last',
+          createIssueManually: true,
+          distractionFreeMode: false
+        })
+        gitalk.render('gitalk-container')           
        </script>
-   
 
 
  

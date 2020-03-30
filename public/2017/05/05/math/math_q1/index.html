@@ -429,7 +429,7 @@
       
 
       
-        <p><strong>前言</strong><br>
+        <p><strong>前言</strong>
 偶然看到的一个问题，如图1，为什么正好经过这个空隙？我们用空间解析几何来解一下吧。</p>
 <p><img src="/public/2017/05/05/math/math_q1/math_q1_show.gif" alt="动图"></p>
 <div align="center"> 图1 为什么会经过这个空隙？</div>
@@ -441,59 +441,59 @@
 <p>设 $OQ=q$  ， $QP=r$  。$Q$ 点坐标为 $(0, 0, q)$  。</p>
 <p>设水平杆  $QP$  绕  $z$   轴以  $\omega, rad/s$  的角速度旋转，并设从开始旋转到现在的时长为 $t$  秒， 则  $P$  点坐标为 $(r\cos{\omega t}, r\sin{\omega t}, q)$  。</p>
 <p>由 $Q$、$P$ 两点坐标得：</p>
-<p>$$<br>
-\overrightarrow{OQ}=(0, 0, q) \qquad \overrightarrow{QP}=(r\cos{\omega t}, r\sin{\omega t}, 0) \tag{1}<br>
+<p>$$
+\overrightarrow{OQ}=(0, 0, q) \qquad \overrightarrow{QP}=(r\cos{\omega t}, r\sin{\omega t}, 0) \tag{1}
 $$</p>
-<p>设 $L$ 的方向向量 $\overrightarrow{S}=(a, b, c) $，由 $L$ 的方向向量 $\overrightarrow{S}$ 和 $P$ 点得，得斜杆  $L$  代表的直线方程：<br>
-$$<br>
-\frac{x-r\cos{\omega t}}{a}=\frac{y-r\sin{\omega t}}{b}=\frac{z-q}{c} \tag{2}<br>
+<p>设 $L$ 的方向向量 $\overrightarrow{S}=(a, b, c) $，由 $L$ 的方向向量 $\overrightarrow{S}$ 和 $P$ 点得，得斜杆  $L$  代表的直线方程：
+$$
+\frac{x-r\cos{\omega t}}{a}=\frac{y-r\sin{\omega t}}{b}=\frac{z-q}{c} \tag{2}
 $$</p>
-<p>我们知道 $\overrightarrow{QP}$ 与斜杆 $L$ 垂直，假设 $\overrightarrow{OQ}$ 与斜杆 $L$ 成固定角 $ \theta$ ，得：<br>
-$$<br>
-\begin{cases} 0=\overrightarrow{QP} \cdot \overrightarrow{S} \ \cos{\theta}=\frac{\overrightarrow{OQ} \cdot \overrightarrow{S}}{\left|\overrightarrow{OQ}\right| \left| \overrightarrow{S}\right|} \end{cases} \tag{3}<br>
+<p>我们知道 $\overrightarrow{QP}$ 与斜杆 $L$ 垂直，假设 $\overrightarrow{OQ}$ 与斜杆 $L$ 成固定角 $ \theta$ ，得：
+$$
+\begin{cases} 0=\overrightarrow{QP} \cdot \overrightarrow{S} \ \cos{\theta}=\frac{\overrightarrow{OQ} \cdot \overrightarrow{S}}{\left|\overrightarrow{OQ}\right| \left| \overrightarrow{S}\right|} \end{cases} \tag{3}
 $$</p>
-<p>把 $\overrightarrow{QP}$， $\overrightarrow{S}$， $\overrightarrow{OQ}$ 代入 式(3)，得<br>
-$$<br>
-\begin{cases}  \frac{a}{b}=\frac{-\sin{\omega t}}{\cos{\omega t}} \ c<sup>{2}(\tan{\theta})</sup>{2}=a<sup>{2}+b</sup>{2}  \end{cases} \tag{4}<br>
+<p>把 $\overrightarrow{QP}$， $\overrightarrow{S}$， $\overrightarrow{OQ}$ 代入 式(3)，得
+$$
+\begin{cases}  \frac{a}{b}=\frac{-\sin{\omega t}}{\cos{\omega t}} \ c^{2}(\tan{\theta})^{2}=a^{2}+b^{2}  \end{cases} \tag{4}
 $$</p>
-<p>式（4）中第2条等式两边除以 $b^2$ ，再化简得：<br>
-$$<br>
-\frac{c<sup>{2}}{b</sup>{2}}=\frac{1}{(\tan{\theta})^{2}(\cos{\omega t})^{2}} \tag{5}<br>
+<p>式（4）中第2条等式两边除以 $b^2$ ，再化简得：
+$$
+\frac{c^{2}}{b^{2}}=\frac{1}{(\tan{\theta})^{2}(\cos{\omega t})^{2}} \tag{5}
 $$</p>
-<p>求直线组 $L$ 与 $xoz$ 平面相交的图形，即回答这个缝隙的形状为什么是图1 中这样的曲线。我们令 $y=0$ ，代入直线公式(2) 得：<br>
-$$<br>
-\frac{x-r\cos{\omega t}}{a}=\frac{-r\sin{\omega t}}{b} =\frac{z-q}{c} \tag{6}<br>
-$$<br>
-由式（4）（5）（6）得到方程组（7）。<br>
-$$<br>
-\begin{cases} \frac{a}{b}=\frac{-\sin{\omega t}}{\cos{\omega t}}\  \frac{x-r\cos{\omega t}}{a}=\frac{-r\sin{\omega t}}{b} \  \frac{c<sup>2}{b</sup>2}=\frac{1}{(\tan{\theta})^{2}(\cos{\omega t})^{2}}\  \frac{-r\sin{\omega t}}{b} =\frac{z-q}{c}  \end{cases}  \tag{7}<br>
+<p>求直线组 $L$ 与 $xoz$ 平面相交的图形，即回答这个缝隙的形状为什么是图1 中这样的曲线。我们令 $y=0$ ，代入直线公式(2) 得：
+$$
+\frac{x-r\cos{\omega t}}{a}=\frac{-r\sin{\omega t}}{b} =\frac{z-q}{c} \tag{6}
+$$
+由式（4）（5）（6）得到方程组（7）。
+$$
+\begin{cases} \frac{a}{b}=\frac{-\sin{\omega t}}{\cos{\omega t}}\  \frac{x-r\cos{\omega t}}{a}=\frac{-r\sin{\omega t}}{b} \  \frac{c^2}{b^2}=\frac{1}{(\tan{\theta})^{2}(\cos{\omega t})^{2}}\  \frac{-r\sin{\omega t}}{b} =\frac{z-q}{c}  \end{cases}  \tag{7}
 $$</p>
-<p>由式（7）中上面两个等式，消去a，b得：<br>
-$$<br>
-\frac{-\sin{\omega t}}{\cos{\omega t}}=\frac{x-r\cos{\omega t}}{-r\sin{\omega t}}=\frac{a}{b} \tag{8}<br>
-$$<br>
-$$<br>
-x \cos{\omega t}=r   \tag{9}<br>
+<p>由式（7）中上面两个等式，消去a，b得：
+$$
+\frac{-\sin{\omega t}}{\cos{\omega t}}=\frac{x-r\cos{\omega t}}{-r\sin{\omega t}}=\frac{a}{b} \tag{8}
+$$
+$$
+x \cos{\omega t}=r   \tag{9}
 $$</p>
-<p>由式（7）中下面两个等式，消去b，c得：<br>
-$$<br>
-\frac{1}{(\tan{\theta})^2(\cos{\omega t})^2}<br>
-= \frac{(z-q)^2}{(-r\sin{\omega t})^2}<br>
-=\frac{c<sup>2}{b</sup>2} \tag{10}<br>
+<p>由式（7）中下面两个等式，消去b，c得：
+$$
+\frac{1}{(\tan{\theta})^2(\cos{\omega t})^2}
+= \frac{(z-q)^2}{(-r\sin{\omega t})^2}
+=\frac{c^2}{b^2} \tag{10}
 $$</p>
-<p>$$<br>
-\frac{(-r\sin{\omega t})<sup>2}{(\tan{\theta})</sup>2(\cos{\omega t})^2}<br>
-= {(z-q)}^2 \tag{11}<br>
+<p>$$
+\frac{(-r\sin{\omega t})^2}{(\tan{\theta})^2(\cos{\omega t})^2}
+= {(z-q)}^2 \tag{11}
 $$</p>
-<p>由利用式（9），可消去式（11）中的 $(\sin{\omega t})^{2}$  和 $(\cos{\omega t})^{2}$  得：<br>
-$$<br>
-x<sup>{2}-(\tan{\theta})</sup>{2}(z-q)<sup>{2}=r</sup>{2} \tag{12}<br>
-$$<br>
+<p>由利用式（9），可消去式（11）中的 $(\sin{\omega t})^{2}$  和 $(\cos{\omega t})^{2}$  得：
+$$
+x^{2}-(\tan{\theta})^{2}(z-q)^{2}=r^{2} \tag{12}
+$$
 易知，为双曲线方程，所以在  xoz 平面相交得图形为双曲线。 ■</p>
 <hr>
-<p>欢迎观众老爷们评论回复，一键三连。<br>
-更多有趣问题，欢迎关注投稿 <a href="https://zhuanlan.zhihu.com/shuxuemanyou" target="_blank" rel="noopener">知乎小成 - 数学漫游专栏</a>，<br>
-我们聚焦生活中的数与形的小小问题们。<br>
+<p>欢迎观众老爷们评论回复，一键三连。
+更多有趣问题，欢迎关注投稿 <a href="https://zhuanlan.zhihu.com/shuxuemanyou" target="_blank" rel="noopener">知乎小成 - 数学漫游专栏</a>，
+我们聚焦生活中的数与形的小小问题们。
 转载请注明出处，谢谢！</p>
 
       
@@ -600,11 +600,6 @@ $$<br>
 
  
   <div class="comments" id="comments">
-    
-       
-         <div onclick="ShowGitment()" id="gitment-display-button">显示 Gitment 评论</div>
-         <div id="gitment-container" style="display:none"></div>
-         
     
   </div>
 
@@ -880,34 +875,29 @@ $$<br>
 
 
 
-   
-   
-   
-   
-   
-    <link rel="stylesheet" href="/public/lib/gitment/default.css">
-    <!-- "/public/lib/gitment/gitment.browser.js"  -->
-        <script src="https://www.wenjunjiang.win/js/gitment.js"></script>
-     
-   
 
-   
-       <script type="text/javascript">
-           function ShowGitment(){
-               document.getElementById("gitment-display-button").style.display = "none";
-               document.getElementById("gitment-container").style.display = "block";
-               var gitment = new Gitment({
-                   id: window.location.pathname,
-                   owner: 'talengu',
-                   repo: 'talengu.github.io',
-                   oauth: {
-                       client_id: '315ada12fed7a0ffb6b7',
-                       client_secret: '5f15e644005fabee93cc7f50d70c78c57dce0e86',
-                   }});
-               gitment.render('gitment-container');
-           }
+
+
+  <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+
+  <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+
+   <script type="text/javascript">
+        var gitalk = new Gitalk({
+          clientID: '315ada12fed7a0ffb6b7',
+          clientSecret: '5f15e644005fabee93cc7f50d70c78c57dce0e86',
+          repo: 'talengu.github.io',
+          owner: 'talengu',
+          admin: ['talengu'],
+          id: location.pathname,
+          labels: ['Gitalk'],
+          perPage: 15,
+          pagerDirection: 'last',
+          createIssueManually: true,
+          distractionFreeMode: false
+        })
+        gitalk.render('gitalk-container')           
        </script>
-   
 
 
  

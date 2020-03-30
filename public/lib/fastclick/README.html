@@ -6,7 +6,7 @@
 <h2 id="Why-does-the-delay-exist"><a class="header-anchor" href="#Why-does-the-delay-exist">¶</a>Why does the delay exist?</h2>
 <p>According to <a href="https://developers.google.com/mobile/articles/fast_buttons">Google</a>:</p>
 <blockquote>
-<p>…mobile browsers will wait approximately 300ms from the time that you tap the button to fire the click event. The reason for this is that the browser is waiting to see if you are actually performing a double tap.</p>
+<p>...mobile browsers will wait approximately 300ms from the time that you tap the button to fire the click event. The reason for this is that the browser is waiting to see if you are actually performing a double tap.</p>
 </blockquote>
 <h2 id="Compatibility"><a class="header-anchor" href="#Compatibility">¶</a>Compatibility</h2>
 <p>The library has been deployed as part of the <a href="http://app.ft.com/">FT Web App</a> and is tried and tested on the following mobile browsers:</p>
@@ -18,9 +18,9 @@
 <li>Android Browser since Android 2</li>
 <li>PlayBook OS 1 and upwards</li>
 </ul>
-<h2 id="When-it-isn’t-needed"><a class="header-anchor" href="#When-it-isn’t-needed">¶</a>When it isn’t needed</h2>
-<p>FastClick doesn’t attach any listeners on desktop browsers.</p>
-<p>Chrome 32+ on Android with <code>width=device-width</code> in the <a href="https://developer.mozilla.org/en-US/docs/Mobile/Viewport_meta_tag">viewport meta tag</a> doesn’t have a 300ms delay, therefore listeners aren’t attached.</p>
+<h2 id="When-it-isn-t-needed"><a class="header-anchor" href="#When-it-isn-t-needed">¶</a>When it isn't needed</h2>
+<p>FastClick doesn't attach any listeners on desktop browsers.</p>
+<p>Chrome 32+ on Android with <code>width=device-width</code> in the <a href="https://developer.mozilla.org/en-US/docs/Mobile/Viewport_meta_tag">viewport meta tag</a> doesn't have a 300ms delay, therefore listeners aren't attached.</p>
 <pre><code class="language-html">&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;
 </code></pre>
 <p>Same goes for Chrome on Android (all versions) with <code>user-scalable=no</code> in the viewport meta tag. But be aware that <code>user-scalable=no</code> also disables pinch zooming, which may be an accessibility concern.</p>
@@ -37,12 +37,12 @@
 	}, false);
 }
 </code></pre>
-<p>Or, if you’re using jQuery:</p>
+<p>Or, if you're using jQuery:</p>
 <pre><code class="language-js">$(function() {
 	FastClick.attach(document.body);
 });
 </code></pre>
-<p>If you’re using Browserify or another CommonJS-style module system, the <code>FastClick.attach</code> function will be returned when you call <code>require('fastclick')</code>. As a result, the easiest way to use FastClick with these loaders is as follows:</p>
+<p>If you're using Browserify or another CommonJS-style module system, the <code>FastClick.attach</code> function will be returned when you call <code>require('fastclick')</code>. As a result, the easiest way to use FastClick with these loaders is as follows:</p>
 <pre><code class="language-js">var attachFastClick = require('fastclick');
 attachFastClick(document.body);
 </code></pre>
@@ -59,7 +59,7 @@ FastClick.attach(document.body, options);
 </code></pre>
 <h3 id="Package-managers"><a class="header-anchor" href="#Package-managers">¶</a>Package managers</h3>
 <p>You can install FastClick using <a href="https://github.com/component/component">Component</a>, <a href="https://npmjs.org/package/fastclick">npm</a> or <a href="http://bower.io/">Bower</a>.</p>
-<p>For Ruby, there’s a third-party gem called <a href="http://rubygems.org/gems/fastclick-rails">fastclick-rails</a>. For .NET there’s a <a href="http://nuget.org/packages/FastClick">NuGet package</a>.</p>
+<p>For Ruby, there's a third-party gem called <a href="http://rubygems.org/gems/fastclick-rails">fastclick-rails</a>. For .NET there's a <a href="http://nuget.org/packages/FastClick">NuGet package</a>.</p>
 <h2 id="Advanced"><a class="header-anchor" href="#Advanced">¶</a>Advanced</h2>
 <h3 id="Ignore-certain-elements-with-needsclick"><a class="header-anchor" href="#Ignore-certain-elements-with-needsclick">¶</a>Ignore certain elements with <code>needsclick</code></h3>
 <p>Sometimes you need FastClick to ignore certain elements. You can do this easily by adding the <code>needsclick</code> class.</p>
@@ -69,7 +69,7 @@ FastClick.attach(document.body, options);
 <p>Internally, FastClick uses <code>document.createEvent</code> to fire a synthetic <code>click</code> event as soon as <code>touchend</code> is fired by the browser. It then suppresses the additional <code>click</code> event created by the browser after that. In some cases, the non-synthetic <code>click</code> event created by the browser is required, as described in the <a href="http://ftlabs.github.com/fastclick/examples/focus.html">triggering focus example</a>.</p>
 <p>This is where the <code>needsclick</code> class comes in. Add the class to any element that requires a non-synthetic click.</p>
 <h4 id="Use-case-2-Twitter-Bootstrap-2-2-2-dropdowns"><a class="header-anchor" href="#Use-case-2-Twitter-Bootstrap-2-2-2-dropdowns">¶</a>Use case 2: Twitter Bootstrap 2.2.2 dropdowns</h4>
-<p>Another example of when to use the <code>needsclick</code> class is with dropdowns in Twitter Bootstrap 2.2.2. Bootstrap add its own <code>touchstart</code> listener for dropdowns, so you want to tell FastClick to ignore those. If you don’t, touch devices will automatically close the dropdown as soon as it is clicked, because both FastClick and Bootstrap execute the synthetic click, one opens the dropdown, the second closes it immediately after.</p>
+<p>Another example of when to use the <code>needsclick</code> class is with dropdowns in Twitter Bootstrap 2.2.2. Bootstrap add its own <code>touchstart</code> listener for dropdowns, so you want to tell FastClick to ignore those. If you don't, touch devices will automatically close the dropdown as soon as it is clicked, because both FastClick and Bootstrap execute the synthetic click, one opens the dropdown, the second closes it immediately after.</p>
 <pre><code class="language-html">&lt;a class=&quot;dropdown-toggle needsclick&quot; data-toggle=&quot;dropdown&quot;&gt;Dropdown&lt;/a&gt;
 </code></pre>
 <h2 id="Examples"><a class="header-anchor" href="#Examples">¶</a>Examples</h2>
@@ -80,6 +80,6 @@ FastClick.attach(document.body, options);
 <li><a href="http://ftlabs.github.com/fastclick/examples/input.html">input element</a> which never receives clicks but gets fast focus</li>
 </ul>
 <h2 id="Tests"><a class="header-anchor" href="#Tests">¶</a>Tests</h2>
-<p>There are no automated tests. The files in <code>tests/</code> are manual reduced test cases. We’ve had a think about how best to test these cases, but they tend to be very browser/device specific and sometimes subjective which means it’s not so trivial to test.</p>
+<p>There are no automated tests. The files in <code>tests/</code> are manual reduced test cases. We've had a think about how best to test these cases, but they tend to be very browser/device specific and sometimes subjective which means it's not so trivial to test.</p>
 <h2 id="Credits-and-collaboration"><a class="header-anchor" href="#Credits-and-collaboration">¶</a>Credits and collaboration</h2>
 <p>FastClick is maintained by <a href="http://twitter.com/rowanbeentje">Rowan Beentje</a>, <a href="http://twitter.com/mcaruanagalizia">Matthew Caruana Galizia</a> and <a href="http://twitter.com/andrewsmatt">Matthew Andrews</a> at <a href="http://labs.ft.com">FT Labs</a>. All open source code released by FT Labs is licenced under the MIT licence. We welcome comments, feedback and suggestions.  Please feel free to raise an issue or pull request.</p>

@@ -428,9 +428,9 @@
       
 
       
-        <p><strong>前言</strong><br>
-本文记录修复ubuntu引导，并修改ubuntu盘的大小过程。<br>
-参考：<a href="http://www.cnblogs.com/jloveu/p/Ubuntu-partition-expansion-record.html" target="_blank" rel="noopener">http://www.cnblogs.com/jloveu/p/Ubuntu-partition-expansion-record.html</a><br>
+        <p><strong>前言</strong>
+本文记录修复ubuntu引导，并修改ubuntu盘的大小过程。
+参考：<a href="http://www.cnblogs.com/jloveu/p/Ubuntu-partition-expansion-record.html" target="_blank" rel="noopener">http://www.cnblogs.com/jloveu/p/Ubuntu-partition-expansion-record.html</a>
 工具：Ubuntu 的live U盘，带有gparted分区工具，和grub修复工具</p>
 <a id="more"></a>
 <h2 id="修复启动"><a class="header-anchor" href="#修复启动">¶</a>修复启动</h2>
@@ -451,10 +451,10 @@
 <p><a href="https://mp.weixin.qq.com/s/NDZPPA-0FhqSzRndQOhNEw" target="_blank" rel="noopener">link</a></p>
 <p>本文以 Ubuntu Live CD 修复 Grub 引导为例，已在 /dev/sda3 安装 Fedora。</p>
 <p>首先制作 Ubuntu 启动 USB</p>
-<p>复制代码代码如下：<br>
+<p>复制代码代码如下：
 　　<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">　　sudo dd if=ubuntu-13.10-desktop-amd64.iso of=/dev/sdb </span><br><span class="line">　　#/dev/sdb 为 USB 盘符</span><br></pre></td></tr></table></figure></p>
 <p>1.使用启动 USB 进入 Ubuntu 试用环境</p>
-<p>2.查看硬盘分区状况，获取 Linux 系统安装分区编号<br>
+<p>2.查看硬盘分区状况，获取 Linux 系统安装分区编号
 　　代码如下：</p>
 <p>sudo fdisk -l</p>
 <p>查看输出结果，然后根据文件类型和分区大小来判定 Linux 系统安装在哪块硬盘和安装的分区。我的电脑是在 /dev/sda3 安装了 Fedora。</p>
@@ -570,11 +570,6 @@
 
  
   <div class="comments" id="comments">
-    
-       
-         <div onclick="ShowGitment()" id="gitment-display-button">显示 Gitment 评论</div>
-         <div id="gitment-container" style="display:none"></div>
-         
     
   </div>
 
@@ -875,34 +870,29 @@
 
 
 
-   
-   
-   
-   
-   
-    <link rel="stylesheet" href="/public/lib/gitment/default.css">
-    <!-- "/public/lib/gitment/gitment.browser.js"  -->
-        <script src="https://www.wenjunjiang.win/js/gitment.js"></script>
-     
-   
 
-   
-       <script type="text/javascript">
-           function ShowGitment(){
-               document.getElementById("gitment-display-button").style.display = "none";
-               document.getElementById("gitment-container").style.display = "block";
-               var gitment = new Gitment({
-                   id: window.location.pathname,
-                   owner: 'talengu',
-                   repo: 'talengu.github.io',
-                   oauth: {
-                       client_id: '315ada12fed7a0ffb6b7',
-                       client_secret: '5f15e644005fabee93cc7f50d70c78c57dce0e86',
-                   }});
-               gitment.render('gitment-container');
-           }
+
+
+  <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+
+  <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+
+   <script type="text/javascript">
+        var gitalk = new Gitalk({
+          clientID: '315ada12fed7a0ffb6b7',
+          clientSecret: '5f15e644005fabee93cc7f50d70c78c57dce0e86',
+          repo: 'talengu.github.io',
+          owner: 'talengu',
+          admin: ['talengu'],
+          id: location.pathname,
+          labels: ['Gitalk'],
+          perPage: 15,
+          pagerDirection: 'last',
+          createIssueManually: true,
+          distractionFreeMode: false
+        })
+        gitalk.render('gitalk-container')           
        </script>
-   
 
 
  
