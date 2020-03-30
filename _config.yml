@@ -116,8 +116,8 @@ live2d:
     vHeadPos: 0.618
   display:
     superSample: 2
-    width: 75
-    height: 150
+    width: 150
+    height: 300
     position: right
     hOffset: 0
     vOffset: 0

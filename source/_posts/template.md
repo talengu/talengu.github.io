@@ -7,7 +7,7 @@ categories:
 tags:
   - 博客模版
 comments: true
-copyright: true
+copyright: false
 math: true
 ---
 
