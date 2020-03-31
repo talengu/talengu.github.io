@@ -44,6 +44,18 @@ gulp.task('minify-images', function() {
         {'verbose': true}))
         .pipe(gulp.dest('./public'))
 });
+
+// 压缩图片
+gulp.task('source_minify-images', function() {
+    return gulp.src(['./source/**/*.png','./source/**/*.jpg','./source/**/*.gif'])
+        .pipe(imagemin(
+        [imagemin.gifsicle({interlaced: true}), 
+        imagemin.mozjpeg({quality: 75,'progressive': true}), 
+        imagemin.optipng({'optimizationLevel': 7}), 
+        imagemin.svgo()],
+        {'verbose': true}))
+        .pipe(gulp.dest('./source'))
+});
 // 默认任务
 /*
 gulp.task('default', [
@@ -55,6 +67,8 @@ gulp.task('default', gulp.parallel('minify-html','minify-css','minify-js','minif
  //build the website
 ));
 
+//gulp source 优化 source 文件夹图片
+gulp.task('source', gulp.parallel('source_minify-images'));
 // gulp-htmlclean // 清理html
 // gulp-htmlmin // 压缩html
 // gulp-minify-css // 压缩css
