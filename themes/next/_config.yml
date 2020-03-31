@@ -97,7 +97,8 @@ font:
     # external: true will load this font family from host.
     external: true
     family: Lato
-
+    #family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen,Ubuntu,Cantarell,Fira Sans,Droid Sans,Helvetica Neue,sans-serif
+    #family: Microsoft YaHei,SF Pro Display,Roboto,Noto,Arial,PingFang SC,sans-serif
   # Font settings for Headlines (h1, h2, h3, h4, h5, h6)
   # Fallback to `global` font settings.
   headings:

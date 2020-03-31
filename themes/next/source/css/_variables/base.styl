@@ -91,20 +91,20 @@ $font-weight-bolder       = 700
 
 
 // Font size
-$font-size-base           = 14px
+$font-size-base           = 16px
 $font-size-small          = $font-size-base - 2px
-$font-size-smaller        = $font-size-base - 4px
+$font-size-smaller        = $font-size-base - 2px
 $font-size-large          = $font-size-base + 2px
 $font-size-larger         = $font-size-base + 4px
 
 
 // Headings font size
 $font-size-headings-step    = 2px
-$font-size-headings-base    = 24px
+$font-size-headings-base    = 22px
 $font-size-headings-small   = $font-size-headings-base - $font-size-headings-step
-$font-size-headings-smaller = $font-size-headings-small - $font-size-headings-step
+$font-size-headings-smaller = $font-size-headings-base - $font-size-headings-step
 $font-size-headings-large   = $font-size-headings-base + $font-size-headings-step
-$font-size-headings-larger  = $font-size-headings-large + $font-size-headings-step
+$font-size-headings-larger  = $font-size-headings-base + $font-size-headings-step
 
 // Global line height
 $line-height-base           = 2
@@ -142,7 +142,7 @@ $table-row-hover-bg-color       = $whitesmoke
 // Code & Code Blocks
 // --------------------------------------------------
 $code-font-family               = $font-family-monospace
-$code-font-size                 = 13px
+$code-font-size                 = 14px
 $code-font-size                 = unit(hexo-config('font.codes.size'), px) if hexo-config('font.codes.size') is a 'unit'
 $code-border-radius             = 3px
 $code-foreground                = $black-light
