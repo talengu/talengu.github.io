@@ -41,19 +41,17 @@ Thank you !!!</p>
   <entry>
     <title>博客模版</title>
     <url>/public/2019/07/25/template/</url>
-    <content><![CDATA[<p>文件head，设置标题、日期、分类、标签、评论、版权、是否使用公式，如下。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">---</span><br><span class="line">title: 模版文件</span><br><span class="line">date: 2019-07-25 12:00:00</span><br><span class="line">updated: 2019-07-25 12:00:00</span><br><span class="line">categories:</span><br><span class="line">  - 博客搭建</span><br><span class="line">  - 模版文件</span><br><span class="line">tags:</span><br><span class="line">  - Writing</span><br><span class="line">comments: true</span><br><span class="line">copyright: true</span><br><span class="line">math: true</span><br><span class="line">---</span><br></pre></td></tr></table></figure>
-<p><strong>摘要</strong></p>
-<p>本部分说明文章的写作意图。涉及的背景、主要内容、本文与其他文章关系等。</p>
-<p>本文为Hexo博客模版文件，以Markdown语言书写。</p>
+    <content><![CDATA[<p><strong>前言</strong></p>
+<p>前言主要说明文章的写作意图，概要介绍文中涉及的背景、主要内容、与其他文章关系等。对于长文，这个部分可以写摘要。</p>
+<p>本文为Hexo博客模版文件，以Markdown语言书写。<a href="#%E9%99%84%EF%BC%9Amarkdown%E8%AF%AD%E6%B3%95">模版markdown语法</a></p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">前言一般放到主页，可利用 &lt;!-- more --&gt; 隔断。</span><br></pre></td></tr></table></figure>
 <a id="more"></a>
-<h2 id="1-构思与起草"><a class="header-anchor" href="#1-构思与起草">¶</a>1 构思与起草</h2>
+<h2 id="构思与起草"><a class="header-anchor" href="#构思与起草">¶</a>构思与起草</h2>
 <ul>
 <li>对文章的阅读群体、写作意图和反馈（Audience Intention Response AIR）要有一个清楚的认识。照顾沟通对象的需要、你的意图（信息）以及希望的反馈。</li>
 <li>在思维导图上，放上你需要的关键名词，然后依次在它基础上添加动词，在加上形容词。最后以一定顺序组织你将要阐述的信息。比如重要性排序，对比优势劣势，方案的不同层面，时间上逻辑上的因果性等等。</li>
 </ul>
-<h2 id="2-主体内容"><a class="header-anchor" href="#2-主体内容">¶</a>2 主体内容</h2>
+<h2 id="主体内容"><a class="header-anchor" href="#主体内容">¶</a>主体内容</h2>
 <p>文章的主要内容，包括你对跟进过程或发现成果的描述，以数据、事实证据以及其他的信息支撑主要内容。在你的论说中，你应该把对客观事实的描述和写作者对事情的主管阐述区分开来。</p>
 <p>当你在报告中对一个观点进行陈述的时候，你需要记住以下几点：</p>
 <ul>
@@ -65,61 +63,7 @@ Thank you !!!</p>
 <li>处理好重要的假设关系</li>
 <li>区分说明（具体阐述）和论证（有理有据）</li>
 </ul>
-<p>链接：<a href="https://talengu.github.io/">https://talengu.github.io/</a></p>
-<h3 id="2-1-图"><a class="header-anchor" href="#2-1-图">¶</a>2.1 图</h3>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">![GDP](http://www.stats.gov.cn/tjsj/zxfb/201902/W020190228338754231076_r75.png)</span><br><span class="line">&lt;div align=&apos;center&apos;&gt; &lt;b&gt;图1 2018年国内生产总值及其增速度&lt;/b&gt;&lt;/div&gt;</span><br></pre></td></tr></table></figure>
-<p>这两行代码生成下面的图和标题。</p>
-<p><img src="http://www.stats.gov.cn/tjsj/zxfb/201902/W020190228338754231076_r75.png" alt="GDP"></p>
-<p>图 1 展示的是2014-2018年的GDP和增长速度，来自<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup>。图中数据反应出国内生产总值在2014-2018年度均平稳增长的情况。</p>
-<h3 id="2-2-表"><a class="header-anchor" href="#2-2-表">¶</a>2.2 表</h3>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;div align=&apos;center&apos;&gt; &lt;b&gt;表1 2018年年末人口数及其构成&lt;/b&gt;&lt;/div&gt;</span><br><span class="line"></span><br><span class="line">| 指标       | 年末数（万人） | 比重（%） |</span><br><span class="line">| ---------- | -------------- | --------- |</span><br><span class="line">| 全国总人口 | 139538         | 100.0     |</span><br><span class="line">| 其中：城镇 | 83137          | 59.58     |</span><br><span class="line">| 乡村       | 56401          | 40.42     |</span><br></pre></td></tr></table></figure>
-<p>这两行代码生成下面的表和标题。</p>
-<div align="center"> <b>表1 2018年年末人口数及其构成</b></div>
-<table>
-<thead>
-<tr>
-<th>指标</th>
-<th>年末数（万人）</th>
-<th>比重（%）</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>全国总人口</td>
-<td>139538</td>
-<td>100.0</td>
-</tr>
-<tr>
-<td>城镇</td>
-<td>83137</td>
-<td>59.58</td>
-</tr>
-<tr>
-<td>乡村</td>
-<td>56401</td>
-<td>40.42</td>
-</tr>
-</tbody>
-</table>
-<p>从表1中得出，2018年年末城镇人口占总人口的59.58%，乡村人口占总人口的40.42%，城镇人口大比例超过乡村人口。</p>
-<h3 id="2-3-公式"><a class="header-anchor" href="#2-3-公式">¶</a>2.3 公式</h3>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$$</span><br><span class="line">f=w_1 x_1 + w_2 x_2</span><br><span class="line">\tag&#123;1&#125;</span><br><span class="line">$$</span><br></pre></td></tr></table></figure>
-<p>数学Tex代码渲染成下面的公式，见公式（1）。公式可以在网站<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup> 进行可视化编写。
-$$
-f=w_1 x_1 + w_2 x_2
-\tag{1}
-$$</p>
-<h3 id="2-4-定理证明"><a class="header-anchor" href="#2-4-定理证明">¶</a>2.4 定理证明</h3>
-<p><strong>定理 3.1</strong> 如果时域混合场积分方程是时域电场积分方程与时域磁场积分方程的线性组合……</p>
-<p><strong>证明：</strong></p>
-<p>首先，由于 ……</p>
-<p>……</p>
-<p>根据 ……，结论得证。                        ■</p>
-<h3 id="2-5-添加iframes"><a class="header-anchor" href="#2-5-添加iframes">¶</a>2.5 添加iframes</h3>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!-- &#123;&#125;替换为视频id，同时去掉&#123;&#125; --&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- 小破站 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">iframe</span> <span class="attr">src</span>=<span class="string">"https://player.bilibili.com/player.html?bvid=&#123;&#125;"</span> <span class="attr">width</span>=<span class="string">"640"</span> <span class="attr">height</span>=<span class="string">"430"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">iframe</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- 腾讯视频 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">iframe</span> <span class="attr">src</span>=<span class="string">"http://v.qq.com/iframe/player.html?vid=&#123;&#125;"</span> <span class="attr">width</span>=<span class="string">"640"</span> <span class="attr">height</span>=<span class="string">"430"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">iframe</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- 优酷视频 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">iframe</span>  <span class="attr">src</span>=<span class="string">'https://player.youku.com/embed/&#123;&#125;'</span> <span class="attr">width</span>=<span class="string">"640"</span> <span class="attr">height</span>=<span class="string">"430"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">iframe</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- PDF --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">iframe</span>  <span class="attr">src</span>=<span class="string">'https://arxiv.org/pdf/1406.2661.pdf'</span> <span class="attr">width</span>=<span class="string">"800"</span> <span class="attr">height</span>=<span class="string">"450"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">iframe</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- HTML --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">iframe</span>  <span class="attr">src</span>=<span class="string">'https://www.sohu.com/a/287817933_100118081'</span> <span class="attr">width</span>=<span class="string">"800"</span> <span class="attr">height</span>=<span class="string">"450"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">iframe</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<iframe src="https://player.bilibili.com/player.html?bvid=BV1Wb411v7WN" width="640" height="430">
-</iframe>
-<h2 id="3-写作检查"><a class="header-anchor" href="#3-写作检查">¶</a>3 写作检查</h2>
+<h2 id="写作检查"><a class="header-anchor" href="#写作检查">¶</a>写作检查</h2>
 <p>主体内容完成后，要进行写作检查。</p>
 <ul>
 <li>保证信息的准确性，时间地点等信息的准确。</li>
@@ -148,25 +92,96 @@ $$</p>
 <li>注意行为的语气</li>
 <li>保持连贯性，使用一种统一的方式表达。</li>
 </ul>
-<h2 id="4-总结"><a class="header-anchor" href="#4-总结">¶</a>4 总结</h2>
+<h2 id="总结"><a class="header-anchor" href="#总结">¶</a>总结</h2>
 <p>一个清晰的总结应该概括全部论点。</p>
 <h2 id="其他"><a class="header-anchor" href="#其他">¶</a>其他</h2>
 <ul>
-<li>逻辑清楚，达情切意<sup class="footnote-ref"><a href="#fn3" id="fnref3">[3]</a></sup>。准备看一些基础的逻辑学。</li>
-<li>写完要读两遍，修改错别字，标点，语序连接等等。<sup class="footnote-ref"><a href="#fn3" id="fnref3:1">[3:1]</a></sup></li>
+<li>逻辑清楚，达情切意<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup>。准备看一些基础的逻辑学。</li>
+<li>写完要读两遍，修改错别字，标点，语序连接等等。</li>
 <li>修改可以反着读，正着读对熟悉的材料会有一种连贯性忽略掉错误或者不顺的地方。</li>
 </ul>
+<h2 id="附：markdown语法"><a class="header-anchor" href="#附：markdown语法">¶</a>附：markdown语法</h2>
+<h3 id="head"><a class="header-anchor" href="#head">¶</a>head</h3>
+<p>文件head，设置标题、日期、分类、标签、评论、版权、是否使用公式，如下。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">---</span><br><span class="line">title: 模版文件</span><br><span class="line">date: 2019-07-25 12:00:00</span><br><span class="line">updated: 2019-07-25 12:00:00</span><br><span class="line">categories:</span><br><span class="line">  - 博客搭建</span><br><span class="line">  - 模版文件</span><br><span class="line">tags:</span><br><span class="line">  - Writing</span><br><span class="line">comments: true</span><br><span class="line">copyright: true</span><br><span class="line">math: true</span><br><span class="line">---</span><br></pre></td></tr></table></figure>
+<h3 id="图"><a class="header-anchor" href="#图">¶</a>图</h3>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"># 使用标准markdown</span><br><span class="line">![GDP](http://www.stats.gov.cn/tjsj/zxfb/202002/W020200228491461098230_r75.png)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"># 使用html</span><br><span class="line"><span class="tag">&lt;<span class="name">center</span>&gt;</span><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">"http://www.stats.gov.cn/tjsj/zxfb/202002/W020200228491461098230_r75.png"</span> <span class="attr">width</span>=<span class="string">"60%"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span>&gt;</span> 图1 2019年国内生产总值及其增速度<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">center</span>&gt;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"># 白色图片用table提供辨识度</span><br><span class="line"><span class="tag">&lt;<span class="name">table</span>&gt;</span><span class="tag">&lt;<span class="name">tr</span>&gt;</span><span class="tag">&lt;<span class="name">td</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">center</span>&gt;</span><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">"http://www.stats.gov.cn/tjsj/zxfb/202002/W020200228491461098230_r75.png"</span> <span class="attr">width</span>=<span class="string">"60%"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span>&gt;</span> 图1 2019年国内生产总值及其增速度<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">center</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">td</span>&gt;</span><span class="tag">&lt;<span class="name">tr</span>&gt;</span><span class="tag">&lt;/<span class="name">table</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>这两行代码生成下面的图和标题。</p>
+<center><img src="http://www.stats.gov.cn/tjsj/zxfb/202002/W020200228491461098230_r75.png" width="60%">
+</center>
+<p>图 1 展示的是2015-2019年的GDP和增长速度<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup>，直方图数据反应国内生产总值在2015-2019年度均平稳增长。</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">table</span>&gt;</span><span class="tag">&lt;<span class="name">tr</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">td</span>&gt;</span><span class="tag">&lt;<span class="name">center</span>&gt;</span><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">"http://www.stats.gov.cn/tjsj/zxfb/202002/W020200228491461098230_r75.png"</span>&gt;</span>图1     <span class="tag">&lt;/<span class="name">center</span>&gt;</span><span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">td</span>&gt;</span><span class="tag">&lt;<span class="name">center</span>&gt;</span><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">"http://www.stats.gov.cn/tjsj/zxfb/202002/W020200228491461098230_r75.png"</span>&gt;</span>图2 <span class="tag">&lt;/<span class="name">center</span>&gt;</span><span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">tr</span>&gt;</span><span class="tag">&lt;/<span class="name">table</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<table><tr>
+<td><center><img src="http://www.stats.gov.cn/tjsj/zxfb/202002/W020200228491461098230_r75.png">图1     </center></td>
+<td><center><img src="http://www.stats.gov.cn/tjsj/zxfb/202002/W020200228491461098230_r75.png">图2 </center></td>
+</tr></table>
+<h3 id="表"><a class="header-anchor" href="#表">¶</a>表</h3>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;div align=&apos;center&apos;&gt; 表1 2018年年末人口数及其构成&lt;/div&gt;</span><br><span class="line"></span><br><span class="line">| 指标       | 年末数（万人） | 比重（%） |</span><br><span class="line">| ---------- | -------------- | --------- |</span><br><span class="line">| 全国总人口 | 139538         | 100.0     |</span><br><span class="line">| 其中：城镇 | 83137          | 59.58     |</span><br><span class="line">| 乡村       | 56401          | 40.42     |</span><br></pre></td></tr></table></figure>
+<p>这两行代码生成下面的表和标题。</p>
+<div align="center">表1 2018年年末人口数及其构成</div>
+<table>
+<thead>
+<tr>
+<th>指标</th>
+<th>年末数（万人）</th>
+<th>比重（%）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>全国总人口</td>
+<td>139538</td>
+<td>100.0</td>
+</tr>
+<tr>
+<td>城镇</td>
+<td>83137</td>
+<td>59.58</td>
+</tr>
+<tr>
+<td>乡村</td>
+<td>56401</td>
+<td>40.42</td>
+</tr>
+</tbody>
+</table>
+<p>从表1得出2018年年末，城镇人口占总人口的59.58%，乡村人口占总人口的40.42%，城镇人口已大比例超过乡村人口。</p>
+<h3 id="公式"><a class="header-anchor" href="#公式">¶</a>公式</h3>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$$</span><br><span class="line">f=w_1 x_1 + w_2 x_2</span><br><span class="line">\tag&#123;1&#125;</span><br><span class="line">$$</span><br></pre></td></tr></table></figure>
+<p>在Markdown中可用Tex代码渲染数学公式，渲染效果为公式（1）。如图2，Tex公式可以在<a href="http://latex.codecogs.com/eqneditor/editor.php" target="_blank" rel="noopener">Latex编辑器网站</a> 可视化编写
+$$
+f=w_1 x_1 + w_2 x_2
+\tag{1}
+$$</p>
+<center><img src="https://img-blog.csdnimg.cn/20200425095309901.png" width="60%">
+<div> 图2 Latex在线编辑器</div>
+</center>
+<h3 id="定理证明"><a class="header-anchor" href="#定理证明">¶</a>定理证明</h3>
+<p><strong>定理 3.1</strong> 如果时域混合场积分方程是时域电场积分方程与时域磁场积分方程的线性组合……</p>
+<p><strong>证明：</strong></p>
+<p>首先，由于 ……</p>
+<p>……</p>
+<p>根据 ……，结论得证。                        ■</p>
+<h3 id="参考"><a class="header-anchor" href="#参考">¶</a>参考</h3>
+<p>参考的分类：</p>
+<ul>
+<li>链接直接在原文中给出。</li>
+<li>引用他人文章中的段落或者意识给出引用的链接。</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">---</span><br><span class="line">**参考**</span><br><span class="line"></span><br><span class="line">[^statics_report_2019]: 国家统计局 [2019年国民经济和社会发展统计公报](http://www.stats.gov.cn/tjsj/zxfb/202002/t20200228_1728913.html) 2020-02-28</span><br><span class="line"></span><br><span class="line">[^hetang]: 朱自清《荷塘清韵》北京大学出版社  2010-1</span><br></pre></td></tr></table></figure>
+<h3 id="添加iframes"><a class="header-anchor" href="#添加iframes">¶</a>添加iframes</h3>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!-- &#123;&#125;替换为视频id，同时去掉&#123;&#125; --&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- 小破站 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">iframe</span> <span class="attr">src</span>=<span class="string">"https://player.bilibili.com/player.html?bvid=&#123;&#125;"</span> <span class="attr">width</span>=<span class="string">"640"</span> <span class="attr">height</span>=<span class="string">"430"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">iframe</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- 腾讯视频 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">iframe</span> <span class="attr">src</span>=<span class="string">"http://v.qq.com/iframe/player.html?vid=&#123;&#125;"</span> <span class="attr">width</span>=<span class="string">"640"</span> <span class="attr">height</span>=<span class="string">"430"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">iframe</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- 优酷视频 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">iframe</span>  <span class="attr">src</span>=<span class="string">'https://player.youku.com/embed/&#123;&#125;'</span> <span class="attr">width</span>=<span class="string">"640"</span> <span class="attr">height</span>=<span class="string">"430"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">iframe</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- PDF --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">iframe</span>  <span class="attr">src</span>=<span class="string">'https://arxiv.org/pdf/1406.2661.pdf'</span> <span class="attr">width</span>=<span class="string">"800"</span> <span class="attr">height</span>=<span class="string">"450"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">iframe</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- HTML --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">iframe</span>  <span class="attr">src</span>=<span class="string">'https://www.sohu.com/a/287817933_100118081'</span> <span class="attr">width</span>=<span class="string">"800"</span> <span class="attr">height</span>=<span class="string">"450"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">iframe</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<iframe src="https://player.bilibili.com/player.html?bvid=BV1Wb411v7WN" width="640" height="430">
+</iframe>
+<iframe src="https://v.qq.com/txp/iframe/player.html?vid=u0951gpf8u2" width="640" height="430"></iframe>
 <hr>
 <p><strong>参考</strong></p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[^statics_report_2018]: [国家统计局：2018年国民经济和社会发展统计公报](http://www.stats.gov.cn/tjsj/zxfb/201902/t20190228_1651265.html)</span><br><span class="line">[^latex_editor]: [Latex公式在线可视化编辑器](http://latex.codecogs.com/eqneditor/editor.php)</span><br><span class="line">[^hetang]: 美学散步系列书籍 - 朱自清的《荷塘清韵》</span><br></pre></td></tr></table></figure>
 <hr class="footnotes-sep">
 <section class="footnotes">
 <ol class="footnotes-list">
-<li id="fn1" class="footnote-item"><p><a href="http://www.stats.gov.cn/tjsj/zxfb/201902/t20190228_1651265.html" target="_blank" rel="noopener">国家统计局：2018年国民经济和社会发展统计公报</a> <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+<li id="fn1" class="footnote-item"><p>朱自清《荷塘清韵》北京大学出版社  2010-1 <a href="#fnref1" class="footnote-backref">↩︎</a></p>
 </li>
-<li id="fn2" class="footnote-item"><p><a href="http://latex.codecogs.com/eqneditor/editor.php" target="_blank" rel="noopener">Latex公式在线可视化编辑器</a> <a href="#fnref2" class="footnote-backref">↩︎</a></p>
-</li>
-<li id="fn3" class="footnote-item"><p>美学散步系列书籍 - 朱自清的《荷塘清韵》 <a href="#fnref3" class="footnote-backref">↩︎</a> <a href="#fnref3:1" class="footnote-backref">↩︎</a></p>
+<li id="fn2" class="footnote-item"><p>国家统计局 <a href="http://www.stats.gov.cn/tjsj/zxfb/202002/t20200228_1728913.html" target="_blank" rel="noopener">2019年国民经济和社会发展统计公报</a> 2020-02-28 <a href="#fnref2" class="footnote-backref">↩︎</a></p>
 </li>
 </ol>
 </section>
@@ -352,7 +367,7 @@ NexT Github  <a href="https://github.com/iissnan/hexo-theme-next" target="_blank
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># clone 项目</span></span><br><span class="line">$ git <span class="built_in">clone</span> https://github.com/talengu/talengu.github.io</span><br><span class="line">$ git submodule init</span><br><span class="line">$ git submodule update</span><br><span class="line"></span><br><span class="line"><span class="comment"># 切换到最新的submodule</span></span><br><span class="line">$ <span class="built_in">cd</span> <span class="built_in">source</span></span><br><span class="line">$ git merge origin/master</span><br><span class="line">$ git submodule update</span><br><span class="line"></span><br><span class="line"><span class="comment"># 执行npm按照，由于已经生成它会按照package.json文件自动安装</span></span><br><span class="line"><span class="comment"># 没有npm的话 安装 https://nodejs.org/en/download/</span></span><br><span class="line">$ npm install</span><br></pre></td></tr></table></figure>
 <h2 id="2-配置"><a class="header-anchor" href="#2-配置">¶</a>2. 配置</h2>
 <p>对于在NexT主页上介绍的配置我就不写了，请参考http://theme-next.iissnan.com/getting-started.html  。</p>
-<p><img src="/public/2016/12/22/build_blog/image-20181112002650646.png" alt="image-20181112002650646"></p>
+<img src="/public/2016/12/22/build_blog/image-20181112002650646.png" alt="image-20181112002650646" width="50%">
 <p>下面主要对重要的和我自己修改的部分说明没有的进行配置，值得注意的是我的NexT版本是<code>version: 5.1.0</code>。</p>
 <h3 id="2-1-NexT官网的设置"><a class="header-anchor" href="#2-1-NexT官网的设置">¶</a>2.1 NexT官网的设置</h3>
 <p><strong>MathJax</strong></p>
@@ -384,7 +399,7 @@ NexT Github  <a href="https://github.com/iissnan/hexo-theme-next" target="_blank
 <blockquote>
 <p>图片必须放到和md文件名字一样的同名字文件夹。
 如使用Typora软件写md的话，设置一下image保存路径即可，如下。</p>
-<p><img src="/public/2016/12/22/build_blog/typora_image.png" alt="typora_image"></p>
+<img src="/public/2016/12/22/build_blog/typora_image.png" alt="typora_image" width="50%">
 </blockquote>
 <h3 id="2-3-代码复制"><a class="header-anchor" href="#2-3-代码复制">¶</a>2.3 代码复制</h3>
 <p>为了提高博客代码块的用户体验，仅仅代码高亮还不行，最好还能一键复制代码。故此文将讲述 Hexo NexT 主题博客的代码块复制功能配置。转 <a href="https://www.jianshu.com/p/3e9d614c1e77" target="_blank" rel="noopener">Hexo NexT 代码块复制功能</a></p>
@@ -406,7 +421,7 @@ NexT Github  <a href="https://github.com/iissnan/hexo-theme-next" target="_blank
 <p>在<code>.\themes\next\layout\_layout.swig</code>文件中，添加引用（注：在 swig 末尾或 body 结束标签（<code>&lt;/body&gt;</code>）之前添加）：</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;!-- 代码块复制功能 --&gt;</span><br><span class="line">&lt;script type=&quot;text/javascript&quot; src=&quot;/js/src/clipboard.min.js&quot;&gt;&lt;/script&gt;  </span><br><span class="line">&lt;script type=&quot;text/javascript&quot; src=&quot;/js/src/clipboard-use.js&quot;&gt;&lt;/script&gt;</span><br></pre></td></tr></table></figure>
 <p>想看效果的可以去<a href="https://talengu.github.io/public/2016/12/22/build_blog/">我博客</a>看，截图如下:</p>
-<p><img src="/public/2016/12/22/build_blog/image-20181112004401227.png" alt="image-20181112004401227"></p>
+<img src="/public/2016/12/22/build_blog/image-20181112004401227.png" alt="image-20181112004401227" width="50%">
 <blockquote>
 <p>熟悉的也可以将<code>clipboard.min.js</code>和<code>clipboard-use.js</code>合并为一个文件，再在<code>.\themes\next\layout\_layout.swig</code>文件中使用。当然<code>clipboard.min.js</code>也可以直接用三方 cdn 的方式引入也行。</p>
 </blockquote>
@@ -470,7 +485,7 @@ NexT Github  <a href="https://github.com/iissnan/hexo-theme-next" target="_blank
  <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">themes/next/source/css/_variables</span><br></pre></td></tr></table></figure>
 <h3 id="2-5-copyright文字添加"><a class="header-anchor" href="#2-5-copyright文字添加">¶</a>2.5 copyright文字添加</h3>
 <p><strong>效果</strong> 可以在md文件里面控制是否使用这个组建。</p>
-<p><img src="/public/2016/12/22/build_blog/copyright.png" alt="copyright" title="copyright 效果"></p>
+<img src="/public/2016/12/22/build_blog/copyright.png" alt="copyright" title="copyright 效果" width="50%">
 <p><strong>使用</strong></p>
 <p>在md文件中的front-head部分，设置 <code>copyright:true</code>如下面。
 设置next/_config.yml 文件，中设置<code>post_copyright</code> 的选项 <code>enable</code>。</p>
@@ -491,11 +506,11 @@ NexT Github  <a href="https://github.com/iissnan/hexo-theme-next" target="_blank
 <p>note: mac中手动修改，sed指令<a href="https://blog.csdn.net/bertie_Jnn/article/details/51219670" target="_blank" rel="noopener">不一样</a></p>
 <h3 id="2-7-添加-fork-me-github"><a class="header-anchor" href="#2-7-添加-fork-me-github">¶</a>2.7 添加 fork me github</h3>
 <p>效果</p>
-<p><img src="/public/2016/12/22/build_blog/image-20181122020200453.png" alt="image-20181122020200453"></p>
+<img src="/public/2016/12/22/build_blog/image-20181122020200453.png" alt="image-20181122020200453" width="50%">
 <p>在<a href="https://github.com/blog/273-github-ribbons" target="_blank" rel="noopener">GitHub Ribbons</a>或<a href="http://tholman.com/github-corners/" target="_blank" rel="noopener">GitHub Corners</a>选择一款你喜欢的挂饰。比如下面的 github corners 在<code>your-url</code>填上你的 url 。</p>
-<p><img src="/public/2016/12/22/build_blog/image-20181122020427248.png" alt="image-20181122020427248"></p>
+<img src="/public/2016/12/22/build_blog/image-20181122020427248.png" alt="image-20181122020427248" width="50%">
 <p>将刚刚复制的挂饰代码，添加到<code>themes/next/layout/_layout.swig</code>文件中，添加位置，放在<code>&lt;div class=&quot;headband&quot;&gt;&lt;/div&gt;</code>的下方如下图。</p>
-<p><img src="/public/2016/12/22/build_blog/image-20181122021516212.png" alt="image-20181122021516212"></p>
+<img src="/public/2016/12/22/build_blog/image-20181122021516212.png" alt="image-20181122021516212" width="50%">
 <h3 id="2-8-添加注脚"><a class="header-anchor" href="#2-8-添加注脚">¶</a>2.8 添加注脚</h3>
 <p>hexo-renderer-markdown-it插件，<a href="https://www.dazhuanlan.com/2019/11/22/5dd6faa42d279/" target="_blank" rel="noopener">参考</a></p>
 <p>首先卸载原来的markdown渲染插件（我这里原来是marked，这是Hexo提供的默认渲染插件），然后把hexo-renderer-markdown-it装上：</p>
@@ -1015,7 +1030,7 @@ $$
     <content><![CDATA[<p><strong>前言</strong>
 网上有很多用笔记本设置无线热点的批处理，我中和了一下。复制下面代码到记事本，改后缀为bat就行了。其中，mssid和mkey可自定义</p>
 <a id="more"></a>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">@echo off</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">set mssid=GTC</span><br><span class="line">::网络名字</span><br><span class="line">set mkey=123456789</span><br><span class="line">::大于八位密码</span><br><span class="line"></span><br><span class="line">echo ***********************************************</span><br><span class="line">echo              打开承载网络  1</span><br><span class="line">echo              关闭承载网络  2</span><br><span class="line">echo              承载网络信息  3</span><br><span class="line">echo              设置网络信息  set</span><br><span class="line">echo              退出          e</span><br><span class="line">echo        （网络名字、密码可在源文件中改）</span><br><span class="line">echo           （请以管理员身份打开!!!）</span><br><span class="line">echo ***********************************************</span><br><span class="line">:start</span><br><span class="line">set /p var=请选择:</span><br><span class="line">if %var%==1 netsh wlan start hostednetwork &amp;&amp; echo 网络名字:%mssid% 密码:%mkey% &amp;&amp; GOTO start</span><br><span class="line">if %var%==2 netsh wlan stop hostednetwork &amp;&amp; GOTO start</span><br><span class="line">if %var%==3 netsh wlan show hostednetwork &amp;&amp; echo 网络名字:%mssid% 密码:%mkey% &amp;&amp; GOTO start</span><br><span class="line">if %var%==set netsh wlan set hostednetwork mode=allow ssid=%mssid% key=%mkey% &amp;&amp; echo 网络名字:%mssid% 密码:%mkey% &amp;&amp; GOTO start</span><br><span class="line">if %var%==e pause</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">@echo off</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">set mssid=GOODGOOD</span><br><span class="line">::网络名字</span><br><span class="line">set mkey=123456789</span><br><span class="line">::大于八位密码</span><br><span class="line"></span><br><span class="line">echo ***********************************************</span><br><span class="line">echo              打开承载网络  1</span><br><span class="line">echo              关闭承载网络  2</span><br><span class="line">echo              承载网络信息  3</span><br><span class="line">echo              设置网络信息  set</span><br><span class="line">echo              退出          e</span><br><span class="line">echo        （网络名字、密码可在源文件中改）</span><br><span class="line">echo           （请以管理员身份打开!!!）</span><br><span class="line">echo ***********************************************</span><br><span class="line">:start</span><br><span class="line">set /p var=请选择:</span><br><span class="line">if %var%==1 netsh wlan start hostednetwork &amp;&amp; echo 网络名字:%mssid% 密码:%mkey% &amp;&amp; GOTO start</span><br><span class="line">if %var%==2 netsh wlan stop hostednetwork &amp;&amp; GOTO start</span><br><span class="line">if %var%==3 netsh wlan show hostednetwork &amp;&amp; echo 网络名字:%mssid% 密码:%mkey% &amp;&amp; GOTO start</span><br><span class="line">if %var%==set netsh wlan set hostednetwork mode=allow ssid=%mssid% key=%mkey% &amp;&amp; echo 网络名字:%mssid% 密码:%mkey% &amp;&amp; GOTO start</span><br><span class="line">if %var%==e pause</span><br></pre></td></tr></table></figure>
 ]]></content>
       <categories>
         <category>常用脚本</category>
@@ -1049,23 +1064,23 @@ $$
     <content><![CDATA[<p>重庆，旅游纪实。20190422 - 20190424</p>
 <a id="more"></a>
 <h2 id="四月二十二"><a class="header-anchor" href="#四月二十二">¶</a>四月二十二</h2>
-<img src="/public/2019/04/25/trips/chongqing/tiankongzhicheng.jpg" alt="tiankongzhicheng" style="zoom:50%;">
+<img src="/public/2019/04/25/trips/chongqing/tiankongzhicheng.jpg" alt="tiankongzhicheng" width="50%">
 <div align="center"> <b>天空之城旅店的临江阳台</b></div>
 <p>今天刚来到重庆。前天查天气说是多云，但是来这之后，天气极好。早上9点从成都出发，12点左右到达重庆北站，然后做地铁10号线倒到6号线的小什坊。在解放广场附近，中午吃了个碗杂面很不错，对于我来说有点辣，说是重庆排行第五的小面。</p>
 <p>下午就准备午休一哈，今早上很早起来要赶到成都的市中心乘火车。在江边，也是在洪崖洞旁边，找了一家叫做天空之城的青年旅舍。晚上走在千厮大桥上，脚感受着下面的地铁穿过抖动。从青年旅馆房间里面刚好可以看到江边的夜景，管理人是个可爱的老人家。里面的床单是没有铺上的，得自己铺，老人家解释免得被认为不好，你也可以自己带睡袋。老人家在铁路上工作，与他聊了很久，谈到他在铁路站工作的经历，当然还有很多打理旅舍时的故事。</p>
 <h2 id="四月二十三"><a class="header-anchor" href="#四月二十三">¶</a>四月二十三</h2>
-<img src="/public/2019/04/25/trips/chongqing/eling.jpg" alt="eling" style="zoom:67%;">
-<div align="center"> <b>鹅岭公园有个塔，从塔上望去</b></div>
-<img src="/public/2019/04/25/trips/chongqing/guojiang1.jpeg" alt="guojiang1" style="zoom:50%;">
+<img src="/public/2019/04/25/trips/chongqing/guojiang1.jpeg" alt="guojiang1" width="50%">
 <div align="center"> <b>排队2小时，乘过江索道</b></div>
-<img src="/public/2019/04/25/trips/chongqing/goujiang2.jpeg" alt="goujiang2" style="zoom:50%;">
+<img src="/public/2019/04/25/trips/chongqing/goujiang2.jpeg" alt="goujiang2" width="50%">
 <div align="center"> <b>过江索道，晃晃悠悠在路上</b></div>
-<img src="/public/2019/04/25/trips/chongqing/yejing.jpg" alt="yejing" style="zoom:67%;">
-<div align="center"> <b>南山一棵松</b></div>
 <p>早上起来，去楼下买了个早餐，有八宝粥和一个米团（块），那个团米上面加了两个半枣。吃完早饭，阳光正照进那个青年公寓。四月底，节气谷雨过后，算还不是很热，在那个临江的阳台晒了会儿阳光。然后很困，大概是吃饱的缘故，我又回去睡了一个回笼觉。下午出发去白公馆，搭的是轻轨2号线，到大坪换到去烈士墓的地铁上，轻轨是一路沿江跑的，欣赏着嘉陵江的美景，羡慕着重庆人的立体公交系统。嘉陵江水比较清澈，也见到有人在游泳。过会儿就经过网红景点李子坝，轻轨穿房而过。白公馆旁边是四川外国语大学，没有去逛，直接去了白公馆，香山别墅，然后去了渣滓洞，白公馆的地势比较陡，台阶比较多，旁边是歌乐山。</p>
+<img src="/public/2019/04/25/trips/chongqing/eling.jpg" alt="eling" width="50%">
+<div align="center"> <b>鹅岭公园有个塔，从塔上望去</b></div>
 <p>接着到了鹅岭公园，可直接做地铁鹅岭站，进门处分左右路线，我选了左转，然后绕了一大圈到了那个塔，其实可以右转沿着汽车的道往上到那个塔。到了塔顶，可以看到面向朝天门方向，左边是嘉陵江，右边是长江，然后各种大桥，轻轨地铁尽收眼底。吹着微风，站在那个塔上，可见重庆各种摩天大楼，然后就是更远处的山。离开鹅岭公园后，继续搭地铁去了上新街站，下车后往南岸区走，南岸发展比较慢，可以看到明显和渝中区的不同，路边找了一家店，选了几个小菜，吃了个晚饭。晚饭后，去了南山一棵树，人很多，夜景倒是很漂亮，有水有山，两水相交，滋润了这个大都市，今天的行程不错。</p>
+<p>&lt;img src=&quot;chongqing/yejing.jpg&quot; alt=&quot;yejing&quot;width=&quot;50%&quot;  /&gt;</p>
+<div align="center"> <b>南山一棵松</b></div>
 <h2 id="四月二十四"><a class="header-anchor" href="#四月二十四">¶</a>四月二十四</h2>
-<img src="/public/2019/04/25/trips/chongqing/caotianmen.jpg" alt="caotianmen" style="zoom: 50%;">
+<img src="/public/2019/04/25/trips/chongqing/caotianmen.jpg" alt="caotianmen" width="50%">
 <div align="center"> <b>朝天门码头，水清黄分明</b></div>
 <p>今天也是懒懒起床，吃了个早饭，豆浆是放在那种果冻的包装袋里。今天差不多，就准备看看朝天门，然后回成都。去朝天门还是比较奇怪，随着百度地图导航走，到了一个商城里面，从地面进去是商城的8楼，下了电梯，走了一个商品批发的地方，然后向朝天门赶，今天太阳超级满足，比较热。岸边停了好多游船。到了朝天门，水分了两个颜色，黄的长江，清的嘉陵江。休息一刻，搭了公交车，沿着长江岸跑，居然到了李子坝，然后地铁转到重庆北火车站，这一趟重庆算是画上了一个句号。</p>
 <p>【转载请联系 博主。】</p>
@@ -1249,7 +1264,7 @@ $$
     <url>/public/2017/07/03/linux/jupyter_notebook/</url>
     <content><![CDATA[<p><strong>前言</strong>
 本文介绍jupyter notebook的安装配置过程和实用技巧。
-官方教程<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup></p>
+<a href="https://jupyter.readthedocs.io/en/latest/index.html" target="_blank" rel="noopener">jupyter.readthedocs教程</a></p>
 <a id="more"></a>
 <h2 id="1-安装与配置"><a class="header-anchor" href="#1-安装与配置">¶</a>1 安装与配置</h2>
 <h3 id="1-1-安装-jupyter"><a class="header-anchor" href="#1-1-安装-jupyter">¶</a>1.1 安装 jupyter</h3>
@@ -1270,8 +1285,8 @@ $$
 <p>我选用的是password密码登陆jupyter的方案，其他的密码登陆方案见 <a href="https://zhuanlan.zhihu.com/p/23110830" target="_blank" rel="noopener">link</a></p>
 <h3 id="1-3-安装插件管理"><a class="header-anchor" href="#1-3-安装插件管理">¶</a>1.3 安装插件管理</h3>
 <p>jupyter_contrib_nbextensions 为 jupyter notebook 扩展插件管理器，下面简称nbextensions。</p>
-<p>nbextensions 的Github<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup>
-nbextensions 的教程<sup class="footnote-ref"><a href="#fn3" id="fnref3">[3]</a></sup></p>
+<p>nbextensions的github <a href="https://github.com/ipython-contrib/jupyter_contrib_nbextensions" target="_blank" rel="noopener">repo</a>
+nbextensions的教程<a href="https://jupyter-contrib-nbextensions.readthedocs.io/en/latest/" target="_blank" rel="noopener">nbextensions_manual_readthedocs</a></p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 用conda安装</span></span><br><span class="line">conda install jupyter</span><br><span class="line">conda install -c conda-forge jupyter_contrib_nbextensions</span><br><span class="line"></span><br><span class="line"><span class="comment"># pip安装</span></span><br><span class="line">pip install jupyter_contrib_nbextensions</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使能</span></span><br><span class="line">jupyter contrib nbextension install</span><br></pre></td></tr></table></figure>
 <p>我启用的一些插件</p>
 <table>
@@ -1333,7 +1348,7 @@ nbextensions 的教程<sup class="footnote-ref"><a href="#fn3" id="fnref3">[3]</
 <p>找到notebook的汉化文件夹的路径，比如<code>~/miniconda3/lib/python3.6/site-packages/notebook/i18n/zh_CN</code>。将其重命名如加个下划线作为后缀<code>zh_CN_old</code>，重启jupyter就行了。</p>
 <p>为了方便，我作了个脚本自动找<code>notebook/i18n/zh_CN</code>位置并改名此文件夹，如下。</p>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> shutil</span><br><span class="line"><span class="keyword">from</span> distutils.sysconfig <span class="keyword">import</span> get_python_lib</span><br><span class="line"><span class="comment"># 获取site-package包的位置</span></span><br><span class="line">path_zh=get_python_lib()+<span class="string">'/notebook/i18n/zh_CN'</span></span><br><span class="line">path_zh_old=get_python_lib()+<span class="string">'/notebook/i18n/zh_CN_old'</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 将 notebook/i18n/zh_CN 改为 notebook/i18n/zh_CN_old</span></span><br><span class="line">shutil.move(path_zh,path_zh_old)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 返回中文</span></span><br><span class="line"><span class="comment"># shutil.move(path_zh_old,path_zh)</span></span><br></pre></td></tr></table></figure>
-<p>重启jupyter就行了, 这样jupyter就找不到这个中文配置，返回中文改回去就行了<sup class="footnote-ref"><a href="#fn4" id="fnref4">[4]</a></sup>。</p>
+<p>重启jupyter就行了, 这样jupyter就找不到这个中文配置，返回中文改回去就行了<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup>。</p>
 <h2 id="2-使用的技巧"><a class="header-anchor" href="#2-使用的技巧">¶</a>2 使用的技巧</h2>
 <h3 id="2-1-快捷键"><a class="header-anchor" href="#2-1-快捷键">¶</a>2.1 快捷键</h3>
 <hr>
@@ -1379,12 +1394,7 @@ nbextensions 的教程<sup class="footnote-ref"><a href="#fn3" id="fnref3">[3]</
 <hr class="footnotes-sep">
 <section class="footnotes">
 <ol class="footnotes-list">
-<li id="fn1" class="footnote-item"> <a href="#fnref1" class="footnote-backref">↩︎</a></li>
-<li id="fn2" class="footnote-item"><p><a href="https://github.com/ipython-contrib/jupyter_contrib_nbextensions" target="_blank" rel="noopener">https://github.com/ipython-contrib/jupyter_contrib_nbextensions</a> <a href="#fnref2" class="footnote-backref">↩︎</a></p>
-</li>
-<li id="fn3" class="footnote-item"><p><a href="https://jupyter-contrib-nbextensions.readthedocs.io/en/latest/" target="_blank" rel="noopener">https://jupyter-contrib-nbextensions.readthedocs.io/en/latest/</a> <a href="#fnref3" class="footnote-backref">↩︎</a></p>
-</li>
-<li id="fn4" class="footnote-item"><p><a href="https://www.zhihu.com/question/302814218/answer/1029684239" target="_blank" rel="noopener">https://www.zhihu.com/question/302814218/answer/1029684239</a> <a href="#fnref4" class="footnote-backref">↩︎</a></p>
+<li id="fn1" class="footnote-item"><p><a href="https://www.zhihu.com/question/302814218/answer/1029684239" target="_blank" rel="noopener">https://www.zhihu.com/question/302814218/answer/1029684239</a> <a href="#fnref1" class="footnote-backref">↩︎</a></p>
 </li>
 </ol>
 </section>
