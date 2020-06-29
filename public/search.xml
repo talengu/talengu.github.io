@@ -327,6 +327,61 @@ $$</p>
       </tags>
   </entry>
   <entry>
+    <title>机器学习系列</title>
+    <url>/public/2019/07/23/AI/ML_summary/</url>
+    <content><![CDATA[<p><strong>前言</strong></p>
+<p>路漫漫其修远兮，吾将上下而求索。2013年，大二接触人工智能课，讲逻辑推理，专家系统等等，神经网络只是一部分，打开当时老师的ppt，还能看到BP等算法。接着在2015年，上了模式识别课程，有一些启发式算法，KNN K-means等算法，同时神经网络也已经有了 GoogLeNet 等深层网络，热门的GAN网络也在2014年被提出。后面，机遇巧合，本科毕业时选了人工智能的坑，直到3年后的现在算是明白了一点。接下来的三年的目标还是<a href="https://talengu.github.io/public/2018/10/01/AI/how_algorithm_engineer/">【成为一名优秀的算法工程师】</a>。</p>
+<p>回望入坑 <strong>机器学习</strong>，没有系统地整理过相关知识。于是想着手整理一份自己笔记系列。本文为序。</p>
+<blockquote>
+<p>雄关漫道真如铁，而今迈步从头越。</p>
+</blockquote>
+<p><img src="/public/2019/07/23/AI/ML_summary/1564034058070.png" alt="1564034058070"></p>
+<div align="center"> 图1 机器学习知识框架</div>
+如图1 所示，整个系列将由五个部分组成。
+<a id="more"></a>
+<h2 id="一、机器学习基础"><a class="header-anchor" href="#一、机器学习基础">¶</a>一、机器学习基础</h2>
+<h2 id="二、监督学习"><a class="header-anchor" href="#二、监督学习">¶</a>二、监督学习</h2>
+<img src="/public/2019/07/23/AI/ML_summary/1564034419203.png" alt="1564034419203" style="zoom:67%;">
+<div align="center"> 图 监督学习</div>
+<h2 id="三、无监督学习"><a class="header-anchor" href="#三、无监督学习">¶</a>三、无监督学习</h2>
+<img src="/public/2019/07/23/AI/ML_summary/1564034460034.png" alt="1564034460034" style="zoom:67%;">
+<div align="center"> 图 无监督学习</div>
+<h2 id="四、学习理论"><a class="header-anchor" href="#四、学习理论">¶</a>四、学习理论</h2>
+<img src="/public/2019/07/23/AI/ML_summary/xuexililun.png" alt="xuexililun" style="zoom:67%;">
+<div align="center"> 图 学习理论</div>
+<h3 id="4-1-正则化"><a class="header-anchor" href="#4-1-正则化">¶</a>4.1 <a href="regulation_baysian.md">正则化</a></h3>
+<h2 id="五、强化学习"><a class="header-anchor" href="#五、强化学习">¶</a>五、强化学习</h2>
+<h2 id="六、参考与规划"><a class="header-anchor" href="#六、参考与规划">¶</a>六、参考与规划</h2>
+<p><strong>目标</strong>
+通过阅读以上基本书，打牢自己的理论基础。</p>
+<p><strong>书籍</strong></p>
+<ul>
+<li>PRML Bishop</li>
+<li>机器学习 周志华</li>
+<li>统计学习 李航</li>
+<li>深度学习 Goodfellow</li>
+<li>模式识别 张学工</li>
+</ul>
+<p><strong>课程</strong></p>
+<p><a href="https://www.bilibili.com/video/av70839977" target="_blank" rel="noopener">https://www.bilibili.com/video/av70839977</a></p>
+<p><strong>博客编写</strong></p>
+<ul>
+<li>前言介绍，包括作者，背景，原始paper，和以上基本书的对应章节。</li>
+<li>原理阐述，算法步骤写出。</li>
+<li>案例分析</li>
+<li>利用python写出代码，先用scilearn写。</li>
+<li>总结，预告。</li>
+</ul>
+]]></content>
+      <categories>
+        <category>机器学习</category>
+      </categories>
+      <tags>
+        <tag>AI</tag>
+        <tag>ML</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>个人主页搭建</title>
     <url>/public/2016/12/22/build_blog/</url>
     <content><![CDATA[<p><strong>前言</strong>
@@ -572,54 +627,166 @@ NexT Github  <a href="https://github.com/iissnan/hexo-theme-next" target="_blank
       </tags>
   </entry>
   <entry>
-    <title>机器学习系列</title>
-    <url>/public/2019/07/23/AI/ML_summary/</url>
-    <content><![CDATA[<p><strong>前言</strong></p>
-<p>路漫漫其修远兮，吾将上下而求索。2013年，大二接触人工智能课，讲逻辑推理，专家系统等等，神经网络只是一部分，打开当时老师的ppt，还能看到BP等算法。接着在2015年，上了模式识别课程，有一些启发式算法，KNN K-means等算法，同时神经网络也已经有了 GoogLeNet 等深层网络，热门的GAN网络也在2014年被提出。后面，机遇巧合，本科毕业时选了人工智能的坑，直到3年后的现在算是明白了一点。接下来的三年的目标还是<a href="https://talengu.github.io/public/2018/10/01/AI/how_algorithm_engineer/">【成为一名优秀的算法工程师】</a>。</p>
-<p>回望入坑 <strong>机器学习</strong>，没有系统地整理过相关知识。于是想着手整理一份自己笔记系列。本文为序。</p>
-<blockquote>
-<p>雄关漫道真如铁，而今迈步从头越。</p>
-</blockquote>
-<p><img src="/public/2019/07/23/AI/ML_summary/1564034058070.png" alt="1564034058070"></p>
-<div align="center"> 图1 机器学习知识框架</div>
-如图1 所示，整个系列将由五个部分组成。
+    <title>正则化【一】机器学习中的正则化</title>
+    <url>/public/2019/07/17/AI/regulation_baysian/</url>
+    <content><![CDATA[<p><strong>前言</strong>
+本<strong>正则化系列</strong>文章我们将讨论<strong>正则化技术在机器学习和深度学习的应用</strong>。本文为该系列的第一篇，主要介绍<strong>机器学习正则化的概念，原理和应用实例</strong>。</p>
+<p><a href="https://en.wikipedia.org/wiki/Regularization_(mathematics)" target="_blank" rel="noopener">正则化</a> 技术广泛应用在机器学习和深度学习算法中，本质作用是<strong>防止过拟合、提高模型泛化能力</strong>。其中过拟合的简单理解就是训练的算法模型太过复杂，模型过分考虑了当前样本的结构。</p>
+<p>在早期的机器学习领域一般只是将范数惩罚叫做正则化技术，而在深度学习领域认为，能够显著减少方差，而不过度增加偏差的策略都可以认为是正则化技术。故<strong>推广的正则化技术</strong>还有：扩增样本集、早停止、Dropout、集成学习、多任务学习、对抗训练、参数共享等。(具体见“花书 第七章 <a href="http://www.deeplearningbook.org/contents/regularization.html" target="_blank" rel="noopener">Regularization for Deep Learning</a>”），关于<strong>深度学习正则化</strong>会在下一篇正则化文章中重点分析。</p>
+<p>转载自：<a href="https://blog.csdn.net/BigData_Mining/article/details/81631249" target="_blank" rel="noopener">https://blog.csdn.net/BigData_Mining/article/details/81631249</a></p>
 <a id="more"></a>
-<h2 id="一、机器学习基础"><a class="header-anchor" href="#一、机器学习基础">¶</a>一、机器学习基础</h2>
-<h2 id="二、监督学习"><a class="header-anchor" href="#二、监督学习">¶</a>二、监督学习</h2>
-<img src="/public/2019/07/23/AI/ML_summary/1564034419203.png" alt="1564034419203" style="zoom:67%;">
-<div align="center"> 图 监督学习</div>
-<h2 id="三、无监督学习"><a class="header-anchor" href="#三、无监督学习">¶</a>三、无监督学习</h2>
-<img src="/public/2019/07/23/AI/ML_summary/1564034460034.png" alt="1564034460034" style="zoom:67%;">
-<div align="center"> 图 无监督学习</div>
-<h2 id="四、学习理论"><a class="header-anchor" href="#四、学习理论">¶</a>四、学习理论</h2>
-<img src="/public/2019/07/23/AI/ML_summary/xuexililun.png" alt="xuexililun" style="zoom:67%;">
-<div align="center"> 图 学习理论</div>
-<h3 id="4-1-正则化"><a class="header-anchor" href="#4-1-正则化">¶</a>4.1 <a href="regulation_baysian.md">正则化</a></h3>
-<h2 id="五、强化学习"><a class="header-anchor" href="#五、强化学习">¶</a>五、强化学习</h2>
-<h2 id="六、参考与规划"><a class="header-anchor" href="#六、参考与规划">¶</a>六、参考与规划</h2>
-<p><strong>目标</strong>
-通过阅读以上基本书，打牢自己的理论基础。</p>
-<p><strong>书籍</strong></p>
+<h2 id="1-多角度看机器学习正则化"><a class="header-anchor" href="#1-多角度看机器学习正则化">¶</a>1. 多角度看机器学习正则化</h2>
+<p><strong>机器学习领域正则化</strong>可以从以下三个角度进行理解：</p>
+<p><strong>(1)</strong> <strong>正则化等价于结构风险最小化，其是通过在经验风险项后加上表示模型复杂度的正则化项或惩罚项，达到选择经验风险和模型复杂度都较小的模型目的</strong>。</p>
+<p>​	<strong>经验风险</strong>：机器学习中的风险是指模型与真实解之间的误差的积累，经验风险是指使用训练出来的模型进行预测或者分类，存在多大的误差，可以简单理解为训练误差，经验风险最小化即为训练误差最小。</p>
+<p>​	<strong>结构风险</strong>：结构风险定义为经验风险与置信风险(置信是指可信程度)的和，置信风险越大，模型推广能力越差。可以简单认为结构风险是经验风险后面多加了一项表示模型复杂度的函数项，从而可以同时控制模型训练误差和测试误差，结构风险最小化即为在保证模型分类精度(经验风险)的同时，降低模型复杂度，提高泛化能力。</p>
+<p>​	<strong>公式表达</strong>
+$$
+R(f)=\frac{1}{n}\sum_{i=1}^{n}L(y_i,f(x_i)) + \lambda \Omega (f)
+\tag{1}
+$$
+​		其中，$R(f)$表示结构风险，$L(y_i,f(x_i))$表示第 $i$ 个样本的经验风险，$\Omega(f)$是表征模型复杂度的正则项，$\lambda$ 是正则化参数。根据奥姆剃刀定律，“如无必要，勿增实体”，即认为相对简单的模型泛化能力更好。而模型泛化能力强、泛化误差小，即表示模型推广能力强，通俗理解就是在训练集中训练得到的优秀模型能够很好的适用于实际测试数据，而不仅仅是减少训练误差或者测试误差。泛化误差定义如下：
+$$
+E={Bias}^2(X) + {Var}(X) +{Noise}
+\tag{2}
+$$
+​		其中，$E$ 表示泛化误差，${Bias}$ 代表偏差，${Var}$ 代表方差， ${Noise}$ 代表噪声。</p>
+<p>​	<strong>关系图</strong></p>
+<p><img src="/public/2019/07/17/AI/regulation_baysian/1563350068097.png" alt="1563350068097"></p>
+<div align="center"> Fig 1. 泛化误差与偏差和方差的关系</div>
+​		从 Fig 1 可以看出，随着训练程度加深，模型复杂度会增加，偏差减少，方差增大，而泛化误差呈现U型变化。对于一个“好的系统”通常要求误差小，正则化的作用即为适当的控制模型复杂度，从而使得**泛化误差曲线**取最小值。
+<p><strong>(2)</strong> <strong>正则化等价于带约束的目标函数中的约束项</strong></p>
+<p>以平方误差损失和L2范数为例，优化问题的数学模型如下：
+$$
+J(\theta)=\sum_{i=1}^{n}(y_i-\theta^Tx_i)^2
+\tag{3}
+$$
+$$
+{s.t.}{|| \theta ||}_2^2 \leq C\<br>
+\tag{4}
+$$</p>
+<p>针对上述约束条件的优化问题，采用拉格朗日乘积算子法可以转化为无约束化问题，即
+$$
+J(\theta)=\sum_{i=1}^{n}(y_i-w^Tx_i)^2 + \lambda({|| \theta ||}_2^2-C)
+\tag{5}
+$$</p>
+<p>由于参数 $C$ 为常数，可以忽略，故上述公式和标准的正则化 公式完全一致。</p>
+<p><strong>(3)</strong> <strong>从贝叶斯角度考虑</strong></p>
+<p>正则项等价于引入参数的模型先验概率，可以简单理解为对最大似然估计引入先验概率，从而转化为最大后验估计，其中的先验概率即对于正则项（这部分内容后面详细讲解）。</p>
+<h2 id="2-基本概念"><a class="header-anchor" href="#2-基本概念">¶</a>2 基本概念</h2>
+<p>正则化也可以成为规则化、权重衰减技术，不同的领域叫法不一样，数学上常用范数实现，例如L1和L2范数，统计学领域叫做惩罚项、罚因子。</p>
+<p>下面给出范数的数学公式，方便以后分析：</p>
+<p>​	(1) $p$ 范数：
+$$
+Lp=(\sum_{i=1}^{n}{|| x_i ||}^p)^{\frac{1}{p}}
+\tag{6}
+$$
+​	(2) $L0$ 范数：0 范数表示向量中非零元素的个数（即为其稀疏度）</p>
+<p>​	(3) $L1$ 范数：即向量元素绝对值之和，$p$ 范数取1，即为1范数
+$$
+{||x||}_1=\sum^n_1 {|| x_i || }
+\tag{7}
+$$</p>
+<p>​	(4) $L2$ 范数：即向量元素绝对值的平方和再开发，也称欧几里得距离，$p$ 范数取2，即为2范数
+$$
+{||x||}_{2}=\sqrt{\sum^{n}_1|| x_i ||^2}
+\tag{8}
+$$</p>
+<p>​	(5) $\infty $ 范数：即所有向量元素的绝对值中的最大值，$p$ 范数取 $\infty $，即为 $\infty $ 范数
+$$
+{||x  ||}_{\infty }=\underset{i}{\max}{\left | x_i \right |}
+\tag{9}
+$$</p>
+<p>​	(6) $-\infty $ 范数：即所有向量元素绝对值中的最小值，$p$ 范数取$-\infty $，即为 $-\infty $ 范数
+$$
+{||x  ||}_{-\infty }=\underset{i}{\min}{\left | x_i \right |}
+\tag{10}
+$$
+<strong>图形描述</strong></p>
+<p>​		从 Fig 2、Fig 3 图可以看出：q(p)越小，曲线越贴近坐标轴，q(p)越大，曲线越远离坐标轴，并且棱角越明显，当q(p)取0时候，是完全和坐标轴贴合，当q(p)取无穷的时候，呈现正方体形状。同时也可以看出，采用不同的范数作为正则项，会得到完全不同的算法模型结果，故而对于不同要求的模型，应该采用不同的范数作为正则项。</p>
+<p><img src="/public/2019/07/17/AI/regulation_baysian/1563354053269.png" alt="1563354053269"></p>
+<div align="center"> Fig 2. 向量长度为2维的范数约束</div>
+![1563354456894](regulation_baysian/1563354456894.png)
+<div align="center"> Fig 3. 向量长度为3维的范数约束</div>
+## 3 深度理解
+<p>​		为了更好的理解正则化技术原理，下面从4个方面进行深度分析，希望对大家理解有帮助。</p>
+<h3 id="3-1-简单数值假设分析法"><a class="header-anchor" href="#3-1-简单数值假设分析法">¶</a>3.1 简单数值假设分析法</h3>
+<p>​		此处以L2范数讲解，下面的各图形来自吴恩达的机器学习课程。</p>
+<p><img src="/public/2019/07/17/AI/regulation_baysian/image-20190619002115576.png" alt="image-20190619002115576"></p>
+<div align="center"> Fig 4. 不同参数下的曲线拟合结果</div>
+​		左边的曲线拟合是欠拟合，中间的曲线拟合是刚好合适，右边的曲线拟合是过拟合。对于右边的拟合曲线，有
+$$
+h_{\theta}(x)={\theta}_0+{\theta}_0 x_1 +{\theta}_2 x_2^2 +{\theta}_3 x_3^3 +{\theta}_4 x_4^4
+\tag{11}
+$$
+​		从上式可以看出，由于$\theta_3$和$\theta_4$对应了高阶，导致拟合曲线是4阶曲线，出现了过拟合。正则化的目的为适当缩减$\theta_3$和$\theta_4$的值，例如都为0.0001，则上述曲线本质上等价与
+$$
+h_{\theta}(x)={\theta}_0 + {\theta}_1 x_1 +{\theta}_2 x_2^2
+\tag{12}
+$$
+​		也就是变成了中间的刚好合适的拟合曲线。对于$\theta_3$ 和$\theta_4$增加 L2 正则项后的代价函数表达式为：
+$$
+J(\theta)= \underset{\theta}{\min}\frac{1}{n}\sum_{i=1}^{n}((h_{\theta}(x_i)-y_i)+1000{\theta}_3^2 + 1000 {\theta}_4^2)
+\tag{13}
+$$
+​		从上式可以看出，$\theta_3^2$ 和 $\theta_4^2$ 均大于 0，其乘上了1000，要 $J(\theta)$ 是最小，则会迫使模型学习到的$\theta_3$ 和 $\theta_4$ 会非常小，因为只有在$\theta_3$ 和 $\theta_4$ 会非常小的情况下整个代价函数值才会取的较小值。在实际开发中，是对所有参数进行正则化，为了使代价函数尽可能的小，所有的参数 $\theta$ 的值（不包括 $\theta_0$）都会在一定程度上减小，但是减小程度会不一样，从而实现了权重衰减、简化模型复杂度的作用。
+<h3 id="3-2-图形分析法"><a class="header-anchor" href="#3-2-图形分析法">¶</a>3.2 图形分析法</h3>
+<p>​		此处采用L1和L2范数讲解：
+<strong>(1) L2 范数正则</strong>
+$$
+J(\beta)=\sum_{i=1}^{n}(y_i-{\beta}^T x_i)^2 + \lambda {|| {\beta} ||}_2^2
+\tag{14}
+$$
+<img src="/public/2019/07/17/AI/regulation_baysian/1563366078400.png" alt="1563366078400"></p>
+<div align="center"> Fig 5. L2 范数与代价函数的寻优图示</div>
+​		在 Fig 5 中，蓝色的圆形空间表示 L2 范数空间，设为 $\beta_1^2 + \beta_2^2 = r^2$，可以看出，当 $r$ 从 0 逐渐增大时候，该圆形也逐渐增大，红色的线表示原始代价函数解空间即 $\sum_{i=1}^{n}(y_i-\beta^T x_i)^2$，此处为了方便绘图，设参数只有2维。红色圆环上的任何一点都表示一个可行解即代表一组$\beta_1$、$\beta_2$，其中任何一个红色圆环上面的$\beta_1$，$\beta_2$对应的代价函数值一样（可以简单理解为等值线），$\hat{\beta}$ 代表最佳解空间。
+<h2 id="4-贝叶斯角度分析"><a class="header-anchor" href="#4-贝叶斯角度分析">¶</a>4. 贝叶斯角度分析</h2>
+<p>​		以L1和L2范数为例，所得结论可以推广到P范数中，首先需要知道：整个最优化问题从贝叶斯观点来看是一种贝叶斯最大后验估计，其中正则化项对应后验估计中的先验信息，损失函数对应后验估计中的似然函数，两者的乘积即对应贝叶斯最大后验估计的形式。针对L1和L2范数还有结论：<strong>L2 范数相当于给模型参数设置一个协方差为1/alpha的零均值高斯先验分布，L1 范数相当于给模型参数 设置一个参数为1/alpha 拉普拉斯先验分布</strong>。</p>
+<p>​		为了讲清楚上述结论，需要具备几点前置知识点：(1) 高斯分布和拉普拉斯分布的定义和形状；(2) 贝叶斯定理；(3) 最大似然估计；(4) 最大后验估计。下面我对这4个知识点进行解释。</p>
+<p><strong>(1)</strong> <strong>高斯分布和拉普拉斯分布</strong></p>
+<p><img src="/public/2019/07/17/AI/regulation_baysian/0.png" alt="0?wx_fmt=png"></p>
+<p><img src="/public/2019/07/17/AI/regulation_baysian/0-20190610163845194.png" alt="0?wx_fmt=png"></p>
+<p><strong>(2)</strong> <strong>最大似然估计</strong></p>
+<p><img src="/public/2019/07/17/AI/regulation_baysian/0-20190610163845276.png" alt="0?wx_fmt=png"></p>
+<p>​		如果上述公式不能理解，请各位读者去复习一下大学课程《概率论与数理统计》中的参数估计章节，为了更方便理解，下面举一个例子：假设我要统计出整个大学内所有同学的身高分布情况，设全校一共20000人，数量庞大，所有人都去问一遍不太靠谱，所以我打算采用抽样方法来估计，假设我已经知道身高分布服从高斯分布，但是我不知道高斯分布中的均值和方差参数，现在我打算采用最大似然估计方法来确定这两个参数。首先需要明确，全校20000即为总体X，我随机从各个班抽取10名同学，假设一共抽了2000个同学，那么2000同学就构成了样本空间，由于每个样本的概率密度函数已知，则很容易写出似然函数，对数求导即可求解参数。</p>
+<p><strong>(3)</strong> <strong>最大后验估计</strong></p>
+<p><img src="/public/2019/07/17/AI/regulation_baysian/0-20190610163845259.png" alt="0?wx_fmt=png"></p>
+<p><img src="/public/2019/07/17/AI/regulation_baysian/0-20190610163845297.png" alt="0?wx_fmt=png"></p>
+<p><img src="/public/2019/07/17/AI/regulation_baysian/0-20190610163845289.png" alt="0?wx_fmt=png"></p>
+<h2 id="5-例子"><a class="header-anchor" href="#5-例子">¶</a>5. 例子</h2>
+<h3 id="5-1-逻辑回归"><a class="header-anchor" href="#5-1-逻辑回归">¶</a>5.1 逻辑回归</h3>
+<p>​		二分类逻辑回归使用Sigmoid作为决策函数进行分类，该函数可以将任意的输入映射到[0,1]区间，当预测结果小于0.5，则表示负类，当预测结果大于0.5.则表示正类，其模型本质是求最大似然估计，具体求解似然函数通常使用梯度下降法，而前面说过：最大似然估计法没有考虑训练集以外的因素，很容易造成过拟合，故而逻辑回归一般采用L2范数进行正则化操作，Sigmoid函数定义和图形如下：</p>
+<p><img src="/public/2019/07/17/AI/regulation_baysian/0.jpeg" alt="0?wx_fmt=png"></p>
+<h3 id="5-2-岭回归-Ridge-Regression"><a class="header-anchor" href="#5-2-岭回归-Ridge-Regression">¶</a>5.2 岭回归(Ridge Regression)</h3>
+<p>​		岭回归本质上是针对线性回归问题引入了L2范数正则，通过缩减回归系数避免过拟合问题，最先用来处理特征数多于样本数的情况(高维小样本问题)，现在也用于在估计中加人偏差，从而得到更好的估计，加了正则化后的代价函数如下：</p>
+<p><img src="/public/2019/07/17/AI/regulation_baysian/0-20190610174921016.png" alt="0?wx_fmt=png"></p>
+<h3 id="5-3-Lasso-回归"><a class="header-anchor" href="#5-3-Lasso-回归">¶</a>5.3 Lasso 回归</h3>
+<p>​		拉索回归(lasso回归)本质上是针对线性回归问题引入了L1范数正则，通过缩减回归系数避免过拟合问题，其不同于L2范数，其可以将某些系数缩减为0即所谓的具备稀疏性(稀疏性的好处是简化计算、容易理解模型、减少存储空间、不容易出现过拟合等等)，加了正则化后的代价函数如下：</p>
+<p><img src="/public/2019/07/17/AI/regulation_baysian/0-20190610174920968.png" alt="0?wx_fmt=png"></p>
+<p>​		其中，参数函数和岭回归中相同。L1范数罚有一个问题：由于|X|函数在0处不可导，故而直接使用最小二乘法、梯度下降法等方法均失效，但是由于其为第一类间断点中的可去间断点，可以通过补充该点的定义解决，通常，对于线性回归中的lasso回归可以采用近似的前向逐步回归替代。</p>
+<h3 id="5-4-SVM"><a class="header-anchor" href="#5-4-SVM">¶</a>5.4 SVM</h3>
+<p>​		支持向量机SVM优化目的为寻找一个超平面，使得正负样本能够以最大间隔分离开，从而得到更好的泛化性能，其通过引入核函数来将低维线性不可分的样本映射到高维空间从而线性可分，通过引入惩罚参数C(类似于正则化参数)来对错分样本进行惩罚，从而减少模型复杂度，提高泛化能力，其优化目标如下：</p>
+<p><img src="/public/2019/07/17/AI/regulation_baysian/0-20190610174921029.png" alt="0?wx_fmt=png"></p>
+<p>​		大家如果不知道上面公式的推导，不用紧张，对于本次内容不是重点，只需要关注后面正则项部分，惩罚参数C作用和正则化参数作用一致，只是反相关而已。需要明白以下结论：</p>
+<p>​		<strong>(1)</strong> C越大，正则化参数越小，表示对分错样本的惩罚程度越大，正则化作用越小，偏差越小，方差越大，越容易出现过拟合(通俗理解，原本将低维空间映射到5维空间正好线性可分，但是由于惩罚过于严重，任何一个样本分错了都不可原谅，结果系统只能不断提高维数来拟合样本，假设为10维，最终导致映射维数过高，出现过拟合样本现象，数学上称为VC维较大)；</p>
+<p>​		<strong>(2)</strong> C越小，正则化参数越大，表示对分错样本的惩罚程度越小，正则化作用越大，偏差越大，方差越小，越容易出现欠拟合(通俗理解，原本将低维空间映射到5维空间正好线性可分，但是由于惩罚过小，分错了好多样本都可以理解，比较随意，结果系统也采用简化版来拟合样本，假设为3维，最终导致映射维数过低，出现欠拟合样本现象，数学上称为VC维较小)。</p>
+<h2 id="6-总结"><a class="header-anchor" href="#6-总结">¶</a>6. 总结</h2>
+<p>根本目的本质：防止过拟合，提高模型泛化能力。</p>
+<p>正则化技术分类：
+<strong>狭义上</strong>（不同地方叫法不同）</p>
 <ul>
-<li>PRML Bishop</li>
-<li>机器学习 周志华</li>
-<li>统计学习 李航</li>
-<li>深度学习 Goodfellow</li>
-<li>模式识别 张学工</li>
+<li>在早期的机器学习领域一般只是将范数惩罚叫做正则化技术</li>
+<li>规则化、权重衰减</li>
+<li>从贝叶斯角度考虑，正则项等价于引入参数的模型先验概率</li>
 </ul>
-<p><strong>课程</strong></p>
-<p><a href="https://www.bilibili.com/video/av70839977" target="_blank" rel="noopener">https://www.bilibili.com/video/av70839977</a></p>
-<p><strong>博客编写</strong></p>
-<ul>
-<li>前言介绍，包括作者，背景，原始paper，和以上基本书的对应章节。</li>
-<li>原理阐述，算法步骤写出。</li>
-<li>案例分析</li>
-<li>利用python写出代码，先用scilearn写。</li>
-<li>总结，预告。</li>
-</ul>
+<p><strong>广义上</strong>：
+能够显著减少方差，而不过度增加偏差的策略都可以认为是正则化技术，推广的正则化技术还有：扩增样本集、早停止、Dropout、集成学习、多任务学习、对抗训练、参数共享等。</p>
+<h2 id="Reference"><a class="header-anchor" href="#Reference">¶</a>Reference</h2>
+<p><a href="https://blog.csdn.net/BigData_Mining/article/details/81631249" target="_blank" rel="noopener">正则化总结的比较好比较全面的文章</a></p>
 ]]></content>
       <categories>
         <category>机器学习</category>
+        <category>正则化</category>
       </categories>
       <tags>
         <tag>AI</tag>
@@ -664,74 +831,6 @@ NexT Github  <a href="https://github.com/iissnan/hexo-theme-next" target="_blank
         <tag>Bashrc</tag>
         <tag>Vimrc</tag>
         <tag>Tmux</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>ubuntu引导修复</title>
-    <url>/public/2017/06/14/linux/boot_recovery/</url>
-    <content><![CDATA[<p><strong>前言</strong>
-本文记录修复ubuntu引导，并修改ubuntu盘的大小过程。
-参考：<a href="http://www.cnblogs.com/jloveu/p/Ubuntu-partition-expansion-record.html" target="_blank" rel="noopener">http://www.cnblogs.com/jloveu/p/Ubuntu-partition-expansion-record.html</a>
-工具：Ubuntu 的live U盘，带有gparted分区工具，和grub修复工具</p>
-<a id="more"></a>
-<h2 id="修复启动"><a class="header-anchor" href="#修复启动">¶</a>修复启动</h2>
-<p>对于使用gpt的格式的硬盘，ubuntu不要用uefi来安装。gpt还要生成一个bootgios的分区，很重要。</p>
-<p>执行以下命令（以root身份）：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">mkdir /tmp/mydir</span><br><span class="line">mount /dev/sda8 /tmp/mydir  (注：其中的`/dev/sda8`为我的`/`分区标识，根据自己情况修改为自己的`/`分区标识)</span><br><span class="line">mount /dev/sda11 /tmp/mydir/boot  (注：同上，`/dev/sda11`为`/boot`分区标识)</span><br><span class="line">mount --bind /dev /tmp/mydir/dev</span><br><span class="line">mount --bind /proc /tmp/mydir/proc</span><br><span class="line">mount --bind /sys /tmp/mydir/sys</span><br><span class="line">chroot /tmp/mydir  (此步可能输出一些信息，可以无视)</span><br><span class="line">grub-install /dev/sda  (注：其中的`/dev/sda`为`/`分区所在硬盘的标识)</span><br><span class="line">exit</span><br></pre></td></tr></table></figure>
-<h2 id="修改Ubuntu多系统的默认启动顺序"><a class="header-anchor" href="#修改Ubuntu多系统的默认启动顺序">¶</a>修改Ubuntu多系统的默认启动顺序</h2>
-<p><a href="http://jingyan.baidu.com/article/f71d60379e16021ab641d1ab.html" target="_blank" rel="noopener">link</a><br>
-打开该配置文件&quot;/etc/default/grub&quot;</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">sudo vim /etc/default/grub</span><br><span class="line">sudo update-grub</span><br></pre></td></tr></table></figure>
-<p>其中的“GRUB_DEFAULT=0”为设置默认启动项。系统启动菜单Windows10的启动项在第5项，修改为4（GRUB启动项是从0开始的）。<br>
-<img src="/public/2017/06/14/linux/boot_recovery/boot_file.png" alt="GRUB修改"></p>
-<h2 id="去除多余GRUB启动项（直接）"><a class="header-anchor" href="#去除多余GRUB启动项（直接）">¶</a>去除多余GRUB启动项（直接）</h2>
-<p><a href="https://zhidao.baidu.com/question/472571337.html" target="_blank" rel="noopener">link</a><br>
-注释掉“/boot/grub/grub.cfg”中对应</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">sudo gedit /boot/grub/grub.cfg</span><br></pre></td></tr></table></figure>
-<h2 id="Ubuntu下如何修复Grub引导"><a class="header-anchor" href="#Ubuntu下如何修复Grub引导">¶</a>Ubuntu下如何修复Grub引导</h2>
-<p><a href="https://mp.weixin.qq.com/s/NDZPPA-0FhqSzRndQOhNEw" target="_blank" rel="noopener">link</a></p>
-<p>本文以 Ubuntu Live CD 修复 Grub 引导为例，已在 /dev/sda3 安装 Fedora。</p>
-<p>首先制作 Ubuntu 启动 USB</p>
-<p>复制代码代码如下：
-　　<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">　　sudo dd if=ubuntu-13.10-desktop-amd64.iso of=/dev/sdb </span><br><span class="line">　　#/dev/sdb 为 USB 盘符</span><br></pre></td></tr></table></figure></p>
-<p>1.使用启动 USB 进入 Ubuntu 试用环境</p>
-<p>2.查看硬盘分区状况，获取 Linux 系统安装分区编号
-　　代码如下：</p>
-<p>sudo fdisk -l</p>
-<p>查看输出结果，然后根据文件类型和分区大小来判定 Linux 系统安装在哪块硬盘和安装的分区。我的电脑是在 /dev/sda3 安装了 Fedora。</p>
-<p>或者，打开 Gparted 图形化工具来查看分区信息也可以。</p>
-<p>挂载 Fedora 安装分区</p>
-<p><strong>3.已知 Fedora 安装在了 /dev/sda3 上，所以我们可以用下面命令来挂载 Fedora 安装分区。你需要将 /dev/sda3 换成自己的 Linux 安装分区。</strong></p>
-<p>代码如下：</p>
-<p>sudo mount /dev/sda3 /mnt</p>
-<p><strong>4.挂载其他所需的目录（使用 --bind）</strong></p>
-<p>代码如下：</p>
-<p>sudo mount --bind /dev /mnt/dev</p>
-<p>sudo mount --bind /proc /mnt/proc</p>
-<p>sudo mount --bind /sys /mnt/sys</p>
-<p><strong>5.Chroot 到硬盘上的 Linux 系统</strong></p>
-<p>代码如下：</p>
-<p>sudo chroot /mnt</p>
-<p><strong>6.安装&amp;更新 Grub</strong></p>
-<p>代码如下：</p>
-<p>grub2-install /dev/sda</p>
-<p>grub2-mkconfig -o /boot/grub2/grub.cfg</p>
-<p><strong>7.Grub 已经修复成功，我们还需要退出 chroot 环境、卸载已经挂载的设备与目录：</strong></p>
-<p>代码如下：</p>
-<p>exit #退出 chroot 环境</p>
-<p>sudo umount /mnt/dev</p>
-<p>sudo umount /mnt/proc</p>
-<p>sudo umount /mnt/sys</p>
-<p>sudo umount /mnt</p>
-<p><strong>8.重启！</strong></p>
-<p>上面就是使用Ubuntu LiveCD修复grub的方法介绍了，如果你在使用双系统安装windows中出现Grub引导错误，不妨使用该方法进行修复吧。</p>
-]]></content>
-      <categories>
-        <category>Linux</category>
-      </categories>
-      <tags>
-        <tag>Ubuntu</tag>
-        <tag>BootRecovery</tag>
       </tags>
   </entry>
   <entry>
@@ -831,6 +930,74 @@ NexT Github  <a href="https://github.com/iissnan/hexo-theme-next" target="_blank
       <tags>
         <tag>Ubuntu</tag>
         <tag>proxy代理</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>ubuntu引导修复</title>
+    <url>/public/2017/06/14/linux/boot_recovery/</url>
+    <content><![CDATA[<p><strong>前言</strong>
+本文记录修复ubuntu引导，并修改ubuntu盘的大小过程。
+参考：<a href="http://www.cnblogs.com/jloveu/p/Ubuntu-partition-expansion-record.html" target="_blank" rel="noopener">http://www.cnblogs.com/jloveu/p/Ubuntu-partition-expansion-record.html</a>
+工具：Ubuntu 的live U盘，带有gparted分区工具，和grub修复工具</p>
+<a id="more"></a>
+<h2 id="修复启动"><a class="header-anchor" href="#修复启动">¶</a>修复启动</h2>
+<p>对于使用gpt的格式的硬盘，ubuntu不要用uefi来安装。gpt还要生成一个bootgios的分区，很重要。</p>
+<p>执行以下命令（以root身份）：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">mkdir /tmp/mydir</span><br><span class="line">mount /dev/sda8 /tmp/mydir  (注：其中的`/dev/sda8`为我的`/`分区标识，根据自己情况修改为自己的`/`分区标识)</span><br><span class="line">mount /dev/sda11 /tmp/mydir/boot  (注：同上，`/dev/sda11`为`/boot`分区标识)</span><br><span class="line">mount --bind /dev /tmp/mydir/dev</span><br><span class="line">mount --bind /proc /tmp/mydir/proc</span><br><span class="line">mount --bind /sys /tmp/mydir/sys</span><br><span class="line">chroot /tmp/mydir  (此步可能输出一些信息，可以无视)</span><br><span class="line">grub-install /dev/sda  (注：其中的`/dev/sda`为`/`分区所在硬盘的标识)</span><br><span class="line">exit</span><br></pre></td></tr></table></figure>
+<h2 id="修改Ubuntu多系统的默认启动顺序"><a class="header-anchor" href="#修改Ubuntu多系统的默认启动顺序">¶</a>修改Ubuntu多系统的默认启动顺序</h2>
+<p><a href="http://jingyan.baidu.com/article/f71d60379e16021ab641d1ab.html" target="_blank" rel="noopener">link</a><br>
+打开该配置文件&quot;/etc/default/grub&quot;</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">sudo vim /etc/default/grub</span><br><span class="line">sudo update-grub</span><br></pre></td></tr></table></figure>
+<p>其中的“GRUB_DEFAULT=0”为设置默认启动项。系统启动菜单Windows10的启动项在第5项，修改为4（GRUB启动项是从0开始的）。<br>
+<img src="/public/2017/06/14/linux/boot_recovery/boot_file.png" alt="GRUB修改"></p>
+<h2 id="去除多余GRUB启动项（直接）"><a class="header-anchor" href="#去除多余GRUB启动项（直接）">¶</a>去除多余GRUB启动项（直接）</h2>
+<p><a href="https://zhidao.baidu.com/question/472571337.html" target="_blank" rel="noopener">link</a><br>
+注释掉“/boot/grub/grub.cfg”中对应</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">sudo gedit /boot/grub/grub.cfg</span><br></pre></td></tr></table></figure>
+<h2 id="Ubuntu下如何修复Grub引导"><a class="header-anchor" href="#Ubuntu下如何修复Grub引导">¶</a>Ubuntu下如何修复Grub引导</h2>
+<p><a href="https://mp.weixin.qq.com/s/NDZPPA-0FhqSzRndQOhNEw" target="_blank" rel="noopener">link</a></p>
+<p>本文以 Ubuntu Live CD 修复 Grub 引导为例，已在 /dev/sda3 安装 Fedora。</p>
+<p>首先制作 Ubuntu 启动 USB</p>
+<p>复制代码代码如下：
+　　<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">　　sudo dd if=ubuntu-13.10-desktop-amd64.iso of=/dev/sdb </span><br><span class="line">　　#/dev/sdb 为 USB 盘符</span><br></pre></td></tr></table></figure></p>
+<p>1.使用启动 USB 进入 Ubuntu 试用环境</p>
+<p>2.查看硬盘分区状况，获取 Linux 系统安装分区编号
+　　代码如下：</p>
+<p>sudo fdisk -l</p>
+<p>查看输出结果，然后根据文件类型和分区大小来判定 Linux 系统安装在哪块硬盘和安装的分区。我的电脑是在 /dev/sda3 安装了 Fedora。</p>
+<p>或者，打开 Gparted 图形化工具来查看分区信息也可以。</p>
+<p>挂载 Fedora 安装分区</p>
+<p><strong>3.已知 Fedora 安装在了 /dev/sda3 上，所以我们可以用下面命令来挂载 Fedora 安装分区。你需要将 /dev/sda3 换成自己的 Linux 安装分区。</strong></p>
+<p>代码如下：</p>
+<p>sudo mount /dev/sda3 /mnt</p>
+<p><strong>4.挂载其他所需的目录（使用 --bind）</strong></p>
+<p>代码如下：</p>
+<p>sudo mount --bind /dev /mnt/dev</p>
+<p>sudo mount --bind /proc /mnt/proc</p>
+<p>sudo mount --bind /sys /mnt/sys</p>
+<p><strong>5.Chroot 到硬盘上的 Linux 系统</strong></p>
+<p>代码如下：</p>
+<p>sudo chroot /mnt</p>
+<p><strong>6.安装&amp;更新 Grub</strong></p>
+<p>代码如下：</p>
+<p>grub2-install /dev/sda</p>
+<p>grub2-mkconfig -o /boot/grub2/grub.cfg</p>
+<p><strong>7.Grub 已经修复成功，我们还需要退出 chroot 环境、卸载已经挂载的设备与目录：</strong></p>
+<p>代码如下：</p>
+<p>exit #退出 chroot 环境</p>
+<p>sudo umount /mnt/dev</p>
+<p>sudo umount /mnt/proc</p>
+<p>sudo umount /mnt/sys</p>
+<p>sudo umount /mnt</p>
+<p><strong>8.重启！</strong></p>
+<p>上面就是使用Ubuntu LiveCD修复grub的方法介绍了，如果你在使用双系统安装windows中出现Grub引导错误，不妨使用该方法进行修复吧。</p>
+]]></content>
+      <categories>
+        <category>Linux</category>
+      </categories>
+      <tags>
+        <tag>Ubuntu</tag>
+        <tag>BootRecovery</tag>
       </tags>
   </entry>
   <entry>
@@ -1043,23 +1210,6 @@ $$
       </tags>
   </entry>
   <entry>
-    <title>srt中英文合并python脚本</title>
-    <url>/public/2016/04/14/shells/youtube_src_combine/</url>
-    <content><![CDATA[<p><strong>前言</strong></p>
-<p>从Youtube上看只有中文或英文分开的字幕，下载好视频，想要中英文字幕。可从 <a href="http://mo.dbxdb.com/Yang/setting.html" target="_blank" rel="noopener">Getting Youtube subtitles</a> 获取中或英文字幕，然后将其合并，即成中英文双字幕。下面是python脚本。</p>
-<a id="more"></a>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">本脚本完成了中英文srt合并的功能</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">srt2lis</span><span class="params">(name)</span>:</span></span><br><span class="line">    lines = open(<span class="string">'srt/'</span>+name, <span class="string">'r'</span>, encoding=<span class="string">'utf-8'</span>).readlines()</span><br><span class="line">    lis = []</span><br><span class="line">    tmp = []</span><br><span class="line">    <span class="keyword">for</span> i, line <span class="keyword">in</span> enumerate(lines):</span><br><span class="line">        <span class="comment"># 以\n 结尾的一个时间点</span></span><br><span class="line">        <span class="keyword">if</span> line == <span class="string">'\n'</span>:</span><br><span class="line">            lis.append(tmp)</span><br><span class="line">            tmp = []</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            tmp.append(line)</span><br><span class="line">    <span class="keyword">return</span> lis</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">hebing</span><span class="params">(name_zh)</span>:</span></span><br><span class="line">    name_en = name_zh[:<span class="number">-7</span>] + <span class="string">'.srt'</span></span><br><span class="line">    out_name=<span class="string">'out/'</span>+name_en</span><br><span class="line">    f=open(out_name,<span class="string">'w'</span>,encoding=<span class="string">'utf-8'</span>)</span><br><span class="line">    lis_en=srt2lis(name_en)</span><br><span class="line">    lis_zh=srt2lis(name_zh)</span><br><span class="line">    <span class="keyword">for</span> i,item <span class="keyword">in</span> enumerate(lis_en):</span><br><span class="line">        print(item[<span class="number">0</span>])</span><br><span class="line">        f.write(item[<span class="number">0</span>])</span><br><span class="line">        f.write(item[<span class="number">1</span>])</span><br><span class="line">        <span class="keyword">for</span> line <span class="keyword">in</span> lis_zh[i][<span class="number">2</span>:]:</span><br><span class="line">            f.write(line)</span><br><span class="line">        <span class="keyword">for</span> line <span class="keyword">in</span> item[<span class="number">2</span>:]:</span><br><span class="line">            f.write(line)</span><br><span class="line">        f.write(<span class="string">'\n'</span>)</span><br><span class="line">    f.close()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">flis=os.listdir(<span class="string">'srt/'</span>)</span><br><span class="line"><span class="keyword">if</span> <span class="keyword">not</span> os.path.exists(<span class="string">'out'</span>):</span><br><span class="line">    os.mkdir(<span class="string">'out'</span>)</span><br><span class="line"><span class="keyword">for</span> name <span class="keyword">in</span> flis:</span><br><span class="line">    print(name)</span><br><span class="line">    <span class="keyword">if</span> name[<span class="number">-6</span>:<span class="number">-4</span>]==<span class="string">'zh'</span>:</span><br><span class="line">        hebing(name)</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>常用脚本</category>
-      </categories>
-      <tags>
-        <tag>python脚本</tag>
-        <tag>YouTube字幕合并</tag>
-        <tag>src</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>这哈儿是重庆</title>
     <url>/public/2019/04/25/trips/chongqing/</url>
     <content><![CDATA[<p>重庆，旅游纪实。20190422 - 20190424</p>
@@ -1094,170 +1244,20 @@ $$
       </tags>
   </entry>
   <entry>
-    <title>正则化【一】机器学习中的正则化</title>
-    <url>/public/2019/07/17/AI/regulation_baysian/</url>
-    <content><![CDATA[<p><strong>前言</strong>
-本<strong>正则化系列</strong>文章我们将讨论<strong>正则化技术在机器学习和深度学习的应用</strong>。本文为该系列的第一篇，主要介绍<strong>机器学习正则化的概念，原理和应用实例</strong>。</p>
-<p><a href="https://en.wikipedia.org/wiki/Regularization_(mathematics)" target="_blank" rel="noopener">正则化</a> 技术广泛应用在机器学习和深度学习算法中，本质作用是<strong>防止过拟合、提高模型泛化能力</strong>。其中过拟合的简单理解就是训练的算法模型太过复杂，模型过分考虑了当前样本的结构。</p>
-<p>在早期的机器学习领域一般只是将范数惩罚叫做正则化技术，而在深度学习领域认为，能够显著减少方差，而不过度增加偏差的策略都可以认为是正则化技术。故<strong>推广的正则化技术</strong>还有：扩增样本集、早停止、Dropout、集成学习、多任务学习、对抗训练、参数共享等。(具体见“花书 第七章 <a href="http://www.deeplearningbook.org/contents/regularization.html" target="_blank" rel="noopener">Regularization for Deep Learning</a>”），关于<strong>深度学习正则化</strong>会在下一篇正则化文章中重点分析。</p>
-<p>转载自：<a href="https://blog.csdn.net/BigData_Mining/article/details/81631249" target="_blank" rel="noopener">https://blog.csdn.net/BigData_Mining/article/details/81631249</a></p>
+    <title>srt中英文合并python脚本</title>
+    <url>/public/2016/04/14/shells/youtube_src_combine/</url>
+    <content><![CDATA[<p><strong>前言</strong></p>
+<p>从Youtube上看只有中文或英文分开的字幕，下载好视频，想要中英文字幕。可从 <a href="http://mo.dbxdb.com/Yang/setting.html" target="_blank" rel="noopener">Getting Youtube subtitles</a> 获取中或英文字幕，然后将其合并，即成中英文双字幕。下面是python脚本。</p>
 <a id="more"></a>
-<h2 id="1-多角度看机器学习正则化"><a class="header-anchor" href="#1-多角度看机器学习正则化">¶</a>1. 多角度看机器学习正则化</h2>
-<p><strong>机器学习领域正则化</strong>可以从以下三个角度进行理解：</p>
-<p><strong>(1)</strong> <strong>正则化等价于结构风险最小化，其是通过在经验风险项后加上表示模型复杂度的正则化项或惩罚项，达到选择经验风险和模型复杂度都较小的模型目的</strong>。</p>
-<p>​	<strong>经验风险</strong>：机器学习中的风险是指模型与真实解之间的误差的积累，经验风险是指使用训练出来的模型进行预测或者分类，存在多大的误差，可以简单理解为训练误差，经验风险最小化即为训练误差最小。</p>
-<p>​	<strong>结构风险</strong>：结构风险定义为经验风险与置信风险(置信是指可信程度)的和，置信风险越大，模型推广能力越差。可以简单认为结构风险是经验风险后面多加了一项表示模型复杂度的函数项，从而可以同时控制模型训练误差和测试误差，结构风险最小化即为在保证模型分类精度(经验风险)的同时，降低模型复杂度，提高泛化能力。</p>
-<p>​	<strong>公式表达</strong>
-$$
-R(f)=\frac{1}{n}\sum_{i=1}^{n}L(y_i,f(x_i)) + \lambda \Omega (f)
-\tag{1}
-$$
-​		其中，$R(f)$表示结构风险，$L(y_i,f(x_i))$表示第 $i$ 个样本的经验风险，$\Omega(f)$是表征模型复杂度的正则项，$\lambda$ 是正则化参数。根据奥姆剃刀定律，“如无必要，勿增实体”，即认为相对简单的模型泛化能力更好。而模型泛化能力强、泛化误差小，即表示模型推广能力强，通俗理解就是在训练集中训练得到的优秀模型能够很好的适用于实际测试数据，而不仅仅是减少训练误差或者测试误差。泛化误差定义如下：
-$$
-E={Bias}^2(X) + {Var}(X) +{Noise}
-\tag{2}
-$$
-​		其中，$E$ 表示泛化误差，${Bias}$ 代表偏差，${Var}$ 代表方差， ${Noise}$ 代表噪声。</p>
-<p>​	<strong>关系图</strong></p>
-<p><img src="/public/2019/07/17/AI/regulation_baysian/1563350068097.png" alt="1563350068097"></p>
-<div align="center"> Fig 1. 泛化误差与偏差和方差的关系</div>
-​		从 Fig 1 可以看出，随着训练程度加深，模型复杂度会增加，偏差减少，方差增大，而泛化误差呈现U型变化。对于一个“好的系统”通常要求误差小，正则化的作用即为适当的控制模型复杂度，从而使得**泛化误差曲线**取最小值。
-<p><strong>(2)</strong> <strong>正则化等价于带约束的目标函数中的约束项</strong></p>
-<p>以平方误差损失和L2范数为例，优化问题的数学模型如下：
-$$
-J(\theta)=\sum_{i=1}^{n}(y_i-\theta^Tx_i)^2
-\tag{3}
-$$
-$$
-{s.t.}{|| \theta ||}_2^2 \leq C\<br>
-\tag{4}
-$$</p>
-<p>针对上述约束条件的优化问题，采用拉格朗日乘积算子法可以转化为无约束化问题，即
-$$
-J(\theta)=\sum_{i=1}^{n}(y_i-w^Tx_i)^2 + \lambda({|| \theta ||}_2^2-C)
-\tag{5}
-$$</p>
-<p>由于参数 $C$ 为常数，可以忽略，故上述公式和标准的正则化 公式完全一致。</p>
-<p><strong>(3)</strong> <strong>从贝叶斯角度考虑</strong></p>
-<p>正则项等价于引入参数的模型先验概率，可以简单理解为对最大似然估计引入先验概率，从而转化为最大后验估计，其中的先验概率即对于正则项（这部分内容后面详细讲解）。</p>
-<h2 id="2-基本概念"><a class="header-anchor" href="#2-基本概念">¶</a>2 基本概念</h2>
-<p>正则化也可以成为规则化、权重衰减技术，不同的领域叫法不一样，数学上常用范数实现，例如L1和L2范数，统计学领域叫做惩罚项、罚因子。</p>
-<p>下面给出范数的数学公式，方便以后分析：</p>
-<p>​	(1) $p$ 范数：
-$$
-Lp=(\sum_{i=1}^{n}{|| x_i ||}^p)^{\frac{1}{p}}
-\tag{6}
-$$
-​	(2) $L0$ 范数：0 范数表示向量中非零元素的个数（即为其稀疏度）</p>
-<p>​	(3) $L1$ 范数：即向量元素绝对值之和，$p$ 范数取1，即为1范数
-$$
-{||x||}_1=\sum^n_1 {|| x_i || }
-\tag{7}
-$$</p>
-<p>​	(4) $L2$ 范数：即向量元素绝对值的平方和再开发，也称欧几里得距离，$p$ 范数取2，即为2范数
-$$
-{||x||}_{2}=\sqrt{\sum^{n}_1|| x_i ||^2}
-\tag{8}
-$$</p>
-<p>​	(5) $\infty $ 范数：即所有向量元素的绝对值中的最大值，$p$ 范数取 $\infty $，即为 $\infty $ 范数
-$$
-{||x  ||}_{\infty }=\underset{i}{\max}{\left | x_i \right |}
-\tag{9}
-$$</p>
-<p>​	(6) $-\infty $ 范数：即所有向量元素绝对值中的最小值，$p$ 范数取$-\infty $，即为 $-\infty $ 范数
-$$
-{||x  ||}_{-\infty }=\underset{i}{\min}{\left | x_i \right |}
-\tag{10}
-$$
-<strong>图形描述</strong></p>
-<p>​		从 Fig 2、Fig 3 图可以看出：q(p)越小，曲线越贴近坐标轴，q(p)越大，曲线越远离坐标轴，并且棱角越明显，当q(p)取0时候，是完全和坐标轴贴合，当q(p)取无穷的时候，呈现正方体形状。同时也可以看出，采用不同的范数作为正则项，会得到完全不同的算法模型结果，故而对于不同要求的模型，应该采用不同的范数作为正则项。</p>
-<p><img src="/public/2019/07/17/AI/regulation_baysian/1563354053269.png" alt="1563354053269"></p>
-<div align="center"> Fig 2. 向量长度为2维的范数约束</div>
-![1563354456894](regulation_baysian/1563354456894.png)
-<div align="center"> Fig 3. 向量长度为3维的范数约束</div>
-## 3 深度理解
-<p>​		为了更好的理解正则化技术原理，下面从4个方面进行深度分析，希望对大家理解有帮助。</p>
-<h3 id="3-1-简单数值假设分析法"><a class="header-anchor" href="#3-1-简单数值假设分析法">¶</a>3.1 简单数值假设分析法</h3>
-<p>​		此处以L2范数讲解，下面的各图形来自吴恩达的机器学习课程。</p>
-<p><img src="/public/2019/07/17/AI/regulation_baysian/image-20190619002115576.png" alt="image-20190619002115576"></p>
-<div align="center"> Fig 4. 不同参数下的曲线拟合结果</div>
-​		左边的曲线拟合是欠拟合，中间的曲线拟合是刚好合适，右边的曲线拟合是过拟合。对于右边的拟合曲线，有
-$$
-h_{\theta}(x)={\theta}_0+{\theta}_0 x_1 +{\theta}_2 x_2^2 +{\theta}_3 x_3^3 +{\theta}_4 x_4^4
-\tag{11}
-$$
-​		从上式可以看出，由于$\theta_3$和$\theta_4$对应了高阶，导致拟合曲线是4阶曲线，出现了过拟合。正则化的目的为适当缩减$\theta_3$和$\theta_4$的值，例如都为0.0001，则上述曲线本质上等价与
-$$
-h_{\theta}(x)={\theta}_0 + {\theta}_1 x_1 +{\theta}_2 x_2^2
-\tag{12}
-$$
-​		也就是变成了中间的刚好合适的拟合曲线。对于$\theta_3$ 和$\theta_4$增加 L2 正则项后的代价函数表达式为：
-$$
-J(\theta)= \underset{\theta}{\min}\frac{1}{n}\sum_{i=1}^{n}((h_{\theta}(x_i)-y_i)+1000{\theta}_3^2 + 1000 {\theta}_4^2)
-\tag{13}
-$$
-​		从上式可以看出，$\theta_3^2$ 和 $\theta_4^2$ 均大于 0，其乘上了1000，要 $J(\theta)$ 是最小，则会迫使模型学习到的$\theta_3$ 和 $\theta_4$ 会非常小，因为只有在$\theta_3$ 和 $\theta_4$ 会非常小的情况下整个代价函数值才会取的较小值。在实际开发中，是对所有参数进行正则化，为了使代价函数尽可能的小，所有的参数 $\theta$ 的值（不包括 $\theta_0$）都会在一定程度上减小，但是减小程度会不一样，从而实现了权重衰减、简化模型复杂度的作用。
-<h3 id="3-2-图形分析法"><a class="header-anchor" href="#3-2-图形分析法">¶</a>3.2 图形分析法</h3>
-<p>​		此处采用L1和L2范数讲解：
-<strong>(1) L2 范数正则</strong>
-$$
-J(\beta)=\sum_{i=1}^{n}(y_i-{\beta}^T x_i)^2 + \lambda {|| {\beta} ||}_2^2
-\tag{14}
-$$
-<img src="/public/2019/07/17/AI/regulation_baysian/1563366078400.png" alt="1563366078400"></p>
-<div align="center"> Fig 5. L2 范数与代价函数的寻优图示</div>
-​		在 Fig 5 中，蓝色的圆形空间表示 L2 范数空间，设为 $\beta_1^2 + \beta_2^2 = r^2$，可以看出，当 $r$ 从 0 逐渐增大时候，该圆形也逐渐增大，红色的线表示原始代价函数解空间即 $\sum_{i=1}^{n}(y_i-\beta^T x_i)^2$，此处为了方便绘图，设参数只有2维。红色圆环上的任何一点都表示一个可行解即代表一组$\beta_1$、$\beta_2$，其中任何一个红色圆环上面的$\beta_1$，$\beta_2$对应的代价函数值一样（可以简单理解为等值线），$\hat{\beta}$ 代表最佳解空间。
-<h2 id="4-贝叶斯角度分析"><a class="header-anchor" href="#4-贝叶斯角度分析">¶</a>4. 贝叶斯角度分析</h2>
-<p>​		以L1和L2范数为例，所得结论可以推广到P范数中，首先需要知道：整个最优化问题从贝叶斯观点来看是一种贝叶斯最大后验估计，其中正则化项对应后验估计中的先验信息，损失函数对应后验估计中的似然函数，两者的乘积即对应贝叶斯最大后验估计的形式。针对L1和L2范数还有结论：<strong>L2 范数相当于给模型参数设置一个协方差为1/alpha的零均值高斯先验分布，L1 范数相当于给模型参数 设置一个参数为1/alpha 拉普拉斯先验分布</strong>。</p>
-<p>​		为了讲清楚上述结论，需要具备几点前置知识点：(1) 高斯分布和拉普拉斯分布的定义和形状；(2) 贝叶斯定理；(3) 最大似然估计；(4) 最大后验估计。下面我对这4个知识点进行解释。</p>
-<p><strong>(1)</strong> <strong>高斯分布和拉普拉斯分布</strong></p>
-<p><img src="/public/2019/07/17/AI/regulation_baysian/0.png" alt="0?wx_fmt=png"></p>
-<p><img src="/public/2019/07/17/AI/regulation_baysian/0-20190610163845194.png" alt="0?wx_fmt=png"></p>
-<p><strong>(2)</strong> <strong>最大似然估计</strong></p>
-<p><img src="/public/2019/07/17/AI/regulation_baysian/0-20190610163845276.png" alt="0?wx_fmt=png"></p>
-<p>​		如果上述公式不能理解，请各位读者去复习一下大学课程《概率论与数理统计》中的参数估计章节，为了更方便理解，下面举一个例子：假设我要统计出整个大学内所有同学的身高分布情况，设全校一共20000人，数量庞大，所有人都去问一遍不太靠谱，所以我打算采用抽样方法来估计，假设我已经知道身高分布服从高斯分布，但是我不知道高斯分布中的均值和方差参数，现在我打算采用最大似然估计方法来确定这两个参数。首先需要明确，全校20000即为总体X，我随机从各个班抽取10名同学，假设一共抽了2000个同学，那么2000同学就构成了样本空间，由于每个样本的概率密度函数已知，则很容易写出似然函数，对数求导即可求解参数。</p>
-<p><strong>(3)</strong> <strong>最大后验估计</strong></p>
-<p><img src="/public/2019/07/17/AI/regulation_baysian/0-20190610163845259.png" alt="0?wx_fmt=png"></p>
-<p><img src="/public/2019/07/17/AI/regulation_baysian/0-20190610163845297.png" alt="0?wx_fmt=png"></p>
-<p><img src="/public/2019/07/17/AI/regulation_baysian/0-20190610163845289.png" alt="0?wx_fmt=png"></p>
-<h2 id="5-例子"><a class="header-anchor" href="#5-例子">¶</a>5. 例子</h2>
-<h3 id="5-1-逻辑回归"><a class="header-anchor" href="#5-1-逻辑回归">¶</a>5.1 逻辑回归</h3>
-<p>​		二分类逻辑回归使用Sigmoid作为决策函数进行分类，该函数可以将任意的输入映射到[0,1]区间，当预测结果小于0.5，则表示负类，当预测结果大于0.5.则表示正类，其模型本质是求最大似然估计，具体求解似然函数通常使用梯度下降法，而前面说过：最大似然估计法没有考虑训练集以外的因素，很容易造成过拟合，故而逻辑回归一般采用L2范数进行正则化操作，Sigmoid函数定义和图形如下：</p>
-<p><img src="/public/2019/07/17/AI/regulation_baysian/0.jpeg" alt="0?wx_fmt=png"></p>
-<h3 id="5-2-岭回归-Ridge-Regression"><a class="header-anchor" href="#5-2-岭回归-Ridge-Regression">¶</a>5.2 岭回归(Ridge Regression)</h3>
-<p>​		岭回归本质上是针对线性回归问题引入了L2范数正则，通过缩减回归系数避免过拟合问题，最先用来处理特征数多于样本数的情况(高维小样本问题)，现在也用于在估计中加人偏差，从而得到更好的估计，加了正则化后的代价函数如下：</p>
-<p><img src="/public/2019/07/17/AI/regulation_baysian/0-20190610174921016.png" alt="0?wx_fmt=png"></p>
-<h3 id="5-3-Lasso-回归"><a class="header-anchor" href="#5-3-Lasso-回归">¶</a>5.3 Lasso 回归</h3>
-<p>​		拉索回归(lasso回归)本质上是针对线性回归问题引入了L1范数正则，通过缩减回归系数避免过拟合问题，其不同于L2范数，其可以将某些系数缩减为0即所谓的具备稀疏性(稀疏性的好处是简化计算、容易理解模型、减少存储空间、不容易出现过拟合等等)，加了正则化后的代价函数如下：</p>
-<p><img src="/public/2019/07/17/AI/regulation_baysian/0-20190610174920968.png" alt="0?wx_fmt=png"></p>
-<p>​		其中，参数函数和岭回归中相同。L1范数罚有一个问题：由于|X|函数在0处不可导，故而直接使用最小二乘法、梯度下降法等方法均失效，但是由于其为第一类间断点中的可去间断点，可以通过补充该点的定义解决，通常，对于线性回归中的lasso回归可以采用近似的前向逐步回归替代。</p>
-<h3 id="5-4-SVM"><a class="header-anchor" href="#5-4-SVM">¶</a>5.4 SVM</h3>
-<p>​		支持向量机SVM优化目的为寻找一个超平面，使得正负样本能够以最大间隔分离开，从而得到更好的泛化性能，其通过引入核函数来将低维线性不可分的样本映射到高维空间从而线性可分，通过引入惩罚参数C(类似于正则化参数)来对错分样本进行惩罚，从而减少模型复杂度，提高泛化能力，其优化目标如下：</p>
-<p><img src="/public/2019/07/17/AI/regulation_baysian/0-20190610174921029.png" alt="0?wx_fmt=png"></p>
-<p>​		大家如果不知道上面公式的推导，不用紧张，对于本次内容不是重点，只需要关注后面正则项部分，惩罚参数C作用和正则化参数作用一致，只是反相关而已。需要明白以下结论：</p>
-<p>​		<strong>(1)</strong> C越大，正则化参数越小，表示对分错样本的惩罚程度越大，正则化作用越小，偏差越小，方差越大，越容易出现过拟合(通俗理解，原本将低维空间映射到5维空间正好线性可分，但是由于惩罚过于严重，任何一个样本分错了都不可原谅，结果系统只能不断提高维数来拟合样本，假设为10维，最终导致映射维数过高，出现过拟合样本现象，数学上称为VC维较大)；</p>
-<p>​		<strong>(2)</strong> C越小，正则化参数越大，表示对分错样本的惩罚程度越小，正则化作用越大，偏差越大，方差越小，越容易出现欠拟合(通俗理解，原本将低维空间映射到5维空间正好线性可分，但是由于惩罚过小，分错了好多样本都可以理解，比较随意，结果系统也采用简化版来拟合样本，假设为3维，最终导致映射维数过低，出现欠拟合样本现象，数学上称为VC维较小)。</p>
-<h2 id="6-总结"><a class="header-anchor" href="#6-总结">¶</a>6. 总结</h2>
-<p>根本目的本质：防止过拟合，提高模型泛化能力。</p>
-<p>正则化技术分类：
-<strong>狭义上</strong>（不同地方叫法不同）</p>
-<ul>
-<li>在早期的机器学习领域一般只是将范数惩罚叫做正则化技术</li>
-<li>规则化、权重衰减</li>
-<li>从贝叶斯角度考虑，正则项等价于引入参数的模型先验概率</li>
-</ul>
-<p><strong>广义上</strong>：
-能够显著减少方差，而不过度增加偏差的策略都可以认为是正则化技术，推广的正则化技术还有：扩增样本集、早停止、Dropout、集成学习、多任务学习、对抗训练、参数共享等。</p>
-<h2 id="Reference"><a class="header-anchor" href="#Reference">¶</a>Reference</h2>
-<p><a href="https://blog.csdn.net/BigData_Mining/article/details/81631249" target="_blank" rel="noopener">正则化总结的比较好比较全面的文章</a></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">本脚本完成了中英文srt合并的功能</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">srt2lis</span><span class="params">(name)</span>:</span></span><br><span class="line">    lines = open(<span class="string">'srt/'</span>+name, <span class="string">'r'</span>, encoding=<span class="string">'utf-8'</span>).readlines()</span><br><span class="line">    lis = []</span><br><span class="line">    tmp = []</span><br><span class="line">    <span class="keyword">for</span> i, line <span class="keyword">in</span> enumerate(lines):</span><br><span class="line">        <span class="comment"># 以\n 结尾的一个时间点</span></span><br><span class="line">        <span class="keyword">if</span> line == <span class="string">'\n'</span>:</span><br><span class="line">            lis.append(tmp)</span><br><span class="line">            tmp = []</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            tmp.append(line)</span><br><span class="line">    <span class="keyword">return</span> lis</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">hebing</span><span class="params">(name_zh)</span>:</span></span><br><span class="line">    name_en = name_zh[:<span class="number">-7</span>] + <span class="string">'.srt'</span></span><br><span class="line">    out_name=<span class="string">'out/'</span>+name_en</span><br><span class="line">    f=open(out_name,<span class="string">'w'</span>,encoding=<span class="string">'utf-8'</span>)</span><br><span class="line">    lis_en=srt2lis(name_en)</span><br><span class="line">    lis_zh=srt2lis(name_zh)</span><br><span class="line">    <span class="keyword">for</span> i,item <span class="keyword">in</span> enumerate(lis_en):</span><br><span class="line">        print(item[<span class="number">0</span>])</span><br><span class="line">        f.write(item[<span class="number">0</span>])</span><br><span class="line">        f.write(item[<span class="number">1</span>])</span><br><span class="line">        <span class="keyword">for</span> line <span class="keyword">in</span> lis_zh[i][<span class="number">2</span>:]:</span><br><span class="line">            f.write(line)</span><br><span class="line">        <span class="keyword">for</span> line <span class="keyword">in</span> item[<span class="number">2</span>:]:</span><br><span class="line">            f.write(line)</span><br><span class="line">        f.write(<span class="string">'\n'</span>)</span><br><span class="line">    f.close()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">flis=os.listdir(<span class="string">'srt/'</span>)</span><br><span class="line"><span class="keyword">if</span> <span class="keyword">not</span> os.path.exists(<span class="string">'out'</span>):</span><br><span class="line">    os.mkdir(<span class="string">'out'</span>)</span><br><span class="line"><span class="keyword">for</span> name <span class="keyword">in</span> flis:</span><br><span class="line">    print(name)</span><br><span class="line">    <span class="keyword">if</span> name[<span class="number">-6</span>:<span class="number">-4</span>]==<span class="string">'zh'</span>:</span><br><span class="line">        hebing(name)</span><br></pre></td></tr></table></figure>
 ]]></content>
       <categories>
-        <category>机器学习</category>
-        <category>正则化</category>
+        <category>常用脚本</category>
       </categories>
       <tags>
-        <tag>AI</tag>
-        <tag>ML</tag>
+        <tag>python脚本</tag>
+        <tag>YouTube字幕合并</tag>
+        <tag>src</tag>
       </tags>
   </entry>
   <entry>
@@ -1407,6 +1407,273 @@ nbextensions的教程<a href="https://jupyter-contrib-nbextensions.readthedocs.i
         <tag>Python</tag>
         <tag>Notebook</tag>
         <tag>Tools</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>怎样成为一名优秀的算法工程师</title>
+    <url>/public/2018/10/01/AI/how_algorithm_engineer/</url>
+    <content><![CDATA[<blockquote>
+<p>转载 原创： AI学习与实践平台
+TODO: 看完里面的文章，对每篇文章做个总结，实验+文章。</p>
+</blockquote>
+<h2 id="1-导言"><a class="header-anchor" href="#1-导言">¶</a>1. 导言</h2>
+<p>怎样成为一名优秀的算法工程师？这是很多从事人工智能学术研究和产品研发的同学都关心的一个问题。面对市场对人才的大量需求与供给的严重不足，以及高薪水的诱惑，越来越多的人开始学习这个方向的技术，或者打算向人工智能转型。市面上各种鱼龙混杂的培训班以及误导人的文章会把很多初学者带入歧途，浮躁的跟风将会让你最后收获甚微，根本达不到企业的用人要求。为了更好的帮助大家学习和成长，少走弯路，在今天的文章里，<a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247485551&amp;idx=2&amp;sn=a6689528f10aedab3fce91857eec877b&amp;chksm=fdb695f8cac11cee025ad6d8d77ed90f7169142d6b20b2f5a6945b58edd97c27225f4a2eba91&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">SIGAI</a> 的作者以自己的亲身经历和思考，为大家写下对这一问题的理解与答案。</p>
+<p>首先来看一个高度相关的问题：一个优秀的算法工程师必须具备哪些素质？我们给出的答案是这样的：</p>
+<ul>
+<li>数学知识</li>
+<li>编程能力</li>
+<li>机器学习与深度学习的知识</li>
+<li>应用方向的知识</li>
+<li>对自己所做的问题的思考和经验</li>
+</ul>
+<p>除去教育背景，逻辑思维，学习能力，沟通能力等其他方面的因素，大多数公司在考察算法工程师的技术水平时都会考虑上面这几个因素。接下来我们将按照这几个方面进行展开，详细的说明如何学习这些方面的知识以及积累经验。</p>
+<a id="more"></a>
+<h2 id="2-数学知识"><a class="header-anchor" href="#2-数学知识">¶</a>2. 数学知识</h2>
+<p>与其他工作方向如app、服务器开发相比，以及与计算机科学的其他方向如网络，数据库，分布式计算等相比，人工智能尤其是机器学习属于数学知识密集的方向。在各种书籍，论文，算法中都充斥着大量的数学公式，这让很多打算入门的人或者开始学习的人感到明显的压力。首先我们考虑一个最核心的问题：机器学习和深度学习究竟需要哪些数学知识？在<a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247485551&amp;idx=2&amp;sn=a6689528f10aedab3fce91857eec877b&amp;chksm=fdb695f8cac11cee025ad6d8d77ed90f7169142d6b20b2f5a6945b58edd97c27225f4a2eba91&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">SIGAI</a>之前的公众号文章“<a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247483713&amp;idx=1&amp;sn=1e7c81381d16806ac73e15691fe17aec&amp;chksm=fdb69cd6cac115c05f1f90b0407e3f8ae9be8719e454f908074ac0d079885b5c134e2d60fd64&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">学好机器学习需要哪些数学知识</a>”里，我们已经给出了答案。先看下面这张表：</p>
+<p><img src="/public/2018/10/01/AI/how_algorithm_engineer/clip_image003.gif" alt="EB5E93E91C3643F991C93D61F363373E.jpeg"></p>
+<p>更多算法工程师的必读文章，请关注SIGAICN公众号</p>
+<p>上面的表给出了各种典型的机器学习算法所用到的数学知识点。我们之前已经总结过，理解绝大多数算法和理论，有微积分/高等数学，线性代数，概率论，最优化方法的知识就够了。除流形学习需要简单的微分几何概念之外，深层次的数学知识如实变函数，泛函分析等主要用在一些基础理论结果的证明上，即使不能看懂证明过程，也不影响我们使用具体的机器学习算法。概率图模型、流形学习中基于图的模型会用到图论的一些基本知识，如果学习过离散数学或者数据结构，这些概念很容易理解。除此之外，某些算法会用到离散数学中的树的概念，但很容易理解。</p>
+<h3 id="2-1-高等数学"><a class="header-anchor" href="#2-1-高等数学">¶</a>2.1 高等数学</h3>
+<p>如果你已经学过这些大学数学课，只要把所需的知识点复习一遍就够了。对于微积分，通俗易懂而又被广为采用的是同济版的高等数学：</p>
+<p><img src="/public/2018/10/01/AI/how_algorithm_engineer/clip_image005.gif" alt="88F2EB8BDFE1448EBD2DF61848E355FD.jpeg"></p>
+<p>在机器学习中主要用到了微分部分，积分用的非常少。具体的，用到了下面的概念：</p>
+<ul>
+<li>导数和偏导数的定义与计算方法，与函数性质的关系</li>
+<li>梯度向量的定义</li>
+<li>极值定理，可导函数在极值点处导数或梯度必须为0</li>
+<li>雅克比矩阵，这是向量到向量映射函数的偏导数构成的矩阵，在求导推导中会用到</li>
+<li>Hessian矩阵，这是2阶导数对多元函数的推广，与函数的极值有密切的联系</li>
+<li>凸函数的定义与判断方法</li>
+<li>泰勒展开公式</li>
+<li>拉格朗日乘数法，用于求解带等式约束的极值问题</li>
+</ul>
+<p>其中最核心的是多元函数的泰勒展开公式，根据它我们可以推导出梯度下降法，牛顿法，拟牛顿法等一系列最优化方法。</p>
+<p>如果你想要深入的学习微积分，可以阅读数学系的教程，称为数学分析：</p>
+<p><img src="/public/2018/10/01/AI/how_algorithm_engineer/clip_image007.gif" alt="DEB5F0D2FC584E0B96B263FE1D559AFF.jpeg"></p>
+<p>与工科的高等数学偏重计算不同，它里面有大量的理论证明，对于锻炼数学思维非常有帮助。北大张筑生先生所著的数学分析可谓是国内这方面教材的精品。</p>
+<h3 id="2-2-线性代数"><a class="header-anchor" href="#2-2-线性代数">¶</a>2.2 线性代数</h3>
+<p>下面来看线性代数，同样是同济版的教材：</p>
+<p><img src="/public/2018/10/01/AI/how_algorithm_engineer/clip_image009.gif" alt="48D5E515A7144CE6A9CB78162F6ECAAF.jpeg"></p>
+<p>如果想更全面系统的学习线性代数，可以看这本书：</p>
+<p><img src="/public/2018/10/01/AI/how_algorithm_engineer/clip_image011.gif" alt="BF71AB68DB2B4D71AC8D2B3263C197E5.jpeg"></p>
+<p>相比之下，线性代数用的更多。具体用到的知识点有：</p>
+<ul>
+<li>向量和它的各种运算，包括加法，减法，数乘，转置，内积</li>
+<li>向量和矩阵的范数，L1范数和L2范数</li>
+<li>矩阵和它的各种运算，包括加法，减法，乘法，数乘</li>
+<li>逆矩阵的定义与性质</li>
+<li>行列式的定义与计算方法</li>
+<li>二次型的定义</li>
+<li>矩阵的正定性</li>
+<li>特征值与特征向量</li>
+<li>奇异值分解</li>
+<li>线性方程组的数值解</li>
+</ul>
+<p>机器学习算法处理的数据一般都是向量、矩阵或者张量。经典的机器学习算法输入的数据都是特征向量，深度学习算法在处理图像时输入的2维的矩阵或者3维的张量。掌握这些概念是你理解机器学习和深度学习算法的基础。</p>
+<h3 id="2-3-概率论"><a class="header-anchor" href="#2-3-概率论">¶</a>2.3 概率论</h3>
+<p>概率论国内理工科专业使用最多的是浙大版的教材：</p>
+<p><img src="/public/2018/10/01/AI/how_algorithm_engineer/clip_image013.gif" alt="91E918CF7ED84C7488BDDFFC7594E0D4.jpeg"></p>
+<p>如果把机器学习所处理的样本数据看作随机变量/向量，就可以用概率论的方法对问题进行建模，这代表了机器学习中很大一类方法。在机器学习里用到的概率论知识点有:</p>
+<ul>
+<li>随机事件的概念，概率的定义与计算方法</li>
+<li>随机变量与概率分布，尤其是连续型随机变量的概率密度函数和分布函数</li>
+<li>条件概率与贝叶斯公式</li>
+<li>常用的概率分布，包括正态分布，伯努利二项分布，均匀分布</li>
+<li>随机变量的均值与方差，协方差</li>
+<li>随机变量的独立性</li>
+<li>最大似然估计</li>
+</ul>
+<p>这些知识不超出普通理工科概率论教材的范围。</p>
+<h3 id="最优化"><a class="header-anchor" href="#最优化">¶</a>最优化</h3>
+<p>最后来说最优化，几乎所有机器学习算法归根到底都是在求解最优化问题。求解最优化问题的指导思想是在极值点出函数的导数/梯度必须为0。因此你必须理解梯度下降法，牛顿法这两种常用的算法，它们的迭代公式都可以从泰勒展开公式而得到。</p>
+<p>凸优化是机器学习中经常会提及的一个概念，这是一类特殊的优化问题，它的优化变量的可行域是凸集，目标函数是凸函数。凸优化最好的性质是它的所有局部最优解就是全局最优解，因此求解时不会陷入局部最优解。如果一个问题被证明为是凸优化问题，基本上已经宣告此问题得到了解决。在机器学习中，线性回归、岭回归、支持向量机、logistic回归等很多算法求解的都是凸优化问题。</p>
+<p>拉格朗日对偶为带等式和不等式约束条件的优化问题构造拉格朗日函数，将其变为原问题，这两个问题是等价的。通过这一步变换，将带约束条件的问题转换成不带约束条件的问题。通过变换原始优化变量和拉格朗日乘子的优化次序，进一步将原问题转换为对偶问题，如果满足某种条件，原问题和对偶问题是等价的。这种方法的意义在于可以将一个不易于求解的问题转换成更容易求解的问题。在支持向量机中有拉格朗日对偶的应用。</p>
+<p>KKT条件是拉格朗日乘数法对带不等式约束问题的推广，它给出了带等式和不等式约束的优化问题在极值点处所必须满足的条件。在支持向量机中也有它的应用。</p>
+<p>如果你没有学过最优化方法这门课也不用担心，这些方法根据微积分和线性代数的基础知识可以很容易推导出来。如果需要系统的学习这方面的知识，可以阅读《凸优化》，《非线性规划》两本经典教材。</p>
+<p><img src="/public/2018/10/01/AI/how_algorithm_engineer/clip_image015.gif" alt="B00246CBCFB446789B2F7F63F3292099.jpeg"></p>
+<h2 id="3-编程能力"><a class="header-anchor" href="#3-编程能力">¶</a>3. 编程能力</h2>
+<p>编程能力是学好机器学习和深度学习的又一大基础。对于计算机类专业的学生，由于本科已经学了c语言，c++，数据结构与算法，因此这方面一般不存在问题。对于非计算机专业的人来说，要真正学好机器学习和深度学习，这些知识是绕不开的。</p>
+<h3 id="3-1-C"><a class="header-anchor" href="#3-1-C">¶</a>3.1 C++</h3>
+<p>虽然现在大家热衷于学习python，但要作为一名真正的算法工程师，还是应该好好学习一下c++，至少，机器学习和深度学习的很多底层开源库都是用它写的；很多公司线上的产品，无论是运行在服务器端，还是嵌入式端，都是用c++写的。此外，如果你是应届生，在校园招聘时不少公司都会面试你c++的知识。</p>
+<p>C++最经典的教材无疑是c++ primer：</p>
+<p><img src="/public/2018/10/01/AI/how_algorithm_engineer/clip_image017.gif" alt="3E0DE0E336474B81A2F89F2190628186.jpeg"></p>
+<p>对做算法的人来说，这本书其实不用全部看，把常用的点学完就够了。对于进阶，Effective c++是很好的选择，不少公司的面试题就直接出自这本书的知识点：</p>
+<p><img src="/public/2018/10/01/AI/how_algorithm_engineer/clip_image019.gif" alt="DDCC32DD5E6D405588CB4B6F4A94BFE5.jpeg"></p>
+<p>接下来说python，相比c++来说，学习的门槛要低很多，找一本通俗易懂的入门教程学习一遍即可。</p>
+<h3 id="3-2-数据结构和算法"><a class="header-anchor" href="#3-2-数据结构和算法">¶</a>3.2 数据结构和算法</h3>
+<p>数据结构和算法是编写很多程序的基础，对于机器学习和深度学习程序也不例外。很多算法的实现都依赖于数组，链表，数，排序，查找之类的数据结构和基础算法。如果有时间和精力，把算法导论啃一遍，你会有不一样的感受：</p>
+<p><img src="/public/2018/10/01/AI/how_algorithm_engineer/clip_image021.gif" alt="E077608423D7473ABF1DBF75C482E060.jpeg"></p>
+<p>对于应届生来说，学完它对于你通过大互联网和人工智能公司校园招聘的技术面试也非常有用。</p>
+<p>上面说的只是编程语言的程序设计的理论知识，我们还要考虑实际动手能力。对于开发环境如gcc/g++，visual studio之类的工具，以及gdb之类的调试工具需要做到熟练使用。如果是在linux上开发，对linux的常用命令也要熟记于心。这方面的知识看各种具体的知识点和教程即可。另外，对于编程的一些常识，如进程，线程，虚拟内存，文件系统等，你最好也要进行了解。</p>
+<h2 id="4-机器学习与深度学习的知识"><a class="header-anchor" href="#4-机器学习与深度学习的知识">¶</a>4. 机器学习与深度学习的知识</h2>
+<p>在说完了数学和编程基础之后，下面我来看核心的内容，机器学习和深度学习知识。机器学习是现阶段解决很多人工智能问题的核心方法，尤其是深度学习，因此它们是算法工程师的核心知识。在这里有一个问题：是否需要先学机器学习，还是直接学深度学习？如果是一个专业的算法工程师，我的建议是先学机器学习。至少，你要知道机器学习中的基本概念， 过拟合，生成模型，ROC曲线等，上来就看深度学习，如没有背景知识你将不知所云。另外，神经网络只是机器学习中的一类方法，对于很多问题，其他机器学习算法如logistic回归，随机森林，GBDT，决策树等还在被大规模使用，因此你不要把自己局限在神经网络的小圈子里。</p>
+<h3 id="4-1-ML和DP的教材"><a class="header-anchor" href="#4-1-ML和DP的教材">¶</a>4.1 ML和DP的教材</h3>
+<p>首先来看机器学习，这方面的教材很多，周志华老师的机器学习，李航老师的统计学习方法是国内的经典。这里我们介绍国外的经典教材，首先是PRML：</p>
+<p><img src="/public/2018/10/01/AI/how_algorithm_engineer/clip_image023.gif" alt="BE2D3D5817344DE0831B718D3F891899.jpeg"></p>
+<p>PRML 下载地址 <a href="https://www.microsoft.com/en-us/research/publication/pattern-recognition-machine-learning/" target="_blank" rel="noopener">link</a></p>
+<p>此书深厚，内容全面，涵盖了有监督学习，无监督学习的主要方法，理论推导和证明详细深入，是机器学习的经典。此外还有模式分类这本书，在这里不详细介绍。</p>
+<p>本书主要内容包括：
+<strong>第一章：简介</strong>
+概率论、模型选择、决策理论、信息理论</p>
+<p><strong>第二章：概率分布</strong>
+二元变量、多项变量、高斯分布、指数分布族、非参数方法</p>
+<p><strong>第三章：线性模型回归问题</strong>
+线性基函数模型、偏置方差分解、贝叶斯线性回归、贝叶斯模型比较、The Evidence Approximation、固定基函数的局限性</p>
+<p><strong>第四章：线性模型分类问题</strong>
+判别函数、概率生成模型、概率判别模型、拉普拉斯逼近、贝叶斯逻辑回归</p>
+<p><strong>第五章：神经网络</strong>
+前馈神经网络、网络训练、误差反向传播、Hessian矩阵、神经网络的正则化、混合密度网络、贝叶斯神经网络</p>
+<p><strong>第六章：Kernel方法</strong>
+对偶表示、构造核、径向基函数网络、高斯过程</p>
+<p><strong>第七章：Sparse Kernel Machines</strong>
+最大边缘分类器、相关向量机</p>
+<p><strong>第八章：图模型</strong>
+贝叶斯网络、条件独立性、马尔科夫随机场、图模型的推理</p>
+<p><strong>第九章：混合模型和EM</strong>
+K-means聚类、高斯混合、EM算法</p>
+<p><strong>第十章：近似推断</strong>
+变分推断、高斯的变分混合、变分线性回归、指数族分布、局部变分方法、变分logistic回归、Expectation Propagation</p>
+<p><strong>第十一章：采样方法</strong>
+基本采样算法、马尔科夫链蒙特卡洛、吉布斯采样、切片采样、混合蒙特卡洛算法、估计划分函数</p>
+<p><strong>第十二章：连续潜在变数</strong>
+主成分分析，Probabilistic PCA，Kernel PCA，非线性潜变量模型</p>
+<p><strong>第十三章：序列数据</strong>
+马尔可夫模型，隐马尔可夫模型，Linear Dynamical Systems</p>
+<p><strong>第十四章：混合模型</strong>
+贝叶斯模型平均法，Committees，Boosting，基于树的模型，条件混合模型</p>
+<p>深度学习目前最权威的教程是下面这本书：</p>
+<p><img src="/public/2018/10/01/AI/how_algorithm_engineer/clip_image025.gif" alt="A39AD50565E141F89B08C93CCD7DEDFC.jpeg"></p>
+<p>它涵盖了深度学习的方方面面，从理论到工程，但美中不足的是对应于介绍的相对较少。</p>
+<p>强化学习是机器学习很独特的一个分支，大多数人对它不太了解，这方面的教程非常少，我们推荐下面这本书：</p>
+<p><img src="/public/2018/10/01/AI/how_algorithm_engineer/clip_image027.gif" alt="115B0E32F06F4538A76CB9B610F63B8C.jpeg"></p>
+<p>美中不足的是这本书对深度强化学习没有介绍，因为出版的较早。不知最新的版本有没有加上这方面的内容。</p>
+<p>在这里需要强调的是，你的知识要系统化，有整体感。很多同学都感觉到自己学的机器学习太零散，缺乏整体感。这需要你多思考算法之间的关系，演化历史之类的问题，这样你就做到胸中有图-机器学习算法地图。其实，<a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247485551&amp;idx=2&amp;sn=a6689528f10aedab3fce91857eec877b&amp;chksm=fdb695f8cac11cee025ad6d8d77ed90f7169142d6b20b2f5a6945b58edd97c27225f4a2eba91&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">SIGAI</a>在之前的公众号文章“<a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247485306&amp;idx=1&amp;sn=fc8cc8de313bdb61dcd39c1dedb240a4&amp;chksm=fdb69aedcac113fb4b18c74248a313536ded50bade0e66b26f332ab247b148519da71ff2a3c0&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">机器学习算法地图</a>”里已经给你总结出来了。</p>
+<h3 id="4-2-开源库"><a class="header-anchor" href="#4-2-开源库">¶</a>4.2 开源库</h3>
+<p>上面介绍了机器学习和深度学习的理论教材，下面来说实践问题。我们无需重复造车轮子，熟练的使用主流的开源库是需要掌握的一项技能。对于经典的机器学习，常用的库的有:</p>
+<ul>
+<li>libsvm</li>
+<li>liblinear</li>
+<li>XGBoost</li>
+<li>OpenCV</li>
+<li>HTK</li>
+<li>Weka</li>
+</ul>
+<p>在这里我们不一一列举。借助于这些库，我们可以方便的完成自己的实验，或是研发自己的产品。对于深度学习，目前常用的有：</p>
+<ul>
+<li>Caffe</li>
+<li>TensorFlow</li>
+<li>MXNet</li>
+</ul>
+<p>除此之外，还有其他的。对于你要用到的开源库，一定要理解它的原理，以及使用中的一些细节问题。例如很多算法要求输入的数据先做归一化，否则效果会非常差，而且面临浮点数溢出的问题，这些实际经验需要你在使用中摸索。如果有精力把这些库的核心代码分析一遍，你对实现机器学习算法将会更有底气。以深度学习为例，最核心的代码无非是实现：</p>
+<ul>
+<li>各种层，包括它们的正向传播和反向传播</li>
+<li>激活函数的实现</li>
+<li>损失函数的实现</li>
+<li>输入数据的处理</li>
+<li>求解器，实现各种梯度下降法</li>
+</ul>
+<p>这些代码的量并不大，沉下心来，我相信一周之内肯定能分析完。看完之后你会有一种豁然开朗的感觉。</p>
+<h2 id="5-应用方向的知识"><a class="header-anchor" href="#5-应用方向的知识">¶</a>5. 应用方向的知识</h2>
+<p>接下来是各个方向的知识，与机器学习有关的应用方向当前主要有：</p>
+<ul>
+<li>机器视觉</li>
+<li>语音识别</li>
+<li>自然语言处理</li>
+<li>数据挖掘</li>
+<li>知识图谱</li>
+<li>推荐系统</li>
+</ul>
+<p>除此之外，还有其他一些特定小方向，在这里不一一列举。这些具体的应用方向一般都有自己的教材，如果你以后要从事此方向的研究，系统的学习一遍是必须的。</p>
+<h2 id="6-实践经验与思考"><a class="header-anchor" href="#6-实践经验与思考">¶</a>6. 实践经验与思考</h2>
+<p>在说完理论与实践知识之后，最后我们来说经验与思考。在你确定要做某一个方向之后，对这个方向的方法要有一个全面系统的认识，很多方法是一脉相承的，如果只追求时髦看最新的算法，你很难做出学术上的创新，以及工程上的优化。对于本问题所有的经典论文，都应该化时间细度，清楚的理解它们解决了什么问题，是怎么解决的，还有哪些问题没有解决。例如：</p>
+<ul>
+<li>机器视觉目标检测中的遮挡问题</li>
+<li>推荐系统中的冷启动问题</li>
+<li>自然语言处理中文分词中的歧义切分问题</li>
+</ul>
+<p>只有经过大量的编程和实验训练，以及持续的思考，你才能算得上对这个方向深刻理解，以至于有自己的理解。很多同学对自己实现轮上的算法没有底气，解决这个问题最快的途径就是看论文算法的开源代码，在github上有丰富的资源，选择一些合适的，研究一下别人是怎么实现的，你就能明白怎么实现自己的网络结构和损失函数，照葫芦画瓢即可。</p>
+<p>计算机以及人工智能是一个偏实践的学科，它的方法和理论既需要我们有扎实的理论功底，又需要有丰富的实践能力与经验。这两个方面构成了算法工程师最主要的素质。科学的学习路径能够让你取得好的学习效果，同时也缩短学习时间。错误和浮躁的做法则会让你最后事倍功半。这是  <a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247485551&amp;idx=2&amp;sn=a6689528f10aedab3fce91857eec877b&amp;chksm=fdb695f8cac11cee025ad6d8d77ed90f7169142d6b20b2f5a6945b58edd97c27225f4a2eba91&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">SIGAI</a> 对想进入这个领域，或者刚进入这个领域的每个人要说的！</p>
+<p><img src="/public/2018/10/01/AI/how_algorithm_engineer/clip_image029.gif" alt="07382DFD55044B48927C8B054DE6F745.png"></p>
+<h2 id="7-其他材料"><a class="header-anchor" href="#7-其他材料">¶</a>7. 其他材料</h2>
+<h3 id="7-1-科普类"><a class="header-anchor" href="#7-1-科普类">¶</a>7.1 科普类</h3>
+<p>【‍获取码】SIGAI0413
+​    <a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247483705&amp;idx=1&amp;sn=c6e7c4a2e14a2469308b41eb60f155ac&amp;chksm=fdb69caecac115b8712653600e526e99a3f6976fdaa2f6b6a09388fa6f9677ccb57b40c40ae3&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">机器学习——波澜壮阔四十年 </a></p>
+<p>【获取码】SIGAI0620
+​    <a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247484981&amp;idx=1&amp;sn=d3003468b9853851923844812993e060&amp;chksm=fdb69ba2cac112b4dac620d52100ebd033eb679f29340726a67297c4d6980b16c7cc91122028&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">理解计算：从√2到AlphaGo ——第1季 从√2谈起</a></p>
+<p>【获取码】SIGAI0704
+<a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247485155&amp;idx=1&amp;sn=990cc7400751c36e9fef0a261e6add2a&amp;chksm=fdb69b74cac112628bdae14c6435120f6fece20dae9bf7b1ffc8b8b25e5496a24160feca0a72&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">理解计算：从√2到AlphaGo ——第2季 神经计算的历史背景</a></p>
+<h3 id="7-2-数学类"><a class="header-anchor" href="#7-2-数学类">¶</a>7.2 数学类</h3>
+<p>【获取码】SIGAI0417
+<a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247483713&amp;idx=1&amp;sn=1e7c81381d16806ac73e15691fe17aec&amp;chksm=fdb69cd6cac115c05f1f90b0407e3f8ae9be8719e454f908074ac0d079885b5c134e2d60fd64&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">学好机器学习需要哪些数学知识</a></p>
+<p>【获取码】SIGAI0511
+<a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247484111&amp;idx=1&amp;sn=4ed4480e849298a0aff828611e18f1a8&amp;chksm=fdb69f58cac1164e844726bd429862eb7b38d22509eb4d1826eb851036460cb7ca5a8de7b9bb&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">理解梯度下降法</a></p>
+<p>【获取码】SIGAI0518
+<a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247484439&amp;idx=1&amp;sn=4fa8c71ae9cb777d6e97ebd0dd8672e7&amp;chksm=fdb69980cac110960e08c63061e0719a8dc7945606eeef460404dc2eb21b4f5bdb434fb56f92&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">理解凸优化</a></p>
+<p>【获取码】SIGAI0531
+<a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247484651&amp;idx=1&amp;sn=a0e4ca5edb868fe3eae9101b71dd7103&amp;chksm=fdb6997ccac1106a61f51fe9f8fd532045cc5d13f6c75c2cbbf1a7c94c58bcdf5f2a6661facd&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">理解牛顿法 </a></p>
+<h3 id="7-3-机器学习类"><a class="header-anchor" href="#7-3-机器学习类">¶</a>7.3 机器学习类</h3>
+<p>【获取码】SIGAI0428
+​    <a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247483937&amp;idx=1&amp;sn=84a5acf12e96727b13fd7d456c414c12&amp;chksm=fdb69fb6cac116a02dc68d948958ee731a4ae2b6c3d81196822b665224d9dab21d0f2fccb329&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">用一张图理解SVM的脉络</a></p>
+<p>【获取码】SIGAI0505
+​    <a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247483977&amp;idx=1&amp;sn=401b211bf72bc70f733d6ac90f7352cc&amp;chksm=fdb69fdecac116c81aad9e5adae42142d67f50258106f501af07dc651d2c1473c52fad8678c3&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">理解神经网络的激活函数</a></p>
+<p>【获取码】SIGAI0522
+<a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247484495&amp;idx=1&amp;sn=4f3a6ce21cdd1a048e402ed05c9ead91&amp;chksm=fdb699d8cac110ce53f4fc5e417e107f839059cb76d3cbf640c6f56620f90f8fb4e7f6ee02f9&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">【实验】理解SVM核函数和参数的作用</a></p>
+<p>【获取码】SIGAI0601
+<a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247484658&amp;idx=1&amp;sn=f5c9f92c272c75883bf8e6f532559f11&amp;chksm=fdb69965cac11073f49048caef5d7b9129614090a363d9ef7f3d1b9bc59948d2217d2bca7b7b&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">【群话题精华】五月集锦—机器学习和深度学习中一些值得思考的问题   </a></p>
+<p>【获取码】SIGAI0602
+​    <a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247484692&amp;idx=1&amp;sn=9b389aa65208c778dddf17c601afbee1&amp;chksm=fdb69883cac1119593934734e94c3b71aa68de67bda8a946c1f9f9e1209c3b6f0bf18fed99b8&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">大话AdaBoost算法    </a></p>
+<p>【获取码】SIGAI0606
+​    <a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247484754&amp;idx=1&amp;sn=b2c0d6798f44e13956bb42373e51d18c&amp;chksm=fdb698c5cac111d3e3dca24c50aafbfb61e5b05c5df5b603067bb7edec8db049370b73046b24&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">理解主成分分析（PCA）    </a></p>
+<p>【获取码】SIGAI0611
+​    <a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247484827&amp;idx=1&amp;sn=043d7d0159baaddfbf92ed78ee5b1124&amp;chksm=fdb6980ccac1111a9faeae7f517fee46a1dfab19612f76ccfe5417487b3f090ab8fc702d18b8&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">理解决策树  </a></p>
+<p>【获取码】SIGAI0613
+​    <a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247484859&amp;idx=1&amp;sn=2c4db22fb538953a62a90983e3e1f99d&amp;chksm=fdb6982ccac1113a82e92be325bb07a947d54090274654375f3b50e11e1abd809fb7358bde16&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">用一句话总结常用的机器学习算法</a></p>
+<p>【获取码】SIGAI0618
+​    <a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247484954&amp;idx=1&amp;sn=c28b7f07c22466e91b1ef90e9dbe3ad1&amp;chksm=fdb69b8dcac1129bc6e78fca1d550e2b18238ad1c240c73b280d4e529f9f93c4626b3ac45ea2&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">理解过拟合</a></p>
+<p>【获取码】SIGAI0627
+​    <a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247485074&amp;idx=1&amp;sn=0ebf1bf8f49e9c46075fe3803d04c95d&amp;chksm=fdb69b05cac112132d280c70af3923ca4c3cccfa5fcd8628b79d4b246b3b2decbc80a180abb3&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">k近邻算法</a></p>
+<p>【获取码】SIGAI0704
+​    <a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247485306&amp;idx=1&amp;sn=fc8cc8de313bdb61dcd39c1dedb240a4&amp;chksm=fdb69aedcac113fb4b18c74248a313536ded50bade0e66b26f332ab247b148519da71ff2a3c0&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">机器学习算法地图</a></p>
+<p>【获取码】SIGAI0706
+​    <a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247485446&amp;idx=1&amp;sn=57d7d866443810c20c4ea2c6ee8018cc&amp;chksm=fdb69591cac11c8773638b396abe43c0161e4d339f0fa845e54326be3e8c4933a3b6a2713dae&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">反向传播算法推导—全连接神经网络</a></p>
+<h3 id="7-4-深度学习类"><a class="header-anchor" href="#7-4-深度学习类">¶</a>7.4 深度学习类</h3>
+<p>【获取码】SIGAI0426
+<a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247483816&amp;idx=1&amp;sn=fc52765b012771d4736c9be4109f910e&amp;chksm=fdb69c3fcac115290020c3dd0d677d987086a031c1bde3429339bb3b5bbc0aa154e76325c225&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">卷积神经网络为什么能够称霸计算机视觉领域？</a></p>
+<p>【获取码】SIGAI0508
+<a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247484037&amp;idx=1&amp;sn=13ad0d521b6a3578ff031e14950b41f4&amp;chksm=fdb69f12cac11604a42ccb37913c56001a11c65a8d1125c4a9aeba1aed570a751cb400d276b6&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">深度卷积神经网络演化历史及结构改进脉络-40页长文全面解读 </a></p>
+<p>【获取码】SIGAI0515
+<a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247484310&amp;idx=1&amp;sn=0fc55a2784a894100a1ae64d7dbfa23d&amp;chksm=fdb69e01cac1171758cb021fc8779952e55de41032a66ee5417bd3e826bf703247e243654bd0&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">循环神经网络综述—语音识别与自然语言处理的利器</a></p>
+<p>【获取码】SIGAI0625
+<a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247485042&amp;idx=1&amp;sn=cdcf8d4b07acf64c7a6f5f7c1a731a12&amp;chksm=fdb69be5cac112f377766984afb87313c1e1c58d94c80005f0f6f6af61ee5a4bd1bf6c6157b6&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">卷积神经网络的压缩与加速</a></p>
+<p>【获取码】SIGAI0709
+<a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247485551&amp;idx=1&amp;sn=213f48c4e55bee688cf0731097bb832c&amp;chksm=fdb695f8cac11ceef3ef246c54d811dd64d8cc45fc75488c374c7aa95f72c1abfb55555ef0b7&amp;scene=21#wechat_redirect" target="_blank" rel="noopener"> 生成式对抗网络模型综述</a></p>
+<h3 id="7-5-机器视觉类"><a class="header-anchor" href="#7-5-机器视觉类">¶</a>7.5 机器视觉类</h3>
+<p>【获取码】SIGAI0420
+​    <a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247483726&amp;idx=1&amp;sn=9fef4cc1766ea4258749f8d40cc71a6e&amp;chksm=fdb69cd9cac115cf4eba16081780c3b64c75e1e55a40bf2782783d5c28f00c6f143426e6f0aa&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">人脸识别算法演化史</a></p>
+<p>【获取码】SIGAI0424
+​    <a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247483731&amp;idx=1&amp;sn=237c52bc9ddfe65779b73ef8b5507f3c&amp;chksm=fdb69cc4cac115d2ca505e0deb975960a792a0106a5314ffe3052f8e02a75c9fef458fd3aca2&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">基于深度学习的目标检测算法综述</a></p>
+<p>【获取码】SIGAI0503
+​    <a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247483950&amp;idx=1&amp;sn=a3a5b7907b2552c233f654a529931776&amp;chksm=fdb69fb9cac116af5dd237cf987e56d12b0d2e54c5c565aab752f3e366c0c45bfefa76f5ed16&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">人脸检测算法综述</a></p>
+<p>【获取码】SIGAI0525
+<a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247483950&amp;idx=1&amp;sn=a3a5b7907b2552c233f654a529931776&amp;chksm=fdb69fb9cac116af5dd237cf987e56d12b0d2e54c5c565aab752f3e366c0c45bfefa76f5ed16&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">【SIGAI综述】行人检测算法   </a></p>
+<p>【获取码】SIGAI0604
+​    <a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247484711&amp;idx=1&amp;sn=bb7644e101b5924f54d6800b952dc3aa&amp;chksm=fdb698b0cac111a6605f5b9b6f0478bf21a8527cfad2342dbaaf624b4e9dcc43c0d85ae06deb&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">FlowNet到FlowNet2.0：基于卷积神经网络的光流预测算法 </a></p>
+<p>【获取码】SIGAI0608
+​    <a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247484784&amp;idx=1&amp;sn=ceafb54203f4e930ae457ad392b9f89c&amp;chksm=fdb698e7cac111f13d8229d7dcc00b4a7305d66de3da1bd41e7ecc1d29bfa7be520d205c53e9&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">人体骨骼关键点检测综述 </a></p>
+<p>【获取码】SIGAI0615
+​    <a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247484909&amp;idx=1&amp;sn=c02ee17e5175230ed39ad63e73249f5c&amp;chksm=fdb6987acac1116c0108ec28424baf4ea16ca11d2b13f20d4a825d7b2b82fb8765720ebd1063&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">目标检测算法之YOLO</a></p>
+<p>【获取码】SIGAI0622
+​    <a href="https://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247485005&amp;idx=1&amp;sn=0d4fb43b8db2a8046c64a9cfcbf3f478&amp;chksm=fdb69bdacac112cce05c8b735b4f8b1ccf2348bea55a30af2055fc328958bb8f1ffd0f819bd2&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">场景文本检测——CTPN算法介绍</a></p>
+<p>【获取码】SIGAI0629
+​    <a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247485142&amp;idx=1&amp;sn=c0e01da30eb5e750be453eabe4be2bf4&amp;chksm=fdb69b41cac11257ae22c7dac395e9651dab628fc35dd6d3c02d9566a8c7f5f2b56353d58a64&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">自然场景文本检测识别技术综述</a></p>
+]]></content>
+      <categories>
+        <category>算法</category>
+      </categories>
+      <tags>
+        <tag>AI</tag>
+        <tag>ML</tag>
+        <tag>DL</tag>
       </tags>
   </entry>
   <entry>
@@ -2116,273 +2383,6 @@ Have any other suggestions? Please mention in the comments and we’ll update th
       <tags>
         <tag>个人管理</tag>
         <tag>《形象美学》</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>怎样成为一名优秀的算法工程师</title>
-    <url>/public/2018/10/01/AI/how_algorithm_engineer/</url>
-    <content><![CDATA[<blockquote>
-<p>转载 原创： AI学习与实践平台
-TODO: 看完里面的文章，对每篇文章做个总结，实验+文章。</p>
-</blockquote>
-<h2 id="1-导言"><a class="header-anchor" href="#1-导言">¶</a>1. 导言</h2>
-<p>怎样成为一名优秀的算法工程师？这是很多从事人工智能学术研究和产品研发的同学都关心的一个问题。面对市场对人才的大量需求与供给的严重不足，以及高薪水的诱惑，越来越多的人开始学习这个方向的技术，或者打算向人工智能转型。市面上各种鱼龙混杂的培训班以及误导人的文章会把很多初学者带入歧途，浮躁的跟风将会让你最后收获甚微，根本达不到企业的用人要求。为了更好的帮助大家学习和成长，少走弯路，在今天的文章里，<a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247485551&amp;idx=2&amp;sn=a6689528f10aedab3fce91857eec877b&amp;chksm=fdb695f8cac11cee025ad6d8d77ed90f7169142d6b20b2f5a6945b58edd97c27225f4a2eba91&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">SIGAI</a> 的作者以自己的亲身经历和思考，为大家写下对这一问题的理解与答案。</p>
-<p>首先来看一个高度相关的问题：一个优秀的算法工程师必须具备哪些素质？我们给出的答案是这样的：</p>
-<ul>
-<li>数学知识</li>
-<li>编程能力</li>
-<li>机器学习与深度学习的知识</li>
-<li>应用方向的知识</li>
-<li>对自己所做的问题的思考和经验</li>
-</ul>
-<p>除去教育背景，逻辑思维，学习能力，沟通能力等其他方面的因素，大多数公司在考察算法工程师的技术水平时都会考虑上面这几个因素。接下来我们将按照这几个方面进行展开，详细的说明如何学习这些方面的知识以及积累经验。</p>
-<a id="more"></a>
-<h2 id="2-数学知识"><a class="header-anchor" href="#2-数学知识">¶</a>2. 数学知识</h2>
-<p>与其他工作方向如app、服务器开发相比，以及与计算机科学的其他方向如网络，数据库，分布式计算等相比，人工智能尤其是机器学习属于数学知识密集的方向。在各种书籍，论文，算法中都充斥着大量的数学公式，这让很多打算入门的人或者开始学习的人感到明显的压力。首先我们考虑一个最核心的问题：机器学习和深度学习究竟需要哪些数学知识？在<a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247485551&amp;idx=2&amp;sn=a6689528f10aedab3fce91857eec877b&amp;chksm=fdb695f8cac11cee025ad6d8d77ed90f7169142d6b20b2f5a6945b58edd97c27225f4a2eba91&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">SIGAI</a>之前的公众号文章“<a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247483713&amp;idx=1&amp;sn=1e7c81381d16806ac73e15691fe17aec&amp;chksm=fdb69cd6cac115c05f1f90b0407e3f8ae9be8719e454f908074ac0d079885b5c134e2d60fd64&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">学好机器学习需要哪些数学知识</a>”里，我们已经给出了答案。先看下面这张表：</p>
-<p><img src="/public/2018/10/01/AI/how_algorithm_engineer/clip_image003.gif" alt="EB5E93E91C3643F991C93D61F363373E.jpeg"></p>
-<p>更多算法工程师的必读文章，请关注SIGAICN公众号</p>
-<p>上面的表给出了各种典型的机器学习算法所用到的数学知识点。我们之前已经总结过，理解绝大多数算法和理论，有微积分/高等数学，线性代数，概率论，最优化方法的知识就够了。除流形学习需要简单的微分几何概念之外，深层次的数学知识如实变函数，泛函分析等主要用在一些基础理论结果的证明上，即使不能看懂证明过程，也不影响我们使用具体的机器学习算法。概率图模型、流形学习中基于图的模型会用到图论的一些基本知识，如果学习过离散数学或者数据结构，这些概念很容易理解。除此之外，某些算法会用到离散数学中的树的概念，但很容易理解。</p>
-<h3 id="2-1-高等数学"><a class="header-anchor" href="#2-1-高等数学">¶</a>2.1 高等数学</h3>
-<p>如果你已经学过这些大学数学课，只要把所需的知识点复习一遍就够了。对于微积分，通俗易懂而又被广为采用的是同济版的高等数学：</p>
-<p><img src="/public/2018/10/01/AI/how_algorithm_engineer/clip_image005.gif" alt="88F2EB8BDFE1448EBD2DF61848E355FD.jpeg"></p>
-<p>在机器学习中主要用到了微分部分，积分用的非常少。具体的，用到了下面的概念：</p>
-<ul>
-<li>导数和偏导数的定义与计算方法，与函数性质的关系</li>
-<li>梯度向量的定义</li>
-<li>极值定理，可导函数在极值点处导数或梯度必须为0</li>
-<li>雅克比矩阵，这是向量到向量映射函数的偏导数构成的矩阵，在求导推导中会用到</li>
-<li>Hessian矩阵，这是2阶导数对多元函数的推广，与函数的极值有密切的联系</li>
-<li>凸函数的定义与判断方法</li>
-<li>泰勒展开公式</li>
-<li>拉格朗日乘数法，用于求解带等式约束的极值问题</li>
-</ul>
-<p>其中最核心的是多元函数的泰勒展开公式，根据它我们可以推导出梯度下降法，牛顿法，拟牛顿法等一系列最优化方法。</p>
-<p>如果你想要深入的学习微积分，可以阅读数学系的教程，称为数学分析：</p>
-<p><img src="/public/2018/10/01/AI/how_algorithm_engineer/clip_image007.gif" alt="DEB5F0D2FC584E0B96B263FE1D559AFF.jpeg"></p>
-<p>与工科的高等数学偏重计算不同，它里面有大量的理论证明，对于锻炼数学思维非常有帮助。北大张筑生先生所著的数学分析可谓是国内这方面教材的精品。</p>
-<h3 id="2-2-线性代数"><a class="header-anchor" href="#2-2-线性代数">¶</a>2.2 线性代数</h3>
-<p>下面来看线性代数，同样是同济版的教材：</p>
-<p><img src="/public/2018/10/01/AI/how_algorithm_engineer/clip_image009.gif" alt="48D5E515A7144CE6A9CB78162F6ECAAF.jpeg"></p>
-<p>如果想更全面系统的学习线性代数，可以看这本书：</p>
-<p><img src="/public/2018/10/01/AI/how_algorithm_engineer/clip_image011.gif" alt="BF71AB68DB2B4D71AC8D2B3263C197E5.jpeg"></p>
-<p>相比之下，线性代数用的更多。具体用到的知识点有：</p>
-<ul>
-<li>向量和它的各种运算，包括加法，减法，数乘，转置，内积</li>
-<li>向量和矩阵的范数，L1范数和L2范数</li>
-<li>矩阵和它的各种运算，包括加法，减法，乘法，数乘</li>
-<li>逆矩阵的定义与性质</li>
-<li>行列式的定义与计算方法</li>
-<li>二次型的定义</li>
-<li>矩阵的正定性</li>
-<li>特征值与特征向量</li>
-<li>奇异值分解</li>
-<li>线性方程组的数值解</li>
-</ul>
-<p>机器学习算法处理的数据一般都是向量、矩阵或者张量。经典的机器学习算法输入的数据都是特征向量，深度学习算法在处理图像时输入的2维的矩阵或者3维的张量。掌握这些概念是你理解机器学习和深度学习算法的基础。</p>
-<h3 id="2-3-概率论"><a class="header-anchor" href="#2-3-概率论">¶</a>2.3 概率论</h3>
-<p>概率论国内理工科专业使用最多的是浙大版的教材：</p>
-<p><img src="/public/2018/10/01/AI/how_algorithm_engineer/clip_image013.gif" alt="91E918CF7ED84C7488BDDFFC7594E0D4.jpeg"></p>
-<p>如果把机器学习所处理的样本数据看作随机变量/向量，就可以用概率论的方法对问题进行建模，这代表了机器学习中很大一类方法。在机器学习里用到的概率论知识点有:</p>
-<ul>
-<li>随机事件的概念，概率的定义与计算方法</li>
-<li>随机变量与概率分布，尤其是连续型随机变量的概率密度函数和分布函数</li>
-<li>条件概率与贝叶斯公式</li>
-<li>常用的概率分布，包括正态分布，伯努利二项分布，均匀分布</li>
-<li>随机变量的均值与方差，协方差</li>
-<li>随机变量的独立性</li>
-<li>最大似然估计</li>
-</ul>
-<p>这些知识不超出普通理工科概率论教材的范围。</p>
-<h3 id="最优化"><a class="header-anchor" href="#最优化">¶</a>最优化</h3>
-<p>最后来说最优化，几乎所有机器学习算法归根到底都是在求解最优化问题。求解最优化问题的指导思想是在极值点出函数的导数/梯度必须为0。因此你必须理解梯度下降法，牛顿法这两种常用的算法，它们的迭代公式都可以从泰勒展开公式而得到。</p>
-<p>凸优化是机器学习中经常会提及的一个概念，这是一类特殊的优化问题，它的优化变量的可行域是凸集，目标函数是凸函数。凸优化最好的性质是它的所有局部最优解就是全局最优解，因此求解时不会陷入局部最优解。如果一个问题被证明为是凸优化问题，基本上已经宣告此问题得到了解决。在机器学习中，线性回归、岭回归、支持向量机、logistic回归等很多算法求解的都是凸优化问题。</p>
-<p>拉格朗日对偶为带等式和不等式约束条件的优化问题构造拉格朗日函数，将其变为原问题，这两个问题是等价的。通过这一步变换，将带约束条件的问题转换成不带约束条件的问题。通过变换原始优化变量和拉格朗日乘子的优化次序，进一步将原问题转换为对偶问题，如果满足某种条件，原问题和对偶问题是等价的。这种方法的意义在于可以将一个不易于求解的问题转换成更容易求解的问题。在支持向量机中有拉格朗日对偶的应用。</p>
-<p>KKT条件是拉格朗日乘数法对带不等式约束问题的推广，它给出了带等式和不等式约束的优化问题在极值点处所必须满足的条件。在支持向量机中也有它的应用。</p>
-<p>如果你没有学过最优化方法这门课也不用担心，这些方法根据微积分和线性代数的基础知识可以很容易推导出来。如果需要系统的学习这方面的知识，可以阅读《凸优化》，《非线性规划》两本经典教材。</p>
-<p><img src="/public/2018/10/01/AI/how_algorithm_engineer/clip_image015.gif" alt="B00246CBCFB446789B2F7F63F3292099.jpeg"></p>
-<h2 id="3-编程能力"><a class="header-anchor" href="#3-编程能力">¶</a>3. 编程能力</h2>
-<p>编程能力是学好机器学习和深度学习的又一大基础。对于计算机类专业的学生，由于本科已经学了c语言，c++，数据结构与算法，因此这方面一般不存在问题。对于非计算机专业的人来说，要真正学好机器学习和深度学习，这些知识是绕不开的。</p>
-<h3 id="3-1-C"><a class="header-anchor" href="#3-1-C">¶</a>3.1 C++</h3>
-<p>虽然现在大家热衷于学习python，但要作为一名真正的算法工程师，还是应该好好学习一下c++，至少，机器学习和深度学习的很多底层开源库都是用它写的；很多公司线上的产品，无论是运行在服务器端，还是嵌入式端，都是用c++写的。此外，如果你是应届生，在校园招聘时不少公司都会面试你c++的知识。</p>
-<p>C++最经典的教材无疑是c++ primer：</p>
-<p><img src="/public/2018/10/01/AI/how_algorithm_engineer/clip_image017.gif" alt="3E0DE0E336474B81A2F89F2190628186.jpeg"></p>
-<p>对做算法的人来说，这本书其实不用全部看，把常用的点学完就够了。对于进阶，Effective c++是很好的选择，不少公司的面试题就直接出自这本书的知识点：</p>
-<p><img src="/public/2018/10/01/AI/how_algorithm_engineer/clip_image019.gif" alt="DDCC32DD5E6D405588CB4B6F4A94BFE5.jpeg"></p>
-<p>接下来说python，相比c++来说，学习的门槛要低很多，找一本通俗易懂的入门教程学习一遍即可。</p>
-<h3 id="3-2-数据结构和算法"><a class="header-anchor" href="#3-2-数据结构和算法">¶</a>3.2 数据结构和算法</h3>
-<p>数据结构和算法是编写很多程序的基础，对于机器学习和深度学习程序也不例外。很多算法的实现都依赖于数组，链表，数，排序，查找之类的数据结构和基础算法。如果有时间和精力，把算法导论啃一遍，你会有不一样的感受：</p>
-<p><img src="/public/2018/10/01/AI/how_algorithm_engineer/clip_image021.gif" alt="E077608423D7473ABF1DBF75C482E060.jpeg"></p>
-<p>对于应届生来说，学完它对于你通过大互联网和人工智能公司校园招聘的技术面试也非常有用。</p>
-<p>上面说的只是编程语言的程序设计的理论知识，我们还要考虑实际动手能力。对于开发环境如gcc/g++，visual studio之类的工具，以及gdb之类的调试工具需要做到熟练使用。如果是在linux上开发，对linux的常用命令也要熟记于心。这方面的知识看各种具体的知识点和教程即可。另外，对于编程的一些常识，如进程，线程，虚拟内存，文件系统等，你最好也要进行了解。</p>
-<h2 id="4-机器学习与深度学习的知识"><a class="header-anchor" href="#4-机器学习与深度学习的知识">¶</a>4. 机器学习与深度学习的知识</h2>
-<p>在说完了数学和编程基础之后，下面我来看核心的内容，机器学习和深度学习知识。机器学习是现阶段解决很多人工智能问题的核心方法，尤其是深度学习，因此它们是算法工程师的核心知识。在这里有一个问题：是否需要先学机器学习，还是直接学深度学习？如果是一个专业的算法工程师，我的建议是先学机器学习。至少，你要知道机器学习中的基本概念， 过拟合，生成模型，ROC曲线等，上来就看深度学习，如没有背景知识你将不知所云。另外，神经网络只是机器学习中的一类方法，对于很多问题，其他机器学习算法如logistic回归，随机森林，GBDT，决策树等还在被大规模使用，因此你不要把自己局限在神经网络的小圈子里。</p>
-<h3 id="4-1-ML和DP的教材"><a class="header-anchor" href="#4-1-ML和DP的教材">¶</a>4.1 ML和DP的教材</h3>
-<p>首先来看机器学习，这方面的教材很多，周志华老师的机器学习，李航老师的统计学习方法是国内的经典。这里我们介绍国外的经典教材，首先是PRML：</p>
-<p><img src="/public/2018/10/01/AI/how_algorithm_engineer/clip_image023.gif" alt="BE2D3D5817344DE0831B718D3F891899.jpeg"></p>
-<p>PRML 下载地址 <a href="https://www.microsoft.com/en-us/research/publication/pattern-recognition-machine-learning/" target="_blank" rel="noopener">link</a></p>
-<p>此书深厚，内容全面，涵盖了有监督学习，无监督学习的主要方法，理论推导和证明详细深入，是机器学习的经典。此外还有模式分类这本书，在这里不详细介绍。</p>
-<p>本书主要内容包括：
-<strong>第一章：简介</strong>
-概率论、模型选择、决策理论、信息理论</p>
-<p><strong>第二章：概率分布</strong>
-二元变量、多项变量、高斯分布、指数分布族、非参数方法</p>
-<p><strong>第三章：线性模型回归问题</strong>
-线性基函数模型、偏置方差分解、贝叶斯线性回归、贝叶斯模型比较、The Evidence Approximation、固定基函数的局限性</p>
-<p><strong>第四章：线性模型分类问题</strong>
-判别函数、概率生成模型、概率判别模型、拉普拉斯逼近、贝叶斯逻辑回归</p>
-<p><strong>第五章：神经网络</strong>
-前馈神经网络、网络训练、误差反向传播、Hessian矩阵、神经网络的正则化、混合密度网络、贝叶斯神经网络</p>
-<p><strong>第六章：Kernel方法</strong>
-对偶表示、构造核、径向基函数网络、高斯过程</p>
-<p><strong>第七章：Sparse Kernel Machines</strong>
-最大边缘分类器、相关向量机</p>
-<p><strong>第八章：图模型</strong>
-贝叶斯网络、条件独立性、马尔科夫随机场、图模型的推理</p>
-<p><strong>第九章：混合模型和EM</strong>
-K-means聚类、高斯混合、EM算法</p>
-<p><strong>第十章：近似推断</strong>
-变分推断、高斯的变分混合、变分线性回归、指数族分布、局部变分方法、变分logistic回归、Expectation Propagation</p>
-<p><strong>第十一章：采样方法</strong>
-基本采样算法、马尔科夫链蒙特卡洛、吉布斯采样、切片采样、混合蒙特卡洛算法、估计划分函数</p>
-<p><strong>第十二章：连续潜在变数</strong>
-主成分分析，Probabilistic PCA，Kernel PCA，非线性潜变量模型</p>
-<p><strong>第十三章：序列数据</strong>
-马尔可夫模型，隐马尔可夫模型，Linear Dynamical Systems</p>
-<p><strong>第十四章：混合模型</strong>
-贝叶斯模型平均法，Committees，Boosting，基于树的模型，条件混合模型</p>
-<p>深度学习目前最权威的教程是下面这本书：</p>
-<p><img src="/public/2018/10/01/AI/how_algorithm_engineer/clip_image025.gif" alt="A39AD50565E141F89B08C93CCD7DEDFC.jpeg"></p>
-<p>它涵盖了深度学习的方方面面，从理论到工程，但美中不足的是对应于介绍的相对较少。</p>
-<p>强化学习是机器学习很独特的一个分支，大多数人对它不太了解，这方面的教程非常少，我们推荐下面这本书：</p>
-<p><img src="/public/2018/10/01/AI/how_algorithm_engineer/clip_image027.gif" alt="115B0E32F06F4538A76CB9B610F63B8C.jpeg"></p>
-<p>美中不足的是这本书对深度强化学习没有介绍，因为出版的较早。不知最新的版本有没有加上这方面的内容。</p>
-<p>在这里需要强调的是，你的知识要系统化，有整体感。很多同学都感觉到自己学的机器学习太零散，缺乏整体感。这需要你多思考算法之间的关系，演化历史之类的问题，这样你就做到胸中有图-机器学习算法地图。其实，<a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247485551&amp;idx=2&amp;sn=a6689528f10aedab3fce91857eec877b&amp;chksm=fdb695f8cac11cee025ad6d8d77ed90f7169142d6b20b2f5a6945b58edd97c27225f4a2eba91&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">SIGAI</a>在之前的公众号文章“<a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247485306&amp;idx=1&amp;sn=fc8cc8de313bdb61dcd39c1dedb240a4&amp;chksm=fdb69aedcac113fb4b18c74248a313536ded50bade0e66b26f332ab247b148519da71ff2a3c0&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">机器学习算法地图</a>”里已经给你总结出来了。</p>
-<h3 id="4-2-开源库"><a class="header-anchor" href="#4-2-开源库">¶</a>4.2 开源库</h3>
-<p>上面介绍了机器学习和深度学习的理论教材，下面来说实践问题。我们无需重复造车轮子，熟练的使用主流的开源库是需要掌握的一项技能。对于经典的机器学习，常用的库的有:</p>
-<ul>
-<li>libsvm</li>
-<li>liblinear</li>
-<li>XGBoost</li>
-<li>OpenCV</li>
-<li>HTK</li>
-<li>Weka</li>
-</ul>
-<p>在这里我们不一一列举。借助于这些库，我们可以方便的完成自己的实验，或是研发自己的产品。对于深度学习，目前常用的有：</p>
-<ul>
-<li>Caffe</li>
-<li>TensorFlow</li>
-<li>MXNet</li>
-</ul>
-<p>除此之外，还有其他的。对于你要用到的开源库，一定要理解它的原理，以及使用中的一些细节问题。例如很多算法要求输入的数据先做归一化，否则效果会非常差，而且面临浮点数溢出的问题，这些实际经验需要你在使用中摸索。如果有精力把这些库的核心代码分析一遍，你对实现机器学习算法将会更有底气。以深度学习为例，最核心的代码无非是实现：</p>
-<ul>
-<li>各种层，包括它们的正向传播和反向传播</li>
-<li>激活函数的实现</li>
-<li>损失函数的实现</li>
-<li>输入数据的处理</li>
-<li>求解器，实现各种梯度下降法</li>
-</ul>
-<p>这些代码的量并不大，沉下心来，我相信一周之内肯定能分析完。看完之后你会有一种豁然开朗的感觉。</p>
-<h2 id="5-应用方向的知识"><a class="header-anchor" href="#5-应用方向的知识">¶</a>5. 应用方向的知识</h2>
-<p>接下来是各个方向的知识，与机器学习有关的应用方向当前主要有：</p>
-<ul>
-<li>机器视觉</li>
-<li>语音识别</li>
-<li>自然语言处理</li>
-<li>数据挖掘</li>
-<li>知识图谱</li>
-<li>推荐系统</li>
-</ul>
-<p>除此之外，还有其他一些特定小方向，在这里不一一列举。这些具体的应用方向一般都有自己的教材，如果你以后要从事此方向的研究，系统的学习一遍是必须的。</p>
-<h2 id="6-实践经验与思考"><a class="header-anchor" href="#6-实践经验与思考">¶</a>6. 实践经验与思考</h2>
-<p>在说完理论与实践知识之后，最后我们来说经验与思考。在你确定要做某一个方向之后，对这个方向的方法要有一个全面系统的认识，很多方法是一脉相承的，如果只追求时髦看最新的算法，你很难做出学术上的创新，以及工程上的优化。对于本问题所有的经典论文，都应该化时间细度，清楚的理解它们解决了什么问题，是怎么解决的，还有哪些问题没有解决。例如：</p>
-<ul>
-<li>机器视觉目标检测中的遮挡问题</li>
-<li>推荐系统中的冷启动问题</li>
-<li>自然语言处理中文分词中的歧义切分问题</li>
-</ul>
-<p>只有经过大量的编程和实验训练，以及持续的思考，你才能算得上对这个方向深刻理解，以至于有自己的理解。很多同学对自己实现轮上的算法没有底气，解决这个问题最快的途径就是看论文算法的开源代码，在github上有丰富的资源，选择一些合适的，研究一下别人是怎么实现的，你就能明白怎么实现自己的网络结构和损失函数，照葫芦画瓢即可。</p>
-<p>计算机以及人工智能是一个偏实践的学科，它的方法和理论既需要我们有扎实的理论功底，又需要有丰富的实践能力与经验。这两个方面构成了算法工程师最主要的素质。科学的学习路径能够让你取得好的学习效果，同时也缩短学习时间。错误和浮躁的做法则会让你最后事倍功半。这是  <a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247485551&amp;idx=2&amp;sn=a6689528f10aedab3fce91857eec877b&amp;chksm=fdb695f8cac11cee025ad6d8d77ed90f7169142d6b20b2f5a6945b58edd97c27225f4a2eba91&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">SIGAI</a> 对想进入这个领域，或者刚进入这个领域的每个人要说的！</p>
-<p><img src="/public/2018/10/01/AI/how_algorithm_engineer/clip_image029.gif" alt="07382DFD55044B48927C8B054DE6F745.png"></p>
-<h2 id="7-其他材料"><a class="header-anchor" href="#7-其他材料">¶</a>7. 其他材料</h2>
-<h3 id="7-1-科普类"><a class="header-anchor" href="#7-1-科普类">¶</a>7.1 科普类</h3>
-<p>【‍获取码】SIGAI0413
-​    <a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247483705&amp;idx=1&amp;sn=c6e7c4a2e14a2469308b41eb60f155ac&amp;chksm=fdb69caecac115b8712653600e526e99a3f6976fdaa2f6b6a09388fa6f9677ccb57b40c40ae3&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">机器学习——波澜壮阔四十年 </a></p>
-<p>【获取码】SIGAI0620
-​    <a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247484981&amp;idx=1&amp;sn=d3003468b9853851923844812993e060&amp;chksm=fdb69ba2cac112b4dac620d52100ebd033eb679f29340726a67297c4d6980b16c7cc91122028&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">理解计算：从√2到AlphaGo ——第1季 从√2谈起</a></p>
-<p>【获取码】SIGAI0704
-<a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247485155&amp;idx=1&amp;sn=990cc7400751c36e9fef0a261e6add2a&amp;chksm=fdb69b74cac112628bdae14c6435120f6fece20dae9bf7b1ffc8b8b25e5496a24160feca0a72&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">理解计算：从√2到AlphaGo ——第2季 神经计算的历史背景</a></p>
-<h3 id="7-2-数学类"><a class="header-anchor" href="#7-2-数学类">¶</a>7.2 数学类</h3>
-<p>【获取码】SIGAI0417
-<a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247483713&amp;idx=1&amp;sn=1e7c81381d16806ac73e15691fe17aec&amp;chksm=fdb69cd6cac115c05f1f90b0407e3f8ae9be8719e454f908074ac0d079885b5c134e2d60fd64&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">学好机器学习需要哪些数学知识</a></p>
-<p>【获取码】SIGAI0511
-<a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247484111&amp;idx=1&amp;sn=4ed4480e849298a0aff828611e18f1a8&amp;chksm=fdb69f58cac1164e844726bd429862eb7b38d22509eb4d1826eb851036460cb7ca5a8de7b9bb&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">理解梯度下降法</a></p>
-<p>【获取码】SIGAI0518
-<a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247484439&amp;idx=1&amp;sn=4fa8c71ae9cb777d6e97ebd0dd8672e7&amp;chksm=fdb69980cac110960e08c63061e0719a8dc7945606eeef460404dc2eb21b4f5bdb434fb56f92&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">理解凸优化</a></p>
-<p>【获取码】SIGAI0531
-<a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247484651&amp;idx=1&amp;sn=a0e4ca5edb868fe3eae9101b71dd7103&amp;chksm=fdb6997ccac1106a61f51fe9f8fd532045cc5d13f6c75c2cbbf1a7c94c58bcdf5f2a6661facd&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">理解牛顿法 </a></p>
-<h3 id="7-3-机器学习类"><a class="header-anchor" href="#7-3-机器学习类">¶</a>7.3 机器学习类</h3>
-<p>【获取码】SIGAI0428
-​    <a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247483937&amp;idx=1&amp;sn=84a5acf12e96727b13fd7d456c414c12&amp;chksm=fdb69fb6cac116a02dc68d948958ee731a4ae2b6c3d81196822b665224d9dab21d0f2fccb329&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">用一张图理解SVM的脉络</a></p>
-<p>【获取码】SIGAI0505
-​    <a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247483977&amp;idx=1&amp;sn=401b211bf72bc70f733d6ac90f7352cc&amp;chksm=fdb69fdecac116c81aad9e5adae42142d67f50258106f501af07dc651d2c1473c52fad8678c3&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">理解神经网络的激活函数</a></p>
-<p>【获取码】SIGAI0522
-<a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247484495&amp;idx=1&amp;sn=4f3a6ce21cdd1a048e402ed05c9ead91&amp;chksm=fdb699d8cac110ce53f4fc5e417e107f839059cb76d3cbf640c6f56620f90f8fb4e7f6ee02f9&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">【实验】理解SVM核函数和参数的作用</a></p>
-<p>【获取码】SIGAI0601
-<a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247484658&amp;idx=1&amp;sn=f5c9f92c272c75883bf8e6f532559f11&amp;chksm=fdb69965cac11073f49048caef5d7b9129614090a363d9ef7f3d1b9bc59948d2217d2bca7b7b&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">【群话题精华】五月集锦—机器学习和深度学习中一些值得思考的问题   </a></p>
-<p>【获取码】SIGAI0602
-​    <a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247484692&amp;idx=1&amp;sn=9b389aa65208c778dddf17c601afbee1&amp;chksm=fdb69883cac1119593934734e94c3b71aa68de67bda8a946c1f9f9e1209c3b6f0bf18fed99b8&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">大话AdaBoost算法    </a></p>
-<p>【获取码】SIGAI0606
-​    <a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247484754&amp;idx=1&amp;sn=b2c0d6798f44e13956bb42373e51d18c&amp;chksm=fdb698c5cac111d3e3dca24c50aafbfb61e5b05c5df5b603067bb7edec8db049370b73046b24&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">理解主成分分析（PCA）    </a></p>
-<p>【获取码】SIGAI0611
-​    <a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247484827&amp;idx=1&amp;sn=043d7d0159baaddfbf92ed78ee5b1124&amp;chksm=fdb6980ccac1111a9faeae7f517fee46a1dfab19612f76ccfe5417487b3f090ab8fc702d18b8&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">理解决策树  </a></p>
-<p>【获取码】SIGAI0613
-​    <a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247484859&amp;idx=1&amp;sn=2c4db22fb538953a62a90983e3e1f99d&amp;chksm=fdb6982ccac1113a82e92be325bb07a947d54090274654375f3b50e11e1abd809fb7358bde16&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">用一句话总结常用的机器学习算法</a></p>
-<p>【获取码】SIGAI0618
-​    <a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247484954&amp;idx=1&amp;sn=c28b7f07c22466e91b1ef90e9dbe3ad1&amp;chksm=fdb69b8dcac1129bc6e78fca1d550e2b18238ad1c240c73b280d4e529f9f93c4626b3ac45ea2&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">理解过拟合</a></p>
-<p>【获取码】SIGAI0627
-​    <a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247485074&amp;idx=1&amp;sn=0ebf1bf8f49e9c46075fe3803d04c95d&amp;chksm=fdb69b05cac112132d280c70af3923ca4c3cccfa5fcd8628b79d4b246b3b2decbc80a180abb3&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">k近邻算法</a></p>
-<p>【获取码】SIGAI0704
-​    <a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247485306&amp;idx=1&amp;sn=fc8cc8de313bdb61dcd39c1dedb240a4&amp;chksm=fdb69aedcac113fb4b18c74248a313536ded50bade0e66b26f332ab247b148519da71ff2a3c0&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">机器学习算法地图</a></p>
-<p>【获取码】SIGAI0706
-​    <a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247485446&amp;idx=1&amp;sn=57d7d866443810c20c4ea2c6ee8018cc&amp;chksm=fdb69591cac11c8773638b396abe43c0161e4d339f0fa845e54326be3e8c4933a3b6a2713dae&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">反向传播算法推导—全连接神经网络</a></p>
-<h3 id="7-4-深度学习类"><a class="header-anchor" href="#7-4-深度学习类">¶</a>7.4 深度学习类</h3>
-<p>【获取码】SIGAI0426
-<a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247483816&amp;idx=1&amp;sn=fc52765b012771d4736c9be4109f910e&amp;chksm=fdb69c3fcac115290020c3dd0d677d987086a031c1bde3429339bb3b5bbc0aa154e76325c225&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">卷积神经网络为什么能够称霸计算机视觉领域？</a></p>
-<p>【获取码】SIGAI0508
-<a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247484037&amp;idx=1&amp;sn=13ad0d521b6a3578ff031e14950b41f4&amp;chksm=fdb69f12cac11604a42ccb37913c56001a11c65a8d1125c4a9aeba1aed570a751cb400d276b6&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">深度卷积神经网络演化历史及结构改进脉络-40页长文全面解读 </a></p>
-<p>【获取码】SIGAI0515
-<a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247484310&amp;idx=1&amp;sn=0fc55a2784a894100a1ae64d7dbfa23d&amp;chksm=fdb69e01cac1171758cb021fc8779952e55de41032a66ee5417bd3e826bf703247e243654bd0&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">循环神经网络综述—语音识别与自然语言处理的利器</a></p>
-<p>【获取码】SIGAI0625
-<a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247485042&amp;idx=1&amp;sn=cdcf8d4b07acf64c7a6f5f7c1a731a12&amp;chksm=fdb69be5cac112f377766984afb87313c1e1c58d94c80005f0f6f6af61ee5a4bd1bf6c6157b6&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">卷积神经网络的压缩与加速</a></p>
-<p>【获取码】SIGAI0709
-<a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247485551&amp;idx=1&amp;sn=213f48c4e55bee688cf0731097bb832c&amp;chksm=fdb695f8cac11ceef3ef246c54d811dd64d8cc45fc75488c374c7aa95f72c1abfb55555ef0b7&amp;scene=21#wechat_redirect" target="_blank" rel="noopener"> 生成式对抗网络模型综述</a></p>
-<h3 id="7-5-机器视觉类"><a class="header-anchor" href="#7-5-机器视觉类">¶</a>7.5 机器视觉类</h3>
-<p>【获取码】SIGAI0420
-​    <a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247483726&amp;idx=1&amp;sn=9fef4cc1766ea4258749f8d40cc71a6e&amp;chksm=fdb69cd9cac115cf4eba16081780c3b64c75e1e55a40bf2782783d5c28f00c6f143426e6f0aa&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">人脸识别算法演化史</a></p>
-<p>【获取码】SIGAI0424
-​    <a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247483731&amp;idx=1&amp;sn=237c52bc9ddfe65779b73ef8b5507f3c&amp;chksm=fdb69cc4cac115d2ca505e0deb975960a792a0106a5314ffe3052f8e02a75c9fef458fd3aca2&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">基于深度学习的目标检测算法综述</a></p>
-<p>【获取码】SIGAI0503
-​    <a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247483950&amp;idx=1&amp;sn=a3a5b7907b2552c233f654a529931776&amp;chksm=fdb69fb9cac116af5dd237cf987e56d12b0d2e54c5c565aab752f3e366c0c45bfefa76f5ed16&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">人脸检测算法综述</a></p>
-<p>【获取码】SIGAI0525
-<a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247483950&amp;idx=1&amp;sn=a3a5b7907b2552c233f654a529931776&amp;chksm=fdb69fb9cac116af5dd237cf987e56d12b0d2e54c5c565aab752f3e366c0c45bfefa76f5ed16&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">【SIGAI综述】行人检测算法   </a></p>
-<p>【获取码】SIGAI0604
-​    <a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247484711&amp;idx=1&amp;sn=bb7644e101b5924f54d6800b952dc3aa&amp;chksm=fdb698b0cac111a6605f5b9b6f0478bf21a8527cfad2342dbaaf624b4e9dcc43c0d85ae06deb&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">FlowNet到FlowNet2.0：基于卷积神经网络的光流预测算法 </a></p>
-<p>【获取码】SIGAI0608
-​    <a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247484784&amp;idx=1&amp;sn=ceafb54203f4e930ae457ad392b9f89c&amp;chksm=fdb698e7cac111f13d8229d7dcc00b4a7305d66de3da1bd41e7ecc1d29bfa7be520d205c53e9&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">人体骨骼关键点检测综述 </a></p>
-<p>【获取码】SIGAI0615
-​    <a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247484909&amp;idx=1&amp;sn=c02ee17e5175230ed39ad63e73249f5c&amp;chksm=fdb6987acac1116c0108ec28424baf4ea16ca11d2b13f20d4a825d7b2b82fb8765720ebd1063&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">目标检测算法之YOLO</a></p>
-<p>【获取码】SIGAI0622
-​    <a href="https://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247485005&amp;idx=1&amp;sn=0d4fb43b8db2a8046c64a9cfcbf3f478&amp;chksm=fdb69bdacac112cce05c8b735b4f8b1ccf2348bea55a30af2055fc328958bb8f1ffd0f819bd2&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">场景文本检测——CTPN算法介绍</a></p>
-<p>【获取码】SIGAI0629
-​    <a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247485142&amp;idx=1&amp;sn=c0e01da30eb5e750be453eabe4be2bf4&amp;chksm=fdb69b41cac11257ae22c7dac395e9651dab628fc35dd6d3c02d9566a8c7f5f2b56353d58a64&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">自然场景文本检测识别技术综述</a></p>
-]]></content>
-      <categories>
-        <category>算法</category>
-      </categories>
-      <tags>
-        <tag>AI</tag>
-        <tag>ML</tag>
-        <tag>DL</tag>
       </tags>
   </entry>
   <entry>
