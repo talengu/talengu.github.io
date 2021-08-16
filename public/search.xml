@@ -506,6 +506,7 @@ markdown 空格</p>
         <category>数学</category>
       </categories>
       <tags>
+        <tag>数学</tag>
         <tag>层次分析法</tag>
       </tags>
   </entry>
@@ -830,6 +831,7 @@ markdown 空格</p>
         <category>Linux</category>
       </categories>
       <tags>
+        <tag>技巧</tag>
         <tag>Ubuntu</tag>
       </tags>
   </entry>
@@ -908,8 +910,8 @@ $$
       </categories>
       <tags>
         <tag>Latex</tag>
+        <tag>数学</tag>
         <tag>空间解析几何</tag>
-        <tag>Math</tag>
       </tags>
   </entry>
   <entry>
@@ -979,6 +981,7 @@ $$
         <category>常用脚本</category>
       </categories>
       <tags>
+        <tag>工具</tag>
         <tag>Windows脚本</tag>
         <tag>共享wifi</tag>
         <tag>cmd</tag>
@@ -1595,9 +1598,9 @@ nbextensions的教程<a href="https://jupyter-contrib-nbextensions.readthedocs.i
         <category>Jupyter</category>
       </categories>
       <tags>
+        <tag>工具</tag>
         <tag>Python</tag>
-        <tag>Notebook</tag>
-        <tag>Tools</tag>
+        <tag>笔记应用</tag>
       </tags>
   </entry>
   <entry>
@@ -1839,8 +1842,8 @@ Have any other suggestions? Please mention in the comments and we’ll update th
         <category>cv</category>
       </categories>
       <tags>
-        <tag>Face Detection</tag>
         <tag>OpenCV</tag>
+        <tag>Face Detection</tag>
         <tag>Dlib</tag>
       </tags>
   </entry>
