@@ -130,6 +130,8 @@
       <category term="博客搭建" scheme="https://talengu.github.io/public/categories/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/"/>
     
     
+      <category term="工具" scheme="https://talengu.github.io/public/tags/%E5%B7%A5%E5%85%B7/"/>
+    
       <category term="博客模版" scheme="https://talengu.github.io/public/tags/%E5%8D%9A%E5%AE%A2%E6%A8%A1%E7%89%88/"/>
     
   </entry>
@@ -243,6 +245,8 @@
     
     
       <category term="重庆" scheme="https://talengu.github.io/public/tags/%E9%87%8D%E5%BA%86/"/>
+    
+      <category term="游记" scheme="https://talengu.github.io/public/tags/%E6%B8%B8%E8%AE%B0/"/>
     
   </entry>
   
@@ -438,7 +442,9 @@ TODO: 看完里面的文章，对每篇文章做个总结，实验+文章。&lt;
       <category term="Linux" scheme="https://talengu.github.io/public/categories/Linux/"/>
     
     
-      <category term="Ubuntu" scheme="https://talengu.github.io/public/tags/Ubuntu/"/>
+      <category term="工具" scheme="https://talengu.github.io/public/tags/%E5%B7%A5%E5%85%B7/"/>
+    
+      <category term="linux" scheme="https://talengu.github.io/public/tags/linux/"/>
     
       <category term="proxy代理" scheme="https://talengu.github.io/public/tags/proxy%E4%BB%A3%E7%90%86/"/>
     
