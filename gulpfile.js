@@ -67,6 +67,11 @@ gulp.task('default', gulp.parallel('minify-html','minify-css','minify-js','minif
  //build the website
 ));
 
+gulp.task('no_img', gulp.parallel('minify-html','minify-css','minify-js'
+	//build the website
+));
+
+
 //gulp source 优化 source 文件夹图片
 gulp.task('source', gulp.parallel('source_minify-images'));
 // gulp-htmlclean // 清理html
