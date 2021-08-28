@@ -1044,24 +1044,6 @@ $$
       </tags>
   </entry>
   <entry>
-    <title>srt中英文合并python脚本</title>
-    <url>/public/2016/04/14/shells/youtube_src_combine/</url>
-    <content><![CDATA[<p><strong>前言</strong></p>
-<p>从Youtube上看只有中文或英文分开的字幕，下载好视频，想要中英文字幕。可从 <a href="http://mo.dbxdb.com/Yang/setting.html" target="_blank" rel="noopener">Getting Youtube subtitles</a> 获取中或英文字幕，然后将其合并，即成中英文双字幕。下面是python脚本。</p>
-<a id="more"></a>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">本脚本完成了中英文srt合并的功能</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">srt2lis</span><span class="params">(name)</span>:</span></span><br><span class="line">    lines = open(<span class="string">'srt/'</span>+name, <span class="string">'r'</span>, encoding=<span class="string">'utf-8'</span>).readlines()</span><br><span class="line">    lis = []</span><br><span class="line">    tmp = []</span><br><span class="line">    <span class="keyword">for</span> i, line <span class="keyword">in</span> enumerate(lines):</span><br><span class="line">        <span class="comment"># 以\n 结尾的一个时间点</span></span><br><span class="line">        <span class="keyword">if</span> line == <span class="string">'\n'</span>:</span><br><span class="line">            lis.append(tmp)</span><br><span class="line">            tmp = []</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            tmp.append(line)</span><br><span class="line">    <span class="keyword">return</span> lis</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">hebing</span><span class="params">(name_zh)</span>:</span></span><br><span class="line">    name_en = name_zh[:<span class="number">-7</span>] + <span class="string">'.srt'</span></span><br><span class="line">    out_name=<span class="string">'out/'</span>+name_en</span><br><span class="line">    f=open(out_name,<span class="string">'w'</span>,encoding=<span class="string">'utf-8'</span>)</span><br><span class="line">    lis_en=srt2lis(name_en)</span><br><span class="line">    lis_zh=srt2lis(name_zh)</span><br><span class="line">    <span class="keyword">for</span> i,item <span class="keyword">in</span> enumerate(lis_en):</span><br><span class="line">        print(item[<span class="number">0</span>])</span><br><span class="line">        f.write(item[<span class="number">0</span>])</span><br><span class="line">        f.write(item[<span class="number">1</span>])</span><br><span class="line">        <span class="keyword">for</span> line <span class="keyword">in</span> lis_zh[i][<span class="number">2</span>:]:</span><br><span class="line">            f.write(line)</span><br><span class="line">        <span class="keyword">for</span> line <span class="keyword">in</span> item[<span class="number">2</span>:]:</span><br><span class="line">            f.write(line)</span><br><span class="line">        f.write(<span class="string">'\n'</span>)</span><br><span class="line">    f.close()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">flis=os.listdir(<span class="string">'srt/'</span>)</span><br><span class="line"><span class="keyword">if</span> <span class="keyword">not</span> os.path.exists(<span class="string">'out'</span>):</span><br><span class="line">    os.mkdir(<span class="string">'out'</span>)</span><br><span class="line"><span class="keyword">for</span> name <span class="keyword">in</span> flis:</span><br><span class="line">    print(name)</span><br><span class="line">    <span class="keyword">if</span> name[<span class="number">-6</span>:<span class="number">-4</span>]==<span class="string">'zh'</span>:</span><br><span class="line">        hebing(name)</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>常用脚本</category>
-      </categories>
-      <tags>
-        <tag>工具</tag>
-        <tag>python</tag>
-        <tag>YouTube字幕合并</tag>
-        <tag>src</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Windows笔记本开共享wifi</title>
     <url>/public/2015/04/14/shells/share_win_wifi/</url>
     <content><![CDATA[<p><strong>前言</strong>
@@ -1077,6 +1059,24 @@ $$
         <tag>Windows脚本</tag>
         <tag>共享wifi</tag>
         <tag>cmd</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>srt中英文合并python脚本</title>
+    <url>/public/2016/04/14/shells/youtube_src_combine/</url>
+    <content><![CDATA[<p><strong>前言</strong></p>
+<p>从Youtube上看只有中文或英文分开的字幕，下载好视频，想要中英文字幕。可从 <a href="http://mo.dbxdb.com/Yang/setting.html" target="_blank" rel="noopener">Getting Youtube subtitles</a> 获取中或英文字幕，然后将其合并，即成中英文双字幕。下面是python脚本。</p>
+<a id="more"></a>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">本脚本完成了中英文srt合并的功能</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">srt2lis</span><span class="params">(name)</span>:</span></span><br><span class="line">    lines = open(<span class="string">'srt/'</span>+name, <span class="string">'r'</span>, encoding=<span class="string">'utf-8'</span>).readlines()</span><br><span class="line">    lis = []</span><br><span class="line">    tmp = []</span><br><span class="line">    <span class="keyword">for</span> i, line <span class="keyword">in</span> enumerate(lines):</span><br><span class="line">        <span class="comment"># 以\n 结尾的一个时间点</span></span><br><span class="line">        <span class="keyword">if</span> line == <span class="string">'\n'</span>:</span><br><span class="line">            lis.append(tmp)</span><br><span class="line">            tmp = []</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            tmp.append(line)</span><br><span class="line">    <span class="keyword">return</span> lis</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">hebing</span><span class="params">(name_zh)</span>:</span></span><br><span class="line">    name_en = name_zh[:<span class="number">-7</span>] + <span class="string">'.srt'</span></span><br><span class="line">    out_name=<span class="string">'out/'</span>+name_en</span><br><span class="line">    f=open(out_name,<span class="string">'w'</span>,encoding=<span class="string">'utf-8'</span>)</span><br><span class="line">    lis_en=srt2lis(name_en)</span><br><span class="line">    lis_zh=srt2lis(name_zh)</span><br><span class="line">    <span class="keyword">for</span> i,item <span class="keyword">in</span> enumerate(lis_en):</span><br><span class="line">        print(item[<span class="number">0</span>])</span><br><span class="line">        f.write(item[<span class="number">0</span>])</span><br><span class="line">        f.write(item[<span class="number">1</span>])</span><br><span class="line">        <span class="keyword">for</span> line <span class="keyword">in</span> lis_zh[i][<span class="number">2</span>:]:</span><br><span class="line">            f.write(line)</span><br><span class="line">        <span class="keyword">for</span> line <span class="keyword">in</span> item[<span class="number">2</span>:]:</span><br><span class="line">            f.write(line)</span><br><span class="line">        f.write(<span class="string">'\n'</span>)</span><br><span class="line">    f.close()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">flis=os.listdir(<span class="string">'srt/'</span>)</span><br><span class="line"><span class="keyword">if</span> <span class="keyword">not</span> os.path.exists(<span class="string">'out'</span>):</span><br><span class="line">    os.mkdir(<span class="string">'out'</span>)</span><br><span class="line"><span class="keyword">for</span> name <span class="keyword">in</span> flis:</span><br><span class="line">    print(name)</span><br><span class="line">    <span class="keyword">if</span> name[<span class="number">-6</span>:<span class="number">-4</span>]==<span class="string">'zh'</span>:</span><br><span class="line">        hebing(name)</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>常用脚本</category>
+      </categories>
+      <tags>
+        <tag>工具</tag>
+        <tag>python</tag>
+        <tag>YouTube字幕合并</tag>
+        <tag>src</tag>
       </tags>
   </entry>
   <entry>
