@@ -634,8 +634,8 @@ markdown 空格</p>
         <category>机器学习</category>
       </categories>
       <tags>
-        <tag>AI</tag>
-        <tag>ML</tag>
+        <tag>人工智能</tag>
+        <tag>机器学习</tag>
       </tags>
   </entry>
   <entry>
@@ -1527,8 +1527,8 @@ $$
         <category>正则化</category>
       </categories>
       <tags>
-        <tag>AI</tag>
-        <tag>ML</tag>
+        <tag>人工智能</tag>
+        <tag>机器学习</tag>
       </tags>
   </entry>
   <entry>
@@ -2651,9 +2651,9 @@ K-means聚类、高斯混合、EM算法</p>
         <category>算法</category>
       </categories>
       <tags>
-        <tag>AI</tag>
-        <tag>ML</tag>
-        <tag>DL</tag>
+        <tag>人工智能</tag>
+        <tag>机器学习</tag>
+        <tag>深度学习</tag>
       </tags>
   </entry>
   <entry>
