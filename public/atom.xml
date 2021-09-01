@@ -6,7 +6,7 @@
   <link href="/public/atom.xml" rel="self"/>
   
   <link href="https://talengu.github.io/public/"/>
-  <updated>2021-08-25T23:18:52.000Z</updated>
+  <updated>2021-09-01T12:00:00.000Z</updated>
   <id>https://talengu.github.io/public/</id>
   
   <author>
@@ -15,6 +15,29 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>2021 年科隆游戏展奖项提名名单</title>
+    <link href="https://talengu.github.io/public/2021/09/01/2021games/"/>
+    <id>https://talengu.github.io/public/2021/09/01/2021games/</id>
+    <published>2021-09-01T12:00:00.000Z</published>
+    <updated>2021-09-01T12:00:00.000Z</updated>
+    
+    <content type="html"><![CDATA[<p><strong>前言</strong></p><p>帝国时代3，现在帝国4！</p><a id="more"></a><p>2021 年科隆游戏展奖项提名名单正式公布8 月 23 日，2021 年科隆游戏展的奖项提名名单已经全部揭晓，本次直接涉及游戏的奖项有 21 个，其中获得提名的游戏分别为：</p><p>最佳微软 Xbox 游戏：《艾尔登法环》（万代南梦宫娱乐）；《孤岛惊魂 6》（育碧）；《光环无限》（微软）</p><p>最佳任天堂 Switch 游戏：《舞力全开 2022》（育碧）；《马里奥 + 疯狂兔子星耀之愿》 (育碧)</p><p>最佳 PC 游戏：《帝国时代 4》(微软)；《艾尔登法环》（万代南梦宫娱乐）；《塞伯利亚之谜: 世界之前》 (Astragon Entertainment)</p><p>最佳索尼 PlayStation 游戏：《艾尔登法环》（万代南梦宫娱乐）；《破晓传说》（万代南梦宫娱乐）；《黑相集：灰冥界》 (万代南梦宫娱乐)</p><p>最佳动作冒险游戏：《艾尔登法环》（万代南梦宫娱乐）；《马里奥 + 疯狂兔子星耀之愿》 (育碧)；《塞伯利亚之谜: 世界之前》 (Astragon Entertainment)</p><p>最佳动作游戏：《孤岛惊魂 6》（育碧）；《光环：无限》（微软）；《彩虹六号：异种》（育碧）</p><p>最佳家庭游戏：《舞力全开 2022》（育碧）；《Run Prop, Run!》（PlayTogether Studio）；《Super Dungeon Maker》 (Rokaplay)</p><p>最佳独立游戏：《Dorfromantik》（Toukana Interactive）；《Inua》（Arte France）；《Lost in Random》（EA）</p><p>最佳角色扮演游戏：《艾尔登法环》（万代南梦宫娱乐）；《Encased》（科赫传媒）；《破晓传说》（万代南梦宫娱乐）</p><p>最佳模拟游戏：《攀登者：天空是极限》(Art Games Studio)；《模拟农场 22》 (Astragon Entertainment)</p><p>最佳体育游戏：《攀登者：天空是极限》(Art Games Studio)；《FIFA22》（EA）；《Riders Republic》（育碧）</p><p>最佳策略游戏：《帝国时代 4》 (微软)；《英雄连 3》 (世嘉)；《马里奥 + 疯狂兔子星耀之愿》 (育碧)</p><p>最佳多人游戏：《光环无限》（微软）；《Riders Republic》（育碧）；《黑相集：灰冥界》 (万代南梦宫娱乐)</p><p>持续时间最长游戏：《Apex 游戏》（EA）；《黑色沙漠》 (Pearl Abyss Corp.)；《末日地带: 隔离的世界》 (Assemble Entertainment)</p><p>最具原创性的游戏：《骰子遗产》（科赫传媒/Destinybit）；《Riders Republic》（育碧）；《Terrorbane》 (轻语互动)</p><p>2021 年科隆游戏展将会于 8 月 25 日至 8 月 29 日举办，将保留现场展览的形式，同时线上数字展形式也将同步举行。</p><hr><p><strong>参考</strong></p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;&lt;strong&gt;前言&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;帝国时代3，现在帝国4！&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="游戏" scheme="https://talengu.github.io/public/categories/%E6%B8%B8%E6%88%8F/"/>
+    
+    
+      <category term="日常杂记" scheme="https://talengu.github.io/public/tags/%E6%97%A5%E5%B8%B8%E6%9D%82%E8%AE%B0/"/>
+    
+  </entry>
   
   <entry>
     <title>在 C/C++ 程序中打印当前函数调用栈[转]</title>
@@ -605,35 +628,6 @@ TODO: 看完里面的文章，对每篇文章做个总结，实验+文章。&lt;
       <category term="故事" scheme="https://talengu.github.io/public/tags/%E6%95%85%E4%BA%8B/"/>
     
       <category term="《红楼梦》" scheme="https://talengu.github.io/public/tags/%E3%80%8A%E7%BA%A2%E6%A5%BC%E6%A2%A6%E3%80%8B/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>为什么正好经过这个空隙？</title>
-    <link href="https://talengu.github.io/public/2017/05/05/math/math_q1/"/>
-    <id>https://talengu.github.io/public/2017/05/05/math/math_q1/</id>
-    <published>2017-05-05T16:00:04.000Z</published>
-    <updated>2017-05-05T16:00:04.000Z</updated>
-    
-    <content type="html"><![CDATA[<p><strong>前言</strong>偶然看到的一个问题，如图1，为什么正好经过这个空隙？我们用空间解析几何来解一下吧。</p><p><img src="/public/2017/05/05/math/math_q1/math_q1_show.gif" alt="动图"></p><div align="center"> 图1 为什么会经过这个空隙？</div><a id="more"></a><p><strong>解答</strong></p><p>如图2，建立空间直角坐标系$xyz$，原点记为 $O$ ， $P$  点为水平杆与斜杆的交点， $Q$ 点为垂直杆与水平杆的交点， 将斜杆标记为 $L$ 。</p><p><img src="/public/2017/05/05/math/math_q1/v2-80ac80b8031d5782412f4f4ef4e22a1a_b.jpeg" alt="img"></p><div align="center"> 图2 建立空间直角坐标系</div><p>设 $OQ=q$  ， $QP=r$  。$Q$ 点坐标为 $(0, 0, q)$  。</p><p>设水平杆  $QP$  绕  $z$   轴以  $\omega, rad/s$  的角速度旋转，并设从开始旋转到现在的时长为 $t$  秒， 则  $P$  点坐标为 $(r\cos{\omega t}, r\sin{\omega t}, q)$  。</p><p>由 $Q$、$P$ 两点坐标得：</p><p>$$\overrightarrow{OQ}=(0, 0, q) \qquad \overrightarrow{QP}=(r\cos{\omega t}, r\sin{\omega t}, 0) \tag{1}$$</p><p>设 $L$ 的方向向量 $\overrightarrow{S}=(a, b, c) $，由 $L$ 的方向向量 $\overrightarrow{S}$ 和 $P$ 点得，得斜杆  $L$  代表的直线方程：$$\frac{x-r\cos{\omega t}}{a}=\frac{y-r\sin{\omega t}}{b}=\frac{z-q}{c} \tag{2}$$</p><p>我们知道 $\overrightarrow{QP}$ 与斜杆 $L$ 垂直，假设 $\overrightarrow{OQ}$ 与斜杆 $L$ 成固定角 $ \theta$ ，得：$$\begin{cases} 0=\overrightarrow{QP} \cdot \overrightarrow{S} \ \cos{\theta}=\frac{\overrightarrow{OQ} \cdot \overrightarrow{S}}{\left|\overrightarrow{OQ}\right| \left| \overrightarrow{S}\right|} \end{cases} \tag{3}$$</p><p>把 $\overrightarrow{QP}$， $\overrightarrow{S}$， $\overrightarrow{OQ}$ 代入 式(3)，得$$\begin{cases}  \frac{a}{b}=\frac{-\sin{\omega t}}{\cos{\omega t}} \ c^{2}(\tan{\theta})^{2}=a^{2}+b^{2}  \end{cases} \tag{4}$$</p><p>式（4）中第2条等式两边除以 $b^2$ ，再化简得：$$\frac{c^{2}}{b^{2}}=\frac{1}{(\tan{\theta})^{2}(\cos{\omega t})^{2}} \tag{5}$$</p><p>求直线组 $L$ 与 $xoz$ 平面相交的图形，即回答这个缝隙的形状为什么是图1 中这样的曲线。我们令 $y=0$ ，代入直线公式(2) 得：$$\frac{x-r\cos{\omega t}}{a}=\frac{-r\sin{\omega t}}{b} =\frac{z-q}{c} \tag{6}$$由式（4）（5）（6）得到方程组（7）。$$\begin{cases} \frac{a}{b}=\frac{-\sin{\omega t}}{\cos{\omega t}}\  \frac{x-r\cos{\omega t}}{a}=\frac{-r\sin{\omega t}}{b} \  \frac{c^2}{b^2}=\frac{1}{(\tan{\theta})^{2}(\cos{\omega t})^{2}}\  \frac{-r\sin{\omega t}}{b} =\frac{z-q}{c}  \end{cases}  \tag{7}$$</p><p>由式（7）中上面两个等式，消去a，b得：$$\frac{-\sin{\omega t}}{\cos{\omega t}}=\frac{x-r\cos{\omega t}}{-r\sin{\omega t}}=\frac{a}{b} \tag{8}$$$$x \cos{\omega t}=r   \tag{9}$$</p><p>由式（7）中下面两个等式，消去b，c得：$$\frac{1}{(\tan{\theta})^2(\cos{\omega t})^2}= \frac{(z-q)^2}{(-r\sin{\omega t})^2}=\frac{c^2}{b^2} \tag{10}$$</p><p>$$\frac{(-r\sin{\omega t})^2}{(\tan{\theta})^2(\cos{\omega t})^2}= {(z-q)}^2 \tag{11}$$</p><p>由利用式（9），可消去式（11）中的 $(\sin{\omega t})^{2}$  和 $(\cos{\omega t})^{2}$  得：$$x^{2}-(\tan{\theta})^{2}(z-q)^{2}=r^{2} \tag{12}$$易知，为双曲线方程，所以在  xoz 平面相交得图形为双曲线。 ■</p><hr><p>欢迎观众老爷们评论回复，一键三连。更多有趣问题，欢迎关注投稿 <a href="https://zhuanlan.zhihu.com/shuxuemanyou" target="_blank" rel="noopener">知乎小成 - 数学漫游专栏</a>，我们聚焦生活中的数与形的小小问题们。转载请注明出处，谢谢！</p>]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;&lt;strong&gt;前言&lt;/strong&gt;
-偶然看到的一个问题，如图1，为什么正好经过这个空隙？我们用空间解析几何来解一下吧。&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;/public/2017/05/05/math/math_q1/math_q1_show.gif&quot; alt=&quot;动图&quot;&gt;&lt;/p&gt;
-&lt;div align=&quot;center&quot;&gt; 图1 为什么会经过这个空隙？&lt;/div&gt;
-    
-    </summary>
-    
-      <category term="数学" scheme="https://talengu.github.io/public/categories/%E6%95%B0%E5%AD%A6/"/>
-    
-    
-      <category term="Latex" scheme="https://talengu.github.io/public/tags/Latex/"/>
-    
-      <category term="数学" scheme="https://talengu.github.io/public/tags/%E6%95%B0%E5%AD%A6/"/>
-    
-      <category term="空间解析几何" scheme="https://talengu.github.io/public/tags/%E7%A9%BA%E9%97%B4%E8%A7%A3%E6%9E%90%E5%87%A0%E4%BD%95/"/>
     
   </entry>
   
