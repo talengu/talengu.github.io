@@ -4,10 +4,10 @@
     <title>2021 年科隆游戏展奖项提名名单</title>
     <url>/public/2021/09/01/2021games/</url>
     <content><![CDATA[<p><strong>前言</strong></p>
-<p>帝国时代3，现在帝国4！</p>
+<p>帝国时代3，现在帝国4！<br>
+2021 年科隆游戏展奖项提名名单正式公布</p>
 <a id="more"></a>
-<p>2021 年科隆游戏展奖项提名名单正式公布
-8 月 23 日，2021 年科隆游戏展的奖项提名名单已经全部揭晓，本次直接涉及游戏的奖项有 21 个，其中获得提名的游戏分别为：</p>
+<p>8 月 23 日，2021 年科隆游戏展的奖项提名名单已经全部揭晓，本次直接涉及游戏的奖项有 21 个，其中获得提名的游戏分别为：</p>
 <p>最佳微软 Xbox 游戏：《艾尔登法环》（万代南梦宫娱乐）；《孤岛惊魂 6》（育碧）；《光环无限》（微软）</p>
 <p>最佳任天堂 Switch 游戏：《舞力全开 2022》（育碧）；《马里奥 + 疯狂兔子星耀之愿》 (育碧)</p>
 <p>最佳 PC 游戏：《帝国时代 4》(微软)；《艾尔登法环》（万代南梦宫娱乐）；《塞伯利亚之谜: 世界之前》 (Astragon Entertainment)</p>
@@ -258,13 +258,12 @@ markdown 空格</p>
       </tags>
   </entry>
   <entry>
-    <title>在 C/C++ 程序中打印当前函数调用栈[转]</title>
+    <title>【转】在 C/C++ 程序中打印当前函数调用栈</title>
     <url>/public/2021/08/25/c_debug/</url>
-    <content><![CDATA[<p><strong>背景</strong>
-...</p>
-<a id="more"></a>
+    <content><![CDATA[<p><strong>背景</strong></p>
 <p>2011 年 6 月 11 日 <a href="http://www.wuzesheng.com/?author=2" title="由 小武哥 发布" target="_blank" rel="noopener">小武哥</a></p>
 <p>前几天帮同事跟踪的一个程序莫名退出，没有 core dump(当然 ulimit 是打开的) 的问题。我们知道，正常情况下，如果程序因为某种异常条件退出的话，应该会产生 core dump，而如果程序正常退出的话，应该是直接或者间接的调用了 exit() 相关的函数。基于这个事实，我想到了这样一个办法，在程序开始时，通过系统提供的 atexit()，向系统注册一个回调函数，在程序调用 exit() 退出的时候，这个回调函数就会被调用，然后我们在回调函数中打印出当前的函数调用栈，由此便可以知道 exit() 是在哪里调用，从而上述问题便迎刃而解了。上述方法用来解决类似问题是非常行之有效的。在上面，我提到了在 “回调函数中打印出当前的函数调用栈”，相信细心的朋友应该注意到这个了，本文的主要内容就是详细介绍，如何在程序中打印中当前的函数调用栈。</p>
+<a id="more"></a>
 <p>我之前写过一篇题目为《<a href="http://www.wuzesheng.com/?p=1123" target="_blank" rel="noopener">介绍几个关于 C/C++ 程序调试的函数</a>》的文章，看到这里，请读者朋友先看一下前面这篇，因为本文是以前面这篇文章为基础的。我正是用了 backtrace() 和 backtrace_symbols() 这两个函数实现的，下面是一个简单的例子，通过这个例子我们来介绍具体的方法：</p>
 <figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;execinfo .h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio .h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdlib .h&gt;</span></span></span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">fun1</span><span class="params">()</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">fun2</span><span class="params">()</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">fun3</span><span class="params">()</span></span>;</span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">print_stacktrace</span><span class="params">()</span></span>;</span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    fun3();</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">fun1</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"stackstrace begin:\n"</span>);</span><br><span class="line">    print_stacktrace();</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">fun2</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    fun1();</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">fun3</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    fun2();</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">print_stacktrace</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> size = <span class="number">16</span>;</span><br><span class="line">    <span class="keyword">void</span> * <span class="built_in">array</span>[<span class="number">16</span>];</span><br><span class="line">    <span class="keyword">int</span> stack_num = backtrace(<span class="built_in">array</span>, size);</span><br><span class="line">    <span class="keyword">char</span> ** stacktrace = backtrace_symbols(<span class="built_in">array</span>, stack_num);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; stack_num; ++i)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"%s\n"</span>, stacktrace[i]);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">free</span>(stacktrace);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>（说明：下面的介绍采用的环境是 ubuntu 11.04, x86_64, gcc-4.5.2）</p>
@@ -1074,6 +1073,116 @@ $$
       <tags>
         <tag>故事</tag>
         <tag>《红楼梦》</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>【转】《中华古籍资源库》中国国家图书馆</title>
+    <url>/public/2021/12/16/readings/zhonghuaguji/</url>
+    <content><![CDATA[<p><strong>简介</strong></p>
+<p>“中华古籍资源库”是“中华古籍保护计划”的重要成果。2016年9月28日，“中华古籍资源库”正式开通运行，陆续发布国家图书馆藏善本和普通古籍、法国国家图书馆藏敦煌遗书、天津图书馆藏普通古籍、日本永青文库捐赠汉籍、云南省图书馆善本古籍、芷兰斋藏稿抄校本等古籍影像资源，总量超过3.3万部。</p>
+<p>《中华古籍资源库》！！！<br>
+网址：<a href="http://www.nlc.cn/pcab/zy/zhgj_zyk/" target="_blank" rel="noopener">http://www.nlc.cn/pcab/zy/zhgj_zyk/</a><br>
+查询：<a href="http://read.nlc.cn/thematDataSearch/toGujiIndex" target="_blank" rel="noopener">http://read.nlc.cn/thematDataSearch/toGujiIndex</a></p>
+<img src="/public/2021/12/16/readings/zhonghuaguji/image-20211216225907506.png" alt="image-20211216225907506" style="zoom:30%;">
+<a id="more"></a>
+<p>比如：《九章算数》的古籍</p>
+<img src="/public/2021/12/16/readings/zhonghuaguji/image-20211216231340351.png" alt="image-20211216231340351" style="zoom:30%;">
+<img src="/public/2021/12/16/readings/zhonghuaguji/image-20211216231141739.png" alt="image-20211216231141739" style="zoom:30%;">
+<p>比如：卷第九的勾股</p>
+<img src="/public/2021/12/16/readings/zhonghuaguji/image-20211216232009068.png" alt="image-20211216232009068" style="zoom:50%;">
+<ul>
+<li>
+<p>数字古籍
+国家图书馆收藏古籍15万部，其中善本古籍直接继承了南宋缉熙殿、元翰林国史院、明文渊阁、清内阁大库等皇家珍藏，以及明清以来许多私人藏书家的毕生所聚。宋元旧椠、明清精刻琳琅满目。通过全彩影像数字化和缩微胶卷转化影像方式建设，从2016年9月28日起陆续在线发布，目前已发布馆藏古籍2万余部，国家图书馆超过三分之二的善本古籍实现了在线阅览。</p>
+</li>
+<li>
+<p>数字方志
+地方志文献为我国所特有，也是国家图书馆独具特色的馆藏之一，所存文献数量与品质极高。该数据库以国家图书馆藏地方志文献建设，主要包括为清代（含清代）以前的方志资源6529种。</p>
+</li>
+<li>
+<p>赵城金藏
+《赵城金藏》被誉为国家图书馆四大镇馆之宝之一。《赵城金藏》是在金代刻的一部大藏，因为它藏在赵城县（今属山西洪洞县）广胜寺，所以后人将它定名为《赵城金藏》。全藏约七千卷左右，六千多万字，现存四千余卷。2017年12月28日，国家图书馆《赵城金藏》1281件正式发布。</p>
+</li>
+<li>
+<p>宋人文集
+国家图书馆精选所藏宋人文集善本二百七十五部，首选宋元刊本，次及明清精抄精刻，或经名家校勘题跋之本，通过缩微胶卷还原数字影像，并辅以详细书目建成本全文影像数据库，目前已发布275部，免费呈献公众利用。</p>
+</li>
+<li>
+<p>碑帖菁华
+以国家图书馆藏有的历代甲骨、青铜器、石刻等类拓片二十三万余件为基础建设的数据库，内容涉及历史、地理、政治、经济、军事、民族、民俗、文学、艺术、科技、建筑等方面。2019年11月12日又新增发布2595种馆藏明清碑刻拓片数字资源，现有元数据2.5万余条，影像3.1万余幅。</p>
+</li>
+<li>
+<p>甲骨世界
+被誉为二十世纪四大文献发现之一的甲骨文，集文献性、文物性、收藏性于一身，是研究我国商朝晚期不可多得的珍贵史料，该库包括甲骨实物元数据2964条，影像5932幅；甲骨拓片元数据2975条，影像3177幅。</p>
+</li>
+<li>
+<p>西夏文献
+以国家图书馆保存的西夏、元代孤本及各种西夏的珍贵实物资料为基础建设的数据库。包括西夏文献书目数据124条，原件影像近5000拍。</p>
+</li>
+<li>
+<p>西夏论著
+包括西夏研究论文篇名数据1200余条。</p>
+</li>
+<li>
+<p>年画撷英
+国家图书馆收藏了杨柳青、朱仙镇等地制作的4000余幅年画作品，从中精选出一部分制作了该库，并为每种年画编写了内容说明，重点介绍了该年画的故事梗概、历史背景、制作特色和相关知识。目前发布元数据及影像302组。</p>
+</li>
+<li>
+<p>前尘旧影
+该资源库收录了国家图书馆收藏的新旧照片3074组，真实生动地记录了过去的社会事件、历史人物、城乡面貌、名胜古迹和建筑服饰等，人们可从中解读出不同历史时期特定事物的形象特征和真实信息，具有十分重要的历史价值。</p>
+</li>
+<li>
+<p>敦煌遗珍
+国际敦煌项目（IDP）建设的数据库，发布来自敦煌和丝绸之路上的写本、绘画、纺织品及器物的信息和图片，其中包括国家图书馆藏敦煌写卷影像18万余拍。</p>
+</li>
+<li>
+<p>徽州善本家谱
+徽州善本家谱印刷资料数据库是中国国家图书馆与法国远东学院的合作项目，收录了中国国家图书馆藏善本古籍中徽州家谱243种286部，配有书影5437幅。</p>
+</li>
+<li>
+<p>中华医药典籍资源库（测试版）
+图书馆收藏的文献典籍是整理研究的基础资料，为使读者能够通过互联网检索、利用中医文献资源，国家图书馆（国家古籍保护中心）将逐步建设中华医药典藏资源库，目前首批对221种中医古籍影像进行发布测试。</p>
+</li>
+<li>
+<p>云南图书馆古籍
+云南省图书馆将该馆古籍数字资源共139种727册提供给国家图书馆（国家古籍保护中心），这批资源均是云南省图书馆所藏珍贵的、有代表性的古籍文献，特别是明代云南丽江木氏土司家族著述，更是明代少数民族汉文著述的代表。该批资源于2019年11月12日正式在线发布。</p>
+</li>
+<li>
+<p>天津图书馆古籍
+为进一步丰富古籍数字资源品种和版本，满足广大读者使用需求，2014年底，天津图书馆向国家图书馆（国家古籍保护中心）提供总量约5,800余种300万拍明清古籍数字资源，该批资源经加工后，于2018年9月28日、2019年1月28日分两批发布。</p>
+</li>
+<li>
+<p>上海图书馆家谱
+上海图书馆现藏有家谱近3万余种30余万册共计365个姓氏，收藏的家谱覆盖全国27个省、自治区及直辖市，是国内外收藏中国家谱原件最多的公藏机构，有着“全球中国家谱第一藏”之美誉。国家图书馆与上海图书馆合作，征集该馆所藏明清家谱资源2200余种，在国图网站发布使用。</p>
+</li>
+<li>
+<p>中华古籍善本联合书目
+中华古籍善本国际联合书目系统是由中文善本书国际联合目录项目发展而来的新数据库，著录了三十余家海内外图书馆所藏古籍善本，数据达2万多条，并配有1.4万余幅书影。</p>
+</li>
+<li>
+<p>东文研汉籍影像库
+东京大学东洋文化研究所收藏有大量中国古籍，其中包括东方文化学院东京研究所的旧藏以及大木幹一、长泽规矩也、仓石武四郎等各具特色的个人收藏。2009年11月，东洋文化研究所将所藏中文古籍4000余种，以数字化方式无偿提供给中国国家图书馆，在国图网站上面向读者提供服务。</p>
+</li>
+<li>
+<p>哈佛大学善本特藏
+哈佛大学哈佛燕京图书馆藏中文善本古籍特藏，以其质量之高、数量之大著称于世。为了方便海内外学人便捷地利用这些资料进行研究，同时以数字化形式保存这些中华古籍精品，2009年国家图书馆与哈佛大学哈佛燕京图书达成协议，对哈佛燕京图书馆所藏中文善本和齐如山专藏进行数字化。目前在线发布经部和史部善本数字资源741部，另有齐如山戏曲小说专藏204种。</p>
+</li>
+<li>
+<p>法藏敦煌遗书
+2015年，在法国国家图书馆与中国国家图书馆达成合作意向，由法国国家图书馆向中国国家图书馆赠送馆藏全部敦煌遗书高清数字资源。在双方共同努力下，实现了这批敦煌遗书的数字化回归，并于2018年3月5日正式在线发布，共计5300余号3.1万余拍。</p>
+</li>
+<li>
+<p>中华寻根网
+中华寻根网是国家图书馆与澳门基金会开展的文化合作项目，是以提供姓氏源流和家谱资源服务为核心、方便海内外华人寻根问祖活动的网络平台。“中华寻根网”目前提供500多个姓氏源流、2000多部家谱和6000种其他文献的阅览，以及自建家谱，交流联谊的互动服务。</p>
+</li>
+</ul>
+]]></content>
+      <categories>
+        <category>书籍</category>
+      </categories>
+      <tags>
+        <tag>资源</tag>
+        <tag>古籍</tag>
       </tags>
   </entry>
   <entry>
