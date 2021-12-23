@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-  <title>半亩·方塘</title>
+  <title>一塘</title>
   
   
   <link href="/public/atom.xml" rel="self"/>
@@ -10,7 +10,7 @@
   <id>https://talengu.github.io/public/</id>
   
   <author>
-    <name>小成</name>
+    <name>一塘</name>
     
   </author>
   
