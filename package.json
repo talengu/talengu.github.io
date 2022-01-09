@@ -15,7 +15,7 @@
     "gulp-uglify": "^3.0.2",
     "imagemin": "^5.2.2",
     "imagemin-gifsicle": "^5.1.0",
-    "hexo": "^3.8.0",
+    "hexo": "3.8.0",
     "hexo-asset-image": "git+https://github.com/CodeFalling/hexo-asset-image.git",
     "hexo-generator-archive": "^0.1.5",
     "hexo-generator-category": "^0.1.3",
