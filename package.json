@@ -6,6 +6,7 @@
     "version": "3.9.0"
   },
   "dependencies": {
+    "chokidar": "^3.3.0",
     "gitalk": "^1.6.2",
     "gulp": "^4.0.2",
     "gulp-htmlclean": "^2.7.22",
@@ -30,6 +31,8 @@
     "hexo-server": "^0.3.3",
     "hexo-wordcount": "^6.0.1",
     "live2d-widget-model-hijiki": "^1.0.5",
-    "package.json": "^2.0.1"
+    "package.json": "^2.0.1",
+    "react": "^15.7.0",
+    "react-dom": "^15.7.0"
   }
 }
