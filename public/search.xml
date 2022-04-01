@@ -97,218 +97,6 @@ Thank you !!!</p>
       </tags>
   </entry>
   <entry>
-    <title>RSS跟踪github文件更新</title>
-    <url>/public/2021/07/24/rss_github_file/</url>
-    <content><![CDATA[<p><strong>前言</strong></p>
-<p>好久没有更新博客了。RSS这种形式的信息获取方式，似乎又流行起来。github上面有很多不错的资源。我的流程是：github readme文件更新-&gt;svn下载对应文件-&gt;生成rss文件。</p>
-<p>这里为什么要这么复杂，因为github仓库更新多了好多不需要的rss信息，而且github文件下载比较慢。</p>
-<p>最后效果，获取《经济学人》和《纽约客》的更新～</p>
-<p><img src="/public/2021/07/24/rss_github_file/rss_result.png" alt="image-20210724005152399"></p>
-<a id="more"></a>
-<h2 id="下载脚本"><a class="header-anchor" href="#下载脚本">¶</a>下载脚本</h2>
-<p>解析readme中的地址，自动下载，并生成rss源。</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="comment"># /etc/cron.hour </span></span><br><span class="line"><span class="keyword">from</span> urllib <span class="keyword">import</span> request</span><br><span class="line"><span class="keyword">import</span> datetime</span><br><span class="line"><span class="keyword">from</span> rfeed <span class="keyword">import</span> * <span class="comment"># 为生成rss.xml的库</span></span><br><span class="line"><span class="keyword">import</span> re</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">from</span> glob <span class="keyword">import</span> glob</span><br><span class="line">URL=<span class="string">"https://raw.githubusercontent.com/hehonghui/the-economist-ebooks/master/README.md"</span></span><br><span class="line">BASE_URL=<span class="string">"http://your_vps_host/download/"</span></span><br><span class="line"></span><br><span class="line">SVN_BASE_URL=<span class="string">"https://github.com/hehonghui/the-economist-ebooks/trunk/"</span></span><br><span class="line"></span><br><span class="line">s=<span class="string">"""</span></span><br><span class="line"><span class="string">* [经济学人 - 周刊, 点击这里下载最新一期](01_economist/te_2021.02.27) , 每周五十一点更新</span></span><br><span class="line"><span class="string">* [纽约客 - 周刊, 点击这里下载最新一期](02_new_yorker/2021.03.01) , 每周六上午更新</span></span><br><span class="line"><span class="string">* [卫报 - 每周两期](09_guardian/), 每周三、周日更新</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line">s = request.urlopen(URL).read().decode(<span class="string">'utf8'</span>)</span><br><span class="line"></span><br><span class="line">res= re.findall(<span class="string">r"\[.+\]\((0.+)\)"</span>,s)[<span class="number">0</span>:<span class="number">2</span>]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># generate xml</span></span><br><span class="line">res_list=[]</span><br><span class="line"><span class="keyword">for</span> item <span class="keyword">in</span> res:</span><br><span class="line">	res_list+=sorted(glob(item.split(<span class="string">'/'</span>)[<span class="number">0</span>]+<span class="string">"/*"</span>))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">item_list=[]</span><br><span class="line">print(item_list)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> item <span class="keyword">in</span> res_list:</span><br><span class="line">    _one = Item(</span><br><span class="line">			title = item[<span class="number">3</span>:],</span><br><span class="line">        link = BASE_URL+item,</span><br><span class="line">		description = <span class="string">'pdf etc. &lt;a href="%s"&gt;link&lt;/a&gt; '</span>% (BASE_URL+item),</span><br><span class="line">        author = <span class="string">"hehonghui"</span>,</span><br><span class="line">        guid = Guid(BASE_URL+item),</span><br><span class="line">        pubDate = datetime.datetime(<span class="number">2020</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">4</span>, <span class="number">0</span>)) <span class="comment"># year, month, date, hh, mm, ss</span></span><br><span class="line">    item_list+=[_one]</span><br><span class="line"></span><br><span class="line">feed = Feed(</span><br><span class="line">        title = <span class="string">"经济学人+纽约客更新"</span>,</span><br><span class="line">        link = <span class="string">"https://www.xxxxx.biz/atom/updated.xml"</span>,</span><br><span class="line">        description = <span class="string">"更新经济学人，纽约客"</span>,</span><br><span class="line">        language = <span class="string">"en-US"</span>,</span><br><span class="line">        lastBuildDate = datetime.datetime.now(),</span><br><span class="line">        items = item_list)</span><br><span class="line"> </span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">save_to_file</span><span class="params">(file_name, contents)</span>:</span></span><br><span class="line">    fh = open(file_name, <span class="string">'w'</span>)</span><br><span class="line">    fh.write(contents)</span><br><span class="line">    fh.close()</span><br><span class="line"></span><br><span class="line">save_to_file(<span class="string">'test.xml'</span>, feed.rss())</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># start downing </span></span><br><span class="line"><span class="keyword">for</span> item <span class="keyword">in</span> res:</span><br><span class="line">    <span class="keyword">if</span> item <span class="keyword">not</span> <span class="keyword">in</span> res_list:</span><br><span class="line">	    print(<span class="string">"downing %s"</span>%item)</span><br><span class="line">	    os.popen(<span class="string">"svn checkout %s %s"</span>%(SVN_BASE_URL+item,item))</span><br><span class="line"></span><br><span class="line">    _now=sorted(glob(item.split(<span class="string">'/'</span>)[<span class="number">0</span>]+<span class="string">"/*"</span>))</span><br><span class="line">    print(_now)</span><br><span class="line">    <span class="keyword">if</span> len(_now)&gt;=<span class="number">5</span>: <span class="comment"># 最多5个，免得服务器下载过多。</span></span><br><span class="line">        <span class="keyword">for</span> _d <span class="keyword">in</span> _now[:<span class="number">-5</span>]:</span><br><span class="line">            os.popen(<span class="string">"rm -rf %s"</span>%_d)</span><br></pre></td></tr></table></figure>
-<p>在linux亦可使用<a href="https://www.runoob.com/w3cnote/linux-crontab-tasks.html" target="_blank" rel="noopener">crontab</a>定时启动下载任务。在 <code>/etc/cron.hourly/</code> 设置即可。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="meta">#!/bin/sh</span></span><br><span class="line">date &gt;&gt; test.log</span><br><span class="line">python3 down_ecomic.py &gt;&gt;test.log</span><br><span class="line"><span class="built_in">exit</span> 0</span><br></pre></td></tr></table></figure>
-<p>从youtube下载音频，自动转成mp3格式</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># -*- coding: utf-8 -*-</span><br><span class="line">#</span><br><span class="line"># 2020-04-18</span><br><span class="line"># /etc/cron.hour # https://www.runoob.com/w3cnote/linux-crontab-tasks.html</span><br><span class="line">from urllib import request</span><br><span class="line">import datetime</span><br><span class="line">from rfeed import *</span><br><span class="line">import re</span><br><span class="line">import os</span><br><span class="line">from glob import glob</span><br><span class="line">import feedparser</span><br><span class="line">import pprint</span><br><span class="line">URL=&quot;https://www.youtube.com/feeds/videos.xml?channel_id=UCFhp6N5z8W9Ann2eyHAzbbA&quot;</span><br><span class="line">rss = feedparser.parse(URL)</span><br><span class="line">entries=rss[&apos;entries&apos;][:3]</span><br><span class="line"></span><br><span class="line">BASE_URL=&quot;http://xxxxx/down_youtube/&quot;</span><br><span class="line"></span><br><span class="line">item_list=[]</span><br><span class="line">for entry in entries:</span><br><span class="line">    print(entry[&apos;title&apos;])</span><br><span class="line">    print(entry[&apos;published&apos;])</span><br><span class="line">    print(entry[&apos;link&apos;])</span><br><span class="line">    #print(entry[&apos;summary&apos;])</span><br><span class="line">    new_link=BASE_URL+&quot;book_audios/%s.mp3&quot;%entry[&apos;yt_videoid&apos;]</span><br><span class="line">    _one = Item(</span><br><span class="line">			title = entry[&apos;title&apos;],</span><br><span class="line">        link = new_link,</span><br><span class="line">		description = &apos;audio: &lt;a href=&quot;%s&quot;&gt;mp3&lt;/a&gt; %s&apos;% (new_link,entry[&apos;summary&apos;]),</span><br><span class="line">        author = &quot;Youtube&quot;,</span><br><span class="line">        guid = Guid(new_link),</span><br><span class="line">        pubDate = datetime.datetime(2020, 1, 1, 4, 0)) # year, month, date, hh, mm, ss</span><br><span class="line">    item_list+=[_one]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">feed = Feed(</span><br><span class="line">        title = &quot;知乎读书会更新&quot;,</span><br><span class="line">        link = &quot;https://www.xxxxx.biz/atom/updated.xml&quot;,</span><br><span class="line">        description = &quot;更新Youtube知乎读书会&quot;,</span><br><span class="line">        language = &quot;en-US&quot;,</span><br><span class="line">        lastBuildDate = datetime.datetime.now(),</span><br><span class="line">        items = item_list)</span><br><span class="line"></span><br><span class="line">def save_to_file(file_name, contents):</span><br><span class="line">    fh = open(file_name, &apos;w&apos;)</span><br><span class="line">    fh.write(contents)</span><br><span class="line">    fh.close()</span><br><span class="line"></span><br><span class="line">save_to_file(&apos;audio.xml&apos;, feed.rss())</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">from os import rename</span><br><span class="line">import youtube_dl</span><br><span class="line"></span><br><span class="line"># start downing </span><br><span class="line">if not os.path.exists(&quot;book_audios/&quot;):</span><br><span class="line">    os.makedirs(&quot;book_audios/&quot;)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">def audio_download(youtube_url):</span><br><span class="line">    # 定义某些下载参数</span><br><span class="line">    ydl_opts = &#123;</span><br><span class="line">        &apos;format&apos;: &apos;bestaudio/best&apos;,</span><br><span class="line">     #   &apos;download_archive&apos;: &apos;downloaded_songs.txt&apos;,</span><br><span class="line">        &apos;outtmpl&apos;: &apos;book_audios/%(id)s.%(ext)s&apos;,</span><br><span class="line">        &apos;postprocessors&apos;: [&#123;</span><br><span class="line">            &apos;key&apos;: &apos;FFmpegExtractAudio&apos;,</span><br><span class="line">            &apos;preferredcodec&apos;: &apos;mp3&apos;,</span><br><span class="line">            &apos;preferredquality&apos;: &apos;192&apos;,</span><br><span class="line">            &#125;],</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    with youtube_dl.YoutubeDL(ydl_opts) as ydl:</span><br><span class="line">        ydl.download([youtube_url])</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">#download(&apos;https://www.youtube.com/watch?v=JElpSrsmbTU&apos;)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">for entry in entries:</span><br><span class="line">    if entry[&apos;yt_videoid&apos;]+&apos;.mp3&apos; not in os.listdir(&apos;book_audios&apos;):</span><br><span class="line">        print(&quot;downing %s, %s&quot;%(entry[&apos;title&apos;], entry[&apos;link&apos;]))</span><br><span class="line">        audio_download(entry[&apos;link&apos;])</span><br><span class="line">   </span><br><span class="line">    _now=sorted(glob(&quot;book_audios/*&quot;),key=os.path.getctime)</span><br><span class="line">    print(_now)</span><br><span class="line">    if len(_now)&gt;=6: # 多余删除</span><br><span class="line">        for _d in _now[:-5]:</span><br><span class="line">            os.popen(&quot;rm -rf %s&quot;%_d)</span><br></pre></td></tr></table></figure>
-<p>祝大家使用愉快！</p>
-]]></content>
-      <categories>
-        <category>工具</category>
-      </categories>
-      <tags>
-        <tag>RSS</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>二零年RSS杂谈</title>
-    <url>/public/2022/01/14/rss_talk2020/</url>
-    <content><![CDATA[<p>2020年了，笔者还是使用RSS的原始人。RSS，Really Simple Syndication是一种信息聚合工具。在5G时代信息即将大爆炸之前，我来谈谈rss的杂七杂八吧。我们来打个赌，你不会看完这篇文章。</p>
-<a id="more"></a>
-<p>软件的交互设计有很多心理学理论的应用。比如微信、QQ的三级页面设计，一般经过3次点击就能到达功能或设置。这符合认知原理，人认知记忆能力一般为3-5个的组合。日常生活中要记电话号码，可以3-4-4这样记。软件交互中还有利用人的习惯奖励机制的提醒红点的设计，吸引你去点击，获取红点消失的奖励。对我来说，较难控制住不受这些设计的影响。在《习惯的力量》一书了解到，直接逃离这些环境可有效解决控制不住的问题。比如工作的时候，把手机关进柜子，工作1个小时，然后再回复信息，当然重要电话还是要立即接的。</p>
-<p>铺天盖地的广告，马路上，电视中，手机里，PC页面充斥着各种广告等等。大多数人可能养成了自动过滤的广告的习惯，然而我的情况是一直在用去广告的插件，并没有养成自动忽略广告的习惯。可怜兮兮，难道只有我是有广告洁癖的嘛？广告有点浪费生命。</p>
-<p>我饱受广告的困扰。web的去广告方法，我可使用某款chrome插件可以将web界面上的小红点，推荐信息模块全部屏蔽掉的。哪里不看点哪里，贼方便。</p>
-<p>移动端的广告去掉太难了，我一生气卸载了知乎 b站等等应用，终于有了一个清爽的手机。</p>
-<p>那我还是想获取一些新的内容，根据二八定律，是有20%的网络资料包含了80%的信息，也就是干货，也可能被我这种操作忽略掉了，那一套RSS应用体系应运而生。</p>
-<p>谈谈推荐算法，知乎推荐的都是啥呀，程序员都懂的，把我一个屌丝的形象勾勒的这么明显。于是我回答问题，人在美国，刚下飞机，年薪百万，老婆在旁？</p>
-<p>很多人会说，RSS一定会获取到有用的信息吗，这取决于信息源的可靠程度。也就是需要你自己去选择，由于它是不含推荐算法的，就不会根据你选择的，再给你推荐一些可能是非常有用的。</p>
-<p>再谈谈知识焦虑，每天觉得有大量知识需要吸收。大家都明白mark了也并不会看的，但还是mark很多，但你并不会有时间或者精力去看。既然不会看，那就不mark了，用到啥学啥，或许是个不错的策略。那RSS的即时性还是不错的，最好能当天把信息清理一下，star一些当前重要的东西，然后一周整理一下，像阮一峰老师。吸收完，把它输出出去，与人交流，给人讲明白，能够记得更深。（费曼学习法，把自己当成老师）。</p>
-<p>让我们再回到RSS，RSS是个淘汰的东西，和微信的公众号的形式有点像。然后倒霉的我又在微信的公众号上难以自拔，常常花很多时间在这上面。推荐算法厉害呀，就是让你看得爽。自我节制太难，那就改变环境。于是，我去掉了很多公众号，保留一些本地生活工作的公众号，微信上专注与朋友们侃大山。</p>
-<p>还有一点难受是，各个平台，相互串在一起，在这个地方看了，在其他地方又换了一个马甲它继续晃悠在眼前。信息源在多平台发布，然后信息重叠。</p>
-<p>看来all in one 势在必行，RSS被谷歌放弃后，很多网站傲娇地不提供RSS服务了，毕竟流量至上，钱要赚的，我一直想做一个这种爬的工具，但我不希望有大量使用爬，也就是我们还是要尊重网站的盈利以及持续发展的，这也是仅仅方便个人的信息处理，优化你的自动信息的处理，再也不用一个个打开网站，然后看信息看广告，还要被推荐不重用的信息。这也算我个人的想法。人在于折腾，于是我开始折腾ttrss rsshub等开源软件。</p>
-<p>自由软件的好处，在于自由定制，参与发展，利益化会尽量变慢或者没有，方便的同时并不忘隐私保护。</p>
-<p>我想说的是，<strong>技术应当给人们带来自由和发展，而非接管人们的注意力，浪费宝贵的时间。</strong></p>
-<p>写在5G信息大爆发前，与大家共同反思与成长。</p>
-]]></content>
-      <categories>
-        <category>杂谈</category>
-        <category>工具</category>
-      </categories>
-      <tags>
-        <tag>RSS</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>博客模版</title>
-    <url>/public/2019/07/25/template/</url>
-    <content><![CDATA[<p><strong>前言</strong></p>
-<p>前言主要说明文章的写作意图，概要介绍文中涉及的背景、主要内容、与其他文章关系等。对于长文，这个部分可以写摘要。</p>
-<p>本文为Hexo博客模版文件，以Markdown语言书写。<a href="#%E9%99%84%EF%BC%9Amarkdown%E8%AF%AD%E6%B3%95">模版markdown语法</a></p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">前言一般放到主页，可利用 &lt;!-- more --&gt; 隔断。</span><br></pre></td></tr></table></figure>
-<a id="more"></a>
-<h2 id="构思与起草"><a class="header-anchor" href="#构思与起草">¶</a>构思与起草</h2>
-<ul>
-<li>对文章的阅读群体、写作意图和反馈（Audience Intention Response AIR）要有一个清楚的认识。照顾沟通对象的需要、你的意图（信息）以及希望的反馈。</li>
-<li>在思维导图上，放上你需要的关键名词，然后依次在它基础上添加动词，在加上形容词。最后以一定顺序组织你将要阐述的信息。比如重要性排序，对比优势劣势，方案的不同层面，时间上逻辑上的因果性等等。</li>
-</ul>
-<h2 id="主体内容"><a class="header-anchor" href="#主体内容">¶</a>主体内容</h2>
-<p>文章的主要内容，包括你对跟进过程或发现成果的描述，以数据、事实证据以及其他的信息支撑主要内容。在你的论说中，你应该把对客观事实的描述和写作者对事情的主管阐述区分开来。</p>
-<p>当你在报告中对一个观点进行陈述的时候，你需要记住以下几点：</p>
-<ul>
-<li>清晰的呈现事实</li>
-<li>有逻辑地提出论据</li>
-<li>引用相关的语录、简明易懂的事实和例子来支持你的论点</li>
-<li>给出支持或反对该行为的理由</li>
-<li>始终围绕主要观点进行讨论</li>
-<li>处理好重要的假设关系</li>
-<li>区分说明（具体阐述）和论证（有理有据）</li>
-</ul>
-<h2 id="写作检查"><a class="header-anchor" href="#写作检查">¶</a>写作检查</h2>
-<p>主体内容完成后，要进行写作检查。</p>
-<ul>
-<li>保证信息的准确性，时间地点等信息的准确。</li>
-<li>确保语法规范性</li>
-<li>段落写作
-<ul>
-<li>主题句，核心思想</li>
-<li>使用关联词，但勿滥
-<ul>
-<li>表示转折：虽然，尽管，但是，相反的是，另一方面</li>
-<li>对已阐述观点的强调：此外，与此同时，除此以外，再补充一点</li>
-<li>阐述结果：结果是，相应的结果是，因此</li>
-</ul>
-</li>
-<li>简单的句子 15-25</li>
-</ul>
-</li>
-<li>精心选择词语
-<ul>
-<li>同一个意思，换一下说法</li>
-<li>少用名词，多用动词。我们想用名词表达意思，采用动名组合，或者一个意群搭配上动词会更有力。</li>
-<li>多用主动动词，少用被动动词</li>
-</ul>
-</li>
-<li>核对标点符号，逗号，与分号。英文的话，检查一下拼写</li>
-<li>注意行为的语气</li>
-<li>保持连贯性，使用一种统一的方式表达。</li>
-</ul>
-<h2 id="总结"><a class="header-anchor" href="#总结">¶</a>总结</h2>
-<p>一个清晰的总结应该概括全部论点。</p>
-<h2 id="其他"><a class="header-anchor" href="#其他">¶</a>其他</h2>
-<ul>
-<li>逻辑清楚，达情切意<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup>。准备看一些基础的逻辑学。</li>
-<li>写完要读两遍，修改错别字，标点，语序连接等等。</li>
-<li>修改可以反着读，正着读对熟悉的材料会有一种连贯性忽略掉错误或者不顺的地方。</li>
-</ul>
-<h2 id="附：markdown语法"><a class="header-anchor" href="#附：markdown语法">¶</a>附：markdown语法</h2>
-<h3 id="head"><a class="header-anchor" href="#head">¶</a>head</h3>
-<p>文件head，设置标题、日期、分类、标签、评论、版权、是否使用公式，如下。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">---</span><br><span class="line">title: 模版文件</span><br><span class="line">date: 2019-07-25 12:00:00</span><br><span class="line">updated: 2019-07-25 12:00:00</span><br><span class="line">categories:</span><br><span class="line">  - 博客搭建</span><br><span class="line">  - 模版文件</span><br><span class="line">tags:</span><br><span class="line">  - Writing</span><br><span class="line">comments: true</span><br><span class="line">copyright: true</span><br><span class="line">math: true</span><br><span class="line">---</span><br></pre></td></tr></table></figure>
-<h3 id="图"><a class="header-anchor" href="#图">¶</a>图</h3>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"># 使用标准markdown</span><br><span class="line">![GDP](http://www.stats.gov.cn/tjsj/zxfb/202002/W020200228491461098230_r75.png)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"># 使用html</span><br><span class="line"><span class="tag">&lt;<span class="name">center</span>&gt;</span><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">"http://www.stats.gov.cn/tjsj/zxfb/202002/W020200228491461098230_r75.png"</span> <span class="attr">width</span>=<span class="string">"60%"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span>&gt;</span> 图1 2019年国内生产总值及其增速度<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">center</span>&gt;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"># 白色图片用table提供辨识度</span><br><span class="line"><span class="tag">&lt;<span class="name">table</span>&gt;</span><span class="tag">&lt;<span class="name">tr</span>&gt;</span><span class="tag">&lt;<span class="name">td</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">center</span>&gt;</span><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">"http://www.stats.gov.cn/tjsj/zxfb/202002/W020200228491461098230_r75.png"</span> <span class="attr">width</span>=<span class="string">"60%"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span>&gt;</span> 图1 2019年国内生产总值及其增速度<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">center</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">td</span>&gt;</span><span class="tag">&lt;<span class="name">tr</span>&gt;</span><span class="tag">&lt;/<span class="name">table</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p>这两行代码生成下面的图和标题。</p>
-<center><img src="http://www.stats.gov.cn/tjsj/zxfb/202002/W020200228491461098230_r75.png" width="60%">
-</center>
-<p>图 1 展示的是2015-2019年的GDP和增长速度<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup>，直方图数据反应国内生产总值在2015-2019年度均平稳增长。</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">table</span>&gt;</span><span class="tag">&lt;<span class="name">tr</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">td</span>&gt;</span><span class="tag">&lt;<span class="name">center</span>&gt;</span><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">"http://www.stats.gov.cn/tjsj/zxfb/202002/W020200228491461098230_r75.png"</span>&gt;</span>图1     <span class="tag">&lt;/<span class="name">center</span>&gt;</span><span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">td</span>&gt;</span><span class="tag">&lt;<span class="name">center</span>&gt;</span><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">"http://www.stats.gov.cn/tjsj/zxfb/202002/W020200228491461098230_r75.png"</span>&gt;</span>图2 <span class="tag">&lt;/<span class="name">center</span>&gt;</span><span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">tr</span>&gt;</span><span class="tag">&lt;/<span class="name">table</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<table><tr>
-<td><center><img src="http://www.stats.gov.cn/tjsj/zxfb/202002/W020200228491461098230_r75.png">图1     </center></td>
-<td><center><img src="http://www.stats.gov.cn/tjsj/zxfb/202002/W020200228491461098230_r75.png">图2 </center></td>
-</tr></table>
-<h3 id="表"><a class="header-anchor" href="#表">¶</a>表</h3>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;div align=&apos;center&apos;&gt; 表1 2018年年末人口数及其构成&lt;/div&gt;</span><br><span class="line"></span><br><span class="line">| 指标       | 年末数（万人） | 比重（%） |</span><br><span class="line">| ---------- | -------------- | --------- |</span><br><span class="line">| 全国总人口 | 139538         | 100.0     |</span><br><span class="line">| 其中：城镇 | 83137          | 59.58     |</span><br><span class="line">| 乡村       | 56401          | 40.42     |</span><br></pre></td></tr></table></figure>
-<p>这两行代码生成下面的表和标题。</p>
-<div align="center">表1 2018年年末人口数及其构成</div>
-<table>
-<thead>
-<tr>
-<th>指标</th>
-<th>年末数（万人）</th>
-<th>比重（%）</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>全国总人口</td>
-<td>139538</td>
-<td>100.0</td>
-</tr>
-<tr>
-<td>城镇</td>
-<td>83137</td>
-<td>59.58</td>
-</tr>
-<tr>
-<td>乡村</td>
-<td>56401</td>
-<td>40.42</td>
-</tr>
-</tbody>
-</table>
-<p>从表1得出2018年年末，城镇人口占总人口的59.58%，乡村人口占总人口的40.42%，城镇人口已大比例超过乡村人口。</p>
-<h3 id="公式"><a class="header-anchor" href="#公式">¶</a>公式</h3>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$$</span><br><span class="line">f=w_1 x_1 + w_2 x_2</span><br><span class="line">\tag&#123;1&#125;</span><br><span class="line">$$</span><br></pre></td></tr></table></figure>
-<p>在Markdown中可用Tex代码渲染数学公式，渲染效果为公式（1）。如图2，Tex公式可以在<a href="http://latex.codecogs.com/eqneditor/editor.php" target="_blank" rel="noopener">Latex编辑器网站</a> 可视化编写
-$$
-f=w_1 x_1 + w_2 x_2
-\tag{1}
-$$</p>
-<center><img src="https://img-blog.csdnimg.cn/20200425095309901.png" width="60%">
-<div> 图2 Latex在线编辑器</div>
-</center>
-<h3 id="定理证明"><a class="header-anchor" href="#定理证明">¶</a>定理证明</h3>
-<p><strong>定理 3.1</strong> 如果时域混合场积分方程是时域电场积分方程与时域磁场积分方程的线性组合……</p>
-<p><strong>证明：</strong></p>
-<p>首先，由于 ……</p>
-<p>……</p>
-<p>根据 ……，结论得证。                        ■</p>
-<h3 id="参考"><a class="header-anchor" href="#参考">¶</a>参考</h3>
-<p>参考的分类：</p>
-<ul>
-<li>链接直接在原文中给出。</li>
-<li>引用他人文章中的段落或者意识给出引用的链接。</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">---</span><br><span class="line">**参考**</span><br><span class="line"></span><br><span class="line">[^statics_report_2019]: 国家统计局 [2019年国民经济和社会发展统计公报](http://www.stats.gov.cn/tjsj/zxfb/202002/t20200228_1728913.html) 2020-02-28</span><br><span class="line"></span><br><span class="line">[^hetang]: 朱自清《荷塘清韵》北京大学出版社  2010-1</span><br></pre></td></tr></table></figure>
-<h3 id="添加iframes"><a class="header-anchor" href="#添加iframes">¶</a>添加iframes</h3>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!-- &#123;&#125;替换为视频id，同时去掉&#123;&#125; --&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- 小破站 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">iframe</span> <span class="attr">src</span>=<span class="string">"https://player.bilibili.com/player.html?bvid=&#123;&#125;"</span> <span class="attr">width</span>=<span class="string">"640"</span> <span class="attr">height</span>=<span class="string">"430"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">iframe</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- 腾讯视频 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">iframe</span> <span class="attr">src</span>=<span class="string">"http://v.qq.com/iframe/player.html?vid=&#123;&#125;"</span> <span class="attr">width</span>=<span class="string">"640"</span> <span class="attr">height</span>=<span class="string">"430"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">iframe</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- 优酷视频 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">iframe</span>  <span class="attr">src</span>=<span class="string">'https://player.youku.com/embed/&#123;&#125;'</span> <span class="attr">width</span>=<span class="string">"640"</span> <span class="attr">height</span>=<span class="string">"430"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">iframe</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- PDF --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">iframe</span>  <span class="attr">src</span>=<span class="string">'https://arxiv.org/pdf/1406.2661.pdf'</span> <span class="attr">width</span>=<span class="string">"800"</span> <span class="attr">height</span>=<span class="string">"450"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">iframe</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- HTML --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">iframe</span>  <span class="attr">src</span>=<span class="string">'https://www.sohu.com/a/287817933_100118081'</span> <span class="attr">width</span>=<span class="string">"800"</span> <span class="attr">height</span>=<span class="string">"450"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">iframe</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<iframe src="https://player.bilibili.com/player.html?bvid=BV1Wb411v7WN" width="640" height="430">
-</iframe>
-<iframe src="https://v.qq.com/txp/iframe/player.html?vid=u0951gpf8u2" width="640" height="430"></iframe>
-<p>TODO:
-markdown 空格</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&amp;emsp;&amp;emsp;</span><br></pre></td></tr></table></figure>
-<hr>
-<p><strong>参考</strong></p>
-<hr class="footnotes-sep">
-<section class="footnotes">
-<ol class="footnotes-list">
-<li id="fn1" class="footnote-item"><p>朱自清《荷塘清韵》北京大学出版社  2010-1 <a href="#fnref1" class="footnote-backref">↩︎</a></p>
-</li>
-<li id="fn2" class="footnote-item"><p>国家统计局 <a href="http://www.stats.gov.cn/tjsj/zxfb/202002/t20200228_1728913.html" target="_blank" rel="noopener">2019年国民经济和社会发展统计公报</a> 2020-02-28 <a href="#fnref2" class="footnote-backref">↩︎</a></p>
-</li>
-</ol>
-</section>
-]]></content>
-      <categories>
-        <category>博客搭建</category>
-      </categories>
-      <tags>
-        <tag>工具</tag>
-        <tag>博客模版</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>【转】在 C/C++ 程序中打印当前函数调用栈</title>
     <url>/public/2021/08/25/c_debug/</url>
     <content><![CDATA[<p><strong>背景</strong></p>
@@ -664,6 +452,218 @@ markdown 空格</p>
       <tags>
         <tag>数学</tag>
         <tag>层次分析法</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>RSS跟踪github文件更新</title>
+    <url>/public/2021/07/24/rss_github_file/</url>
+    <content><![CDATA[<p><strong>前言</strong></p>
+<p>好久没有更新博客了。RSS这种形式的信息获取方式，似乎又流行起来。github上面有很多不错的资源。我的流程是：github readme文件更新-&gt;svn下载对应文件-&gt;生成rss文件。</p>
+<p>这里为什么要这么复杂，因为github仓库更新多了好多不需要的rss信息，而且github文件下载比较慢。</p>
+<p>最后效果，获取《经济学人》和《纽约客》的更新～</p>
+<p><img src="/public/2021/07/24/rss_github_file/rss_result.png" alt="image-20210724005152399"></p>
+<a id="more"></a>
+<h2 id="下载脚本"><a class="header-anchor" href="#下载脚本">¶</a>下载脚本</h2>
+<p>解析readme中的地址，自动下载，并生成rss源。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="comment"># /etc/cron.hour </span></span><br><span class="line"><span class="keyword">from</span> urllib <span class="keyword">import</span> request</span><br><span class="line"><span class="keyword">import</span> datetime</span><br><span class="line"><span class="keyword">from</span> rfeed <span class="keyword">import</span> * <span class="comment"># 为生成rss.xml的库</span></span><br><span class="line"><span class="keyword">import</span> re</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">from</span> glob <span class="keyword">import</span> glob</span><br><span class="line">URL=<span class="string">"https://raw.githubusercontent.com/hehonghui/the-economist-ebooks/master/README.md"</span></span><br><span class="line">BASE_URL=<span class="string">"http://your_vps_host/download/"</span></span><br><span class="line"></span><br><span class="line">SVN_BASE_URL=<span class="string">"https://github.com/hehonghui/the-economist-ebooks/trunk/"</span></span><br><span class="line"></span><br><span class="line">s=<span class="string">"""</span></span><br><span class="line"><span class="string">* [经济学人 - 周刊, 点击这里下载最新一期](01_economist/te_2021.02.27) , 每周五十一点更新</span></span><br><span class="line"><span class="string">* [纽约客 - 周刊, 点击这里下载最新一期](02_new_yorker/2021.03.01) , 每周六上午更新</span></span><br><span class="line"><span class="string">* [卫报 - 每周两期](09_guardian/), 每周三、周日更新</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line">s = request.urlopen(URL).read().decode(<span class="string">'utf8'</span>)</span><br><span class="line"></span><br><span class="line">res= re.findall(<span class="string">r"\[.+\]\((0.+)\)"</span>,s)[<span class="number">0</span>:<span class="number">2</span>]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># generate xml</span></span><br><span class="line">res_list=[]</span><br><span class="line"><span class="keyword">for</span> item <span class="keyword">in</span> res:</span><br><span class="line">	res_list+=sorted(glob(item.split(<span class="string">'/'</span>)[<span class="number">0</span>]+<span class="string">"/*"</span>))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">item_list=[]</span><br><span class="line">print(item_list)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> item <span class="keyword">in</span> res_list:</span><br><span class="line">    _one = Item(</span><br><span class="line">			title = item[<span class="number">3</span>:],</span><br><span class="line">        link = BASE_URL+item,</span><br><span class="line">		description = <span class="string">'pdf etc. &lt;a href="%s"&gt;link&lt;/a&gt; '</span>% (BASE_URL+item),</span><br><span class="line">        author = <span class="string">"hehonghui"</span>,</span><br><span class="line">        guid = Guid(BASE_URL+item),</span><br><span class="line">        pubDate = datetime.datetime(<span class="number">2020</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">4</span>, <span class="number">0</span>)) <span class="comment"># year, month, date, hh, mm, ss</span></span><br><span class="line">    item_list+=[_one]</span><br><span class="line"></span><br><span class="line">feed = Feed(</span><br><span class="line">        title = <span class="string">"经济学人+纽约客更新"</span>,</span><br><span class="line">        link = <span class="string">"https://www.xxxxx.biz/atom/updated.xml"</span>,</span><br><span class="line">        description = <span class="string">"更新经济学人，纽约客"</span>,</span><br><span class="line">        language = <span class="string">"en-US"</span>,</span><br><span class="line">        lastBuildDate = datetime.datetime.now(),</span><br><span class="line">        items = item_list)</span><br><span class="line"> </span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">save_to_file</span><span class="params">(file_name, contents)</span>:</span></span><br><span class="line">    fh = open(file_name, <span class="string">'w'</span>)</span><br><span class="line">    fh.write(contents)</span><br><span class="line">    fh.close()</span><br><span class="line"></span><br><span class="line">save_to_file(<span class="string">'test.xml'</span>, feed.rss())</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># start downing </span></span><br><span class="line"><span class="keyword">for</span> item <span class="keyword">in</span> res:</span><br><span class="line">    <span class="keyword">if</span> item <span class="keyword">not</span> <span class="keyword">in</span> res_list:</span><br><span class="line">	    print(<span class="string">"downing %s"</span>%item)</span><br><span class="line">	    os.popen(<span class="string">"svn checkout %s %s"</span>%(SVN_BASE_URL+item,item))</span><br><span class="line"></span><br><span class="line">    _now=sorted(glob(item.split(<span class="string">'/'</span>)[<span class="number">0</span>]+<span class="string">"/*"</span>))</span><br><span class="line">    print(_now)</span><br><span class="line">    <span class="keyword">if</span> len(_now)&gt;=<span class="number">5</span>: <span class="comment"># 最多5个，免得服务器下载过多。</span></span><br><span class="line">        <span class="keyword">for</span> _d <span class="keyword">in</span> _now[:<span class="number">-5</span>]:</span><br><span class="line">            os.popen(<span class="string">"rm -rf %s"</span>%_d)</span><br></pre></td></tr></table></figure>
+<p>在linux亦可使用<a href="https://www.runoob.com/w3cnote/linux-crontab-tasks.html" target="_blank" rel="noopener">crontab</a>定时启动下载任务。在 <code>/etc/cron.hourly/</code> 设置即可。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="meta">#!/bin/sh</span></span><br><span class="line">date &gt;&gt; test.log</span><br><span class="line">python3 down_ecomic.py &gt;&gt;test.log</span><br><span class="line"><span class="built_in">exit</span> 0</span><br></pre></td></tr></table></figure>
+<p>从youtube下载音频，自动转成mp3格式</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># -*- coding: utf-8 -*-</span><br><span class="line">#</span><br><span class="line"># 2020-04-18</span><br><span class="line"># /etc/cron.hour # https://www.runoob.com/w3cnote/linux-crontab-tasks.html</span><br><span class="line">from urllib import request</span><br><span class="line">import datetime</span><br><span class="line">from rfeed import *</span><br><span class="line">import re</span><br><span class="line">import os</span><br><span class="line">from glob import glob</span><br><span class="line">import feedparser</span><br><span class="line">import pprint</span><br><span class="line">URL=&quot;https://www.youtube.com/feeds/videos.xml?channel_id=UCFhp6N5z8W9Ann2eyHAzbbA&quot;</span><br><span class="line">rss = feedparser.parse(URL)</span><br><span class="line">entries=rss[&apos;entries&apos;][:3]</span><br><span class="line"></span><br><span class="line">BASE_URL=&quot;http://xxxxx/down_youtube/&quot;</span><br><span class="line"></span><br><span class="line">item_list=[]</span><br><span class="line">for entry in entries:</span><br><span class="line">    print(entry[&apos;title&apos;])</span><br><span class="line">    print(entry[&apos;published&apos;])</span><br><span class="line">    print(entry[&apos;link&apos;])</span><br><span class="line">    #print(entry[&apos;summary&apos;])</span><br><span class="line">    new_link=BASE_URL+&quot;book_audios/%s.mp3&quot;%entry[&apos;yt_videoid&apos;]</span><br><span class="line">    _one = Item(</span><br><span class="line">			title = entry[&apos;title&apos;],</span><br><span class="line">        link = new_link,</span><br><span class="line">		description = &apos;audio: &lt;a href=&quot;%s&quot;&gt;mp3&lt;/a&gt; %s&apos;% (new_link,entry[&apos;summary&apos;]),</span><br><span class="line">        author = &quot;Youtube&quot;,</span><br><span class="line">        guid = Guid(new_link),</span><br><span class="line">        pubDate = datetime.datetime(2020, 1, 1, 4, 0)) # year, month, date, hh, mm, ss</span><br><span class="line">    item_list+=[_one]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">feed = Feed(</span><br><span class="line">        title = &quot;知乎读书会更新&quot;,</span><br><span class="line">        link = &quot;https://www.xxxxx.biz/atom/updated.xml&quot;,</span><br><span class="line">        description = &quot;更新Youtube知乎读书会&quot;,</span><br><span class="line">        language = &quot;en-US&quot;,</span><br><span class="line">        lastBuildDate = datetime.datetime.now(),</span><br><span class="line">        items = item_list)</span><br><span class="line"></span><br><span class="line">def save_to_file(file_name, contents):</span><br><span class="line">    fh = open(file_name, &apos;w&apos;)</span><br><span class="line">    fh.write(contents)</span><br><span class="line">    fh.close()</span><br><span class="line"></span><br><span class="line">save_to_file(&apos;audio.xml&apos;, feed.rss())</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">from os import rename</span><br><span class="line">import youtube_dl</span><br><span class="line"></span><br><span class="line"># start downing </span><br><span class="line">if not os.path.exists(&quot;book_audios/&quot;):</span><br><span class="line">    os.makedirs(&quot;book_audios/&quot;)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">def audio_download(youtube_url):</span><br><span class="line">    # 定义某些下载参数</span><br><span class="line">    ydl_opts = &#123;</span><br><span class="line">        &apos;format&apos;: &apos;bestaudio/best&apos;,</span><br><span class="line">     #   &apos;download_archive&apos;: &apos;downloaded_songs.txt&apos;,</span><br><span class="line">        &apos;outtmpl&apos;: &apos;book_audios/%(id)s.%(ext)s&apos;,</span><br><span class="line">        &apos;postprocessors&apos;: [&#123;</span><br><span class="line">            &apos;key&apos;: &apos;FFmpegExtractAudio&apos;,</span><br><span class="line">            &apos;preferredcodec&apos;: &apos;mp3&apos;,</span><br><span class="line">            &apos;preferredquality&apos;: &apos;192&apos;,</span><br><span class="line">            &#125;],</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    with youtube_dl.YoutubeDL(ydl_opts) as ydl:</span><br><span class="line">        ydl.download([youtube_url])</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">#download(&apos;https://www.youtube.com/watch?v=JElpSrsmbTU&apos;)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">for entry in entries:</span><br><span class="line">    if entry[&apos;yt_videoid&apos;]+&apos;.mp3&apos; not in os.listdir(&apos;book_audios&apos;):</span><br><span class="line">        print(&quot;downing %s, %s&quot;%(entry[&apos;title&apos;], entry[&apos;link&apos;]))</span><br><span class="line">        audio_download(entry[&apos;link&apos;])</span><br><span class="line">   </span><br><span class="line">    _now=sorted(glob(&quot;book_audios/*&quot;),key=os.path.getctime)</span><br><span class="line">    print(_now)</span><br><span class="line">    if len(_now)&gt;=6: # 多余删除</span><br><span class="line">        for _d in _now[:-5]:</span><br><span class="line">            os.popen(&quot;rm -rf %s&quot;%_d)</span><br></pre></td></tr></table></figure>
+<p>祝大家使用愉快！</p>
+]]></content>
+      <categories>
+        <category>工具</category>
+      </categories>
+      <tags>
+        <tag>RSS</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>二零年RSS杂谈</title>
+    <url>/public/2022/01/14/rss_talk2020/</url>
+    <content><![CDATA[<p>2020年了，笔者还是使用RSS的原始人。RSS，Really Simple Syndication是一种信息聚合工具。在5G时代信息即将大爆炸之前，我来谈谈rss的杂七杂八吧。我们来打个赌，你不会看完这篇文章。</p>
+<a id="more"></a>
+<p>软件的交互设计有很多心理学理论的应用。比如微信、QQ的三级页面设计，一般经过3次点击就能到达功能或设置。这符合认知原理，人认知记忆能力一般为3-5个的组合。日常生活中要记电话号码，可以3-4-4这样记。软件交互中还有利用人的习惯奖励机制的提醒红点的设计，吸引你去点击，获取红点消失的奖励。对我来说，较难控制住不受这些设计的影响。在《习惯的力量》一书了解到，直接逃离这些环境可有效解决控制不住的问题。比如工作的时候，把手机关进柜子，工作1个小时，然后再回复信息，当然重要电话还是要立即接的。</p>
+<p>铺天盖地的广告，马路上，电视中，手机里，PC页面充斥着各种广告等等。大多数人可能养成了自动过滤的广告的习惯，然而我的情况是一直在用去广告的插件，并没有养成自动忽略广告的习惯。可怜兮兮，难道只有我是有广告洁癖的嘛？广告有点浪费生命。</p>
+<p>我饱受广告的困扰。web的去广告方法，我可使用某款chrome插件可以将web界面上的小红点，推荐信息模块全部屏蔽掉的。哪里不看点哪里，贼方便。</p>
+<p>移动端的广告去掉太难了，我一生气卸载了知乎 b站等等应用，终于有了一个清爽的手机。</p>
+<p>那我还是想获取一些新的内容，根据二八定律，是有20%的网络资料包含了80%的信息，也就是干货，也可能被我这种操作忽略掉了，那一套RSS应用体系应运而生。</p>
+<p>谈谈推荐算法，知乎推荐的都是啥呀，程序员都懂的，把我一个屌丝的形象勾勒的这么明显。于是我回答问题，人在美国，刚下飞机，年薪百万，老婆在旁？</p>
+<p>很多人会说，RSS一定会获取到有用的信息吗，这取决于信息源的可靠程度。也就是需要你自己去选择，由于它是不含推荐算法的，就不会根据你选择的，再给你推荐一些可能是非常有用的。</p>
+<p>再谈谈知识焦虑，每天觉得有大量知识需要吸收。大家都明白mark了也并不会看的，但还是mark很多，但你并不会有时间或者精力去看。既然不会看，那就不mark了，用到啥学啥，或许是个不错的策略。那RSS的即时性还是不错的，最好能当天把信息清理一下，star一些当前重要的东西，然后一周整理一下，像阮一峰老师。吸收完，把它输出出去，与人交流，给人讲明白，能够记得更深。（费曼学习法，把自己当成老师）。</p>
+<p>让我们再回到RSS，RSS是个淘汰的东西，和微信的公众号的形式有点像。然后倒霉的我又在微信的公众号上难以自拔，常常花很多时间在这上面。推荐算法厉害呀，就是让你看得爽。自我节制太难，那就改变环境。于是，我去掉了很多公众号，保留一些本地生活工作的公众号，微信上专注与朋友们侃大山。</p>
+<p>还有一点难受是，各个平台，相互串在一起，在这个地方看了，在其他地方又换了一个马甲它继续晃悠在眼前。信息源在多平台发布，然后信息重叠。</p>
+<p>看来all in one 势在必行，RSS被谷歌放弃后，很多网站傲娇地不提供RSS服务了，毕竟流量至上，钱要赚的，我一直想做一个这种爬的工具，但我不希望有大量使用爬，也就是我们还是要尊重网站的盈利以及持续发展的，这也是仅仅方便个人的信息处理，优化你的自动信息的处理，再也不用一个个打开网站，然后看信息看广告，还要被推荐不重用的信息。这也算我个人的想法。人在于折腾，于是我开始折腾ttrss rsshub等开源软件。</p>
+<p>自由软件的好处，在于自由定制，参与发展，利益化会尽量变慢或者没有，方便的同时并不忘隐私保护。</p>
+<p>我想说的是，<strong>技术应当给人们带来自由和发展，而非接管人们的注意力，浪费宝贵的时间。</strong></p>
+<p>写在5G信息大爆发前，与大家共同反思与成长。</p>
+]]></content>
+      <categories>
+        <category>杂谈</category>
+        <category>工具</category>
+      </categories>
+      <tags>
+        <tag>RSS</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>博客模版</title>
+    <url>/public/2019/07/25/template/</url>
+    <content><![CDATA[<p><strong>前言</strong></p>
+<p>前言主要说明文章的写作意图，概要介绍文中涉及的背景、主要内容、与其他文章关系等。对于长文，这个部分可以写摘要。</p>
+<p>本文为Hexo博客模版文件，以Markdown语言书写。<a href="#%E9%99%84%EF%BC%9Amarkdown%E8%AF%AD%E6%B3%95">模版markdown语法</a></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">前言一般放到主页，可利用 &lt;!-- more --&gt; 隔断。</span><br></pre></td></tr></table></figure>
+<a id="more"></a>
+<h2 id="构思与起草"><a class="header-anchor" href="#构思与起草">¶</a>构思与起草</h2>
+<ul>
+<li>对文章的阅读群体、写作意图和反馈（Audience Intention Response AIR）要有一个清楚的认识。照顾沟通对象的需要、你的意图（信息）以及希望的反馈。</li>
+<li>在思维导图上，放上你需要的关键名词，然后依次在它基础上添加动词，在加上形容词。最后以一定顺序组织你将要阐述的信息。比如重要性排序，对比优势劣势，方案的不同层面，时间上逻辑上的因果性等等。</li>
+</ul>
+<h2 id="主体内容"><a class="header-anchor" href="#主体内容">¶</a>主体内容</h2>
+<p>文章的主要内容，包括你对跟进过程或发现成果的描述，以数据、事实证据以及其他的信息支撑主要内容。在你的论说中，你应该把对客观事实的描述和写作者对事情的主管阐述区分开来。</p>
+<p>当你在报告中对一个观点进行陈述的时候，你需要记住以下几点：</p>
+<ul>
+<li>清晰的呈现事实</li>
+<li>有逻辑地提出论据</li>
+<li>引用相关的语录、简明易懂的事实和例子来支持你的论点</li>
+<li>给出支持或反对该行为的理由</li>
+<li>始终围绕主要观点进行讨论</li>
+<li>处理好重要的假设关系</li>
+<li>区分说明（具体阐述）和论证（有理有据）</li>
+</ul>
+<h2 id="写作检查"><a class="header-anchor" href="#写作检查">¶</a>写作检查</h2>
+<p>主体内容完成后，要进行写作检查。</p>
+<ul>
+<li>保证信息的准确性，时间地点等信息的准确。</li>
+<li>确保语法规范性</li>
+<li>段落写作
+<ul>
+<li>主题句，核心思想</li>
+<li>使用关联词，但勿滥
+<ul>
+<li>表示转折：虽然，尽管，但是，相反的是，另一方面</li>
+<li>对已阐述观点的强调：此外，与此同时，除此以外，再补充一点</li>
+<li>阐述结果：结果是，相应的结果是，因此</li>
+</ul>
+</li>
+<li>简单的句子 15-25</li>
+</ul>
+</li>
+<li>精心选择词语
+<ul>
+<li>同一个意思，换一下说法</li>
+<li>少用名词，多用动词。我们想用名词表达意思，采用动名组合，或者一个意群搭配上动词会更有力。</li>
+<li>多用主动动词，少用被动动词</li>
+</ul>
+</li>
+<li>核对标点符号，逗号，与分号。英文的话，检查一下拼写</li>
+<li>注意行为的语气</li>
+<li>保持连贯性，使用一种统一的方式表达。</li>
+</ul>
+<h2 id="总结"><a class="header-anchor" href="#总结">¶</a>总结</h2>
+<p>一个清晰的总结应该概括全部论点。</p>
+<h2 id="其他"><a class="header-anchor" href="#其他">¶</a>其他</h2>
+<ul>
+<li>逻辑清楚，达情切意<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup>。准备看一些基础的逻辑学。</li>
+<li>写完要读两遍，修改错别字，标点，语序连接等等。</li>
+<li>修改可以反着读，正着读对熟悉的材料会有一种连贯性忽略掉错误或者不顺的地方。</li>
+</ul>
+<h2 id="附：markdown语法"><a class="header-anchor" href="#附：markdown语法">¶</a>附：markdown语法</h2>
+<h3 id="head"><a class="header-anchor" href="#head">¶</a>head</h3>
+<p>文件head，设置标题、日期、分类、标签、评论、版权、是否使用公式，如下。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">---</span><br><span class="line">title: 模版文件</span><br><span class="line">date: 2019-07-25 12:00:00</span><br><span class="line">updated: 2019-07-25 12:00:00</span><br><span class="line">categories:</span><br><span class="line">  - 博客搭建</span><br><span class="line">  - 模版文件</span><br><span class="line">tags:</span><br><span class="line">  - Writing</span><br><span class="line">comments: true</span><br><span class="line">copyright: true</span><br><span class="line">math: true</span><br><span class="line">---</span><br></pre></td></tr></table></figure>
+<h3 id="图"><a class="header-anchor" href="#图">¶</a>图</h3>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"># 使用标准markdown</span><br><span class="line">![GDP](http://www.stats.gov.cn/tjsj/zxfb/202002/W020200228491461098230_r75.png)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"># 使用html</span><br><span class="line"><span class="tag">&lt;<span class="name">center</span>&gt;</span><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">"http://www.stats.gov.cn/tjsj/zxfb/202002/W020200228491461098230_r75.png"</span> <span class="attr">width</span>=<span class="string">"60%"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span>&gt;</span> 图1 2019年国内生产总值及其增速度<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">center</span>&gt;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"># 白色图片用table提供辨识度</span><br><span class="line"><span class="tag">&lt;<span class="name">table</span>&gt;</span><span class="tag">&lt;<span class="name">tr</span>&gt;</span><span class="tag">&lt;<span class="name">td</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">center</span>&gt;</span><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">"http://www.stats.gov.cn/tjsj/zxfb/202002/W020200228491461098230_r75.png"</span> <span class="attr">width</span>=<span class="string">"60%"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span>&gt;</span> 图1 2019年国内生产总值及其增速度<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">center</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">td</span>&gt;</span><span class="tag">&lt;<span class="name">tr</span>&gt;</span><span class="tag">&lt;/<span class="name">table</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>这两行代码生成下面的图和标题。</p>
+<center><img src="http://www.stats.gov.cn/tjsj/zxfb/202002/W020200228491461098230_r75.png" width="60%">
+</center>
+<p>图 1 展示的是2015-2019年的GDP和增长速度<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup>，直方图数据反应国内生产总值在2015-2019年度均平稳增长。</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">table</span>&gt;</span><span class="tag">&lt;<span class="name">tr</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">td</span>&gt;</span><span class="tag">&lt;<span class="name">center</span>&gt;</span><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">"http://www.stats.gov.cn/tjsj/zxfb/202002/W020200228491461098230_r75.png"</span>&gt;</span>图1     <span class="tag">&lt;/<span class="name">center</span>&gt;</span><span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">td</span>&gt;</span><span class="tag">&lt;<span class="name">center</span>&gt;</span><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">"http://www.stats.gov.cn/tjsj/zxfb/202002/W020200228491461098230_r75.png"</span>&gt;</span>图2 <span class="tag">&lt;/<span class="name">center</span>&gt;</span><span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">tr</span>&gt;</span><span class="tag">&lt;/<span class="name">table</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<table><tr>
+<td><center><img src="http://www.stats.gov.cn/tjsj/zxfb/202002/W020200228491461098230_r75.png">图1     </center></td>
+<td><center><img src="http://www.stats.gov.cn/tjsj/zxfb/202002/W020200228491461098230_r75.png">图2 </center></td>
+</tr></table>
+<h3 id="表"><a class="header-anchor" href="#表">¶</a>表</h3>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;div align=&apos;center&apos;&gt; 表1 2018年年末人口数及其构成&lt;/div&gt;</span><br><span class="line"></span><br><span class="line">| 指标       | 年末数（万人） | 比重（%） |</span><br><span class="line">| ---------- | -------------- | --------- |</span><br><span class="line">| 全国总人口 | 139538         | 100.0     |</span><br><span class="line">| 其中：城镇 | 83137          | 59.58     |</span><br><span class="line">| 乡村       | 56401          | 40.42     |</span><br></pre></td></tr></table></figure>
+<p>这两行代码生成下面的表和标题。</p>
+<div align="center">表1 2018年年末人口数及其构成</div>
+<table>
+<thead>
+<tr>
+<th>指标</th>
+<th>年末数（万人）</th>
+<th>比重（%）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>全国总人口</td>
+<td>139538</td>
+<td>100.0</td>
+</tr>
+<tr>
+<td>城镇</td>
+<td>83137</td>
+<td>59.58</td>
+</tr>
+<tr>
+<td>乡村</td>
+<td>56401</td>
+<td>40.42</td>
+</tr>
+</tbody>
+</table>
+<p>从表1得出2018年年末，城镇人口占总人口的59.58%，乡村人口占总人口的40.42%，城镇人口已大比例超过乡村人口。</p>
+<h3 id="公式"><a class="header-anchor" href="#公式">¶</a>公式</h3>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$$</span><br><span class="line">f=w_1 x_1 + w_2 x_2</span><br><span class="line">\tag&#123;1&#125;</span><br><span class="line">$$</span><br></pre></td></tr></table></figure>
+<p>在Markdown中可用Tex代码渲染数学公式，渲染效果为公式（1）。如图2，Tex公式可以在<a href="http://latex.codecogs.com/eqneditor/editor.php" target="_blank" rel="noopener">Latex编辑器网站</a> 可视化编写
+$$
+f=w_1 x_1 + w_2 x_2
+\tag{1}
+$$</p>
+<center><img src="https://img-blog.csdnimg.cn/20200425095309901.png" width="60%">
+<div> 图2 Latex在线编辑器</div>
+</center>
+<h3 id="定理证明"><a class="header-anchor" href="#定理证明">¶</a>定理证明</h3>
+<p><strong>定理 3.1</strong> 如果时域混合场积分方程是时域电场积分方程与时域磁场积分方程的线性组合……</p>
+<p><strong>证明：</strong></p>
+<p>首先，由于 ……</p>
+<p>……</p>
+<p>根据 ……，结论得证。                        ■</p>
+<h3 id="参考"><a class="header-anchor" href="#参考">¶</a>参考</h3>
+<p>参考的分类：</p>
+<ul>
+<li>链接直接在原文中给出。</li>
+<li>引用他人文章中的段落或者意识给出引用的链接。</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">---</span><br><span class="line">**参考**</span><br><span class="line"></span><br><span class="line">[^statics_report_2019]: 国家统计局 [2019年国民经济和社会发展统计公报](http://www.stats.gov.cn/tjsj/zxfb/202002/t20200228_1728913.html) 2020-02-28</span><br><span class="line"></span><br><span class="line">[^hetang]: 朱自清《荷塘清韵》北京大学出版社  2010-1</span><br></pre></td></tr></table></figure>
+<h3 id="添加iframes"><a class="header-anchor" href="#添加iframes">¶</a>添加iframes</h3>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!-- &#123;&#125;替换为视频id，同时去掉&#123;&#125; --&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- 小破站 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">iframe</span> <span class="attr">src</span>=<span class="string">"https://player.bilibili.com/player.html?bvid=&#123;&#125;"</span> <span class="attr">width</span>=<span class="string">"640"</span> <span class="attr">height</span>=<span class="string">"430"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">iframe</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- 腾讯视频 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">iframe</span> <span class="attr">src</span>=<span class="string">"http://v.qq.com/iframe/player.html?vid=&#123;&#125;"</span> <span class="attr">width</span>=<span class="string">"640"</span> <span class="attr">height</span>=<span class="string">"430"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">iframe</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- 优酷视频 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">iframe</span>  <span class="attr">src</span>=<span class="string">'https://player.youku.com/embed/&#123;&#125;'</span> <span class="attr">width</span>=<span class="string">"640"</span> <span class="attr">height</span>=<span class="string">"430"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">iframe</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- PDF --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">iframe</span>  <span class="attr">src</span>=<span class="string">'https://arxiv.org/pdf/1406.2661.pdf'</span> <span class="attr">width</span>=<span class="string">"800"</span> <span class="attr">height</span>=<span class="string">"450"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">iframe</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- HTML --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">iframe</span>  <span class="attr">src</span>=<span class="string">'https://www.sohu.com/a/287817933_100118081'</span> <span class="attr">width</span>=<span class="string">"800"</span> <span class="attr">height</span>=<span class="string">"450"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">iframe</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<iframe src="https://player.bilibili.com/player.html?bvid=BV1Wb411v7WN" width="640" height="430">
+</iframe>
+<iframe src="https://v.qq.com/txp/iframe/player.html?vid=u0951gpf8u2" width="640" height="430"></iframe>
+<p>TODO:
+markdown 空格</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&amp;emsp;&amp;emsp;</span><br></pre></td></tr></table></figure>
+<hr>
+<p><strong>参考</strong></p>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p>朱自清《荷塘清韵》北京大学出版社  2010-1 <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn2" class="footnote-item"><p>国家统计局 <a href="http://www.stats.gov.cn/tjsj/zxfb/202002/t20200228_1728913.html" target="_blank" rel="noopener">2019年国民经济和社会发展统计公报</a> 2020-02-28 <a href="#fnref2" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
+]]></content>
+      <categories>
+        <category>博客搭建</category>
+      </categories>
+      <tags>
+        <tag>工具</tag>
+        <tag>博客模版</tag>
       </tags>
   </entry>
   <entry>
@@ -1072,242 +1072,6 @@ $$
       </tags>
   </entry>
   <entry>
-    <title>希腊罗马神话</title>
-    <url>/public/2018/11/05/readings/Gods_stories/</url>
-    <content><![CDATA[<p><strong>前言</strong></p>
-<p>在我电的图书馆的还书柜子里面偶然所得，一本叫《希腊罗马神话对英语语言文化的影响》吕海平 著 江苏大学初版社，然后莫名的想研究一下，发现挺不错的。</p>
-<a id="more"></a>
-<p>古希腊罗马的神的关系还是比较乱的，尤其是jupiter 或者zeus的奥林匹斯神系。从上古的神系，总共有三代。</p>
-<p>网上有个人（<a href="http://www.veritablehokum.com/" target="_blank" rel="noopener">Korwin Briggs</a>）做的关系图很不错。</p>
-<p>TODO:后面我也会对其进行整理，以后给大家分享。</p>
-<p><img src="http://www.veritablehokum.com/wp-content/uploads/2018/08/Roman-God-Family-Tree.jpg" alt></p>
-]]></content>
-      <categories>
-        <category>读书笔记</category>
-      </categories>
-      <tags>
-        <tag>希腊罗马神话</tag>
-        <tag>语言文化</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>红楼梦与我</title>
-    <url>/public/2017/05/14/readings/hongloumeng/</url>
-    <content><![CDATA[<p>红楼梦是我国四大名著之一，主要内容是贾府的兴衰和宝黛的悲剧爱情。电视剧红楼梦2010版，我是从八月开始看的，看完到现在，也有小一个月了。在网上大家对这版电视剧褒贬不一。与我来说，我是喜欢这部剧的，不能说拍得很好，但这部剧却勾起了我读书与写字的兴趣。于是乎，做了一篇随笔，以记录我的一些感触。</p>
-<a id="more"></a>
-<p>我记得最早是小学，我们还是顾着打玻璃珠和丢沙包的年纪，学校旁边的小书店里，也都是七龙珠，哆啦A梦，柯南的小人书，老师们讲到四大名著，顺带提了下红楼梦，其他没印象了。我们学习最多的是中文的拼音和书写，作文都是打油，日记也闹了不少笑话。后来上初中，有一次寒假附加作业是阅读红楼梦，我虽毫无兴趣，但还是硬着头皮，去新华书店，试看红楼梦。120章的红楼，厚得连看下去的勇气也没有。略看了几下，最后，做了一个红楼梦不好看的论断，也就放在那边了。那时有老版的红楼梦电视剧播映，打开电视偶尔会遇见，但是立马换台，央视的西游记与情深深雨蒙蒙，湖南电视台的还珠格格，也是欣赏了好几遍。再者，有动画片谁有兴趣去看这些什么破剧，关于书本，最多也就是看看汤姆索亚历险记。</p>
-<p>再后来，去启中读书，学习上比较紧张，再加上理科班的非文学氛围，对这些文学的东西更不感冒。尽管偶尔也会入耳一些其中的人物，比如林妹妹，刘姥姥，也是不用大脑耳朵直接过滤。当时，大伙是杂志，读者，青年文摘读得比较多，班上一本，全班查阅，杂志文章篇幅较小，读起很顺很舒服。期间，与红楼的唯一一次接触是，高中教科书上有刘姥姥进大观园的章节，翻了一遍，当时，感叹人物好多，理不出人物关系，完全放弃看完红楼的欲望。以为姥姥是贾府的姥姥，猩猩然想着以后可以说看过一段红楼，红楼也比较贵不如多买几本读者，积累作文素材。不知什么时候，班上网络小说之风随着mp4和智能手机的普及而吹起，我也用MP4刷完了一两部网络小说，感觉都是一个套路，主角都是绝处逢生，越来越无敌，也就不敢兴趣了。</p>
-<p>再然后，我上大学，藏书400百万册的成电图书馆，也并没有引起我读文学类的欲望，大学四年借的专业工具类书比较多，想来也是浪费资源。在一个工科高校，文学方面的课程几乎没有，虽说有个大学语文的选修课，俨然不感兴趣。大学里，再一次看到有人在看红楼梦电视剧，也是大二的时候的人工智能课上，也是闲得无聊。再后来，大四时，手机上自带一个蜻蜓网络电台应用，无聊点开蒋勋老师评述的红楼梦音频，红学大师讲到他与红楼梦的相遇，同时，他介绍的红楼基本背景和人物，通俗易懂，一下子引起我的兴趣。他说红楼梦写的都是15、6岁人的故事，15、16岁就可以读了。回想我15、16岁，基本没看什么名著。要说四大名著，我也就看了三国和水浒的少年版。上次回家，看美剧，老妈突然蹦出句，不能光看英文也应当看看我们老祖宗的文化。</p>
-<p>现在得空，就这样抱着惭愧和一丝尝试我看起了2010版红楼梦。在这我得承认，我是个演员控。不得不说，三大主演都很不错。</p>
-<p>50集过后，原来红楼讲得是这个，并表示有兴趣去读读名著了。原来有这么多原来。</p>
-<ul>
-<li>
-<p>人物家族命运令人感慨。作者写出超越那个时代的朦胧的爱情与不得不提的丧心病狂的全部悲剧，果然是个失意文人的作品。 可叹停机德，堪怜咏絮才。宝钗落落大方德才兼备，黛玉因情而伤而痛去世，宝玉虽与宝钗结婚，最后离家成道去。精于人情世故,，胸有城府的王熙凤，平日的爽朗笑声终究悲剧，贾府里多么好的领导，最后也人情冷暖，不免为其伤心。刘姥姥，其实是个成功的投机分子，但也是朴实善良的“穷亲戚”，最后救了巧儿。十二金钗各有个的悲剧，正如宝玉在虚幻仙境里警幻仙姑给的设定。原来故事一开始就把结局告诉了读者。</p>
-</li>
-<li>
-<p>体验古代贵族文化。里面还有个诗社的组织，古人的结社，好有雅致，也会给人起“绰号”。除此以外还有击鼓传花，有时主题是讲笑话有时对诗。猜灯谜，中秋赏月，生日宴会等等。</p>
-</li>
-<li>
-<p>语言魅力。打秋风，这是形容刘姥姥找找贾府接济用的。恼，生气，或者使生气。不同人的称谓，宝兄弟，宝二爷，宝姐姐或者好姐姐，林妹妹或者好妹妹。</p>
-</li>
-<li>
-<p>情节回味无穷。刘姥姥进大观园，是贾母和姥姥差不多年纪想和她聊聊，邀请她的。乡村来打秋风的刘姥姥像是在参观皇宫。在后面时期  ，家族里一次比一次捉襟见肘的聚会，可以看见这些家族的衰落。中国的各种人情世故体现在这里面。四个大家族，一个小社会。</p>
-</li>
-</ul>
-<p>以上是我的一点点感悟。</p>
-<p>只是，我与红楼梦，还差80章书页，希望还能有计划地读完。</p>
-<p>2016年于成电</p>
-]]></content>
-      <categories>
-        <category>读书笔记</category>
-      </categories>
-      <tags>
-        <tag>故事</tag>
-        <tag>《红楼梦》</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>【转】《中华古籍资源库》中国国家图书馆</title>
-    <url>/public/2021/12/16/readings/zhonghuaguji/</url>
-    <content><![CDATA[<p><strong>简介</strong></p>
-<p>“中华古籍资源库”是“中华古籍保护计划”的重要成果。2016年9月28日，“中华古籍资源库”正式开通运行，陆续发布国家图书馆藏善本和普通古籍、法国国家图书馆藏敦煌遗书、天津图书馆藏普通古籍、日本永青文库捐赠汉籍、云南省图书馆善本古籍、芷兰斋藏稿抄校本等古籍影像资源，总量超过3.3万部。</p>
-<p>《中华古籍资源库》！！！<br>
-网址：<a href="http://www.nlc.cn/pcab/zy/zhgj_zyk/" target="_blank" rel="noopener">http://www.nlc.cn/pcab/zy/zhgj_zyk/</a><br>
-查询：<a href="http://read.nlc.cn/thematDataSearch/toGujiIndex" target="_blank" rel="noopener">http://read.nlc.cn/thematDataSearch/toGujiIndex</a></p>
-<img src="/public/2021/12/16/readings/zhonghuaguji/image-20211216225907506.png" alt="image-20211216225907506" style="zoom:30%;">
-<a id="more"></a>
-<p>比如：《九章算数》的古籍</p>
-<img src="/public/2021/12/16/readings/zhonghuaguji/image-20211216231340351.png" alt="image-20211216231340351" style="zoom:30%;">
-<img src="/public/2021/12/16/readings/zhonghuaguji/image-20211216231141739.png" alt="image-20211216231141739" style="zoom:30%;">
-<p>比如：卷第九的勾股</p>
-<img src="/public/2021/12/16/readings/zhonghuaguji/image-20211216232009068.png" alt="image-20211216232009068" style="zoom:50%;">
-<ul>
-<li>
-<p>数字古籍
-国家图书馆收藏古籍15万部，其中善本古籍直接继承了南宋缉熙殿、元翰林国史院、明文渊阁、清内阁大库等皇家珍藏，以及明清以来许多私人藏书家的毕生所聚。宋元旧椠、明清精刻琳琅满目。通过全彩影像数字化和缩微胶卷转化影像方式建设，从2016年9月28日起陆续在线发布，目前已发布馆藏古籍2万余部，国家图书馆超过三分之二的善本古籍实现了在线阅览。</p>
-</li>
-<li>
-<p>数字方志
-地方志文献为我国所特有，也是国家图书馆独具特色的馆藏之一，所存文献数量与品质极高。该数据库以国家图书馆藏地方志文献建设，主要包括为清代（含清代）以前的方志资源6529种。</p>
-</li>
-<li>
-<p>赵城金藏
-《赵城金藏》被誉为国家图书馆四大镇馆之宝之一。《赵城金藏》是在金代刻的一部大藏，因为它藏在赵城县（今属山西洪洞县）广胜寺，所以后人将它定名为《赵城金藏》。全藏约七千卷左右，六千多万字，现存四千余卷。2017年12月28日，国家图书馆《赵城金藏》1281件正式发布。</p>
-</li>
-<li>
-<p>宋人文集
-国家图书馆精选所藏宋人文集善本二百七十五部，首选宋元刊本，次及明清精抄精刻，或经名家校勘题跋之本，通过缩微胶卷还原数字影像，并辅以详细书目建成本全文影像数据库，目前已发布275部，免费呈献公众利用。</p>
-</li>
-<li>
-<p>碑帖菁华
-以国家图书馆藏有的历代甲骨、青铜器、石刻等类拓片二十三万余件为基础建设的数据库，内容涉及历史、地理、政治、经济、军事、民族、民俗、文学、艺术、科技、建筑等方面。2019年11月12日又新增发布2595种馆藏明清碑刻拓片数字资源，现有元数据2.5万余条，影像3.1万余幅。</p>
-</li>
-<li>
-<p>甲骨世界
-被誉为二十世纪四大文献发现之一的甲骨文，集文献性、文物性、收藏性于一身，是研究我国商朝晚期不可多得的珍贵史料，该库包括甲骨实物元数据2964条，影像5932幅；甲骨拓片元数据2975条，影像3177幅。</p>
-</li>
-<li>
-<p>西夏文献
-以国家图书馆保存的西夏、元代孤本及各种西夏的珍贵实物资料为基础建设的数据库。包括西夏文献书目数据124条，原件影像近5000拍。</p>
-</li>
-<li>
-<p>西夏论著
-包括西夏研究论文篇名数据1200余条。</p>
-</li>
-<li>
-<p>年画撷英
-国家图书馆收藏了杨柳青、朱仙镇等地制作的4000余幅年画作品，从中精选出一部分制作了该库，并为每种年画编写了内容说明，重点介绍了该年画的故事梗概、历史背景、制作特色和相关知识。目前发布元数据及影像302组。</p>
-</li>
-<li>
-<p>前尘旧影
-该资源库收录了国家图书馆收藏的新旧照片3074组，真实生动地记录了过去的社会事件、历史人物、城乡面貌、名胜古迹和建筑服饰等，人们可从中解读出不同历史时期特定事物的形象特征和真实信息，具有十分重要的历史价值。</p>
-</li>
-<li>
-<p>敦煌遗珍
-国际敦煌项目（IDP）建设的数据库，发布来自敦煌和丝绸之路上的写本、绘画、纺织品及器物的信息和图片，其中包括国家图书馆藏敦煌写卷影像18万余拍。</p>
-</li>
-<li>
-<p>徽州善本家谱
-徽州善本家谱印刷资料数据库是中国国家图书馆与法国远东学院的合作项目，收录了中国国家图书馆藏善本古籍中徽州家谱243种286部，配有书影5437幅。</p>
-</li>
-<li>
-<p>中华医药典籍资源库（测试版）
-图书馆收藏的文献典籍是整理研究的基础资料，为使读者能够通过互联网检索、利用中医文献资源，国家图书馆（国家古籍保护中心）将逐步建设中华医药典藏资源库，目前首批对221种中医古籍影像进行发布测试。</p>
-</li>
-<li>
-<p>云南图书馆古籍
-云南省图书馆将该馆古籍数字资源共139种727册提供给国家图书馆（国家古籍保护中心），这批资源均是云南省图书馆所藏珍贵的、有代表性的古籍文献，特别是明代云南丽江木氏土司家族著述，更是明代少数民族汉文著述的代表。该批资源于2019年11月12日正式在线发布。</p>
-</li>
-<li>
-<p>天津图书馆古籍
-为进一步丰富古籍数字资源品种和版本，满足广大读者使用需求，2014年底，天津图书馆向国家图书馆（国家古籍保护中心）提供总量约5,800余种300万拍明清古籍数字资源，该批资源经加工后，于2018年9月28日、2019年1月28日分两批发布。</p>
-</li>
-<li>
-<p>上海图书馆家谱
-上海图书馆现藏有家谱近3万余种30余万册共计365个姓氏，收藏的家谱覆盖全国27个省、自治区及直辖市，是国内外收藏中国家谱原件最多的公藏机构，有着“全球中国家谱第一藏”之美誉。国家图书馆与上海图书馆合作，征集该馆所藏明清家谱资源2200余种，在国图网站发布使用。</p>
-</li>
-<li>
-<p>中华古籍善本联合书目
-中华古籍善本国际联合书目系统是由中文善本书国际联合目录项目发展而来的新数据库，著录了三十余家海内外图书馆所藏古籍善本，数据达2万多条，并配有1.4万余幅书影。</p>
-</li>
-<li>
-<p>东文研汉籍影像库
-东京大学东洋文化研究所收藏有大量中国古籍，其中包括东方文化学院东京研究所的旧藏以及大木幹一、长泽规矩也、仓石武四郎等各具特色的个人收藏。2009年11月，东洋文化研究所将所藏中文古籍4000余种，以数字化方式无偿提供给中国国家图书馆，在国图网站上面向读者提供服务。</p>
-</li>
-<li>
-<p>哈佛大学善本特藏
-哈佛大学哈佛燕京图书馆藏中文善本古籍特藏，以其质量之高、数量之大著称于世。为了方便海内外学人便捷地利用这些资料进行研究，同时以数字化形式保存这些中华古籍精品，2009年国家图书馆与哈佛大学哈佛燕京图书达成协议，对哈佛燕京图书馆所藏中文善本和齐如山专藏进行数字化。目前在线发布经部和史部善本数字资源741部，另有齐如山戏曲小说专藏204种。</p>
-</li>
-<li>
-<p>法藏敦煌遗书
-2015年，在法国国家图书馆与中国国家图书馆达成合作意向，由法国国家图书馆向中国国家图书馆赠送馆藏全部敦煌遗书高清数字资源。在双方共同努力下，实现了这批敦煌遗书的数字化回归，并于2018年3月5日正式在线发布，共计5300余号3.1万余拍。</p>
-</li>
-<li>
-<p>中华寻根网
-中华寻根网是国家图书馆与澳门基金会开展的文化合作项目，是以提供姓氏源流和家谱资源服务为核心、方便海内外华人寻根问祖活动的网络平台。“中华寻根网”目前提供500多个姓氏源流、2000多部家谱和6000种其他文献的阅览，以及自建家谱，交流联谊的互动服务。</p>
-</li>
-</ul>
-]]></content>
-      <categories>
-        <category>书籍</category>
-      </categories>
-      <tags>
-        <tag>资源</tag>
-        <tag>古籍</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Windows笔记本开共享wifi</title>
-    <url>/public/2015/04/14/shells/share_win_wifi/</url>
-    <content><![CDATA[<p><strong>前言</strong>
-网上有很多用笔记本设置无线热点的批处理，我中和了一下。复制下面代码到记事本，改后缀为bat就行了。其中，mssid和mkey可自定义</p>
-<a id="more"></a>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">@echo off</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">set mssid=GOODGOOD</span><br><span class="line">::网络名字</span><br><span class="line">set mkey=123456789</span><br><span class="line">::大于八位密码</span><br><span class="line"></span><br><span class="line">echo ***********************************************</span><br><span class="line">echo              打开承载网络  1</span><br><span class="line">echo              关闭承载网络  2</span><br><span class="line">echo              承载网络信息  3</span><br><span class="line">echo              设置网络信息  set</span><br><span class="line">echo              退出          e</span><br><span class="line">echo        （网络名字、密码可在源文件中改）</span><br><span class="line">echo           （请以管理员身份打开!!!）</span><br><span class="line">echo ***********************************************</span><br><span class="line">:start</span><br><span class="line">set /p var=请选择:</span><br><span class="line">if %var%==1 netsh wlan start hostednetwork &amp;&amp; echo 网络名字:%mssid% 密码:%mkey% &amp;&amp; GOTO start</span><br><span class="line">if %var%==2 netsh wlan stop hostednetwork &amp;&amp; GOTO start</span><br><span class="line">if %var%==3 netsh wlan show hostednetwork &amp;&amp; echo 网络名字:%mssid% 密码:%mkey% &amp;&amp; GOTO start</span><br><span class="line">if %var%==set netsh wlan set hostednetwork mode=allow ssid=%mssid% key=%mkey% &amp;&amp; echo 网络名字:%mssid% 密码:%mkey% &amp;&amp; GOTO start</span><br><span class="line">if %var%==e pause</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>常用脚本</category>
-      </categories>
-      <tags>
-        <tag>工具</tag>
-        <tag>Windows脚本</tag>
-        <tag>共享wifi</tag>
-        <tag>cmd</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>srt中英文合并python脚本</title>
-    <url>/public/2016/04/14/shells/youtube_src_combine/</url>
-    <content><![CDATA[<p><strong>前言</strong></p>
-<p>从Youtube上看只有中文或英文分开的字幕，下载好视频，想要中英文字幕。可从 <a href="http://mo.dbxdb.com/Yang/setting.html" target="_blank" rel="noopener">Getting Youtube subtitles</a> 获取中或英文字幕，然后将其合并，即成中英文双字幕。下面是python脚本。</p>
-<a id="more"></a>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">本脚本完成了中英文srt合并的功能</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">srt2lis</span><span class="params">(name)</span>:</span></span><br><span class="line">    lines = open(<span class="string">'srt/'</span>+name, <span class="string">'r'</span>, encoding=<span class="string">'utf-8'</span>).readlines()</span><br><span class="line">    lis = []</span><br><span class="line">    tmp = []</span><br><span class="line">    <span class="keyword">for</span> i, line <span class="keyword">in</span> enumerate(lines):</span><br><span class="line">        <span class="comment"># 以\n 结尾的一个时间点</span></span><br><span class="line">        <span class="keyword">if</span> line == <span class="string">'\n'</span>:</span><br><span class="line">            lis.append(tmp)</span><br><span class="line">            tmp = []</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            tmp.append(line)</span><br><span class="line">    <span class="keyword">return</span> lis</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">hebing</span><span class="params">(name_zh)</span>:</span></span><br><span class="line">    name_en = name_zh[:<span class="number">-7</span>] + <span class="string">'.srt'</span></span><br><span class="line">    out_name=<span class="string">'out/'</span>+name_en</span><br><span class="line">    f=open(out_name,<span class="string">'w'</span>,encoding=<span class="string">'utf-8'</span>)</span><br><span class="line">    lis_en=srt2lis(name_en)</span><br><span class="line">    lis_zh=srt2lis(name_zh)</span><br><span class="line">    <span class="keyword">for</span> i,item <span class="keyword">in</span> enumerate(lis_en):</span><br><span class="line">        print(item[<span class="number">0</span>])</span><br><span class="line">        f.write(item[<span class="number">0</span>])</span><br><span class="line">        f.write(item[<span class="number">1</span>])</span><br><span class="line">        <span class="keyword">for</span> line <span class="keyword">in</span> lis_zh[i][<span class="number">2</span>:]:</span><br><span class="line">            f.write(line)</span><br><span class="line">        <span class="keyword">for</span> line <span class="keyword">in</span> item[<span class="number">2</span>:]:</span><br><span class="line">            f.write(line)</span><br><span class="line">        f.write(<span class="string">'\n'</span>)</span><br><span class="line">    f.close()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">flis=os.listdir(<span class="string">'srt/'</span>)</span><br><span class="line"><span class="keyword">if</span> <span class="keyword">not</span> os.path.exists(<span class="string">'out'</span>):</span><br><span class="line">    os.mkdir(<span class="string">'out'</span>)</span><br><span class="line"><span class="keyword">for</span> name <span class="keyword">in</span> flis:</span><br><span class="line">    print(name)</span><br><span class="line">    <span class="keyword">if</span> name[<span class="number">-6</span>:<span class="number">-4</span>]==<span class="string">'zh'</span>:</span><br><span class="line">        hebing(name)</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>常用脚本</category>
-      </categories>
-      <tags>
-        <tag>工具</tag>
-        <tag>python</tag>
-        <tag>YouTube字幕合并</tag>
-        <tag>src</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>这哈儿是重庆</title>
-    <url>/public/2019/04/25/trips/chongqing/</url>
-    <content><![CDATA[<p>重庆，旅游纪实。20190422 - 20190424</p>
-<a id="more"></a>
-<h2 id="四月二十二"><a class="header-anchor" href="#四月二十二">¶</a>四月二十二</h2>
-<img src="/public/2019/04/25/trips/chongqing/tiankongzhicheng.jpg" alt="tiankongzhicheng" width="50%">
-<div align="center"> <b>天空之城旅店的临江阳台</b></div>
-<p>今天刚来到重庆。前天查天气说是多云，但是来这之后，天气极好。早上9点从成都出发，12点左右到达重庆北站，然后做地铁10号线倒到6号线的小什坊。在解放广场附近，中午吃了个碗杂面很不错，对于我来说有点辣，说是重庆排行第五的小面。</p>
-<p>下午就准备午休一哈，今早上很早起来要赶到成都的市中心乘火车。在江边，也是在洪崖洞旁边，找了一家叫做天空之城的青年旅舍。晚上走在千厮大桥上，脚感受着下面的地铁穿过抖动。从青年旅馆房间里面刚好可以看到江边的夜景，管理人是个可爱的老人家。里面的床单是没有铺上的，得自己铺，老人家解释免得被认为不好，你也可以自己带睡袋。老人家在铁路上工作，与他聊了很久，谈到他在铁路站工作的经历，当然还有很多打理旅舍时的故事。</p>
-<h2 id="四月二十三"><a class="header-anchor" href="#四月二十三">¶</a>四月二十三</h2>
-<img src="/public/2019/04/25/trips/chongqing/guojiang1.jpeg" alt="guojiang1" width="50%">
-<div align="center"> <b>排队2小时，乘过江索道</b></div>
-<img src="/public/2019/04/25/trips/chongqing/goujiang2.jpeg" alt="goujiang2" width="50%">
-<div align="center"> <b>过江索道，晃晃悠悠在路上</b></div>
-<p>早上起来，去楼下买了个早餐，有八宝粥和一个米团（块），那个团米上面加了两个半枣。吃完早饭，阳光正照进那个青年公寓。四月底，节气谷雨过后，算还不是很热，在那个临江的阳台晒了会儿阳光。然后很困，大概是吃饱的缘故，我又回去睡了一个回笼觉。下午出发去白公馆，搭的是轻轨2号线，到大坪换到去烈士墓的地铁上，轻轨是一路沿江跑的，欣赏着嘉陵江的美景，羡慕着重庆人的立体公交系统。嘉陵江水比较清澈，也见到有人在游泳。过会儿就经过网红景点李子坝，轻轨穿房而过。白公馆旁边是四川外国语大学，没有去逛，直接去了白公馆，香山别墅，然后去了渣滓洞，白公馆的地势比较陡，台阶比较多，旁边是歌乐山。</p>
-<img src="/public/2019/04/25/trips/chongqing/eling.jpg" alt="eling" width="50%">
-<div align="center"> <b>鹅岭公园有个塔，从塔上望去</b></div>
-<p>接着到了鹅岭公园，可直接做地铁鹅岭站，进门处分左右路线，我选了左转，然后绕了一大圈到了那个塔，其实可以右转沿着汽车的道往上到那个塔。到了塔顶，可以看到面向朝天门方向，左边是嘉陵江，右边是长江，然后各种大桥，轻轨地铁尽收眼底。吹着微风，站在那个塔上，可见重庆各种摩天大楼，然后就是更远处的山。离开鹅岭公园后，继续搭地铁去了上新街站，下车后往南岸区走，南岸发展比较慢，可以看到明显和渝中区的不同，路边找了一家店，选了几个小菜，吃了个晚饭。晚饭后，去了南山一棵树，人很多，夜景倒是很漂亮，有水有山，两水相交，滋润了这个大都市，今天的行程不错。</p>
-<img src="/public/2019/04/25/trips/chongqing/yejing.jpg" alt="yejing" width="50%">
-<div align="center"> <b>南山一棵松</b></div>
-<h2 id="四月二十四"><a class="header-anchor" href="#四月二十四">¶</a>四月二十四</h2>
-<img src="/public/2019/04/25/trips/chongqing/caotianmen.jpg" alt="caotianmen" width="50%">
-<div align="center"> <b>朝天门码头，水清黄分明</b></div>
-<p>今天也是懒懒起床，吃了个早饭，豆浆是放在那种果冻的包装袋里。今天差不多，就准备看看朝天门，然后回成都。去朝天门还是比较奇怪，随着百度地图导航走，到了一个商城里面，从地面进去是商城的8楼，下了电梯，走了一个商品批发的地方，然后向朝天门赶，今天太阳超级满足，比较热。岸边停了好多游船。到了朝天门，水分了两个颜色，黄的长江，清的嘉陵江。休息一刻，搭了公交车，沿着长江岸跑，居然到了李子坝，然后地铁转到重庆北火车站，这一趟重庆算是画上了一个句号。</p>
-<p>【转载请联系 博主。】</p>
-]]></content>
-      <categories>
-        <category>旅游</category>
-      </categories>
-      <tags>
-        <tag>重庆</tag>
-        <tag>游记</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>个人主页搭建</title>
     <url>/public/2016/12/22/build_blog/</url>
     <content><![CDATA[<p><strong>前言</strong>
@@ -1557,6 +1321,214 @@ NexT Github  <a href="https://github.com/iissnan/hexo-theme-next" target="_blank
         <tag>工具</tag>
         <tag>Hexo</tag>
         <tag>NexT</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>爱立信的百年沉浮</title>
+    <url>/public/2022/04/01/history_ericsson/</url>
+    <content><![CDATA[<blockquote>
+<p>文章来源：<br>
+鲜枣课堂（ID：xzclasscom）<br>
+<a href="https://mp.weixin.qq.com/s?__biz=MjM5NTY1MjY0MQ==&amp;mid=2650814278&amp;idx=1&amp;sn=26083fed8d8dd76340e063fd42a59dea" target="_blank" rel="noopener">原文</a></p>
+</blockquote>
+<p>19 世纪中叶，电报业务在欧洲大陆逐渐开始普及。</p>
+<p>1853 年，北欧小国瑞典动用 “海盗基金”（不是海盗的钱，是政府用来打海盗的钱），架设了自己的第一条电报线路，从首都斯德哥尔摩到乌普萨拉。</p>
+<p>为了确保负责这条线路的正常运营，瑞典政府还成立了自己的第一家电报公司，名字叫 Televerket。</p>
+<p>当时，Televerket 公司急需大量的电报硬件设备。于是，乌普萨拉电报局的局长，<strong>安东 · 亨里克 · 奥勒</strong>（Anton Henric Öller），决定创办一家公司，为 Televerket 生产、修理和改进电报机。</p>
+<p>不久后，这家电气设备维修公司正式成立，名字叫奥勒公司（Öller &amp; Co）。</p>
+<p><img src="/public/2022/04/01/history_ericsson/640.png" alt></p>
+<center><div>安东 · 亨里克 · 奥勒，瑞典电信业的先驱</div></center>
+<p>奥勒公司名义上是一家公司，但实际上就是一个手工作坊，规模很小，只能靠 Televerket 公司的资助才能维持生存。</p>
+<p>在奥勒公司的员工中，有一个勤奋的小伙子，当时专门负责维修电报设备以及其它机械设备。他的名字，叫做<strong>拉什 · 玛格纳斯 · 爱立信</strong>（Lars Magnus Ericsson）。</p>
+<p><img src="/public/2022/04/01/history_ericsson/640-16487839499382.png" alt></p>
+<center><div> 拉什 · 玛格纳斯 · 爱立信</div></center>
+<a id="more"></a>
+<p>拉什 · 爱立信 1846 年 5 月 5 日出生于瑞典中部瓦姆兰省的一个小农场里。他的家庭条件贫困，自己在 9 个兄弟姐妹中排行第六。</p>
+<p>11 岁时，由于父亲病逝，他不得不外出工作，养家糊口。这期间，他当过矿工，修过铁路，还在铁匠铺做了很长时间的学徒。</p>
+<p>1867 年，拉什 · 爱立信终于攒够了路费，来到他梦寐以求的瑞典首都——斯德哥尔摩。经过一周的试用后，他成功加入了奥勒公司，成为一名修理工。</p>
+<p>尽管这份工作的工资微薄，拉什 · 爱立信仍然感到十分满足。他后来回忆说：“（这份工作）足以满足我的需求，让我庆幸地看到生活比以往任何时候都更加光明，我心中第一次感受到了生活的快乐。”</p>
+<p>工作之余，拉什 · 爱立信努力学习数学、材料技术、工程制图，以及德语和英语。在公司老板奥勒先生的推荐下，1873 年和 1875 年，拉什 · 爱立信先后两次获得瑞典政府的官方资助，前往德国和瑞士进行游学和实习。</p>
+<p>这期间，拉什 · 爱立信来到了德国柏林的西门子公司（Siemens &amp; Halske），学到了很多电报工程技术知识，也接触到一些先进的机床设备。</p>
+<p><img src="/public/2022/04/01/history_ericsson/640-16487839554904.jpeg" alt></p>
+<center><div> 拉什 · 爱立信在西门子公司时绘制的图纸，相当精妙</div></center>
+<p>游学结束之后，拉什 · 爱立信返回瑞典。此时的他，已经具备了非常丰富的专业知识，有能力开创属于自己的事业。</p>
+<p>1876 年 4 月，拉什 · 爱立信拒绝了奥勒公司升职加薪的提议，在斯德哥尔摩皇后街 15 号一个普通建筑的小厨房里，创建了 <strong>L.M.Ericsson</strong> 公司。</p>
+<p><img src="/public/2022/04/01/history_ericsson/640-16487839586856.png" alt></p>
+<center><div> 爱立信公司最初的商标</div></center>
+<center><div>MEK.WERKSTAD 的意思是 “机械作坊”</div></center>
+<center><div> STOCKHOLM 就是瑞典首都 “斯德哥尔摩”</div></center>
+<p>当时的 L.M.Ericsson 公司，其实就是一个作坊修理铺。启动资金 1000 克朗，是借来的。小厨房不到 13 平方米，是租来的。仅有的一套工作设备，是一架脚踏式机床。</p>
+<p>公司的全部员工，除了拉什 · 爱立信本人之外，只有一名临时雇佣的 12 岁男孩。</p>
+<p>不久后，拉什 · 爱立信在奥勒公司的前同事卡尔 · 乔汗 · 安德森（Carl Johan Andersson）加入了他的新公司，成为合伙人。</p>
+<p>公司创立之后，主要业务是维修各种机械设备、电报机以及电器仪表。他们接到的第一单生意，是维修用于火警的一只机械指示器，收费 2 克朗。</p>
+<p>没过多久，拉什 · 爱立信凭借自己的才华和经验，制造出了一些不错的产品，例如用于铁路系统的拨号电报仪器，以及小型社区的防火电报系统。</p>
+<p>这些产品，逐渐赢得了铁路、消防等部门用户的认可，带来了源源不断的订单。</p>
+<h2 id="█-涉足电话业务，规模迅速扩张"><a class="header-anchor" href="#█-涉足电话业务，规模迅速扩张">¶</a>█  涉足电话业务，规模迅速扩张</h2>
+<p>爱立信公司成立的同一年（1876 年），美国的亚历山大 · 贝尔申请并获得了电话的发明专利，从而将人类带入了电话时代。</p>
+<p>1877 年，电话被引入瑞典。拉什 · 爱立信第一时间去买了一对，并进行了拆解研究。</p>
+<p>后来，很多用户将损坏的电话机送到拉什 · 爱立信这里维修，使得他对电话机内部结构有了更深入的了解。</p>
+<p>凭借敏锐的商业嗅觉，拉什 · 爱立信意识到电话背后的巨大商机。于是，他决定研制自己的电话机型号。</p>
+<p>1878 年底，拉什 · 爱立信在妻子<strong>希尔达 · 爱立信</strong>（Hilda Ericsson）的帮助下，成功研制出第一台电话机产品。这款产品性能出色，价格远低于对手，受到了用户的欢迎。</p>
+<p><img src="/public/2022/04/01/history_ericsson/640-16487981603198.jpeg" alt></p>
+<center><div>拉什 · 爱立信的妻子（左），对他帮助极大</div></center>
+<p>后来，拉什 · 爱立信又推出了自己的墙式电话机，再次获得畅销。</p>
+<p><img src="/public/2022/04/01/history_ericsson/640-164879816421310.png" alt></p>
+<center><div>爱立信的墙式电话机</div></center>
+<p>1880 年，拉什 · 爱立信和他的公司迎来了一次重大的机遇。</p>
+<p>当时，美国贝尔公司在斯德哥尔摩、哥德堡、马尔默、松兹瓦尔和索德港建造了一个电话网络。如果任由贝尔公司发展下去，他们将垄断整个瑞典的电话市场。</p>
+<p>于是，拉什 · 爱立信决定与贝尔公司进行正面竞争。不久后，L.M.Ericsson 公司成功击败对手，先后中标了耶夫勒市和挪威卑尔根市的本地电话系统合同。</p>
+<p>拉什 · 爱立信的胜利，极大地增强了瑞典人民的信心。事实证明，瑞典的工艺和技术，完全可以与世界最领先的公司相媲美。</p>
+<p>1883 年，拉什 · 爱立信遇到了自己创业早期最重要的合作伙伴兼客户，<strong>亨里克 · 托勒 · 塞德格伦</strong>（Henrik Thore Cedergren）。</p>
+<p><img src="/public/2022/04/01/history_ericsson/640-164879816726712.jpeg" alt></p>
+<center><div>亨里克 · 托勒 · 塞德格伦</div></center>
+<p>亨里克 · 塞德格伦原本是一个珠宝商人。作为瑞典最早的电话机用户之一，他非常看好电话的发展潜力。但是，他认为贝尔公司的收费太过昂贵，阻碍了电话业务的普及。</p>
+<p>于是，1883 年 2 月，他成立了一家名为 Stockholms Allmänna Telefonaktiebolag（斯德哥尔摩公共电话公司，以下简称 SAT 公司）的独立瑞典电话公司，旨在为公众提供廉价的电话连接服务。</p>
+<p>起初，拉什 · 爱立信并不看好亨里克 · 塞德格伦和他的公司，因为他们完全没有电话网络方面的经验。后来，亨里克 · 塞德格伦凭借自己的热情，打动了拉什 · 爱立信，说服他支持自己的事业。</p>
+<p>1883 年，L.M.Ericsson 公司和 SAT 公司就电话供应签订了一项供货合同，全面负责 SAT 的电话及相关设备。那一年，L.M.Ericsson 公司完成了 SAT 订购的 1000 部电话机和 22 套电话交换设备的交付。</p>
+<p>此后，L.M.Ericsson 公司进入了发展的快车道。</p>
+<p>1884 年，公司建造完成了自己的第一家大规模工厂。1885 年，生产了第一部手持送受话筒。1887 年，签订了当时的最大的合同，为 SAT 在斯德哥尔摩开办的电话局提供设备。这个电话局，是当时欧洲最大的电话局。</p>
+<p><img src="/public/2022/04/01/history_ericsson/640-164879816988314.png" alt></p>
+<center><div>当时的 SAT 公司电话塔</div></center>
+<p>1890 年，L.M.Ericsson 公司的员工人数上升到 153 人。1896 年，L.M.Ericsson 公司改制为有限责任公司，股份资本为 100 万克朗。这一年的 6 月 1 日，爱立信公司累计生产电话超过十万部。</p>
+<p>此后的爱立信，开始全面开拓海外市场。</p>
+<p>1897 年，爱立信在俄罗斯圣彼得堡开办工厂，组装电话机。1902 年，爱立信在纽约开设办事处。1903 年，爱立信与英国国家电话公司联合组建英国爱立信制造有限公司。</p>
+<p>后来，爱立信陆续进入了挪威、丹麦、芬兰、澳大利亚、新西兰、南非、墨西哥、法国、匈牙利、奥地利等国家，成为一家全球性的电信设备公司。</p>
+<p>1900 年，正当爱立信公司高速发展的时候，创始人拉什 · 爱立信决定辞去总经理职务。次年，他又辞任董事长，并逐步出售他持有的爱立信公司的股票（1905 年全部卖完）。</p>
+<p><img src="/public/2022/04/01/history_ericsson/640-164879817266816.png" alt></p>
+<center><div>拉什 · 爱立信</div></center>
+<p>1926 年 12 月 17 日，拉什 · 爱立信逝世，安葬在距离斯德哥尔摩不远的博基尔卡。按照他的遗嘱，墓地没有立石碑。</p>
+<p>1946 年，拉什 · 爱立信百年诞辰之际，他的家乡为他立了一座石碑，上面刻着——<strong>“瑞典电话工业见证了他的成就”</strong>。</p>
+<h2 id="█-遭遇股权危机，险些沦落敌手"><a class="header-anchor" href="#█-遭遇股权危机，险些沦落敌手">¶</a>█  遭遇股权危机，险些沦落敌手</h2>
+<p>1914 年，第一次世界大战爆发，爱立信的海外市场受到重创。</p>
+<p><img src="/public/2022/04/01/history_ericsson/640-164879817662718.png" alt></p>
+<center><div>瑞典地处波罗的海，战争导致出海口被封，爱立信的设备根本运不出去。</div></center>
+<p>1917 年，俄国十月革命爆发，新成立的布尔什维克政府将爱立信在俄国的工厂和业务全部国有化，夺取了价值约 2000 万瑞典克朗的资产，使得爱立信公司雪上加霜。</p>
+<p><img src="/public/2022/04/01/history_ericsson/640-164879818274520.jpeg" alt></p>
+<center><div>被夺走的工厂，后来被改名为 “红色黎明”</div></center>
+<p>1918 年，为了度过经营危机，L.M.Ericsson 与 SAT 公司正式合并，成为 <strong>Allmänna Telefonaktiebolaget LM Ericsson</strong> 公司。</p>
+<p>合并之后的新公司，得到了瑞典政府支付的约 5000 万克朗电话网络运营费用，大大缓解了经营压力。</p>
+<p>不久后，新公司迎来了一个更大的危机，关于<strong>控制权</strong>的危机。</p>
+<p>当时的情况是这样的：1909 年，SAT 公司创始人亨里克 · 塞德格伦去世时，将公司所有权转移给了一个基金会和他的家人。后来，SAT 公司与 L.M.Ericsson 公司合并，基金会和亨里克 · 塞德格伦的家人继而拥有了新公司的大部分控制权。</p>
+<p>再后来，一战期间的巨额经营亏损，使得他们面临巨大的经济压力，于是，他们将爱立信公司的股权卖给了<strong>卡尔 · 弗雷德里克 · 温克兰茨</strong>（Karl Henrik Wincrantz）。</p>
+<p>温克兰茨是谁？温克兰茨原本是 SAT 公司旗下斯德哥尔摩电信的总裁，1925 年，他被任命为爱立信公司的总裁。</p>
+<p>为了巩固自己的权力，温克兰茨一直在努力增加自己的持股比例。</p>
+<p>1928 年，在温克兰茨的推动下，爱立信公司开始发行 “A” 和“B”股。其中，“B”股只有 “A” 股千分之一的投票权。</p>
+<p>温克兰茨希望通过持有少数 “A” 股来控制公司。同时，他主导发行了大量的 “B” 股，筹措公司发展所需的资金。这一时期，公司更名为 Telefon AB LM Ericsson。</p>
+<p>温克兰茨增持股票肯定需要资金，但自己并没有这么多资金。于是，他找到了国际金融家<strong>伊瓦尔 · 克鲁格</strong>（Ivar Kreuger）。</p>
+<p><img src="/public/2022/04/01/history_ericsson/640-164879818656822.jpeg" alt></p>
+<center><div>伊瓦尔 · 克鲁格</div></center>
+<p>伊瓦尔 · 克鲁格帮助温克兰茨控制了爱立信公司。后来，克鲁格与温克兰茨闹翻，干脆赶走了温克兰茨，委任了自己的亲信担任爱立信公司的总裁。</p>
+<p>克鲁格是一个做火柴生意起家的商人，非常精明，也非常不靠谱。为了从资本市场骗取资金，他长期谎报自己的资产规模和旗下企业的盈利能力。</p>
+<p>1931 年，经济大萧条愈演愈烈，克鲁格资金断链。为了偿还债务，他找到了 ITT 的主席，索申尼斯 · 奔尼（Sosthenes Behn），把自己的爱立信股票以 1100 万美元的价格出售给 ITT。</p>
+<p>ITT 是什么公司？美国国际电话电报公司，爱立信最大的竞争对手。这一举动，相当于把爱立信的控制权拱手交给了死对头。</p>
+<p>1932 年 3 月，克鲁格自杀身亡。此时，ITT 拥有爱立信三分之一的股份。</p>
+<p>事情被揭露之后，瑞典举国哗然。自己的民族企业，竟然被对手完全控制，这是无法接受的事情。</p>
+<p>不过好在瑞典法律规定，禁止外国利益在瑞典公司中行使多数表决权，导致 ITT 公司没有办法完全控制爱立信公司。</p>
+<p>后来，瑞典三大银行——斯堪的纳维亚银行、斯德哥尔摩恩斯基尔达银行和瑞典商业银行——迅速采取行动，拯救爱立信。他们与 ITT 进行谈判，逐渐增加了对爱立信公司的控股，夺回了控制权。</p>
+<p>当时，负责牵头拯救行动的是瓦伦堡家族的<strong>小马库斯 · 瓦伦堡</strong>（Marcus Wallenberg Jr），斯德哥尔摩恩斯基尔达银行就属于他的瓦伦堡家族。</p>
+<p><img src="/public/2022/04/01/history_ericsson/640-164879819009724.jpeg" alt></p>
+<center><div>小马库斯 · 瓦伦堡</div></center>
+<p>后来，经过数十年的漫长周旋，一直到 1960 年，小马库斯 · 瓦伦堡才完全收回了 ITT 所持有的爱立信公司股份。爱立信公司也由此彻底摆脱了伊瓦尔 · 克鲁格事件的阴影。</p>
+<h2 id="█-专注技术研发，成功反超对手"><a class="header-anchor" href="#█-专注技术研发，成功反超对手">¶</a>█  专注技术研发，成功反超对手</h2>
+<p>二战时期，爱立信的业务再度因为出海口问题遭受重创。它的很多国外资产都被战争摧毁，销售额也大幅下降。</p>
+<p>这期间，爱立信不得不临时转行，进行军工生产，为军队制造电话、飞机仪表、机枪和弹药等，维持生存。</p>
+<p>二战结束后，全球电话市场需求激增，爱立信公司的业务也逐渐开始复苏。</p>
+<p>1960 年，爱立信开始业务聚焦，砍掉了电信业务之外的无关业务，专注通信设备的研发。</p>
+<p>当时，爱立信启动了一种名为 AKE 的商用电子交换系统的研发。到了 60 年代末，爱立信意识到，AKE 系统已经跟不上时代，它的速度太慢而且价格过于昂贵。</p>
+<p>因为技术和产品的落后，爱立信在市场竞争中屡次输给自己的对手——ITT、GTE 和西门子等。</p>
+<p>1969 年底，爱立信在一个大额合同上再次输给了 ITT。这次失败，迫使爱立信管理层下定决心，与瑞典电报公司 Televerket 联手，共同开发有竞争力的新型产品。</p>
+<p>于是，1970 年 4 月，爱立信与 Televerket 正式签署协议，成立一家名为 <strong>Ellemtel Utvecklings AB</strong> 的联合研发公司。该公司的主要任务，就是开发一种先进的自动化数字电话交换系统，名为 <strong>AX 系统</strong>。</p>
+<p>1976 年，经过不懈努力，Ellemtel 公司成功研发出世界上首台全数字交换机——<strong>AXE 交换机</strong>。</p>
+<p><img src="/public/2022/04/01/history_ericsson/640-164879819313226.png" alt></p>
+<center><div>AXE 是爱立信历史上最重要和最成功的产品</div></center>
+<p>AXE 是一个划时代的产品。它采用模块化的软硬件设计方式，易于制造和测试，也易于维修。</p>
+<p><img src="/public/2022/04/01/history_ericsson/640-164879819539828.png" alt></p>
+<center><div>AXE 设备</div></center>
+<p>因为技术上非常领先，在推出的两年时间里，AXE 几乎赢得了所有主要的国际电信合同。领导 AXE 开发团队的年轻工程师 Björn Svedberg，1977 年直接被任命为公司总裁。</p>
+<p>AXE 成功商用后，Ellemtel 完成了自己的使命，逐步将研究成果移交给了爱立信和 Televerket。后来，Televerket 将自己的 Ellemtel 股份出售给爱立信，Ellemtel 也因此被完全整合到爱立信中。</p>
+<h2 id="█-移动通信浪潮，百年名企沉浮"><a class="header-anchor" href="#█-移动通信浪潮，百年名企沉浮">¶</a>█ 移动通信浪潮，百年名企沉浮</h2>
+<p>20 世纪 80 年代初，爱立信的数字交换技术继续在行业保持领先。</p>
+<p>这一时期，因为沉迷于自己的 AXE 系统，爱立信错过了移动通信技术崛起的第一波浪潮。等到对手纷纷有所成就后，爱立信公司才反应过来，赶紧调整自身的战略方向，转战蜂窝移动通信市场。</p>
+<p>1981 年 9 月，爱立信在沙特阿拉伯建设完成了世界第一个投入商业运营的 NMT 网络（比瑞典自己还早了 1 个月）。</p>
+<p><img src="/public/2022/04/01/history_ericsson/640-164879819790330.jpeg" alt></p>
+<center><div>项目签约现场</div></center>
+<p>1988 年，爱立信决定继续聚焦核心业务。这一年，它以 2.17 亿美元的价格，将自己的计算机和终端业务出售给了芬兰公司诺基亚。</p>
+<p>与此同时，爱立信最主要的竞争对手，美国 AT&amp;T 公司，因为垄断被美国政府强行拆分。爱立信从中受益，很快占据了全球 40% 的移动系统市场。</p>
+<p>后来，到了 2G 时代。欧洲基于 NMT 推出了 GSM，爱立信也及时地推出了自己的产品。</p>
+<p><img src="/public/2022/04/01/history_ericsson/640-164879820007232.png" alt></p>
+<center><div>爱立信的 2G GSM 原型机</div></center>
+<p>这期间，爱立信保持了连续 10 年<strong>年均 35% 以上</strong>的惊人增长，成为了世界上最大的电话及蜂窝移动通信设备商之一。</p>
+<p>1995 年，爱立信的收入达到 76.1 亿瑞典克朗。1996 年，爱立信全球研发工程师达到 18000 名。1997 年，爱立信在世界移动市场上的份额达到 40%，拥有大约 5400 万用户。</p>
+<p>1998 年，<strong>斯温 · 克里斯特 · 尼尔森</strong>（Sven-Christer Nilsson）当选为爱立信公司的 CEO。</p>
+<p><img src="/public/2022/04/01/history_ericsson/640-164879820245334.png" alt></p>
+<center><div>斯温 · 克里斯特 · 尼尔森</div></center>
+<p>在他的领导下，爱立信进行了重大的组织架构调整。</p>
+<p>他将公司业务分为三个板块，分别是网络运营商部门、消费品部门（包括手机业务）和企业解决方案部门。（是不是有点眼熟？）</p>
+<p>除了重组之外，尼尔森还宣布了 11000 人的裁员计划。</p>
+<p>1999 年，爱立信与高通公司解决了为期两年的 CDMA 技术专利官司。作为和解的一部分，爱立信收购了高通的无线基础设施业务。</p>
+<p>这一年，爱立信的手机业务在与诺基亚的竞争中落后，导致市场份额从 15.1% 下降到 10.5%。当时，爱立信 70% 的收入来自基础设施销售，而 21% 来自手机销售。</p>
+<p>1999 年 7 月，因为业务重组失败，尼尔森被迫辞职。</p>
+<p>进入 21 世纪，爱立信的霉运没有结束。2000 年，因为产品质量问题以及工厂发生的火灾意外，爱立信亏损 240 亿瑞典克朗。</p>
+<p>2001 年，爱立信宣布将其手机的生产外包给<strong>伟创力</strong>国际有限公司，自己则集中力量于手机的技术研发、设计以及市场推广。同时，爱立信大幅裁剪了消费品部门的员工人数。</p>
+<p>同年 10 月，爱立信与日本索尼公司分别出资 50%，组建了<strong>索尼爱立信移动通信公司</strong>，专门生产手机产品。对于这家公司，相信大家都比较熟悉。</p>
+<p><img src="/public/2022/04/01/history_ericsson/640-164879820498536.jpeg" alt></p>
+<p>2002 年，在全球金融危机的持续影响下，爱立信再次遭受巨额亏损。</p>
+<p>面对亏损，爱立信一方面推出了降低运营成本、提高效率的 “成本控制计划”；另一方面，调整市场战略，将公司的核心业务做了全面的优化与整合，出售了一些非核心业务。</p>
+<p>2002 年 6 月，爱立信以 4 亿美元的价格，将自己的微电子部门卖给了<strong>英飞凌</strong>科技股份公司（当时是西门子的子公司）。</p>
+<p>2003 年，随着全球通信产业回暖，加上之前的一系列战略调整显露成效，爱立信宣告结束亏损，恢复盈利。</p>
+<p>复苏后的爱立信，在全球 3G 市场上表现突出，拥有 40% 的 3G WCDMA 市场份额，是当之无愧的全球第一设备商。</p>
+<h2 id="█-遭遇中国对手，迎来严峻挑战"><a class="header-anchor" href="#█-遭遇中国对手，迎来严峻挑战">¶</a>█ 遭遇中国对手，迎来严峻挑战</h2>
+<p>爱立信与中国的历史渊源已超过百年。早在 1892 年，爱立信就接到了来自中国的订单（2000 个电话机），并为中国供货。1906 年，中国代表团还前往斯德哥尔摩，参观了爱立信总部。</p>
+<p><img src="/public/2022/04/01/history_ericsson/640-164879820869638.png" alt></p>
+<center><div>当时的会面场景</div></center>
+<p>一个多世纪以来，爱立信在中国电信发展史上贡献了多个 “第一”。</p>
+<p>中国第一部人工交换机（1900 年）和第一部自动交换机（1924 年），就是来自爱立信。1987 年中国第一套移动电话系统在广州开通，设备也是来自爱立信。</p>
+<p><img src="/public/2022/04/01/history_ericsson/640-164879821103340.jpeg" alt></p>
+<center><div>中国第一套移动电话系统</div></center>
+<p><img src="/public/2022/04/01/history_ericsson/640-164879821453442.png" alt></p>
+<center><div>改革开放后，国内也引进了 AXE（1985 年照片）</div></center>
+<p>爱立信一直非常重视中国市场，不仅成立了合资公司和独资公司，还在中国设立了爱立信学院和研究院。</p>
+<p>不过，拉什 · 爱立信当年卖电话到这个国家的时候，一定不会想到，一百多年后，这个国家会走出来两个名不见经传的小公司，把他开创的通信霸业给搅得鸡犬不宁。</p>
+<p>这两个小公司，当然就是华为和中兴。</p>
+<p><img src="/public/2022/04/01/history_ericsson/640-164879821693844.jpeg" alt></p>
+<p>在这两家公司的挑战和冲击下，爱立信公司在 21 世纪的市场份额不断下滑，CEO 频繁更换。那些年，伴随爱立信的坏消息总是一个接着一个，不是出售业务，就是裁员。</p>
+<p>2013 年，华为全年销售收入正式超过爱立信，爱立信被迫将全球第一的位置拱手相让。</p>
+<p>2016 年，爱立信计划关闭瑞典境内的所有工厂，结束在瑞典制造产品 140 年的历史。</p>
+<p>2017 年，爱立信净亏损 44.76 亿美元，全年裁员达到 1.7 万人。</p>
+<h2 id="█-外部环境变化，业绩迅速复苏"><a class="header-anchor" href="#█-外部环境变化，业绩迅速复苏">¶</a>█ 外部环境变化，业绩迅速复苏</h2>
+<p>2018 年之后，爱立信的形势有了明显的好转，原因包括多个方面。</p>
+<p>首先，就是 5G 市场增长带来的商业机会。</p>
+<p>爱立信非常重视 5G，投入了大量的资源进行研发。2014 年，爱立信就发布了全球首台 5G 移动终端原型。</p>
+<p><img src="/public/2022/04/01/history_ericsson/640-164879822068446.jpeg" alt></p>
+<p>2016 年，爱立信发布了一款号称 “全球首个 5G NR 无线设备” 的 5G 基站——AIR 6468。</p>
+<p><img src="/public/2022/04/01/history_ericsson/640-164879822338648.jpeg" alt></p>
+<p>2017 年 2 月，爱立信推出了自己的 5G 平台。2018 年 1 月，爱立信发布了首个 5G 小基站 “5G Radio Dot”，吸引了行业的广泛关注。</p>
+<p><img src="/public/2022/04/01/history_ericsson/640-164879822621150.png" alt></p>
+<center><div>5G NR DOT 点系统</div></center>
+<p>除了 5G 之外，另一个帮助爱立信业绩复苏的主要原因，是微妙变化的外部环境。</p>
+<p>正如大家所知道的，中美贸易摩擦，美国对中国通信设备商进行强力打压，多个国家宣布 “禁用” 华为和中兴。于是，欧美国家的设备商就有了难得的市场机会。</p>
+<p>综合种种因素，爱立信的业绩迅速转好，扭亏为盈，股价攀升。</p>
+<p>2020 年，爱立信全年净销售额达到 2324 亿瑞典克朗（约合 278 亿美元），同比上涨 2%；净利润 176 亿瑞典克郎（约合 21 亿美元），相比 2019 年，翻了近十倍。</p>
+<h2 id="█-结语"><a class="header-anchor" href="#█-结语">¶</a>█  结语</h2>
+<p>爱立信，是通信行业历史最悠久的企业之一（准确来说，是 145 年的历史）。</p>
+<p>在很长的一段时间里，它都是世界排名第一的通信设备制造商。爱立信的很多技术创新，改变了通信行业的发展走向。很多经典的通信产品和知名的通信项目，都是出于这家企业。</p>
+<p>在一百年的发展过程中，爱立信有过辉煌，也有过挫折，但是它仍然屹立不倒，在世界通信第一阵营中牢牢占据自己的位置。这充分说明，这家企业有着自己的技术积累和文化底蕴，有属于自己的 “韧性”。</p>
+<p>如今，5G 的竞争还在继续，百年老店爱立信的奋斗之路也在继续。面对变幻莫测的市场环境，爱立信究竟会走向何方呢？它还会续写另一段百年辉煌吗？</p>
+<p>（全文完）</p>
+<p><strong>参考文献：</strong></p>
+<p>1、<a href="https://www.ericsson.com/en/about-us/history/company" target="_blank" rel="noopener">https://www.ericsson.com/en/about-us/history/company</a></p>
+<p>2、<a href="https://en.wikipedia.org/wiki/Ericsson" target="_blank" rel="noopener">https://en.wikipedia.org/wiki/Ericsson</a></p>
+<p>3、《改变世界》，2009 年出版</p>
+<p>4、<a href="https://ethw.org/Lars_Magnus_Ericsson" target="_blank" rel="noopener">https://ethw.org/Lars_Magnus_Ericsson</a></p>
+<p>5、<a href="https://www.company-histories.com/Telefonaktiebolaget-LM-Ericsson-Company-History.html" target="_blank" rel="noopener">https://www.company-histories.com/Telefonaktiebolaget-LM-Ericsson-Company-History.html</a></p>
+<p><img src="/public/2022/04/01/history_ericsson/640-164879825241752.gif" alt></p>
+]]></content>
+      <categories>
+        <category>通信</category>
+      </categories>
+      <tags>
+        <tag>通信</tag>
+        <tag>历史</tag>
       </tags>
   </entry>
   <entry>
@@ -1876,6 +1848,242 @@ nbextensions的教程<a href="https://jupyter-contrib-nbextensions.readthedocs.i
       </tags>
   </entry>
   <entry>
+    <title>【转】《中华古籍资源库》中国国家图书馆</title>
+    <url>/public/2021/12/16/readings/zhonghuaguji/</url>
+    <content><![CDATA[<p><strong>简介</strong></p>
+<p>“中华古籍资源库”是“中华古籍保护计划”的重要成果。2016年9月28日，“中华古籍资源库”正式开通运行，陆续发布国家图书馆藏善本和普通古籍、法国国家图书馆藏敦煌遗书、天津图书馆藏普通古籍、日本永青文库捐赠汉籍、云南省图书馆善本古籍、芷兰斋藏稿抄校本等古籍影像资源，总量超过3.3万部。</p>
+<p>《中华古籍资源库》！！！<br>
+网址：<a href="http://www.nlc.cn/pcab/zy/zhgj_zyk/" target="_blank" rel="noopener">http://www.nlc.cn/pcab/zy/zhgj_zyk/</a><br>
+查询：<a href="http://read.nlc.cn/thematDataSearch/toGujiIndex" target="_blank" rel="noopener">http://read.nlc.cn/thematDataSearch/toGujiIndex</a></p>
+<img src="/public/2021/12/16/readings/zhonghuaguji/image-20211216225907506.png" alt="image-20211216225907506" style="zoom:30%;">
+<a id="more"></a>
+<p>比如：《九章算数》的古籍</p>
+<img src="/public/2021/12/16/readings/zhonghuaguji/image-20211216231340351.png" alt="image-20211216231340351" style="zoom:30%;">
+<img src="/public/2021/12/16/readings/zhonghuaguji/image-20211216231141739.png" alt="image-20211216231141739" style="zoom:30%;">
+<p>比如：卷第九的勾股</p>
+<img src="/public/2021/12/16/readings/zhonghuaguji/image-20211216232009068.png" alt="image-20211216232009068" style="zoom:50%;">
+<ul>
+<li>
+<p>数字古籍
+国家图书馆收藏古籍15万部，其中善本古籍直接继承了南宋缉熙殿、元翰林国史院、明文渊阁、清内阁大库等皇家珍藏，以及明清以来许多私人藏书家的毕生所聚。宋元旧椠、明清精刻琳琅满目。通过全彩影像数字化和缩微胶卷转化影像方式建设，从2016年9月28日起陆续在线发布，目前已发布馆藏古籍2万余部，国家图书馆超过三分之二的善本古籍实现了在线阅览。</p>
+</li>
+<li>
+<p>数字方志
+地方志文献为我国所特有，也是国家图书馆独具特色的馆藏之一，所存文献数量与品质极高。该数据库以国家图书馆藏地方志文献建设，主要包括为清代（含清代）以前的方志资源6529种。</p>
+</li>
+<li>
+<p>赵城金藏
+《赵城金藏》被誉为国家图书馆四大镇馆之宝之一。《赵城金藏》是在金代刻的一部大藏，因为它藏在赵城县（今属山西洪洞县）广胜寺，所以后人将它定名为《赵城金藏》。全藏约七千卷左右，六千多万字，现存四千余卷。2017年12月28日，国家图书馆《赵城金藏》1281件正式发布。</p>
+</li>
+<li>
+<p>宋人文集
+国家图书馆精选所藏宋人文集善本二百七十五部，首选宋元刊本，次及明清精抄精刻，或经名家校勘题跋之本，通过缩微胶卷还原数字影像，并辅以详细书目建成本全文影像数据库，目前已发布275部，免费呈献公众利用。</p>
+</li>
+<li>
+<p>碑帖菁华
+以国家图书馆藏有的历代甲骨、青铜器、石刻等类拓片二十三万余件为基础建设的数据库，内容涉及历史、地理、政治、经济、军事、民族、民俗、文学、艺术、科技、建筑等方面。2019年11月12日又新增发布2595种馆藏明清碑刻拓片数字资源，现有元数据2.5万余条，影像3.1万余幅。</p>
+</li>
+<li>
+<p>甲骨世界
+被誉为二十世纪四大文献发现之一的甲骨文，集文献性、文物性、收藏性于一身，是研究我国商朝晚期不可多得的珍贵史料，该库包括甲骨实物元数据2964条，影像5932幅；甲骨拓片元数据2975条，影像3177幅。</p>
+</li>
+<li>
+<p>西夏文献
+以国家图书馆保存的西夏、元代孤本及各种西夏的珍贵实物资料为基础建设的数据库。包括西夏文献书目数据124条，原件影像近5000拍。</p>
+</li>
+<li>
+<p>西夏论著
+包括西夏研究论文篇名数据1200余条。</p>
+</li>
+<li>
+<p>年画撷英
+国家图书馆收藏了杨柳青、朱仙镇等地制作的4000余幅年画作品，从中精选出一部分制作了该库，并为每种年画编写了内容说明，重点介绍了该年画的故事梗概、历史背景、制作特色和相关知识。目前发布元数据及影像302组。</p>
+</li>
+<li>
+<p>前尘旧影
+该资源库收录了国家图书馆收藏的新旧照片3074组，真实生动地记录了过去的社会事件、历史人物、城乡面貌、名胜古迹和建筑服饰等，人们可从中解读出不同历史时期特定事物的形象特征和真实信息，具有十分重要的历史价值。</p>
+</li>
+<li>
+<p>敦煌遗珍
+国际敦煌项目（IDP）建设的数据库，发布来自敦煌和丝绸之路上的写本、绘画、纺织品及器物的信息和图片，其中包括国家图书馆藏敦煌写卷影像18万余拍。</p>
+</li>
+<li>
+<p>徽州善本家谱
+徽州善本家谱印刷资料数据库是中国国家图书馆与法国远东学院的合作项目，收录了中国国家图书馆藏善本古籍中徽州家谱243种286部，配有书影5437幅。</p>
+</li>
+<li>
+<p>中华医药典籍资源库（测试版）
+图书馆收藏的文献典籍是整理研究的基础资料，为使读者能够通过互联网检索、利用中医文献资源，国家图书馆（国家古籍保护中心）将逐步建设中华医药典藏资源库，目前首批对221种中医古籍影像进行发布测试。</p>
+</li>
+<li>
+<p>云南图书馆古籍
+云南省图书馆将该馆古籍数字资源共139种727册提供给国家图书馆（国家古籍保护中心），这批资源均是云南省图书馆所藏珍贵的、有代表性的古籍文献，特别是明代云南丽江木氏土司家族著述，更是明代少数民族汉文著述的代表。该批资源于2019年11月12日正式在线发布。</p>
+</li>
+<li>
+<p>天津图书馆古籍
+为进一步丰富古籍数字资源品种和版本，满足广大读者使用需求，2014年底，天津图书馆向国家图书馆（国家古籍保护中心）提供总量约5,800余种300万拍明清古籍数字资源，该批资源经加工后，于2018年9月28日、2019年1月28日分两批发布。</p>
+</li>
+<li>
+<p>上海图书馆家谱
+上海图书馆现藏有家谱近3万余种30余万册共计365个姓氏，收藏的家谱覆盖全国27个省、自治区及直辖市，是国内外收藏中国家谱原件最多的公藏机构，有着“全球中国家谱第一藏”之美誉。国家图书馆与上海图书馆合作，征集该馆所藏明清家谱资源2200余种，在国图网站发布使用。</p>
+</li>
+<li>
+<p>中华古籍善本联合书目
+中华古籍善本国际联合书目系统是由中文善本书国际联合目录项目发展而来的新数据库，著录了三十余家海内外图书馆所藏古籍善本，数据达2万多条，并配有1.4万余幅书影。</p>
+</li>
+<li>
+<p>东文研汉籍影像库
+东京大学东洋文化研究所收藏有大量中国古籍，其中包括东方文化学院东京研究所的旧藏以及大木幹一、长泽规矩也、仓石武四郎等各具特色的个人收藏。2009年11月，东洋文化研究所将所藏中文古籍4000余种，以数字化方式无偿提供给中国国家图书馆，在国图网站上面向读者提供服务。</p>
+</li>
+<li>
+<p>哈佛大学善本特藏
+哈佛大学哈佛燕京图书馆藏中文善本古籍特藏，以其质量之高、数量之大著称于世。为了方便海内外学人便捷地利用这些资料进行研究，同时以数字化形式保存这些中华古籍精品，2009年国家图书馆与哈佛大学哈佛燕京图书达成协议，对哈佛燕京图书馆所藏中文善本和齐如山专藏进行数字化。目前在线发布经部和史部善本数字资源741部，另有齐如山戏曲小说专藏204种。</p>
+</li>
+<li>
+<p>法藏敦煌遗书
+2015年，在法国国家图书馆与中国国家图书馆达成合作意向，由法国国家图书馆向中国国家图书馆赠送馆藏全部敦煌遗书高清数字资源。在双方共同努力下，实现了这批敦煌遗书的数字化回归，并于2018年3月5日正式在线发布，共计5300余号3.1万余拍。</p>
+</li>
+<li>
+<p>中华寻根网
+中华寻根网是国家图书馆与澳门基金会开展的文化合作项目，是以提供姓氏源流和家谱资源服务为核心、方便海内外华人寻根问祖活动的网络平台。“中华寻根网”目前提供500多个姓氏源流、2000多部家谱和6000种其他文献的阅览，以及自建家谱，交流联谊的互动服务。</p>
+</li>
+</ul>
+]]></content>
+      <categories>
+        <category>书籍</category>
+      </categories>
+      <tags>
+        <tag>资源</tag>
+        <tag>古籍</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Windows笔记本开共享wifi</title>
+    <url>/public/2015/04/14/shells/share_win_wifi/</url>
+    <content><![CDATA[<p><strong>前言</strong>
+网上有很多用笔记本设置无线热点的批处理，我中和了一下。复制下面代码到记事本，改后缀为bat就行了。其中，mssid和mkey可自定义</p>
+<a id="more"></a>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">@echo off</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">set mssid=GOODGOOD</span><br><span class="line">::网络名字</span><br><span class="line">set mkey=123456789</span><br><span class="line">::大于八位密码</span><br><span class="line"></span><br><span class="line">echo ***********************************************</span><br><span class="line">echo              打开承载网络  1</span><br><span class="line">echo              关闭承载网络  2</span><br><span class="line">echo              承载网络信息  3</span><br><span class="line">echo              设置网络信息  set</span><br><span class="line">echo              退出          e</span><br><span class="line">echo        （网络名字、密码可在源文件中改）</span><br><span class="line">echo           （请以管理员身份打开!!!）</span><br><span class="line">echo ***********************************************</span><br><span class="line">:start</span><br><span class="line">set /p var=请选择:</span><br><span class="line">if %var%==1 netsh wlan start hostednetwork &amp;&amp; echo 网络名字:%mssid% 密码:%mkey% &amp;&amp; GOTO start</span><br><span class="line">if %var%==2 netsh wlan stop hostednetwork &amp;&amp; GOTO start</span><br><span class="line">if %var%==3 netsh wlan show hostednetwork &amp;&amp; echo 网络名字:%mssid% 密码:%mkey% &amp;&amp; GOTO start</span><br><span class="line">if %var%==set netsh wlan set hostednetwork mode=allow ssid=%mssid% key=%mkey% &amp;&amp; echo 网络名字:%mssid% 密码:%mkey% &amp;&amp; GOTO start</span><br><span class="line">if %var%==e pause</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>常用脚本</category>
+      </categories>
+      <tags>
+        <tag>工具</tag>
+        <tag>Windows脚本</tag>
+        <tag>共享wifi</tag>
+        <tag>cmd</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>srt中英文合并python脚本</title>
+    <url>/public/2016/04/14/shells/youtube_src_combine/</url>
+    <content><![CDATA[<p><strong>前言</strong></p>
+<p>从Youtube上看只有中文或英文分开的字幕，下载好视频，想要中英文字幕。可从 <a href="http://mo.dbxdb.com/Yang/setting.html" target="_blank" rel="noopener">Getting Youtube subtitles</a> 获取中或英文字幕，然后将其合并，即成中英文双字幕。下面是python脚本。</p>
+<a id="more"></a>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">本脚本完成了中英文srt合并的功能</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">srt2lis</span><span class="params">(name)</span>:</span></span><br><span class="line">    lines = open(<span class="string">'srt/'</span>+name, <span class="string">'r'</span>, encoding=<span class="string">'utf-8'</span>).readlines()</span><br><span class="line">    lis = []</span><br><span class="line">    tmp = []</span><br><span class="line">    <span class="keyword">for</span> i, line <span class="keyword">in</span> enumerate(lines):</span><br><span class="line">        <span class="comment"># 以\n 结尾的一个时间点</span></span><br><span class="line">        <span class="keyword">if</span> line == <span class="string">'\n'</span>:</span><br><span class="line">            lis.append(tmp)</span><br><span class="line">            tmp = []</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            tmp.append(line)</span><br><span class="line">    <span class="keyword">return</span> lis</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">hebing</span><span class="params">(name_zh)</span>:</span></span><br><span class="line">    name_en = name_zh[:<span class="number">-7</span>] + <span class="string">'.srt'</span></span><br><span class="line">    out_name=<span class="string">'out/'</span>+name_en</span><br><span class="line">    f=open(out_name,<span class="string">'w'</span>,encoding=<span class="string">'utf-8'</span>)</span><br><span class="line">    lis_en=srt2lis(name_en)</span><br><span class="line">    lis_zh=srt2lis(name_zh)</span><br><span class="line">    <span class="keyword">for</span> i,item <span class="keyword">in</span> enumerate(lis_en):</span><br><span class="line">        print(item[<span class="number">0</span>])</span><br><span class="line">        f.write(item[<span class="number">0</span>])</span><br><span class="line">        f.write(item[<span class="number">1</span>])</span><br><span class="line">        <span class="keyword">for</span> line <span class="keyword">in</span> lis_zh[i][<span class="number">2</span>:]:</span><br><span class="line">            f.write(line)</span><br><span class="line">        <span class="keyword">for</span> line <span class="keyword">in</span> item[<span class="number">2</span>:]:</span><br><span class="line">            f.write(line)</span><br><span class="line">        f.write(<span class="string">'\n'</span>)</span><br><span class="line">    f.close()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">flis=os.listdir(<span class="string">'srt/'</span>)</span><br><span class="line"><span class="keyword">if</span> <span class="keyword">not</span> os.path.exists(<span class="string">'out'</span>):</span><br><span class="line">    os.mkdir(<span class="string">'out'</span>)</span><br><span class="line"><span class="keyword">for</span> name <span class="keyword">in</span> flis:</span><br><span class="line">    print(name)</span><br><span class="line">    <span class="keyword">if</span> name[<span class="number">-6</span>:<span class="number">-4</span>]==<span class="string">'zh'</span>:</span><br><span class="line">        hebing(name)</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>常用脚本</category>
+      </categories>
+      <tags>
+        <tag>工具</tag>
+        <tag>python</tag>
+        <tag>YouTube字幕合并</tag>
+        <tag>src</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>这哈儿是重庆</title>
+    <url>/public/2019/04/25/trips/chongqing/</url>
+    <content><![CDATA[<p>重庆，旅游纪实。20190422 - 20190424</p>
+<a id="more"></a>
+<h2 id="四月二十二"><a class="header-anchor" href="#四月二十二">¶</a>四月二十二</h2>
+<img src="/public/2019/04/25/trips/chongqing/tiankongzhicheng.jpg" alt="tiankongzhicheng" width="50%">
+<div align="center"> <b>天空之城旅店的临江阳台</b></div>
+<p>今天刚来到重庆。前天查天气说是多云，但是来这之后，天气极好。早上9点从成都出发，12点左右到达重庆北站，然后做地铁10号线倒到6号线的小什坊。在解放广场附近，中午吃了个碗杂面很不错，对于我来说有点辣，说是重庆排行第五的小面。</p>
+<p>下午就准备午休一哈，今早上很早起来要赶到成都的市中心乘火车。在江边，也是在洪崖洞旁边，找了一家叫做天空之城的青年旅舍。晚上走在千厮大桥上，脚感受着下面的地铁穿过抖动。从青年旅馆房间里面刚好可以看到江边的夜景，管理人是个可爱的老人家。里面的床单是没有铺上的，得自己铺，老人家解释免得被认为不好，你也可以自己带睡袋。老人家在铁路上工作，与他聊了很久，谈到他在铁路站工作的经历，当然还有很多打理旅舍时的故事。</p>
+<h2 id="四月二十三"><a class="header-anchor" href="#四月二十三">¶</a>四月二十三</h2>
+<img src="/public/2019/04/25/trips/chongqing/guojiang1.jpeg" alt="guojiang1" width="50%">
+<div align="center"> <b>排队2小时，乘过江索道</b></div>
+<img src="/public/2019/04/25/trips/chongqing/goujiang2.jpeg" alt="goujiang2" width="50%">
+<div align="center"> <b>过江索道，晃晃悠悠在路上</b></div>
+<p>早上起来，去楼下买了个早餐，有八宝粥和一个米团（块），那个团米上面加了两个半枣。吃完早饭，阳光正照进那个青年公寓。四月底，节气谷雨过后，算还不是很热，在那个临江的阳台晒了会儿阳光。然后很困，大概是吃饱的缘故，我又回去睡了一个回笼觉。下午出发去白公馆，搭的是轻轨2号线，到大坪换到去烈士墓的地铁上，轻轨是一路沿江跑的，欣赏着嘉陵江的美景，羡慕着重庆人的立体公交系统。嘉陵江水比较清澈，也见到有人在游泳。过会儿就经过网红景点李子坝，轻轨穿房而过。白公馆旁边是四川外国语大学，没有去逛，直接去了白公馆，香山别墅，然后去了渣滓洞，白公馆的地势比较陡，台阶比较多，旁边是歌乐山。</p>
+<img src="/public/2019/04/25/trips/chongqing/eling.jpg" alt="eling" width="50%">
+<div align="center"> <b>鹅岭公园有个塔，从塔上望去</b></div>
+<p>接着到了鹅岭公园，可直接做地铁鹅岭站，进门处分左右路线，我选了左转，然后绕了一大圈到了那个塔，其实可以右转沿着汽车的道往上到那个塔。到了塔顶，可以看到面向朝天门方向，左边是嘉陵江，右边是长江，然后各种大桥，轻轨地铁尽收眼底。吹着微风，站在那个塔上，可见重庆各种摩天大楼，然后就是更远处的山。离开鹅岭公园后，继续搭地铁去了上新街站，下车后往南岸区走，南岸发展比较慢，可以看到明显和渝中区的不同，路边找了一家店，选了几个小菜，吃了个晚饭。晚饭后，去了南山一棵树，人很多，夜景倒是很漂亮，有水有山，两水相交，滋润了这个大都市，今天的行程不错。</p>
+<img src="/public/2019/04/25/trips/chongqing/yejing.jpg" alt="yejing" width="50%">
+<div align="center"> <b>南山一棵松</b></div>
+<h2 id="四月二十四"><a class="header-anchor" href="#四月二十四">¶</a>四月二十四</h2>
+<img src="/public/2019/04/25/trips/chongqing/caotianmen.jpg" alt="caotianmen" width="50%">
+<div align="center"> <b>朝天门码头，水清黄分明</b></div>
+<p>今天也是懒懒起床，吃了个早饭，豆浆是放在那种果冻的包装袋里。今天差不多，就准备看看朝天门，然后回成都。去朝天门还是比较奇怪，随着百度地图导航走，到了一个商城里面，从地面进去是商城的8楼，下了电梯，走了一个商品批发的地方，然后向朝天门赶，今天太阳超级满足，比较热。岸边停了好多游船。到了朝天门，水分了两个颜色，黄的长江，清的嘉陵江。休息一刻，搭了公交车，沿着长江岸跑，居然到了李子坝，然后地铁转到重庆北火车站，这一趟重庆算是画上了一个句号。</p>
+<p>【转载请联系 博主。】</p>
+]]></content>
+      <categories>
+        <category>旅游</category>
+      </categories>
+      <tags>
+        <tag>重庆</tag>
+        <tag>游记</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>希腊罗马神话</title>
+    <url>/public/2018/11/05/readings/Gods_stories/</url>
+    <content><![CDATA[<p><strong>前言</strong></p>
+<p>在我电的图书馆的还书柜子里面偶然所得，一本叫《希腊罗马神话对英语语言文化的影响》吕海平 著 江苏大学初版社，然后莫名的想研究一下，发现挺不错的。</p>
+<a id="more"></a>
+<p>古希腊罗马的神的关系还是比较乱的，尤其是jupiter 或者zeus的奥林匹斯神系。从上古的神系，总共有三代。</p>
+<p>网上有个人（<a href="http://www.veritablehokum.com/" target="_blank" rel="noopener">Korwin Briggs</a>）做的关系图很不错。</p>
+<p>TODO:后面我也会对其进行整理，以后给大家分享。</p>
+<p><img src="http://www.veritablehokum.com/wp-content/uploads/2018/08/Roman-God-Family-Tree.jpg" alt></p>
+]]></content>
+      <categories>
+        <category>读书笔记</category>
+      </categories>
+      <tags>
+        <tag>希腊罗马神话</tag>
+        <tag>语言文化</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>红楼梦与我</title>
+    <url>/public/2017/05/14/readings/hongloumeng/</url>
+    <content><![CDATA[<p>红楼梦是我国四大名著之一，主要内容是贾府的兴衰和宝黛的悲剧爱情。电视剧红楼梦2010版，我是从八月开始看的，看完到现在，也有小一个月了。在网上大家对这版电视剧褒贬不一。与我来说，我是喜欢这部剧的，不能说拍得很好，但这部剧却勾起了我读书与写字的兴趣。于是乎，做了一篇随笔，以记录我的一些感触。</p>
+<a id="more"></a>
+<p>我记得最早是小学，我们还是顾着打玻璃珠和丢沙包的年纪，学校旁边的小书店里，也都是七龙珠，哆啦A梦，柯南的小人书，老师们讲到四大名著，顺带提了下红楼梦，其他没印象了。我们学习最多的是中文的拼音和书写，作文都是打油，日记也闹了不少笑话。后来上初中，有一次寒假附加作业是阅读红楼梦，我虽毫无兴趣，但还是硬着头皮，去新华书店，试看红楼梦。120章的红楼，厚得连看下去的勇气也没有。略看了几下，最后，做了一个红楼梦不好看的论断，也就放在那边了。那时有老版的红楼梦电视剧播映，打开电视偶尔会遇见，但是立马换台，央视的西游记与情深深雨蒙蒙，湖南电视台的还珠格格，也是欣赏了好几遍。再者，有动画片谁有兴趣去看这些什么破剧，关于书本，最多也就是看看汤姆索亚历险记。</p>
+<p>再后来，去启中读书，学习上比较紧张，再加上理科班的非文学氛围，对这些文学的东西更不感冒。尽管偶尔也会入耳一些其中的人物，比如林妹妹，刘姥姥，也是不用大脑耳朵直接过滤。当时，大伙是杂志，读者，青年文摘读得比较多，班上一本，全班查阅，杂志文章篇幅较小，读起很顺很舒服。期间，与红楼的唯一一次接触是，高中教科书上有刘姥姥进大观园的章节，翻了一遍，当时，感叹人物好多，理不出人物关系，完全放弃看完红楼的欲望。以为姥姥是贾府的姥姥，猩猩然想着以后可以说看过一段红楼，红楼也比较贵不如多买几本读者，积累作文素材。不知什么时候，班上网络小说之风随着mp4和智能手机的普及而吹起，我也用MP4刷完了一两部网络小说，感觉都是一个套路，主角都是绝处逢生，越来越无敌，也就不敢兴趣了。</p>
+<p>再然后，我上大学，藏书400百万册的成电图书馆，也并没有引起我读文学类的欲望，大学四年借的专业工具类书比较多，想来也是浪费资源。在一个工科高校，文学方面的课程几乎没有，虽说有个大学语文的选修课，俨然不感兴趣。大学里，再一次看到有人在看红楼梦电视剧，也是大二的时候的人工智能课上，也是闲得无聊。再后来，大四时，手机上自带一个蜻蜓网络电台应用，无聊点开蒋勋老师评述的红楼梦音频，红学大师讲到他与红楼梦的相遇，同时，他介绍的红楼基本背景和人物，通俗易懂，一下子引起我的兴趣。他说红楼梦写的都是15、6岁人的故事，15、16岁就可以读了。回想我15、16岁，基本没看什么名著。要说四大名著，我也就看了三国和水浒的少年版。上次回家，看美剧，老妈突然蹦出句，不能光看英文也应当看看我们老祖宗的文化。</p>
+<p>现在得空，就这样抱着惭愧和一丝尝试我看起了2010版红楼梦。在这我得承认，我是个演员控。不得不说，三大主演都很不错。</p>
+<p>50集过后，原来红楼讲得是这个，并表示有兴趣去读读名著了。原来有这么多原来。</p>
+<ul>
+<li>
+<p>人物家族命运令人感慨。作者写出超越那个时代的朦胧的爱情与不得不提的丧心病狂的全部悲剧，果然是个失意文人的作品。 可叹停机德，堪怜咏絮才。宝钗落落大方德才兼备，黛玉因情而伤而痛去世，宝玉虽与宝钗结婚，最后离家成道去。精于人情世故,，胸有城府的王熙凤，平日的爽朗笑声终究悲剧，贾府里多么好的领导，最后也人情冷暖，不免为其伤心。刘姥姥，其实是个成功的投机分子，但也是朴实善良的“穷亲戚”，最后救了巧儿。十二金钗各有个的悲剧，正如宝玉在虚幻仙境里警幻仙姑给的设定。原来故事一开始就把结局告诉了读者。</p>
+</li>
+<li>
+<p>体验古代贵族文化。里面还有个诗社的组织，古人的结社，好有雅致，也会给人起“绰号”。除此以外还有击鼓传花，有时主题是讲笑话有时对诗。猜灯谜，中秋赏月，生日宴会等等。</p>
+</li>
+<li>
+<p>语言魅力。打秋风，这是形容刘姥姥找找贾府接济用的。恼，生气，或者使生气。不同人的称谓，宝兄弟，宝二爷，宝姐姐或者好姐姐，林妹妹或者好妹妹。</p>
+</li>
+<li>
+<p>情节回味无穷。刘姥姥进大观园，是贾母和姥姥差不多年纪想和她聊聊，邀请她的。乡村来打秋风的刘姥姥像是在参观皇宫。在后面时期  ，家族里一次比一次捉襟见肘的聚会，可以看见这些家族的衰落。中国的各种人情世故体现在这里面。四个大家族，一个小社会。</p>
+</li>
+</ul>
+<p>以上是我的一点点感悟。</p>
+<p>只是，我与红楼梦，还差80章书页，希望还能有计划地读完。</p>
+<p>2016年于成电</p>
+]]></content>
+      <categories>
+        <category>读书笔记</category>
+      </categories>
+      <tags>
+        <tag>故事</tag>
+        <tag>《红楼梦》</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>[译] Face Detection – OpenCV, Dlib and Deep Learning ( C++ / Python )</title>
     <url>/public/2018/11/12/cv/FaceDetectionComparison/</url>
     <content><![CDATA[<p><strong>前言</strong>
@@ -2117,6 +2325,273 @@ Have any other suggestions? Please mention in the comments and we’ll update th
         <tag>OpenCV</tag>
         <tag>Face Detection</tag>
         <tag>Dlib</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>怎样成为一名优秀的算法工程师</title>
+    <url>/public/2018/10/01/AI/how_algorithm_engineer/</url>
+    <content><![CDATA[<blockquote>
+<p>转载 原创： AI学习与实践平台
+TODO: 看完里面的文章，对每篇文章做个总结，实验+文章。</p>
+</blockquote>
+<h2 id="1-导言"><a class="header-anchor" href="#1-导言">¶</a>1. 导言</h2>
+<p>怎样成为一名优秀的算法工程师？这是很多从事人工智能学术研究和产品研发的同学都关心的一个问题。面对市场对人才的大量需求与供给的严重不足，以及高薪水的诱惑，越来越多的人开始学习这个方向的技术，或者打算向人工智能转型。市面上各种鱼龙混杂的培训班以及误导人的文章会把很多初学者带入歧途，浮躁的跟风将会让你最后收获甚微，根本达不到企业的用人要求。为了更好的帮助大家学习和成长，少走弯路，在今天的文章里，<a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247485551&amp;idx=2&amp;sn=a6689528f10aedab3fce91857eec877b&amp;chksm=fdb695f8cac11cee025ad6d8d77ed90f7169142d6b20b2f5a6945b58edd97c27225f4a2eba91&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">SIGAI</a> 的作者以自己的亲身经历和思考，为大家写下对这一问题的理解与答案。</p>
+<p>首先来看一个高度相关的问题：一个优秀的算法工程师必须具备哪些素质？我们给出的答案是这样的：</p>
+<ul>
+<li>数学知识</li>
+<li>编程能力</li>
+<li>机器学习与深度学习的知识</li>
+<li>应用方向的知识</li>
+<li>对自己所做的问题的思考和经验</li>
+</ul>
+<p>除去教育背景，逻辑思维，学习能力，沟通能力等其他方面的因素，大多数公司在考察算法工程师的技术水平时都会考虑上面这几个因素。接下来我们将按照这几个方面进行展开，详细的说明如何学习这些方面的知识以及积累经验。</p>
+<a id="more"></a>
+<h2 id="2-数学知识"><a class="header-anchor" href="#2-数学知识">¶</a>2. 数学知识</h2>
+<p>与其他工作方向如app、服务器开发相比，以及与计算机科学的其他方向如网络，数据库，分布式计算等相比，人工智能尤其是机器学习属于数学知识密集的方向。在各种书籍，论文，算法中都充斥着大量的数学公式，这让很多打算入门的人或者开始学习的人感到明显的压力。首先我们考虑一个最核心的问题：机器学习和深度学习究竟需要哪些数学知识？在<a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247485551&amp;idx=2&amp;sn=a6689528f10aedab3fce91857eec877b&amp;chksm=fdb695f8cac11cee025ad6d8d77ed90f7169142d6b20b2f5a6945b58edd97c27225f4a2eba91&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">SIGAI</a>之前的公众号文章“<a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247483713&amp;idx=1&amp;sn=1e7c81381d16806ac73e15691fe17aec&amp;chksm=fdb69cd6cac115c05f1f90b0407e3f8ae9be8719e454f908074ac0d079885b5c134e2d60fd64&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">学好机器学习需要哪些数学知识</a>”里，我们已经给出了答案。先看下面这张表：</p>
+<p><img src="/public/2018/10/01/AI/how_algorithm_engineer/clip_image003.gif" alt="EB5E93E91C3643F991C93D61F363373E.jpeg"></p>
+<p>更多算法工程师的必读文章，请关注SIGAICN公众号</p>
+<p>上面的表给出了各种典型的机器学习算法所用到的数学知识点。我们之前已经总结过，理解绝大多数算法和理论，有微积分/高等数学，线性代数，概率论，最优化方法的知识就够了。除流形学习需要简单的微分几何概念之外，深层次的数学知识如实变函数，泛函分析等主要用在一些基础理论结果的证明上，即使不能看懂证明过程，也不影响我们使用具体的机器学习算法。概率图模型、流形学习中基于图的模型会用到图论的一些基本知识，如果学习过离散数学或者数据结构，这些概念很容易理解。除此之外，某些算法会用到离散数学中的树的概念，但很容易理解。</p>
+<h3 id="2-1-高等数学"><a class="header-anchor" href="#2-1-高等数学">¶</a>2.1 高等数学</h3>
+<p>如果你已经学过这些大学数学课，只要把所需的知识点复习一遍就够了。对于微积分，通俗易懂而又被广为采用的是同济版的高等数学：</p>
+<p><img src="/public/2018/10/01/AI/how_algorithm_engineer/clip_image005.gif" alt="88F2EB8BDFE1448EBD2DF61848E355FD.jpeg"></p>
+<p>在机器学习中主要用到了微分部分，积分用的非常少。具体的，用到了下面的概念：</p>
+<ul>
+<li>导数和偏导数的定义与计算方法，与函数性质的关系</li>
+<li>梯度向量的定义</li>
+<li>极值定理，可导函数在极值点处导数或梯度必须为0</li>
+<li>雅克比矩阵，这是向量到向量映射函数的偏导数构成的矩阵，在求导推导中会用到</li>
+<li>Hessian矩阵，这是2阶导数对多元函数的推广，与函数的极值有密切的联系</li>
+<li>凸函数的定义与判断方法</li>
+<li>泰勒展开公式</li>
+<li>拉格朗日乘数法，用于求解带等式约束的极值问题</li>
+</ul>
+<p>其中最核心的是多元函数的泰勒展开公式，根据它我们可以推导出梯度下降法，牛顿法，拟牛顿法等一系列最优化方法。</p>
+<p>如果你想要深入的学习微积分，可以阅读数学系的教程，称为数学分析：</p>
+<p><img src="/public/2018/10/01/AI/how_algorithm_engineer/clip_image007.gif" alt="DEB5F0D2FC584E0B96B263FE1D559AFF.jpeg"></p>
+<p>与工科的高等数学偏重计算不同，它里面有大量的理论证明，对于锻炼数学思维非常有帮助。北大张筑生先生所著的数学分析可谓是国内这方面教材的精品。</p>
+<h3 id="2-2-线性代数"><a class="header-anchor" href="#2-2-线性代数">¶</a>2.2 线性代数</h3>
+<p>下面来看线性代数，同样是同济版的教材：</p>
+<p><img src="/public/2018/10/01/AI/how_algorithm_engineer/clip_image009.gif" alt="48D5E515A7144CE6A9CB78162F6ECAAF.jpeg"></p>
+<p>如果想更全面系统的学习线性代数，可以看这本书：</p>
+<p><img src="/public/2018/10/01/AI/how_algorithm_engineer/clip_image011.gif" alt="BF71AB68DB2B4D71AC8D2B3263C197E5.jpeg"></p>
+<p>相比之下，线性代数用的更多。具体用到的知识点有：</p>
+<ul>
+<li>向量和它的各种运算，包括加法，减法，数乘，转置，内积</li>
+<li>向量和矩阵的范数，L1范数和L2范数</li>
+<li>矩阵和它的各种运算，包括加法，减法，乘法，数乘</li>
+<li>逆矩阵的定义与性质</li>
+<li>行列式的定义与计算方法</li>
+<li>二次型的定义</li>
+<li>矩阵的正定性</li>
+<li>特征值与特征向量</li>
+<li>奇异值分解</li>
+<li>线性方程组的数值解</li>
+</ul>
+<p>机器学习算法处理的数据一般都是向量、矩阵或者张量。经典的机器学习算法输入的数据都是特征向量，深度学习算法在处理图像时输入的2维的矩阵或者3维的张量。掌握这些概念是你理解机器学习和深度学习算法的基础。</p>
+<h3 id="2-3-概率论"><a class="header-anchor" href="#2-3-概率论">¶</a>2.3 概率论</h3>
+<p>概率论国内理工科专业使用最多的是浙大版的教材：</p>
+<p><img src="/public/2018/10/01/AI/how_algorithm_engineer/clip_image013.gif" alt="91E918CF7ED84C7488BDDFFC7594E0D4.jpeg"></p>
+<p>如果把机器学习所处理的样本数据看作随机变量/向量，就可以用概率论的方法对问题进行建模，这代表了机器学习中很大一类方法。在机器学习里用到的概率论知识点有:</p>
+<ul>
+<li>随机事件的概念，概率的定义与计算方法</li>
+<li>随机变量与概率分布，尤其是连续型随机变量的概率密度函数和分布函数</li>
+<li>条件概率与贝叶斯公式</li>
+<li>常用的概率分布，包括正态分布，伯努利二项分布，均匀分布</li>
+<li>随机变量的均值与方差，协方差</li>
+<li>随机变量的独立性</li>
+<li>最大似然估计</li>
+</ul>
+<p>这些知识不超出普通理工科概率论教材的范围。</p>
+<h3 id="最优化"><a class="header-anchor" href="#最优化">¶</a>最优化</h3>
+<p>最后来说最优化，几乎所有机器学习算法归根到底都是在求解最优化问题。求解最优化问题的指导思想是在极值点出函数的导数/梯度必须为0。因此你必须理解梯度下降法，牛顿法这两种常用的算法，它们的迭代公式都可以从泰勒展开公式而得到。</p>
+<p>凸优化是机器学习中经常会提及的一个概念，这是一类特殊的优化问题，它的优化变量的可行域是凸集，目标函数是凸函数。凸优化最好的性质是它的所有局部最优解就是全局最优解，因此求解时不会陷入局部最优解。如果一个问题被证明为是凸优化问题，基本上已经宣告此问题得到了解决。在机器学习中，线性回归、岭回归、支持向量机、logistic回归等很多算法求解的都是凸优化问题。</p>
+<p>拉格朗日对偶为带等式和不等式约束条件的优化问题构造拉格朗日函数，将其变为原问题，这两个问题是等价的。通过这一步变换，将带约束条件的问题转换成不带约束条件的问题。通过变换原始优化变量和拉格朗日乘子的优化次序，进一步将原问题转换为对偶问题，如果满足某种条件，原问题和对偶问题是等价的。这种方法的意义在于可以将一个不易于求解的问题转换成更容易求解的问题。在支持向量机中有拉格朗日对偶的应用。</p>
+<p>KKT条件是拉格朗日乘数法对带不等式约束问题的推广，它给出了带等式和不等式约束的优化问题在极值点处所必须满足的条件。在支持向量机中也有它的应用。</p>
+<p>如果你没有学过最优化方法这门课也不用担心，这些方法根据微积分和线性代数的基础知识可以很容易推导出来。如果需要系统的学习这方面的知识，可以阅读《凸优化》，《非线性规划》两本经典教材。</p>
+<p><img src="/public/2018/10/01/AI/how_algorithm_engineer/clip_image015.gif" alt="B00246CBCFB446789B2F7F63F3292099.jpeg"></p>
+<h2 id="3-编程能力"><a class="header-anchor" href="#3-编程能力">¶</a>3. 编程能力</h2>
+<p>编程能力是学好机器学习和深度学习的又一大基础。对于计算机类专业的学生，由于本科已经学了c语言，c++，数据结构与算法，因此这方面一般不存在问题。对于非计算机专业的人来说，要真正学好机器学习和深度学习，这些知识是绕不开的。</p>
+<h3 id="3-1-C"><a class="header-anchor" href="#3-1-C">¶</a>3.1 C++</h3>
+<p>虽然现在大家热衷于学习python，但要作为一名真正的算法工程师，还是应该好好学习一下c++，至少，机器学习和深度学习的很多底层开源库都是用它写的；很多公司线上的产品，无论是运行在服务器端，还是嵌入式端，都是用c++写的。此外，如果你是应届生，在校园招聘时不少公司都会面试你c++的知识。</p>
+<p>C++最经典的教材无疑是c++ primer：</p>
+<p><img src="/public/2018/10/01/AI/how_algorithm_engineer/clip_image017.gif" alt="3E0DE0E336474B81A2F89F2190628186.jpeg"></p>
+<p>对做算法的人来说，这本书其实不用全部看，把常用的点学完就够了。对于进阶，Effective c++是很好的选择，不少公司的面试题就直接出自这本书的知识点：</p>
+<p><img src="/public/2018/10/01/AI/how_algorithm_engineer/clip_image019.gif" alt="DDCC32DD5E6D405588CB4B6F4A94BFE5.jpeg"></p>
+<p>接下来说python，相比c++来说，学习的门槛要低很多，找一本通俗易懂的入门教程学习一遍即可。</p>
+<h3 id="3-2-数据结构和算法"><a class="header-anchor" href="#3-2-数据结构和算法">¶</a>3.2 数据结构和算法</h3>
+<p>数据结构和算法是编写很多程序的基础，对于机器学习和深度学习程序也不例外。很多算法的实现都依赖于数组，链表，数，排序，查找之类的数据结构和基础算法。如果有时间和精力，把算法导论啃一遍，你会有不一样的感受：</p>
+<p><img src="/public/2018/10/01/AI/how_algorithm_engineer/clip_image021.gif" alt="E077608423D7473ABF1DBF75C482E060.jpeg"></p>
+<p>对于应届生来说，学完它对于你通过大互联网和人工智能公司校园招聘的技术面试也非常有用。</p>
+<p>上面说的只是编程语言的程序设计的理论知识，我们还要考虑实际动手能力。对于开发环境如gcc/g++，visual studio之类的工具，以及gdb之类的调试工具需要做到熟练使用。如果是在linux上开发，对linux的常用命令也要熟记于心。这方面的知识看各种具体的知识点和教程即可。另外，对于编程的一些常识，如进程，线程，虚拟内存，文件系统等，你最好也要进行了解。</p>
+<h2 id="4-机器学习与深度学习的知识"><a class="header-anchor" href="#4-机器学习与深度学习的知识">¶</a>4. 机器学习与深度学习的知识</h2>
+<p>在说完了数学和编程基础之后，下面我来看核心的内容，机器学习和深度学习知识。机器学习是现阶段解决很多人工智能问题的核心方法，尤其是深度学习，因此它们是算法工程师的核心知识。在这里有一个问题：是否需要先学机器学习，还是直接学深度学习？如果是一个专业的算法工程师，我的建议是先学机器学习。至少，你要知道机器学习中的基本概念， 过拟合，生成模型，ROC曲线等，上来就看深度学习，如没有背景知识你将不知所云。另外，神经网络只是机器学习中的一类方法，对于很多问题，其他机器学习算法如logistic回归，随机森林，GBDT，决策树等还在被大规模使用，因此你不要把自己局限在神经网络的小圈子里。</p>
+<h3 id="4-1-ML和DP的教材"><a class="header-anchor" href="#4-1-ML和DP的教材">¶</a>4.1 ML和DP的教材</h3>
+<p>首先来看机器学习，这方面的教材很多，周志华老师的机器学习，李航老师的统计学习方法是国内的经典。这里我们介绍国外的经典教材，首先是PRML：</p>
+<p><img src="/public/2018/10/01/AI/how_algorithm_engineer/clip_image023.gif" alt="BE2D3D5817344DE0831B718D3F891899.jpeg"></p>
+<p>PRML 下载地址 <a href="https://www.microsoft.com/en-us/research/publication/pattern-recognition-machine-learning/" target="_blank" rel="noopener">link</a></p>
+<p>此书深厚，内容全面，涵盖了有监督学习，无监督学习的主要方法，理论推导和证明详细深入，是机器学习的经典。此外还有模式分类这本书，在这里不详细介绍。</p>
+<p>本书主要内容包括：
+<strong>第一章：简介</strong>
+概率论、模型选择、决策理论、信息理论</p>
+<p><strong>第二章：概率分布</strong>
+二元变量、多项变量、高斯分布、指数分布族、非参数方法</p>
+<p><strong>第三章：线性模型回归问题</strong>
+线性基函数模型、偏置方差分解、贝叶斯线性回归、贝叶斯模型比较、The Evidence Approximation、固定基函数的局限性</p>
+<p><strong>第四章：线性模型分类问题</strong>
+判别函数、概率生成模型、概率判别模型、拉普拉斯逼近、贝叶斯逻辑回归</p>
+<p><strong>第五章：神经网络</strong>
+前馈神经网络、网络训练、误差反向传播、Hessian矩阵、神经网络的正则化、混合密度网络、贝叶斯神经网络</p>
+<p><strong>第六章：Kernel方法</strong>
+对偶表示、构造核、径向基函数网络、高斯过程</p>
+<p><strong>第七章：Sparse Kernel Machines</strong>
+最大边缘分类器、相关向量机</p>
+<p><strong>第八章：图模型</strong>
+贝叶斯网络、条件独立性、马尔科夫随机场、图模型的推理</p>
+<p><strong>第九章：混合模型和EM</strong>
+K-means聚类、高斯混合、EM算法</p>
+<p><strong>第十章：近似推断</strong>
+变分推断、高斯的变分混合、变分线性回归、指数族分布、局部变分方法、变分logistic回归、Expectation Propagation</p>
+<p><strong>第十一章：采样方法</strong>
+基本采样算法、马尔科夫链蒙特卡洛、吉布斯采样、切片采样、混合蒙特卡洛算法、估计划分函数</p>
+<p><strong>第十二章：连续潜在变数</strong>
+主成分分析，Probabilistic PCA，Kernel PCA，非线性潜变量模型</p>
+<p><strong>第十三章：序列数据</strong>
+马尔可夫模型，隐马尔可夫模型，Linear Dynamical Systems</p>
+<p><strong>第十四章：混合模型</strong>
+贝叶斯模型平均法，Committees，Boosting，基于树的模型，条件混合模型</p>
+<p>深度学习目前最权威的教程是下面这本书：</p>
+<p><img src="/public/2018/10/01/AI/how_algorithm_engineer/clip_image025.gif" alt="A39AD50565E141F89B08C93CCD7DEDFC.jpeg"></p>
+<p>它涵盖了深度学习的方方面面，从理论到工程，但美中不足的是对应于介绍的相对较少。</p>
+<p>强化学习是机器学习很独特的一个分支，大多数人对它不太了解，这方面的教程非常少，我们推荐下面这本书：</p>
+<p><img src="/public/2018/10/01/AI/how_algorithm_engineer/clip_image027.gif" alt="115B0E32F06F4538A76CB9B610F63B8C.jpeg"></p>
+<p>美中不足的是这本书对深度强化学习没有介绍，因为出版的较早。不知最新的版本有没有加上这方面的内容。</p>
+<p>在这里需要强调的是，你的知识要系统化，有整体感。很多同学都感觉到自己学的机器学习太零散，缺乏整体感。这需要你多思考算法之间的关系，演化历史之类的问题，这样你就做到胸中有图-机器学习算法地图。其实，<a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247485551&amp;idx=2&amp;sn=a6689528f10aedab3fce91857eec877b&amp;chksm=fdb695f8cac11cee025ad6d8d77ed90f7169142d6b20b2f5a6945b58edd97c27225f4a2eba91&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">SIGAI</a>在之前的公众号文章“<a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247485306&amp;idx=1&amp;sn=fc8cc8de313bdb61dcd39c1dedb240a4&amp;chksm=fdb69aedcac113fb4b18c74248a313536ded50bade0e66b26f332ab247b148519da71ff2a3c0&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">机器学习算法地图</a>”里已经给你总结出来了。</p>
+<h3 id="4-2-开源库"><a class="header-anchor" href="#4-2-开源库">¶</a>4.2 开源库</h3>
+<p>上面介绍了机器学习和深度学习的理论教材，下面来说实践问题。我们无需重复造车轮子，熟练的使用主流的开源库是需要掌握的一项技能。对于经典的机器学习，常用的库的有:</p>
+<ul>
+<li>libsvm</li>
+<li>liblinear</li>
+<li>XGBoost</li>
+<li>OpenCV</li>
+<li>HTK</li>
+<li>Weka</li>
+</ul>
+<p>在这里我们不一一列举。借助于这些库，我们可以方便的完成自己的实验，或是研发自己的产品。对于深度学习，目前常用的有：</p>
+<ul>
+<li>Caffe</li>
+<li>TensorFlow</li>
+<li>MXNet</li>
+</ul>
+<p>除此之外，还有其他的。对于你要用到的开源库，一定要理解它的原理，以及使用中的一些细节问题。例如很多算法要求输入的数据先做归一化，否则效果会非常差，而且面临浮点数溢出的问题，这些实际经验需要你在使用中摸索。如果有精力把这些库的核心代码分析一遍，你对实现机器学习算法将会更有底气。以深度学习为例，最核心的代码无非是实现：</p>
+<ul>
+<li>各种层，包括它们的正向传播和反向传播</li>
+<li>激活函数的实现</li>
+<li>损失函数的实现</li>
+<li>输入数据的处理</li>
+<li>求解器，实现各种梯度下降法</li>
+</ul>
+<p>这些代码的量并不大，沉下心来，我相信一周之内肯定能分析完。看完之后你会有一种豁然开朗的感觉。</p>
+<h2 id="5-应用方向的知识"><a class="header-anchor" href="#5-应用方向的知识">¶</a>5. 应用方向的知识</h2>
+<p>接下来是各个方向的知识，与机器学习有关的应用方向当前主要有：</p>
+<ul>
+<li>机器视觉</li>
+<li>语音识别</li>
+<li>自然语言处理</li>
+<li>数据挖掘</li>
+<li>知识图谱</li>
+<li>推荐系统</li>
+</ul>
+<p>除此之外，还有其他一些特定小方向，在这里不一一列举。这些具体的应用方向一般都有自己的教材，如果你以后要从事此方向的研究，系统的学习一遍是必须的。</p>
+<h2 id="6-实践经验与思考"><a class="header-anchor" href="#6-实践经验与思考">¶</a>6. 实践经验与思考</h2>
+<p>在说完理论与实践知识之后，最后我们来说经验与思考。在你确定要做某一个方向之后，对这个方向的方法要有一个全面系统的认识，很多方法是一脉相承的，如果只追求时髦看最新的算法，你很难做出学术上的创新，以及工程上的优化。对于本问题所有的经典论文，都应该化时间细度，清楚的理解它们解决了什么问题，是怎么解决的，还有哪些问题没有解决。例如：</p>
+<ul>
+<li>机器视觉目标检测中的遮挡问题</li>
+<li>推荐系统中的冷启动问题</li>
+<li>自然语言处理中文分词中的歧义切分问题</li>
+</ul>
+<p>只有经过大量的编程和实验训练，以及持续的思考，你才能算得上对这个方向深刻理解，以至于有自己的理解。很多同学对自己实现轮上的算法没有底气，解决这个问题最快的途径就是看论文算法的开源代码，在github上有丰富的资源，选择一些合适的，研究一下别人是怎么实现的，你就能明白怎么实现自己的网络结构和损失函数，照葫芦画瓢即可。</p>
+<p>计算机以及人工智能是一个偏实践的学科，它的方法和理论既需要我们有扎实的理论功底，又需要有丰富的实践能力与经验。这两个方面构成了算法工程师最主要的素质。科学的学习路径能够让你取得好的学习效果，同时也缩短学习时间。错误和浮躁的做法则会让你最后事倍功半。这是  <a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247485551&amp;idx=2&amp;sn=a6689528f10aedab3fce91857eec877b&amp;chksm=fdb695f8cac11cee025ad6d8d77ed90f7169142d6b20b2f5a6945b58edd97c27225f4a2eba91&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">SIGAI</a> 对想进入这个领域，或者刚进入这个领域的每个人要说的！</p>
+<p><img src="/public/2018/10/01/AI/how_algorithm_engineer/clip_image029.gif" alt="07382DFD55044B48927C8B054DE6F745.png"></p>
+<h2 id="7-其他材料"><a class="header-anchor" href="#7-其他材料">¶</a>7. 其他材料</h2>
+<h3 id="7-1-科普类"><a class="header-anchor" href="#7-1-科普类">¶</a>7.1 科普类</h3>
+<p>【‍获取码】SIGAI0413
+​    <a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247483705&amp;idx=1&amp;sn=c6e7c4a2e14a2469308b41eb60f155ac&amp;chksm=fdb69caecac115b8712653600e526e99a3f6976fdaa2f6b6a09388fa6f9677ccb57b40c40ae3&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">机器学习——波澜壮阔四十年 </a></p>
+<p>【获取码】SIGAI0620
+​    <a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247484981&amp;idx=1&amp;sn=d3003468b9853851923844812993e060&amp;chksm=fdb69ba2cac112b4dac620d52100ebd033eb679f29340726a67297c4d6980b16c7cc91122028&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">理解计算：从√2到AlphaGo ——第1季 从√2谈起</a></p>
+<p>【获取码】SIGAI0704
+<a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247485155&amp;idx=1&amp;sn=990cc7400751c36e9fef0a261e6add2a&amp;chksm=fdb69b74cac112628bdae14c6435120f6fece20dae9bf7b1ffc8b8b25e5496a24160feca0a72&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">理解计算：从√2到AlphaGo ——第2季 神经计算的历史背景</a></p>
+<h3 id="7-2-数学类"><a class="header-anchor" href="#7-2-数学类">¶</a>7.2 数学类</h3>
+<p>【获取码】SIGAI0417
+<a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247483713&amp;idx=1&amp;sn=1e7c81381d16806ac73e15691fe17aec&amp;chksm=fdb69cd6cac115c05f1f90b0407e3f8ae9be8719e454f908074ac0d079885b5c134e2d60fd64&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">学好机器学习需要哪些数学知识</a></p>
+<p>【获取码】SIGAI0511
+<a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247484111&amp;idx=1&amp;sn=4ed4480e849298a0aff828611e18f1a8&amp;chksm=fdb69f58cac1164e844726bd429862eb7b38d22509eb4d1826eb851036460cb7ca5a8de7b9bb&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">理解梯度下降法</a></p>
+<p>【获取码】SIGAI0518
+<a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247484439&amp;idx=1&amp;sn=4fa8c71ae9cb777d6e97ebd0dd8672e7&amp;chksm=fdb69980cac110960e08c63061e0719a8dc7945606eeef460404dc2eb21b4f5bdb434fb56f92&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">理解凸优化</a></p>
+<p>【获取码】SIGAI0531
+<a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247484651&amp;idx=1&amp;sn=a0e4ca5edb868fe3eae9101b71dd7103&amp;chksm=fdb6997ccac1106a61f51fe9f8fd532045cc5d13f6c75c2cbbf1a7c94c58bcdf5f2a6661facd&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">理解牛顿法 </a></p>
+<h3 id="7-3-机器学习类"><a class="header-anchor" href="#7-3-机器学习类">¶</a>7.3 机器学习类</h3>
+<p>【获取码】SIGAI0428
+​    <a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247483937&amp;idx=1&amp;sn=84a5acf12e96727b13fd7d456c414c12&amp;chksm=fdb69fb6cac116a02dc68d948958ee731a4ae2b6c3d81196822b665224d9dab21d0f2fccb329&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">用一张图理解SVM的脉络</a></p>
+<p>【获取码】SIGAI0505
+​    <a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247483977&amp;idx=1&amp;sn=401b211bf72bc70f733d6ac90f7352cc&amp;chksm=fdb69fdecac116c81aad9e5adae42142d67f50258106f501af07dc651d2c1473c52fad8678c3&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">理解神经网络的激活函数</a></p>
+<p>【获取码】SIGAI0522
+<a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247484495&amp;idx=1&amp;sn=4f3a6ce21cdd1a048e402ed05c9ead91&amp;chksm=fdb699d8cac110ce53f4fc5e417e107f839059cb76d3cbf640c6f56620f90f8fb4e7f6ee02f9&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">【实验】理解SVM核函数和参数的作用</a></p>
+<p>【获取码】SIGAI0601
+<a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247484658&amp;idx=1&amp;sn=f5c9f92c272c75883bf8e6f532559f11&amp;chksm=fdb69965cac11073f49048caef5d7b9129614090a363d9ef7f3d1b9bc59948d2217d2bca7b7b&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">【群话题精华】五月集锦—机器学习和深度学习中一些值得思考的问题   </a></p>
+<p>【获取码】SIGAI0602
+​    <a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247484692&amp;idx=1&amp;sn=9b389aa65208c778dddf17c601afbee1&amp;chksm=fdb69883cac1119593934734e94c3b71aa68de67bda8a946c1f9f9e1209c3b6f0bf18fed99b8&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">大话AdaBoost算法    </a></p>
+<p>【获取码】SIGAI0606
+​    <a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247484754&amp;idx=1&amp;sn=b2c0d6798f44e13956bb42373e51d18c&amp;chksm=fdb698c5cac111d3e3dca24c50aafbfb61e5b05c5df5b603067bb7edec8db049370b73046b24&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">理解主成分分析（PCA）    </a></p>
+<p>【获取码】SIGAI0611
+​    <a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247484827&amp;idx=1&amp;sn=043d7d0159baaddfbf92ed78ee5b1124&amp;chksm=fdb6980ccac1111a9faeae7f517fee46a1dfab19612f76ccfe5417487b3f090ab8fc702d18b8&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">理解决策树  </a></p>
+<p>【获取码】SIGAI0613
+​    <a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247484859&amp;idx=1&amp;sn=2c4db22fb538953a62a90983e3e1f99d&amp;chksm=fdb6982ccac1113a82e92be325bb07a947d54090274654375f3b50e11e1abd809fb7358bde16&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">用一句话总结常用的机器学习算法</a></p>
+<p>【获取码】SIGAI0618
+​    <a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247484954&amp;idx=1&amp;sn=c28b7f07c22466e91b1ef90e9dbe3ad1&amp;chksm=fdb69b8dcac1129bc6e78fca1d550e2b18238ad1c240c73b280d4e529f9f93c4626b3ac45ea2&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">理解过拟合</a></p>
+<p>【获取码】SIGAI0627
+​    <a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247485074&amp;idx=1&amp;sn=0ebf1bf8f49e9c46075fe3803d04c95d&amp;chksm=fdb69b05cac112132d280c70af3923ca4c3cccfa5fcd8628b79d4b246b3b2decbc80a180abb3&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">k近邻算法</a></p>
+<p>【获取码】SIGAI0704
+​    <a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247485306&amp;idx=1&amp;sn=fc8cc8de313bdb61dcd39c1dedb240a4&amp;chksm=fdb69aedcac113fb4b18c74248a313536ded50bade0e66b26f332ab247b148519da71ff2a3c0&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">机器学习算法地图</a></p>
+<p>【获取码】SIGAI0706
+​    <a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247485446&amp;idx=1&amp;sn=57d7d866443810c20c4ea2c6ee8018cc&amp;chksm=fdb69591cac11c8773638b396abe43c0161e4d339f0fa845e54326be3e8c4933a3b6a2713dae&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">反向传播算法推导—全连接神经网络</a></p>
+<h3 id="7-4-深度学习类"><a class="header-anchor" href="#7-4-深度学习类">¶</a>7.4 深度学习类</h3>
+<p>【获取码】SIGAI0426
+<a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247483816&amp;idx=1&amp;sn=fc52765b012771d4736c9be4109f910e&amp;chksm=fdb69c3fcac115290020c3dd0d677d987086a031c1bde3429339bb3b5bbc0aa154e76325c225&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">卷积神经网络为什么能够称霸计算机视觉领域？</a></p>
+<p>【获取码】SIGAI0508
+<a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247484037&amp;idx=1&amp;sn=13ad0d521b6a3578ff031e14950b41f4&amp;chksm=fdb69f12cac11604a42ccb37913c56001a11c65a8d1125c4a9aeba1aed570a751cb400d276b6&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">深度卷积神经网络演化历史及结构改进脉络-40页长文全面解读 </a></p>
+<p>【获取码】SIGAI0515
+<a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247484310&amp;idx=1&amp;sn=0fc55a2784a894100a1ae64d7dbfa23d&amp;chksm=fdb69e01cac1171758cb021fc8779952e55de41032a66ee5417bd3e826bf703247e243654bd0&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">循环神经网络综述—语音识别与自然语言处理的利器</a></p>
+<p>【获取码】SIGAI0625
+<a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247485042&amp;idx=1&amp;sn=cdcf8d4b07acf64c7a6f5f7c1a731a12&amp;chksm=fdb69be5cac112f377766984afb87313c1e1c58d94c80005f0f6f6af61ee5a4bd1bf6c6157b6&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">卷积神经网络的压缩与加速</a></p>
+<p>【获取码】SIGAI0709
+<a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247485551&amp;idx=1&amp;sn=213f48c4e55bee688cf0731097bb832c&amp;chksm=fdb695f8cac11ceef3ef246c54d811dd64d8cc45fc75488c374c7aa95f72c1abfb55555ef0b7&amp;scene=21#wechat_redirect" target="_blank" rel="noopener"> 生成式对抗网络模型综述</a></p>
+<h3 id="7-5-机器视觉类"><a class="header-anchor" href="#7-5-机器视觉类">¶</a>7.5 机器视觉类</h3>
+<p>【获取码】SIGAI0420
+​    <a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247483726&amp;idx=1&amp;sn=9fef4cc1766ea4258749f8d40cc71a6e&amp;chksm=fdb69cd9cac115cf4eba16081780c3b64c75e1e55a40bf2782783d5c28f00c6f143426e6f0aa&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">人脸识别算法演化史</a></p>
+<p>【获取码】SIGAI0424
+​    <a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247483731&amp;idx=1&amp;sn=237c52bc9ddfe65779b73ef8b5507f3c&amp;chksm=fdb69cc4cac115d2ca505e0deb975960a792a0106a5314ffe3052f8e02a75c9fef458fd3aca2&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">基于深度学习的目标检测算法综述</a></p>
+<p>【获取码】SIGAI0503
+​    <a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247483950&amp;idx=1&amp;sn=a3a5b7907b2552c233f654a529931776&amp;chksm=fdb69fb9cac116af5dd237cf987e56d12b0d2e54c5c565aab752f3e366c0c45bfefa76f5ed16&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">人脸检测算法综述</a></p>
+<p>【获取码】SIGAI0525
+<a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247483950&amp;idx=1&amp;sn=a3a5b7907b2552c233f654a529931776&amp;chksm=fdb69fb9cac116af5dd237cf987e56d12b0d2e54c5c565aab752f3e366c0c45bfefa76f5ed16&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">【SIGAI综述】行人检测算法   </a></p>
+<p>【获取码】SIGAI0604
+​    <a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247484711&amp;idx=1&amp;sn=bb7644e101b5924f54d6800b952dc3aa&amp;chksm=fdb698b0cac111a6605f5b9b6f0478bf21a8527cfad2342dbaaf624b4e9dcc43c0d85ae06deb&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">FlowNet到FlowNet2.0：基于卷积神经网络的光流预测算法 </a></p>
+<p>【获取码】SIGAI0608
+​    <a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247484784&amp;idx=1&amp;sn=ceafb54203f4e930ae457ad392b9f89c&amp;chksm=fdb698e7cac111f13d8229d7dcc00b4a7305d66de3da1bd41e7ecc1d29bfa7be520d205c53e9&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">人体骨骼关键点检测综述 </a></p>
+<p>【获取码】SIGAI0615
+​    <a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247484909&amp;idx=1&amp;sn=c02ee17e5175230ed39ad63e73249f5c&amp;chksm=fdb6987acac1116c0108ec28424baf4ea16ca11d2b13f20d4a825d7b2b82fb8765720ebd1063&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">目标检测算法之YOLO</a></p>
+<p>【获取码】SIGAI0622
+​    <a href="https://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247485005&amp;idx=1&amp;sn=0d4fb43b8db2a8046c64a9cfcbf3f478&amp;chksm=fdb69bdacac112cce05c8b735b4f8b1ccf2348bea55a30af2055fc328958bb8f1ffd0f819bd2&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">场景文本检测——CTPN算法介绍</a></p>
+<p>【获取码】SIGAI0629
+​    <a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247485142&amp;idx=1&amp;sn=c0e01da30eb5e750be453eabe4be2bf4&amp;chksm=fdb69b41cac11257ae22c7dac395e9651dab628fc35dd6d3c02d9566a8c7f5f2b56353d58a64&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">自然场景文本检测识别技术综述</a></p>
+]]></content>
+      <categories>
+        <category>算法</category>
+      </categories>
+      <tags>
+        <tag>人工智能</tag>
+        <tag>机器学习</tag>
+        <tag>深度学习</tag>
       </tags>
   </entry>
   <entry>
@@ -2582,273 +3057,6 @@ Have any other suggestions? Please mention in the comments and we’ll update th
       <tags>
         <tag>个人管理</tag>
         <tag>《形象美学》</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>怎样成为一名优秀的算法工程师</title>
-    <url>/public/2018/10/01/AI/how_algorithm_engineer/</url>
-    <content><![CDATA[<blockquote>
-<p>转载 原创： AI学习与实践平台
-TODO: 看完里面的文章，对每篇文章做个总结，实验+文章。</p>
-</blockquote>
-<h2 id="1-导言"><a class="header-anchor" href="#1-导言">¶</a>1. 导言</h2>
-<p>怎样成为一名优秀的算法工程师？这是很多从事人工智能学术研究和产品研发的同学都关心的一个问题。面对市场对人才的大量需求与供给的严重不足，以及高薪水的诱惑，越来越多的人开始学习这个方向的技术，或者打算向人工智能转型。市面上各种鱼龙混杂的培训班以及误导人的文章会把很多初学者带入歧途，浮躁的跟风将会让你最后收获甚微，根本达不到企业的用人要求。为了更好的帮助大家学习和成长，少走弯路，在今天的文章里，<a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247485551&amp;idx=2&amp;sn=a6689528f10aedab3fce91857eec877b&amp;chksm=fdb695f8cac11cee025ad6d8d77ed90f7169142d6b20b2f5a6945b58edd97c27225f4a2eba91&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">SIGAI</a> 的作者以自己的亲身经历和思考，为大家写下对这一问题的理解与答案。</p>
-<p>首先来看一个高度相关的问题：一个优秀的算法工程师必须具备哪些素质？我们给出的答案是这样的：</p>
-<ul>
-<li>数学知识</li>
-<li>编程能力</li>
-<li>机器学习与深度学习的知识</li>
-<li>应用方向的知识</li>
-<li>对自己所做的问题的思考和经验</li>
-</ul>
-<p>除去教育背景，逻辑思维，学习能力，沟通能力等其他方面的因素，大多数公司在考察算法工程师的技术水平时都会考虑上面这几个因素。接下来我们将按照这几个方面进行展开，详细的说明如何学习这些方面的知识以及积累经验。</p>
-<a id="more"></a>
-<h2 id="2-数学知识"><a class="header-anchor" href="#2-数学知识">¶</a>2. 数学知识</h2>
-<p>与其他工作方向如app、服务器开发相比，以及与计算机科学的其他方向如网络，数据库，分布式计算等相比，人工智能尤其是机器学习属于数学知识密集的方向。在各种书籍，论文，算法中都充斥着大量的数学公式，这让很多打算入门的人或者开始学习的人感到明显的压力。首先我们考虑一个最核心的问题：机器学习和深度学习究竟需要哪些数学知识？在<a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247485551&amp;idx=2&amp;sn=a6689528f10aedab3fce91857eec877b&amp;chksm=fdb695f8cac11cee025ad6d8d77ed90f7169142d6b20b2f5a6945b58edd97c27225f4a2eba91&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">SIGAI</a>之前的公众号文章“<a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247483713&amp;idx=1&amp;sn=1e7c81381d16806ac73e15691fe17aec&amp;chksm=fdb69cd6cac115c05f1f90b0407e3f8ae9be8719e454f908074ac0d079885b5c134e2d60fd64&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">学好机器学习需要哪些数学知识</a>”里，我们已经给出了答案。先看下面这张表：</p>
-<p><img src="/public/2018/10/01/AI/how_algorithm_engineer/clip_image003.gif" alt="EB5E93E91C3643F991C93D61F363373E.jpeg"></p>
-<p>更多算法工程师的必读文章，请关注SIGAICN公众号</p>
-<p>上面的表给出了各种典型的机器学习算法所用到的数学知识点。我们之前已经总结过，理解绝大多数算法和理论，有微积分/高等数学，线性代数，概率论，最优化方法的知识就够了。除流形学习需要简单的微分几何概念之外，深层次的数学知识如实变函数，泛函分析等主要用在一些基础理论结果的证明上，即使不能看懂证明过程，也不影响我们使用具体的机器学习算法。概率图模型、流形学习中基于图的模型会用到图论的一些基本知识，如果学习过离散数学或者数据结构，这些概念很容易理解。除此之外，某些算法会用到离散数学中的树的概念，但很容易理解。</p>
-<h3 id="2-1-高等数学"><a class="header-anchor" href="#2-1-高等数学">¶</a>2.1 高等数学</h3>
-<p>如果你已经学过这些大学数学课，只要把所需的知识点复习一遍就够了。对于微积分，通俗易懂而又被广为采用的是同济版的高等数学：</p>
-<p><img src="/public/2018/10/01/AI/how_algorithm_engineer/clip_image005.gif" alt="88F2EB8BDFE1448EBD2DF61848E355FD.jpeg"></p>
-<p>在机器学习中主要用到了微分部分，积分用的非常少。具体的，用到了下面的概念：</p>
-<ul>
-<li>导数和偏导数的定义与计算方法，与函数性质的关系</li>
-<li>梯度向量的定义</li>
-<li>极值定理，可导函数在极值点处导数或梯度必须为0</li>
-<li>雅克比矩阵，这是向量到向量映射函数的偏导数构成的矩阵，在求导推导中会用到</li>
-<li>Hessian矩阵，这是2阶导数对多元函数的推广，与函数的极值有密切的联系</li>
-<li>凸函数的定义与判断方法</li>
-<li>泰勒展开公式</li>
-<li>拉格朗日乘数法，用于求解带等式约束的极值问题</li>
-</ul>
-<p>其中最核心的是多元函数的泰勒展开公式，根据它我们可以推导出梯度下降法，牛顿法，拟牛顿法等一系列最优化方法。</p>
-<p>如果你想要深入的学习微积分，可以阅读数学系的教程，称为数学分析：</p>
-<p><img src="/public/2018/10/01/AI/how_algorithm_engineer/clip_image007.gif" alt="DEB5F0D2FC584E0B96B263FE1D559AFF.jpeg"></p>
-<p>与工科的高等数学偏重计算不同，它里面有大量的理论证明，对于锻炼数学思维非常有帮助。北大张筑生先生所著的数学分析可谓是国内这方面教材的精品。</p>
-<h3 id="2-2-线性代数"><a class="header-anchor" href="#2-2-线性代数">¶</a>2.2 线性代数</h3>
-<p>下面来看线性代数，同样是同济版的教材：</p>
-<p><img src="/public/2018/10/01/AI/how_algorithm_engineer/clip_image009.gif" alt="48D5E515A7144CE6A9CB78162F6ECAAF.jpeg"></p>
-<p>如果想更全面系统的学习线性代数，可以看这本书：</p>
-<p><img src="/public/2018/10/01/AI/how_algorithm_engineer/clip_image011.gif" alt="BF71AB68DB2B4D71AC8D2B3263C197E5.jpeg"></p>
-<p>相比之下，线性代数用的更多。具体用到的知识点有：</p>
-<ul>
-<li>向量和它的各种运算，包括加法，减法，数乘，转置，内积</li>
-<li>向量和矩阵的范数，L1范数和L2范数</li>
-<li>矩阵和它的各种运算，包括加法，减法，乘法，数乘</li>
-<li>逆矩阵的定义与性质</li>
-<li>行列式的定义与计算方法</li>
-<li>二次型的定义</li>
-<li>矩阵的正定性</li>
-<li>特征值与特征向量</li>
-<li>奇异值分解</li>
-<li>线性方程组的数值解</li>
-</ul>
-<p>机器学习算法处理的数据一般都是向量、矩阵或者张量。经典的机器学习算法输入的数据都是特征向量，深度学习算法在处理图像时输入的2维的矩阵或者3维的张量。掌握这些概念是你理解机器学习和深度学习算法的基础。</p>
-<h3 id="2-3-概率论"><a class="header-anchor" href="#2-3-概率论">¶</a>2.3 概率论</h3>
-<p>概率论国内理工科专业使用最多的是浙大版的教材：</p>
-<p><img src="/public/2018/10/01/AI/how_algorithm_engineer/clip_image013.gif" alt="91E918CF7ED84C7488BDDFFC7594E0D4.jpeg"></p>
-<p>如果把机器学习所处理的样本数据看作随机变量/向量，就可以用概率论的方法对问题进行建模，这代表了机器学习中很大一类方法。在机器学习里用到的概率论知识点有:</p>
-<ul>
-<li>随机事件的概念，概率的定义与计算方法</li>
-<li>随机变量与概率分布，尤其是连续型随机变量的概率密度函数和分布函数</li>
-<li>条件概率与贝叶斯公式</li>
-<li>常用的概率分布，包括正态分布，伯努利二项分布，均匀分布</li>
-<li>随机变量的均值与方差，协方差</li>
-<li>随机变量的独立性</li>
-<li>最大似然估计</li>
-</ul>
-<p>这些知识不超出普通理工科概率论教材的范围。</p>
-<h3 id="最优化"><a class="header-anchor" href="#最优化">¶</a>最优化</h3>
-<p>最后来说最优化，几乎所有机器学习算法归根到底都是在求解最优化问题。求解最优化问题的指导思想是在极值点出函数的导数/梯度必须为0。因此你必须理解梯度下降法，牛顿法这两种常用的算法，它们的迭代公式都可以从泰勒展开公式而得到。</p>
-<p>凸优化是机器学习中经常会提及的一个概念，这是一类特殊的优化问题，它的优化变量的可行域是凸集，目标函数是凸函数。凸优化最好的性质是它的所有局部最优解就是全局最优解，因此求解时不会陷入局部最优解。如果一个问题被证明为是凸优化问题，基本上已经宣告此问题得到了解决。在机器学习中，线性回归、岭回归、支持向量机、logistic回归等很多算法求解的都是凸优化问题。</p>
-<p>拉格朗日对偶为带等式和不等式约束条件的优化问题构造拉格朗日函数，将其变为原问题，这两个问题是等价的。通过这一步变换，将带约束条件的问题转换成不带约束条件的问题。通过变换原始优化变量和拉格朗日乘子的优化次序，进一步将原问题转换为对偶问题，如果满足某种条件，原问题和对偶问题是等价的。这种方法的意义在于可以将一个不易于求解的问题转换成更容易求解的问题。在支持向量机中有拉格朗日对偶的应用。</p>
-<p>KKT条件是拉格朗日乘数法对带不等式约束问题的推广，它给出了带等式和不等式约束的优化问题在极值点处所必须满足的条件。在支持向量机中也有它的应用。</p>
-<p>如果你没有学过最优化方法这门课也不用担心，这些方法根据微积分和线性代数的基础知识可以很容易推导出来。如果需要系统的学习这方面的知识，可以阅读《凸优化》，《非线性规划》两本经典教材。</p>
-<p><img src="/public/2018/10/01/AI/how_algorithm_engineer/clip_image015.gif" alt="B00246CBCFB446789B2F7F63F3292099.jpeg"></p>
-<h2 id="3-编程能力"><a class="header-anchor" href="#3-编程能力">¶</a>3. 编程能力</h2>
-<p>编程能力是学好机器学习和深度学习的又一大基础。对于计算机类专业的学生，由于本科已经学了c语言，c++，数据结构与算法，因此这方面一般不存在问题。对于非计算机专业的人来说，要真正学好机器学习和深度学习，这些知识是绕不开的。</p>
-<h3 id="3-1-C"><a class="header-anchor" href="#3-1-C">¶</a>3.1 C++</h3>
-<p>虽然现在大家热衷于学习python，但要作为一名真正的算法工程师，还是应该好好学习一下c++，至少，机器学习和深度学习的很多底层开源库都是用它写的；很多公司线上的产品，无论是运行在服务器端，还是嵌入式端，都是用c++写的。此外，如果你是应届生，在校园招聘时不少公司都会面试你c++的知识。</p>
-<p>C++最经典的教材无疑是c++ primer：</p>
-<p><img src="/public/2018/10/01/AI/how_algorithm_engineer/clip_image017.gif" alt="3E0DE0E336474B81A2F89F2190628186.jpeg"></p>
-<p>对做算法的人来说，这本书其实不用全部看，把常用的点学完就够了。对于进阶，Effective c++是很好的选择，不少公司的面试题就直接出自这本书的知识点：</p>
-<p><img src="/public/2018/10/01/AI/how_algorithm_engineer/clip_image019.gif" alt="DDCC32DD5E6D405588CB4B6F4A94BFE5.jpeg"></p>
-<p>接下来说python，相比c++来说，学习的门槛要低很多，找一本通俗易懂的入门教程学习一遍即可。</p>
-<h3 id="3-2-数据结构和算法"><a class="header-anchor" href="#3-2-数据结构和算法">¶</a>3.2 数据结构和算法</h3>
-<p>数据结构和算法是编写很多程序的基础，对于机器学习和深度学习程序也不例外。很多算法的实现都依赖于数组，链表，数，排序，查找之类的数据结构和基础算法。如果有时间和精力，把算法导论啃一遍，你会有不一样的感受：</p>
-<p><img src="/public/2018/10/01/AI/how_algorithm_engineer/clip_image021.gif" alt="E077608423D7473ABF1DBF75C482E060.jpeg"></p>
-<p>对于应届生来说，学完它对于你通过大互联网和人工智能公司校园招聘的技术面试也非常有用。</p>
-<p>上面说的只是编程语言的程序设计的理论知识，我们还要考虑实际动手能力。对于开发环境如gcc/g++，visual studio之类的工具，以及gdb之类的调试工具需要做到熟练使用。如果是在linux上开发，对linux的常用命令也要熟记于心。这方面的知识看各种具体的知识点和教程即可。另外，对于编程的一些常识，如进程，线程，虚拟内存，文件系统等，你最好也要进行了解。</p>
-<h2 id="4-机器学习与深度学习的知识"><a class="header-anchor" href="#4-机器学习与深度学习的知识">¶</a>4. 机器学习与深度学习的知识</h2>
-<p>在说完了数学和编程基础之后，下面我来看核心的内容，机器学习和深度学习知识。机器学习是现阶段解决很多人工智能问题的核心方法，尤其是深度学习，因此它们是算法工程师的核心知识。在这里有一个问题：是否需要先学机器学习，还是直接学深度学习？如果是一个专业的算法工程师，我的建议是先学机器学习。至少，你要知道机器学习中的基本概念， 过拟合，生成模型，ROC曲线等，上来就看深度学习，如没有背景知识你将不知所云。另外，神经网络只是机器学习中的一类方法，对于很多问题，其他机器学习算法如logistic回归，随机森林，GBDT，决策树等还在被大规模使用，因此你不要把自己局限在神经网络的小圈子里。</p>
-<h3 id="4-1-ML和DP的教材"><a class="header-anchor" href="#4-1-ML和DP的教材">¶</a>4.1 ML和DP的教材</h3>
-<p>首先来看机器学习，这方面的教材很多，周志华老师的机器学习，李航老师的统计学习方法是国内的经典。这里我们介绍国外的经典教材，首先是PRML：</p>
-<p><img src="/public/2018/10/01/AI/how_algorithm_engineer/clip_image023.gif" alt="BE2D3D5817344DE0831B718D3F891899.jpeg"></p>
-<p>PRML 下载地址 <a href="https://www.microsoft.com/en-us/research/publication/pattern-recognition-machine-learning/" target="_blank" rel="noopener">link</a></p>
-<p>此书深厚，内容全面，涵盖了有监督学习，无监督学习的主要方法，理论推导和证明详细深入，是机器学习的经典。此外还有模式分类这本书，在这里不详细介绍。</p>
-<p>本书主要内容包括：
-<strong>第一章：简介</strong>
-概率论、模型选择、决策理论、信息理论</p>
-<p><strong>第二章：概率分布</strong>
-二元变量、多项变量、高斯分布、指数分布族、非参数方法</p>
-<p><strong>第三章：线性模型回归问题</strong>
-线性基函数模型、偏置方差分解、贝叶斯线性回归、贝叶斯模型比较、The Evidence Approximation、固定基函数的局限性</p>
-<p><strong>第四章：线性模型分类问题</strong>
-判别函数、概率生成模型、概率判别模型、拉普拉斯逼近、贝叶斯逻辑回归</p>
-<p><strong>第五章：神经网络</strong>
-前馈神经网络、网络训练、误差反向传播、Hessian矩阵、神经网络的正则化、混合密度网络、贝叶斯神经网络</p>
-<p><strong>第六章：Kernel方法</strong>
-对偶表示、构造核、径向基函数网络、高斯过程</p>
-<p><strong>第七章：Sparse Kernel Machines</strong>
-最大边缘分类器、相关向量机</p>
-<p><strong>第八章：图模型</strong>
-贝叶斯网络、条件独立性、马尔科夫随机场、图模型的推理</p>
-<p><strong>第九章：混合模型和EM</strong>
-K-means聚类、高斯混合、EM算法</p>
-<p><strong>第十章：近似推断</strong>
-变分推断、高斯的变分混合、变分线性回归、指数族分布、局部变分方法、变分logistic回归、Expectation Propagation</p>
-<p><strong>第十一章：采样方法</strong>
-基本采样算法、马尔科夫链蒙特卡洛、吉布斯采样、切片采样、混合蒙特卡洛算法、估计划分函数</p>
-<p><strong>第十二章：连续潜在变数</strong>
-主成分分析，Probabilistic PCA，Kernel PCA，非线性潜变量模型</p>
-<p><strong>第十三章：序列数据</strong>
-马尔可夫模型，隐马尔可夫模型，Linear Dynamical Systems</p>
-<p><strong>第十四章：混合模型</strong>
-贝叶斯模型平均法，Committees，Boosting，基于树的模型，条件混合模型</p>
-<p>深度学习目前最权威的教程是下面这本书：</p>
-<p><img src="/public/2018/10/01/AI/how_algorithm_engineer/clip_image025.gif" alt="A39AD50565E141F89B08C93CCD7DEDFC.jpeg"></p>
-<p>它涵盖了深度学习的方方面面，从理论到工程，但美中不足的是对应于介绍的相对较少。</p>
-<p>强化学习是机器学习很独特的一个分支，大多数人对它不太了解，这方面的教程非常少，我们推荐下面这本书：</p>
-<p><img src="/public/2018/10/01/AI/how_algorithm_engineer/clip_image027.gif" alt="115B0E32F06F4538A76CB9B610F63B8C.jpeg"></p>
-<p>美中不足的是这本书对深度强化学习没有介绍，因为出版的较早。不知最新的版本有没有加上这方面的内容。</p>
-<p>在这里需要强调的是，你的知识要系统化，有整体感。很多同学都感觉到自己学的机器学习太零散，缺乏整体感。这需要你多思考算法之间的关系，演化历史之类的问题，这样你就做到胸中有图-机器学习算法地图。其实，<a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247485551&amp;idx=2&amp;sn=a6689528f10aedab3fce91857eec877b&amp;chksm=fdb695f8cac11cee025ad6d8d77ed90f7169142d6b20b2f5a6945b58edd97c27225f4a2eba91&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">SIGAI</a>在之前的公众号文章“<a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247485306&amp;idx=1&amp;sn=fc8cc8de313bdb61dcd39c1dedb240a4&amp;chksm=fdb69aedcac113fb4b18c74248a313536ded50bade0e66b26f332ab247b148519da71ff2a3c0&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">机器学习算法地图</a>”里已经给你总结出来了。</p>
-<h3 id="4-2-开源库"><a class="header-anchor" href="#4-2-开源库">¶</a>4.2 开源库</h3>
-<p>上面介绍了机器学习和深度学习的理论教材，下面来说实践问题。我们无需重复造车轮子，熟练的使用主流的开源库是需要掌握的一项技能。对于经典的机器学习，常用的库的有:</p>
-<ul>
-<li>libsvm</li>
-<li>liblinear</li>
-<li>XGBoost</li>
-<li>OpenCV</li>
-<li>HTK</li>
-<li>Weka</li>
-</ul>
-<p>在这里我们不一一列举。借助于这些库，我们可以方便的完成自己的实验，或是研发自己的产品。对于深度学习，目前常用的有：</p>
-<ul>
-<li>Caffe</li>
-<li>TensorFlow</li>
-<li>MXNet</li>
-</ul>
-<p>除此之外，还有其他的。对于你要用到的开源库，一定要理解它的原理，以及使用中的一些细节问题。例如很多算法要求输入的数据先做归一化，否则效果会非常差，而且面临浮点数溢出的问题，这些实际经验需要你在使用中摸索。如果有精力把这些库的核心代码分析一遍，你对实现机器学习算法将会更有底气。以深度学习为例，最核心的代码无非是实现：</p>
-<ul>
-<li>各种层，包括它们的正向传播和反向传播</li>
-<li>激活函数的实现</li>
-<li>损失函数的实现</li>
-<li>输入数据的处理</li>
-<li>求解器，实现各种梯度下降法</li>
-</ul>
-<p>这些代码的量并不大，沉下心来，我相信一周之内肯定能分析完。看完之后你会有一种豁然开朗的感觉。</p>
-<h2 id="5-应用方向的知识"><a class="header-anchor" href="#5-应用方向的知识">¶</a>5. 应用方向的知识</h2>
-<p>接下来是各个方向的知识，与机器学习有关的应用方向当前主要有：</p>
-<ul>
-<li>机器视觉</li>
-<li>语音识别</li>
-<li>自然语言处理</li>
-<li>数据挖掘</li>
-<li>知识图谱</li>
-<li>推荐系统</li>
-</ul>
-<p>除此之外，还有其他一些特定小方向，在这里不一一列举。这些具体的应用方向一般都有自己的教材，如果你以后要从事此方向的研究，系统的学习一遍是必须的。</p>
-<h2 id="6-实践经验与思考"><a class="header-anchor" href="#6-实践经验与思考">¶</a>6. 实践经验与思考</h2>
-<p>在说完理论与实践知识之后，最后我们来说经验与思考。在你确定要做某一个方向之后，对这个方向的方法要有一个全面系统的认识，很多方法是一脉相承的，如果只追求时髦看最新的算法，你很难做出学术上的创新，以及工程上的优化。对于本问题所有的经典论文，都应该化时间细度，清楚的理解它们解决了什么问题，是怎么解决的，还有哪些问题没有解决。例如：</p>
-<ul>
-<li>机器视觉目标检测中的遮挡问题</li>
-<li>推荐系统中的冷启动问题</li>
-<li>自然语言处理中文分词中的歧义切分问题</li>
-</ul>
-<p>只有经过大量的编程和实验训练，以及持续的思考，你才能算得上对这个方向深刻理解，以至于有自己的理解。很多同学对自己实现轮上的算法没有底气，解决这个问题最快的途径就是看论文算法的开源代码，在github上有丰富的资源，选择一些合适的，研究一下别人是怎么实现的，你就能明白怎么实现自己的网络结构和损失函数，照葫芦画瓢即可。</p>
-<p>计算机以及人工智能是一个偏实践的学科，它的方法和理论既需要我们有扎实的理论功底，又需要有丰富的实践能力与经验。这两个方面构成了算法工程师最主要的素质。科学的学习路径能够让你取得好的学习效果，同时也缩短学习时间。错误和浮躁的做法则会让你最后事倍功半。这是  <a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247485551&amp;idx=2&amp;sn=a6689528f10aedab3fce91857eec877b&amp;chksm=fdb695f8cac11cee025ad6d8d77ed90f7169142d6b20b2f5a6945b58edd97c27225f4a2eba91&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">SIGAI</a> 对想进入这个领域，或者刚进入这个领域的每个人要说的！</p>
-<p><img src="/public/2018/10/01/AI/how_algorithm_engineer/clip_image029.gif" alt="07382DFD55044B48927C8B054DE6F745.png"></p>
-<h2 id="7-其他材料"><a class="header-anchor" href="#7-其他材料">¶</a>7. 其他材料</h2>
-<h3 id="7-1-科普类"><a class="header-anchor" href="#7-1-科普类">¶</a>7.1 科普类</h3>
-<p>【‍获取码】SIGAI0413
-​    <a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247483705&amp;idx=1&amp;sn=c6e7c4a2e14a2469308b41eb60f155ac&amp;chksm=fdb69caecac115b8712653600e526e99a3f6976fdaa2f6b6a09388fa6f9677ccb57b40c40ae3&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">机器学习——波澜壮阔四十年 </a></p>
-<p>【获取码】SIGAI0620
-​    <a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247484981&amp;idx=1&amp;sn=d3003468b9853851923844812993e060&amp;chksm=fdb69ba2cac112b4dac620d52100ebd033eb679f29340726a67297c4d6980b16c7cc91122028&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">理解计算：从√2到AlphaGo ——第1季 从√2谈起</a></p>
-<p>【获取码】SIGAI0704
-<a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247485155&amp;idx=1&amp;sn=990cc7400751c36e9fef0a261e6add2a&amp;chksm=fdb69b74cac112628bdae14c6435120f6fece20dae9bf7b1ffc8b8b25e5496a24160feca0a72&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">理解计算：从√2到AlphaGo ——第2季 神经计算的历史背景</a></p>
-<h3 id="7-2-数学类"><a class="header-anchor" href="#7-2-数学类">¶</a>7.2 数学类</h3>
-<p>【获取码】SIGAI0417
-<a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247483713&amp;idx=1&amp;sn=1e7c81381d16806ac73e15691fe17aec&amp;chksm=fdb69cd6cac115c05f1f90b0407e3f8ae9be8719e454f908074ac0d079885b5c134e2d60fd64&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">学好机器学习需要哪些数学知识</a></p>
-<p>【获取码】SIGAI0511
-<a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247484111&amp;idx=1&amp;sn=4ed4480e849298a0aff828611e18f1a8&amp;chksm=fdb69f58cac1164e844726bd429862eb7b38d22509eb4d1826eb851036460cb7ca5a8de7b9bb&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">理解梯度下降法</a></p>
-<p>【获取码】SIGAI0518
-<a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247484439&amp;idx=1&amp;sn=4fa8c71ae9cb777d6e97ebd0dd8672e7&amp;chksm=fdb69980cac110960e08c63061e0719a8dc7945606eeef460404dc2eb21b4f5bdb434fb56f92&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">理解凸优化</a></p>
-<p>【获取码】SIGAI0531
-<a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247484651&amp;idx=1&amp;sn=a0e4ca5edb868fe3eae9101b71dd7103&amp;chksm=fdb6997ccac1106a61f51fe9f8fd532045cc5d13f6c75c2cbbf1a7c94c58bcdf5f2a6661facd&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">理解牛顿法 </a></p>
-<h3 id="7-3-机器学习类"><a class="header-anchor" href="#7-3-机器学习类">¶</a>7.3 机器学习类</h3>
-<p>【获取码】SIGAI0428
-​    <a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247483937&amp;idx=1&amp;sn=84a5acf12e96727b13fd7d456c414c12&amp;chksm=fdb69fb6cac116a02dc68d948958ee731a4ae2b6c3d81196822b665224d9dab21d0f2fccb329&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">用一张图理解SVM的脉络</a></p>
-<p>【获取码】SIGAI0505
-​    <a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247483977&amp;idx=1&amp;sn=401b211bf72bc70f733d6ac90f7352cc&amp;chksm=fdb69fdecac116c81aad9e5adae42142d67f50258106f501af07dc651d2c1473c52fad8678c3&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">理解神经网络的激活函数</a></p>
-<p>【获取码】SIGAI0522
-<a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247484495&amp;idx=1&amp;sn=4f3a6ce21cdd1a048e402ed05c9ead91&amp;chksm=fdb699d8cac110ce53f4fc5e417e107f839059cb76d3cbf640c6f56620f90f8fb4e7f6ee02f9&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">【实验】理解SVM核函数和参数的作用</a></p>
-<p>【获取码】SIGAI0601
-<a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247484658&amp;idx=1&amp;sn=f5c9f92c272c75883bf8e6f532559f11&amp;chksm=fdb69965cac11073f49048caef5d7b9129614090a363d9ef7f3d1b9bc59948d2217d2bca7b7b&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">【群话题精华】五月集锦—机器学习和深度学习中一些值得思考的问题   </a></p>
-<p>【获取码】SIGAI0602
-​    <a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247484692&amp;idx=1&amp;sn=9b389aa65208c778dddf17c601afbee1&amp;chksm=fdb69883cac1119593934734e94c3b71aa68de67bda8a946c1f9f9e1209c3b6f0bf18fed99b8&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">大话AdaBoost算法    </a></p>
-<p>【获取码】SIGAI0606
-​    <a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247484754&amp;idx=1&amp;sn=b2c0d6798f44e13956bb42373e51d18c&amp;chksm=fdb698c5cac111d3e3dca24c50aafbfb61e5b05c5df5b603067bb7edec8db049370b73046b24&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">理解主成分分析（PCA）    </a></p>
-<p>【获取码】SIGAI0611
-​    <a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247484827&amp;idx=1&amp;sn=043d7d0159baaddfbf92ed78ee5b1124&amp;chksm=fdb6980ccac1111a9faeae7f517fee46a1dfab19612f76ccfe5417487b3f090ab8fc702d18b8&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">理解决策树  </a></p>
-<p>【获取码】SIGAI0613
-​    <a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247484859&amp;idx=1&amp;sn=2c4db22fb538953a62a90983e3e1f99d&amp;chksm=fdb6982ccac1113a82e92be325bb07a947d54090274654375f3b50e11e1abd809fb7358bde16&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">用一句话总结常用的机器学习算法</a></p>
-<p>【获取码】SIGAI0618
-​    <a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247484954&amp;idx=1&amp;sn=c28b7f07c22466e91b1ef90e9dbe3ad1&amp;chksm=fdb69b8dcac1129bc6e78fca1d550e2b18238ad1c240c73b280d4e529f9f93c4626b3ac45ea2&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">理解过拟合</a></p>
-<p>【获取码】SIGAI0627
-​    <a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247485074&amp;idx=1&amp;sn=0ebf1bf8f49e9c46075fe3803d04c95d&amp;chksm=fdb69b05cac112132d280c70af3923ca4c3cccfa5fcd8628b79d4b246b3b2decbc80a180abb3&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">k近邻算法</a></p>
-<p>【获取码】SIGAI0704
-​    <a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247485306&amp;idx=1&amp;sn=fc8cc8de313bdb61dcd39c1dedb240a4&amp;chksm=fdb69aedcac113fb4b18c74248a313536ded50bade0e66b26f332ab247b148519da71ff2a3c0&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">机器学习算法地图</a></p>
-<p>【获取码】SIGAI0706
-​    <a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247485446&amp;idx=1&amp;sn=57d7d866443810c20c4ea2c6ee8018cc&amp;chksm=fdb69591cac11c8773638b396abe43c0161e4d339f0fa845e54326be3e8c4933a3b6a2713dae&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">反向传播算法推导—全连接神经网络</a></p>
-<h3 id="7-4-深度学习类"><a class="header-anchor" href="#7-4-深度学习类">¶</a>7.4 深度学习类</h3>
-<p>【获取码】SIGAI0426
-<a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247483816&amp;idx=1&amp;sn=fc52765b012771d4736c9be4109f910e&amp;chksm=fdb69c3fcac115290020c3dd0d677d987086a031c1bde3429339bb3b5bbc0aa154e76325c225&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">卷积神经网络为什么能够称霸计算机视觉领域？</a></p>
-<p>【获取码】SIGAI0508
-<a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247484037&amp;idx=1&amp;sn=13ad0d521b6a3578ff031e14950b41f4&amp;chksm=fdb69f12cac11604a42ccb37913c56001a11c65a8d1125c4a9aeba1aed570a751cb400d276b6&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">深度卷积神经网络演化历史及结构改进脉络-40页长文全面解读 </a></p>
-<p>【获取码】SIGAI0515
-<a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247484310&amp;idx=1&amp;sn=0fc55a2784a894100a1ae64d7dbfa23d&amp;chksm=fdb69e01cac1171758cb021fc8779952e55de41032a66ee5417bd3e826bf703247e243654bd0&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">循环神经网络综述—语音识别与自然语言处理的利器</a></p>
-<p>【获取码】SIGAI0625
-<a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247485042&amp;idx=1&amp;sn=cdcf8d4b07acf64c7a6f5f7c1a731a12&amp;chksm=fdb69be5cac112f377766984afb87313c1e1c58d94c80005f0f6f6af61ee5a4bd1bf6c6157b6&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">卷积神经网络的压缩与加速</a></p>
-<p>【获取码】SIGAI0709
-<a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247485551&amp;idx=1&amp;sn=213f48c4e55bee688cf0731097bb832c&amp;chksm=fdb695f8cac11ceef3ef246c54d811dd64d8cc45fc75488c374c7aa95f72c1abfb55555ef0b7&amp;scene=21#wechat_redirect" target="_blank" rel="noopener"> 生成式对抗网络模型综述</a></p>
-<h3 id="7-5-机器视觉类"><a class="header-anchor" href="#7-5-机器视觉类">¶</a>7.5 机器视觉类</h3>
-<p>【获取码】SIGAI0420
-​    <a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247483726&amp;idx=1&amp;sn=9fef4cc1766ea4258749f8d40cc71a6e&amp;chksm=fdb69cd9cac115cf4eba16081780c3b64c75e1e55a40bf2782783d5c28f00c6f143426e6f0aa&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">人脸识别算法演化史</a></p>
-<p>【获取码】SIGAI0424
-​    <a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247483731&amp;idx=1&amp;sn=237c52bc9ddfe65779b73ef8b5507f3c&amp;chksm=fdb69cc4cac115d2ca505e0deb975960a792a0106a5314ffe3052f8e02a75c9fef458fd3aca2&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">基于深度学习的目标检测算法综述</a></p>
-<p>【获取码】SIGAI0503
-​    <a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247483950&amp;idx=1&amp;sn=a3a5b7907b2552c233f654a529931776&amp;chksm=fdb69fb9cac116af5dd237cf987e56d12b0d2e54c5c565aab752f3e366c0c45bfefa76f5ed16&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">人脸检测算法综述</a></p>
-<p>【获取码】SIGAI0525
-<a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247483950&amp;idx=1&amp;sn=a3a5b7907b2552c233f654a529931776&amp;chksm=fdb69fb9cac116af5dd237cf987e56d12b0d2e54c5c565aab752f3e366c0c45bfefa76f5ed16&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">【SIGAI综述】行人检测算法   </a></p>
-<p>【获取码】SIGAI0604
-​    <a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247484711&amp;idx=1&amp;sn=bb7644e101b5924f54d6800b952dc3aa&amp;chksm=fdb698b0cac111a6605f5b9b6f0478bf21a8527cfad2342dbaaf624b4e9dcc43c0d85ae06deb&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">FlowNet到FlowNet2.0：基于卷积神经网络的光流预测算法 </a></p>
-<p>【获取码】SIGAI0608
-​    <a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247484784&amp;idx=1&amp;sn=ceafb54203f4e930ae457ad392b9f89c&amp;chksm=fdb698e7cac111f13d8229d7dcc00b4a7305d66de3da1bd41e7ecc1d29bfa7be520d205c53e9&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">人体骨骼关键点检测综述 </a></p>
-<p>【获取码】SIGAI0615
-​    <a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247484909&amp;idx=1&amp;sn=c02ee17e5175230ed39ad63e73249f5c&amp;chksm=fdb6987acac1116c0108ec28424baf4ea16ca11d2b13f20d4a825d7b2b82fb8765720ebd1063&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">目标检测算法之YOLO</a></p>
-<p>【获取码】SIGAI0622
-​    <a href="https://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247485005&amp;idx=1&amp;sn=0d4fb43b8db2a8046c64a9cfcbf3f478&amp;chksm=fdb69bdacac112cce05c8b735b4f8b1ccf2348bea55a30af2055fc328958bb8f1ffd0f819bd2&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">场景文本检测——CTPN算法介绍</a></p>
-<p>【获取码】SIGAI0629
-​    <a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247485142&amp;idx=1&amp;sn=c0e01da30eb5e750be453eabe4be2bf4&amp;chksm=fdb69b41cac11257ae22c7dac395e9651dab628fc35dd6d3c02d9566a8c7f5f2b56353d58a64&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">自然场景文本检测识别技术综述</a></p>
-]]></content>
-      <categories>
-        <category>算法</category>
-      </categories>
-      <tags>
-        <tag>人工智能</tag>
-        <tag>机器学习</tag>
-        <tag>深度学习</tag>
       </tags>
   </entry>
   <entry>
