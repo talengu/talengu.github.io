@@ -300,161 +300,6 @@ Thank you !!!</p>
       </tags>
   </entry>
   <entry>
-    <title>选择困难者的福音？层次分析法</title>
-    <url>/public/2021/04/02/math_AHP/</url>
-    <content><![CDATA[<p><strong>摘要</strong></p>
-<p>日常生活中，我们面临很多的选择，选择工作offer，选择买哪个牌子的手机，选择哪个地方旅行等等。这些选择难以定量的衡量，有很多不确定性。内心小纠结，我选择了这个，万一那个好呢，怎么办？请看层次分析法。</p>
-<p>层次分析法(Analytic Hierarchy Process，简称 AHP)是对一些较为复杂、较为模糊的问题作出决策的简易方法，它特别适用于那些难于完全定量分析的问题。它是美国运筹学家 T. L. Saaty 教授于上世纪 70 年代初期提出的一种简便、灵活而又实用的多准则决策方法。</p>
-<p>运用层次分析法建模，大体上可按下面四个步骤进行</p>
-<ul>
-<li>建立递阶层次结构模型</li>
-<li>构造出各层次中的所有判断矩阵</li>
-<li>层次单排序及一致性检验</li>
-<li>层次总排序及一致性检验。（一般不用）</li>
-</ul>
-<a id="more"></a>
-<p>让我们从offer大佬的例子开始吧！</p>
-<p>举个栗子，今年有位大学生，有三个offer，C1 C2 C3。</p>
-<p>第一步，建立层次模型。</p>
-<ul>
-<li>目标层A：找工作的目标，自己满意程度。
-<ul>
-<li>这个程度怎么计算呢？比如工作1。</li>
-</ul>
-</li>
-<li>准则层B：研究课题、发展前途、待遇、同事情况、地理位置、单位名气等等。
-<ul>
-<li>尽量列全一点，不需要排列重要顺序。</li>
-<li>小于等于9个，后面要两两拍脑袋给出相对的重要层度，给多了不得把脑袋拍疼了。</li>
-<li>也可以有子准则层，比如待遇中的放假、工作环境等等，列出也小于9个。</li>
-</ul>
-</li>
-<li>方案层C：就是我们的offer</li>
-</ul>
-<img src="/public/2021/04/02/math_AHP/image-20200406145535585.png" alt="image-20200406145535585" style="zoom:50%;">
-<h2 id="构造-A-B-之间判断矩阵"><a class="header-anchor" href="#构造-A-B-之间判断矩阵">¶</a>构造 A B 之间判断矩阵</h2>
-<p>准则层B与目标A之间的关系。为了求出准则层中(B1-6) 对目标的重要层度的排序。比如对于该生工作满意度第一重要是待遇，然后是地点，其实该生自己也很模糊。就是固定A，然后求B中准则，对A重要性的排序。</p>
-<h3 id="我们怎么对B中的准则们的重要排序呢？"><a class="header-anchor" href="#我们怎么对B中的准则们的重要排序呢？">¶</a>我们怎么对B中的准则们的重要排序呢？</h3>
-<p>直接给每一个准则，0-1的评分，然后排序。经常会想，给完分之后，这个不合理呀要不我再给哪个准则加加分。所以这样的方法常常会因考虑不周全、顾此失彼而使决策者提出与他实际认为的重要性程度不相一致的数据。</p>
-<p>我们可以将这个过程细化，我就比较两个准则对于目标的重要性，然后通过下面的矩阵方法，求出优先顺序。</p>
-<p>还能通过一个一致性检验，来检验在你评分的过程中，有没有自相矛盾的地方，当然这种方法允许一些自相矛盾。反正评分的时候尊从内心拍脑袋就对了。</p>
-<p>所以我们拿出一个B1 与 B2 对于目标的重要，想一想然后给出B2/B1，填入下面的表格中的(2,1)的位置。</p>
-<p>整个矩阵i,j 与j，i 是取倒数的关系，所以只要做一半。</p>
-<p>在找工作的目标下，准则i与j相对的重要性表示，B2/B1 的值。采用9个标度。而相比不重要刻度取倒数就可以了</p>
-<table>
-<thead>
-<tr>
-<th>准则i比j的比较</th>
-<th>1</th>
-<th>2</th>
-<th>3</th>
-<th>4</th>
-<th>5</th>
-<th>6</th>
-<th>7</th>
-<th>8</th>
-<th>9</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-<td>相同重要</td>
-<td></td>
-<td>比较重要</td>
-<td></td>
-<td>明显重要</td>
-<td></td>
-<td>强烈重要</td>
-<td></td>
-<td>极端重要</td>
-</tr>
-</tbody>
-</table>
-<p>最后的两两相对重要表格</p>
-<img src="/public/2021/04/02/math_AHP/image-20200406145640316.png" alt="image-20200406145640316" style="zoom:50%;">
-<p>对角线对称的两个数互为倒数，即 $$a_{ji}=\frac{1}{a_{ij}}$$  B1/B2 不就是和 B2/B1互为倒数嘛</p>
-<p>从心理学观点来看，分级太多会超越人们的判断能力，既增加了作判断的难度， 又容易因此而提供虚假数据。Saaty 等人还用实验方法比较了在各种不同标度下人们判断结果的正确性，实验结果也表明，采用 1~9 标度最为合适。</p>
-<p>判断矩阵的一致性指标步骤：</p>
-<ul>
-<li>1）计算一致性指标 CI 。$$CI=\frac{ \lambda_{max}-n}{n-1}$$</li>
-<li>2）查表，平均随机一致性指标 RI。</li>
-</ul>
-<table>
-<thead>
-<tr>
-<th>n</th>
-<th>1</th>
-<th>2</th>
-<th>3</th>
-<th>4</th>
-<th>5</th>
-<th>6</th>
-<th>7</th>
-<th>8</th>
-<th>9</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>RI</td>
-<td>0</td>
-<td>0</td>
-<td>0.58</td>
-<td>0.90</td>
-<td>1.12</td>
-<td>1.24</td>
-<td>1.32</td>
-<td>1.41</td>
-<td>1.45</td>
-</tr>
-</tbody>
-</table>
-<blockquote>
-<p><em>RI</em> 的值是这样得到的，用随机方法构造500个样本矩阵:随机地从1~9及其倒数中抽取数字构造正互反矩阵，求得最大特征根的平均值 $$\bar \lambda_{max}$$ 并定义$$RI=\frac{\bar \lambda_{max}-n}{n-1}$$</p>
-</blockquote>
-<ul>
-<li>3）计算一致性比例CR。 $$CR=\frac{CI}{RI}$$，当$$CR&lt;0.10$$ 时，认为判断矩阵的一致性是可以接受的，否则应对判断矩阵作适当修正。</li>
-</ul>
-<p>如果一个矩阵满足上面的条件，那么它最大特征值对应的特征向量就可以认为是每个维度的重要性权重。</p>
-<h2 id="构造-B-C-之间判断矩阵"><a class="header-anchor" href="#构造-B-C-之间判断矩阵">¶</a>构造 B C 之间判断矩阵</h2>
-<p>相同的方法，在同一B准则下，考虑不同工作的优先顺序。求工作排序的方法，和上面一样。</p>
-<img src="/public/2021/04/02/math_AHP/image-20200406162644137.png" alt="image-20200406162644137" style="zoom:50%;">
-<p>python代码<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup></p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">import</span> warnings</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AHP</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, criteria, b)</span>:</span></span><br><span class="line">        self.RI = (<span class="number">0</span>, <span class="number">0</span>, <span class="number">0.58</span>, <span class="number">0.9</span>, <span class="number">1.12</span>, <span class="number">1.24</span>, <span class="number">1.32</span>, <span class="number">1.41</span>, <span class="number">1.45</span>, <span class="number">1.49</span>)</span><br><span class="line">        self.criteria = criteria</span><br><span class="line">        self.b = b</span><br><span class="line">        self.num_criteria = criteria.shape[<span class="number">0</span>]</span><br><span class="line">        self.num_project = b[<span class="number">0</span>].shape[<span class="number">0</span>]</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">cal_weights</span><span class="params">(self, input_matrix)</span>:</span></span><br><span class="line">        input_matrix = np.array(input_matrix)</span><br><span class="line">        n, n1 = input_matrix.shape</span><br><span class="line">        <span class="keyword">assert</span> n == n1, <span class="string">'不是一个方阵'</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(n):</span><br><span class="line">            <span class="keyword">for</span> j <span class="keyword">in</span> range(n):</span><br><span class="line">                <span class="keyword">if</span> np.abs(input_matrix[i, j] * input_matrix[j, i] - <span class="number">1</span>) &gt; <span class="number">1e-7</span>:</span><br><span class="line">                    <span class="keyword">raise</span> ValueError(<span class="string">'不是反互对称矩阵'</span>)</span><br><span class="line"></span><br><span class="line">        eigenvalues, eigenvectors = np.linalg.eig(input_matrix)</span><br><span class="line"></span><br><span class="line">        max_idx = np.argmax(eigenvalues)</span><br><span class="line">        max_eigen = eigenvalues[max_idx].real</span><br><span class="line">        eigen = eigenvectors[:, max_idx].real</span><br><span class="line">        eigen = eigen / eigen.sum()</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> n &gt; <span class="number">9</span>:</span><br><span class="line">            CR = <span class="literal">None</span></span><br><span class="line">            warnings.warn(<span class="string">'无法判断一致性'</span>)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            CI = (max_eigen - n) / (n - <span class="number">1</span>)</span><br><span class="line">            CR = CI / self.RI[n]</span><br><span class="line">        <span class="keyword">return</span> max_eigen, CR, eigen</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">run</span><span class="params">(self)</span>:</span></span><br><span class="line">        max_eigen, CR, criteria_eigen = self.cal_weights(self.criteria)</span><br><span class="line">        print(<span class="string">'准则层：最大特征值&#123;:&lt;5f&#125;,CR=&#123;:&lt;5f&#125;,检验&#123;&#125;通过'</span>.format(max_eigen, CR, <span class="string">''</span> <span class="keyword">if</span> CR &lt; <span class="number">0.1</span> <span class="keyword">else</span> <span class="string">'不'</span>))</span><br><span class="line">        print(<span class="string">'准则层权重=&#123;&#125;\n'</span>.format(criteria_eigen))</span><br><span class="line"></span><br><span class="line">        max_eigen_list, CR_list, eigen_list = [], [], []</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> self.b:</span><br><span class="line">            max_eigen, CR, eigen = self.cal_weights(i)</span><br><span class="line">            max_eigen_list.append(max_eigen)</span><br><span class="line">            CR_list.append(CR)</span><br><span class="line">            eigen_list.append(eigen)</span><br><span class="line"></span><br><span class="line">        pd_print = pd.DataFrame(eigen_list,</span><br><span class="line">                                index=[<span class="string">'准则'</span> + str(i) <span class="keyword">for</span> i <span class="keyword">in</span> range(self.num_criteria)],</span><br><span class="line">                                columns=[<span class="string">'方案'</span> + str(i) <span class="keyword">for</span> i <span class="keyword">in</span> range(self.num_project)],</span><br><span class="line">                                )</span><br><span class="line">        pd_print.loc[:, <span class="string">'最大特征值'</span>] = max_eigen_list</span><br><span class="line">        pd_print.loc[:, <span class="string">'CR'</span>] = CR_list</span><br><span class="line">        pd_print.loc[:, <span class="string">'一致性检验'</span>] = pd_print.loc[:, <span class="string">'CR'</span>] &lt; <span class="number">0.1</span></span><br><span class="line">        print(<span class="string">'方案层'</span>)</span><br><span class="line">        print(pd_print)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 目标层</span></span><br><span class="line">        obj = np.dot(criteria_eigen.reshape(<span class="number">1</span>, <span class="number">-1</span>), np.array(eigen_list))</span><br><span class="line">        print(<span class="string">'\n目标层'</span>, obj)</span><br><span class="line">        print(<span class="string">'最优选择是方案&#123;&#125;'</span>.format(np.argmax(obj)))</span><br><span class="line">        <span class="keyword">return</span> obj</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    <span class="comment"># 准则重要性矩阵</span></span><br><span class="line">    criteria = np.array([[<span class="number">1</span>, <span class="number">2</span>, <span class="number">7</span>, <span class="number">5</span>, <span class="number">5</span>],</span><br><span class="line">                         [<span class="number">1</span> / <span class="number">2</span>, <span class="number">1</span>, <span class="number">4</span>, <span class="number">3</span>, <span class="number">3</span>],</span><br><span class="line">                         [<span class="number">1</span> / <span class="number">7</span>, <span class="number">1</span> / <span class="number">4</span>, <span class="number">1</span>, <span class="number">1</span> / <span class="number">2</span>, <span class="number">1</span> / <span class="number">3</span>],</span><br><span class="line">                         [<span class="number">1</span> / <span class="number">5</span>, <span class="number">1</span> / <span class="number">3</span>, <span class="number">2</span>, <span class="number">1</span>, <span class="number">1</span>],</span><br><span class="line">                         [<span class="number">1</span> / <span class="number">5</span>, <span class="number">1</span> / <span class="number">3</span>, <span class="number">3</span>, <span class="number">1</span>, <span class="number">1</span>]])</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 对每个准则，方案优劣排序</span></span><br><span class="line">    b1 = np.array([[<span class="number">1</span>, <span class="number">1</span> / <span class="number">3</span>, <span class="number">1</span> / <span class="number">8</span>], [<span class="number">3</span>, <span class="number">1</span>, <span class="number">1</span> / <span class="number">3</span>], [<span class="number">8</span>, <span class="number">3</span>, <span class="number">1</span>]])</span><br><span class="line">    b2 = np.array([[<span class="number">1</span>, <span class="number">2</span>, <span class="number">5</span>], [<span class="number">1</span> / <span class="number">2</span>, <span class="number">1</span>, <span class="number">2</span>], [<span class="number">1</span> / <span class="number">5</span>, <span class="number">1</span> / <span class="number">2</span>, <span class="number">1</span>]])</span><br><span class="line">    b3 = np.array([[<span class="number">1</span>, <span class="number">1</span>, <span class="number">3</span>], [<span class="number">1</span>, <span class="number">1</span>, <span class="number">3</span>], [<span class="number">1</span> / <span class="number">3</span>, <span class="number">1</span> / <span class="number">3</span>, <span class="number">1</span>]])</span><br><span class="line">    b4 = np.array([[<span class="number">1</span>, <span class="number">3</span>, <span class="number">4</span>], [<span class="number">1</span> / <span class="number">3</span>, <span class="number">1</span>, <span class="number">1</span>], [<span class="number">1</span> / <span class="number">4</span>, <span class="number">1</span>, <span class="number">1</span>]])</span><br><span class="line">    b5 = np.array([[<span class="number">1</span>, <span class="number">4</span>, <span class="number">1</span> / <span class="number">2</span>], [<span class="number">1</span> / <span class="number">4</span>, <span class="number">1</span>, <span class="number">1</span> / <span class="number">4</span>], [<span class="number">2</span>, <span class="number">4</span>, <span class="number">1</span>]])</span><br><span class="line"></span><br><span class="line">    b = [b1, b2, b3, b4, b5]</span><br><span class="line">    a = AHP(criteria, b).run()</span><br></pre></td></tr></table></figure>
-<h2 id="层次分析法与控制变量法"><a class="header-anchor" href="#层次分析法与控制变量法">¶</a>层次分析法与控制变量法</h2>
-<p>我们的任务是选择工作，最后使得我们满意，直接选择我们当然一头雾水。所以我们设立一些准则，然后对这些准则对于目标的重要性排序。</p>
-<p>这又有点像概率图模型，只是赋权的方法，是相互比较的方法。</p>
-<h2 id="选择困难者的福音？"><a class="header-anchor" href="#选择困难者的福音？">¶</a>选择困难者的福音？</h2>
-<p>层次分析法对人们的思维过程进行了加工整理，提出了一套系统分析问题的方法，为科学管理和决策提供了较有说服力的依据。</p>
-<p>在应用层次分析法研究问题时，遇到的主要困难有两个:
-(1) 如何根据实际情况抽象出较为贴切的层次结构;
-(2) 如何将某些定性的量作比较接近实际定量化处理。</p>
-<p>层次分析法的其局限性<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup>：
-(1) 它在很大程度上依赖于人们的经验，主观因素的影响很大，它至多只能排除思维过程中的严重非一致性，却无法排除决策者个人可能存在的严重片面性。
-(2) 比较、 判断过程较为粗糙，不能用于精度要求较高的决策问题。</p>
-<p>所以，AHP 至多只能算是一种半定量(或定性与定量结合)的方法。
-本文仅供参考，不负法律责任，哈哈。</p>
-<p>参考</p>
-<hr class="footnotes-sep">
-<section class="footnotes">
-<ol class="footnotes-list">
-<li id="fn1" class="footnote-item"><p>幼鹰me 知乎 <a href="https://zhuanlan.zhihu.com/p/101505929" target="_blank" rel="noopener">层次分析法原理与Python实现</a> <a href="#fnref1" class="footnote-backref">↩︎</a></p>
-</li>
-<li id="fn2" class="footnote-item"><p>司守奎《数学建模算法与程序》第八章 层次分析法 P167 <a href="#fnref2" class="footnote-backref">↩︎</a></p>
-</li>
-</ol>
-</section>
-]]></content>
-      <categories>
-        <category>数学</category>
-      </categories>
-      <tags>
-        <tag>数学</tag>
-        <tag>层次分析法</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>RSS跟踪github文件更新</title>
     <url>/public/2021/07/24/rss_github_file/</url>
     <content><![CDATA[<p><strong>前言</strong></p>
@@ -664,6 +509,161 @@ markdown 空格</p>
       <tags>
         <tag>工具</tag>
         <tag>博客模版</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>选择困难者的福音？层次分析法</title>
+    <url>/public/2021/04/02/math_AHP/</url>
+    <content><![CDATA[<p><strong>摘要</strong></p>
+<p>日常生活中，我们面临很多的选择，选择工作offer，选择买哪个牌子的手机，选择哪个地方旅行等等。这些选择难以定量的衡量，有很多不确定性。内心小纠结，我选择了这个，万一那个好呢，怎么办？请看层次分析法。</p>
+<p>层次分析法(Analytic Hierarchy Process，简称 AHP)是对一些较为复杂、较为模糊的问题作出决策的简易方法，它特别适用于那些难于完全定量分析的问题。它是美国运筹学家 T. L. Saaty 教授于上世纪 70 年代初期提出的一种简便、灵活而又实用的多准则决策方法。</p>
+<p>运用层次分析法建模，大体上可按下面四个步骤进行</p>
+<ul>
+<li>建立递阶层次结构模型</li>
+<li>构造出各层次中的所有判断矩阵</li>
+<li>层次单排序及一致性检验</li>
+<li>层次总排序及一致性检验。（一般不用）</li>
+</ul>
+<a id="more"></a>
+<p>让我们从offer大佬的例子开始吧！</p>
+<p>举个栗子，今年有位大学生，有三个offer，C1 C2 C3。</p>
+<p>第一步，建立层次模型。</p>
+<ul>
+<li>目标层A：找工作的目标，自己满意程度。
+<ul>
+<li>这个程度怎么计算呢？比如工作1。</li>
+</ul>
+</li>
+<li>准则层B：研究课题、发展前途、待遇、同事情况、地理位置、单位名气等等。
+<ul>
+<li>尽量列全一点，不需要排列重要顺序。</li>
+<li>小于等于9个，后面要两两拍脑袋给出相对的重要层度，给多了不得把脑袋拍疼了。</li>
+<li>也可以有子准则层，比如待遇中的放假、工作环境等等，列出也小于9个。</li>
+</ul>
+</li>
+<li>方案层C：就是我们的offer</li>
+</ul>
+<img src="/public/2021/04/02/math_AHP/image-20200406145535585.png" alt="image-20200406145535585" style="zoom:50%;">
+<h2 id="构造-A-B-之间判断矩阵"><a class="header-anchor" href="#构造-A-B-之间判断矩阵">¶</a>构造 A B 之间判断矩阵</h2>
+<p>准则层B与目标A之间的关系。为了求出准则层中(B1-6) 对目标的重要层度的排序。比如对于该生工作满意度第一重要是待遇，然后是地点，其实该生自己也很模糊。就是固定A，然后求B中准则，对A重要性的排序。</p>
+<h3 id="我们怎么对B中的准则们的重要排序呢？"><a class="header-anchor" href="#我们怎么对B中的准则们的重要排序呢？">¶</a>我们怎么对B中的准则们的重要排序呢？</h3>
+<p>直接给每一个准则，0-1的评分，然后排序。经常会想，给完分之后，这个不合理呀要不我再给哪个准则加加分。所以这样的方法常常会因考虑不周全、顾此失彼而使决策者提出与他实际认为的重要性程度不相一致的数据。</p>
+<p>我们可以将这个过程细化，我就比较两个准则对于目标的重要性，然后通过下面的矩阵方法，求出优先顺序。</p>
+<p>还能通过一个一致性检验，来检验在你评分的过程中，有没有自相矛盾的地方，当然这种方法允许一些自相矛盾。反正评分的时候尊从内心拍脑袋就对了。</p>
+<p>所以我们拿出一个B1 与 B2 对于目标的重要，想一想然后给出B2/B1，填入下面的表格中的(2,1)的位置。</p>
+<p>整个矩阵i,j 与j，i 是取倒数的关系，所以只要做一半。</p>
+<p>在找工作的目标下，准则i与j相对的重要性表示，B2/B1 的值。采用9个标度。而相比不重要刻度取倒数就可以了</p>
+<table>
+<thead>
+<tr>
+<th>准则i比j的比较</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+<th>5</th>
+<th>6</th>
+<th>7</th>
+<th>8</th>
+<th>9</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td>相同重要</td>
+<td></td>
+<td>比较重要</td>
+<td></td>
+<td>明显重要</td>
+<td></td>
+<td>强烈重要</td>
+<td></td>
+<td>极端重要</td>
+</tr>
+</tbody>
+</table>
+<p>最后的两两相对重要表格</p>
+<img src="/public/2021/04/02/math_AHP/image-20200406145640316.png" alt="image-20200406145640316" style="zoom:50%;">
+<p>对角线对称的两个数互为倒数，即 $$a_{ji}=\frac{1}{a_{ij}}$$  B1/B2 不就是和 B2/B1互为倒数嘛</p>
+<p>从心理学观点来看，分级太多会超越人们的判断能力，既增加了作判断的难度， 又容易因此而提供虚假数据。Saaty 等人还用实验方法比较了在各种不同标度下人们判断结果的正确性，实验结果也表明，采用 1~9 标度最为合适。</p>
+<p>判断矩阵的一致性指标步骤：</p>
+<ul>
+<li>1）计算一致性指标 CI 。$$CI=\frac{ \lambda_{max}-n}{n-1}$$</li>
+<li>2）查表，平均随机一致性指标 RI。</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>n</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+<th>5</th>
+<th>6</th>
+<th>7</th>
+<th>8</th>
+<th>9</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>RI</td>
+<td>0</td>
+<td>0</td>
+<td>0.58</td>
+<td>0.90</td>
+<td>1.12</td>
+<td>1.24</td>
+<td>1.32</td>
+<td>1.41</td>
+<td>1.45</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><em>RI</em> 的值是这样得到的，用随机方法构造500个样本矩阵:随机地从1~9及其倒数中抽取数字构造正互反矩阵，求得最大特征根的平均值 $$\bar \lambda_{max}$$ 并定义$$RI=\frac{\bar \lambda_{max}-n}{n-1}$$</p>
+</blockquote>
+<ul>
+<li>3）计算一致性比例CR。 $$CR=\frac{CI}{RI}$$，当$$CR&lt;0.10$$ 时，认为判断矩阵的一致性是可以接受的，否则应对判断矩阵作适当修正。</li>
+</ul>
+<p>如果一个矩阵满足上面的条件，那么它最大特征值对应的特征向量就可以认为是每个维度的重要性权重。</p>
+<h2 id="构造-B-C-之间判断矩阵"><a class="header-anchor" href="#构造-B-C-之间判断矩阵">¶</a>构造 B C 之间判断矩阵</h2>
+<p>相同的方法，在同一B准则下，考虑不同工作的优先顺序。求工作排序的方法，和上面一样。</p>
+<img src="/public/2021/04/02/math_AHP/image-20200406162644137.png" alt="image-20200406162644137" style="zoom:50%;">
+<p>python代码<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">import</span> warnings</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AHP</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, criteria, b)</span>:</span></span><br><span class="line">        self.RI = (<span class="number">0</span>, <span class="number">0</span>, <span class="number">0.58</span>, <span class="number">0.9</span>, <span class="number">1.12</span>, <span class="number">1.24</span>, <span class="number">1.32</span>, <span class="number">1.41</span>, <span class="number">1.45</span>, <span class="number">1.49</span>)</span><br><span class="line">        self.criteria = criteria</span><br><span class="line">        self.b = b</span><br><span class="line">        self.num_criteria = criteria.shape[<span class="number">0</span>]</span><br><span class="line">        self.num_project = b[<span class="number">0</span>].shape[<span class="number">0</span>]</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">cal_weights</span><span class="params">(self, input_matrix)</span>:</span></span><br><span class="line">        input_matrix = np.array(input_matrix)</span><br><span class="line">        n, n1 = input_matrix.shape</span><br><span class="line">        <span class="keyword">assert</span> n == n1, <span class="string">'不是一个方阵'</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(n):</span><br><span class="line">            <span class="keyword">for</span> j <span class="keyword">in</span> range(n):</span><br><span class="line">                <span class="keyword">if</span> np.abs(input_matrix[i, j] * input_matrix[j, i] - <span class="number">1</span>) &gt; <span class="number">1e-7</span>:</span><br><span class="line">                    <span class="keyword">raise</span> ValueError(<span class="string">'不是反互对称矩阵'</span>)</span><br><span class="line"></span><br><span class="line">        eigenvalues, eigenvectors = np.linalg.eig(input_matrix)</span><br><span class="line"></span><br><span class="line">        max_idx = np.argmax(eigenvalues)</span><br><span class="line">        max_eigen = eigenvalues[max_idx].real</span><br><span class="line">        eigen = eigenvectors[:, max_idx].real</span><br><span class="line">        eigen = eigen / eigen.sum()</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> n &gt; <span class="number">9</span>:</span><br><span class="line">            CR = <span class="literal">None</span></span><br><span class="line">            warnings.warn(<span class="string">'无法判断一致性'</span>)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            CI = (max_eigen - n) / (n - <span class="number">1</span>)</span><br><span class="line">            CR = CI / self.RI[n]</span><br><span class="line">        <span class="keyword">return</span> max_eigen, CR, eigen</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">run</span><span class="params">(self)</span>:</span></span><br><span class="line">        max_eigen, CR, criteria_eigen = self.cal_weights(self.criteria)</span><br><span class="line">        print(<span class="string">'准则层：最大特征值&#123;:&lt;5f&#125;,CR=&#123;:&lt;5f&#125;,检验&#123;&#125;通过'</span>.format(max_eigen, CR, <span class="string">''</span> <span class="keyword">if</span> CR &lt; <span class="number">0.1</span> <span class="keyword">else</span> <span class="string">'不'</span>))</span><br><span class="line">        print(<span class="string">'准则层权重=&#123;&#125;\n'</span>.format(criteria_eigen))</span><br><span class="line"></span><br><span class="line">        max_eigen_list, CR_list, eigen_list = [], [], []</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> self.b:</span><br><span class="line">            max_eigen, CR, eigen = self.cal_weights(i)</span><br><span class="line">            max_eigen_list.append(max_eigen)</span><br><span class="line">            CR_list.append(CR)</span><br><span class="line">            eigen_list.append(eigen)</span><br><span class="line"></span><br><span class="line">        pd_print = pd.DataFrame(eigen_list,</span><br><span class="line">                                index=[<span class="string">'准则'</span> + str(i) <span class="keyword">for</span> i <span class="keyword">in</span> range(self.num_criteria)],</span><br><span class="line">                                columns=[<span class="string">'方案'</span> + str(i) <span class="keyword">for</span> i <span class="keyword">in</span> range(self.num_project)],</span><br><span class="line">                                )</span><br><span class="line">        pd_print.loc[:, <span class="string">'最大特征值'</span>] = max_eigen_list</span><br><span class="line">        pd_print.loc[:, <span class="string">'CR'</span>] = CR_list</span><br><span class="line">        pd_print.loc[:, <span class="string">'一致性检验'</span>] = pd_print.loc[:, <span class="string">'CR'</span>] &lt; <span class="number">0.1</span></span><br><span class="line">        print(<span class="string">'方案层'</span>)</span><br><span class="line">        print(pd_print)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 目标层</span></span><br><span class="line">        obj = np.dot(criteria_eigen.reshape(<span class="number">1</span>, <span class="number">-1</span>), np.array(eigen_list))</span><br><span class="line">        print(<span class="string">'\n目标层'</span>, obj)</span><br><span class="line">        print(<span class="string">'最优选择是方案&#123;&#125;'</span>.format(np.argmax(obj)))</span><br><span class="line">        <span class="keyword">return</span> obj</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    <span class="comment"># 准则重要性矩阵</span></span><br><span class="line">    criteria = np.array([[<span class="number">1</span>, <span class="number">2</span>, <span class="number">7</span>, <span class="number">5</span>, <span class="number">5</span>],</span><br><span class="line">                         [<span class="number">1</span> / <span class="number">2</span>, <span class="number">1</span>, <span class="number">4</span>, <span class="number">3</span>, <span class="number">3</span>],</span><br><span class="line">                         [<span class="number">1</span> / <span class="number">7</span>, <span class="number">1</span> / <span class="number">4</span>, <span class="number">1</span>, <span class="number">1</span> / <span class="number">2</span>, <span class="number">1</span> / <span class="number">3</span>],</span><br><span class="line">                         [<span class="number">1</span> / <span class="number">5</span>, <span class="number">1</span> / <span class="number">3</span>, <span class="number">2</span>, <span class="number">1</span>, <span class="number">1</span>],</span><br><span class="line">                         [<span class="number">1</span> / <span class="number">5</span>, <span class="number">1</span> / <span class="number">3</span>, <span class="number">3</span>, <span class="number">1</span>, <span class="number">1</span>]])</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 对每个准则，方案优劣排序</span></span><br><span class="line">    b1 = np.array([[<span class="number">1</span>, <span class="number">1</span> / <span class="number">3</span>, <span class="number">1</span> / <span class="number">8</span>], [<span class="number">3</span>, <span class="number">1</span>, <span class="number">1</span> / <span class="number">3</span>], [<span class="number">8</span>, <span class="number">3</span>, <span class="number">1</span>]])</span><br><span class="line">    b2 = np.array([[<span class="number">1</span>, <span class="number">2</span>, <span class="number">5</span>], [<span class="number">1</span> / <span class="number">2</span>, <span class="number">1</span>, <span class="number">2</span>], [<span class="number">1</span> / <span class="number">5</span>, <span class="number">1</span> / <span class="number">2</span>, <span class="number">1</span>]])</span><br><span class="line">    b3 = np.array([[<span class="number">1</span>, <span class="number">1</span>, <span class="number">3</span>], [<span class="number">1</span>, <span class="number">1</span>, <span class="number">3</span>], [<span class="number">1</span> / <span class="number">3</span>, <span class="number">1</span> / <span class="number">3</span>, <span class="number">1</span>]])</span><br><span class="line">    b4 = np.array([[<span class="number">1</span>, <span class="number">3</span>, <span class="number">4</span>], [<span class="number">1</span> / <span class="number">3</span>, <span class="number">1</span>, <span class="number">1</span>], [<span class="number">1</span> / <span class="number">4</span>, <span class="number">1</span>, <span class="number">1</span>]])</span><br><span class="line">    b5 = np.array([[<span class="number">1</span>, <span class="number">4</span>, <span class="number">1</span> / <span class="number">2</span>], [<span class="number">1</span> / <span class="number">4</span>, <span class="number">1</span>, <span class="number">1</span> / <span class="number">4</span>], [<span class="number">2</span>, <span class="number">4</span>, <span class="number">1</span>]])</span><br><span class="line"></span><br><span class="line">    b = [b1, b2, b3, b4, b5]</span><br><span class="line">    a = AHP(criteria, b).run()</span><br></pre></td></tr></table></figure>
+<h2 id="层次分析法与控制变量法"><a class="header-anchor" href="#层次分析法与控制变量法">¶</a>层次分析法与控制变量法</h2>
+<p>我们的任务是选择工作，最后使得我们满意，直接选择我们当然一头雾水。所以我们设立一些准则，然后对这些准则对于目标的重要性排序。</p>
+<p>这又有点像概率图模型，只是赋权的方法，是相互比较的方法。</p>
+<h2 id="选择困难者的福音？"><a class="header-anchor" href="#选择困难者的福音？">¶</a>选择困难者的福音？</h2>
+<p>层次分析法对人们的思维过程进行了加工整理，提出了一套系统分析问题的方法，为科学管理和决策提供了较有说服力的依据。</p>
+<p>在应用层次分析法研究问题时，遇到的主要困难有两个:
+(1) 如何根据实际情况抽象出较为贴切的层次结构;
+(2) 如何将某些定性的量作比较接近实际定量化处理。</p>
+<p>层次分析法的其局限性<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup>：
+(1) 它在很大程度上依赖于人们的经验，主观因素的影响很大，它至多只能排除思维过程中的严重非一致性，却无法排除决策者个人可能存在的严重片面性。
+(2) 比较、 判断过程较为粗糙，不能用于精度要求较高的决策问题。</p>
+<p>所以，AHP 至多只能算是一种半定量(或定性与定量结合)的方法。
+本文仅供参考，不负法律责任，哈哈。</p>
+<p>参考</p>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p>幼鹰me 知乎 <a href="https://zhuanlan.zhihu.com/p/101505929" target="_blank" rel="noopener">层次分析法原理与Python实现</a> <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn2" class="footnote-item"><p>司守奎《数学建模算法与程序》第八章 层次分析法 P167 <a href="#fnref2" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
+]]></content>
+      <categories>
+        <category>数学</category>
+      </categories>
+      <tags>
+        <tag>数学</tag>
+        <tag>层次分析法</tag>
       </tags>
   </entry>
   <entry>
@@ -1848,6 +1848,25 @@ nbextensions的教程<a href="https://jupyter-contrib-nbextensions.readthedocs.i
       </tags>
   </entry>
   <entry>
+    <title>希腊罗马神话</title>
+    <url>/public/2018/11/05/readings/Gods_stories/</url>
+    <content><![CDATA[<p><strong>前言</strong></p>
+<p>在我电的图书馆的还书柜子里面偶然所得，一本叫《希腊罗马神话对英语语言文化的影响》吕海平 著 江苏大学初版社，然后莫名的想研究一下，发现挺不错的。</p>
+<a id="more"></a>
+<p>古希腊罗马的神的关系还是比较乱的，尤其是jupiter 或者zeus的奥林匹斯神系。从上古的神系，总共有三代。</p>
+<p>网上有个人（<a href="http://www.veritablehokum.com/" target="_blank" rel="noopener">Korwin Briggs</a>）做的关系图很不错。</p>
+<p>TODO:后面我也会对其进行整理，以后给大家分享。</p>
+<p><img src="http://www.veritablehokum.com/wp-content/uploads/2018/08/Roman-God-Family-Tree.jpg" alt></p>
+]]></content>
+      <categories>
+        <category>读书笔记</category>
+      </categories>
+      <tags>
+        <tag>希腊罗马神话</tag>
+        <tag>语言文化</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>红楼梦与我</title>
     <url>/public/2017/05/14/readings/hongloumeng/</url>
     <content><![CDATA[<p>红楼梦是我国四大名著之一，主要内容是贾府的兴衰和宝黛的悲剧爱情。电视剧红楼梦2010版，我是从八月开始看的，看完到现在，也有小一个月了。在网上大家对这版电视剧褒贬不一。与我来说，我是喜欢这部剧的，不能说拍得很好，但这部剧却勾起了我读书与写字的兴趣。于是乎，做了一篇随笔，以记录我的一些感触。</p>
@@ -2064,25 +2083,6 @@ nbextensions的教程<a href="https://jupyter-contrib-nbextensions.readthedocs.i
       <tags>
         <tag>重庆</tag>
         <tag>游记</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>希腊罗马神话</title>
-    <url>/public/2018/11/05/readings/Gods_stories/</url>
-    <content><![CDATA[<p><strong>前言</strong></p>
-<p>在我电的图书馆的还书柜子里面偶然所得，一本叫《希腊罗马神话对英语语言文化的影响》吕海平 著 江苏大学初版社，然后莫名的想研究一下，发现挺不错的。</p>
-<a id="more"></a>
-<p>古希腊罗马的神的关系还是比较乱的，尤其是jupiter 或者zeus的奥林匹斯神系。从上古的神系，总共有三代。</p>
-<p>网上有个人（<a href="http://www.veritablehokum.com/" target="_blank" rel="noopener">Korwin Briggs</a>）做的关系图很不错。</p>
-<p>TODO:后面我也会对其进行整理，以后给大家分享。</p>
-<p><img src="http://www.veritablehokum.com/wp-content/uploads/2018/08/Roman-God-Family-Tree.jpg" alt></p>
-]]></content>
-      <categories>
-        <category>读书笔记</category>
-      </categories>
-      <tags>
-        <tag>希腊罗马神话</tag>
-        <tag>语言文化</tag>
       </tags>
   </entry>
   <entry>
@@ -4987,57 +4987,71 @@ todo整理</p>
 <p>字体的选择及显示风格，可以修改GTK2或者Qt的配置文件，建议使用图形界面配置</p>
 <p>* 一般情况下，桌面环境中附带了相关程序，例如 gnome-font-properties</p>
 <h3 id="系统管理"><a class="header-anchor" href="#系统管理">¶</a>系统管理</h3>
-<p>一些细节</p>
+<h4 id="一些细节"><a class="header-anchor" href="#一些细节">¶</a>一些细节</h4>
+<ul>
+<li>
 <p>Linux是大小写敏感的系统，所有的命令、路径、参数、变量……都区分大小写</p>
-<p>使用 TAB 键补全命令，无论任何时候，多按几次TAB总会有所帮助</p>
+</li>
+<li>
+<p>使用 <code>TAB</code> 键补全命令，无论任何时候，多按几次TAB总会有所帮助</p>
+</li>
+<li>
 <p>Shell的功能键能够协助您更高效的编辑命令，请熟悉其键绑定，尽量使用它</p>
-<p>命令由 命令名 、 分隔符 、 参数 、 操作对象 构成</p>
-<p>命令名</p>
+</li>
+<li>
+<p>命令由 <code>命令名</code> 、 <code>分隔符</code> 、 <code>参数</code> 、 <code>操作对象</code> 构成</p>
+</li>
+</ul>
+<h4 id="命令名"><a class="header-anchor" href="#命令名">¶</a>命令名</h4>
 <p>标识命令的功能，例如cp(copy)、mv(move)、rm(remove)……</p>
-<p>有些命令包含一些子命令，您可以认为它的命令名由两个单词构成，例如“apt”软件包管理系统：</p>
-<p>apt-get install 安装一个软件</p>
-<p>apt-get remove 删除一个软件</p>
-<p>分隔符</p>
-<p>通常为空格，多个连续的空格视为一个空格，下面两个命令相同：</p>
-<p>cp a b</p>
-<p>cp a b</p>
-<p>有一些特殊符号也属于分隔符，例如管道 | 、重定向 &gt; 、 &gt;&gt; 、 &lt; 、后台运行 &amp; 、序列执行 &amp;&amp; 、 ; 。使用这些符号时，您不需要再使用空格作为分隔符，例如：</p>
-<p>ls -al|less</p>
+<p>有些命令包含一些子命令，您可以认为它的命令名由两个单词构成，例如<code>apt</code>软件包管理系统：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">apt-get install <span class="comment"># 安装一个软件</span></span><br><span class="line">apt-get remove  <span class="comment"># 删除一个软件</span></span><br></pre></td></tr></table></figure>
+<h4 id="分隔符-2"><a class="header-anchor" href="#分隔符-2">¶</a>分隔符</h4>
+<p>通常为空格，<code>多个连续的空格视为一个空格</code>，下面两个命令相同：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">cp a b</span><br><span class="line">cp   a   b</span><br></pre></td></tr></table></figure>
+<p>有一些特殊符号也属于分隔符，例如 <code>管道 | 、重定向 &gt; 、 &gt;&gt; 、 &lt; 、后台运行 &amp; 、序列执行 &amp;&amp; 、 ; </code>。使用这些符号时，您不需要再使用<code>空格作为分隔符</code>，例如：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ls -al|less</span><br></pre></td></tr></table></figure>
 <p>写为以下形式，是为了让您更容易的阅读它：</p>
-<p>ls -al | less</p>
-<p>参数</p>
-<p>精细调节命令的行为，以 - 引导，通常为参数名的首字母。许多软件都可以使用 -h 参数来阅读使用说明，例如：</p>
-<p>apt-get -h</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ls -al | less</span><br></pre></td></tr></table></figure>
+<h4 id="参数"><a class="header-anchor" href="#参数">¶</a>参数</h4>
+<p>精细调节命令的行为，以 <code>-</code> 引导，通常为参数名的首字母。许多软件都可以使用 <code>-h</code> 参数来阅读使用说明，例如：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">apt-get -h</span><br></pre></td></tr></table></figure>
 <p>也可以使用参数的全名，一般以 -- 引导，例如：</p>
-<p>apt-get --help</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">apt-get --<span class="built_in">help</span></span><br></pre></td></tr></table></figure>
 <p>多数命令中，使用 - 引导多个字符，将会被视为多个参数，例如：</p>
-<p>apt-get -help</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">apt-get -<span class="built_in">help</span></span><br></pre></td></tr></table></figure>
 <p>系统会解读为以下命令</p>
-<p>apt-get -h -e -l -p</p>
-<p>少数命令的参数，不需要以 - 引导，或者使用 - 引导参数全名，例如：</p>
-<p>ps aux</p>
-<p>/etc/init.d/gdm start</p>
-<p>mplayer -loop xxx</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">apt-get -h -e -l -p</span><br></pre></td></tr></table></figure>
+<p>少数命令的参数，不需要以 <code>-</code> 引导，或者使用 <code>-</code> 引导参数全名，例如：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ps aux</span><br><span class="line">/etc/init.d/gdm start</span><br><span class="line">mplayer -loop xxx</span><br></pre></td></tr></table></figure>
 <p>需要对多个对象进行操作时，可以使用空格分隔符将它们隔开：</p>
-<p>touch 1 2 3 4 5 6</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">touch 1 2 3 4 5 6</span><br></pre></td></tr></table></figure>
 <p>使用空格分隔的多个对象，视为一个整体，作为命令的一个操作对象：</p>
-<p>mv 1 2 3 4 5 6 /home/</p>
-<p>这个命令把“1 2 3 4 5 6”作为一个操作对象，移动到另一个操作对象，“/home/”目录</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mv 1 2 3 4 5 6 /home/</span><br></pre></td></tr></table></figure>
+<p>这个命令把<code>1 2 3 4 5 6</code>作为一个操作对象，移动到另一个操作对象，<code>/home/</code>目录</p>
 <p>递归 表示在子层次中重复相同操作。例如递归复制某目录，不但复制当前目录及其下的所有文件；而且对当前目录的子目录，也进行递归复制的操作。</p>
-<p>格式约定</p>
-<p>使用 [] 表示可选项，实际输入为方括号中的内容，例如</p>
-<p>ls [-al]</p>
-<p>ls是必须的，参数不需要以方括号括起来。</p>
-<p>使用 &lt;&gt; 表示必需项，实际输入为尖括号中的内容</p>
+<h4 id="格式约定"><a class="header-anchor" href="#格式约定">¶</a>格式约定</h4>
+<p>使用 <code>[]</code> 表示可选项，实际输入为方括号中的内容，例如</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ls [-al]</span><br></pre></td></tr></table></figure>
+<ul>
+<li>
+<p><code>ls</code>是必须的，参数不需要以方括号括起来。</p>
+</li>
+<li>
+<p>使用 <code>&lt;&gt;</code> 表示必需项，实际输入为尖括号中的内容</p>
+</li>
+<li>
 <p>使用 | 表示 或 ，以 | 分隔的项目不能同时使用，例如</p>
-<p>tar [-z|j c|x vf] &lt;归档文件&gt; [源文件]</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">tar [-z|j c|x vf] &lt;归档文件&gt; [源文件]</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
 <p>参数通常紧跟命令名，除非必要，在命令格式中，我们通常省略它们</p>
 <h3 id="系统信息"><a class="header-anchor" href="#系统信息">¶</a>系统信息</h3>
-<p>uptime</p>
+<h4 id="uptime"><a class="header-anchor" href="#uptime">¶</a>uptime</h4>
 <p>联机信息-时间，显示如下</p>
 <p>11:27pm up 9 days, 7:12, 3 user, load average: 0.07, 0.12, 0.14</p>
 <p>当前系统时间 系统运行时间 当前在线用户数 系统负荷 1分钟前 5分钟前 15分钟前</p>
-<p>w</p>
+<h4 id="w"><a class="header-anchor" href="#w">¶</a>w</h4>
 <p>联机信息-已登录用户，显示如下</p>
 <p>01:04:10 up 1:34, 2 users, load average: 0.25, 0.16, 0.11</p>
 <p>uptime 信息</p>
@@ -5045,39 +5059,22 @@ todo整理</p>
 <p>user tty1 192.168.0.1 23:30 1:33 0.14s 0.12s -bash</p>
 <p>用户名 登录方式 来源地址 登录时间 发呆时间 资源占用 当前任务</p>
 <p>Tip：w [用户名称] : 显示某一用户相关信息</p>
-<p>who</p>
+<h4 id="who"><a class="header-anchor" href="#who">¶</a>who</h4>
 <p>联机信息，常用参数</p>
-<p>*<strong>-r*</strong> *<strong>运行级别*</strong></p>
-<p>whoami</p>
+<p>-r 运行级别</p>
+<h4 id="whoami"><a class="header-anchor" href="#whoami">¶</a>whoami</h4>
 <p>显示当前用户名</p>
-<p>last</p>
-<p>最近用户登录信息</p>
-<p>-&lt;数字&gt; 使用数字作为参数，控制显示条目。例如</p>
-<p>last -10 显示10条纪录</p>
-<p>uname</p>
+<h4 id="last"><a class="header-anchor" href="#last">¶</a>last</h4>
+<p>最近用户登录信息
+-&lt;数字&gt; 使用数字作为参数，控制显示条目。例如
+last -10 显示10条纪录</p>
+<h4 id="uname"><a class="header-anchor" href="#uname">¶</a>uname</h4>
 <p>系统信息</p>
-<p><em>-s</em> <em>内核名称（默认参数）</em>      <em>-a</em> <em>全部</em>        <em>-p CPU**信息</em>        <em>-n</em> <em>主机名</em></p>
-<p><em>-r</em> <em>内核发行信息（版本号）</em>        <em>-v</em> <em>内核版本信息</em></p>
-<p>date</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">-s 内核名称（默认参数）    -a 全部        -p CPU 信息       -n 主机名     </span><br><span class="line">-r 内核发行信息（版本号）  -v 内核版本信息</span><br></pre></td></tr></table></figure>
+<h4 id="date"><a class="header-anchor" href="#date">¶</a>date</h4>
 <p>显示、设定系统时间</p>
-<p>-u 显示格林尼洛时间（UTC）</p>
-<p>MMDDhhmm[[CC]YY][.ss] 设定时间，需要管理员权限。例如： date 12292359</p>
-<p>MM 月份 DD 天数 hh 小时 mm 分钟 CC 年份前两位 YY 年份后两位 ss 秒钟</p>
-<p>秒钟、年份为可选，例如： date 122923592006.59</p>
-<p>+[%X]设定显示格式，以下为date默认输出格式：</p>
-<p>date +%Y年%m月%d日%A%H:%M:%S%Z</p>
-<p>格式控制      %n 换行       %t 制表符</p>
-<p>小时          %H(00~23) %I(01~12) %k(0~23) %l(1~12) %p(AM|PM)</p>
-<p>分、秒        %M分钟(00~59)         %S秒(00..61)       %T(hh:mm:ss) %r(hh:mm:ss [AM|PM])</p>
-<p>%s 从1970年1月1日00:00:00 UTC到目前为止的秒数       %X(%H:%M:%S)         %Z时区</p>
-<p>星期          %a(Sun~Sat) %A(Sunday~Saturday) %w : 一周中的第几天 (0..6)</p>
-<p>年份          %Y(0000~9999) %y(00~99)</p>
-<p>月份          %m(01~12) %b %h(Jan~Dec) %B(January~December)</p>
-<p>日期          %d(01~31) %j(001~366)</p>
-<p>%x(本地格式mm/dd/yy) %D(mm/dd/yy) %c</p>
-<p>一年中的第几周</p>
-<p>%U(00~53)以Sunday为一周的第一天 %W(00~53)以Monday为一周的第一天</p>
-<p>cal</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">-u 显示格林尼洛时间（UTC）</span><br><span class="line"></span><br><span class="line">MMDDhhmm[[CC]YY][.ss] 设定时间，需要管理员权限。例如： date 12292359</span><br><span class="line"></span><br><span class="line">MM 月份 DD 天数 hh 小时 mm 分钟 CC 年份前两位 YY 年份后两位 ss 秒钟</span><br><span class="line"></span><br><span class="line">秒钟、年份为可选，例如： date 122923592006.59</span><br><span class="line"></span><br><span class="line">+[%X]设定显示格式，以下为date默认输出格式：</span><br><span class="line"></span><br><span class="line">date +%Y年%m月%d日%A%H:%M:%S%Z</span><br><span class="line"></span><br><span class="line">格式控制      %n 换行       %t 制表符</span><br><span class="line"></span><br><span class="line">小时          %H(00~23) %I(01~12) %k(0~23) %l(1~12) %p(AM|PM)</span><br><span class="line"></span><br><span class="line">分、秒        %M分钟(00~59)         %S秒(00..61)       %T(hh:mm:ss) %r(hh:mm:ss [AM|PM])</span><br><span class="line"></span><br><span class="line">%s 从1970年1月1日00:00:00 UTC到目前为止的秒数       %X(%H:%M:%S)         %Z时区</span><br><span class="line"></span><br><span class="line">星期          %a(Sun~Sat) %A(Sunday~Saturday) %w : 一周中的第几天 (0..6)</span><br><span class="line"></span><br><span class="line">年份          %Y(0000~9999) %y(00~99)</span><br><span class="line"></span><br><span class="line">月份          %m(01~12) %b %h(Jan~Dec) %B(January~December)</span><br><span class="line"></span><br><span class="line">日期          %d(01~31) %j(001~366)</span><br><span class="line"></span><br><span class="line">%x(本地格式mm/dd/yy) %D(mm/dd/yy) %c</span><br><span class="line"></span><br><span class="line">一年中的第几周</span><br><span class="line"></span><br><span class="line">%U(00~53)以Sunday为一周的第一天 %W(00~53)以Monday为一周的第一天</span><br></pre></td></tr></table></figure>
+<h4 id="cal"><a class="header-anchor" href="#cal">¶</a>cal</h4>
 <p>显示日历</p>
 <h3 id="文件管理"><a class="header-anchor" href="#文件管理">¶</a>文件管理</h3>
 <p>一些细节</p>
@@ -5085,7 +5082,7 @@ todo整理</p>
 <p>绝对路径以 <code>/</code> 起始，相对路径以当前所在目录起始</p>
 <p>目录是一种特殊类型的文件，如果没有特别指明， 文件 包括文件和目录</p>
 <p><code>..</code> 表示上一级目录， <code>.</code> 表示当前目录，它们是两个特殊目录</p>
-<p>链接</p>
+<h4 id="链接"><a class="header-anchor" href="#链接">¶</a>链接</h4>
 <p>为当前文件建立在其它路径中的访问方法。例如将系统中其它位置的可执行文件，链接到 <code>/usr/local/bin</code> 目录下，使用命令调用。</p>
 <p>ls [路径]</p>
 <p>显示当前目录文件列表</p>
@@ -5654,64 +5651,43 @@ todo整理</p>
 <p>* /lib/modules/uname -r 目录下为所有可用模块</p>
 <p>modprobe &lt;模块名称&gt;</p>
 <h2 id="简明VIM教程"><a class="header-anchor" href="#简明VIM教程">¶</a>简明VIM教程</h2>
-<p>VIM简介</p>
+<h3 id="VIM简介"><a class="header-anchor" href="#VIM简介">¶</a>VIM简介</h3>
 <p>我们使用的大多数编辑器，都可以直接在编辑区输入字符，并且能够通过一些快捷键来完成一些控制功能，比如使用方向键移动光标，使用</p>
 <p>BackSpack 或者 Delete 键删除文字，使用 PgUp 和 PgDn 翻页，使用 Home 和 End 来定位行首和行末……</p>
 <p>而Vim是一个带模式的编辑器，同样的按键，在不同模式下，具有不同的功能定义。例如 h j k l 在 编辑模式 下输入相应的字符，在 普通模式 下却相当于方向键的作用。</p>
 <p>由于需要切换模式，Vim的使用起来略显繁琐。不过优点也显而易见：您只要把手安安稳稳的放在打字区就可以了，而不需要使用诸如方向键、排版键、小键盘等</p>
 <p>需要挪开双手的键位，从而提高了您的效率和专注程度。事实上，Vim的前身Vi诞生的时候，键盘上还没有方向键、排版键和小键盘：）</p>
-<p>命令</p>
+<h3 id="命令-2"><a class="header-anchor" href="#命令-2">¶</a>命令</h3>
 <p>使用Vim编辑文件:</p>
-<p>vi [文件名]</p>
-<p>vim [文件名]</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">vi [文件名]</span><br><span class="line">vim [文件名]</span><br></pre></td></tr></table></figure>
 <p>教学模式:</p>
-<p>vimtutor [语言]</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">vimtutor [语言]</span><br></pre></td></tr></table></figure>
 <p>vim教程，相当于使用Vim编辑器以只读模式打开教程文件。您无论对这个文件作了什么，都会在退出后恢复原来的样貌。与只读模式的区别在于，它不会没有眼色的提醒您，现在的状态为只读模式。您可以使用它作一些练习</p>
 <p>您可以指定教程文件的语言，如果使用本地语言(ZH_cn)出现乱码，您可以尝试使用英语</p>
-<p>vimtutor en</p>
-<p>使用Vim比较文件区别</p>
-<p>vimdiff [文件1] [文件2] [其它文件]……</p>
-<p>配置文件</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">vimtutor en</span><br></pre></td></tr></table></figure>
+<h3 id="使用Vim比较文件区别"><a class="header-anchor" href="#使用Vim比较文件区别">¶</a>使用Vim比较文件区别</h3>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">vimdiff [文件1] [文件2] [其它文件]……</span><br></pre></td></tr></table></figure>
+<h3 id="配置文件"><a class="header-anchor" href="#配置文件">¶</a>配置文件</h3>
 <p>Vim的全局配置文件为 /etc/vim/vimrc ，用户配置文件为 ~/.vimrc ， &quot; 起始的行为注释行。我们提供的配置项，您直接加入配置文件就可以了</p>
 <p>您可以先对Vim进行一些简单的配置：</p>
-<p>&quot;设定文件编码</p>
-<p>set fileencodings=utf-8,ucs-bom,gb18030,gbk,gb2312,cp936</p>
-<p>&quot;开启语法加亮</p>
-<p>syntax on</p>
-<p>&quot;配色风格</p>
-<p>colorscheme pablo</p>
-<p>&quot;设定行距 GUI界面中生效</p>
-<p>set linespace=4</p>
-<p>&quot;设定GUI选项</p>
-<p>&quot;set guioptions=gmrLtT m:菜单 T:工具栏</p>
-<p>set guioptions=gmrLt</p>
-<p>&quot;设定Tab键缩进的空格数</p>
-<p>set tabstop=4</p>
-<p>&quot;设定编辑器将多少空格视为一个缩进</p>
-<p>set shiftwidth=4</p>
-<p>&quot;将缩进转换为空格</p>
-<p>&quot;set expandtab</p>
-<p>&quot;设定折叠方式</p>
-<p>&quot;set foldmethod=indent</p>
-<p>&quot;以下字符将被视为单词的一部分 (ASCII)：</p>
-<p>&quot;set iskeyword+=33-47,58-64,91-96,123-128</p>
-<p>模式介绍</p>
-<p>Vim常见的模式有： 普通模式 、 插入模式 、 命令模式 ，另外我们也会经常用到 可视模式 。</p>
-<p>Vim启动时进入 普通模式 ；或者在其它模式下，按下 Esc 键，便可以回到普通模式。</p>
-<p>使用 vimtutor en 命令进入教程，现在是普通模式。随便按几下 j 、 k 、 l 、 h 键，您会发现光标的位置发生改变。</p>
-<p>按下 i 键，编辑器底部出现了 -- 插入 -- 或者 -- insert -- ，您进入了插入模式。随便按几下 j 、 k 、 l、 h，您会发现相应的字符出现在编辑区，现在还可以通过方向键来移动光标。可能您觉得使用方向键移动光标不是什么问题，但是习惯了Vim后，您会认为方向键太麻烦了，简直不能容忍！好了，现在按下 Esc 键回到普通模式，我们又可以使用 j 、 k 、 l 、 h 来移动光标了。</p>
-<p>在普通模式下，按下 : 键（也就是 Shift+; ），在编辑器底部出现了一个 : ，您进入了命令模式。在 : 后输入一个命令 new ，回车后，编辑器被分割为上下两栏。为了方便起见，我们在命令前加一个 : 来表示命令模式下输入的命令，像这样</p>
-<p>:vnew</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&quot;设定文件编码</span><br><span class="line">set fileencodings=utf-8,ucs-bom,gb18030,gbk,gb2312,cp936</span><br><span class="line"></span><br><span class="line">&quot;开启语法加亮</span><br><span class="line">syntax on</span><br><span class="line"></span><br><span class="line">&quot;配色风格</span><br><span class="line">colorscheme pablo</span><br><span class="line"></span><br><span class="line">&quot;设定行距 GUI界面中生效</span><br><span class="line">set linespace=4</span><br><span class="line"></span><br><span class="line">&quot;设定GUI选项</span><br><span class="line">&quot;set guioptions=gmrLtT m:菜单 T:工具栏</span><br><span class="line">set guioptions=gmrLt</span><br><span class="line"></span><br><span class="line">&quot;设定Tab键缩进的空格数</span><br><span class="line">set tabstop=4</span><br><span class="line"></span><br><span class="line">&quot;设定编辑器将多少空格视为一个缩进</span><br><span class="line">set shiftwidth=4</span><br><span class="line"></span><br><span class="line">&quot;将缩进转换为空格</span><br><span class="line">&quot;set expandtab</span><br><span class="line"></span><br><span class="line">&quot;设定折叠方式</span><br><span class="line">&quot;set foldmethod=indent</span><br><span class="line"></span><br><span class="line">&quot;以下字符将被视为单词的一部分 (ASCII)：</span><br><span class="line">&quot;set iskeyword+=33-47,58-64,91-96,123-128</span><br></pre></td></tr></table></figure>
+<h3 id="模式介绍"><a class="header-anchor" href="#模式介绍">¶</a>模式介绍</h3>
+<p>Vim常见的模式有： <code>普通模式</code> 、 <code>插入模式</code> 、 <code>命令模式</code> ，另外我们也会经常用到 <code>可视模式</code> 。</p>
+<p>Vim启动时进入 <code>普通模式</code> ；或者在其它模式下，按下 Esc 键，便可以回到<code>普通模式</code>。</p>
+<p>使用 <code>vimtutor en</code> 命令进入教程，现在是普通模式。随便按几下 j 、 k 、 l 、 h 键，您会发现光标的位置发生改变。</p>
+<p>按下 i 键，编辑器底部出现了 -- 插入 -- 或者 -- insert -- ，您进入了插入模式。随便按几下 j 、 k 、 l、 h，您会发现相应的字符出现在编辑区，现在还可以通过方向键来移动光标。可能您觉得使用方向键移动光标不是什么问题，但是习惯了Vim后，您会认为方向键太麻烦了，简直不能容忍！好了，现在按下 <code>Esc</code> 键回到普通模式，我们又可以使用 j 、 k 、 l 、 h 来移动光标了。</p>
+<p>在<code>普通模式</code>下，按下 : 键（也就是 Shift+; ），在编辑器底部出现了一个 : ，您进入了命令模式。在 : 后输入一个命令 new ，回车后，编辑器被分割为上下两栏。为了方便起见，我们在命令前加一个 : 来表示命令模式下输入的命令，像这样</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">:vnew</span><br></pre></td></tr></table></figure>
 <p>一个命令能够以一些规则简化，上面的命令也可以写为这种形式</p>
-<p>:vne</p>
-<p>现在您的编辑区一定弄的四分五裂，您可以使用命令“:quit”来关闭当前栏，直接用简写就可以了</p>
-<p>:q</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">:vne</span><br></pre></td></tr></table></figure>
+<p>现在您的编辑区一定弄的四分五裂，您可以使用命令<code>:quit</code>来关闭当前栏，直接用简写就可以了</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">:q</span><br></pre></td></tr></table></figure>
 <p>这个命令是退出编辑器，如果编辑区被分成多栏，则是退出当前栏。</p>
 <p>执行完一个命令（按下回车后），编辑器会自动回到普通模式。如果您想不执行当前命令，直接回到普通模式，您可以按下Esc键。</p>
 <p>按下 v 键，您进入了可视模式，可以使用 j 、 k 、 l 、 h 移动光标，高亮选取文本 。</p>
 <p>事实上，可视模式相当于高亮选取文本后的普通模式。</p>
 <p>可视模式具有子模式，以行为单位进行选取的可视行模式，使用 V 键进入（也就是 Shift+v ）；和以块为单位进行选取的可视块模式，使用 Ctrl+v 键进入。</p>
-<p>模式切换</p>
+<h3 id="模式切换"><a class="header-anchor" href="#模式切换">¶</a>模式切换</h3>
 <p>好了，现在我们总结一下模式间切换的方法</p>
 <p>其它模式==&gt;普通模式</p>
 <p>Esc</p>
@@ -5720,7 +5696,7 @@ todo整理</p>
 <p>o 在当前行之下新建行 O 在当前行之上新建行          r 替换当前字符 R 从当前字符开始替换</p>
 <p>普通模式==&gt;命令模式         普通模式==&gt;可视模式         v 可视模式         V 可视块模式</p>
 <p>&lt;Ctrl+v&gt; 可视块模式</p>
-<p>移动</p>
+<h3 id="移动"><a class="header-anchor" href="#移动">¶</a>移动</h3>
 <p>在普通模式中，您可以使用以下方式移动光标</p>
 <p>j 向下         k 向上        l 向右 h l      h 向左 j</p>
 <p>您可以使用其它更有效率的方式移动光标</p>
@@ -5735,28 +5711,28 @@ todo整理</p>
 <p>………………</p>
 <p>&lt;作用范围&gt; &lt;键位&gt; &lt;功能&gt;</p>
 <p>其中，map!绑定的键盘映射，作用于所有模式；inoremap!绑定的映射，仅作用于插入模式。</p>
-<p>数字参数</p>
+<h3 id="数字参数"><a class="header-anchor" href="#数字参数">¶</a>数字参数</h3>
 <p>您也可以使用数字参数，来重复执行。例如</p>
 <p>100j 执行100次j键，向下100行</p>
 <p>或者作为跳转的行号、百分比。见下面的浏览部分</p>
 <p>&lt;行号&gt; Ctrl+g 按行号跳转</p>
-<p>标记</p>
+<h3 id="标记"><a class="header-anchor" href="#标记">¶</a>标记</h3>
 <p>您可以在当前光标处作一个标记，以便快速返回</p>
 <p>m&lt;标记名称&gt; 定义标记。标记名称为一个字符</p>
 <p>`&lt;标记名称&gt; 返回标记</p>
 <p>mx 将当前光标处定义为标记 x</p>
 <p>`x 返回标记 x</p>
-<p>浏览</p>
+<h3 id="浏览"><a class="header-anchor" href="#浏览">¶</a>浏览</h3>
 <p>&lt;Ctrl+f&gt; 下翻一页 &lt;Ctrl+d&gt; 下翻半页        &lt;Ctrl+b&gt; 上翻一页 &lt;Ctrl+u&gt; 上翻半页</p>
 <p>gg 文件首行        G 文件末行        &lt;行号&gt;G 按行号转到相应行</p>
 <p>&lt;1~100&gt;% 按百分比转到相应的行数      zz 将光标所在行调整至页面中间</p>
 <p>&lt;Ctrl+e&gt; 下卷一行       &lt;Ctrl+y&gt; 上卷一行</p>
 <p>说明：gg 定位到文件首行， V 进入可视行模式， G 定位到文件末行，实现类似“全选”的功能。依次按下 g g V(Shift+v) G(Shift+g)</p>
-<p>编辑</p>
+<h3 id="编辑"><a class="header-anchor" href="#编辑">¶</a>编辑</h3>
 <p>x 剪切当前字符              dd 剪切当前行      y 复制可视模式选取字符      yy 复制当前行</p>
 <p>p 在光标后粘贴 P 在光标前粘贴        u 撤消        &lt;trl+r&gt; 重做</p>
 <p>&lt;Ctrl+y&gt; 逐字克隆上一行内容           &lt;Ctrl+e&gt; 逐字克隆下一行内容</p>
-<p>寄存器操作</p>
+<h3 id="寄存器操作"><a class="header-anchor" href="#寄存器操作">¶</a>寄存器操作</h3>
 <p>Vim可以将不同字段剪切或复制到不同寄存器中，您可以从不同寄存器中取出内容后粘贴</p>
 <p>&quot;&lt;寄存器名称&gt; 按下“&quot;”键和另一个字符键，便可以定义一个寄存器。例如：</p>
 <p>&quot;a &quot;1</p>
@@ -5765,7 +5741,7 @@ todo整理</p>
 <p>&quot;ap 将寄存器 a 中的内容粘贴到光标之后</p>
 <p>* 通常情况下，寄存器 + ( &quot; + Shift+= )对应X下的剪贴板。您在其它程序中复制的内容，可以使用 &quot;+p 粘贴到Vim中；您在Vim中，可以使用 &quot;+y 将内容复制到剪贴板，再粘贴到其它程序中</p>
 <p>* 没有指定寄存器时，Vim使用“无名寄存器”存储内容</p>
-<p>搜索和替换</p>
+<h3 id="搜索和替换"><a class="header-anchor" href="#搜索和替换">¶</a>搜索和替换</h3>
 <p>按下 / 键，编辑器底部会出现 / 符号，接着输入字符串，便可以进行搜索</p>
 <p>/ 向下搜索 ? 向上搜索</p>
 <p>n 搜索下一个</p>
@@ -5774,9 +5750,9 @@ todo整理</p>
 <p>:s/&lt;源字符串&gt;/&lt;目标字符串&gt;/g 替换当前行中所有符合条件的字符串</p>
 <p>:&lt;行号1&gt;,&lt;行号2&gt;s/&lt;源字符串&gt;/&lt;目标字符串&gt;/g 在指定行中进行替换</p>
 <p>:%s/&lt;源字符串&gt;/&lt;目标字符串&gt;/g 全文替换</p>
-<p>正则表达式</p>
+<h3 id="正则表达式"><a class="header-anchor" href="#正则表达式">¶</a>正则表达式</h3>
 <p>在搜索和替换时，可以使用正则表达式进行匹配</p>
-<p>宏</p>
+<h3 id="宏"><a class="header-anchor" href="#宏">¶</a>宏</h3>
 <p>您可以将一系列的操作录制为一个宏，然后执行它</p>
 <p>q&lt;宏名称&gt; 开始录制宏。宏名称为一个字符</p>
 <p>q 录制中按下“q”键，结束录制</p>
@@ -5786,7 +5762,7 @@ todo整理</p>
 <p>&lt;Ctrl+k&gt;&lt;2个字符&gt; 输入二合字符</p>
 <p>&lt;Ctrl+v&gt;&lt;数字&gt; 通过数字编码输入字符</p>
 <p>&lt;Ctrl+v&gt;&lt;键位&gt; 输入键位的名称</p>
-<p>键绑定、缩写</p>
+<h3 id="键绑定、缩写"><a class="header-anchor" href="#键绑定、缩写">¶</a>键绑定、缩写</h3>
 <p>前面我们已经向您介绍了键绑定，</p>
 <p>map! <m-j> <down></down></m-j></p>
 <p>尖括号及其中的内容，为Vim配置文件的约定，分别描述了按键和功能，表示将功能编写到按键上。如果绑定的只是普通字符，例如：</p>
@@ -5797,60 +5773,45 @@ todo整理</p>
 <p>在插入模式下键入 ubt ，编辑器会自动替换为 Ubuntu 。您可以将 iabbrev 命令缩写为 iab ，例如：</p>
 <p>iab ubt Ubuntu</p>
 <p>以上命令，您可以直接在命令模式下输入，临时启用。也可以写入配置文件，永久启用。</p>
-<p>单词补全</p>
+<h3 id="单词补全"><a class="header-anchor" href="#单词补全">¶</a>单词补全</h3>
 <p>&lt;Ctrl+n&gt; 下一个匹配项</p>
 <p>&lt;Ctrl+p&gt; 上一个匹配项</p>
 <p>您可以在配置文件中定义补全的方式</p>
-<p>&quot;自动补全方式：(使用逗号分隔)</p>
-<p>set complete=k,.</p>
-<p>&quot; . 当前文件</p>
-<p>&quot; b 已被装缓冲区,但是没有在窗口内的文件</p>
-<p>&quot; d 在当前的文件中定义和由#include包含进来的文件</p>
-<p>&quot; i 由#include包含进来的文件</p>
-<p>&quot; k 由dictionary选项定义的文件</p>
-<p>&quot; kfile 名为{file}的文件</p>
-<p>&quot; t 标记(tags)文件</p>
-<p>&quot; u 没有载入的缓冲区</p>
-<p>&quot; w 在其他窗口中的文件</p>
-<p>&quot;设定自动补全字典 ：</p>
-<p>set dictionary=path</p>
-<p>命令模式</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&quot;自动补全方式：(使用逗号分隔)</span><br><span class="line">set complete=k,.</span><br><span class="line"></span><br><span class="line">&quot; . 当前文件</span><br><span class="line">&quot; b 已被装缓冲区,但是没有在窗口内的文件</span><br><span class="line">&quot; d 在当前的文件中定义和由#include包含进来的文件</span><br><span class="line">&quot; i 由#include包含进来的文件</span><br><span class="line">&quot; k 由dictionary选项定义的文件</span><br><span class="line">&quot; kfile 名为&#123;file&#125;的文件</span><br><span class="line">&quot; t 标记(tags)文件</span><br><span class="line">&quot; u 没有载入的缓冲区</span><br><span class="line">&quot; w 在其他窗口中的文件</span><br><span class="line">&quot;设定自动补全字典 ：</span><br><span class="line">set dictionary=path</span><br></pre></td></tr></table></figure>
+<h3 id="命令模式"><a class="header-anchor" href="#命令模式">¶</a>命令模式</h3>
 <p>前面介绍了普通模式和插入模式。我们发现，普通模式主要用来浏览和修改文本内容，而插入模式则用来向文本中添加内容。</p>
 <p>而命令模式则多用于操作文本文件（而不是操作文本文件的内容），例如保存文件；或者用来更改编辑器本身的状态，例如设定多栏窗口、标签或者退出编辑器……</p>
 <p>w(rote) 将更改写入文件</p>
-<p>:w</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">:w</span><br></pre></td></tr></table></figure>
 <p>q(uit) 退出编辑器:</p>
-<p>:q</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">:q</span><br></pre></td></tr></table></figure>
 <p>某些情况下，编辑器会阻止命令的执行。例如您修改了文件，而没有保存，那么您使用 :q 命令退出时，编辑器就不会执行这条命令，而是提醒您保存文件。</p>
 <p>这个时候，您可以在命令末尾追加 ! 来强制执行命令</p>
-<p>:&lt;命令&gt;!</p>
-<p>例如 :q! ，即便您没有保存已修改的文件，使用此命令，编辑器也会放弃修改而强行退出</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">:&lt;命令&gt;!</span><br></pre></td></tr></table></figure>
+<p>例如 <code>:q!</code> ，即便您没有保存已修改的文件，使用此命令，编辑器也会放弃修改而强行退出</p>
 <p>以 ! 引导一个Shell命令，则可以从Vim临时切换到Shell中，执行一个Shell</p>
-<p>:!&lt;命令&gt;</p>
-<p>例如 :!ls</p>
-<p>多栏窗口</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">:!&lt;命令&gt;</span><br></pre></td></tr></table></figure>
+<p>例如 :<code>!ls</code></p>
+<h3 id="多栏窗口"><a class="header-anchor" href="#多栏窗口">¶</a>多栏窗口</h3>
 <p>您可以使用以下命令，将当前窗口水平分为两栏</p>
-<p>:new</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">:new</span><br></pre></td></tr></table></figure>
 <p>新建一栏空白窗口</p>
-<p>:split</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">:split</span><br></pre></td></tr></table></figure>
 <p>将当前文件分两栏显示</p>
 <p>同理，您可以使用下列命令，将当前窗口垂直分为两栏</p>
-<p>:vnew</p>
-<p>:vsplit</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">:vnew</span><br><span class="line"></span><br><span class="line">:vsplit</span><br></pre></td></tr></table></figure>
 <p>先按下 &lt;ctrl+w&gt; 键，再按下方向键 j 、 k 、 l 、 h ，您可以切换到其它栏；在当前栏中使用 :q 命令，可以退出当前栏，也可以使用其它命令，对当前栏作出修改</p>
 <p>如果您希望当前命令在所有栏中生效，您可以在命令的末尾追加 all</p>
-<p>:&lt;命令&gt;all</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">:&lt;命令&gt;all</span><br></pre></td></tr></table></figure>
 <p>例如：</p>
-<p>:qall</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">:qall</span><br></pre></td></tr></table></figure>
 <p>如果您希望这条命令强制执行，那么 ! 位于命令的最末</p>
-<p>:&lt;命令&gt;all!</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">:&lt;命令&gt;all!</span><br></pre></td></tr></table></figure>
 <p>例如：</p>
-<p>:qall! 强行退出所有栏窗口</p>
-<p>标签页</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">:qall! 强行退出所有栏窗口</span><br></pre></td></tr></table></figure>
+<h3 id="标签页"><a class="header-anchor" href="#标签页">¶</a>标签页</h3>
 <p>Vim在7以后的版本，开始支持标签页的功能</p>
-<p>:tabnew 新建一个标签</p>
-<p>:tabnext 转到下一个标签</p>
-<p>:tabprevious 转到上一个标签</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">:tabnew 新建一个标签</span><br><span class="line">:tabnext 转到下一个标签</span><br><span class="line">:tabprevious 转到上一个标签</span><br></pre></td></tr></table></figure>
 <p>多数情况下，您可以使用鼠标点击标签进行切换。</p>
 <h2 id="引导管理器Grub"><a class="header-anchor" href="#引导管理器Grub">¶</a>引导管理器Grub</h2>
 <h3 id="硬件基础"><a class="header-anchor" href="#硬件基础">¶</a>硬件基础</h3>
