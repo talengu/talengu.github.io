@@ -300,6 +300,161 @@ Thank you !!!</p>
       </tags>
   </entry>
   <entry>
+    <title>选择困难者的福音？层次分析法</title>
+    <url>/public/2021/04/02/math_AHP/</url>
+    <content><![CDATA[<p><strong>摘要</strong></p>
+<p>日常生活中，我们面临很多的选择，选择工作offer，选择买哪个牌子的手机，选择哪个地方旅行等等。这些选择难以定量的衡量，有很多不确定性。内心小纠结，我选择了这个，万一那个好呢，怎么办？请看层次分析法。</p>
+<p>层次分析法(Analytic Hierarchy Process，简称 AHP)是对一些较为复杂、较为模糊的问题作出决策的简易方法，它特别适用于那些难于完全定量分析的问题。它是美国运筹学家 T. L. Saaty 教授于上世纪 70 年代初期提出的一种简便、灵活而又实用的多准则决策方法。</p>
+<p>运用层次分析法建模，大体上可按下面四个步骤进行</p>
+<ul>
+<li>建立递阶层次结构模型</li>
+<li>构造出各层次中的所有判断矩阵</li>
+<li>层次单排序及一致性检验</li>
+<li>层次总排序及一致性检验。（一般不用）</li>
+</ul>
+<a id="more"></a>
+<p>让我们从offer大佬的例子开始吧！</p>
+<p>举个栗子，今年有位大学生，有三个offer，C1 C2 C3。</p>
+<p>第一步，建立层次模型。</p>
+<ul>
+<li>目标层A：找工作的目标，自己满意程度。
+<ul>
+<li>这个程度怎么计算呢？比如工作1。</li>
+</ul>
+</li>
+<li>准则层B：研究课题、发展前途、待遇、同事情况、地理位置、单位名气等等。
+<ul>
+<li>尽量列全一点，不需要排列重要顺序。</li>
+<li>小于等于9个，后面要两两拍脑袋给出相对的重要层度，给多了不得把脑袋拍疼了。</li>
+<li>也可以有子准则层，比如待遇中的放假、工作环境等等，列出也小于9个。</li>
+</ul>
+</li>
+<li>方案层C：就是我们的offer</li>
+</ul>
+<img src="/public/2021/04/02/math_AHP/image-20200406145535585.png" alt="image-20200406145535585" style="zoom:50%;">
+<h2 id="构造-A-B-之间判断矩阵"><a class="header-anchor" href="#构造-A-B-之间判断矩阵">¶</a>构造 A B 之间判断矩阵</h2>
+<p>准则层B与目标A之间的关系。为了求出准则层中(B1-6) 对目标的重要层度的排序。比如对于该生工作满意度第一重要是待遇，然后是地点，其实该生自己也很模糊。就是固定A，然后求B中准则，对A重要性的排序。</p>
+<h3 id="我们怎么对B中的准则们的重要排序呢？"><a class="header-anchor" href="#我们怎么对B中的准则们的重要排序呢？">¶</a>我们怎么对B中的准则们的重要排序呢？</h3>
+<p>直接给每一个准则，0-1的评分，然后排序。经常会想，给完分之后，这个不合理呀要不我再给哪个准则加加分。所以这样的方法常常会因考虑不周全、顾此失彼而使决策者提出与他实际认为的重要性程度不相一致的数据。</p>
+<p>我们可以将这个过程细化，我就比较两个准则对于目标的重要性，然后通过下面的矩阵方法，求出优先顺序。</p>
+<p>还能通过一个一致性检验，来检验在你评分的过程中，有没有自相矛盾的地方，当然这种方法允许一些自相矛盾。反正评分的时候尊从内心拍脑袋就对了。</p>
+<p>所以我们拿出一个B1 与 B2 对于目标的重要，想一想然后给出B2/B1，填入下面的表格中的(2,1)的位置。</p>
+<p>整个矩阵i,j 与j，i 是取倒数的关系，所以只要做一半。</p>
+<p>在找工作的目标下，准则i与j相对的重要性表示，B2/B1 的值。采用9个标度。而相比不重要刻度取倒数就可以了</p>
+<table>
+<thead>
+<tr>
+<th>准则i比j的比较</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+<th>5</th>
+<th>6</th>
+<th>7</th>
+<th>8</th>
+<th>9</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td>相同重要</td>
+<td></td>
+<td>比较重要</td>
+<td></td>
+<td>明显重要</td>
+<td></td>
+<td>强烈重要</td>
+<td></td>
+<td>极端重要</td>
+</tr>
+</tbody>
+</table>
+<p>最后的两两相对重要表格</p>
+<img src="/public/2021/04/02/math_AHP/image-20200406145640316.png" alt="image-20200406145640316" style="zoom:50%;">
+<p>对角线对称的两个数互为倒数，即 $$a_{ji}=\frac{1}{a_{ij}}$$  B1/B2 不就是和 B2/B1互为倒数嘛</p>
+<p>从心理学观点来看，分级太多会超越人们的判断能力，既增加了作判断的难度， 又容易因此而提供虚假数据。Saaty 等人还用实验方法比较了在各种不同标度下人们判断结果的正确性，实验结果也表明，采用 1~9 标度最为合适。</p>
+<p>判断矩阵的一致性指标步骤：</p>
+<ul>
+<li>1）计算一致性指标 CI 。$$CI=\frac{ \lambda_{max}-n}{n-1}$$</li>
+<li>2）查表，平均随机一致性指标 RI。</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>n</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+<th>5</th>
+<th>6</th>
+<th>7</th>
+<th>8</th>
+<th>9</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>RI</td>
+<td>0</td>
+<td>0</td>
+<td>0.58</td>
+<td>0.90</td>
+<td>1.12</td>
+<td>1.24</td>
+<td>1.32</td>
+<td>1.41</td>
+<td>1.45</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><em>RI</em> 的值是这样得到的，用随机方法构造500个样本矩阵:随机地从1~9及其倒数中抽取数字构造正互反矩阵，求得最大特征根的平均值 $$\bar \lambda_{max}$$ 并定义$$RI=\frac{\bar \lambda_{max}-n}{n-1}$$</p>
+</blockquote>
+<ul>
+<li>3）计算一致性比例CR。 $$CR=\frac{CI}{RI}$$，当$$CR&lt;0.10$$ 时，认为判断矩阵的一致性是可以接受的，否则应对判断矩阵作适当修正。</li>
+</ul>
+<p>如果一个矩阵满足上面的条件，那么它最大特征值对应的特征向量就可以认为是每个维度的重要性权重。</p>
+<h2 id="构造-B-C-之间判断矩阵"><a class="header-anchor" href="#构造-B-C-之间判断矩阵">¶</a>构造 B C 之间判断矩阵</h2>
+<p>相同的方法，在同一B准则下，考虑不同工作的优先顺序。求工作排序的方法，和上面一样。</p>
+<img src="/public/2021/04/02/math_AHP/image-20200406162644137.png" alt="image-20200406162644137" style="zoom:50%;">
+<p>python代码<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">import</span> warnings</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AHP</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, criteria, b)</span>:</span></span><br><span class="line">        self.RI = (<span class="number">0</span>, <span class="number">0</span>, <span class="number">0.58</span>, <span class="number">0.9</span>, <span class="number">1.12</span>, <span class="number">1.24</span>, <span class="number">1.32</span>, <span class="number">1.41</span>, <span class="number">1.45</span>, <span class="number">1.49</span>)</span><br><span class="line">        self.criteria = criteria</span><br><span class="line">        self.b = b</span><br><span class="line">        self.num_criteria = criteria.shape[<span class="number">0</span>]</span><br><span class="line">        self.num_project = b[<span class="number">0</span>].shape[<span class="number">0</span>]</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">cal_weights</span><span class="params">(self, input_matrix)</span>:</span></span><br><span class="line">        input_matrix = np.array(input_matrix)</span><br><span class="line">        n, n1 = input_matrix.shape</span><br><span class="line">        <span class="keyword">assert</span> n == n1, <span class="string">'不是一个方阵'</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(n):</span><br><span class="line">            <span class="keyword">for</span> j <span class="keyword">in</span> range(n):</span><br><span class="line">                <span class="keyword">if</span> np.abs(input_matrix[i, j] * input_matrix[j, i] - <span class="number">1</span>) &gt; <span class="number">1e-7</span>:</span><br><span class="line">                    <span class="keyword">raise</span> ValueError(<span class="string">'不是反互对称矩阵'</span>)</span><br><span class="line"></span><br><span class="line">        eigenvalues, eigenvectors = np.linalg.eig(input_matrix)</span><br><span class="line"></span><br><span class="line">        max_idx = np.argmax(eigenvalues)</span><br><span class="line">        max_eigen = eigenvalues[max_idx].real</span><br><span class="line">        eigen = eigenvectors[:, max_idx].real</span><br><span class="line">        eigen = eigen / eigen.sum()</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> n &gt; <span class="number">9</span>:</span><br><span class="line">            CR = <span class="literal">None</span></span><br><span class="line">            warnings.warn(<span class="string">'无法判断一致性'</span>)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            CI = (max_eigen - n) / (n - <span class="number">1</span>)</span><br><span class="line">            CR = CI / self.RI[n]</span><br><span class="line">        <span class="keyword">return</span> max_eigen, CR, eigen</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">run</span><span class="params">(self)</span>:</span></span><br><span class="line">        max_eigen, CR, criteria_eigen = self.cal_weights(self.criteria)</span><br><span class="line">        print(<span class="string">'准则层：最大特征值&#123;:&lt;5f&#125;,CR=&#123;:&lt;5f&#125;,检验&#123;&#125;通过'</span>.format(max_eigen, CR, <span class="string">''</span> <span class="keyword">if</span> CR &lt; <span class="number">0.1</span> <span class="keyword">else</span> <span class="string">'不'</span>))</span><br><span class="line">        print(<span class="string">'准则层权重=&#123;&#125;\n'</span>.format(criteria_eigen))</span><br><span class="line"></span><br><span class="line">        max_eigen_list, CR_list, eigen_list = [], [], []</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> self.b:</span><br><span class="line">            max_eigen, CR, eigen = self.cal_weights(i)</span><br><span class="line">            max_eigen_list.append(max_eigen)</span><br><span class="line">            CR_list.append(CR)</span><br><span class="line">            eigen_list.append(eigen)</span><br><span class="line"></span><br><span class="line">        pd_print = pd.DataFrame(eigen_list,</span><br><span class="line">                                index=[<span class="string">'准则'</span> + str(i) <span class="keyword">for</span> i <span class="keyword">in</span> range(self.num_criteria)],</span><br><span class="line">                                columns=[<span class="string">'方案'</span> + str(i) <span class="keyword">for</span> i <span class="keyword">in</span> range(self.num_project)],</span><br><span class="line">                                )</span><br><span class="line">        pd_print.loc[:, <span class="string">'最大特征值'</span>] = max_eigen_list</span><br><span class="line">        pd_print.loc[:, <span class="string">'CR'</span>] = CR_list</span><br><span class="line">        pd_print.loc[:, <span class="string">'一致性检验'</span>] = pd_print.loc[:, <span class="string">'CR'</span>] &lt; <span class="number">0.1</span></span><br><span class="line">        print(<span class="string">'方案层'</span>)</span><br><span class="line">        print(pd_print)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 目标层</span></span><br><span class="line">        obj = np.dot(criteria_eigen.reshape(<span class="number">1</span>, <span class="number">-1</span>), np.array(eigen_list))</span><br><span class="line">        print(<span class="string">'\n目标层'</span>, obj)</span><br><span class="line">        print(<span class="string">'最优选择是方案&#123;&#125;'</span>.format(np.argmax(obj)))</span><br><span class="line">        <span class="keyword">return</span> obj</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    <span class="comment"># 准则重要性矩阵</span></span><br><span class="line">    criteria = np.array([[<span class="number">1</span>, <span class="number">2</span>, <span class="number">7</span>, <span class="number">5</span>, <span class="number">5</span>],</span><br><span class="line">                         [<span class="number">1</span> / <span class="number">2</span>, <span class="number">1</span>, <span class="number">4</span>, <span class="number">3</span>, <span class="number">3</span>],</span><br><span class="line">                         [<span class="number">1</span> / <span class="number">7</span>, <span class="number">1</span> / <span class="number">4</span>, <span class="number">1</span>, <span class="number">1</span> / <span class="number">2</span>, <span class="number">1</span> / <span class="number">3</span>],</span><br><span class="line">                         [<span class="number">1</span> / <span class="number">5</span>, <span class="number">1</span> / <span class="number">3</span>, <span class="number">2</span>, <span class="number">1</span>, <span class="number">1</span>],</span><br><span class="line">                         [<span class="number">1</span> / <span class="number">5</span>, <span class="number">1</span> / <span class="number">3</span>, <span class="number">3</span>, <span class="number">1</span>, <span class="number">1</span>]])</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 对每个准则，方案优劣排序</span></span><br><span class="line">    b1 = np.array([[<span class="number">1</span>, <span class="number">1</span> / <span class="number">3</span>, <span class="number">1</span> / <span class="number">8</span>], [<span class="number">3</span>, <span class="number">1</span>, <span class="number">1</span> / <span class="number">3</span>], [<span class="number">8</span>, <span class="number">3</span>, <span class="number">1</span>]])</span><br><span class="line">    b2 = np.array([[<span class="number">1</span>, <span class="number">2</span>, <span class="number">5</span>], [<span class="number">1</span> / <span class="number">2</span>, <span class="number">1</span>, <span class="number">2</span>], [<span class="number">1</span> / <span class="number">5</span>, <span class="number">1</span> / <span class="number">2</span>, <span class="number">1</span>]])</span><br><span class="line">    b3 = np.array([[<span class="number">1</span>, <span class="number">1</span>, <span class="number">3</span>], [<span class="number">1</span>, <span class="number">1</span>, <span class="number">3</span>], [<span class="number">1</span> / <span class="number">3</span>, <span class="number">1</span> / <span class="number">3</span>, <span class="number">1</span>]])</span><br><span class="line">    b4 = np.array([[<span class="number">1</span>, <span class="number">3</span>, <span class="number">4</span>], [<span class="number">1</span> / <span class="number">3</span>, <span class="number">1</span>, <span class="number">1</span>], [<span class="number">1</span> / <span class="number">4</span>, <span class="number">1</span>, <span class="number">1</span>]])</span><br><span class="line">    b5 = np.array([[<span class="number">1</span>, <span class="number">4</span>, <span class="number">1</span> / <span class="number">2</span>], [<span class="number">1</span> / <span class="number">4</span>, <span class="number">1</span>, <span class="number">1</span> / <span class="number">4</span>], [<span class="number">2</span>, <span class="number">4</span>, <span class="number">1</span>]])</span><br><span class="line"></span><br><span class="line">    b = [b1, b2, b3, b4, b5]</span><br><span class="line">    a = AHP(criteria, b).run()</span><br></pre></td></tr></table></figure>
+<h2 id="层次分析法与控制变量法"><a class="header-anchor" href="#层次分析法与控制变量法">¶</a>层次分析法与控制变量法</h2>
+<p>我们的任务是选择工作，最后使得我们满意，直接选择我们当然一头雾水。所以我们设立一些准则，然后对这些准则对于目标的重要性排序。</p>
+<p>这又有点像概率图模型，只是赋权的方法，是相互比较的方法。</p>
+<h2 id="选择困难者的福音？"><a class="header-anchor" href="#选择困难者的福音？">¶</a>选择困难者的福音？</h2>
+<p>层次分析法对人们的思维过程进行了加工整理，提出了一套系统分析问题的方法，为科学管理和决策提供了较有说服力的依据。</p>
+<p>在应用层次分析法研究问题时，遇到的主要困难有两个:
+(1) 如何根据实际情况抽象出较为贴切的层次结构;
+(2) 如何将某些定性的量作比较接近实际定量化处理。</p>
+<p>层次分析法的其局限性<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup>：
+(1) 它在很大程度上依赖于人们的经验，主观因素的影响很大，它至多只能排除思维过程中的严重非一致性，却无法排除决策者个人可能存在的严重片面性。
+(2) 比较、 判断过程较为粗糙，不能用于精度要求较高的决策问题。</p>
+<p>所以，AHP 至多只能算是一种半定量(或定性与定量结合)的方法。
+本文仅供参考，不负法律责任，哈哈。</p>
+<p>参考</p>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p>幼鹰me 知乎 <a href="https://zhuanlan.zhihu.com/p/101505929" target="_blank" rel="noopener">层次分析法原理与Python实现</a> <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn2" class="footnote-item"><p>司守奎《数学建模算法与程序》第八章 层次分析法 P167 <a href="#fnref2" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
+]]></content>
+      <categories>
+        <category>数学</category>
+      </categories>
+      <tags>
+        <tag>数学</tag>
+        <tag>层次分析法</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>RSS跟踪github文件更新</title>
     <url>/public/2021/07/24/rss_github_file/</url>
     <content><![CDATA[<p><strong>前言</strong></p>
@@ -509,161 +664,6 @@ markdown 空格</p>
       <tags>
         <tag>工具</tag>
         <tag>博客模版</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>选择困难者的福音？层次分析法</title>
-    <url>/public/2021/04/02/math_AHP/</url>
-    <content><![CDATA[<p><strong>摘要</strong></p>
-<p>日常生活中，我们面临很多的选择，选择工作offer，选择买哪个牌子的手机，选择哪个地方旅行等等。这些选择难以定量的衡量，有很多不确定性。内心小纠结，我选择了这个，万一那个好呢，怎么办？请看层次分析法。</p>
-<p>层次分析法(Analytic Hierarchy Process，简称 AHP)是对一些较为复杂、较为模糊的问题作出决策的简易方法，它特别适用于那些难于完全定量分析的问题。它是美国运筹学家 T. L. Saaty 教授于上世纪 70 年代初期提出的一种简便、灵活而又实用的多准则决策方法。</p>
-<p>运用层次分析法建模，大体上可按下面四个步骤进行</p>
-<ul>
-<li>建立递阶层次结构模型</li>
-<li>构造出各层次中的所有判断矩阵</li>
-<li>层次单排序及一致性检验</li>
-<li>层次总排序及一致性检验。（一般不用）</li>
-</ul>
-<a id="more"></a>
-<p>让我们从offer大佬的例子开始吧！</p>
-<p>举个栗子，今年有位大学生，有三个offer，C1 C2 C3。</p>
-<p>第一步，建立层次模型。</p>
-<ul>
-<li>目标层A：找工作的目标，自己满意程度。
-<ul>
-<li>这个程度怎么计算呢？比如工作1。</li>
-</ul>
-</li>
-<li>准则层B：研究课题、发展前途、待遇、同事情况、地理位置、单位名气等等。
-<ul>
-<li>尽量列全一点，不需要排列重要顺序。</li>
-<li>小于等于9个，后面要两两拍脑袋给出相对的重要层度，给多了不得把脑袋拍疼了。</li>
-<li>也可以有子准则层，比如待遇中的放假、工作环境等等，列出也小于9个。</li>
-</ul>
-</li>
-<li>方案层C：就是我们的offer</li>
-</ul>
-<img src="/public/2021/04/02/math_AHP/image-20200406145535585.png" alt="image-20200406145535585" style="zoom:50%;">
-<h2 id="构造-A-B-之间判断矩阵"><a class="header-anchor" href="#构造-A-B-之间判断矩阵">¶</a>构造 A B 之间判断矩阵</h2>
-<p>准则层B与目标A之间的关系。为了求出准则层中(B1-6) 对目标的重要层度的排序。比如对于该生工作满意度第一重要是待遇，然后是地点，其实该生自己也很模糊。就是固定A，然后求B中准则，对A重要性的排序。</p>
-<h3 id="我们怎么对B中的准则们的重要排序呢？"><a class="header-anchor" href="#我们怎么对B中的准则们的重要排序呢？">¶</a>我们怎么对B中的准则们的重要排序呢？</h3>
-<p>直接给每一个准则，0-1的评分，然后排序。经常会想，给完分之后，这个不合理呀要不我再给哪个准则加加分。所以这样的方法常常会因考虑不周全、顾此失彼而使决策者提出与他实际认为的重要性程度不相一致的数据。</p>
-<p>我们可以将这个过程细化，我就比较两个准则对于目标的重要性，然后通过下面的矩阵方法，求出优先顺序。</p>
-<p>还能通过一个一致性检验，来检验在你评分的过程中，有没有自相矛盾的地方，当然这种方法允许一些自相矛盾。反正评分的时候尊从内心拍脑袋就对了。</p>
-<p>所以我们拿出一个B1 与 B2 对于目标的重要，想一想然后给出B2/B1，填入下面的表格中的(2,1)的位置。</p>
-<p>整个矩阵i,j 与j，i 是取倒数的关系，所以只要做一半。</p>
-<p>在找工作的目标下，准则i与j相对的重要性表示，B2/B1 的值。采用9个标度。而相比不重要刻度取倒数就可以了</p>
-<table>
-<thead>
-<tr>
-<th>准则i比j的比较</th>
-<th>1</th>
-<th>2</th>
-<th>3</th>
-<th>4</th>
-<th>5</th>
-<th>6</th>
-<th>7</th>
-<th>8</th>
-<th>9</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-<td>相同重要</td>
-<td></td>
-<td>比较重要</td>
-<td></td>
-<td>明显重要</td>
-<td></td>
-<td>强烈重要</td>
-<td></td>
-<td>极端重要</td>
-</tr>
-</tbody>
-</table>
-<p>最后的两两相对重要表格</p>
-<img src="/public/2021/04/02/math_AHP/image-20200406145640316.png" alt="image-20200406145640316" style="zoom:50%;">
-<p>对角线对称的两个数互为倒数，即 $$a_{ji}=\frac{1}{a_{ij}}$$  B1/B2 不就是和 B2/B1互为倒数嘛</p>
-<p>从心理学观点来看，分级太多会超越人们的判断能力，既增加了作判断的难度， 又容易因此而提供虚假数据。Saaty 等人还用实验方法比较了在各种不同标度下人们判断结果的正确性，实验结果也表明，采用 1~9 标度最为合适。</p>
-<p>判断矩阵的一致性指标步骤：</p>
-<ul>
-<li>1）计算一致性指标 CI 。$$CI=\frac{ \lambda_{max}-n}{n-1}$$</li>
-<li>2）查表，平均随机一致性指标 RI。</li>
-</ul>
-<table>
-<thead>
-<tr>
-<th>n</th>
-<th>1</th>
-<th>2</th>
-<th>3</th>
-<th>4</th>
-<th>5</th>
-<th>6</th>
-<th>7</th>
-<th>8</th>
-<th>9</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>RI</td>
-<td>0</td>
-<td>0</td>
-<td>0.58</td>
-<td>0.90</td>
-<td>1.12</td>
-<td>1.24</td>
-<td>1.32</td>
-<td>1.41</td>
-<td>1.45</td>
-</tr>
-</tbody>
-</table>
-<blockquote>
-<p><em>RI</em> 的值是这样得到的，用随机方法构造500个样本矩阵:随机地从1~9及其倒数中抽取数字构造正互反矩阵，求得最大特征根的平均值 $$\bar \lambda_{max}$$ 并定义$$RI=\frac{\bar \lambda_{max}-n}{n-1}$$</p>
-</blockquote>
-<ul>
-<li>3）计算一致性比例CR。 $$CR=\frac{CI}{RI}$$，当$$CR&lt;0.10$$ 时，认为判断矩阵的一致性是可以接受的，否则应对判断矩阵作适当修正。</li>
-</ul>
-<p>如果一个矩阵满足上面的条件，那么它最大特征值对应的特征向量就可以认为是每个维度的重要性权重。</p>
-<h2 id="构造-B-C-之间判断矩阵"><a class="header-anchor" href="#构造-B-C-之间判断矩阵">¶</a>构造 B C 之间判断矩阵</h2>
-<p>相同的方法，在同一B准则下，考虑不同工作的优先顺序。求工作排序的方法，和上面一样。</p>
-<img src="/public/2021/04/02/math_AHP/image-20200406162644137.png" alt="image-20200406162644137" style="zoom:50%;">
-<p>python代码<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup></p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">import</span> warnings</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AHP</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, criteria, b)</span>:</span></span><br><span class="line">        self.RI = (<span class="number">0</span>, <span class="number">0</span>, <span class="number">0.58</span>, <span class="number">0.9</span>, <span class="number">1.12</span>, <span class="number">1.24</span>, <span class="number">1.32</span>, <span class="number">1.41</span>, <span class="number">1.45</span>, <span class="number">1.49</span>)</span><br><span class="line">        self.criteria = criteria</span><br><span class="line">        self.b = b</span><br><span class="line">        self.num_criteria = criteria.shape[<span class="number">0</span>]</span><br><span class="line">        self.num_project = b[<span class="number">0</span>].shape[<span class="number">0</span>]</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">cal_weights</span><span class="params">(self, input_matrix)</span>:</span></span><br><span class="line">        input_matrix = np.array(input_matrix)</span><br><span class="line">        n, n1 = input_matrix.shape</span><br><span class="line">        <span class="keyword">assert</span> n == n1, <span class="string">'不是一个方阵'</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(n):</span><br><span class="line">            <span class="keyword">for</span> j <span class="keyword">in</span> range(n):</span><br><span class="line">                <span class="keyword">if</span> np.abs(input_matrix[i, j] * input_matrix[j, i] - <span class="number">1</span>) &gt; <span class="number">1e-7</span>:</span><br><span class="line">                    <span class="keyword">raise</span> ValueError(<span class="string">'不是反互对称矩阵'</span>)</span><br><span class="line"></span><br><span class="line">        eigenvalues, eigenvectors = np.linalg.eig(input_matrix)</span><br><span class="line"></span><br><span class="line">        max_idx = np.argmax(eigenvalues)</span><br><span class="line">        max_eigen = eigenvalues[max_idx].real</span><br><span class="line">        eigen = eigenvectors[:, max_idx].real</span><br><span class="line">        eigen = eigen / eigen.sum()</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> n &gt; <span class="number">9</span>:</span><br><span class="line">            CR = <span class="literal">None</span></span><br><span class="line">            warnings.warn(<span class="string">'无法判断一致性'</span>)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            CI = (max_eigen - n) / (n - <span class="number">1</span>)</span><br><span class="line">            CR = CI / self.RI[n]</span><br><span class="line">        <span class="keyword">return</span> max_eigen, CR, eigen</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">run</span><span class="params">(self)</span>:</span></span><br><span class="line">        max_eigen, CR, criteria_eigen = self.cal_weights(self.criteria)</span><br><span class="line">        print(<span class="string">'准则层：最大特征值&#123;:&lt;5f&#125;,CR=&#123;:&lt;5f&#125;,检验&#123;&#125;通过'</span>.format(max_eigen, CR, <span class="string">''</span> <span class="keyword">if</span> CR &lt; <span class="number">0.1</span> <span class="keyword">else</span> <span class="string">'不'</span>))</span><br><span class="line">        print(<span class="string">'准则层权重=&#123;&#125;\n'</span>.format(criteria_eigen))</span><br><span class="line"></span><br><span class="line">        max_eigen_list, CR_list, eigen_list = [], [], []</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> self.b:</span><br><span class="line">            max_eigen, CR, eigen = self.cal_weights(i)</span><br><span class="line">            max_eigen_list.append(max_eigen)</span><br><span class="line">            CR_list.append(CR)</span><br><span class="line">            eigen_list.append(eigen)</span><br><span class="line"></span><br><span class="line">        pd_print = pd.DataFrame(eigen_list,</span><br><span class="line">                                index=[<span class="string">'准则'</span> + str(i) <span class="keyword">for</span> i <span class="keyword">in</span> range(self.num_criteria)],</span><br><span class="line">                                columns=[<span class="string">'方案'</span> + str(i) <span class="keyword">for</span> i <span class="keyword">in</span> range(self.num_project)],</span><br><span class="line">                                )</span><br><span class="line">        pd_print.loc[:, <span class="string">'最大特征值'</span>] = max_eigen_list</span><br><span class="line">        pd_print.loc[:, <span class="string">'CR'</span>] = CR_list</span><br><span class="line">        pd_print.loc[:, <span class="string">'一致性检验'</span>] = pd_print.loc[:, <span class="string">'CR'</span>] &lt; <span class="number">0.1</span></span><br><span class="line">        print(<span class="string">'方案层'</span>)</span><br><span class="line">        print(pd_print)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 目标层</span></span><br><span class="line">        obj = np.dot(criteria_eigen.reshape(<span class="number">1</span>, <span class="number">-1</span>), np.array(eigen_list))</span><br><span class="line">        print(<span class="string">'\n目标层'</span>, obj)</span><br><span class="line">        print(<span class="string">'最优选择是方案&#123;&#125;'</span>.format(np.argmax(obj)))</span><br><span class="line">        <span class="keyword">return</span> obj</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    <span class="comment"># 准则重要性矩阵</span></span><br><span class="line">    criteria = np.array([[<span class="number">1</span>, <span class="number">2</span>, <span class="number">7</span>, <span class="number">5</span>, <span class="number">5</span>],</span><br><span class="line">                         [<span class="number">1</span> / <span class="number">2</span>, <span class="number">1</span>, <span class="number">4</span>, <span class="number">3</span>, <span class="number">3</span>],</span><br><span class="line">                         [<span class="number">1</span> / <span class="number">7</span>, <span class="number">1</span> / <span class="number">4</span>, <span class="number">1</span>, <span class="number">1</span> / <span class="number">2</span>, <span class="number">1</span> / <span class="number">3</span>],</span><br><span class="line">                         [<span class="number">1</span> / <span class="number">5</span>, <span class="number">1</span> / <span class="number">3</span>, <span class="number">2</span>, <span class="number">1</span>, <span class="number">1</span>],</span><br><span class="line">                         [<span class="number">1</span> / <span class="number">5</span>, <span class="number">1</span> / <span class="number">3</span>, <span class="number">3</span>, <span class="number">1</span>, <span class="number">1</span>]])</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 对每个准则，方案优劣排序</span></span><br><span class="line">    b1 = np.array([[<span class="number">1</span>, <span class="number">1</span> / <span class="number">3</span>, <span class="number">1</span> / <span class="number">8</span>], [<span class="number">3</span>, <span class="number">1</span>, <span class="number">1</span> / <span class="number">3</span>], [<span class="number">8</span>, <span class="number">3</span>, <span class="number">1</span>]])</span><br><span class="line">    b2 = np.array([[<span class="number">1</span>, <span class="number">2</span>, <span class="number">5</span>], [<span class="number">1</span> / <span class="number">2</span>, <span class="number">1</span>, <span class="number">2</span>], [<span class="number">1</span> / <span class="number">5</span>, <span class="number">1</span> / <span class="number">2</span>, <span class="number">1</span>]])</span><br><span class="line">    b3 = np.array([[<span class="number">1</span>, <span class="number">1</span>, <span class="number">3</span>], [<span class="number">1</span>, <span class="number">1</span>, <span class="number">3</span>], [<span class="number">1</span> / <span class="number">3</span>, <span class="number">1</span> / <span class="number">3</span>, <span class="number">1</span>]])</span><br><span class="line">    b4 = np.array([[<span class="number">1</span>, <span class="number">3</span>, <span class="number">4</span>], [<span class="number">1</span> / <span class="number">3</span>, <span class="number">1</span>, <span class="number">1</span>], [<span class="number">1</span> / <span class="number">4</span>, <span class="number">1</span>, <span class="number">1</span>]])</span><br><span class="line">    b5 = np.array([[<span class="number">1</span>, <span class="number">4</span>, <span class="number">1</span> / <span class="number">2</span>], [<span class="number">1</span> / <span class="number">4</span>, <span class="number">1</span>, <span class="number">1</span> / <span class="number">4</span>], [<span class="number">2</span>, <span class="number">4</span>, <span class="number">1</span>]])</span><br><span class="line"></span><br><span class="line">    b = [b1, b2, b3, b4, b5]</span><br><span class="line">    a = AHP(criteria, b).run()</span><br></pre></td></tr></table></figure>
-<h2 id="层次分析法与控制变量法"><a class="header-anchor" href="#层次分析法与控制变量法">¶</a>层次分析法与控制变量法</h2>
-<p>我们的任务是选择工作，最后使得我们满意，直接选择我们当然一头雾水。所以我们设立一些准则，然后对这些准则对于目标的重要性排序。</p>
-<p>这又有点像概率图模型，只是赋权的方法，是相互比较的方法。</p>
-<h2 id="选择困难者的福音？"><a class="header-anchor" href="#选择困难者的福音？">¶</a>选择困难者的福音？</h2>
-<p>层次分析法对人们的思维过程进行了加工整理，提出了一套系统分析问题的方法，为科学管理和决策提供了较有说服力的依据。</p>
-<p>在应用层次分析法研究问题时，遇到的主要困难有两个:
-(1) 如何根据实际情况抽象出较为贴切的层次结构;
-(2) 如何将某些定性的量作比较接近实际定量化处理。</p>
-<p>层次分析法的其局限性<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup>：
-(1) 它在很大程度上依赖于人们的经验，主观因素的影响很大，它至多只能排除思维过程中的严重非一致性，却无法排除决策者个人可能存在的严重片面性。
-(2) 比较、 判断过程较为粗糙，不能用于精度要求较高的决策问题。</p>
-<p>所以，AHP 至多只能算是一种半定量(或定性与定量结合)的方法。
-本文仅供参考，不负法律责任，哈哈。</p>
-<p>参考</p>
-<hr class="footnotes-sep">
-<section class="footnotes">
-<ol class="footnotes-list">
-<li id="fn1" class="footnote-item"><p>幼鹰me 知乎 <a href="https://zhuanlan.zhihu.com/p/101505929" target="_blank" rel="noopener">层次分析法原理与Python实现</a> <a href="#fnref1" class="footnote-backref">↩︎</a></p>
-</li>
-<li id="fn2" class="footnote-item"><p>司守奎《数学建模算法与程序》第八章 层次分析法 P167 <a href="#fnref2" class="footnote-backref">↩︎</a></p>
-</li>
-</ol>
-</section>
-]]></content>
-      <categories>
-        <category>数学</category>
-      </categories>
-      <tags>
-        <tag>数学</tag>
-        <tag>层次分析法</tag>
       </tags>
   </entry>
   <entry>
@@ -1699,174 +1699,6 @@ $$
       </tags>
   </entry>
   <entry>
-    <title>Jupyter notebook的配置</title>
-    <url>/public/2017/07/03/linux/jupyter_notebook/</url>
-    <content><![CDATA[<p><strong>前言</strong>
-本文介绍jupyter notebook的安装配置过程和实用技巧。
-<a href="https://jupyter.readthedocs.io/en/latest/index.html" target="_blank" rel="noopener">jupyter.readthedocs教程</a></p>
-<a id="more"></a>
-<h2 id="1-安装与配置"><a class="header-anchor" href="#1-安装与配置">¶</a>1 安装与配置</h2>
-<h3 id="1-1-安装-jupyter"><a class="header-anchor" href="#1-1-安装-jupyter">¶</a>1.1 安装 jupyter</h3>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">conda install jupyter</span><br><span class="line"><span class="comment"># pip install jupyter -y</span></span><br></pre></td></tr></table></figure>
-<h3 id="1-2-修改配置文件"><a class="header-anchor" href="#1-2-修改配置文件">¶</a>1.2 修改配置文件</h3>
-<ul>
-<li>生成配置文件</li>
-</ul>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">jupyter notebook --generate-config</span><br><span class="line">vim ~/.jupyter/jupyter_notebook_config.py</span><br></pre></td></tr></table></figure>
-<ul>
-<li>修改配置文件内容</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">c.NotebookApp.ip = <span class="string">'0.0.0.0'</span></span><br><span class="line">c.NotebookApp.port = <span class="number">8018</span></span><br><span class="line"><span class="comment"># 设置密码</span></span><br><span class="line">c.NotebookApp.password = <span class="string">u'sha1:bcd259ccf...your hashed password here'</span></span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>Tip: 利用ipython 生成密码</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&gt; In [1]: from IPython.lib import passwd</span><br><span class="line">&gt; In [2]: passwd()</span><br><span class="line">&gt;   Enter password:</span><br><span class="line">&gt;   Verify password:</span><br><span class="line">&gt;   Out[2]: &apos;sha1:67xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&apos;</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
-</blockquote>
-<p>我选用的是password密码登陆jupyter的方案，其他的密码登陆方案见 <a href="https://zhuanlan.zhihu.com/p/23110830" target="_blank" rel="noopener">link</a></p>
-<h3 id="1-3-安装插件管理"><a class="header-anchor" href="#1-3-安装插件管理">¶</a>1.3 安装插件管理</h3>
-<p>jupyter_contrib_nbextensions 为 jupyter notebook 扩展插件管理器，下面简称nbextensions。</p>
-<p>nbextensions的github <a href="https://github.com/ipython-contrib/jupyter_contrib_nbextensions" target="_blank" rel="noopener">repo</a>
-nbextensions的教程<a href="https://jupyter-contrib-nbextensions.readthedocs.io/en/latest/" target="_blank" rel="noopener">nbextensions_manual_readthedocs</a></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 用conda安装</span></span><br><span class="line">conda install jupyter</span><br><span class="line">conda install -c conda-forge jupyter_contrib_nbextensions</span><br><span class="line"></span><br><span class="line"><span class="comment"># pip安装</span></span><br><span class="line">pip install jupyter_contrib_nbextensions</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使能</span></span><br><span class="line">jupyter contrib nbextension install</span><br></pre></td></tr></table></figure>
-<p>我启用的一些插件</p>
-<table>
-<thead>
-<tr>
-<th>plugins</th>
-<th></th>
-<th></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Table of Contents (2)</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>Freeze</td>
-<td>比较好的一个插件，可以用来冻住cell</td>
-<td></td>
-</tr>
-<tr>
-<td>nbTranslate</td>
-<td>这个插件利用Google翻译cell很好用</td>
-<td><a href="https://github.com/jfbercher/jupyter_nbTranslate/blob/master/languages.js" target="_blank" rel="noopener">support languages</a></td>
-</tr>
-<tr>
-<td>ExecuteTime</td>
-<td>显示执行时间</td>
-<td></td>
-</tr>
-<tr>
-<td>Ruler</td>
-<td>代码标尺</td>
-<td></td>
-</tr>
-<tr>
-<td>Autopep8</td>
-<td>代码美化</td>
-<td></td>
-</tr>
-<tr>
-<td>Scratchpad</td>
-<td>代码测试</td>
-<td></td>
-</tr>
-</tbody>
-</table>
-<p>其他花样的配置</p>
-<p><a href="https://zhuanlan.zhihu.com/p/74950682" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/74950682</a></p>
-<h3 id="1-4-conda环境的设置"><a class="header-anchor" href="#1-4-conda环境的设置">¶</a>1.4 conda环境的设置</h3>
-<p>jupyter使用Anaconda miniconda环境需要安装的组件。
-[conda repo][<a href="https://repo.anaconda.com" target="_blank" rel="noopener">https://repo.anaconda.com</a>]</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 创建虚拟环境</span></span><br><span class="line">conda create -n env_name python=3.6</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> conda虚拟核组件 切换kernel</span></span><br><span class="line">conda install nb_conda_kernels</span><br></pre></td></tr></table></figure>
-<h3 id="1-5-解决界面中英文混杂"><a class="header-anchor" href="#1-5-解决界面中英文混杂">¶</a>1.5 解决界面中英文混杂</h3>
-<img src="/public/2017/07/03/linux/jupyter_notebook/image-20200413125705473.png" alt="image-20200413125705473" style="zoom:50%;">
-<p>如图，jupyter 界面中中英文混杂，解决方法为将界面文字中文切换成英文。</p>
-<p>原理：让jupyter就找不到他的中文配置文件夹。</p>
-<p>找到notebook的汉化文件夹的路径，比如<code>~/miniconda3/lib/python3.6/site-packages/notebook/i18n/zh_CN</code>。将其重命名如加个下划线作为后缀<code>zh_CN_old</code>，重启jupyter就行了。</p>
-<p>为了方便，我作了个脚本自动找<code>notebook/i18n/zh_CN</code>位置并改名此文件夹，如下。</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> shutil</span><br><span class="line"><span class="keyword">from</span> distutils.sysconfig <span class="keyword">import</span> get_python_lib</span><br><span class="line"><span class="comment"># 获取site-package包的位置</span></span><br><span class="line">path_zh=get_python_lib()+<span class="string">'/notebook/i18n/zh_CN'</span></span><br><span class="line">path_zh_old=get_python_lib()+<span class="string">'/notebook/i18n/zh_CN_old'</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 将 notebook/i18n/zh_CN 改为 notebook/i18n/zh_CN_old</span></span><br><span class="line">shutil.move(path_zh,path_zh_old)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 返回中文</span></span><br><span class="line"><span class="comment"># shutil.move(path_zh_old,path_zh)</span></span><br></pre></td></tr></table></figure>
-<p>重启jupyter就行了, 这样jupyter就找不到这个中文配置，返回中文改回去就行了<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup>。</p>
-<h2 id="2-使用的技巧"><a class="header-anchor" href="#2-使用的技巧">¶</a>2 使用的技巧</h2>
-<h3 id="2-1-快捷键"><a class="header-anchor" href="#2-1-快捷键">¶</a>2.1 快捷键</h3>
-<hr>
-<table>
-<thead>
-<tr>
-<th>在非激活状态即是蓝颜色的边框</th>
-<th>内容</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>A</td>
-<td>insert cell above</td>
-</tr>
-<tr>
-<td>B</td>
-<td>insert cell below</td>
-</tr>
-<tr>
-<td>H</td>
-<td>查看帮助</td>
-</tr>
-<tr>
-<td>⌃↩(ctrl + enter)</td>
-<td>run selected cells</td>
-</tr>
-</tbody>
-</table>
-<h3 id="2-2-显示图片-视频-音频"><a class="header-anchor" href="#2-2-显示图片-视频-音频">¶</a>2.2 显示图片 视频 音频</h3>
-<p>主要是画图、显示视频和音频的方法。</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 图片</span></span><br><span class="line">%%HTML</span><br><span class="line">&lt;img src=<span class="string">"xxx.jpg"</span>  alt=<span class="string">"title"</span> /&gt;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 视频</span></span><br><span class="line">%%HTML</span><br><span class="line">&lt;video width=<span class="string">"330"</span> height=<span class="string">"150"</span> controls&gt;</span><br><span class="line">&lt;source src=<span class="string">"out_all.mp4"</span> type=<span class="string">"video/mp4"</span>&gt;</span><br><span class="line">&lt;/video&gt;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 语音</span></span><br><span class="line">%%HTML</span><br><span class="line">&lt;audio src=<span class="string">"out.wav"</span> controls=<span class="string">"controls"</span>&gt;</span><br><span class="line">Your browser does <span class="keyword">not</span> support the audio element.</span><br><span class="line">&lt;/audio&gt;</span><br><span class="line"></span><br><span class="line"><span class="comment"># html t是html的字符串</span></span><br><span class="line"><span class="keyword">from</span> IPython.core.display <span class="keyword">import</span> HTML</span><br><span class="line">HTML(str(t))</span><br></pre></td></tr></table></figure>
-<h3 id="2-3-其他技巧"><a class="header-anchor" href="#2-3-其他技巧">¶</a>2.3 其他技巧</h3>
-<h4 id="修复视频文件"><a class="header-anchor" href="#修复视频文件">¶</a>修复视频文件</h4>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fix_use_ffmpeg</span><span class="params">(in_name, out_name,message=<span class="string">""</span>)</span>:</span></span><br><span class="line">    <span class="keyword">import</span> os</span><br><span class="line">    <span class="keyword">if</span> os.path.isfile(out_name):</span><br><span class="line">    os.remove(out_name)</span><br><span class="line">    cmd = <span class="string">'ffmpeg -i %s %s'</span> % (in_name, out_name)</span><br><span class="line">    log_lines = os.popen(cmd).readlines()</span><br><span class="line">    print(message,<span class="string">"ok"</span>)</span><br></pre></td></tr></table></figure>
-<h4 id="加载自己的模块文件"><a class="header-anchor" href="#加载自己的模块文件">¶</a>加载自己的模块文件</h4>
-<p>出于性能考虑，每个模块在每个解释器会话中只导入一遍。因此，如果你修改了你的模块，需要重启解释器；或者，如果你就是想交互式的测试这么一个模块，可以用 imp.reload() 重新加载，例如 <code>import imp; imp.reload(modulename)</code></p>
-<h4 id="导出pdf支持中文"><a class="header-anchor" href="#导出pdf支持中文">¶</a>导出pdf支持中文</h4>
-<p>Jupyter Notebook 输出PDF中文支持 <a href="https://www.jianshu.com/p/c3f660188766" target="_blank" rel="noopener">link</a></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> /usr/<span class="built_in">local</span>/lib/python3.6/site-packages/nbconvert/templates/latex</span><br><span class="line"></span><br><span class="line"><span class="comment"># 在里面的模版中添加，前提是安装好了texlive</span></span><br><span class="line">% add</span><br><span class="line">\usepackage&#123;ctex&#125;</span><br></pre></td></tr></table></figure>
-<h4 id="ipynb2pdf"><a class="header-anchor" href="#ipynb2pdf">¶</a>ipynb2pdf</h4>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python3</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string">Current version of Jupyter doesn't support pdf exporting when it comes to</span></span><br><span class="line"><span class="string">russian language in the document. To fix this, current script has born.</span></span><br><span class="line"><span class="string">It requires nbconvert as long as jupyter to be installed.</span></span><br><span class="line"><span class="string">Author:     Sergey Ivanychev</span></span><br><span class="line"><span class="string">Email:      sergeyivanychev@gmail.com</span></span><br><span class="line"><span class="string">Revision:   1</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> subprocess</span><br><span class="line"></span><br><span class="line">FORMAT = <span class="string">".ipynb"</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string">TODO:   What if user has ___o.tex in current folder?</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line">TEMP_TEX = <span class="string">"___o.tex"</span></span><br><span class="line">TEMP_FOLDER = <span class="string">"/tmp"</span></span><br><span class="line">TRASH_EXTENSIONS = [<span class="string">".aux"</span>, <span class="string">".out"</span>, <span class="string">".log"</span>]</span><br><span class="line">OLD1 = <span class="string">r"\usepackage[utf8x]&#123;inputenc&#125;"</span></span><br><span class="line">NEW1 = <span class="string">r"""</span></span><br><span class="line"><span class="string">    \usepackage[utf8x]&#123;inputenc&#125;</span></span><br><span class="line"><span class="string">    \usepackage&#123;ctex&#125;</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line">REPLACE = [(OLD1, NEW1)]</span><br><span class="line">HELP = <span class="string">"""</span></span><br><span class="line"><span class="string">This script is aimed at correctly converting .ipynb to .pdf files.</span></span><br><span class="line"><span class="string">You may use it via</span></span><br><span class="line"><span class="string"># ipynb2pdf Solution.ipynb</span></span><br><span class="line"><span class="string">To get .pdf in the same directory</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">check_args</span><span class="params">(argv)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> (len(argv) &gt; <span class="number">2</span>):</span><br><span class="line">        print(<span class="string">"Please, type .ipynb filename as argument"</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span></span><br><span class="line">    <span class="keyword">if</span> (len(argv) == <span class="number">1</span>):</span><br><span class="line">        print(HELP)</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span></span><br><span class="line">    script, filename = argv</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> is_ipynb(filename):</span><br><span class="line">        print(<span class="string">"Please, type .ipynb filename as argument"</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">remove_extention</span><span class="params">(string, extention)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    Removes argumented extention from the end of the string</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    <span class="keyword">if</span> extention[<span class="number">0</span>] != <span class="string">'.'</span>:</span><br><span class="line">        extention = <span class="string">"."</span> + extention</span><br><span class="line">    <span class="keyword">if</span> string.endswith(extention):</span><br><span class="line">        string = string[<span class="number">0</span>:-len(extention)]</span><br><span class="line">    <span class="keyword">return</span> string</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">is_ipynb</span><span class="params">(filename)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> filename.endswith(<span class="string">".ipynb"</span>):</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">    <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">tex2pdf</span><span class="params">(filename, desired_name)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    Converts filename (which is tex document) to desired_name (which is pdf)</span></span><br><span class="line"><span class="string">    leaving no trash in current folder</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    base = remove_extention(filename, <span class="string">"tex"</span>)</span><br><span class="line">    output = base + <span class="string">".pdf"</span></span><br><span class="line">    ret = subprocess.call(<span class="string">"xelatex %s"</span> % filename , </span><br><span class="line">                                        shell=<span class="literal">True</span>, stdout=subprocess.PIPE)</span><br><span class="line">    <span class="keyword">for</span> ext <span class="keyword">in</span> TRASH_EXTENSIONS:</span><br><span class="line">        os.unlink(base + ext)</span><br><span class="line">    os.rename(output, desired_name)</span><br><span class="line">    <span class="keyword">return</span> ret</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">(argv)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> check_args(argv) == <span class="number">-1</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span></span><br><span class="line">    script, filename = argv</span><br><span class="line">    ret = subprocess.call(<span class="string">"jupyter nbconvert %s --to latex --output %s"</span> %</span><br><span class="line">                                            (filename, TEMP_TEX), shell=<span class="literal">True</span>,</span><br><span class="line">                                            stdout=subprocess.PIPE)</span><br><span class="line">    <span class="keyword">if</span> (ret != <span class="number">0</span>):</span><br><span class="line">        print(<span class="string">"ret = %d"</span> % ret)</span><br><span class="line">        os.unlink(TEMP_TEX)</span><br><span class="line">        print(<span class="string">"Converting to LaTeX failed. Return code: %d"</span> % ret)</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span></span><br><span class="line">    tex_file = open(TEMP_TEX, <span class="string">"r"</span>)</span><br><span class="line">    tex = tex_file.read()</span><br><span class="line">    <span class="keyword">for</span> old, new <span class="keyword">in</span> REPLACE:</span><br><span class="line">        tex = tex.replace(old, new)</span><br><span class="line">    tex_file.close()</span><br><span class="line">    os.unlink(TEMP_TEX)</span><br><span class="line">    tex_file = open(TEMP_TEX, <span class="string">"w+"</span>)</span><br><span class="line">    tex_file.write(tex)</span><br><span class="line">    tex_file.close()</span><br><span class="line">    ret = tex2pdf(TEMP_TEX, remove_extention(filename, <span class="string">".ipynb"</span>) + <span class="string">".pdf"</span>)</span><br><span class="line">    tex_file.close()</span><br><span class="line">    os.unlink(TEMP_TEX)</span><br><span class="line">    print(remove_extention(filename, <span class="string">".ipynb"</span>) + <span class="string">".pdf - DONE"</span>)</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</span><br><span class="line">    exit(main(sys.argv))</span><br></pre></td></tr></table></figure>
-<hr class="footnotes-sep">
-<section class="footnotes">
-<ol class="footnotes-list">
-<li id="fn1" class="footnote-item"><p><a href="https://www.zhihu.com/question/302814218/answer/1029684239" target="_blank" rel="noopener">https://www.zhihu.com/question/302814218/answer/1029684239</a> <a href="#fnref1" class="footnote-backref">↩︎</a></p>
-</li>
-</ol>
-</section>
-]]></content>
-      <categories>
-        <category>jupyter</category>
-      </categories>
-      <tags>
-        <tag>工具</tag>
-        <tag>Python</tag>
-        <tag>笔记应用</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>希腊罗马神话</title>
-    <url>/public/2018/11/05/readings/Gods_stories/</url>
-    <content><![CDATA[<p><strong>前言</strong></p>
-<p>在我电的图书馆的还书柜子里面偶然所得，一本叫《希腊罗马神话对英语语言文化的影响》吕海平 著 江苏大学初版社，然后莫名的想研究一下，发现挺不错的。</p>
-<a id="more"></a>
-<p>古希腊罗马的神的关系还是比较乱的，尤其是jupiter 或者zeus的奥林匹斯神系。从上古的神系，总共有三代。</p>
-<p>网上有个人（<a href="http://www.veritablehokum.com/" target="_blank" rel="noopener">Korwin Briggs</a>）做的关系图很不错。</p>
-<p>TODO:后面我也会对其进行整理，以后给大家分享。</p>
-<p><img src="http://www.veritablehokum.com/wp-content/uploads/2018/08/Roman-God-Family-Tree.jpg" alt></p>
-]]></content>
-      <categories>
-        <category>读书笔记</category>
-      </categories>
-      <tags>
-        <tag>希腊罗马神话</tag>
-        <tag>语言文化</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>红楼梦与我</title>
     <url>/public/2017/05/14/readings/hongloumeng/</url>
     <content><![CDATA[<p>红楼梦是我国四大名著之一，主要内容是贾府的兴衰和宝黛的悲剧爱情。电视剧红楼梦2010版，我是从八月开始看的，看完到现在，也有小一个月了。在网上大家对这版电视剧褒贬不一。与我来说，我是喜欢这部剧的，不能说拍得很好，但这部剧却勾起了我读书与写字的兴趣。于是乎，做了一篇随笔，以记录我的一些感触。</p>
@@ -2083,6 +1915,174 @@ nbextensions的教程<a href="https://jupyter-contrib-nbextensions.readthedocs.i
       <tags>
         <tag>重庆</tag>
         <tag>游记</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>希腊罗马神话</title>
+    <url>/public/2018/11/05/readings/Gods_stories/</url>
+    <content><![CDATA[<p><strong>前言</strong></p>
+<p>在我电的图书馆的还书柜子里面偶然所得，一本叫《希腊罗马神话对英语语言文化的影响》吕海平 著 江苏大学初版社，然后莫名的想研究一下，发现挺不错的。</p>
+<a id="more"></a>
+<p>古希腊罗马的神的关系还是比较乱的，尤其是jupiter 或者zeus的奥林匹斯神系。从上古的神系，总共有三代。</p>
+<p>网上有个人（<a href="http://www.veritablehokum.com/" target="_blank" rel="noopener">Korwin Briggs</a>）做的关系图很不错。</p>
+<p>TODO:后面我也会对其进行整理，以后给大家分享。</p>
+<p><img src="http://www.veritablehokum.com/wp-content/uploads/2018/08/Roman-God-Family-Tree.jpg" alt></p>
+]]></content>
+      <categories>
+        <category>读书笔记</category>
+      </categories>
+      <tags>
+        <tag>希腊罗马神话</tag>
+        <tag>语言文化</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Jupyter notebook的配置</title>
+    <url>/public/2017/07/03/linux/jupyter_notebook/</url>
+    <content><![CDATA[<p><strong>前言</strong>
+本文介绍jupyter notebook的安装配置过程和实用技巧。
+<a href="https://jupyter.readthedocs.io/en/latest/index.html" target="_blank" rel="noopener">jupyter.readthedocs教程</a></p>
+<a id="more"></a>
+<h2 id="1-安装与配置"><a class="header-anchor" href="#1-安装与配置">¶</a>1 安装与配置</h2>
+<h3 id="1-1-安装-jupyter"><a class="header-anchor" href="#1-1-安装-jupyter">¶</a>1.1 安装 jupyter</h3>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">conda install jupyter</span><br><span class="line"><span class="comment"># pip install jupyter -y</span></span><br></pre></td></tr></table></figure>
+<h3 id="1-2-修改配置文件"><a class="header-anchor" href="#1-2-修改配置文件">¶</a>1.2 修改配置文件</h3>
+<ul>
+<li>生成配置文件</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">jupyter notebook --generate-config</span><br><span class="line">vim ~/.jupyter/jupyter_notebook_config.py</span><br></pre></td></tr></table></figure>
+<ul>
+<li>修改配置文件内容</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">c.NotebookApp.ip = <span class="string">'0.0.0.0'</span></span><br><span class="line">c.NotebookApp.port = <span class="number">8018</span></span><br><span class="line"><span class="comment"># 设置密码</span></span><br><span class="line">c.NotebookApp.password = <span class="string">u'sha1:bcd259ccf...your hashed password here'</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>Tip: 利用ipython 生成密码</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&gt; In [1]: from IPython.lib import passwd</span><br><span class="line">&gt; In [2]: passwd()</span><br><span class="line">&gt;   Enter password:</span><br><span class="line">&gt;   Verify password:</span><br><span class="line">&gt;   Out[2]: &apos;sha1:67xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&apos;</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<p>我选用的是password密码登陆jupyter的方案，其他的密码登陆方案见 <a href="https://zhuanlan.zhihu.com/p/23110830" target="_blank" rel="noopener">link</a></p>
+<h3 id="1-3-安装插件管理"><a class="header-anchor" href="#1-3-安装插件管理">¶</a>1.3 安装插件管理</h3>
+<p>jupyter_contrib_nbextensions 为 jupyter notebook 扩展插件管理器，下面简称nbextensions。</p>
+<p>nbextensions的github <a href="https://github.com/ipython-contrib/jupyter_contrib_nbextensions" target="_blank" rel="noopener">repo</a>
+nbextensions的教程<a href="https://jupyter-contrib-nbextensions.readthedocs.io/en/latest/" target="_blank" rel="noopener">nbextensions_manual_readthedocs</a></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 用conda安装</span></span><br><span class="line">conda install jupyter</span><br><span class="line">conda install -c conda-forge jupyter_contrib_nbextensions</span><br><span class="line"></span><br><span class="line"><span class="comment"># pip安装</span></span><br><span class="line">pip install jupyter_contrib_nbextensions</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使能</span></span><br><span class="line">jupyter contrib nbextension install</span><br></pre></td></tr></table></figure>
+<p>我启用的一些插件</p>
+<table>
+<thead>
+<tr>
+<th>plugins</th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Table of Contents (2)</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Freeze</td>
+<td>比较好的一个插件，可以用来冻住cell</td>
+<td></td>
+</tr>
+<tr>
+<td>nbTranslate</td>
+<td>这个插件利用Google翻译cell很好用</td>
+<td><a href="https://github.com/jfbercher/jupyter_nbTranslate/blob/master/languages.js" target="_blank" rel="noopener">support languages</a></td>
+</tr>
+<tr>
+<td>ExecuteTime</td>
+<td>显示执行时间</td>
+<td></td>
+</tr>
+<tr>
+<td>Ruler</td>
+<td>代码标尺</td>
+<td></td>
+</tr>
+<tr>
+<td>Autopep8</td>
+<td>代码美化</td>
+<td></td>
+</tr>
+<tr>
+<td>Scratchpad</td>
+<td>代码测试</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>其他花样的配置</p>
+<p><a href="https://zhuanlan.zhihu.com/p/74950682" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/74950682</a></p>
+<h3 id="1-4-conda环境的设置"><a class="header-anchor" href="#1-4-conda环境的设置">¶</a>1.4 conda环境的设置</h3>
+<p>jupyter使用Anaconda miniconda环境需要安装的组件。
+[conda repo][<a href="https://repo.anaconda.com" target="_blank" rel="noopener">https://repo.anaconda.com</a>]</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 创建虚拟环境</span></span><br><span class="line">conda create -n env_name python=3.6</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> conda虚拟核组件 切换kernel</span></span><br><span class="line">conda install nb_conda_kernels</span><br></pre></td></tr></table></figure>
+<h3 id="1-5-解决界面中英文混杂"><a class="header-anchor" href="#1-5-解决界面中英文混杂">¶</a>1.5 解决界面中英文混杂</h3>
+<img src="/public/2017/07/03/linux/jupyter_notebook/image-20200413125705473.png" alt="image-20200413125705473" style="zoom:50%;">
+<p>如图，jupyter 界面中中英文混杂，解决方法为将界面文字中文切换成英文。</p>
+<p>原理：让jupyter就找不到他的中文配置文件夹。</p>
+<p>找到notebook的汉化文件夹的路径，比如<code>~/miniconda3/lib/python3.6/site-packages/notebook/i18n/zh_CN</code>。将其重命名如加个下划线作为后缀<code>zh_CN_old</code>，重启jupyter就行了。</p>
+<p>为了方便，我作了个脚本自动找<code>notebook/i18n/zh_CN</code>位置并改名此文件夹，如下。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> shutil</span><br><span class="line"><span class="keyword">from</span> distutils.sysconfig <span class="keyword">import</span> get_python_lib</span><br><span class="line"><span class="comment"># 获取site-package包的位置</span></span><br><span class="line">path_zh=get_python_lib()+<span class="string">'/notebook/i18n/zh_CN'</span></span><br><span class="line">path_zh_old=get_python_lib()+<span class="string">'/notebook/i18n/zh_CN_old'</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 将 notebook/i18n/zh_CN 改为 notebook/i18n/zh_CN_old</span></span><br><span class="line">shutil.move(path_zh,path_zh_old)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 返回中文</span></span><br><span class="line"><span class="comment"># shutil.move(path_zh_old,path_zh)</span></span><br></pre></td></tr></table></figure>
+<p>重启jupyter就行了, 这样jupyter就找不到这个中文配置，返回中文改回去就行了<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup>。</p>
+<h2 id="2-使用的技巧"><a class="header-anchor" href="#2-使用的技巧">¶</a>2 使用的技巧</h2>
+<h3 id="2-1-快捷键"><a class="header-anchor" href="#2-1-快捷键">¶</a>2.1 快捷键</h3>
+<hr>
+<table>
+<thead>
+<tr>
+<th>在非激活状态即是蓝颜色的边框</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A</td>
+<td>insert cell above</td>
+</tr>
+<tr>
+<td>B</td>
+<td>insert cell below</td>
+</tr>
+<tr>
+<td>H</td>
+<td>查看帮助</td>
+</tr>
+<tr>
+<td>⌃↩(ctrl + enter)</td>
+<td>run selected cells</td>
+</tr>
+</tbody>
+</table>
+<h3 id="2-2-显示图片-视频-音频"><a class="header-anchor" href="#2-2-显示图片-视频-音频">¶</a>2.2 显示图片 视频 音频</h3>
+<p>主要是画图、显示视频和音频的方法。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 图片</span></span><br><span class="line">%%HTML</span><br><span class="line">&lt;img src=<span class="string">"xxx.jpg"</span>  alt=<span class="string">"title"</span> /&gt;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 视频</span></span><br><span class="line">%%HTML</span><br><span class="line">&lt;video width=<span class="string">"330"</span> height=<span class="string">"150"</span> controls&gt;</span><br><span class="line">&lt;source src=<span class="string">"out_all.mp4"</span> type=<span class="string">"video/mp4"</span>&gt;</span><br><span class="line">&lt;/video&gt;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 语音</span></span><br><span class="line">%%HTML</span><br><span class="line">&lt;audio src=<span class="string">"out.wav"</span> controls=<span class="string">"controls"</span>&gt;</span><br><span class="line">Your browser does <span class="keyword">not</span> support the audio element.</span><br><span class="line">&lt;/audio&gt;</span><br><span class="line"></span><br><span class="line"><span class="comment"># html t是html的字符串</span></span><br><span class="line"><span class="keyword">from</span> IPython.core.display <span class="keyword">import</span> HTML</span><br><span class="line">HTML(str(t))</span><br></pre></td></tr></table></figure>
+<h3 id="2-3-其他技巧"><a class="header-anchor" href="#2-3-其他技巧">¶</a>2.3 其他技巧</h3>
+<h4 id="修复视频文件"><a class="header-anchor" href="#修复视频文件">¶</a>修复视频文件</h4>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fix_use_ffmpeg</span><span class="params">(in_name, out_name,message=<span class="string">""</span>)</span>:</span></span><br><span class="line">    <span class="keyword">import</span> os</span><br><span class="line">    <span class="keyword">if</span> os.path.isfile(out_name):</span><br><span class="line">    os.remove(out_name)</span><br><span class="line">    cmd = <span class="string">'ffmpeg -i %s %s'</span> % (in_name, out_name)</span><br><span class="line">    log_lines = os.popen(cmd).readlines()</span><br><span class="line">    print(message,<span class="string">"ok"</span>)</span><br></pre></td></tr></table></figure>
+<h4 id="加载自己的模块文件"><a class="header-anchor" href="#加载自己的模块文件">¶</a>加载自己的模块文件</h4>
+<p>出于性能考虑，每个模块在每个解释器会话中只导入一遍。因此，如果你修改了你的模块，需要重启解释器；或者，如果你就是想交互式的测试这么一个模块，可以用 imp.reload() 重新加载，例如 <code>import imp; imp.reload(modulename)</code></p>
+<h4 id="导出pdf支持中文"><a class="header-anchor" href="#导出pdf支持中文">¶</a>导出pdf支持中文</h4>
+<p>Jupyter Notebook 输出PDF中文支持 <a href="https://www.jianshu.com/p/c3f660188766" target="_blank" rel="noopener">link</a></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> /usr/<span class="built_in">local</span>/lib/python3.6/site-packages/nbconvert/templates/latex</span><br><span class="line"></span><br><span class="line"><span class="comment"># 在里面的模版中添加，前提是安装好了texlive</span></span><br><span class="line">% add</span><br><span class="line">\usepackage&#123;ctex&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="ipynb2pdf"><a class="header-anchor" href="#ipynb2pdf">¶</a>ipynb2pdf</h4>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python3</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string">Current version of Jupyter doesn't support pdf exporting when it comes to</span></span><br><span class="line"><span class="string">russian language in the document. To fix this, current script has born.</span></span><br><span class="line"><span class="string">It requires nbconvert as long as jupyter to be installed.</span></span><br><span class="line"><span class="string">Author:     Sergey Ivanychev</span></span><br><span class="line"><span class="string">Email:      sergeyivanychev@gmail.com</span></span><br><span class="line"><span class="string">Revision:   1</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> subprocess</span><br><span class="line"></span><br><span class="line">FORMAT = <span class="string">".ipynb"</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string">TODO:   What if user has ___o.tex in current folder?</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line">TEMP_TEX = <span class="string">"___o.tex"</span></span><br><span class="line">TEMP_FOLDER = <span class="string">"/tmp"</span></span><br><span class="line">TRASH_EXTENSIONS = [<span class="string">".aux"</span>, <span class="string">".out"</span>, <span class="string">".log"</span>]</span><br><span class="line">OLD1 = <span class="string">r"\usepackage[utf8x]&#123;inputenc&#125;"</span></span><br><span class="line">NEW1 = <span class="string">r"""</span></span><br><span class="line"><span class="string">    \usepackage[utf8x]&#123;inputenc&#125;</span></span><br><span class="line"><span class="string">    \usepackage&#123;ctex&#125;</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line">REPLACE = [(OLD1, NEW1)]</span><br><span class="line">HELP = <span class="string">"""</span></span><br><span class="line"><span class="string">This script is aimed at correctly converting .ipynb to .pdf files.</span></span><br><span class="line"><span class="string">You may use it via</span></span><br><span class="line"><span class="string"># ipynb2pdf Solution.ipynb</span></span><br><span class="line"><span class="string">To get .pdf in the same directory</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">check_args</span><span class="params">(argv)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> (len(argv) &gt; <span class="number">2</span>):</span><br><span class="line">        print(<span class="string">"Please, type .ipynb filename as argument"</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span></span><br><span class="line">    <span class="keyword">if</span> (len(argv) == <span class="number">1</span>):</span><br><span class="line">        print(HELP)</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span></span><br><span class="line">    script, filename = argv</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> is_ipynb(filename):</span><br><span class="line">        print(<span class="string">"Please, type .ipynb filename as argument"</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">remove_extention</span><span class="params">(string, extention)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    Removes argumented extention from the end of the string</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    <span class="keyword">if</span> extention[<span class="number">0</span>] != <span class="string">'.'</span>:</span><br><span class="line">        extention = <span class="string">"."</span> + extention</span><br><span class="line">    <span class="keyword">if</span> string.endswith(extention):</span><br><span class="line">        string = string[<span class="number">0</span>:-len(extention)]</span><br><span class="line">    <span class="keyword">return</span> string</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">is_ipynb</span><span class="params">(filename)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> filename.endswith(<span class="string">".ipynb"</span>):</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">    <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">tex2pdf</span><span class="params">(filename, desired_name)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    Converts filename (which is tex document) to desired_name (which is pdf)</span></span><br><span class="line"><span class="string">    leaving no trash in current folder</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    base = remove_extention(filename, <span class="string">"tex"</span>)</span><br><span class="line">    output = base + <span class="string">".pdf"</span></span><br><span class="line">    ret = subprocess.call(<span class="string">"xelatex %s"</span> % filename , </span><br><span class="line">                                        shell=<span class="literal">True</span>, stdout=subprocess.PIPE)</span><br><span class="line">    <span class="keyword">for</span> ext <span class="keyword">in</span> TRASH_EXTENSIONS:</span><br><span class="line">        os.unlink(base + ext)</span><br><span class="line">    os.rename(output, desired_name)</span><br><span class="line">    <span class="keyword">return</span> ret</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">(argv)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> check_args(argv) == <span class="number">-1</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span></span><br><span class="line">    script, filename = argv</span><br><span class="line">    ret = subprocess.call(<span class="string">"jupyter nbconvert %s --to latex --output %s"</span> %</span><br><span class="line">                                            (filename, TEMP_TEX), shell=<span class="literal">True</span>,</span><br><span class="line">                                            stdout=subprocess.PIPE)</span><br><span class="line">    <span class="keyword">if</span> (ret != <span class="number">0</span>):</span><br><span class="line">        print(<span class="string">"ret = %d"</span> % ret)</span><br><span class="line">        os.unlink(TEMP_TEX)</span><br><span class="line">        print(<span class="string">"Converting to LaTeX failed. Return code: %d"</span> % ret)</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span></span><br><span class="line">    tex_file = open(TEMP_TEX, <span class="string">"r"</span>)</span><br><span class="line">    tex = tex_file.read()</span><br><span class="line">    <span class="keyword">for</span> old, new <span class="keyword">in</span> REPLACE:</span><br><span class="line">        tex = tex.replace(old, new)</span><br><span class="line">    tex_file.close()</span><br><span class="line">    os.unlink(TEMP_TEX)</span><br><span class="line">    tex_file = open(TEMP_TEX, <span class="string">"w+"</span>)</span><br><span class="line">    tex_file.write(tex)</span><br><span class="line">    tex_file.close()</span><br><span class="line">    ret = tex2pdf(TEMP_TEX, remove_extention(filename, <span class="string">".ipynb"</span>) + <span class="string">".pdf"</span>)</span><br><span class="line">    tex_file.close()</span><br><span class="line">    os.unlink(TEMP_TEX)</span><br><span class="line">    print(remove_extention(filename, <span class="string">".ipynb"</span>) + <span class="string">".pdf - DONE"</span>)</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</span><br><span class="line">    exit(main(sys.argv))</span><br></pre></td></tr></table></figure>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p><a href="https://www.zhihu.com/question/302814218/answer/1029684239" target="_blank" rel="noopener">https://www.zhihu.com/question/302814218/answer/1029684239</a> <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
+]]></content>
+      <categories>
+        <category>jupyter</category>
+      </categories>
+      <tags>
+        <tag>工具</tag>
+        <tag>Python</tag>
+        <tag>笔记应用</tag>
       </tags>
   </entry>
   <entry>
@@ -4366,7 +4366,7 @@ todo整理</p>
 <p>或许您会这样想，Linux命令的句型确实不难，但是那么多命令，我怎么知道它们都是作什么的呢？而且不同的系统中，可以使用的命令似乎也不太一样，这真让人困惑……</p>
 <p>其实Linux的命令，运行的是Linux系统中的程序。只要您已安装了程序，您就可以通过命令来运行它，并且可以使用参数来精细的调整它的运行状态。也可以通过点击启动图标来运行，不过启动图标不能够方便的调整参数，并不是很方便。</p>
 <p>举一个例子：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mplayer -shuffle -loop 3 -playlist mymp3.list</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mplayer -shuffle -loop 3 -playlist mymp3.list</span><br></pre></td></tr></table></figure>
 <p>可能您运行上面命令，系统会提示您 无法找到命令，那是因为您没有安装mplayer这个程序。mplayer是我见过的支持格式最多的播放器，几乎任何已知格式的多媒体文件，都可以使用mplayer来播放。它包含一个图形界面的前端，您可以在菜单中找到它，鼠标点击运行;也可以通过执行命令来运行它的命令行版本。</p>
 <p>如果您的系统中没有mplayer播放器，我们建议您安装一个。关于程序的安装，请参阅 软件安装 。</p>
 <p>上面命令中， mplayer 调用了mplayer播放器程序。参数 -shuffle 表示随机播放， -loop 表示循环播放，后面的3 为循环的次数，如果为 0 ,则一直播放。 -playlist 表示播放列表中的曲目。我们可以把mp3的路径放到 mymp3.list文件中，让mplayer来播放它们。</p>
@@ -4383,7 +4383,9 @@ todo整理</p>
 <p>现在我说， /usr/local 目录下，它的相对路径 bin 中有某个文件，这样就比较明确了。</p>
 <p>在相对路径中 . 表示当前目录， .. 表示当前目录的上一级目录。</p>
 <p>假设您安装了一个程序，它的主程序没有被放置到上面三个 bin 目录中的任何一个，或者其它系统能够找到的地方，您就得告诉系统，它的可执行文件在哪里。</p>
+<blockquote>
 <p>可以使用绝对路径，例如： /home/user/bin/可执行文件</p>
+</blockquote>
 <p>或者定位到 /home/user/bin 目录，使用相对目录来定位它 ./可执行文件</p>
 <p>如果您定位到了它的子目录，比如 /home/user/bin/gui，您可以使用 .. 来表示它的上级目录 ../可执行文件</p>
 <p>路径相关命令</p>
