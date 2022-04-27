@@ -97,6 +97,171 @@ Thank you !!!</p>
       </tags>
   </entry>
   <entry>
+    <title>anki</title>
+    <url>/public/2015/04/14/anki_tips/</url>
+    <content><![CDATA[<h2 id="anki使用-自建-anki-server"><a class="header-anchor" href="#anki使用-自建-anki-server">¶</a>anki使用 - 自建 anki  server</h2>
+<p>想当初想自己设计英语背诵软件，现在anki人家功能全部实现，还要啥自行车。</p>
+<p><a href="https://github.com/talengu/WordWarrior" target="_blank" rel="noopener">https://github.com/talengu/WordWarrior</a>
+现在已弃坑。</p>
+<p>当然选用docker compose 来安装，相当丝滑。</p>
+<p>自己制作卡组，可以只关系内容而不关系技术。</p>
+<a id="more"></a>
+<h2 id="docker-compose"><a class="header-anchor" href="#docker-compose">¶</a>docker compose</h2>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="comment"># docker-compose.yml</span></span><br><span class="line"><span class="attr">version:</span> <span class="string">"2"</span></span><br><span class="line"><span class="attr">services:</span></span><br><span class="line">  <span class="attr">service.anki:</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">kuklinistvan/anki-sync-server</span></span><br><span class="line">    <span class="attr">container_name:</span> <span class="string">anki-container</span></span><br><span class="line">    <span class="attr">ports:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="number">8121</span><span class="string">:27701</span></span><br><span class="line">    <span class="attr">volumes:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">~/anki-sync-server:/app/data</span> <span class="comment"># anki data</span></span><br><span class="line">    <span class="attr">restart:</span> <span class="string">always</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">docker-compose up -d</span><br></pre></td></tr></table></figure>
+<h3 id="登陆container"><a class="header-anchor" href="#登陆container">¶</a>登陆container</h3>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">docker exec -it anki-container /bin/sh</span><br><span class="line"></span><br><span class="line">./ankisyncctl.py lsuser             - list users</span><br><span class="line">./ankisyncctl.py adduser &lt;username&gt; - add a new user</span><br><span class="line">./ankisyncctl.py deluser &lt;username&gt; - delete a user</span><br><span class="line">./ankisyncctl.py passwd &lt;username&gt;  - change password of a user</span><br></pre></td></tr></table></figure>
+<h2 id="client端"><a class="header-anchor" href="#client端">¶</a>client端</h2>
+<img src="/public/2015/04/14/anki_tips/image-20200424005627732.png" alt="image-20200424005627732" style="zoom:33%;">
+<h3 id="mac-win-客户端"><a class="header-anchor" href="#mac-win-客户端">¶</a>mac/win 客户端</h3>
+<p>从官网下载 【anki mac版本 2.1.21 (f1734a47)】/【Windows PC 客户端】</p>
+<p>中文网：<a href="http://www.ankichina.net/" target="_blank" rel="noopener">http://www.ankichina.net/</a></p>
+<p>工具-&gt;附加组件-&gt;<code>获取插件</code>，输入 代码：2124817646</p>
+<img src="/public/2015/04/14/anki_tips/add_server.png" alt="add_server" style="zoom:30%;">
+<img src="/public/2015/04/14/anki_tips/add_on1.png" alt="add_on1" style="zoom:30%;">
+<p>插件下载完成后设置ip地址，点击<code>设置</code>。</p>
+<figure class="highlight json"><table><tr><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"msyncUrl"</span>: <span class="string">"http://127.0.0.1:27701/msync/"</span>,</span><br><span class="line">    <span class="attr">"syncUrl"</span>: <span class="string">"http://127.0.0.1:27701/sync/"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<img src="/public/2015/04/14/anki_tips/addon_2.png" alt="addon_2" style="zoom:30%;">
+<p>重启anki，同步并输入输入自定义服务器中配置的账户</p>
+<h3 id="Android客户端-AnkiDroid"><a class="header-anchor" href="#Android客户端-AnkiDroid">¶</a>Android客户端 - AnkiDroid</h3>
+<p>首先配置服务器地址信息，打开<code>设置-&gt;高级设置-&gt;自定义同步服务器</code>，输入同步地址 和 媒体文件同步地址。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 同步地址</span><br><span class="line">http://127.0.0.1:27701/</span><br><span class="line"># 媒体文件同步地址</span><br><span class="line">http://127.0.0.1:27701/msync/</span><br></pre></td></tr></table></figure>
+<p>然后打开 <code>设置-&gt;AnkiDroid常用设置-&gt;AnkiWeb账户</code>，输入在服务器里面设置的账户和密码。PS：可在服务器重置密码。</p>
+<table><tr>
+<td><center><img src="/public/2015/04/14/anki_tips/IMG_20200424_010047.jpg">图1    </center></td>
+<td><center><img src="/public/2015/04/14/anki_tips/IMG_20200424_011338.jpg">图2      </center></td>
+</tr></table>
+<p>coco20000 anki 包 <a href="https://www.dazhuanlan.com/2019/11/20/5dd54a6571f01/" target="_blank" rel="noopener">https://www.dazhuanlan.com/2019/11/20/5dd54a6571f01/</a></p>
+<h2 id="其他docker-安装方法"><a class="header-anchor" href="#其他docker-安装方法">¶</a>其他docker 安装方法</h2>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">export</span> ANKI_SYNC_DATA_DIR=<span class="variable">$HOME</span>/anki-sync-server</span><br><span class="line"><span class="built_in">export</span> HOST_PORT=27701</span><br><span class="line"></span><br><span class="line">mkdir -p <span class="string">"<span class="variable">$ANKI_SYNC_DATA_DIR</span>"</span></span><br><span class="line"><span class="comment">#export DOCKER_USER=root</span></span><br><span class="line"><span class="comment">#chown "$DOCKER_USER" "$ANKI_SYNC_DATA_DIR"</span></span><br><span class="line">chmod 700 <span class="string">"<span class="variable">$ANKI_SYNC_DATA_DIR</span>"</span></span><br><span class="line"></span><br><span class="line">docker run -itd \</span><br><span class="line">   -v <span class="string">"<span class="variable">$ANKI_SYNC_DATA_DIR</span>"</span>:/app/data \</span><br><span class="line">   -p <span class="string">"<span class="variable">$HOST_PORT</span>"</span>:27701 \</span><br><span class="line">   --name anki-container \</span><br><span class="line">   --restart always \</span><br><span class="line">   kuklinistvan/anki-sync-server:latest</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>知识管理</category>
+      </categories>
+      <tags>
+        <tag>工具</tag>
+        <tag>anki</tag>
+        <tag>技巧</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>本地安装rss</title>
+    <url>/public/2015/04/14/local_rss/</url>
+    <content><![CDATA[<p><strong>前言</strong></p>
+<p>在 “<a href="https://zhuanlan.zhihu.com/p/149452085" target="_blank" rel="noopener">二零年RSS杂谈</a>”中说到，我想建立一种信息的获取系统，免受广告和推荐算法的困扰。</p>
+<p>我希望其的功能包括：</p>
+<ul>
+<li>多终端 Web、PC、 mobile的同步</li>
+<li>全文获取能力</li>
+<li>可自定义过滤规则</li>
+<li>RSS源自定义</li>
+</ul>
+<p>方案：</p>
+<ul>
+<li>RSS源 rsshub</li>
+<li>RSS服务  ttrss</li>
+<li>RSS电脑手机软件：Android的Readably、Feedme，mac的reeder等等。windows上我暂时没有发现，我用的是ttrss的web界面。</li>
+</ul>
+<a id="more"></a>
+<p>rsshub 是由 DIYgod 开发的开源RSS源生成工具，RSShub原始的网站可能不稳定，所以我选择了自己搭建。</p>
+<p>ttrss 是一个rss源管理配置的工具，可获取全文，可自定义过滤规则。</p>
+<p>本教程我们将完成在window电脑通过docker安装，ttrss与全文插件、rsshub的过程。</p>
+<p>服务器的成本还是有点小贵的，我们可以在本地搭建整个服务，即利用docker安装这些服务，开机的时候记得启动这些服务。
+不爽点：</p>
+<ul>
+<li>需要后台开启docker服务，使得其自动更新信息</li>
+<li>没有公网ip的情况下，无法全网连接服务</li>
+</ul>
+<h2 id="最终ttrss界面"><a class="header-anchor" href="#最终ttrss界面">¶</a>最终ttrss界面</h2>
+<p>在这里我已经添加一些rss源了。</p>
+<p><img src="/public/2015/04/14/local_rss/image-20200626135803804.png" alt="image-20200626135803804"></p>
+<h2 id="docker-windows安装"><a class="header-anchor" href="#docker-windows安装">¶</a>docker windows安装</h2>
+<p>从<a href="https://www.docker.com/products/docker-desktop" target="_blank" rel="noopener">docker 官网</a> 下载windows版本安装。完成后，在图标区会有一个鲸鱼船。</p>
+<p><img src="/public/2015/04/14/local_rss/image-20200626141604658.png" alt="image-20200626141604658"></p>
+<p>我们使用docker-compose 来进行下一步 网站服务的安装。将下面的资料保存到s<code> docker-compose.yml</code> 然后利用docker-compose方法安装。</p>
+<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">version:</span> <span class="string">"2"</span></span><br><span class="line"><span class="attr">services:</span></span><br><span class="line">  <span class="attr">service.rsshub:</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">diygod/rsshub</span></span><br><span class="line">    <span class="attr">container_name:</span> <span class="string">rsshub</span></span><br><span class="line">    <span class="attr">ports:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">"1200:1200"</span></span><br><span class="line">    <span class="attr">volumes:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">rsshub_data:/app/lib</span></span><br><span class="line">    <span class="attr">restart:</span> <span class="string">always</span></span><br><span class="line"></span><br><span class="line">  <span class="attr">service.rss:</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">wangqiru/ttrss:latest</span></span><br><span class="line">    <span class="attr">container_name:</span> <span class="string">ttrss</span></span><br><span class="line">    <span class="attr">ports:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="number">8118</span><span class="string">:80</span></span><br><span class="line">    <span class="attr">environment:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">SELF_URL_PATH=http://127.0.0.1:8118/</span> <span class="comment"># please change to your own domain</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">DB_HOST=database.postgres</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">DB_PORT=5432</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">DB_NAME=ttrss</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">DB_USER=postgres</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">DB_PASS=ttrss</span> <span class="comment"># please change the password</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">ENABLE_PLUGINS=auth_internal,fever</span> <span class="comment"># auth_internal is required. Plugins enabled here will be enabled for all users as system plugins</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">FEED_LOG_QUIET=true</span></span><br><span class="line">    <span class="attr">stdin_open:</span> <span class="literal">true</span></span><br><span class="line">    <span class="attr">tty:</span> <span class="literal">true</span></span><br><span class="line">    <span class="attr">restart:</span> <span class="string">always</span></span><br><span class="line">    <span class="attr">command:</span> <span class="string">sh</span> <span class="string">-c</span> <span class="string">'sh /wait-for.sh $$DB_HOST:$$DB_PORT -- php /configure-db.php &amp;&amp; exec s6-svscan /etc/s6/'</span></span><br><span class="line">  </span><br><span class="line">  <span class="attr">database.postgres:</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">postgres:alpine</span></span><br><span class="line">    <span class="attr">container_name:</span> <span class="string">postgres</span></span><br><span class="line">    <span class="attr">environment:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">POSTGRES_PASSWORD=ttrss</span> <span class="comment"># please change the password</span></span><br><span class="line">    <span class="attr">volumes:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">postgres_data:/var/lib/postgresql/data</span> <span class="comment"># persist postgres data to ~/postgres/data/ on the host</span></span><br><span class="line">    <span class="attr">restart:</span> <span class="string">always</span></span><br><span class="line">  </span><br><span class="line">  <span class="attr">service.mercury:</span> <span class="comment"># set Mercury Parser API endpoint to `service.mercury:3000` on TTRSS plugin setting page</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">wangqiru/mercury-parser-api:latest</span></span><br><span class="line">    <span class="attr">container_name:</span> <span class="string">mercury</span></span><br><span class="line">    <span class="attr">ports:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="number">3000</span><span class="string">:3000</span></span><br><span class="line">    <span class="attr">restart:</span> <span class="string">always</span></span><br><span class="line"></span><br><span class="line"><span class="attr">volumes:</span></span><br><span class="line">  <span class="attr">postgres_data:</span></span><br><span class="line">  <span class="attr">rsshub_data:</span></span><br></pre></td></tr></table></figure>
+<p><img src="/public/2015/04/14/local_rss/image-20200626140114783.png" alt="image-20200626140114783"></p>
+<p>在地址栏输入<code>cmd</code>，我们就可以打开cmd界面了，然后运行<code>docker-compose up -d</code> ，就可以自动安装全部内容了。</p>
+<p><img src="/public/2015/04/14/local_rss/image-20200626134626593.png" alt="image-20200626134626593"></p>
+<p>在地址栏输入<code>cmd</code> 然后回车，我们就能进入cmd界面，然后使用docker-compose，进行安装，网速好的话，安装很快。</p>
+<p><img src="/public/2015/04/14/local_rss/image-20200626140147402.png" alt="image-20200626140147402"></p>
+<p>安装完毕我们就可以使用了，下面是其资源占用情况。</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>内容</th>
+<th>占用内存空间（M）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>mercury</td>
+<td>全文获取ttrss插件</td>
+<td>66.8</td>
+</tr>
+<tr>
+<td>postgres</td>
+<td>ttrss数据库</td>
+<td>6.8</td>
+</tr>
+<tr>
+<td>ttrss</td>
+<td>ttrss工具</td>
+<td>30.2</td>
+</tr>
+<tr>
+<td>rsshub</td>
+<td>rsshub各种b站源等等</td>
+<td>142.4</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>246.2</td>
+</tr>
+</tbody>
+</table>
+<p><img src="/public/2015/04/14/local_rss/image-20200626140407183.png" alt="image-20200626140407183"></p>
+<p>打开 <a href="http://127.0.0.1:8118/" target="_blank" rel="noopener">http://127.0.0.1:8118/</a></p>
+<p>默认账户：admin 密码：password，请第一时间更改。</p>
+<p><img src="/public/2015/04/14/local_rss/image-20200626143320968.png" alt="image-20200626143320968"></p>
+<h2 id="在chrome安装-rsshub-radar"><a class="header-anchor" href="#在chrome安装-rsshub-radar">¶</a>在chrome安装 rsshub radar</h2>
+<p><img src="/public/2015/04/14/local_rss/image-20200626144233385.png" alt="image-20200626144233385"></p>
+<p>并设置到本机的rsshub地址，ttrss地址，如上。</p>
+<p><img src="/public/2015/04/14/local_rss/image-20200626144330350.png" alt="image-20200626144330350"></p>
+<p>打开bilibili up主的主页就能订阅了，订阅到ttrss。</p>
+<p>这里有问题。需要解决。</p>
+<p><img src="/public/2015/04/14/local_rss/image-20200626145153354.png" alt="image-20200626145153354"></p>
+<p>本次安装教程到此结束，下期我们介绍全文获取功能，手机app的联动，即ttrss的设置问题</p>
+]]></content>
+      <categories>
+        <category>信息收集</category>
+      </categories>
+      <tags>
+        <tag>rss</tag>
+        <tag>工具</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>现代数学手册</title>
+    <url>/public/2017/05/22/math_handbook/</url>
+    <content><![CDATA[<img src="/public/2017/05/22/math_handbook/Screen Shot 2020-03-06 at 13.24.51.png" alt="Screen Shot 2020-03-06 at 13.24.51" style="zoom:33%;">
+<img src="/public/2017/05/22/math_handbook/Screen Shot 2020-03-06 at 13.24.27.png" alt="Screen Shot 2020-03-06 at 13.24.27" style="zoom: 33%;">
+<img src="/public/2017/05/22/math_handbook/Screen Shot 2020-03-06 at 13.22.44.png" alt="Screen Shot 2020-03-06 at 13.22.44" style="zoom:33%;">
+<img src="/public/2017/05/22/math_handbook/Screen Shot 2020-03-06 at 13.23.48.png" alt="Screen Shot 2020-03-06 at 13.23.48" style="zoom:33%;">
+<img src="/public/2017/05/22/math_handbook/Screen Shot 2020-03-06 at 13.23.57.png" alt="Screen Shot 2020-03-06 at 13.23.57" style="zoom:33%;">
+<p>百度云链接: <a href="https://pan.baidu.com/s/1AwNZNoMLgJcJ5X0G0fpC5w" target="_blank" rel="noopener">https://pan.baidu.com/s/1AwNZNoMLgJcJ5X0G0fpC5w</a> 提取码: pb1n</p>
+]]></content>
+      <categories>
+        <category>现代数学</category>
+      </categories>
+      <tags>
+        <tag>数学</tag>
+        <tag>工具书</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>【转】在 C/C++ 程序中打印当前函数调用栈</title>
     <url>/public/2021/08/25/c_debug/</url>
     <content><![CDATA[<p><strong>背景</strong></p>
@@ -300,6 +465,161 @@ Thank you !!!</p>
       </tags>
   </entry>
   <entry>
+    <title>选择困难者的福音？层次分析法</title>
+    <url>/public/2021/04/02/math_AHP/</url>
+    <content><![CDATA[<p><strong>摘要</strong></p>
+<p>日常生活中，我们面临很多的选择，选择工作offer，选择买哪个牌子的手机，选择哪个地方旅行等等。这些选择难以定量的衡量，有很多不确定性。内心小纠结，我选择了这个，万一那个好呢，怎么办？请看层次分析法。</p>
+<p>层次分析法(Analytic Hierarchy Process，简称 AHP)是对一些较为复杂、较为模糊的问题作出决策的简易方法，它特别适用于那些难于完全定量分析的问题。它是美国运筹学家 T. L. Saaty 教授于上世纪 70 年代初期提出的一种简便、灵活而又实用的多准则决策方法。</p>
+<p>运用层次分析法建模，大体上可按下面四个步骤进行</p>
+<ul>
+<li>建立递阶层次结构模型</li>
+<li>构造出各层次中的所有判断矩阵</li>
+<li>层次单排序及一致性检验</li>
+<li>层次总排序及一致性检验。（一般不用）</li>
+</ul>
+<a id="more"></a>
+<p>让我们从offer大佬的例子开始吧！</p>
+<p>举个栗子，今年有位大学生，有三个offer，C1 C2 C3。</p>
+<p>第一步，建立层次模型。</p>
+<ul>
+<li>目标层A：找工作的目标，自己满意程度。
+<ul>
+<li>这个程度怎么计算呢？比如工作1。</li>
+</ul>
+</li>
+<li>准则层B：研究课题、发展前途、待遇、同事情况、地理位置、单位名气等等。
+<ul>
+<li>尽量列全一点，不需要排列重要顺序。</li>
+<li>小于等于9个，后面要两两拍脑袋给出相对的重要层度，给多了不得把脑袋拍疼了。</li>
+<li>也可以有子准则层，比如待遇中的放假、工作环境等等，列出也小于9个。</li>
+</ul>
+</li>
+<li>方案层C：就是我们的offer</li>
+</ul>
+<img src="/public/2021/04/02/math_AHP/image-20200406145535585.png" alt="image-20200406145535585" style="zoom:50%;">
+<h2 id="构造-A-B-之间判断矩阵"><a class="header-anchor" href="#构造-A-B-之间判断矩阵">¶</a>构造 A B 之间判断矩阵</h2>
+<p>准则层B与目标A之间的关系。为了求出准则层中(B1-6) 对目标的重要层度的排序。比如对于该生工作满意度第一重要是待遇，然后是地点，其实该生自己也很模糊。就是固定A，然后求B中准则，对A重要性的排序。</p>
+<h3 id="我们怎么对B中的准则们的重要排序呢？"><a class="header-anchor" href="#我们怎么对B中的准则们的重要排序呢？">¶</a>我们怎么对B中的准则们的重要排序呢？</h3>
+<p>直接给每一个准则，0-1的评分，然后排序。经常会想，给完分之后，这个不合理呀要不我再给哪个准则加加分。所以这样的方法常常会因考虑不周全、顾此失彼而使决策者提出与他实际认为的重要性程度不相一致的数据。</p>
+<p>我们可以将这个过程细化，我就比较两个准则对于目标的重要性，然后通过下面的矩阵方法，求出优先顺序。</p>
+<p>还能通过一个一致性检验，来检验在你评分的过程中，有没有自相矛盾的地方，当然这种方法允许一些自相矛盾。反正评分的时候尊从内心拍脑袋就对了。</p>
+<p>所以我们拿出一个B1 与 B2 对于目标的重要，想一想然后给出B2/B1，填入下面的表格中的(2,1)的位置。</p>
+<p>整个矩阵i,j 与j，i 是取倒数的关系，所以只要做一半。</p>
+<p>在找工作的目标下，准则i与j相对的重要性表示，B2/B1 的值。采用9个标度。而相比不重要刻度取倒数就可以了</p>
+<table>
+<thead>
+<tr>
+<th>准则i比j的比较</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+<th>5</th>
+<th>6</th>
+<th>7</th>
+<th>8</th>
+<th>9</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td>相同重要</td>
+<td></td>
+<td>比较重要</td>
+<td></td>
+<td>明显重要</td>
+<td></td>
+<td>强烈重要</td>
+<td></td>
+<td>极端重要</td>
+</tr>
+</tbody>
+</table>
+<p>最后的两两相对重要表格</p>
+<img src="/public/2021/04/02/math_AHP/image-20200406145640316.png" alt="image-20200406145640316" style="zoom:50%;">
+<p>对角线对称的两个数互为倒数，即 $$a_{ji}=\frac{1}{a_{ij}}$$  B1/B2 不就是和 B2/B1互为倒数嘛</p>
+<p>从心理学观点来看，分级太多会超越人们的判断能力，既增加了作判断的难度， 又容易因此而提供虚假数据。Saaty 等人还用实验方法比较了在各种不同标度下人们判断结果的正确性，实验结果也表明，采用 1~9 标度最为合适。</p>
+<p>判断矩阵的一致性指标步骤：</p>
+<ul>
+<li>1）计算一致性指标 CI 。$$CI=\frac{ \lambda_{max}-n}{n-1}$$</li>
+<li>2）查表，平均随机一致性指标 RI。</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>n</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+<th>5</th>
+<th>6</th>
+<th>7</th>
+<th>8</th>
+<th>9</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>RI</td>
+<td>0</td>
+<td>0</td>
+<td>0.58</td>
+<td>0.90</td>
+<td>1.12</td>
+<td>1.24</td>
+<td>1.32</td>
+<td>1.41</td>
+<td>1.45</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><em>RI</em> 的值是这样得到的，用随机方法构造500个样本矩阵:随机地从1~9及其倒数中抽取数字构造正互反矩阵，求得最大特征根的平均值 $$\bar \lambda_{max}$$ 并定义$$RI=\frac{\bar \lambda_{max}-n}{n-1}$$</p>
+</blockquote>
+<ul>
+<li>3）计算一致性比例CR。 $$CR=\frac{CI}{RI}$$，当$$CR&lt;0.10$$ 时，认为判断矩阵的一致性是可以接受的，否则应对判断矩阵作适当修正。</li>
+</ul>
+<p>如果一个矩阵满足上面的条件，那么它最大特征值对应的特征向量就可以认为是每个维度的重要性权重。</p>
+<h2 id="构造-B-C-之间判断矩阵"><a class="header-anchor" href="#构造-B-C-之间判断矩阵">¶</a>构造 B C 之间判断矩阵</h2>
+<p>相同的方法，在同一B准则下，考虑不同工作的优先顺序。求工作排序的方法，和上面一样。</p>
+<img src="/public/2021/04/02/math_AHP/image-20200406162644137.png" alt="image-20200406162644137" style="zoom:50%;">
+<p>python代码<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">import</span> warnings</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AHP</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, criteria, b)</span>:</span></span><br><span class="line">        self.RI = (<span class="number">0</span>, <span class="number">0</span>, <span class="number">0.58</span>, <span class="number">0.9</span>, <span class="number">1.12</span>, <span class="number">1.24</span>, <span class="number">1.32</span>, <span class="number">1.41</span>, <span class="number">1.45</span>, <span class="number">1.49</span>)</span><br><span class="line">        self.criteria = criteria</span><br><span class="line">        self.b = b</span><br><span class="line">        self.num_criteria = criteria.shape[<span class="number">0</span>]</span><br><span class="line">        self.num_project = b[<span class="number">0</span>].shape[<span class="number">0</span>]</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">cal_weights</span><span class="params">(self, input_matrix)</span>:</span></span><br><span class="line">        input_matrix = np.array(input_matrix)</span><br><span class="line">        n, n1 = input_matrix.shape</span><br><span class="line">        <span class="keyword">assert</span> n == n1, <span class="string">'不是一个方阵'</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(n):</span><br><span class="line">            <span class="keyword">for</span> j <span class="keyword">in</span> range(n):</span><br><span class="line">                <span class="keyword">if</span> np.abs(input_matrix[i, j] * input_matrix[j, i] - <span class="number">1</span>) &gt; <span class="number">1e-7</span>:</span><br><span class="line">                    <span class="keyword">raise</span> ValueError(<span class="string">'不是反互对称矩阵'</span>)</span><br><span class="line"></span><br><span class="line">        eigenvalues, eigenvectors = np.linalg.eig(input_matrix)</span><br><span class="line"></span><br><span class="line">        max_idx = np.argmax(eigenvalues)</span><br><span class="line">        max_eigen = eigenvalues[max_idx].real</span><br><span class="line">        eigen = eigenvectors[:, max_idx].real</span><br><span class="line">        eigen = eigen / eigen.sum()</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> n &gt; <span class="number">9</span>:</span><br><span class="line">            CR = <span class="literal">None</span></span><br><span class="line">            warnings.warn(<span class="string">'无法判断一致性'</span>)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            CI = (max_eigen - n) / (n - <span class="number">1</span>)</span><br><span class="line">            CR = CI / self.RI[n]</span><br><span class="line">        <span class="keyword">return</span> max_eigen, CR, eigen</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">run</span><span class="params">(self)</span>:</span></span><br><span class="line">        max_eigen, CR, criteria_eigen = self.cal_weights(self.criteria)</span><br><span class="line">        print(<span class="string">'准则层：最大特征值&#123;:&lt;5f&#125;,CR=&#123;:&lt;5f&#125;,检验&#123;&#125;通过'</span>.format(max_eigen, CR, <span class="string">''</span> <span class="keyword">if</span> CR &lt; <span class="number">0.1</span> <span class="keyword">else</span> <span class="string">'不'</span>))</span><br><span class="line">        print(<span class="string">'准则层权重=&#123;&#125;\n'</span>.format(criteria_eigen))</span><br><span class="line"></span><br><span class="line">        max_eigen_list, CR_list, eigen_list = [], [], []</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> self.b:</span><br><span class="line">            max_eigen, CR, eigen = self.cal_weights(i)</span><br><span class="line">            max_eigen_list.append(max_eigen)</span><br><span class="line">            CR_list.append(CR)</span><br><span class="line">            eigen_list.append(eigen)</span><br><span class="line"></span><br><span class="line">        pd_print = pd.DataFrame(eigen_list,</span><br><span class="line">                                index=[<span class="string">'准则'</span> + str(i) <span class="keyword">for</span> i <span class="keyword">in</span> range(self.num_criteria)],</span><br><span class="line">                                columns=[<span class="string">'方案'</span> + str(i) <span class="keyword">for</span> i <span class="keyword">in</span> range(self.num_project)],</span><br><span class="line">                                )</span><br><span class="line">        pd_print.loc[:, <span class="string">'最大特征值'</span>] = max_eigen_list</span><br><span class="line">        pd_print.loc[:, <span class="string">'CR'</span>] = CR_list</span><br><span class="line">        pd_print.loc[:, <span class="string">'一致性检验'</span>] = pd_print.loc[:, <span class="string">'CR'</span>] &lt; <span class="number">0.1</span></span><br><span class="line">        print(<span class="string">'方案层'</span>)</span><br><span class="line">        print(pd_print)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 目标层</span></span><br><span class="line">        obj = np.dot(criteria_eigen.reshape(<span class="number">1</span>, <span class="number">-1</span>), np.array(eigen_list))</span><br><span class="line">        print(<span class="string">'\n目标层'</span>, obj)</span><br><span class="line">        print(<span class="string">'最优选择是方案&#123;&#125;'</span>.format(np.argmax(obj)))</span><br><span class="line">        <span class="keyword">return</span> obj</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    <span class="comment"># 准则重要性矩阵</span></span><br><span class="line">    criteria = np.array([[<span class="number">1</span>, <span class="number">2</span>, <span class="number">7</span>, <span class="number">5</span>, <span class="number">5</span>],</span><br><span class="line">                         [<span class="number">1</span> / <span class="number">2</span>, <span class="number">1</span>, <span class="number">4</span>, <span class="number">3</span>, <span class="number">3</span>],</span><br><span class="line">                         [<span class="number">1</span> / <span class="number">7</span>, <span class="number">1</span> / <span class="number">4</span>, <span class="number">1</span>, <span class="number">1</span> / <span class="number">2</span>, <span class="number">1</span> / <span class="number">3</span>],</span><br><span class="line">                         [<span class="number">1</span> / <span class="number">5</span>, <span class="number">1</span> / <span class="number">3</span>, <span class="number">2</span>, <span class="number">1</span>, <span class="number">1</span>],</span><br><span class="line">                         [<span class="number">1</span> / <span class="number">5</span>, <span class="number">1</span> / <span class="number">3</span>, <span class="number">3</span>, <span class="number">1</span>, <span class="number">1</span>]])</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 对每个准则，方案优劣排序</span></span><br><span class="line">    b1 = np.array([[<span class="number">1</span>, <span class="number">1</span> / <span class="number">3</span>, <span class="number">1</span> / <span class="number">8</span>], [<span class="number">3</span>, <span class="number">1</span>, <span class="number">1</span> / <span class="number">3</span>], [<span class="number">8</span>, <span class="number">3</span>, <span class="number">1</span>]])</span><br><span class="line">    b2 = np.array([[<span class="number">1</span>, <span class="number">2</span>, <span class="number">5</span>], [<span class="number">1</span> / <span class="number">2</span>, <span class="number">1</span>, <span class="number">2</span>], [<span class="number">1</span> / <span class="number">5</span>, <span class="number">1</span> / <span class="number">2</span>, <span class="number">1</span>]])</span><br><span class="line">    b3 = np.array([[<span class="number">1</span>, <span class="number">1</span>, <span class="number">3</span>], [<span class="number">1</span>, <span class="number">1</span>, <span class="number">3</span>], [<span class="number">1</span> / <span class="number">3</span>, <span class="number">1</span> / <span class="number">3</span>, <span class="number">1</span>]])</span><br><span class="line">    b4 = np.array([[<span class="number">1</span>, <span class="number">3</span>, <span class="number">4</span>], [<span class="number">1</span> / <span class="number">3</span>, <span class="number">1</span>, <span class="number">1</span>], [<span class="number">1</span> / <span class="number">4</span>, <span class="number">1</span>, <span class="number">1</span>]])</span><br><span class="line">    b5 = np.array([[<span class="number">1</span>, <span class="number">4</span>, <span class="number">1</span> / <span class="number">2</span>], [<span class="number">1</span> / <span class="number">4</span>, <span class="number">1</span>, <span class="number">1</span> / <span class="number">4</span>], [<span class="number">2</span>, <span class="number">4</span>, <span class="number">1</span>]])</span><br><span class="line"></span><br><span class="line">    b = [b1, b2, b3, b4, b5]</span><br><span class="line">    a = AHP(criteria, b).run()</span><br></pre></td></tr></table></figure>
+<h2 id="层次分析法与控制变量法"><a class="header-anchor" href="#层次分析法与控制变量法">¶</a>层次分析法与控制变量法</h2>
+<p>我们的任务是选择工作，最后使得我们满意，直接选择我们当然一头雾水。所以我们设立一些准则，然后对这些准则对于目标的重要性排序。</p>
+<p>这又有点像概率图模型，只是赋权的方法，是相互比较的方法。</p>
+<h2 id="选择困难者的福音？"><a class="header-anchor" href="#选择困难者的福音？">¶</a>选择困难者的福音？</h2>
+<p>层次分析法对人们的思维过程进行了加工整理，提出了一套系统分析问题的方法，为科学管理和决策提供了较有说服力的依据。</p>
+<p>在应用层次分析法研究问题时，遇到的主要困难有两个:
+(1) 如何根据实际情况抽象出较为贴切的层次结构;
+(2) 如何将某些定性的量作比较接近实际定量化处理。</p>
+<p>层次分析法的其局限性<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup>：
+(1) 它在很大程度上依赖于人们的经验，主观因素的影响很大，它至多只能排除思维过程中的严重非一致性，却无法排除决策者个人可能存在的严重片面性。
+(2) 比较、 判断过程较为粗糙，不能用于精度要求较高的决策问题。</p>
+<p>所以，AHP 至多只能算是一种半定量(或定性与定量结合)的方法。
+本文仅供参考，不负法律责任，哈哈。</p>
+<p>参考</p>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p>幼鹰me 知乎 <a href="https://zhuanlan.zhihu.com/p/101505929" target="_blank" rel="noopener">层次分析法原理与Python实现</a> <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn2" class="footnote-item"><p>司守奎《数学建模算法与程序》第八章 层次分析法 P167 <a href="#fnref2" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
+]]></content>
+      <categories>
+        <category>数学</category>
+      </categories>
+      <tags>
+        <tag>数学</tag>
+        <tag>层次分析法</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>二零年RSS杂谈</title>
     <url>/public/2022/01/14/rss_talk2020/</url>
     <content><![CDATA[<p>2020年了，笔者还是使用RSS的原始人。RSS，Really Simple Syndication是一种信息聚合工具。在5G时代信息即将大爆炸之前，我来谈谈rss的杂七杂八吧。我们来打个赌，你不会看完这篇文章。</p>
@@ -487,161 +807,6 @@ markdown 空格</p>
       </tags>
   </entry>
   <entry>
-    <title>选择困难者的福音？层次分析法</title>
-    <url>/public/2021/04/02/math_AHP/</url>
-    <content><![CDATA[<p><strong>摘要</strong></p>
-<p>日常生活中，我们面临很多的选择，选择工作offer，选择买哪个牌子的手机，选择哪个地方旅行等等。这些选择难以定量的衡量，有很多不确定性。内心小纠结，我选择了这个，万一那个好呢，怎么办？请看层次分析法。</p>
-<p>层次分析法(Analytic Hierarchy Process，简称 AHP)是对一些较为复杂、较为模糊的问题作出决策的简易方法，它特别适用于那些难于完全定量分析的问题。它是美国运筹学家 T. L. Saaty 教授于上世纪 70 年代初期提出的一种简便、灵活而又实用的多准则决策方法。</p>
-<p>运用层次分析法建模，大体上可按下面四个步骤进行</p>
-<ul>
-<li>建立递阶层次结构模型</li>
-<li>构造出各层次中的所有判断矩阵</li>
-<li>层次单排序及一致性检验</li>
-<li>层次总排序及一致性检验。（一般不用）</li>
-</ul>
-<a id="more"></a>
-<p>让我们从offer大佬的例子开始吧！</p>
-<p>举个栗子，今年有位大学生，有三个offer，C1 C2 C3。</p>
-<p>第一步，建立层次模型。</p>
-<ul>
-<li>目标层A：找工作的目标，自己满意程度。
-<ul>
-<li>这个程度怎么计算呢？比如工作1。</li>
-</ul>
-</li>
-<li>准则层B：研究课题、发展前途、待遇、同事情况、地理位置、单位名气等等。
-<ul>
-<li>尽量列全一点，不需要排列重要顺序。</li>
-<li>小于等于9个，后面要两两拍脑袋给出相对的重要层度，给多了不得把脑袋拍疼了。</li>
-<li>也可以有子准则层，比如待遇中的放假、工作环境等等，列出也小于9个。</li>
-</ul>
-</li>
-<li>方案层C：就是我们的offer</li>
-</ul>
-<img src="/public/2021/04/02/math_AHP/image-20200406145535585.png" alt="image-20200406145535585" style="zoom:50%;">
-<h2 id="构造-A-B-之间判断矩阵"><a class="header-anchor" href="#构造-A-B-之间判断矩阵">¶</a>构造 A B 之间判断矩阵</h2>
-<p>准则层B与目标A之间的关系。为了求出准则层中(B1-6) 对目标的重要层度的排序。比如对于该生工作满意度第一重要是待遇，然后是地点，其实该生自己也很模糊。就是固定A，然后求B中准则，对A重要性的排序。</p>
-<h3 id="我们怎么对B中的准则们的重要排序呢？"><a class="header-anchor" href="#我们怎么对B中的准则们的重要排序呢？">¶</a>我们怎么对B中的准则们的重要排序呢？</h3>
-<p>直接给每一个准则，0-1的评分，然后排序。经常会想，给完分之后，这个不合理呀要不我再给哪个准则加加分。所以这样的方法常常会因考虑不周全、顾此失彼而使决策者提出与他实际认为的重要性程度不相一致的数据。</p>
-<p>我们可以将这个过程细化，我就比较两个准则对于目标的重要性，然后通过下面的矩阵方法，求出优先顺序。</p>
-<p>还能通过一个一致性检验，来检验在你评分的过程中，有没有自相矛盾的地方，当然这种方法允许一些自相矛盾。反正评分的时候尊从内心拍脑袋就对了。</p>
-<p>所以我们拿出一个B1 与 B2 对于目标的重要，想一想然后给出B2/B1，填入下面的表格中的(2,1)的位置。</p>
-<p>整个矩阵i,j 与j，i 是取倒数的关系，所以只要做一半。</p>
-<p>在找工作的目标下，准则i与j相对的重要性表示，B2/B1 的值。采用9个标度。而相比不重要刻度取倒数就可以了</p>
-<table>
-<thead>
-<tr>
-<th>准则i比j的比较</th>
-<th>1</th>
-<th>2</th>
-<th>3</th>
-<th>4</th>
-<th>5</th>
-<th>6</th>
-<th>7</th>
-<th>8</th>
-<th>9</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-<td>相同重要</td>
-<td></td>
-<td>比较重要</td>
-<td></td>
-<td>明显重要</td>
-<td></td>
-<td>强烈重要</td>
-<td></td>
-<td>极端重要</td>
-</tr>
-</tbody>
-</table>
-<p>最后的两两相对重要表格</p>
-<img src="/public/2021/04/02/math_AHP/image-20200406145640316.png" alt="image-20200406145640316" style="zoom:50%;">
-<p>对角线对称的两个数互为倒数，即 $$a_{ji}=\frac{1}{a_{ij}}$$  B1/B2 不就是和 B2/B1互为倒数嘛</p>
-<p>从心理学观点来看，分级太多会超越人们的判断能力，既增加了作判断的难度， 又容易因此而提供虚假数据。Saaty 等人还用实验方法比较了在各种不同标度下人们判断结果的正确性，实验结果也表明，采用 1~9 标度最为合适。</p>
-<p>判断矩阵的一致性指标步骤：</p>
-<ul>
-<li>1）计算一致性指标 CI 。$$CI=\frac{ \lambda_{max}-n}{n-1}$$</li>
-<li>2）查表，平均随机一致性指标 RI。</li>
-</ul>
-<table>
-<thead>
-<tr>
-<th>n</th>
-<th>1</th>
-<th>2</th>
-<th>3</th>
-<th>4</th>
-<th>5</th>
-<th>6</th>
-<th>7</th>
-<th>8</th>
-<th>9</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>RI</td>
-<td>0</td>
-<td>0</td>
-<td>0.58</td>
-<td>0.90</td>
-<td>1.12</td>
-<td>1.24</td>
-<td>1.32</td>
-<td>1.41</td>
-<td>1.45</td>
-</tr>
-</tbody>
-</table>
-<blockquote>
-<p><em>RI</em> 的值是这样得到的，用随机方法构造500个样本矩阵:随机地从1~9及其倒数中抽取数字构造正互反矩阵，求得最大特征根的平均值 $$\bar \lambda_{max}$$ 并定义$$RI=\frac{\bar \lambda_{max}-n}{n-1}$$</p>
-</blockquote>
-<ul>
-<li>3）计算一致性比例CR。 $$CR=\frac{CI}{RI}$$，当$$CR&lt;0.10$$ 时，认为判断矩阵的一致性是可以接受的，否则应对判断矩阵作适当修正。</li>
-</ul>
-<p>如果一个矩阵满足上面的条件，那么它最大特征值对应的特征向量就可以认为是每个维度的重要性权重。</p>
-<h2 id="构造-B-C-之间判断矩阵"><a class="header-anchor" href="#构造-B-C-之间判断矩阵">¶</a>构造 B C 之间判断矩阵</h2>
-<p>相同的方法，在同一B准则下，考虑不同工作的优先顺序。求工作排序的方法，和上面一样。</p>
-<img src="/public/2021/04/02/math_AHP/image-20200406162644137.png" alt="image-20200406162644137" style="zoom:50%;">
-<p>python代码<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup></p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">import</span> warnings</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AHP</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, criteria, b)</span>:</span></span><br><span class="line">        self.RI = (<span class="number">0</span>, <span class="number">0</span>, <span class="number">0.58</span>, <span class="number">0.9</span>, <span class="number">1.12</span>, <span class="number">1.24</span>, <span class="number">1.32</span>, <span class="number">1.41</span>, <span class="number">1.45</span>, <span class="number">1.49</span>)</span><br><span class="line">        self.criteria = criteria</span><br><span class="line">        self.b = b</span><br><span class="line">        self.num_criteria = criteria.shape[<span class="number">0</span>]</span><br><span class="line">        self.num_project = b[<span class="number">0</span>].shape[<span class="number">0</span>]</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">cal_weights</span><span class="params">(self, input_matrix)</span>:</span></span><br><span class="line">        input_matrix = np.array(input_matrix)</span><br><span class="line">        n, n1 = input_matrix.shape</span><br><span class="line">        <span class="keyword">assert</span> n == n1, <span class="string">'不是一个方阵'</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(n):</span><br><span class="line">            <span class="keyword">for</span> j <span class="keyword">in</span> range(n):</span><br><span class="line">                <span class="keyword">if</span> np.abs(input_matrix[i, j] * input_matrix[j, i] - <span class="number">1</span>) &gt; <span class="number">1e-7</span>:</span><br><span class="line">                    <span class="keyword">raise</span> ValueError(<span class="string">'不是反互对称矩阵'</span>)</span><br><span class="line"></span><br><span class="line">        eigenvalues, eigenvectors = np.linalg.eig(input_matrix)</span><br><span class="line"></span><br><span class="line">        max_idx = np.argmax(eigenvalues)</span><br><span class="line">        max_eigen = eigenvalues[max_idx].real</span><br><span class="line">        eigen = eigenvectors[:, max_idx].real</span><br><span class="line">        eigen = eigen / eigen.sum()</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> n &gt; <span class="number">9</span>:</span><br><span class="line">            CR = <span class="literal">None</span></span><br><span class="line">            warnings.warn(<span class="string">'无法判断一致性'</span>)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            CI = (max_eigen - n) / (n - <span class="number">1</span>)</span><br><span class="line">            CR = CI / self.RI[n]</span><br><span class="line">        <span class="keyword">return</span> max_eigen, CR, eigen</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">run</span><span class="params">(self)</span>:</span></span><br><span class="line">        max_eigen, CR, criteria_eigen = self.cal_weights(self.criteria)</span><br><span class="line">        print(<span class="string">'准则层：最大特征值&#123;:&lt;5f&#125;,CR=&#123;:&lt;5f&#125;,检验&#123;&#125;通过'</span>.format(max_eigen, CR, <span class="string">''</span> <span class="keyword">if</span> CR &lt; <span class="number">0.1</span> <span class="keyword">else</span> <span class="string">'不'</span>))</span><br><span class="line">        print(<span class="string">'准则层权重=&#123;&#125;\n'</span>.format(criteria_eigen))</span><br><span class="line"></span><br><span class="line">        max_eigen_list, CR_list, eigen_list = [], [], []</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> self.b:</span><br><span class="line">            max_eigen, CR, eigen = self.cal_weights(i)</span><br><span class="line">            max_eigen_list.append(max_eigen)</span><br><span class="line">            CR_list.append(CR)</span><br><span class="line">            eigen_list.append(eigen)</span><br><span class="line"></span><br><span class="line">        pd_print = pd.DataFrame(eigen_list,</span><br><span class="line">                                index=[<span class="string">'准则'</span> + str(i) <span class="keyword">for</span> i <span class="keyword">in</span> range(self.num_criteria)],</span><br><span class="line">                                columns=[<span class="string">'方案'</span> + str(i) <span class="keyword">for</span> i <span class="keyword">in</span> range(self.num_project)],</span><br><span class="line">                                )</span><br><span class="line">        pd_print.loc[:, <span class="string">'最大特征值'</span>] = max_eigen_list</span><br><span class="line">        pd_print.loc[:, <span class="string">'CR'</span>] = CR_list</span><br><span class="line">        pd_print.loc[:, <span class="string">'一致性检验'</span>] = pd_print.loc[:, <span class="string">'CR'</span>] &lt; <span class="number">0.1</span></span><br><span class="line">        print(<span class="string">'方案层'</span>)</span><br><span class="line">        print(pd_print)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 目标层</span></span><br><span class="line">        obj = np.dot(criteria_eigen.reshape(<span class="number">1</span>, <span class="number">-1</span>), np.array(eigen_list))</span><br><span class="line">        print(<span class="string">'\n目标层'</span>, obj)</span><br><span class="line">        print(<span class="string">'最优选择是方案&#123;&#125;'</span>.format(np.argmax(obj)))</span><br><span class="line">        <span class="keyword">return</span> obj</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    <span class="comment"># 准则重要性矩阵</span></span><br><span class="line">    criteria = np.array([[<span class="number">1</span>, <span class="number">2</span>, <span class="number">7</span>, <span class="number">5</span>, <span class="number">5</span>],</span><br><span class="line">                         [<span class="number">1</span> / <span class="number">2</span>, <span class="number">1</span>, <span class="number">4</span>, <span class="number">3</span>, <span class="number">3</span>],</span><br><span class="line">                         [<span class="number">1</span> / <span class="number">7</span>, <span class="number">1</span> / <span class="number">4</span>, <span class="number">1</span>, <span class="number">1</span> / <span class="number">2</span>, <span class="number">1</span> / <span class="number">3</span>],</span><br><span class="line">                         [<span class="number">1</span> / <span class="number">5</span>, <span class="number">1</span> / <span class="number">3</span>, <span class="number">2</span>, <span class="number">1</span>, <span class="number">1</span>],</span><br><span class="line">                         [<span class="number">1</span> / <span class="number">5</span>, <span class="number">1</span> / <span class="number">3</span>, <span class="number">3</span>, <span class="number">1</span>, <span class="number">1</span>]])</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 对每个准则，方案优劣排序</span></span><br><span class="line">    b1 = np.array([[<span class="number">1</span>, <span class="number">1</span> / <span class="number">3</span>, <span class="number">1</span> / <span class="number">8</span>], [<span class="number">3</span>, <span class="number">1</span>, <span class="number">1</span> / <span class="number">3</span>], [<span class="number">8</span>, <span class="number">3</span>, <span class="number">1</span>]])</span><br><span class="line">    b2 = np.array([[<span class="number">1</span>, <span class="number">2</span>, <span class="number">5</span>], [<span class="number">1</span> / <span class="number">2</span>, <span class="number">1</span>, <span class="number">2</span>], [<span class="number">1</span> / <span class="number">5</span>, <span class="number">1</span> / <span class="number">2</span>, <span class="number">1</span>]])</span><br><span class="line">    b3 = np.array([[<span class="number">1</span>, <span class="number">1</span>, <span class="number">3</span>], [<span class="number">1</span>, <span class="number">1</span>, <span class="number">3</span>], [<span class="number">1</span> / <span class="number">3</span>, <span class="number">1</span> / <span class="number">3</span>, <span class="number">1</span>]])</span><br><span class="line">    b4 = np.array([[<span class="number">1</span>, <span class="number">3</span>, <span class="number">4</span>], [<span class="number">1</span> / <span class="number">3</span>, <span class="number">1</span>, <span class="number">1</span>], [<span class="number">1</span> / <span class="number">4</span>, <span class="number">1</span>, <span class="number">1</span>]])</span><br><span class="line">    b5 = np.array([[<span class="number">1</span>, <span class="number">4</span>, <span class="number">1</span> / <span class="number">2</span>], [<span class="number">1</span> / <span class="number">4</span>, <span class="number">1</span>, <span class="number">1</span> / <span class="number">4</span>], [<span class="number">2</span>, <span class="number">4</span>, <span class="number">1</span>]])</span><br><span class="line"></span><br><span class="line">    b = [b1, b2, b3, b4, b5]</span><br><span class="line">    a = AHP(criteria, b).run()</span><br></pre></td></tr></table></figure>
-<h2 id="层次分析法与控制变量法"><a class="header-anchor" href="#层次分析法与控制变量法">¶</a>层次分析法与控制变量法</h2>
-<p>我们的任务是选择工作，最后使得我们满意，直接选择我们当然一头雾水。所以我们设立一些准则，然后对这些准则对于目标的重要性排序。</p>
-<p>这又有点像概率图模型，只是赋权的方法，是相互比较的方法。</p>
-<h2 id="选择困难者的福音？"><a class="header-anchor" href="#选择困难者的福音？">¶</a>选择困难者的福音？</h2>
-<p>层次分析法对人们的思维过程进行了加工整理，提出了一套系统分析问题的方法，为科学管理和决策提供了较有说服力的依据。</p>
-<p>在应用层次分析法研究问题时，遇到的主要困难有两个:
-(1) 如何根据实际情况抽象出较为贴切的层次结构;
-(2) 如何将某些定性的量作比较接近实际定量化处理。</p>
-<p>层次分析法的其局限性<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup>：
-(1) 它在很大程度上依赖于人们的经验，主观因素的影响很大，它至多只能排除思维过程中的严重非一致性，却无法排除决策者个人可能存在的严重片面性。
-(2) 比较、 判断过程较为粗糙，不能用于精度要求较高的决策问题。</p>
-<p>所以，AHP 至多只能算是一种半定量(或定性与定量结合)的方法。
-本文仅供参考，不负法律责任，哈哈。</p>
-<p>参考</p>
-<hr class="footnotes-sep">
-<section class="footnotes">
-<ol class="footnotes-list">
-<li id="fn1" class="footnote-item"><p>幼鹰me 知乎 <a href="https://zhuanlan.zhihu.com/p/101505929" target="_blank" rel="noopener">层次分析法原理与Python实现</a> <a href="#fnref1" class="footnote-backref">↩︎</a></p>
-</li>
-<li id="fn2" class="footnote-item"><p>司守奎《数学建模算法与程序》第八章 层次分析法 P167 <a href="#fnref2" class="footnote-backref">↩︎</a></p>
-</li>
-</ol>
-</section>
-]]></content>
-      <categories>
-        <category>数学</category>
-      </categories>
-      <tags>
-        <tag>数学</tag>
-        <tag>层次分析法</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>RSS跟踪github文件更新</title>
     <url>/public/2021/07/24/rss_github_file/</url>
     <content><![CDATA[<p><strong>前言</strong></p>
@@ -666,6 +831,88 @@ markdown 空格</p>
       </categories>
       <tags>
         <tag>RSS</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Why Software Should Not Have Owners</title>
+    <url>/public/2018/05/11/why_gnu/</url>
+    <content><![CDATA[<p><a href="http://www.gnu.org/philosophy/why-free.html" target="_blank" rel="noopener">Why Software Should Not Have Owners</a>
+为什么软件不应有主人
+作者︰<a href="https://www.stallman.org/" target="_blank" rel="noopener">Richard Stallman</a></p>
+<a id="more"></a>
+<p>数字资讯科技令大众更容易复制和变更资料。然而不是所有人都希望这样。版权制度容许软件有「主人」。他们主要目的在于从公众夺取软件的潜在利益。他们希望独占这些软件的复制、更改权利。</p>
+<p>版权制度随著印刷技术而发展——印刷是一种大量制作副本的技术。版权很适合这项技术，因为它只限制了大规模的复制。它并没有剥夺图书读者的自由。一般读者没有印刷机，他们只能用笔墨抄写作品，所以很少有读者因此而被控告。</p>
+<p>数字科技比印刷机更灵活：当信息呈数字形式时，你能很容易把它跟别人分享。这种情况不太配合故有的版权制度，所以现在有越来越多日益严厉的措施用来加强软件版权。看看这些软件出版商协会（Software Publishers Association, SPA）的四种惯常说法：</p>
+<ul>
+<li>大肆宣传违反版权法去帮助朋友是错误的。</li>
+<li>诱使大家告发违返规定的同事和同僚。</li>
+<li>如果警察协助突击搜查公司和学校，那里的人们必须证明自己没有非法复制。</li>
+<li>因软件出版商协会提出要求，美国政府起诉一些如麻省理工学院的 David LaMacchia的人，不是因为他非法软复制件，而只是因为破解复制工具，从而不能对用户非法复制进行检查。</li>
+</ul>
+<p>这些惯常说法和前苏联曾用过的做法相似，在每一台影印机前都有一个守卫，以防止那些未经许可复印，同时个人只有秘密地复制信息，并像「秘密出版物」一样在手头传播。不同的是，苏联管制信息是政治原因，而美国则是为了经济利益。无论动机如何，我们都受到影响。不管什么原因，任何人企图阻止信息共享，都导致了相同的后果和同样的不便。</p>
+<p>软件所有者用各种理由来控制我们如何使用资讯的权利︰</p>
+<ul>
+<li>
+<p>中伤
+软件所有者使用「盗窃」、「剽窃」这类带有污蔑的词语，或者「知识产权」、「损害」之类专业的术语，向公众暗示他们是合理的——其实，他们是将软件和真实物件混为一谈。
+我们对「拿取别人的物件」的概念 ，并不能直接套用在复制这件事，然而软件所有者却迫使我们必须接受他们的想法。</p>
+</li>
+<li>
+<p>凭空夸大
+软件所有者声称当用户复制他们的程序时，他们受到「伤害」或「经济损失」。但复制并不会对软件所有者造成直接的影响，也没有伤害到任何人。只有在使用复制者不愿意给软件所有者付费时，软件所有者才会受损失。
+很明显大多数这样的人不愿意购买这些程序，但是软件所有者会假定所有人都会购买，并以此来计算他们的「损失」。客气点说这就是夸大了专有软件的价值。</p>
+</li>
+<li>
+<p>法律
+软件所有者经常引用当今的法律和苛刻的刑罚来威胁我们。这暗示现今的法律反映了一个不容置疑的道德观念，同时怂恿我们视这些刑罚为正常及不能推卸。
+这些说词面对严谨的思维是站不住脚的，这做法只是打算利用了人的惯性思维。
+显然法律是不能决定错对的。美国人都应该知道，五十年代的黑人在许多州份坐在巴士前座是违法的；但只有种族主义者才会说他们是错误的。</p>
+</li>
+<li>
+<p>自然权利
+软件作者常常声称与自己编写的程序有一种特殊联系，因此他们宣称对这个程序的渴望和兴趣是高于世上任何人。（通常是公司持有软件版权，而不是作者，但是我们预期忽略这个差异。)
+对那些打算把「作者高于一切」推崇为一种道德的人，本人作为一个著名的软件开发者，只能说这是废话。
+但一般人有两个原因对自然权利的说法产生共鸣。
+第一个原因是将软件与现实事物过分地类比。当我做意大利面时，如果其他人也要吃，我一定会反感，因为那样的话，我就吃不上了。他的行为对我造成的损失，正如他得到的利益一样。我们中仅有一人可以吃意大利面，问题是谁来吃？我们两者之间最小的分歧也足以打破道德上的平衡。
+问题是︰你会否因为运行或修改一个我写的程序而直接影响到你，而对我只会产生一点间接影响？你是否复制我的软件给你的朋友，而对你们的影响远比对我的还要大？我不应有这样的权利去叫你不要这么做。任何人都不该有。
+这第二个原因就是，人们被告知作者的自然权利是社会约定俗成的准则。
+历史证明，相反的一方才是正确的。当年起草美国宪法时坚决驳回了关于作者自然权利的提议。这就是为什么宪法只是允许版权体系，而并不强制要求；所以说版权体制一定是临时的。宪法也说明版权体制的目的是促进发展，而不是奖励作者。版权确实给作者和出版社带来了更多收益，但这本来只是一种激励他们的手段而已。
+事实是我们的社会建立了削弱公众自然权利的版权制度。然而版权只有用于公益事业才是正当的。</p>
+</li>
+<li>
+<p>经济
+软件应该有主人的最终辩解理由是，这会提高软件产量。
+这个论据至少比以上的更切合主题。它立足于一个合理目标——满足软件用户的需求。以经验看来，人们因为满意的回报而生产更多，是很容易理解的。
+但是这个关于经济的论据有瑕疵：它基于这样一个假设，区别仅仅是我们要付多少钱的问题。它假设无论软件是否有其所有者，「软件产品」都是我们想要的。
+由于这个假设合乎我们处理真实物件的经验，所以人们很乐意接受。假设你付费与否都能得到一份一样的三明治，这样你付的费用就是唯一的分别。不管你是否购买，三明治有相同的味道和相同的营养，但你只能吃一次。不管你是否从所有者手中得到三明治，它都不能直接影响到你的金钱以外的任何事情。
+对任何真实物件，这都是正确的︰不管它是否有主人都不会直接影响它的本质和用途。
+如果程序有了主人，这将大大影响它的本质，和你对它的用途。不同之处不仅仅是钱的问题。软件该有主人的体制鼓励软件主人生产，但不一定是社会真正需要的。它导致的道德低落影响我们所有人。
+社会需要什么？社会需要对公民真实可用的信息──例如，人们可以解读、修补、使用和改进的程序，而不只是操作。但是软件主人往往会给我们一个不能研究和修改的黑盒子。</p>
+</li>
+</ul>
+<p>社会也需要自由。当程序有了主人，用户就失去了控制他们部分生活的自由。</p>
+<p>总之社会需要鼓励公民们自主合作的精神。当软件主人告诉我们用这种自然的方式帮助旁人是剽窃行为时，那他们就是玷污我们的人格。</p>
+<p>这正是我们提倡自由软件 事关自由，而并非价格的原因。</p>
+<p>支持所有者的经济论据是错误的，但是经济问题确实存在。一些人出于荣誉、认同和博爱，而编写了有用的软件，但是如果我们希望有更多的软件，就需要筹集资金。</p>
+<p>自由软件开发者自从八十年代尝试过许多寻求财源的方法，稍有小成。我们不需要让任何人致富，典型的收入，足以吸引人做很多比编程少满足感的工作。</p>
+<p>多年以来，我一直靠改进自己编写的自由软件为生，直到获得研究经费。每次改进我都会添加到标準发佈版本，使得大众受益。客户为我付费，这样我就会优先完成他们需求，自己的变成次要。</p>
+<p>一些自由软件开发者通过支援服务赚钱。1994年，Cygnus 有近50个员工，估计有大约百分之十五的员工从事自由软件开发︰对一间软件公司而言，这是个了不起的比例。</p>
+<p>九十年代，Intel、Motorola、Texas Instruments 和 Analog Devices 等公司联合赞助持续发展的GNU C语言编译器。现在大部份开发GCC的人工作还是受薪的开发者完成的。GNU的Ada语言编译器受美国空军赞助，之后成立专属公司延续过个项目。</p>
+<p>自由软件运动的规模还是很小，但是靠听众支持的美国电台的例子说明，不用强迫每个用户付费也可以支撑一个巨大的活动。</p>
+<p>今天如果你发现用了专有软件。如果你的朋友问你复制一份，拒绝是不对的。合作比版权更重要。私下传播也不能建立健康的社会。人应当自豪的向往开放而正直的生活，这就意味著应该对专有软件说「不」。</p>
+<p>你应该能与其他软件使用者开放、自由地合作，能够学习软件如何运作，并教导学生，能够在软件出问题时请中意的程序员修复它。</p>
+<p><strong>欢迎来到自由软件的世界。</strong></p>
+<p><strong>参考</strong>
+<a href="http://www.gnu.org/philosophy/why-free.html" target="_blank" rel="noopener">http://www.gnu.org/philosophy/why-free.html</a></p>
+]]></content>
+      <categories>
+        <category>技术阅读</category>
+      </categories>
+      <tags>
+        <tag>开源</tag>
+        <tag>gnu</tag>
+        <tag>linux</tag>
+        <tag>os</tag>
       </tags>
   </entry>
   <entry>
@@ -1850,25 +2097,6 @@ nbextensions的教程<a href="https://jupyter-contrib-nbextensions.readthedocs.i
       </tags>
   </entry>
   <entry>
-    <title>希腊罗马神话</title>
-    <url>/public/2018/11/05/readings/Gods_stories/</url>
-    <content><![CDATA[<p><strong>前言</strong></p>
-<p>在我电的图书馆的还书柜子里面偶然所得，一本叫《希腊罗马神话对英语语言文化的影响》吕海平 著 江苏大学初版社，然后莫名的想研究一下，发现挺不错的。</p>
-<a id="more"></a>
-<p>古希腊罗马的神的关系还是比较乱的，尤其是jupiter 或者zeus的奥林匹斯神系。从上古的神系，总共有三代。</p>
-<p>网上有个人（<a href="http://www.veritablehokum.com/" target="_blank" rel="noopener">Korwin Briggs</a>）做的关系图很不错。</p>
-<p>TODO:后面我也会对其进行整理，以后给大家分享。</p>
-<p><img src="http://www.veritablehokum.com/wp-content/uploads/2018/08/Roman-God-Family-Tree.jpg" alt></p>
-]]></content>
-      <categories>
-        <category>读书笔记</category>
-      </categories>
-      <tags>
-        <tag>希腊罗马神话</tag>
-        <tag>语言文化</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>红楼梦与我</title>
     <url>/public/2017/05/14/readings/hongloumeng/</url>
     <content><![CDATA[<p>红楼梦是我国四大名著之一，主要内容是贾府的兴衰和宝黛的悲剧爱情。电视剧红楼梦2010版，我是从八月开始看的，看完到现在，也有小一个月了。在网上大家对这版电视剧褒贬不一。与我来说，我是喜欢这部剧的，不能说拍得很好，但这部剧却勾起了我读书与写字的兴趣。于是乎，做了一篇随笔，以记录我的一些感触。</p>
@@ -2085,6 +2313,25 @@ nbextensions的教程<a href="https://jupyter-contrib-nbextensions.readthedocs.i
       <tags>
         <tag>重庆</tag>
         <tag>游记</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>希腊罗马神话</title>
+    <url>/public/2018/11/05/readings/Gods_stories/</url>
+    <content><![CDATA[<p><strong>前言</strong></p>
+<p>在我电的图书馆的还书柜子里面偶然所得，一本叫《希腊罗马神话对英语语言文化的影响》吕海平 著 江苏大学初版社，然后莫名的想研究一下，发现挺不错的。</p>
+<a id="more"></a>
+<p>古希腊罗马的神的关系还是比较乱的，尤其是jupiter 或者zeus的奥林匹斯神系。从上古的神系，总共有三代。</p>
+<p>网上有个人（<a href="http://www.veritablehokum.com/" target="_blank" rel="noopener">Korwin Briggs</a>）做的关系图很不错。</p>
+<p>TODO:后面我也会对其进行整理，以后给大家分享。</p>
+<p><img src="http://www.veritablehokum.com/wp-content/uploads/2018/08/Roman-God-Family-Tree.jpg" alt></p>
+]]></content>
+      <categories>
+        <category>读书笔记</category>
+      </categories>
+      <tags>
+        <tag>希腊罗马神话</tag>
+        <tag>语言文化</tag>
       </tags>
   </entry>
   <entry>
