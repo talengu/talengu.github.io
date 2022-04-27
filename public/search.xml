@@ -263,6 +263,193 @@ Thank you !!!</p>
       </tags>
   </entry>
   <entry>
+    <title>二零年RSS杂谈</title>
+    <url>/public/2022/01/14/rss_talk2020/</url>
+    <content><![CDATA[<p>2020年了，笔者还是使用RSS的原始人。RSS，Really Simple Syndication是一种信息聚合工具。在5G时代信息即将大爆炸之前，我来谈谈rss的杂七杂八吧。我们来打个赌，你不会看完这篇文章。</p>
+<a id="more"></a>
+<p>软件的交互设计有很多心理学理论的应用。比如微信、QQ的三级页面设计，一般经过3次点击就能到达功能或设置。这符合认知原理，人认知记忆能力一般为3-5个的组合。日常生活中要记电话号码，可以3-4-4这样记。软件交互中还有利用人的习惯奖励机制的提醒红点的设计，吸引你去点击，获取红点消失的奖励。对我来说，较难控制住不受这些设计的影响。在《习惯的力量》一书了解到，直接逃离这些环境可有效解决控制不住的问题。比如工作的时候，把手机关进柜子，工作1个小时，然后再回复信息，当然重要电话还是要立即接的。</p>
+<p>铺天盖地的广告，马路上，电视中，手机里，PC页面充斥着各种广告等等。大多数人可能养成了自动过滤的广告的习惯，然而我的情况是一直在用去广告的插件，并没有养成自动忽略广告的习惯。可怜兮兮，难道只有我是有广告洁癖的嘛？广告有点浪费生命。</p>
+<p>我饱受广告的困扰。web的去广告方法，我可使用某款chrome插件可以将web界面上的小红点，推荐信息模块全部屏蔽掉的。哪里不看点哪里，贼方便。</p>
+<p>移动端的广告去掉太难了，我一生气卸载了知乎 b站等等应用，终于有了一个清爽的手机。</p>
+<p>那我还是想获取一些新的内容，根据二八定律，是有20%的网络资料包含了80%的信息，也就是干货，也可能被我这种操作忽略掉了，那一套RSS应用体系应运而生。</p>
+<p>谈谈推荐算法，知乎推荐的都是啥呀，程序员都懂的，把我一个屌丝的形象勾勒的这么明显。于是我回答问题，人在美国，刚下飞机，年薪百万，老婆在旁？</p>
+<p>很多人会说，RSS一定会获取到有用的信息吗，这取决于信息源的可靠程度。也就是需要你自己去选择，由于它是不含推荐算法的，就不会根据你选择的，再给你推荐一些可能是非常有用的。</p>
+<p>再谈谈知识焦虑，每天觉得有大量知识需要吸收。大家都明白mark了也并不会看的，但还是mark很多，但你并不会有时间或者精力去看。既然不会看，那就不mark了，用到啥学啥，或许是个不错的策略。那RSS的即时性还是不错的，最好能当天把信息清理一下，star一些当前重要的东西，然后一周整理一下，像阮一峰老师。吸收完，把它输出出去，与人交流，给人讲明白，能够记得更深。（费曼学习法，把自己当成老师）。</p>
+<p>让我们再回到RSS，RSS是个淘汰的东西，和微信的公众号的形式有点像。然后倒霉的我又在微信的公众号上难以自拔，常常花很多时间在这上面。推荐算法厉害呀，就是让你看得爽。自我节制太难，那就改变环境。于是，我去掉了很多公众号，保留一些本地生活工作的公众号，微信上专注与朋友们侃大山。</p>
+<p>还有一点难受是，各个平台，相互串在一起，在这个地方看了，在其他地方又换了一个马甲它继续晃悠在眼前。信息源在多平台发布，然后信息重叠。</p>
+<p>看来all in one 势在必行，RSS被谷歌放弃后，很多网站傲娇地不提供RSS服务了，毕竟流量至上，钱要赚的，我一直想做一个这种爬的工具，但我不希望有大量使用爬，也就是我们还是要尊重网站的盈利以及持续发展的，这也是仅仅方便个人的信息处理，优化你的自动信息的处理，再也不用一个个打开网站，然后看信息看广告，还要被推荐不重用的信息。这也算我个人的想法。人在于折腾，于是我开始折腾ttrss rsshub等开源软件。</p>
+<p>自由软件的好处，在于自由定制，参与发展，利益化会尽量变慢或者没有，方便的同时并不忘隐私保护。</p>
+<p>我想说的是，<strong>技术应当给人们带来自由和发展，而非接管人们的注意力，浪费宝贵的时间。</strong></p>
+<p>写在5G信息大爆发前，与大家共同反思与成长。</p>
+]]></content>
+      <categories>
+        <category>杂谈</category>
+        <category>工具</category>
+      </categories>
+      <tags>
+        <tag>RSS</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>博客模版</title>
+    <url>/public/2019/07/25/template/</url>
+    <content><![CDATA[<p><strong>前言</strong></p>
+<p>前言主要说明文章的写作意图，概要介绍文中涉及的背景、主要内容、与其他文章关系等。对于长文，这个部分可以写摘要。</p>
+<p>本文为Hexo博客模版文件，以Markdown语言书写。<a href="#%E9%99%84%EF%BC%9Amarkdown%E8%AF%AD%E6%B3%95">模版markdown语法</a></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">前言一般放到主页，可利用 &lt;!-- more --&gt; 隔断。</span><br></pre></td></tr></table></figure>
+<a id="more"></a>
+<h2 id="构思与起草"><a class="header-anchor" href="#构思与起草">¶</a>构思与起草</h2>
+<ul>
+<li>对文章的阅读群体、写作意图和反馈（Audience Intention Response AIR）要有一个清楚的认识。照顾沟通对象的需要、你的意图（信息）以及希望的反馈。</li>
+<li>在思维导图上，放上你需要的关键名词，然后依次在它基础上添加动词，在加上形容词。最后以一定顺序组织你将要阐述的信息。比如重要性排序，对比优势劣势，方案的不同层面，时间上逻辑上的因果性等等。</li>
+</ul>
+<h2 id="主体内容"><a class="header-anchor" href="#主体内容">¶</a>主体内容</h2>
+<p>文章的主要内容，包括你对跟进过程或发现成果的描述，以数据、事实证据以及其他的信息支撑主要内容。在你的论说中，你应该把对客观事实的描述和写作者对事情的主管阐述区分开来。</p>
+<p>当你在报告中对一个观点进行陈述的时候，你需要记住以下几点：</p>
+<ul>
+<li>清晰的呈现事实</li>
+<li>有逻辑地提出论据</li>
+<li>引用相关的语录、简明易懂的事实和例子来支持你的论点</li>
+<li>给出支持或反对该行为的理由</li>
+<li>始终围绕主要观点进行讨论</li>
+<li>处理好重要的假设关系</li>
+<li>区分说明（具体阐述）和论证（有理有据）</li>
+</ul>
+<h2 id="写作检查"><a class="header-anchor" href="#写作检查">¶</a>写作检查</h2>
+<p>主体内容完成后，要进行写作检查。</p>
+<ul>
+<li>保证信息的准确性，时间地点等信息的准确。</li>
+<li>确保语法规范性</li>
+<li>段落写作
+<ul>
+<li>主题句，核心思想</li>
+<li>使用关联词，但勿滥
+<ul>
+<li>表示转折：虽然，尽管，但是，相反的是，另一方面</li>
+<li>对已阐述观点的强调：此外，与此同时，除此以外，再补充一点</li>
+<li>阐述结果：结果是，相应的结果是，因此</li>
+</ul>
+</li>
+<li>简单的句子 15-25</li>
+</ul>
+</li>
+<li>精心选择词语
+<ul>
+<li>同一个意思，换一下说法</li>
+<li>少用名词，多用动词。我们想用名词表达意思，采用动名组合，或者一个意群搭配上动词会更有力。</li>
+<li>多用主动动词，少用被动动词</li>
+</ul>
+</li>
+<li>核对标点符号，逗号，与分号。英文的话，检查一下拼写</li>
+<li>注意行为的语气</li>
+<li>保持连贯性，使用一种统一的方式表达。</li>
+</ul>
+<h2 id="总结"><a class="header-anchor" href="#总结">¶</a>总结</h2>
+<p>一个清晰的总结应该概括全部论点。</p>
+<h2 id="其他"><a class="header-anchor" href="#其他">¶</a>其他</h2>
+<ul>
+<li>逻辑清楚，达情切意<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup>。准备看一些基础的逻辑学。</li>
+<li>写完要读两遍，修改错别字，标点，语序连接等等。</li>
+<li>修改可以反着读，正着读对熟悉的材料会有一种连贯性忽略掉错误或者不顺的地方。</li>
+</ul>
+<h2 id="附：markdown语法"><a class="header-anchor" href="#附：markdown语法">¶</a>附：markdown语法</h2>
+<h3 id="head"><a class="header-anchor" href="#head">¶</a>head</h3>
+<p>文件head，设置标题、日期、分类、标签、评论、版权、是否使用公式，如下。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">---</span><br><span class="line">title: 模版文件</span><br><span class="line">date: 2019-07-25 12:00:00</span><br><span class="line">updated: 2019-07-25 12:00:00</span><br><span class="line">categories:</span><br><span class="line">  - 博客搭建</span><br><span class="line">  - 模版文件</span><br><span class="line">tags:</span><br><span class="line">  - Writing</span><br><span class="line">comments: true</span><br><span class="line">copyright: true</span><br><span class="line">math: true</span><br><span class="line">---</span><br></pre></td></tr></table></figure>
+<h3 id="图"><a class="header-anchor" href="#图">¶</a>图</h3>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"># 使用标准markdown</span><br><span class="line">![GDP](http://www.stats.gov.cn/tjsj/zxfb/202002/W020200228491461098230_r75.png)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"># 使用html</span><br><span class="line"><span class="tag">&lt;<span class="name">center</span>&gt;</span><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">"http://www.stats.gov.cn/tjsj/zxfb/202002/W020200228491461098230_r75.png"</span> <span class="attr">width</span>=<span class="string">"60%"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span>&gt;</span> 图1 2019年国内生产总值及其增速度<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">center</span>&gt;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"># 白色图片用table提供辨识度</span><br><span class="line"><span class="tag">&lt;<span class="name">table</span>&gt;</span><span class="tag">&lt;<span class="name">tr</span>&gt;</span><span class="tag">&lt;<span class="name">td</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">center</span>&gt;</span><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">"http://www.stats.gov.cn/tjsj/zxfb/202002/W020200228491461098230_r75.png"</span> <span class="attr">width</span>=<span class="string">"60%"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span>&gt;</span> 图1 2019年国内生产总值及其增速度<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">center</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">td</span>&gt;</span><span class="tag">&lt;<span class="name">tr</span>&gt;</span><span class="tag">&lt;/<span class="name">table</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>这两行代码生成下面的图和标题。</p>
+<center><img src="http://www.stats.gov.cn/tjsj/zxfb/202002/W020200228491461098230_r75.png" width="60%">
+</center>
+<p>图 1 展示的是2015-2019年的GDP和增长速度<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup>，直方图数据反应国内生产总值在2015-2019年度均平稳增长。</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">table</span>&gt;</span><span class="tag">&lt;<span class="name">tr</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">td</span>&gt;</span><span class="tag">&lt;<span class="name">center</span>&gt;</span><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">"http://www.stats.gov.cn/tjsj/zxfb/202002/W020200228491461098230_r75.png"</span>&gt;</span>图1     <span class="tag">&lt;/<span class="name">center</span>&gt;</span><span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">td</span>&gt;</span><span class="tag">&lt;<span class="name">center</span>&gt;</span><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">"http://www.stats.gov.cn/tjsj/zxfb/202002/W020200228491461098230_r75.png"</span>&gt;</span>图2 <span class="tag">&lt;/<span class="name">center</span>&gt;</span><span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">tr</span>&gt;</span><span class="tag">&lt;/<span class="name">table</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<table><tr>
+<td><center><img src="http://www.stats.gov.cn/tjsj/zxfb/202002/W020200228491461098230_r75.png">图1     </center></td>
+<td><center><img src="http://www.stats.gov.cn/tjsj/zxfb/202002/W020200228491461098230_r75.png">图2 </center></td>
+</tr></table>
+<h3 id="表"><a class="header-anchor" href="#表">¶</a>表</h3>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;div align=&apos;center&apos;&gt; 表1 2018年年末人口数及其构成&lt;/div&gt;</span><br><span class="line"></span><br><span class="line">| 指标       | 年末数（万人） | 比重（%） |</span><br><span class="line">| ---------- | -------------- | --------- |</span><br><span class="line">| 全国总人口 | 139538         | 100.0     |</span><br><span class="line">| 其中：城镇 | 83137          | 59.58     |</span><br><span class="line">| 乡村       | 56401          | 40.42     |</span><br></pre></td></tr></table></figure>
+<p>这两行代码生成下面的表和标题。</p>
+<div align="center">表1 2018年年末人口数及其构成</div>
+<table>
+<thead>
+<tr>
+<th>指标</th>
+<th>年末数（万人）</th>
+<th>比重（%）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>全国总人口</td>
+<td>139538</td>
+<td>100.0</td>
+</tr>
+<tr>
+<td>城镇</td>
+<td>83137</td>
+<td>59.58</td>
+</tr>
+<tr>
+<td>乡村</td>
+<td>56401</td>
+<td>40.42</td>
+</tr>
+</tbody>
+</table>
+<p>从表1得出2018年年末，城镇人口占总人口的59.58%，乡村人口占总人口的40.42%，城镇人口已大比例超过乡村人口。</p>
+<h3 id="公式"><a class="header-anchor" href="#公式">¶</a>公式</h3>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$$</span><br><span class="line">f=w_1 x_1 + w_2 x_2</span><br><span class="line">\tag&#123;1&#125;</span><br><span class="line">$$</span><br></pre></td></tr></table></figure>
+<p>在Markdown中可用Tex代码渲染数学公式，渲染效果为公式（1）。如图2，Tex公式可以在<a href="http://latex.codecogs.com/eqneditor/editor.php" target="_blank" rel="noopener">Latex编辑器网站</a> 可视化编写
+$$
+f=w_1 x_1 + w_2 x_2
+\tag{1}
+$$</p>
+<center><img src="https://img-blog.csdnimg.cn/20200425095309901.png" width="60%">
+<div> 图2 Latex在线编辑器</div>
+</center>
+<h3 id="定理证明"><a class="header-anchor" href="#定理证明">¶</a>定理证明</h3>
+<p><strong>定理 3.1</strong> 如果时域混合场积分方程是时域电场积分方程与时域磁场积分方程的线性组合……</p>
+<p><strong>证明：</strong></p>
+<p>首先，由于 ……</p>
+<p>……</p>
+<p>根据 ……，结论得证。                        ■</p>
+<h3 id="参考"><a class="header-anchor" href="#参考">¶</a>参考</h3>
+<p>参考的分类：</p>
+<ul>
+<li>链接直接在原文中给出。</li>
+<li>引用他人文章中的段落或者意识给出引用的链接。</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">---</span><br><span class="line">**参考**</span><br><span class="line"></span><br><span class="line">[^statics_report_2019]: 国家统计局 [2019年国民经济和社会发展统计公报](http://www.stats.gov.cn/tjsj/zxfb/202002/t20200228_1728913.html) 2020-02-28</span><br><span class="line"></span><br><span class="line">[^hetang]: 朱自清《荷塘清韵》北京大学出版社  2010-1</span><br></pre></td></tr></table></figure>
+<h3 id="添加iframes"><a class="header-anchor" href="#添加iframes">¶</a>添加iframes</h3>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!-- &#123;&#125;替换为视频id，同时去掉&#123;&#125; --&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- 小破站 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">iframe</span> <span class="attr">src</span>=<span class="string">"https://player.bilibili.com/player.html?bvid=&#123;&#125;"</span> <span class="attr">width</span>=<span class="string">"640"</span> <span class="attr">height</span>=<span class="string">"430"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">iframe</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- 腾讯视频 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">iframe</span> <span class="attr">src</span>=<span class="string">"http://v.qq.com/iframe/player.html?vid=&#123;&#125;"</span> <span class="attr">width</span>=<span class="string">"640"</span> <span class="attr">height</span>=<span class="string">"430"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">iframe</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- 优酷视频 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">iframe</span>  <span class="attr">src</span>=<span class="string">'https://player.youku.com/embed/&#123;&#125;'</span> <span class="attr">width</span>=<span class="string">"640"</span> <span class="attr">height</span>=<span class="string">"430"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">iframe</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- PDF --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">iframe</span>  <span class="attr">src</span>=<span class="string">'https://arxiv.org/pdf/1406.2661.pdf'</span> <span class="attr">width</span>=<span class="string">"800"</span> <span class="attr">height</span>=<span class="string">"450"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">iframe</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- HTML --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">iframe</span>  <span class="attr">src</span>=<span class="string">'https://www.sohu.com/a/287817933_100118081'</span> <span class="attr">width</span>=<span class="string">"800"</span> <span class="attr">height</span>=<span class="string">"450"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">iframe</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<iframe src="https://player.bilibili.com/player.html?bvid=BV1Wb411v7WN" width="640" height="430">
+</iframe>
+<iframe src="https://v.qq.com/txp/iframe/player.html?vid=u0951gpf8u2" width="640" height="430"></iframe>
+<p>TODO:
+markdown 空格</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&amp;emsp;&amp;emsp;</span><br></pre></td></tr></table></figure>
+<hr>
+<p><strong>参考</strong></p>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p>朱自清《荷塘清韵》北京大学出版社  2010-1 <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn2" class="footnote-item"><p>国家统计局 <a href="http://www.stats.gov.cn/tjsj/zxfb/202002/t20200228_1728913.html" target="_blank" rel="noopener">2019年国民经济和社会发展统计公报</a> 2020-02-28 <a href="#fnref2" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
+]]></content>
+      <categories>
+        <category>博客搭建</category>
+      </categories>
+      <tags>
+        <tag>工具</tag>
+        <tag>博客模版</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>【转】在 C/C++ 程序中打印当前函数调用栈</title>
     <url>/public/2021/08/25/c_debug/</url>
     <content><![CDATA[<p><strong>背景</strong></p>
@@ -621,193 +808,6 @@ Thank you !!!</p>
       </tags>
   </entry>
   <entry>
-    <title>二零年RSS杂谈</title>
-    <url>/public/2022/01/14/rss_talk2020/</url>
-    <content><![CDATA[<p>2020年了，笔者还是使用RSS的原始人。RSS，Really Simple Syndication是一种信息聚合工具。在5G时代信息即将大爆炸之前，我来谈谈rss的杂七杂八吧。我们来打个赌，你不会看完这篇文章。</p>
-<a id="more"></a>
-<p>软件的交互设计有很多心理学理论的应用。比如微信、QQ的三级页面设计，一般经过3次点击就能到达功能或设置。这符合认知原理，人认知记忆能力一般为3-5个的组合。日常生活中要记电话号码，可以3-4-4这样记。软件交互中还有利用人的习惯奖励机制的提醒红点的设计，吸引你去点击，获取红点消失的奖励。对我来说，较难控制住不受这些设计的影响。在《习惯的力量》一书了解到，直接逃离这些环境可有效解决控制不住的问题。比如工作的时候，把手机关进柜子，工作1个小时，然后再回复信息，当然重要电话还是要立即接的。</p>
-<p>铺天盖地的广告，马路上，电视中，手机里，PC页面充斥着各种广告等等。大多数人可能养成了自动过滤的广告的习惯，然而我的情况是一直在用去广告的插件，并没有养成自动忽略广告的习惯。可怜兮兮，难道只有我是有广告洁癖的嘛？广告有点浪费生命。</p>
-<p>我饱受广告的困扰。web的去广告方法，我可使用某款chrome插件可以将web界面上的小红点，推荐信息模块全部屏蔽掉的。哪里不看点哪里，贼方便。</p>
-<p>移动端的广告去掉太难了，我一生气卸载了知乎 b站等等应用，终于有了一个清爽的手机。</p>
-<p>那我还是想获取一些新的内容，根据二八定律，是有20%的网络资料包含了80%的信息，也就是干货，也可能被我这种操作忽略掉了，那一套RSS应用体系应运而生。</p>
-<p>谈谈推荐算法，知乎推荐的都是啥呀，程序员都懂的，把我一个屌丝的形象勾勒的这么明显。于是我回答问题，人在美国，刚下飞机，年薪百万，老婆在旁？</p>
-<p>很多人会说，RSS一定会获取到有用的信息吗，这取决于信息源的可靠程度。也就是需要你自己去选择，由于它是不含推荐算法的，就不会根据你选择的，再给你推荐一些可能是非常有用的。</p>
-<p>再谈谈知识焦虑，每天觉得有大量知识需要吸收。大家都明白mark了也并不会看的，但还是mark很多，但你并不会有时间或者精力去看。既然不会看，那就不mark了，用到啥学啥，或许是个不错的策略。那RSS的即时性还是不错的，最好能当天把信息清理一下，star一些当前重要的东西，然后一周整理一下，像阮一峰老师。吸收完，把它输出出去，与人交流，给人讲明白，能够记得更深。（费曼学习法，把自己当成老师）。</p>
-<p>让我们再回到RSS，RSS是个淘汰的东西，和微信的公众号的形式有点像。然后倒霉的我又在微信的公众号上难以自拔，常常花很多时间在这上面。推荐算法厉害呀，就是让你看得爽。自我节制太难，那就改变环境。于是，我去掉了很多公众号，保留一些本地生活工作的公众号，微信上专注与朋友们侃大山。</p>
-<p>还有一点难受是，各个平台，相互串在一起，在这个地方看了，在其他地方又换了一个马甲它继续晃悠在眼前。信息源在多平台发布，然后信息重叠。</p>
-<p>看来all in one 势在必行，RSS被谷歌放弃后，很多网站傲娇地不提供RSS服务了，毕竟流量至上，钱要赚的，我一直想做一个这种爬的工具，但我不希望有大量使用爬，也就是我们还是要尊重网站的盈利以及持续发展的，这也是仅仅方便个人的信息处理，优化你的自动信息的处理，再也不用一个个打开网站，然后看信息看广告，还要被推荐不重用的信息。这也算我个人的想法。人在于折腾，于是我开始折腾ttrss rsshub等开源软件。</p>
-<p>自由软件的好处，在于自由定制，参与发展，利益化会尽量变慢或者没有，方便的同时并不忘隐私保护。</p>
-<p>我想说的是，<strong>技术应当给人们带来自由和发展，而非接管人们的注意力，浪费宝贵的时间。</strong></p>
-<p>写在5G信息大爆发前，与大家共同反思与成长。</p>
-]]></content>
-      <categories>
-        <category>杂谈</category>
-        <category>工具</category>
-      </categories>
-      <tags>
-        <tag>RSS</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>博客模版</title>
-    <url>/public/2019/07/25/template/</url>
-    <content><![CDATA[<p><strong>前言</strong></p>
-<p>前言主要说明文章的写作意图，概要介绍文中涉及的背景、主要内容、与其他文章关系等。对于长文，这个部分可以写摘要。</p>
-<p>本文为Hexo博客模版文件，以Markdown语言书写。<a href="#%E9%99%84%EF%BC%9Amarkdown%E8%AF%AD%E6%B3%95">模版markdown语法</a></p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">前言一般放到主页，可利用 &lt;!-- more --&gt; 隔断。</span><br></pre></td></tr></table></figure>
-<a id="more"></a>
-<h2 id="构思与起草"><a class="header-anchor" href="#构思与起草">¶</a>构思与起草</h2>
-<ul>
-<li>对文章的阅读群体、写作意图和反馈（Audience Intention Response AIR）要有一个清楚的认识。照顾沟通对象的需要、你的意图（信息）以及希望的反馈。</li>
-<li>在思维导图上，放上你需要的关键名词，然后依次在它基础上添加动词，在加上形容词。最后以一定顺序组织你将要阐述的信息。比如重要性排序，对比优势劣势，方案的不同层面，时间上逻辑上的因果性等等。</li>
-</ul>
-<h2 id="主体内容"><a class="header-anchor" href="#主体内容">¶</a>主体内容</h2>
-<p>文章的主要内容，包括你对跟进过程或发现成果的描述，以数据、事实证据以及其他的信息支撑主要内容。在你的论说中，你应该把对客观事实的描述和写作者对事情的主管阐述区分开来。</p>
-<p>当你在报告中对一个观点进行陈述的时候，你需要记住以下几点：</p>
-<ul>
-<li>清晰的呈现事实</li>
-<li>有逻辑地提出论据</li>
-<li>引用相关的语录、简明易懂的事实和例子来支持你的论点</li>
-<li>给出支持或反对该行为的理由</li>
-<li>始终围绕主要观点进行讨论</li>
-<li>处理好重要的假设关系</li>
-<li>区分说明（具体阐述）和论证（有理有据）</li>
-</ul>
-<h2 id="写作检查"><a class="header-anchor" href="#写作检查">¶</a>写作检查</h2>
-<p>主体内容完成后，要进行写作检查。</p>
-<ul>
-<li>保证信息的准确性，时间地点等信息的准确。</li>
-<li>确保语法规范性</li>
-<li>段落写作
-<ul>
-<li>主题句，核心思想</li>
-<li>使用关联词，但勿滥
-<ul>
-<li>表示转折：虽然，尽管，但是，相反的是，另一方面</li>
-<li>对已阐述观点的强调：此外，与此同时，除此以外，再补充一点</li>
-<li>阐述结果：结果是，相应的结果是，因此</li>
-</ul>
-</li>
-<li>简单的句子 15-25</li>
-</ul>
-</li>
-<li>精心选择词语
-<ul>
-<li>同一个意思，换一下说法</li>
-<li>少用名词，多用动词。我们想用名词表达意思，采用动名组合，或者一个意群搭配上动词会更有力。</li>
-<li>多用主动动词，少用被动动词</li>
-</ul>
-</li>
-<li>核对标点符号，逗号，与分号。英文的话，检查一下拼写</li>
-<li>注意行为的语气</li>
-<li>保持连贯性，使用一种统一的方式表达。</li>
-</ul>
-<h2 id="总结"><a class="header-anchor" href="#总结">¶</a>总结</h2>
-<p>一个清晰的总结应该概括全部论点。</p>
-<h2 id="其他"><a class="header-anchor" href="#其他">¶</a>其他</h2>
-<ul>
-<li>逻辑清楚，达情切意<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup>。准备看一些基础的逻辑学。</li>
-<li>写完要读两遍，修改错别字，标点，语序连接等等。</li>
-<li>修改可以反着读，正着读对熟悉的材料会有一种连贯性忽略掉错误或者不顺的地方。</li>
-</ul>
-<h2 id="附：markdown语法"><a class="header-anchor" href="#附：markdown语法">¶</a>附：markdown语法</h2>
-<h3 id="head"><a class="header-anchor" href="#head">¶</a>head</h3>
-<p>文件head，设置标题、日期、分类、标签、评论、版权、是否使用公式，如下。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">---</span><br><span class="line">title: 模版文件</span><br><span class="line">date: 2019-07-25 12:00:00</span><br><span class="line">updated: 2019-07-25 12:00:00</span><br><span class="line">categories:</span><br><span class="line">  - 博客搭建</span><br><span class="line">  - 模版文件</span><br><span class="line">tags:</span><br><span class="line">  - Writing</span><br><span class="line">comments: true</span><br><span class="line">copyright: true</span><br><span class="line">math: true</span><br><span class="line">---</span><br></pre></td></tr></table></figure>
-<h3 id="图"><a class="header-anchor" href="#图">¶</a>图</h3>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"># 使用标准markdown</span><br><span class="line">![GDP](http://www.stats.gov.cn/tjsj/zxfb/202002/W020200228491461098230_r75.png)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"># 使用html</span><br><span class="line"><span class="tag">&lt;<span class="name">center</span>&gt;</span><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">"http://www.stats.gov.cn/tjsj/zxfb/202002/W020200228491461098230_r75.png"</span> <span class="attr">width</span>=<span class="string">"60%"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span>&gt;</span> 图1 2019年国内生产总值及其增速度<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">center</span>&gt;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"># 白色图片用table提供辨识度</span><br><span class="line"><span class="tag">&lt;<span class="name">table</span>&gt;</span><span class="tag">&lt;<span class="name">tr</span>&gt;</span><span class="tag">&lt;<span class="name">td</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">center</span>&gt;</span><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">"http://www.stats.gov.cn/tjsj/zxfb/202002/W020200228491461098230_r75.png"</span> <span class="attr">width</span>=<span class="string">"60%"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span>&gt;</span> 图1 2019年国内生产总值及其增速度<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">center</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">td</span>&gt;</span><span class="tag">&lt;<span class="name">tr</span>&gt;</span><span class="tag">&lt;/<span class="name">table</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p>这两行代码生成下面的图和标题。</p>
-<center><img src="http://www.stats.gov.cn/tjsj/zxfb/202002/W020200228491461098230_r75.png" width="60%">
-</center>
-<p>图 1 展示的是2015-2019年的GDP和增长速度<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup>，直方图数据反应国内生产总值在2015-2019年度均平稳增长。</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">table</span>&gt;</span><span class="tag">&lt;<span class="name">tr</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">td</span>&gt;</span><span class="tag">&lt;<span class="name">center</span>&gt;</span><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">"http://www.stats.gov.cn/tjsj/zxfb/202002/W020200228491461098230_r75.png"</span>&gt;</span>图1     <span class="tag">&lt;/<span class="name">center</span>&gt;</span><span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">td</span>&gt;</span><span class="tag">&lt;<span class="name">center</span>&gt;</span><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">"http://www.stats.gov.cn/tjsj/zxfb/202002/W020200228491461098230_r75.png"</span>&gt;</span>图2 <span class="tag">&lt;/<span class="name">center</span>&gt;</span><span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">tr</span>&gt;</span><span class="tag">&lt;/<span class="name">table</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<table><tr>
-<td><center><img src="http://www.stats.gov.cn/tjsj/zxfb/202002/W020200228491461098230_r75.png">图1     </center></td>
-<td><center><img src="http://www.stats.gov.cn/tjsj/zxfb/202002/W020200228491461098230_r75.png">图2 </center></td>
-</tr></table>
-<h3 id="表"><a class="header-anchor" href="#表">¶</a>表</h3>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;div align=&apos;center&apos;&gt; 表1 2018年年末人口数及其构成&lt;/div&gt;</span><br><span class="line"></span><br><span class="line">| 指标       | 年末数（万人） | 比重（%） |</span><br><span class="line">| ---------- | -------------- | --------- |</span><br><span class="line">| 全国总人口 | 139538         | 100.0     |</span><br><span class="line">| 其中：城镇 | 83137          | 59.58     |</span><br><span class="line">| 乡村       | 56401          | 40.42     |</span><br></pre></td></tr></table></figure>
-<p>这两行代码生成下面的表和标题。</p>
-<div align="center">表1 2018年年末人口数及其构成</div>
-<table>
-<thead>
-<tr>
-<th>指标</th>
-<th>年末数（万人）</th>
-<th>比重（%）</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>全国总人口</td>
-<td>139538</td>
-<td>100.0</td>
-</tr>
-<tr>
-<td>城镇</td>
-<td>83137</td>
-<td>59.58</td>
-</tr>
-<tr>
-<td>乡村</td>
-<td>56401</td>
-<td>40.42</td>
-</tr>
-</tbody>
-</table>
-<p>从表1得出2018年年末，城镇人口占总人口的59.58%，乡村人口占总人口的40.42%，城镇人口已大比例超过乡村人口。</p>
-<h3 id="公式"><a class="header-anchor" href="#公式">¶</a>公式</h3>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$$</span><br><span class="line">f=w_1 x_1 + w_2 x_2</span><br><span class="line">\tag&#123;1&#125;</span><br><span class="line">$$</span><br></pre></td></tr></table></figure>
-<p>在Markdown中可用Tex代码渲染数学公式，渲染效果为公式（1）。如图2，Tex公式可以在<a href="http://latex.codecogs.com/eqneditor/editor.php" target="_blank" rel="noopener">Latex编辑器网站</a> 可视化编写
-$$
-f=w_1 x_1 + w_2 x_2
-\tag{1}
-$$</p>
-<center><img src="https://img-blog.csdnimg.cn/20200425095309901.png" width="60%">
-<div> 图2 Latex在线编辑器</div>
-</center>
-<h3 id="定理证明"><a class="header-anchor" href="#定理证明">¶</a>定理证明</h3>
-<p><strong>定理 3.1</strong> 如果时域混合场积分方程是时域电场积分方程与时域磁场积分方程的线性组合……</p>
-<p><strong>证明：</strong></p>
-<p>首先，由于 ……</p>
-<p>……</p>
-<p>根据 ……，结论得证。                        ■</p>
-<h3 id="参考"><a class="header-anchor" href="#参考">¶</a>参考</h3>
-<p>参考的分类：</p>
-<ul>
-<li>链接直接在原文中给出。</li>
-<li>引用他人文章中的段落或者意识给出引用的链接。</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">---</span><br><span class="line">**参考**</span><br><span class="line"></span><br><span class="line">[^statics_report_2019]: 国家统计局 [2019年国民经济和社会发展统计公报](http://www.stats.gov.cn/tjsj/zxfb/202002/t20200228_1728913.html) 2020-02-28</span><br><span class="line"></span><br><span class="line">[^hetang]: 朱自清《荷塘清韵》北京大学出版社  2010-1</span><br></pre></td></tr></table></figure>
-<h3 id="添加iframes"><a class="header-anchor" href="#添加iframes">¶</a>添加iframes</h3>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!-- &#123;&#125;替换为视频id，同时去掉&#123;&#125; --&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- 小破站 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">iframe</span> <span class="attr">src</span>=<span class="string">"https://player.bilibili.com/player.html?bvid=&#123;&#125;"</span> <span class="attr">width</span>=<span class="string">"640"</span> <span class="attr">height</span>=<span class="string">"430"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">iframe</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- 腾讯视频 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">iframe</span> <span class="attr">src</span>=<span class="string">"http://v.qq.com/iframe/player.html?vid=&#123;&#125;"</span> <span class="attr">width</span>=<span class="string">"640"</span> <span class="attr">height</span>=<span class="string">"430"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">iframe</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- 优酷视频 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">iframe</span>  <span class="attr">src</span>=<span class="string">'https://player.youku.com/embed/&#123;&#125;'</span> <span class="attr">width</span>=<span class="string">"640"</span> <span class="attr">height</span>=<span class="string">"430"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">iframe</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- PDF --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">iframe</span>  <span class="attr">src</span>=<span class="string">'https://arxiv.org/pdf/1406.2661.pdf'</span> <span class="attr">width</span>=<span class="string">"800"</span> <span class="attr">height</span>=<span class="string">"450"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">iframe</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- HTML --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">iframe</span>  <span class="attr">src</span>=<span class="string">'https://www.sohu.com/a/287817933_100118081'</span> <span class="attr">width</span>=<span class="string">"800"</span> <span class="attr">height</span>=<span class="string">"450"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">iframe</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<iframe src="https://player.bilibili.com/player.html?bvid=BV1Wb411v7WN" width="640" height="430">
-</iframe>
-<iframe src="https://v.qq.com/txp/iframe/player.html?vid=u0951gpf8u2" width="640" height="430"></iframe>
-<p>TODO:
-markdown 空格</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&amp;emsp;&amp;emsp;</span><br></pre></td></tr></table></figure>
-<hr>
-<p><strong>参考</strong></p>
-<hr class="footnotes-sep">
-<section class="footnotes">
-<ol class="footnotes-list">
-<li id="fn1" class="footnote-item"><p>朱自清《荷塘清韵》北京大学出版社  2010-1 <a href="#fnref1" class="footnote-backref">↩︎</a></p>
-</li>
-<li id="fn2" class="footnote-item"><p>国家统计局 <a href="http://www.stats.gov.cn/tjsj/zxfb/202002/t20200228_1728913.html" target="_blank" rel="noopener">2019年国民经济和社会发展统计公报</a> 2020-02-28 <a href="#fnref2" class="footnote-backref">↩︎</a></p>
-</li>
-</ol>
-</section>
-]]></content>
-      <categories>
-        <category>博客搭建</category>
-      </categories>
-      <tags>
-        <tag>工具</tag>
-        <tag>博客模版</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>RSS跟踪github文件更新</title>
     <url>/public/2021/07/24/rss_github_file/</url>
     <content><![CDATA[<p><strong>前言</strong></p>
@@ -839,6 +839,7 @@ markdown 空格</p>
     <url>/public/2022/04/15/soft_run_time/</url>
     <content><![CDATA[<h2 id="背景"><a class="header-anchor" href="#背景">¶</a>背景</h2>
 <p>对关注性能的程序开发人员而言，一个好的计时部件既是益友，也是良师。计时器既可以作为程序组件帮助程序员精确的控制程序进程，又是一件有力的调试武器，在有经验的程序员手里可以尽快的确定程序的性能瓶颈，或者对不同的算法作出有说服力的性能比较。</p>
+<a id="more"></a>
 <p>在Windows平台下，常用的计时器有两种，一种是<code>timeGetTime</code>多媒体计时器，它可以提供毫秒级的计时。但这个精度对很多应用场合而言还是太粗糙了。另一种是<code>QueryPerformanceCount</code>计数器，随系统的不同可以提供微秒级的计数。对于实时图形处理、多媒体数据流处理、或者实时系统构造的程序员，善用<code>QueryPerformanceCount/QueryPerformanceFrequency</code>是一项基本功。</p>
 <p>本文要介绍的，是另一种直接利用<code>Pentium CPU</code>内部时间戳进行计时的高精度计时手段。以下讨论主要得益于<code>《Windows图形编程》</code>一书，第15页－17页，有兴趣的读者可以直接参考该书。关于RDTSC指令的详细讨论，可以参考Intel产品手册。本文仅仅作抛砖之用。</p>
 <p>在 <code>Intel Pentium</code>以上级别的CPU中，有一个称为“时间戳（Time   Stamp）”的部件，它以64位无符号整型数的格式，记录了自CPU上电以来所经过的时钟周期数。由于目前的CPU主频都非常高，因此这个部件可以达到纳秒级的计时精度。这个精确性是上述两种方法所无法比拟的。</p>
@@ -1277,6 +1278,322 @@ t   -=   (unsigned   long)GetCycleCount();</p>
       </tags>
   </entry>
   <entry>
+    <title>正则化【一】机器学习中的正则化</title>
+    <url>/public/2019/07/17/AI/regulation_baysian/</url>
+    <content><![CDATA[<p><strong>前言</strong>
+本<strong>正则化系列</strong>文章我们将讨论<strong>正则化技术在机器学习和深度学习的应用</strong>。本文为该系列的第一篇，主要介绍<strong>机器学习正则化的概念，原理和应用实例</strong>。</p>
+<p><a href="https://en.wikipedia.org/wiki/Regularization_(mathematics)" target="_blank" rel="noopener">正则化</a> 技术广泛应用在机器学习和深度学习算法中，本质作用是<strong>防止过拟合、提高模型泛化能力</strong>。其中过拟合的简单理解就是训练的算法模型太过复杂，模型过分考虑了当前样本的结构。</p>
+<p>在早期的机器学习领域一般只是将范数惩罚叫做正则化技术，而在深度学习领域认为，能够显著减少方差，而不过度增加偏差的策略都可以认为是正则化技术。故<strong>推广的正则化技术</strong>还有：扩增样本集、早停止、Dropout、集成学习、多任务学习、对抗训练、参数共享等。(具体见“花书 第七章 <a href="http://www.deeplearningbook.org/contents/regularization.html" target="_blank" rel="noopener">Regularization for Deep Learning</a>”），关于<strong>深度学习正则化</strong>会在下一篇正则化文章中重点分析。</p>
+<p>转载自：<a href="https://blog.csdn.net/BigData_Mining/article/details/81631249" target="_blank" rel="noopener">https://blog.csdn.net/BigData_Mining/article/details/81631249</a></p>
+<a id="more"></a>
+<h2 id="1-多角度看机器学习正则化"><a class="header-anchor" href="#1-多角度看机器学习正则化">¶</a>1. 多角度看机器学习正则化</h2>
+<p><strong>机器学习领域正则化</strong>可以从以下三个角度进行理解：</p>
+<p><strong>(1)</strong> <strong>正则化等价于结构风险最小化，其是通过在经验风险项后加上表示模型复杂度的正则化项或惩罚项，达到选择经验风险和模型复杂度都较小的模型目的</strong>。</p>
+<p>​	<strong>经验风险</strong>：机器学习中的风险是指模型与真实解之间的误差的积累，经验风险是指使用训练出来的模型进行预测或者分类，存在多大的误差，可以简单理解为训练误差，经验风险最小化即为训练误差最小。</p>
+<p>​	<strong>结构风险</strong>：结构风险定义为经验风险与置信风险(置信是指可信程度)的和，置信风险越大，模型推广能力越差。可以简单认为结构风险是经验风险后面多加了一项表示模型复杂度的函数项，从而可以同时控制模型训练误差和测试误差，结构风险最小化即为在保证模型分类精度(经验风险)的同时，降低模型复杂度，提高泛化能力。</p>
+<p>​	<strong>公式表达</strong>
+$$
+R(f)=\frac{1}{n}\sum_{i=1}^{n}L(y_i,f(x_i)) + \lambda \Omega (f)
+\tag{1}
+$$
+​		其中，$R(f)$表示结构风险，$L(y_i,f(x_i))$表示第 $i$ 个样本的经验风险，$\Omega(f)$是表征模型复杂度的正则项，$\lambda$ 是正则化参数。根据奥姆剃刀定律，“如无必要，勿增实体”，即认为相对简单的模型泛化能力更好。而模型泛化能力强、泛化误差小，即表示模型推广能力强，通俗理解就是在训练集中训练得到的优秀模型能够很好的适用于实际测试数据，而不仅仅是减少训练误差或者测试误差。泛化误差定义如下：
+$$
+E={Bias}^2(X) + {Var}(X) +{Noise}
+\tag{2}
+$$
+​		其中，$E$ 表示泛化误差，${Bias}$ 代表偏差，${Var}$ 代表方差， ${Noise}$ 代表噪声。</p>
+<p>​	<strong>关系图</strong></p>
+<p><img src="/public/2019/07/17/AI/regulation_baysian/1563350068097.png" alt="1563350068097"></p>
+<div align="center"> Fig 1. 泛化误差与偏差和方差的关系</div>
+​		从 Fig 1 可以看出，随着训练程度加深，模型复杂度会增加，偏差减少，方差增大，而泛化误差呈现U型变化。对于一个“好的系统”通常要求误差小，正则化的作用即为适当的控制模型复杂度，从而使得**泛化误差曲线**取最小值。
+<p><strong>(2)</strong> <strong>正则化等价于带约束的目标函数中的约束项</strong></p>
+<p>以平方误差损失和L2范数为例，优化问题的数学模型如下：
+$$
+J(\theta)=\sum_{i=1}^{n}(y_i-\theta^Tx_i)^2
+\tag{3}
+$$
+$$
+{s.t.}{|| \theta ||}_2^2 \leq C\<br>
+\tag{4}
+$$</p>
+<p>针对上述约束条件的优化问题，采用拉格朗日乘积算子法可以转化为无约束化问题，即
+$$
+J(\theta)=\sum_{i=1}^{n}(y_i-w^Tx_i)^2 + \lambda({|| \theta ||}_2^2-C)
+\tag{5}
+$$</p>
+<p>由于参数 $C$ 为常数，可以忽略，故上述公式和标准的正则化 公式完全一致。</p>
+<p><strong>(3)</strong> <strong>从贝叶斯角度考虑</strong></p>
+<p>正则项等价于引入参数的模型先验概率，可以简单理解为对最大似然估计引入先验概率，从而转化为最大后验估计，其中的先验概率即对于正则项（这部分内容后面详细讲解）。</p>
+<h2 id="2-基本概念"><a class="header-anchor" href="#2-基本概念">¶</a>2 基本概念</h2>
+<p>正则化也可以成为规则化、权重衰减技术，不同的领域叫法不一样，数学上常用范数实现，例如L1和L2范数，统计学领域叫做惩罚项、罚因子。</p>
+<p>下面给出范数的数学公式，方便以后分析：</p>
+<p>​	(1) $p$ 范数：
+$$
+Lp=(\sum_{i=1}^{n}{|| x_i ||}^p)^{\frac{1}{p}}
+\tag{6}
+$$
+​	(2) $L0$ 范数：0 范数表示向量中非零元素的个数（即为其稀疏度）</p>
+<p>​	(3) $L1$ 范数：即向量元素绝对值之和，$p$ 范数取1，即为1范数
+$$
+{||x||}_1=\sum^n_1 {|| x_i || }
+\tag{7}
+$$</p>
+<p>​	(4) $L2$ 范数：即向量元素绝对值的平方和再开发，也称欧几里得距离，$p$ 范数取2，即为2范数
+$$
+{||x||}_{2}=\sqrt{\sum^{n}_1|| x_i ||^2}
+\tag{8}
+$$</p>
+<p>​	(5) $\infty $ 范数：即所有向量元素的绝对值中的最大值，$p$ 范数取 $\infty $，即为 $\infty $ 范数
+$$
+{||x  ||}_{\infty }=\underset{i}{\max}{\left | x_i \right |}
+\tag{9}
+$$</p>
+<p>​	(6) $-\infty $ 范数：即所有向量元素绝对值中的最小值，$p$ 范数取$-\infty $，即为 $-\infty $ 范数
+$$
+{||x  ||}_{-\infty }=\underset{i}{\min}{\left | x_i \right |}
+\tag{10}
+$$
+<strong>图形描述</strong></p>
+<p>​		从 Fig 2、Fig 3 图可以看出：q(p)越小，曲线越贴近坐标轴，q(p)越大，曲线越远离坐标轴，并且棱角越明显，当q(p)取0时候，是完全和坐标轴贴合，当q(p)取无穷的时候，呈现正方体形状。同时也可以看出，采用不同的范数作为正则项，会得到完全不同的算法模型结果，故而对于不同要求的模型，应该采用不同的范数作为正则项。</p>
+<p><img src="/public/2019/07/17/AI/regulation_baysian/1563354053269.png" alt="1563354053269"></p>
+<div align="center"> Fig 2. 向量长度为2维的范数约束</div>
+![1563354456894](regulation_baysian/1563354456894.png)
+<div align="center"> Fig 3. 向量长度为3维的范数约束</div>
+## 3 深度理解
+<p>​		为了更好的理解正则化技术原理，下面从4个方面进行深度分析，希望对大家理解有帮助。</p>
+<h3 id="3-1-简单数值假设分析法"><a class="header-anchor" href="#3-1-简单数值假设分析法">¶</a>3.1 简单数值假设分析法</h3>
+<p>​		此处以L2范数讲解，下面的各图形来自吴恩达的机器学习课程。</p>
+<p><img src="/public/2019/07/17/AI/regulation_baysian/image-20190619002115576.png" alt="image-20190619002115576"></p>
+<div align="center"> Fig 4. 不同参数下的曲线拟合结果</div>
+​		左边的曲线拟合是欠拟合，中间的曲线拟合是刚好合适，右边的曲线拟合是过拟合。对于右边的拟合曲线，有
+$$
+h_{\theta}(x)={\theta}_0+{\theta}_0 x_1 +{\theta}_2 x_2^2 +{\theta}_3 x_3^3 +{\theta}_4 x_4^4
+\tag{11}
+$$
+​		从上式可以看出，由于$\theta_3$和$\theta_4$对应了高阶，导致拟合曲线是4阶曲线，出现了过拟合。正则化的目的为适当缩减$\theta_3$和$\theta_4$的值，例如都为0.0001，则上述曲线本质上等价与
+$$
+h_{\theta}(x)={\theta}_0 + {\theta}_1 x_1 +{\theta}_2 x_2^2
+\tag{12}
+$$
+​		也就是变成了中间的刚好合适的拟合曲线。对于$\theta_3$ 和$\theta_4$增加 L2 正则项后的代价函数表达式为：
+$$
+J(\theta)= \underset{\theta}{\min}\frac{1}{n}\sum_{i=1}^{n}((h_{\theta}(x_i)-y_i)+1000{\theta}_3^2 + 1000 {\theta}_4^2)
+\tag{13}
+$$
+​		从上式可以看出，$\theta_3^2$ 和 $\theta_4^2$ 均大于 0，其乘上了1000，要 $J(\theta)$ 是最小，则会迫使模型学习到的$\theta_3$ 和 $\theta_4$ 会非常小，因为只有在$\theta_3$ 和 $\theta_4$ 会非常小的情况下整个代价函数值才会取的较小值。在实际开发中，是对所有参数进行正则化，为了使代价函数尽可能的小，所有的参数 $\theta$ 的值（不包括 $\theta_0$）都会在一定程度上减小，但是减小程度会不一样，从而实现了权重衰减、简化模型复杂度的作用。
+<h3 id="3-2-图形分析法"><a class="header-anchor" href="#3-2-图形分析法">¶</a>3.2 图形分析法</h3>
+<p>​		此处采用L1和L2范数讲解：
+<strong>(1) L2 范数正则</strong>
+$$
+J(\beta)=\sum_{i=1}^{n}(y_i-{\beta}^T x_i)^2 + \lambda {|| {\beta} ||}_2^2
+\tag{14}
+$$
+<img src="/public/2019/07/17/AI/regulation_baysian/1563366078400.png" alt="1563366078400"></p>
+<div align="center"> Fig 5. L2 范数与代价函数的寻优图示</div>
+​		在 Fig 5 中，蓝色的圆形空间表示 L2 范数空间，设为 $\beta_1^2 + \beta_2^2 = r^2$，可以看出，当 $r$ 从 0 逐渐增大时候，该圆形也逐渐增大，红色的线表示原始代价函数解空间即 $\sum_{i=1}^{n}(y_i-\beta^T x_i)^2$，此处为了方便绘图，设参数只有2维。红色圆环上的任何一点都表示一个可行解即代表一组$\beta_1$、$\beta_2$，其中任何一个红色圆环上面的$\beta_1$，$\beta_2$对应的代价函数值一样（可以简单理解为等值线），$\hat{\beta}$ 代表最佳解空间。
+<h2 id="4-贝叶斯角度分析"><a class="header-anchor" href="#4-贝叶斯角度分析">¶</a>4. 贝叶斯角度分析</h2>
+<p>​		以L1和L2范数为例，所得结论可以推广到P范数中，首先需要知道：整个最优化问题从贝叶斯观点来看是一种贝叶斯最大后验估计，其中正则化项对应后验估计中的先验信息，损失函数对应后验估计中的似然函数，两者的乘积即对应贝叶斯最大后验估计的形式。针对L1和L2范数还有结论：<strong>L2 范数相当于给模型参数设置一个协方差为1/alpha的零均值高斯先验分布，L1 范数相当于给模型参数 设置一个参数为1/alpha 拉普拉斯先验分布</strong>。</p>
+<p>​		为了讲清楚上述结论，需要具备几点前置知识点：(1) 高斯分布和拉普拉斯分布的定义和形状；(2) 贝叶斯定理；(3) 最大似然估计；(4) 最大后验估计。下面我对这4个知识点进行解释。</p>
+<p><strong>(1)</strong> <strong>高斯分布和拉普拉斯分布</strong></p>
+<p><img src="/public/2019/07/17/AI/regulation_baysian/0.png" alt="0?wx_fmt=png"></p>
+<p><img src="/public/2019/07/17/AI/regulation_baysian/0-20190610163845194.png" alt="0?wx_fmt=png"></p>
+<p><strong>(2)</strong> <strong>最大似然估计</strong></p>
+<p><img src="/public/2019/07/17/AI/regulation_baysian/0-20190610163845276.png" alt="0?wx_fmt=png"></p>
+<p>​		如果上述公式不能理解，请各位读者去复习一下大学课程《概率论与数理统计》中的参数估计章节，为了更方便理解，下面举一个例子：假设我要统计出整个大学内所有同学的身高分布情况，设全校一共20000人，数量庞大，所有人都去问一遍不太靠谱，所以我打算采用抽样方法来估计，假设我已经知道身高分布服从高斯分布，但是我不知道高斯分布中的均值和方差参数，现在我打算采用最大似然估计方法来确定这两个参数。首先需要明确，全校20000即为总体X，我随机从各个班抽取10名同学，假设一共抽了2000个同学，那么2000同学就构成了样本空间，由于每个样本的概率密度函数已知，则很容易写出似然函数，对数求导即可求解参数。</p>
+<p><strong>(3)</strong> <strong>最大后验估计</strong></p>
+<p><img src="/public/2019/07/17/AI/regulation_baysian/0-20190610163845259.png" alt="0?wx_fmt=png"></p>
+<p><img src="/public/2019/07/17/AI/regulation_baysian/0-20190610163845297.png" alt="0?wx_fmt=png"></p>
+<p><img src="/public/2019/07/17/AI/regulation_baysian/0-20190610163845289.png" alt="0?wx_fmt=png"></p>
+<h2 id="5-例子"><a class="header-anchor" href="#5-例子">¶</a>5. 例子</h2>
+<h3 id="5-1-逻辑回归"><a class="header-anchor" href="#5-1-逻辑回归">¶</a>5.1 逻辑回归</h3>
+<p>​		二分类逻辑回归使用Sigmoid作为决策函数进行分类，该函数可以将任意的输入映射到[0,1]区间，当预测结果小于0.5，则表示负类，当预测结果大于0.5.则表示正类，其模型本质是求最大似然估计，具体求解似然函数通常使用梯度下降法，而前面说过：最大似然估计法没有考虑训练集以外的因素，很容易造成过拟合，故而逻辑回归一般采用L2范数进行正则化操作，Sigmoid函数定义和图形如下：</p>
+<p><img src="/public/2019/07/17/AI/regulation_baysian/0.jpeg" alt="0?wx_fmt=png"></p>
+<h3 id="5-2-岭回归-Ridge-Regression"><a class="header-anchor" href="#5-2-岭回归-Ridge-Regression">¶</a>5.2 岭回归(Ridge Regression)</h3>
+<p>​		岭回归本质上是针对线性回归问题引入了L2范数正则，通过缩减回归系数避免过拟合问题，最先用来处理特征数多于样本数的情况(高维小样本问题)，现在也用于在估计中加人偏差，从而得到更好的估计，加了正则化后的代价函数如下：</p>
+<p><img src="/public/2019/07/17/AI/regulation_baysian/0-20190610174921016.png" alt="0?wx_fmt=png"></p>
+<h3 id="5-3-Lasso-回归"><a class="header-anchor" href="#5-3-Lasso-回归">¶</a>5.3 Lasso 回归</h3>
+<p>​		拉索回归(lasso回归)本质上是针对线性回归问题引入了L1范数正则，通过缩减回归系数避免过拟合问题，其不同于L2范数，其可以将某些系数缩减为0即所谓的具备稀疏性(稀疏性的好处是简化计算、容易理解模型、减少存储空间、不容易出现过拟合等等)，加了正则化后的代价函数如下：</p>
+<p><img src="/public/2019/07/17/AI/regulation_baysian/0-20190610174920968.png" alt="0?wx_fmt=png"></p>
+<p>​		其中，参数函数和岭回归中相同。L1范数罚有一个问题：由于|X|函数在0处不可导，故而直接使用最小二乘法、梯度下降法等方法均失效，但是由于其为第一类间断点中的可去间断点，可以通过补充该点的定义解决，通常，对于线性回归中的lasso回归可以采用近似的前向逐步回归替代。</p>
+<h3 id="5-4-SVM"><a class="header-anchor" href="#5-4-SVM">¶</a>5.4 SVM</h3>
+<p>​		支持向量机SVM优化目的为寻找一个超平面，使得正负样本能够以最大间隔分离开，从而得到更好的泛化性能，其通过引入核函数来将低维线性不可分的样本映射到高维空间从而线性可分，通过引入惩罚参数C(类似于正则化参数)来对错分样本进行惩罚，从而减少模型复杂度，提高泛化能力，其优化目标如下：</p>
+<p><img src="/public/2019/07/17/AI/regulation_baysian/0-20190610174921029.png" alt="0?wx_fmt=png"></p>
+<p>​		大家如果不知道上面公式的推导，不用紧张，对于本次内容不是重点，只需要关注后面正则项部分，惩罚参数C作用和正则化参数作用一致，只是反相关而已。需要明白以下结论：</p>
+<p>​		<strong>(1)</strong> C越大，正则化参数越小，表示对分错样本的惩罚程度越大，正则化作用越小，偏差越小，方差越大，越容易出现过拟合(通俗理解，原本将低维空间映射到5维空间正好线性可分，但是由于惩罚过于严重，任何一个样本分错了都不可原谅，结果系统只能不断提高维数来拟合样本，假设为10维，最终导致映射维数过高，出现过拟合样本现象，数学上称为VC维较大)；</p>
+<p>​		<strong>(2)</strong> C越小，正则化参数越大，表示对分错样本的惩罚程度越小，正则化作用越大，偏差越大，方差越小，越容易出现欠拟合(通俗理解，原本将低维空间映射到5维空间正好线性可分，但是由于惩罚过小，分错了好多样本都可以理解，比较随意，结果系统也采用简化版来拟合样本，假设为3维，最终导致映射维数过低，出现欠拟合样本现象，数学上称为VC维较小)。</p>
+<h2 id="6-总结"><a class="header-anchor" href="#6-总结">¶</a>6. 总结</h2>
+<p>根本目的本质：防止过拟合，提高模型泛化能力。</p>
+<p>正则化技术分类：
+<strong>狭义上</strong>（不同地方叫法不同）</p>
+<ul>
+<li>在早期的机器学习领域一般只是将范数惩罚叫做正则化技术</li>
+<li>规则化、权重衰减</li>
+<li>从贝叶斯角度考虑，正则项等价于引入参数的模型先验概率</li>
+</ul>
+<p><strong>广义上</strong>：
+能够显著减少方差，而不过度增加偏差的策略都可以认为是正则化技术，推广的正则化技术还有：扩增样本集、早停止、Dropout、集成学习、多任务学习、对抗训练、参数共享等。</p>
+<h2 id="Reference"><a class="header-anchor" href="#Reference">¶</a>Reference</h2>
+<p><a href="https://blog.csdn.net/BigData_Mining/article/details/81631249" target="_blank" rel="noopener">正则化总结的比较好比较全面的文章</a></p>
+]]></content>
+      <categories>
+        <category>机器学习</category>
+        <category>正则化</category>
+      </categories>
+      <tags>
+        <tag>人工智能</tag>
+        <tag>机器学习</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Jupyter notebook的配置</title>
+    <url>/public/2017/07/03/linux/jupyter_notebook/</url>
+    <content><![CDATA[<p><strong>前言</strong>
+本文介绍jupyter notebook的安装配置过程和实用技巧。
+<a href="https://jupyter.readthedocs.io/en/latest/index.html" target="_blank" rel="noopener">jupyter.readthedocs教程</a></p>
+<a id="more"></a>
+<h2 id="1-安装与配置"><a class="header-anchor" href="#1-安装与配置">¶</a>1 安装与配置</h2>
+<h3 id="1-1-安装-jupyter"><a class="header-anchor" href="#1-1-安装-jupyter">¶</a>1.1 安装 jupyter</h3>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">conda install jupyter</span><br><span class="line"><span class="comment"># pip install jupyter -y</span></span><br></pre></td></tr></table></figure>
+<h3 id="1-2-修改配置文件"><a class="header-anchor" href="#1-2-修改配置文件">¶</a>1.2 修改配置文件</h3>
+<ul>
+<li>生成配置文件</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">jupyter notebook --generate-config</span><br><span class="line">vim ~/.jupyter/jupyter_notebook_config.py</span><br></pre></td></tr></table></figure>
+<ul>
+<li>修改配置文件内容</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">c.NotebookApp.ip = <span class="string">'0.0.0.0'</span></span><br><span class="line">c.NotebookApp.port = <span class="number">8018</span></span><br><span class="line"><span class="comment"># 设置密码</span></span><br><span class="line">c.NotebookApp.password = <span class="string">u'sha1:bcd259ccf...your hashed password here'</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>Tip: 利用ipython 生成密码</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&gt; In [1]: from IPython.lib import passwd</span><br><span class="line">&gt; In [2]: passwd()</span><br><span class="line">&gt;   Enter password:</span><br><span class="line">&gt;   Verify password:</span><br><span class="line">&gt;   Out[2]: &apos;sha1:67xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&apos;</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<p>我选用的是password密码登陆jupyter的方案，其他的密码登陆方案见 <a href="https://zhuanlan.zhihu.com/p/23110830" target="_blank" rel="noopener">link</a></p>
+<h3 id="1-3-安装插件管理"><a class="header-anchor" href="#1-3-安装插件管理">¶</a>1.3 安装插件管理</h3>
+<p>jupyter_contrib_nbextensions 为 jupyter notebook 扩展插件管理器，下面简称nbextensions。</p>
+<p>nbextensions的github <a href="https://github.com/ipython-contrib/jupyter_contrib_nbextensions" target="_blank" rel="noopener">repo</a>
+nbextensions的教程<a href="https://jupyter-contrib-nbextensions.readthedocs.io/en/latest/" target="_blank" rel="noopener">nbextensions_manual_readthedocs</a></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 用conda安装</span></span><br><span class="line">conda install jupyter</span><br><span class="line">conda install -c conda-forge jupyter_contrib_nbextensions</span><br><span class="line"></span><br><span class="line"><span class="comment"># pip安装</span></span><br><span class="line">pip install jupyter_contrib_nbextensions</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使能</span></span><br><span class="line">jupyter contrib nbextension install</span><br></pre></td></tr></table></figure>
+<p>我启用的一些插件</p>
+<table>
+<thead>
+<tr>
+<th>plugins</th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Table of Contents (2)</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Freeze</td>
+<td>比较好的一个插件，可以用来冻住cell</td>
+<td></td>
+</tr>
+<tr>
+<td>nbTranslate</td>
+<td>这个插件利用Google翻译cell很好用</td>
+<td><a href="https://github.com/jfbercher/jupyter_nbTranslate/blob/master/languages.js" target="_blank" rel="noopener">support languages</a></td>
+</tr>
+<tr>
+<td>ExecuteTime</td>
+<td>显示执行时间</td>
+<td></td>
+</tr>
+<tr>
+<td>Ruler</td>
+<td>代码标尺</td>
+<td></td>
+</tr>
+<tr>
+<td>Autopep8</td>
+<td>代码美化</td>
+<td></td>
+</tr>
+<tr>
+<td>Scratchpad</td>
+<td>代码测试</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>其他花样的配置</p>
+<p><a href="https://zhuanlan.zhihu.com/p/74950682" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/74950682</a></p>
+<h3 id="1-4-conda环境的设置"><a class="header-anchor" href="#1-4-conda环境的设置">¶</a>1.4 conda环境的设置</h3>
+<p>jupyter使用Anaconda miniconda环境需要安装的组件。
+[conda repo][<a href="https://repo.anaconda.com" target="_blank" rel="noopener">https://repo.anaconda.com</a>]</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 创建虚拟环境</span></span><br><span class="line">conda create -n env_name python=3.6</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> conda虚拟核组件 切换kernel</span></span><br><span class="line">conda install nb_conda_kernels</span><br></pre></td></tr></table></figure>
+<h3 id="1-5-解决界面中英文混杂"><a class="header-anchor" href="#1-5-解决界面中英文混杂">¶</a>1.5 解决界面中英文混杂</h3>
+<img src="/public/2017/07/03/linux/jupyter_notebook/image-20200413125705473.png" alt="image-20200413125705473" style="zoom:50%;">
+<p>如图，jupyter 界面中中英文混杂，解决方法为将界面文字中文切换成英文。</p>
+<p>原理：让jupyter就找不到他的中文配置文件夹。</p>
+<p>找到notebook的汉化文件夹的路径，比如<code>~/miniconda3/lib/python3.6/site-packages/notebook/i18n/zh_CN</code>。将其重命名如加个下划线作为后缀<code>zh_CN_old</code>，重启jupyter就行了。</p>
+<p>为了方便，我作了个脚本自动找<code>notebook/i18n/zh_CN</code>位置并改名此文件夹，如下。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> shutil</span><br><span class="line"><span class="keyword">from</span> distutils.sysconfig <span class="keyword">import</span> get_python_lib</span><br><span class="line"><span class="comment"># 获取site-package包的位置</span></span><br><span class="line">path_zh=get_python_lib()+<span class="string">'/notebook/i18n/zh_CN'</span></span><br><span class="line">path_zh_old=get_python_lib()+<span class="string">'/notebook/i18n/zh_CN_old'</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 将 notebook/i18n/zh_CN 改为 notebook/i18n/zh_CN_old</span></span><br><span class="line">shutil.move(path_zh,path_zh_old)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 返回中文</span></span><br><span class="line"><span class="comment"># shutil.move(path_zh_old,path_zh)</span></span><br></pre></td></tr></table></figure>
+<p>重启jupyter就行了, 这样jupyter就找不到这个中文配置，返回中文改回去就行了<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup>。</p>
+<h2 id="2-使用的技巧"><a class="header-anchor" href="#2-使用的技巧">¶</a>2 使用的技巧</h2>
+<h3 id="2-1-快捷键"><a class="header-anchor" href="#2-1-快捷键">¶</a>2.1 快捷键</h3>
+<hr>
+<table>
+<thead>
+<tr>
+<th>在非激活状态即是蓝颜色的边框</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A</td>
+<td>insert cell above</td>
+</tr>
+<tr>
+<td>B</td>
+<td>insert cell below</td>
+</tr>
+<tr>
+<td>H</td>
+<td>查看帮助</td>
+</tr>
+<tr>
+<td>⌃↩(ctrl + enter)</td>
+<td>run selected cells</td>
+</tr>
+</tbody>
+</table>
+<h3 id="2-2-显示图片-视频-音频"><a class="header-anchor" href="#2-2-显示图片-视频-音频">¶</a>2.2 显示图片 视频 音频</h3>
+<p>主要是画图、显示视频和音频的方法。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 图片</span></span><br><span class="line">%%HTML</span><br><span class="line">&lt;img src=<span class="string">"xxx.jpg"</span>  alt=<span class="string">"title"</span> /&gt;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 视频</span></span><br><span class="line">%%HTML</span><br><span class="line">&lt;video width=<span class="string">"330"</span> height=<span class="string">"150"</span> controls&gt;</span><br><span class="line">&lt;source src=<span class="string">"out_all.mp4"</span> type=<span class="string">"video/mp4"</span>&gt;</span><br><span class="line">&lt;/video&gt;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 语音</span></span><br><span class="line">%%HTML</span><br><span class="line">&lt;audio src=<span class="string">"out.wav"</span> controls=<span class="string">"controls"</span>&gt;</span><br><span class="line">Your browser does <span class="keyword">not</span> support the audio element.</span><br><span class="line">&lt;/audio&gt;</span><br><span class="line"></span><br><span class="line"><span class="comment"># html t是html的字符串</span></span><br><span class="line"><span class="keyword">from</span> IPython.core.display <span class="keyword">import</span> HTML</span><br><span class="line">HTML(str(t))</span><br></pre></td></tr></table></figure>
+<h3 id="2-3-其他技巧"><a class="header-anchor" href="#2-3-其他技巧">¶</a>2.3 其他技巧</h3>
+<h4 id="修复视频文件"><a class="header-anchor" href="#修复视频文件">¶</a>修复视频文件</h4>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fix_use_ffmpeg</span><span class="params">(in_name, out_name,message=<span class="string">""</span>)</span>:</span></span><br><span class="line">    <span class="keyword">import</span> os</span><br><span class="line">    <span class="keyword">if</span> os.path.isfile(out_name):</span><br><span class="line">    os.remove(out_name)</span><br><span class="line">    cmd = <span class="string">'ffmpeg -i %s %s'</span> % (in_name, out_name)</span><br><span class="line">    log_lines = os.popen(cmd).readlines()</span><br><span class="line">    print(message,<span class="string">"ok"</span>)</span><br></pre></td></tr></table></figure>
+<h4 id="加载自己的模块文件"><a class="header-anchor" href="#加载自己的模块文件">¶</a>加载自己的模块文件</h4>
+<p>出于性能考虑，每个模块在每个解释器会话中只导入一遍。因此，如果你修改了你的模块，需要重启解释器；或者，如果你就是想交互式的测试这么一个模块，可以用 imp.reload() 重新加载，例如 <code>import imp; imp.reload(modulename)</code></p>
+<h4 id="导出pdf支持中文"><a class="header-anchor" href="#导出pdf支持中文">¶</a>导出pdf支持中文</h4>
+<p>Jupyter Notebook 输出PDF中文支持 <a href="https://www.jianshu.com/p/c3f660188766" target="_blank" rel="noopener">link</a></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> /usr/<span class="built_in">local</span>/lib/python3.6/site-packages/nbconvert/templates/latex</span><br><span class="line"></span><br><span class="line"><span class="comment"># 在里面的模版中添加，前提是安装好了texlive</span></span><br><span class="line">% add</span><br><span class="line">\usepackage&#123;ctex&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="ipynb2pdf"><a class="header-anchor" href="#ipynb2pdf">¶</a>ipynb2pdf</h4>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python3</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string">Current version of Jupyter doesn't support pdf exporting when it comes to</span></span><br><span class="line"><span class="string">russian language in the document. To fix this, current script has born.</span></span><br><span class="line"><span class="string">It requires nbconvert as long as jupyter to be installed.</span></span><br><span class="line"><span class="string">Author:     Sergey Ivanychev</span></span><br><span class="line"><span class="string">Email:      sergeyivanychev@gmail.com</span></span><br><span class="line"><span class="string">Revision:   1</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> subprocess</span><br><span class="line"></span><br><span class="line">FORMAT = <span class="string">".ipynb"</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string">TODO:   What if user has ___o.tex in current folder?</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line">TEMP_TEX = <span class="string">"___o.tex"</span></span><br><span class="line">TEMP_FOLDER = <span class="string">"/tmp"</span></span><br><span class="line">TRASH_EXTENSIONS = [<span class="string">".aux"</span>, <span class="string">".out"</span>, <span class="string">".log"</span>]</span><br><span class="line">OLD1 = <span class="string">r"\usepackage[utf8x]&#123;inputenc&#125;"</span></span><br><span class="line">NEW1 = <span class="string">r"""</span></span><br><span class="line"><span class="string">    \usepackage[utf8x]&#123;inputenc&#125;</span></span><br><span class="line"><span class="string">    \usepackage&#123;ctex&#125;</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line">REPLACE = [(OLD1, NEW1)]</span><br><span class="line">HELP = <span class="string">"""</span></span><br><span class="line"><span class="string">This script is aimed at correctly converting .ipynb to .pdf files.</span></span><br><span class="line"><span class="string">You may use it via</span></span><br><span class="line"><span class="string"># ipynb2pdf Solution.ipynb</span></span><br><span class="line"><span class="string">To get .pdf in the same directory</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">check_args</span><span class="params">(argv)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> (len(argv) &gt; <span class="number">2</span>):</span><br><span class="line">        print(<span class="string">"Please, type .ipynb filename as argument"</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span></span><br><span class="line">    <span class="keyword">if</span> (len(argv) == <span class="number">1</span>):</span><br><span class="line">        print(HELP)</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span></span><br><span class="line">    script, filename = argv</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> is_ipynb(filename):</span><br><span class="line">        print(<span class="string">"Please, type .ipynb filename as argument"</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">remove_extention</span><span class="params">(string, extention)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    Removes argumented extention from the end of the string</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    <span class="keyword">if</span> extention[<span class="number">0</span>] != <span class="string">'.'</span>:</span><br><span class="line">        extention = <span class="string">"."</span> + extention</span><br><span class="line">    <span class="keyword">if</span> string.endswith(extention):</span><br><span class="line">        string = string[<span class="number">0</span>:-len(extention)]</span><br><span class="line">    <span class="keyword">return</span> string</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">is_ipynb</span><span class="params">(filename)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> filename.endswith(<span class="string">".ipynb"</span>):</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">    <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">tex2pdf</span><span class="params">(filename, desired_name)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    Converts filename (which is tex document) to desired_name (which is pdf)</span></span><br><span class="line"><span class="string">    leaving no trash in current folder</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    base = remove_extention(filename, <span class="string">"tex"</span>)</span><br><span class="line">    output = base + <span class="string">".pdf"</span></span><br><span class="line">    ret = subprocess.call(<span class="string">"xelatex %s"</span> % filename , </span><br><span class="line">                                        shell=<span class="literal">True</span>, stdout=subprocess.PIPE)</span><br><span class="line">    <span class="keyword">for</span> ext <span class="keyword">in</span> TRASH_EXTENSIONS:</span><br><span class="line">        os.unlink(base + ext)</span><br><span class="line">    os.rename(output, desired_name)</span><br><span class="line">    <span class="keyword">return</span> ret</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">(argv)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> check_args(argv) == <span class="number">-1</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span></span><br><span class="line">    script, filename = argv</span><br><span class="line">    ret = subprocess.call(<span class="string">"jupyter nbconvert %s --to latex --output %s"</span> %</span><br><span class="line">                                            (filename, TEMP_TEX), shell=<span class="literal">True</span>,</span><br><span class="line">                                            stdout=subprocess.PIPE)</span><br><span class="line">    <span class="keyword">if</span> (ret != <span class="number">0</span>):</span><br><span class="line">        print(<span class="string">"ret = %d"</span> % ret)</span><br><span class="line">        os.unlink(TEMP_TEX)</span><br><span class="line">        print(<span class="string">"Converting to LaTeX failed. Return code: %d"</span> % ret)</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span></span><br><span class="line">    tex_file = open(TEMP_TEX, <span class="string">"r"</span>)</span><br><span class="line">    tex = tex_file.read()</span><br><span class="line">    <span class="keyword">for</span> old, new <span class="keyword">in</span> REPLACE:</span><br><span class="line">        tex = tex.replace(old, new)</span><br><span class="line">    tex_file.close()</span><br><span class="line">    os.unlink(TEMP_TEX)</span><br><span class="line">    tex_file = open(TEMP_TEX, <span class="string">"w+"</span>)</span><br><span class="line">    tex_file.write(tex)</span><br><span class="line">    tex_file.close()</span><br><span class="line">    ret = tex2pdf(TEMP_TEX, remove_extention(filename, <span class="string">".ipynb"</span>) + <span class="string">".pdf"</span>)</span><br><span class="line">    tex_file.close()</span><br><span class="line">    os.unlink(TEMP_TEX)</span><br><span class="line">    print(remove_extention(filename, <span class="string">".ipynb"</span>) + <span class="string">".pdf - DONE"</span>)</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</span><br><span class="line">    exit(main(sys.argv))</span><br></pre></td></tr></table></figure>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p><a href="https://www.zhihu.com/question/302814218/answer/1029684239" target="_blank" rel="noopener">https://www.zhihu.com/question/302814218/answer/1029684239</a> <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
+]]></content>
+      <categories>
+        <category>jupyter</category>
+      </categories>
+      <tags>
+        <tag>工具</tag>
+        <tag>Python</tag>
+        <tag>笔记应用</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>为什么正好经过这个空隙？</title>
     <url>/public/2017/05/05/math/math_q1/</url>
     <content><![CDATA[<p><strong>前言</strong>
@@ -1353,6 +1670,244 @@ $$
         <tag>Latex</tag>
         <tag>数学</tag>
         <tag>空间解析几何</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>希腊罗马神话</title>
+    <url>/public/2018/11/05/readings/Gods_stories/</url>
+    <content><![CDATA[<p><strong>前言</strong></p>
+<p>在我电的图书馆的还书柜子里面偶然所得，一本叫《希腊罗马神话对英语语言文化的影响》吕海平 著 江苏大学初版社，然后莫名的想研究一下，发现挺不错的。</p>
+<a id="more"></a>
+<p>古希腊罗马的神的关系还是比较乱的，尤其是jupiter 或者zeus的奥林匹斯神系。从上古的神系，总共有三代。</p>
+<p>网上有个人（<a href="http://www.veritablehokum.com/" target="_blank" rel="noopener">Korwin Briggs</a>）做的关系图很不错。</p>
+<p>TODO:后面我也会对其进行整理，以后给大家分享。</p>
+<p><img src="http://www.veritablehokum.com/wp-content/uploads/2018/08/Roman-God-Family-Tree.jpg" alt></p>
+]]></content>
+      <categories>
+        <category>读书笔记</category>
+      </categories>
+      <tags>
+        <tag>希腊罗马神话</tag>
+        <tag>语言文化</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>红楼梦与我</title>
+    <url>/public/2017/05/14/readings/hongloumeng/</url>
+    <content><![CDATA[<p>红楼梦是我国四大名著之一，主要内容是贾府的兴衰和宝黛的悲剧爱情。电视剧红楼梦2010版，我是从八月开始看的，看完到现在，也有小一个月了。在网上大家对这版电视剧褒贬不一。与我来说，我是喜欢这部剧的，不能说拍得很好，但这部剧却勾起了我读书与写字的兴趣。于是乎，做了一篇随笔，以记录我的一些感触。</p>
+<a id="more"></a>
+<p>我记得最早是小学，我们还是顾着打玻璃珠和丢沙包的年纪，学校旁边的小书店里，也都是七龙珠，哆啦A梦，柯南的小人书，老师们讲到四大名著，顺带提了下红楼梦，其他没印象了。我们学习最多的是中文的拼音和书写，作文都是打油，日记也闹了不少笑话。后来上初中，有一次寒假附加作业是阅读红楼梦，我虽毫无兴趣，但还是硬着头皮，去新华书店，试看红楼梦。120章的红楼，厚得连看下去的勇气也没有。略看了几下，最后，做了一个红楼梦不好看的论断，也就放在那边了。那时有老版的红楼梦电视剧播映，打开电视偶尔会遇见，但是立马换台，央视的西游记与情深深雨蒙蒙，湖南电视台的还珠格格，也是欣赏了好几遍。再者，有动画片谁有兴趣去看这些什么破剧，关于书本，最多也就是看看汤姆索亚历险记。</p>
+<p>再后来，去启中读书，学习上比较紧张，再加上理科班的非文学氛围，对这些文学的东西更不感冒。尽管偶尔也会入耳一些其中的人物，比如林妹妹，刘姥姥，也是不用大脑耳朵直接过滤。当时，大伙是杂志，读者，青年文摘读得比较多，班上一本，全班查阅，杂志文章篇幅较小，读起很顺很舒服。期间，与红楼的唯一一次接触是，高中教科书上有刘姥姥进大观园的章节，翻了一遍，当时，感叹人物好多，理不出人物关系，完全放弃看完红楼的欲望。以为姥姥是贾府的姥姥，猩猩然想着以后可以说看过一段红楼，红楼也比较贵不如多买几本读者，积累作文素材。不知什么时候，班上网络小说之风随着mp4和智能手机的普及而吹起，我也用MP4刷完了一两部网络小说，感觉都是一个套路，主角都是绝处逢生，越来越无敌，也就不敢兴趣了。</p>
+<p>再然后，我上大学，藏书400百万册的成电图书馆，也并没有引起我读文学类的欲望，大学四年借的专业工具类书比较多，想来也是浪费资源。在一个工科高校，文学方面的课程几乎没有，虽说有个大学语文的选修课，俨然不感兴趣。大学里，再一次看到有人在看红楼梦电视剧，也是大二的时候的人工智能课上，也是闲得无聊。再后来，大四时，手机上自带一个蜻蜓网络电台应用，无聊点开蒋勋老师评述的红楼梦音频，红学大师讲到他与红楼梦的相遇，同时，他介绍的红楼基本背景和人物，通俗易懂，一下子引起我的兴趣。他说红楼梦写的都是15、6岁人的故事，15、16岁就可以读了。回想我15、16岁，基本没看什么名著。要说四大名著，我也就看了三国和水浒的少年版。上次回家，看美剧，老妈突然蹦出句，不能光看英文也应当看看我们老祖宗的文化。</p>
+<p>现在得空，就这样抱着惭愧和一丝尝试我看起了2010版红楼梦。在这我得承认，我是个演员控。不得不说，三大主演都很不错。</p>
+<p>50集过后，原来红楼讲得是这个，并表示有兴趣去读读名著了。原来有这么多原来。</p>
+<ul>
+<li>
+<p>人物家族命运令人感慨。作者写出超越那个时代的朦胧的爱情与不得不提的丧心病狂的全部悲剧，果然是个失意文人的作品。 可叹停机德，堪怜咏絮才。宝钗落落大方德才兼备，黛玉因情而伤而痛去世，宝玉虽与宝钗结婚，最后离家成道去。精于人情世故,，胸有城府的王熙凤，平日的爽朗笑声终究悲剧，贾府里多么好的领导，最后也人情冷暖，不免为其伤心。刘姥姥，其实是个成功的投机分子，但也是朴实善良的“穷亲戚”，最后救了巧儿。十二金钗各有个的悲剧，正如宝玉在虚幻仙境里警幻仙姑给的设定。原来故事一开始就把结局告诉了读者。</p>
+</li>
+<li>
+<p>体验古代贵族文化。里面还有个诗社的组织，古人的结社，好有雅致，也会给人起“绰号”。除此以外还有击鼓传花，有时主题是讲笑话有时对诗。猜灯谜，中秋赏月，生日宴会等等。</p>
+</li>
+<li>
+<p>语言魅力。打秋风，这是形容刘姥姥找找贾府接济用的。恼，生气，或者使生气。不同人的称谓，宝兄弟，宝二爷，宝姐姐或者好姐姐，林妹妹或者好妹妹。</p>
+</li>
+<li>
+<p>情节回味无穷。刘姥姥进大观园，是贾母和姥姥差不多年纪想和她聊聊，邀请她的。乡村来打秋风的刘姥姥像是在参观皇宫。在后面时期  ，家族里一次比一次捉襟见肘的聚会，可以看见这些家族的衰落。中国的各种人情世故体现在这里面。四个大家族，一个小社会。</p>
+</li>
+</ul>
+<p>以上是我的一点点感悟。</p>
+<p>只是，我与红楼梦，还差80章书页，希望还能有计划地读完。</p>
+<p>2016年于成电</p>
+]]></content>
+      <categories>
+        <category>读书笔记</category>
+      </categories>
+      <tags>
+        <tag>故事</tag>
+        <tag>《红楼梦》</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>【转】《中华古籍资源库》中国国家图书馆</title>
+    <url>/public/2021/12/16/readings/zhonghuaguji/</url>
+    <content><![CDATA[<p><strong>简介</strong></p>
+<p>“中华古籍资源库”是“中华古籍保护计划”的重要成果。2016年9月28日，“中华古籍资源库”正式开通运行，陆续发布国家图书馆藏善本和普通古籍、法国国家图书馆藏敦煌遗书、天津图书馆藏普通古籍、日本永青文库捐赠汉籍、云南省图书馆善本古籍、芷兰斋藏稿抄校本等古籍影像资源，总量超过3.3万部。</p>
+<p>《中华古籍资源库》！！！<br>
+网址：<a href="http://www.nlc.cn/pcab/zy/zhgj_zyk/" target="_blank" rel="noopener">http://www.nlc.cn/pcab/zy/zhgj_zyk/</a><br>
+查询：<a href="http://read.nlc.cn/thematDataSearch/toGujiIndex" target="_blank" rel="noopener">http://read.nlc.cn/thematDataSearch/toGujiIndex</a></p>
+<img src="/public/2021/12/16/readings/zhonghuaguji/image-20211216225907506.png" alt="image-20211216225907506" style="zoom:30%;">
+<a id="more"></a>
+<p>比如：《九章算数》的古籍</p>
+<img src="/public/2021/12/16/readings/zhonghuaguji/image-20211216231340351.png" alt="image-20211216231340351" style="zoom:30%;">
+<img src="/public/2021/12/16/readings/zhonghuaguji/image-20211216231141739.png" alt="image-20211216231141739" style="zoom:30%;">
+<p>比如：卷第九的勾股</p>
+<img src="/public/2021/12/16/readings/zhonghuaguji/image-20211216232009068.png" alt="image-20211216232009068" style="zoom:50%;">
+<ul>
+<li>
+<p>数字古籍
+国家图书馆收藏古籍15万部，其中善本古籍直接继承了南宋缉熙殿、元翰林国史院、明文渊阁、清内阁大库等皇家珍藏，以及明清以来许多私人藏书家的毕生所聚。宋元旧椠、明清精刻琳琅满目。通过全彩影像数字化和缩微胶卷转化影像方式建设，从2016年9月28日起陆续在线发布，目前已发布馆藏古籍2万余部，国家图书馆超过三分之二的善本古籍实现了在线阅览。</p>
+</li>
+<li>
+<p>数字方志
+地方志文献为我国所特有，也是国家图书馆独具特色的馆藏之一，所存文献数量与品质极高。该数据库以国家图书馆藏地方志文献建设，主要包括为清代（含清代）以前的方志资源6529种。</p>
+</li>
+<li>
+<p>赵城金藏
+《赵城金藏》被誉为国家图书馆四大镇馆之宝之一。《赵城金藏》是在金代刻的一部大藏，因为它藏在赵城县（今属山西洪洞县）广胜寺，所以后人将它定名为《赵城金藏》。全藏约七千卷左右，六千多万字，现存四千余卷。2017年12月28日，国家图书馆《赵城金藏》1281件正式发布。</p>
+</li>
+<li>
+<p>宋人文集
+国家图书馆精选所藏宋人文集善本二百七十五部，首选宋元刊本，次及明清精抄精刻，或经名家校勘题跋之本，通过缩微胶卷还原数字影像，并辅以详细书目建成本全文影像数据库，目前已发布275部，免费呈献公众利用。</p>
+</li>
+<li>
+<p>碑帖菁华
+以国家图书馆藏有的历代甲骨、青铜器、石刻等类拓片二十三万余件为基础建设的数据库，内容涉及历史、地理、政治、经济、军事、民族、民俗、文学、艺术、科技、建筑等方面。2019年11月12日又新增发布2595种馆藏明清碑刻拓片数字资源，现有元数据2.5万余条，影像3.1万余幅。</p>
+</li>
+<li>
+<p>甲骨世界
+被誉为二十世纪四大文献发现之一的甲骨文，集文献性、文物性、收藏性于一身，是研究我国商朝晚期不可多得的珍贵史料，该库包括甲骨实物元数据2964条，影像5932幅；甲骨拓片元数据2975条，影像3177幅。</p>
+</li>
+<li>
+<p>西夏文献
+以国家图书馆保存的西夏、元代孤本及各种西夏的珍贵实物资料为基础建设的数据库。包括西夏文献书目数据124条，原件影像近5000拍。</p>
+</li>
+<li>
+<p>西夏论著
+包括西夏研究论文篇名数据1200余条。</p>
+</li>
+<li>
+<p>年画撷英
+国家图书馆收藏了杨柳青、朱仙镇等地制作的4000余幅年画作品，从中精选出一部分制作了该库，并为每种年画编写了内容说明，重点介绍了该年画的故事梗概、历史背景、制作特色和相关知识。目前发布元数据及影像302组。</p>
+</li>
+<li>
+<p>前尘旧影
+该资源库收录了国家图书馆收藏的新旧照片3074组，真实生动地记录了过去的社会事件、历史人物、城乡面貌、名胜古迹和建筑服饰等，人们可从中解读出不同历史时期特定事物的形象特征和真实信息，具有十分重要的历史价值。</p>
+</li>
+<li>
+<p>敦煌遗珍
+国际敦煌项目（IDP）建设的数据库，发布来自敦煌和丝绸之路上的写本、绘画、纺织品及器物的信息和图片，其中包括国家图书馆藏敦煌写卷影像18万余拍。</p>
+</li>
+<li>
+<p>徽州善本家谱
+徽州善本家谱印刷资料数据库是中国国家图书馆与法国远东学院的合作项目，收录了中国国家图书馆藏善本古籍中徽州家谱243种286部，配有书影5437幅。</p>
+</li>
+<li>
+<p>中华医药典籍资源库（测试版）
+图书馆收藏的文献典籍是整理研究的基础资料，为使读者能够通过互联网检索、利用中医文献资源，国家图书馆（国家古籍保护中心）将逐步建设中华医药典藏资源库，目前首批对221种中医古籍影像进行发布测试。</p>
+</li>
+<li>
+<p>云南图书馆古籍
+云南省图书馆将该馆古籍数字资源共139种727册提供给国家图书馆（国家古籍保护中心），这批资源均是云南省图书馆所藏珍贵的、有代表性的古籍文献，特别是明代云南丽江木氏土司家族著述，更是明代少数民族汉文著述的代表。该批资源于2019年11月12日正式在线发布。</p>
+</li>
+<li>
+<p>天津图书馆古籍
+为进一步丰富古籍数字资源品种和版本，满足广大读者使用需求，2014年底，天津图书馆向国家图书馆（国家古籍保护中心）提供总量约5,800余种300万拍明清古籍数字资源，该批资源经加工后，于2018年9月28日、2019年1月28日分两批发布。</p>
+</li>
+<li>
+<p>上海图书馆家谱
+上海图书馆现藏有家谱近3万余种30余万册共计365个姓氏，收藏的家谱覆盖全国27个省、自治区及直辖市，是国内外收藏中国家谱原件最多的公藏机构，有着“全球中国家谱第一藏”之美誉。国家图书馆与上海图书馆合作，征集该馆所藏明清家谱资源2200余种，在国图网站发布使用。</p>
+</li>
+<li>
+<p>中华古籍善本联合书目
+中华古籍善本国际联合书目系统是由中文善本书国际联合目录项目发展而来的新数据库，著录了三十余家海内外图书馆所藏古籍善本，数据达2万多条，并配有1.4万余幅书影。</p>
+</li>
+<li>
+<p>东文研汉籍影像库
+东京大学东洋文化研究所收藏有大量中国古籍，其中包括东方文化学院东京研究所的旧藏以及大木幹一、长泽规矩也、仓石武四郎等各具特色的个人收藏。2009年11月，东洋文化研究所将所藏中文古籍4000余种，以数字化方式无偿提供给中国国家图书馆，在国图网站上面向读者提供服务。</p>
+</li>
+<li>
+<p>哈佛大学善本特藏
+哈佛大学哈佛燕京图书馆藏中文善本古籍特藏，以其质量之高、数量之大著称于世。为了方便海内外学人便捷地利用这些资料进行研究，同时以数字化形式保存这些中华古籍精品，2009年国家图书馆与哈佛大学哈佛燕京图书达成协议，对哈佛燕京图书馆所藏中文善本和齐如山专藏进行数字化。目前在线发布经部和史部善本数字资源741部，另有齐如山戏曲小说专藏204种。</p>
+</li>
+<li>
+<p>法藏敦煌遗书
+2015年，在法国国家图书馆与中国国家图书馆达成合作意向，由法国国家图书馆向中国国家图书馆赠送馆藏全部敦煌遗书高清数字资源。在双方共同努力下，实现了这批敦煌遗书的数字化回归，并于2018年3月5日正式在线发布，共计5300余号3.1万余拍。</p>
+</li>
+<li>
+<p>中华寻根网
+中华寻根网是国家图书馆与澳门基金会开展的文化合作项目，是以提供姓氏源流和家谱资源服务为核心、方便海内外华人寻根问祖活动的网络平台。“中华寻根网”目前提供500多个姓氏源流、2000多部家谱和6000种其他文献的阅览，以及自建家谱，交流联谊的互动服务。</p>
+</li>
+</ul>
+]]></content>
+      <categories>
+        <category>书籍</category>
+      </categories>
+      <tags>
+        <tag>资源</tag>
+        <tag>古籍</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Windows笔记本开共享wifi</title>
+    <url>/public/2015/04/14/shells/share_win_wifi/</url>
+    <content><![CDATA[<p><strong>前言</strong>
+网上有很多用笔记本设置无线热点的批处理，我中和了一下。复制下面代码到记事本，改后缀为bat就行了。其中，mssid和mkey可自定义</p>
+<a id="more"></a>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">@echo off</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">set mssid=GOODGOOD</span><br><span class="line">::网络名字</span><br><span class="line">set mkey=123456789</span><br><span class="line">::大于八位密码</span><br><span class="line"></span><br><span class="line">echo ***********************************************</span><br><span class="line">echo              打开承载网络  1</span><br><span class="line">echo              关闭承载网络  2</span><br><span class="line">echo              承载网络信息  3</span><br><span class="line">echo              设置网络信息  set</span><br><span class="line">echo              退出          e</span><br><span class="line">echo        （网络名字、密码可在源文件中改）</span><br><span class="line">echo           （请以管理员身份打开!!!）</span><br><span class="line">echo ***********************************************</span><br><span class="line">:start</span><br><span class="line">set /p var=请选择:</span><br><span class="line">if %var%==1 netsh wlan start hostednetwork &amp;&amp; echo 网络名字:%mssid% 密码:%mkey% &amp;&amp; GOTO start</span><br><span class="line">if %var%==2 netsh wlan stop hostednetwork &amp;&amp; GOTO start</span><br><span class="line">if %var%==3 netsh wlan show hostednetwork &amp;&amp; echo 网络名字:%mssid% 密码:%mkey% &amp;&amp; GOTO start</span><br><span class="line">if %var%==set netsh wlan set hostednetwork mode=allow ssid=%mssid% key=%mkey% &amp;&amp; echo 网络名字:%mssid% 密码:%mkey% &amp;&amp; GOTO start</span><br><span class="line">if %var%==e pause</span><br></pre></td></tr></table></figure>
+<h2 id="播放声音"><a class="header-anchor" href="#播放声音">¶</a>播放声音</h2>
+<p>保存为<code>播放声音.vbs</code>,可以播放声音</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">CreateObject(&quot;SAPI.SpVoice&quot;).Speak &quot;hello world&quot;</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>常用脚本</category>
+      </categories>
+      <tags>
+        <tag>工具</tag>
+        <tag>Windows脚本</tag>
+        <tag>共享wifi</tag>
+        <tag>cmd</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>srt中英文合并python脚本</title>
+    <url>/public/2016/04/14/shells/youtube_src_combine/</url>
+    <content><![CDATA[<p><strong>前言</strong></p>
+<p>从Youtube上看只有中文或英文分开的字幕，下载好视频，想要中英文字幕。可从 <a href="http://mo.dbxdb.com/Yang/setting.html" target="_blank" rel="noopener">Getting Youtube subtitles</a> 获取中或英文字幕，然后将其合并，即成中英文双字幕。下面是python脚本。</p>
+<a id="more"></a>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">本脚本完成了中英文srt合并的功能</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">srt2lis</span><span class="params">(name)</span>:</span></span><br><span class="line">    lines = open(<span class="string">'srt/'</span>+name, <span class="string">'r'</span>, encoding=<span class="string">'utf-8'</span>).readlines()</span><br><span class="line">    lis = []</span><br><span class="line">    tmp = []</span><br><span class="line">    <span class="keyword">for</span> i, line <span class="keyword">in</span> enumerate(lines):</span><br><span class="line">        <span class="comment"># 以\n 结尾的一个时间点</span></span><br><span class="line">        <span class="keyword">if</span> line == <span class="string">'\n'</span>:</span><br><span class="line">            lis.append(tmp)</span><br><span class="line">            tmp = []</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            tmp.append(line)</span><br><span class="line">    <span class="keyword">return</span> lis</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">hebing</span><span class="params">(name_zh)</span>:</span></span><br><span class="line">    name_en = name_zh[:<span class="number">-7</span>] + <span class="string">'.srt'</span></span><br><span class="line">    out_name=<span class="string">'out/'</span>+name_en</span><br><span class="line">    f=open(out_name,<span class="string">'w'</span>,encoding=<span class="string">'utf-8'</span>)</span><br><span class="line">    lis_en=srt2lis(name_en)</span><br><span class="line">    lis_zh=srt2lis(name_zh)</span><br><span class="line">    <span class="keyword">for</span> i,item <span class="keyword">in</span> enumerate(lis_en):</span><br><span class="line">        print(item[<span class="number">0</span>])</span><br><span class="line">        f.write(item[<span class="number">0</span>])</span><br><span class="line">        f.write(item[<span class="number">1</span>])</span><br><span class="line">        <span class="keyword">for</span> line <span class="keyword">in</span> lis_zh[i][<span class="number">2</span>:]:</span><br><span class="line">            f.write(line)</span><br><span class="line">        <span class="keyword">for</span> line <span class="keyword">in</span> item[<span class="number">2</span>:]:</span><br><span class="line">            f.write(line)</span><br><span class="line">        f.write(<span class="string">'\n'</span>)</span><br><span class="line">    f.close()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">flis=os.listdir(<span class="string">'srt/'</span>)</span><br><span class="line"><span class="keyword">if</span> <span class="keyword">not</span> os.path.exists(<span class="string">'out'</span>):</span><br><span class="line">    os.mkdir(<span class="string">'out'</span>)</span><br><span class="line"><span class="keyword">for</span> name <span class="keyword">in</span> flis:</span><br><span class="line">    print(name)</span><br><span class="line">    <span class="keyword">if</span> name[<span class="number">-6</span>:<span class="number">-4</span>]==<span class="string">'zh'</span>:</span><br><span class="line">        hebing(name)</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>常用脚本</category>
+      </categories>
+      <tags>
+        <tag>工具</tag>
+        <tag>python</tag>
+        <tag>YouTube字幕合并</tag>
+        <tag>src</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>这哈儿是重庆</title>
+    <url>/public/2019/04/25/trips/chongqing/</url>
+    <content><![CDATA[<p>重庆，旅游纪实。20190422 - 20190424</p>
+<a id="more"></a>
+<h2 id="四月二十二"><a class="header-anchor" href="#四月二十二">¶</a>四月二十二</h2>
+<img src="/public/2019/04/25/trips/chongqing/tiankongzhicheng.jpg" alt="tiankongzhicheng" width="50%">
+<div align="center"> <b>天空之城旅店的临江阳台</b></div>
+<p>今天刚来到重庆。前天查天气说是多云，但是来这之后，天气极好。早上9点从成都出发，12点左右到达重庆北站，然后做地铁10号线倒到6号线的小什坊。在解放广场附近，中午吃了个碗杂面很不错，对于我来说有点辣，说是重庆排行第五的小面。</p>
+<p>下午就准备午休一哈，今早上很早起来要赶到成都的市中心乘火车。在江边，也是在洪崖洞旁边，找了一家叫做天空之城的青年旅舍。晚上走在千厮大桥上，脚感受着下面的地铁穿过抖动。从青年旅馆房间里面刚好可以看到江边的夜景，管理人是个可爱的老人家。里面的床单是没有铺上的，得自己铺，老人家解释免得被认为不好，你也可以自己带睡袋。老人家在铁路上工作，与他聊了很久，谈到他在铁路站工作的经历，当然还有很多打理旅舍时的故事。</p>
+<h2 id="四月二十三"><a class="header-anchor" href="#四月二十三">¶</a>四月二十三</h2>
+<img src="/public/2019/04/25/trips/chongqing/guojiang1.jpeg" alt="guojiang1" width="50%">
+<div align="center"> <b>排队2小时，乘过江索道</b></div>
+<img src="/public/2019/04/25/trips/chongqing/goujiang2.jpeg" alt="goujiang2" width="50%">
+<div align="center"> <b>过江索道，晃晃悠悠在路上</b></div>
+<p>早上起来，去楼下买了个早餐，有八宝粥和一个米团（块），那个团米上面加了两个半枣。吃完早饭，阳光正照进那个青年公寓。四月底，节气谷雨过后，算还不是很热，在那个临江的阳台晒了会儿阳光。然后很困，大概是吃饱的缘故，我又回去睡了一个回笼觉。下午出发去白公馆，搭的是轻轨2号线，到大坪换到去烈士墓的地铁上，轻轨是一路沿江跑的，欣赏着嘉陵江的美景，羡慕着重庆人的立体公交系统。嘉陵江水比较清澈，也见到有人在游泳。过会儿就经过网红景点李子坝，轻轨穿房而过。白公馆旁边是四川外国语大学，没有去逛，直接去了白公馆，香山别墅，然后去了渣滓洞，白公馆的地势比较陡，台阶比较多，旁边是歌乐山。</p>
+<img src="/public/2019/04/25/trips/chongqing/eling.jpg" alt="eling" width="50%">
+<div align="center"> <b>鹅岭公园有个塔，从塔上望去</b></div>
+<p>接着到了鹅岭公园，可直接做地铁鹅岭站，进门处分左右路线，我选了左转，然后绕了一大圈到了那个塔，其实可以右转沿着汽车的道往上到那个塔。到了塔顶，可以看到面向朝天门方向，左边是嘉陵江，右边是长江，然后各种大桥，轻轨地铁尽收眼底。吹着微风，站在那个塔上，可见重庆各种摩天大楼，然后就是更远处的山。离开鹅岭公园后，继续搭地铁去了上新街站，下车后往南岸区走，南岸发展比较慢，可以看到明显和渝中区的不同，路边找了一家店，选了几个小菜，吃了个晚饭。晚饭后，去了南山一棵树，人很多，夜景倒是很漂亮，有水有山，两水相交，滋润了这个大都市，今天的行程不错。</p>
+<img src="/public/2019/04/25/trips/chongqing/yejing.jpg" alt="yejing" width="50%">
+<div align="center"> <b>南山一棵松</b></div>
+<h2 id="四月二十四"><a class="header-anchor" href="#四月二十四">¶</a>四月二十四</h2>
+<img src="/public/2019/04/25/trips/chongqing/caotianmen.jpg" alt="caotianmen" width="50%">
+<div align="center"> <b>朝天门码头，水清黄分明</b></div>
+<p>今天也是懒懒起床，吃了个早饭，豆浆是放在那种果冻的包装袋里。今天差不多，就准备看看朝天门，然后回成都。去朝天门还是比较奇怪，随着百度地图导航走，到了一个商城里面，从地面进去是商城的8楼，下了电梯，走了一个商品批发的地方，然后向朝天门赶，今天太阳超级满足，比较热。岸边停了好多游船。到了朝天门，水分了两个颜色，黄的长江，清的嘉陵江。休息一刻，搭了公交车，沿着长江岸跑，居然到了李子坝，然后地铁转到重庆北火车站，这一趟重庆算是画上了一个句号。</p>
+<p>【转载请联系 博主。】</p>
+]]></content>
+      <categories>
+        <category>旅游</category>
+      </categories>
+      <tags>
+        <tag>重庆</tag>
+        <tag>游记</tag>
       </tags>
   </entry>
   <entry>
@@ -1813,560 +2368,6 @@ NexT Github  <a href="https://github.com/iissnan/hexo-theme-next" target="_blank
       <tags>
         <tag>通信</tag>
         <tag>历史</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>正则化【一】机器学习中的正则化</title>
-    <url>/public/2019/07/17/AI/regulation_baysian/</url>
-    <content><![CDATA[<p><strong>前言</strong>
-本<strong>正则化系列</strong>文章我们将讨论<strong>正则化技术在机器学习和深度学习的应用</strong>。本文为该系列的第一篇，主要介绍<strong>机器学习正则化的概念，原理和应用实例</strong>。</p>
-<p><a href="https://en.wikipedia.org/wiki/Regularization_(mathematics)" target="_blank" rel="noopener">正则化</a> 技术广泛应用在机器学习和深度学习算法中，本质作用是<strong>防止过拟合、提高模型泛化能力</strong>。其中过拟合的简单理解就是训练的算法模型太过复杂，模型过分考虑了当前样本的结构。</p>
-<p>在早期的机器学习领域一般只是将范数惩罚叫做正则化技术，而在深度学习领域认为，能够显著减少方差，而不过度增加偏差的策略都可以认为是正则化技术。故<strong>推广的正则化技术</strong>还有：扩增样本集、早停止、Dropout、集成学习、多任务学习、对抗训练、参数共享等。(具体见“花书 第七章 <a href="http://www.deeplearningbook.org/contents/regularization.html" target="_blank" rel="noopener">Regularization for Deep Learning</a>”），关于<strong>深度学习正则化</strong>会在下一篇正则化文章中重点分析。</p>
-<p>转载自：<a href="https://blog.csdn.net/BigData_Mining/article/details/81631249" target="_blank" rel="noopener">https://blog.csdn.net/BigData_Mining/article/details/81631249</a></p>
-<a id="more"></a>
-<h2 id="1-多角度看机器学习正则化"><a class="header-anchor" href="#1-多角度看机器学习正则化">¶</a>1. 多角度看机器学习正则化</h2>
-<p><strong>机器学习领域正则化</strong>可以从以下三个角度进行理解：</p>
-<p><strong>(1)</strong> <strong>正则化等价于结构风险最小化，其是通过在经验风险项后加上表示模型复杂度的正则化项或惩罚项，达到选择经验风险和模型复杂度都较小的模型目的</strong>。</p>
-<p>​	<strong>经验风险</strong>：机器学习中的风险是指模型与真实解之间的误差的积累，经验风险是指使用训练出来的模型进行预测或者分类，存在多大的误差，可以简单理解为训练误差，经验风险最小化即为训练误差最小。</p>
-<p>​	<strong>结构风险</strong>：结构风险定义为经验风险与置信风险(置信是指可信程度)的和，置信风险越大，模型推广能力越差。可以简单认为结构风险是经验风险后面多加了一项表示模型复杂度的函数项，从而可以同时控制模型训练误差和测试误差，结构风险最小化即为在保证模型分类精度(经验风险)的同时，降低模型复杂度，提高泛化能力。</p>
-<p>​	<strong>公式表达</strong>
-$$
-R(f)=\frac{1}{n}\sum_{i=1}^{n}L(y_i,f(x_i)) + \lambda \Omega (f)
-\tag{1}
-$$
-​		其中，$R(f)$表示结构风险，$L(y_i,f(x_i))$表示第 $i$ 个样本的经验风险，$\Omega(f)$是表征模型复杂度的正则项，$\lambda$ 是正则化参数。根据奥姆剃刀定律，“如无必要，勿增实体”，即认为相对简单的模型泛化能力更好。而模型泛化能力强、泛化误差小，即表示模型推广能力强，通俗理解就是在训练集中训练得到的优秀模型能够很好的适用于实际测试数据，而不仅仅是减少训练误差或者测试误差。泛化误差定义如下：
-$$
-E={Bias}^2(X) + {Var}(X) +{Noise}
-\tag{2}
-$$
-​		其中，$E$ 表示泛化误差，${Bias}$ 代表偏差，${Var}$ 代表方差， ${Noise}$ 代表噪声。</p>
-<p>​	<strong>关系图</strong></p>
-<p><img src="/public/2019/07/17/AI/regulation_baysian/1563350068097.png" alt="1563350068097"></p>
-<div align="center"> Fig 1. 泛化误差与偏差和方差的关系</div>
-​		从 Fig 1 可以看出，随着训练程度加深，模型复杂度会增加，偏差减少，方差增大，而泛化误差呈现U型变化。对于一个“好的系统”通常要求误差小，正则化的作用即为适当的控制模型复杂度，从而使得**泛化误差曲线**取最小值。
-<p><strong>(2)</strong> <strong>正则化等价于带约束的目标函数中的约束项</strong></p>
-<p>以平方误差损失和L2范数为例，优化问题的数学模型如下：
-$$
-J(\theta)=\sum_{i=1}^{n}(y_i-\theta^Tx_i)^2
-\tag{3}
-$$
-$$
-{s.t.}{|| \theta ||}_2^2 \leq C\<br>
-\tag{4}
-$$</p>
-<p>针对上述约束条件的优化问题，采用拉格朗日乘积算子法可以转化为无约束化问题，即
-$$
-J(\theta)=\sum_{i=1}^{n}(y_i-w^Tx_i)^2 + \lambda({|| \theta ||}_2^2-C)
-\tag{5}
-$$</p>
-<p>由于参数 $C$ 为常数，可以忽略，故上述公式和标准的正则化 公式完全一致。</p>
-<p><strong>(3)</strong> <strong>从贝叶斯角度考虑</strong></p>
-<p>正则项等价于引入参数的模型先验概率，可以简单理解为对最大似然估计引入先验概率，从而转化为最大后验估计，其中的先验概率即对于正则项（这部分内容后面详细讲解）。</p>
-<h2 id="2-基本概念"><a class="header-anchor" href="#2-基本概念">¶</a>2 基本概念</h2>
-<p>正则化也可以成为规则化、权重衰减技术，不同的领域叫法不一样，数学上常用范数实现，例如L1和L2范数，统计学领域叫做惩罚项、罚因子。</p>
-<p>下面给出范数的数学公式，方便以后分析：</p>
-<p>​	(1) $p$ 范数：
-$$
-Lp=(\sum_{i=1}^{n}{|| x_i ||}^p)^{\frac{1}{p}}
-\tag{6}
-$$
-​	(2) $L0$ 范数：0 范数表示向量中非零元素的个数（即为其稀疏度）</p>
-<p>​	(3) $L1$ 范数：即向量元素绝对值之和，$p$ 范数取1，即为1范数
-$$
-{||x||}_1=\sum^n_1 {|| x_i || }
-\tag{7}
-$$</p>
-<p>​	(4) $L2$ 范数：即向量元素绝对值的平方和再开发，也称欧几里得距离，$p$ 范数取2，即为2范数
-$$
-{||x||}_{2}=\sqrt{\sum^{n}_1|| x_i ||^2}
-\tag{8}
-$$</p>
-<p>​	(5) $\infty $ 范数：即所有向量元素的绝对值中的最大值，$p$ 范数取 $\infty $，即为 $\infty $ 范数
-$$
-{||x  ||}_{\infty }=\underset{i}{\max}{\left | x_i \right |}
-\tag{9}
-$$</p>
-<p>​	(6) $-\infty $ 范数：即所有向量元素绝对值中的最小值，$p$ 范数取$-\infty $，即为 $-\infty $ 范数
-$$
-{||x  ||}_{-\infty }=\underset{i}{\min}{\left | x_i \right |}
-\tag{10}
-$$
-<strong>图形描述</strong></p>
-<p>​		从 Fig 2、Fig 3 图可以看出：q(p)越小，曲线越贴近坐标轴，q(p)越大，曲线越远离坐标轴，并且棱角越明显，当q(p)取0时候，是完全和坐标轴贴合，当q(p)取无穷的时候，呈现正方体形状。同时也可以看出，采用不同的范数作为正则项，会得到完全不同的算法模型结果，故而对于不同要求的模型，应该采用不同的范数作为正则项。</p>
-<p><img src="/public/2019/07/17/AI/regulation_baysian/1563354053269.png" alt="1563354053269"></p>
-<div align="center"> Fig 2. 向量长度为2维的范数约束</div>
-![1563354456894](regulation_baysian/1563354456894.png)
-<div align="center"> Fig 3. 向量长度为3维的范数约束</div>
-## 3 深度理解
-<p>​		为了更好的理解正则化技术原理，下面从4个方面进行深度分析，希望对大家理解有帮助。</p>
-<h3 id="3-1-简单数值假设分析法"><a class="header-anchor" href="#3-1-简单数值假设分析法">¶</a>3.1 简单数值假设分析法</h3>
-<p>​		此处以L2范数讲解，下面的各图形来自吴恩达的机器学习课程。</p>
-<p><img src="/public/2019/07/17/AI/regulation_baysian/image-20190619002115576.png" alt="image-20190619002115576"></p>
-<div align="center"> Fig 4. 不同参数下的曲线拟合结果</div>
-​		左边的曲线拟合是欠拟合，中间的曲线拟合是刚好合适，右边的曲线拟合是过拟合。对于右边的拟合曲线，有
-$$
-h_{\theta}(x)={\theta}_0+{\theta}_0 x_1 +{\theta}_2 x_2^2 +{\theta}_3 x_3^3 +{\theta}_4 x_4^4
-\tag{11}
-$$
-​		从上式可以看出，由于$\theta_3$和$\theta_4$对应了高阶，导致拟合曲线是4阶曲线，出现了过拟合。正则化的目的为适当缩减$\theta_3$和$\theta_4$的值，例如都为0.0001，则上述曲线本质上等价与
-$$
-h_{\theta}(x)={\theta}_0 + {\theta}_1 x_1 +{\theta}_2 x_2^2
-\tag{12}
-$$
-​		也就是变成了中间的刚好合适的拟合曲线。对于$\theta_3$ 和$\theta_4$增加 L2 正则项后的代价函数表达式为：
-$$
-J(\theta)= \underset{\theta}{\min}\frac{1}{n}\sum_{i=1}^{n}((h_{\theta}(x_i)-y_i)+1000{\theta}_3^2 + 1000 {\theta}_4^2)
-\tag{13}
-$$
-​		从上式可以看出，$\theta_3^2$ 和 $\theta_4^2$ 均大于 0，其乘上了1000，要 $J(\theta)$ 是最小，则会迫使模型学习到的$\theta_3$ 和 $\theta_4$ 会非常小，因为只有在$\theta_3$ 和 $\theta_4$ 会非常小的情况下整个代价函数值才会取的较小值。在实际开发中，是对所有参数进行正则化，为了使代价函数尽可能的小，所有的参数 $\theta$ 的值（不包括 $\theta_0$）都会在一定程度上减小，但是减小程度会不一样，从而实现了权重衰减、简化模型复杂度的作用。
-<h3 id="3-2-图形分析法"><a class="header-anchor" href="#3-2-图形分析法">¶</a>3.2 图形分析法</h3>
-<p>​		此处采用L1和L2范数讲解：
-<strong>(1) L2 范数正则</strong>
-$$
-J(\beta)=\sum_{i=1}^{n}(y_i-{\beta}^T x_i)^2 + \lambda {|| {\beta} ||}_2^2
-\tag{14}
-$$
-<img src="/public/2019/07/17/AI/regulation_baysian/1563366078400.png" alt="1563366078400"></p>
-<div align="center"> Fig 5. L2 范数与代价函数的寻优图示</div>
-​		在 Fig 5 中，蓝色的圆形空间表示 L2 范数空间，设为 $\beta_1^2 + \beta_2^2 = r^2$，可以看出，当 $r$ 从 0 逐渐增大时候，该圆形也逐渐增大，红色的线表示原始代价函数解空间即 $\sum_{i=1}^{n}(y_i-\beta^T x_i)^2$，此处为了方便绘图，设参数只有2维。红色圆环上的任何一点都表示一个可行解即代表一组$\beta_1$、$\beta_2$，其中任何一个红色圆环上面的$\beta_1$，$\beta_2$对应的代价函数值一样（可以简单理解为等值线），$\hat{\beta}$ 代表最佳解空间。
-<h2 id="4-贝叶斯角度分析"><a class="header-anchor" href="#4-贝叶斯角度分析">¶</a>4. 贝叶斯角度分析</h2>
-<p>​		以L1和L2范数为例，所得结论可以推广到P范数中，首先需要知道：整个最优化问题从贝叶斯观点来看是一种贝叶斯最大后验估计，其中正则化项对应后验估计中的先验信息，损失函数对应后验估计中的似然函数，两者的乘积即对应贝叶斯最大后验估计的形式。针对L1和L2范数还有结论：<strong>L2 范数相当于给模型参数设置一个协方差为1/alpha的零均值高斯先验分布，L1 范数相当于给模型参数 设置一个参数为1/alpha 拉普拉斯先验分布</strong>。</p>
-<p>​		为了讲清楚上述结论，需要具备几点前置知识点：(1) 高斯分布和拉普拉斯分布的定义和形状；(2) 贝叶斯定理；(3) 最大似然估计；(4) 最大后验估计。下面我对这4个知识点进行解释。</p>
-<p><strong>(1)</strong> <strong>高斯分布和拉普拉斯分布</strong></p>
-<p><img src="/public/2019/07/17/AI/regulation_baysian/0.png" alt="0?wx_fmt=png"></p>
-<p><img src="/public/2019/07/17/AI/regulation_baysian/0-20190610163845194.png" alt="0?wx_fmt=png"></p>
-<p><strong>(2)</strong> <strong>最大似然估计</strong></p>
-<p><img src="/public/2019/07/17/AI/regulation_baysian/0-20190610163845276.png" alt="0?wx_fmt=png"></p>
-<p>​		如果上述公式不能理解，请各位读者去复习一下大学课程《概率论与数理统计》中的参数估计章节，为了更方便理解，下面举一个例子：假设我要统计出整个大学内所有同学的身高分布情况，设全校一共20000人，数量庞大，所有人都去问一遍不太靠谱，所以我打算采用抽样方法来估计，假设我已经知道身高分布服从高斯分布，但是我不知道高斯分布中的均值和方差参数，现在我打算采用最大似然估计方法来确定这两个参数。首先需要明确，全校20000即为总体X，我随机从各个班抽取10名同学，假设一共抽了2000个同学，那么2000同学就构成了样本空间，由于每个样本的概率密度函数已知，则很容易写出似然函数，对数求导即可求解参数。</p>
-<p><strong>(3)</strong> <strong>最大后验估计</strong></p>
-<p><img src="/public/2019/07/17/AI/regulation_baysian/0-20190610163845259.png" alt="0?wx_fmt=png"></p>
-<p><img src="/public/2019/07/17/AI/regulation_baysian/0-20190610163845297.png" alt="0?wx_fmt=png"></p>
-<p><img src="/public/2019/07/17/AI/regulation_baysian/0-20190610163845289.png" alt="0?wx_fmt=png"></p>
-<h2 id="5-例子"><a class="header-anchor" href="#5-例子">¶</a>5. 例子</h2>
-<h3 id="5-1-逻辑回归"><a class="header-anchor" href="#5-1-逻辑回归">¶</a>5.1 逻辑回归</h3>
-<p>​		二分类逻辑回归使用Sigmoid作为决策函数进行分类，该函数可以将任意的输入映射到[0,1]区间，当预测结果小于0.5，则表示负类，当预测结果大于0.5.则表示正类，其模型本质是求最大似然估计，具体求解似然函数通常使用梯度下降法，而前面说过：最大似然估计法没有考虑训练集以外的因素，很容易造成过拟合，故而逻辑回归一般采用L2范数进行正则化操作，Sigmoid函数定义和图形如下：</p>
-<p><img src="/public/2019/07/17/AI/regulation_baysian/0.jpeg" alt="0?wx_fmt=png"></p>
-<h3 id="5-2-岭回归-Ridge-Regression"><a class="header-anchor" href="#5-2-岭回归-Ridge-Regression">¶</a>5.2 岭回归(Ridge Regression)</h3>
-<p>​		岭回归本质上是针对线性回归问题引入了L2范数正则，通过缩减回归系数避免过拟合问题，最先用来处理特征数多于样本数的情况(高维小样本问题)，现在也用于在估计中加人偏差，从而得到更好的估计，加了正则化后的代价函数如下：</p>
-<p><img src="/public/2019/07/17/AI/regulation_baysian/0-20190610174921016.png" alt="0?wx_fmt=png"></p>
-<h3 id="5-3-Lasso-回归"><a class="header-anchor" href="#5-3-Lasso-回归">¶</a>5.3 Lasso 回归</h3>
-<p>​		拉索回归(lasso回归)本质上是针对线性回归问题引入了L1范数正则，通过缩减回归系数避免过拟合问题，其不同于L2范数，其可以将某些系数缩减为0即所谓的具备稀疏性(稀疏性的好处是简化计算、容易理解模型、减少存储空间、不容易出现过拟合等等)，加了正则化后的代价函数如下：</p>
-<p><img src="/public/2019/07/17/AI/regulation_baysian/0-20190610174920968.png" alt="0?wx_fmt=png"></p>
-<p>​		其中，参数函数和岭回归中相同。L1范数罚有一个问题：由于|X|函数在0处不可导，故而直接使用最小二乘法、梯度下降法等方法均失效，但是由于其为第一类间断点中的可去间断点，可以通过补充该点的定义解决，通常，对于线性回归中的lasso回归可以采用近似的前向逐步回归替代。</p>
-<h3 id="5-4-SVM"><a class="header-anchor" href="#5-4-SVM">¶</a>5.4 SVM</h3>
-<p>​		支持向量机SVM优化目的为寻找一个超平面，使得正负样本能够以最大间隔分离开，从而得到更好的泛化性能，其通过引入核函数来将低维线性不可分的样本映射到高维空间从而线性可分，通过引入惩罚参数C(类似于正则化参数)来对错分样本进行惩罚，从而减少模型复杂度，提高泛化能力，其优化目标如下：</p>
-<p><img src="/public/2019/07/17/AI/regulation_baysian/0-20190610174921029.png" alt="0?wx_fmt=png"></p>
-<p>​		大家如果不知道上面公式的推导，不用紧张，对于本次内容不是重点，只需要关注后面正则项部分，惩罚参数C作用和正则化参数作用一致，只是反相关而已。需要明白以下结论：</p>
-<p>​		<strong>(1)</strong> C越大，正则化参数越小，表示对分错样本的惩罚程度越大，正则化作用越小，偏差越小，方差越大，越容易出现过拟合(通俗理解，原本将低维空间映射到5维空间正好线性可分，但是由于惩罚过于严重，任何一个样本分错了都不可原谅，结果系统只能不断提高维数来拟合样本，假设为10维，最终导致映射维数过高，出现过拟合样本现象，数学上称为VC维较大)；</p>
-<p>​		<strong>(2)</strong> C越小，正则化参数越大，表示对分错样本的惩罚程度越小，正则化作用越大，偏差越大，方差越小，越容易出现欠拟合(通俗理解，原本将低维空间映射到5维空间正好线性可分，但是由于惩罚过小，分错了好多样本都可以理解，比较随意，结果系统也采用简化版来拟合样本，假设为3维，最终导致映射维数过低，出现欠拟合样本现象，数学上称为VC维较小)。</p>
-<h2 id="6-总结"><a class="header-anchor" href="#6-总结">¶</a>6. 总结</h2>
-<p>根本目的本质：防止过拟合，提高模型泛化能力。</p>
-<p>正则化技术分类：
-<strong>狭义上</strong>（不同地方叫法不同）</p>
-<ul>
-<li>在早期的机器学习领域一般只是将范数惩罚叫做正则化技术</li>
-<li>规则化、权重衰减</li>
-<li>从贝叶斯角度考虑，正则项等价于引入参数的模型先验概率</li>
-</ul>
-<p><strong>广义上</strong>：
-能够显著减少方差，而不过度增加偏差的策略都可以认为是正则化技术，推广的正则化技术还有：扩增样本集、早停止、Dropout、集成学习、多任务学习、对抗训练、参数共享等。</p>
-<h2 id="Reference"><a class="header-anchor" href="#Reference">¶</a>Reference</h2>
-<p><a href="https://blog.csdn.net/BigData_Mining/article/details/81631249" target="_blank" rel="noopener">正则化总结的比较好比较全面的文章</a></p>
-]]></content>
-      <categories>
-        <category>机器学习</category>
-        <category>正则化</category>
-      </categories>
-      <tags>
-        <tag>人工智能</tag>
-        <tag>机器学习</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Jupyter notebook的配置</title>
-    <url>/public/2017/07/03/linux/jupyter_notebook/</url>
-    <content><![CDATA[<p><strong>前言</strong>
-本文介绍jupyter notebook的安装配置过程和实用技巧。
-<a href="https://jupyter.readthedocs.io/en/latest/index.html" target="_blank" rel="noopener">jupyter.readthedocs教程</a></p>
-<a id="more"></a>
-<h2 id="1-安装与配置"><a class="header-anchor" href="#1-安装与配置">¶</a>1 安装与配置</h2>
-<h3 id="1-1-安装-jupyter"><a class="header-anchor" href="#1-1-安装-jupyter">¶</a>1.1 安装 jupyter</h3>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">conda install jupyter</span><br><span class="line"><span class="comment"># pip install jupyter -y</span></span><br></pre></td></tr></table></figure>
-<h3 id="1-2-修改配置文件"><a class="header-anchor" href="#1-2-修改配置文件">¶</a>1.2 修改配置文件</h3>
-<ul>
-<li>生成配置文件</li>
-</ul>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">jupyter notebook --generate-config</span><br><span class="line">vim ~/.jupyter/jupyter_notebook_config.py</span><br></pre></td></tr></table></figure>
-<ul>
-<li>修改配置文件内容</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">c.NotebookApp.ip = <span class="string">'0.0.0.0'</span></span><br><span class="line">c.NotebookApp.port = <span class="number">8018</span></span><br><span class="line"><span class="comment"># 设置密码</span></span><br><span class="line">c.NotebookApp.password = <span class="string">u'sha1:bcd259ccf...your hashed password here'</span></span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>Tip: 利用ipython 生成密码</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&gt; In [1]: from IPython.lib import passwd</span><br><span class="line">&gt; In [2]: passwd()</span><br><span class="line">&gt;   Enter password:</span><br><span class="line">&gt;   Verify password:</span><br><span class="line">&gt;   Out[2]: &apos;sha1:67xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&apos;</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
-</blockquote>
-<p>我选用的是password密码登陆jupyter的方案，其他的密码登陆方案见 <a href="https://zhuanlan.zhihu.com/p/23110830" target="_blank" rel="noopener">link</a></p>
-<h3 id="1-3-安装插件管理"><a class="header-anchor" href="#1-3-安装插件管理">¶</a>1.3 安装插件管理</h3>
-<p>jupyter_contrib_nbextensions 为 jupyter notebook 扩展插件管理器，下面简称nbextensions。</p>
-<p>nbextensions的github <a href="https://github.com/ipython-contrib/jupyter_contrib_nbextensions" target="_blank" rel="noopener">repo</a>
-nbextensions的教程<a href="https://jupyter-contrib-nbextensions.readthedocs.io/en/latest/" target="_blank" rel="noopener">nbextensions_manual_readthedocs</a></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 用conda安装</span></span><br><span class="line">conda install jupyter</span><br><span class="line">conda install -c conda-forge jupyter_contrib_nbextensions</span><br><span class="line"></span><br><span class="line"><span class="comment"># pip安装</span></span><br><span class="line">pip install jupyter_contrib_nbextensions</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使能</span></span><br><span class="line">jupyter contrib nbextension install</span><br></pre></td></tr></table></figure>
-<p>我启用的一些插件</p>
-<table>
-<thead>
-<tr>
-<th>plugins</th>
-<th></th>
-<th></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Table of Contents (2)</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>Freeze</td>
-<td>比较好的一个插件，可以用来冻住cell</td>
-<td></td>
-</tr>
-<tr>
-<td>nbTranslate</td>
-<td>这个插件利用Google翻译cell很好用</td>
-<td><a href="https://github.com/jfbercher/jupyter_nbTranslate/blob/master/languages.js" target="_blank" rel="noopener">support languages</a></td>
-</tr>
-<tr>
-<td>ExecuteTime</td>
-<td>显示执行时间</td>
-<td></td>
-</tr>
-<tr>
-<td>Ruler</td>
-<td>代码标尺</td>
-<td></td>
-</tr>
-<tr>
-<td>Autopep8</td>
-<td>代码美化</td>
-<td></td>
-</tr>
-<tr>
-<td>Scratchpad</td>
-<td>代码测试</td>
-<td></td>
-</tr>
-</tbody>
-</table>
-<p>其他花样的配置</p>
-<p><a href="https://zhuanlan.zhihu.com/p/74950682" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/74950682</a></p>
-<h3 id="1-4-conda环境的设置"><a class="header-anchor" href="#1-4-conda环境的设置">¶</a>1.4 conda环境的设置</h3>
-<p>jupyter使用Anaconda miniconda环境需要安装的组件。
-[conda repo][<a href="https://repo.anaconda.com" target="_blank" rel="noopener">https://repo.anaconda.com</a>]</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 创建虚拟环境</span></span><br><span class="line">conda create -n env_name python=3.6</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> conda虚拟核组件 切换kernel</span></span><br><span class="line">conda install nb_conda_kernels</span><br></pre></td></tr></table></figure>
-<h3 id="1-5-解决界面中英文混杂"><a class="header-anchor" href="#1-5-解决界面中英文混杂">¶</a>1.5 解决界面中英文混杂</h3>
-<img src="/public/2017/07/03/linux/jupyter_notebook/image-20200413125705473.png" alt="image-20200413125705473" style="zoom:50%;">
-<p>如图，jupyter 界面中中英文混杂，解决方法为将界面文字中文切换成英文。</p>
-<p>原理：让jupyter就找不到他的中文配置文件夹。</p>
-<p>找到notebook的汉化文件夹的路径，比如<code>~/miniconda3/lib/python3.6/site-packages/notebook/i18n/zh_CN</code>。将其重命名如加个下划线作为后缀<code>zh_CN_old</code>，重启jupyter就行了。</p>
-<p>为了方便，我作了个脚本自动找<code>notebook/i18n/zh_CN</code>位置并改名此文件夹，如下。</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> shutil</span><br><span class="line"><span class="keyword">from</span> distutils.sysconfig <span class="keyword">import</span> get_python_lib</span><br><span class="line"><span class="comment"># 获取site-package包的位置</span></span><br><span class="line">path_zh=get_python_lib()+<span class="string">'/notebook/i18n/zh_CN'</span></span><br><span class="line">path_zh_old=get_python_lib()+<span class="string">'/notebook/i18n/zh_CN_old'</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 将 notebook/i18n/zh_CN 改为 notebook/i18n/zh_CN_old</span></span><br><span class="line">shutil.move(path_zh,path_zh_old)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 返回中文</span></span><br><span class="line"><span class="comment"># shutil.move(path_zh_old,path_zh)</span></span><br></pre></td></tr></table></figure>
-<p>重启jupyter就行了, 这样jupyter就找不到这个中文配置，返回中文改回去就行了<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup>。</p>
-<h2 id="2-使用的技巧"><a class="header-anchor" href="#2-使用的技巧">¶</a>2 使用的技巧</h2>
-<h3 id="2-1-快捷键"><a class="header-anchor" href="#2-1-快捷键">¶</a>2.1 快捷键</h3>
-<hr>
-<table>
-<thead>
-<tr>
-<th>在非激活状态即是蓝颜色的边框</th>
-<th>内容</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>A</td>
-<td>insert cell above</td>
-</tr>
-<tr>
-<td>B</td>
-<td>insert cell below</td>
-</tr>
-<tr>
-<td>H</td>
-<td>查看帮助</td>
-</tr>
-<tr>
-<td>⌃↩(ctrl + enter)</td>
-<td>run selected cells</td>
-</tr>
-</tbody>
-</table>
-<h3 id="2-2-显示图片-视频-音频"><a class="header-anchor" href="#2-2-显示图片-视频-音频">¶</a>2.2 显示图片 视频 音频</h3>
-<p>主要是画图、显示视频和音频的方法。</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 图片</span></span><br><span class="line">%%HTML</span><br><span class="line">&lt;img src=<span class="string">"xxx.jpg"</span>  alt=<span class="string">"title"</span> /&gt;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 视频</span></span><br><span class="line">%%HTML</span><br><span class="line">&lt;video width=<span class="string">"330"</span> height=<span class="string">"150"</span> controls&gt;</span><br><span class="line">&lt;source src=<span class="string">"out_all.mp4"</span> type=<span class="string">"video/mp4"</span>&gt;</span><br><span class="line">&lt;/video&gt;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 语音</span></span><br><span class="line">%%HTML</span><br><span class="line">&lt;audio src=<span class="string">"out.wav"</span> controls=<span class="string">"controls"</span>&gt;</span><br><span class="line">Your browser does <span class="keyword">not</span> support the audio element.</span><br><span class="line">&lt;/audio&gt;</span><br><span class="line"></span><br><span class="line"><span class="comment"># html t是html的字符串</span></span><br><span class="line"><span class="keyword">from</span> IPython.core.display <span class="keyword">import</span> HTML</span><br><span class="line">HTML(str(t))</span><br></pre></td></tr></table></figure>
-<h3 id="2-3-其他技巧"><a class="header-anchor" href="#2-3-其他技巧">¶</a>2.3 其他技巧</h3>
-<h4 id="修复视频文件"><a class="header-anchor" href="#修复视频文件">¶</a>修复视频文件</h4>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fix_use_ffmpeg</span><span class="params">(in_name, out_name,message=<span class="string">""</span>)</span>:</span></span><br><span class="line">    <span class="keyword">import</span> os</span><br><span class="line">    <span class="keyword">if</span> os.path.isfile(out_name):</span><br><span class="line">    os.remove(out_name)</span><br><span class="line">    cmd = <span class="string">'ffmpeg -i %s %s'</span> % (in_name, out_name)</span><br><span class="line">    log_lines = os.popen(cmd).readlines()</span><br><span class="line">    print(message,<span class="string">"ok"</span>)</span><br></pre></td></tr></table></figure>
-<h4 id="加载自己的模块文件"><a class="header-anchor" href="#加载自己的模块文件">¶</a>加载自己的模块文件</h4>
-<p>出于性能考虑，每个模块在每个解释器会话中只导入一遍。因此，如果你修改了你的模块，需要重启解释器；或者，如果你就是想交互式的测试这么一个模块，可以用 imp.reload() 重新加载，例如 <code>import imp; imp.reload(modulename)</code></p>
-<h4 id="导出pdf支持中文"><a class="header-anchor" href="#导出pdf支持中文">¶</a>导出pdf支持中文</h4>
-<p>Jupyter Notebook 输出PDF中文支持 <a href="https://www.jianshu.com/p/c3f660188766" target="_blank" rel="noopener">link</a></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> /usr/<span class="built_in">local</span>/lib/python3.6/site-packages/nbconvert/templates/latex</span><br><span class="line"></span><br><span class="line"><span class="comment"># 在里面的模版中添加，前提是安装好了texlive</span></span><br><span class="line">% add</span><br><span class="line">\usepackage&#123;ctex&#125;</span><br></pre></td></tr></table></figure>
-<h4 id="ipynb2pdf"><a class="header-anchor" href="#ipynb2pdf">¶</a>ipynb2pdf</h4>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python3</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string">Current version of Jupyter doesn't support pdf exporting when it comes to</span></span><br><span class="line"><span class="string">russian language in the document. To fix this, current script has born.</span></span><br><span class="line"><span class="string">It requires nbconvert as long as jupyter to be installed.</span></span><br><span class="line"><span class="string">Author:     Sergey Ivanychev</span></span><br><span class="line"><span class="string">Email:      sergeyivanychev@gmail.com</span></span><br><span class="line"><span class="string">Revision:   1</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> subprocess</span><br><span class="line"></span><br><span class="line">FORMAT = <span class="string">".ipynb"</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string">TODO:   What if user has ___o.tex in current folder?</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line">TEMP_TEX = <span class="string">"___o.tex"</span></span><br><span class="line">TEMP_FOLDER = <span class="string">"/tmp"</span></span><br><span class="line">TRASH_EXTENSIONS = [<span class="string">".aux"</span>, <span class="string">".out"</span>, <span class="string">".log"</span>]</span><br><span class="line">OLD1 = <span class="string">r"\usepackage[utf8x]&#123;inputenc&#125;"</span></span><br><span class="line">NEW1 = <span class="string">r"""</span></span><br><span class="line"><span class="string">    \usepackage[utf8x]&#123;inputenc&#125;</span></span><br><span class="line"><span class="string">    \usepackage&#123;ctex&#125;</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line">REPLACE = [(OLD1, NEW1)]</span><br><span class="line">HELP = <span class="string">"""</span></span><br><span class="line"><span class="string">This script is aimed at correctly converting .ipynb to .pdf files.</span></span><br><span class="line"><span class="string">You may use it via</span></span><br><span class="line"><span class="string"># ipynb2pdf Solution.ipynb</span></span><br><span class="line"><span class="string">To get .pdf in the same directory</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">check_args</span><span class="params">(argv)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> (len(argv) &gt; <span class="number">2</span>):</span><br><span class="line">        print(<span class="string">"Please, type .ipynb filename as argument"</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span></span><br><span class="line">    <span class="keyword">if</span> (len(argv) == <span class="number">1</span>):</span><br><span class="line">        print(HELP)</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span></span><br><span class="line">    script, filename = argv</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> is_ipynb(filename):</span><br><span class="line">        print(<span class="string">"Please, type .ipynb filename as argument"</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">remove_extention</span><span class="params">(string, extention)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    Removes argumented extention from the end of the string</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    <span class="keyword">if</span> extention[<span class="number">0</span>] != <span class="string">'.'</span>:</span><br><span class="line">        extention = <span class="string">"."</span> + extention</span><br><span class="line">    <span class="keyword">if</span> string.endswith(extention):</span><br><span class="line">        string = string[<span class="number">0</span>:-len(extention)]</span><br><span class="line">    <span class="keyword">return</span> string</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">is_ipynb</span><span class="params">(filename)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> filename.endswith(<span class="string">".ipynb"</span>):</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">    <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">tex2pdf</span><span class="params">(filename, desired_name)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    Converts filename (which is tex document) to desired_name (which is pdf)</span></span><br><span class="line"><span class="string">    leaving no trash in current folder</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    base = remove_extention(filename, <span class="string">"tex"</span>)</span><br><span class="line">    output = base + <span class="string">".pdf"</span></span><br><span class="line">    ret = subprocess.call(<span class="string">"xelatex %s"</span> % filename , </span><br><span class="line">                                        shell=<span class="literal">True</span>, stdout=subprocess.PIPE)</span><br><span class="line">    <span class="keyword">for</span> ext <span class="keyword">in</span> TRASH_EXTENSIONS:</span><br><span class="line">        os.unlink(base + ext)</span><br><span class="line">    os.rename(output, desired_name)</span><br><span class="line">    <span class="keyword">return</span> ret</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">(argv)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> check_args(argv) == <span class="number">-1</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span></span><br><span class="line">    script, filename = argv</span><br><span class="line">    ret = subprocess.call(<span class="string">"jupyter nbconvert %s --to latex --output %s"</span> %</span><br><span class="line">                                            (filename, TEMP_TEX), shell=<span class="literal">True</span>,</span><br><span class="line">                                            stdout=subprocess.PIPE)</span><br><span class="line">    <span class="keyword">if</span> (ret != <span class="number">0</span>):</span><br><span class="line">        print(<span class="string">"ret = %d"</span> % ret)</span><br><span class="line">        os.unlink(TEMP_TEX)</span><br><span class="line">        print(<span class="string">"Converting to LaTeX failed. Return code: %d"</span> % ret)</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span></span><br><span class="line">    tex_file = open(TEMP_TEX, <span class="string">"r"</span>)</span><br><span class="line">    tex = tex_file.read()</span><br><span class="line">    <span class="keyword">for</span> old, new <span class="keyword">in</span> REPLACE:</span><br><span class="line">        tex = tex.replace(old, new)</span><br><span class="line">    tex_file.close()</span><br><span class="line">    os.unlink(TEMP_TEX)</span><br><span class="line">    tex_file = open(TEMP_TEX, <span class="string">"w+"</span>)</span><br><span class="line">    tex_file.write(tex)</span><br><span class="line">    tex_file.close()</span><br><span class="line">    ret = tex2pdf(TEMP_TEX, remove_extention(filename, <span class="string">".ipynb"</span>) + <span class="string">".pdf"</span>)</span><br><span class="line">    tex_file.close()</span><br><span class="line">    os.unlink(TEMP_TEX)</span><br><span class="line">    print(remove_extention(filename, <span class="string">".ipynb"</span>) + <span class="string">".pdf - DONE"</span>)</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</span><br><span class="line">    exit(main(sys.argv))</span><br></pre></td></tr></table></figure>
-<hr class="footnotes-sep">
-<section class="footnotes">
-<ol class="footnotes-list">
-<li id="fn1" class="footnote-item"><p><a href="https://www.zhihu.com/question/302814218/answer/1029684239" target="_blank" rel="noopener">https://www.zhihu.com/question/302814218/answer/1029684239</a> <a href="#fnref1" class="footnote-backref">↩︎</a></p>
-</li>
-</ol>
-</section>
-]]></content>
-      <categories>
-        <category>jupyter</category>
-      </categories>
-      <tags>
-        <tag>工具</tag>
-        <tag>Python</tag>
-        <tag>笔记应用</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>红楼梦与我</title>
-    <url>/public/2017/05/14/readings/hongloumeng/</url>
-    <content><![CDATA[<p>红楼梦是我国四大名著之一，主要内容是贾府的兴衰和宝黛的悲剧爱情。电视剧红楼梦2010版，我是从八月开始看的，看完到现在，也有小一个月了。在网上大家对这版电视剧褒贬不一。与我来说，我是喜欢这部剧的，不能说拍得很好，但这部剧却勾起了我读书与写字的兴趣。于是乎，做了一篇随笔，以记录我的一些感触。</p>
-<a id="more"></a>
-<p>我记得最早是小学，我们还是顾着打玻璃珠和丢沙包的年纪，学校旁边的小书店里，也都是七龙珠，哆啦A梦，柯南的小人书，老师们讲到四大名著，顺带提了下红楼梦，其他没印象了。我们学习最多的是中文的拼音和书写，作文都是打油，日记也闹了不少笑话。后来上初中，有一次寒假附加作业是阅读红楼梦，我虽毫无兴趣，但还是硬着头皮，去新华书店，试看红楼梦。120章的红楼，厚得连看下去的勇气也没有。略看了几下，最后，做了一个红楼梦不好看的论断，也就放在那边了。那时有老版的红楼梦电视剧播映，打开电视偶尔会遇见，但是立马换台，央视的西游记与情深深雨蒙蒙，湖南电视台的还珠格格，也是欣赏了好几遍。再者，有动画片谁有兴趣去看这些什么破剧，关于书本，最多也就是看看汤姆索亚历险记。</p>
-<p>再后来，去启中读书，学习上比较紧张，再加上理科班的非文学氛围，对这些文学的东西更不感冒。尽管偶尔也会入耳一些其中的人物，比如林妹妹，刘姥姥，也是不用大脑耳朵直接过滤。当时，大伙是杂志，读者，青年文摘读得比较多，班上一本，全班查阅，杂志文章篇幅较小，读起很顺很舒服。期间，与红楼的唯一一次接触是，高中教科书上有刘姥姥进大观园的章节，翻了一遍，当时，感叹人物好多，理不出人物关系，完全放弃看完红楼的欲望。以为姥姥是贾府的姥姥，猩猩然想着以后可以说看过一段红楼，红楼也比较贵不如多买几本读者，积累作文素材。不知什么时候，班上网络小说之风随着mp4和智能手机的普及而吹起，我也用MP4刷完了一两部网络小说，感觉都是一个套路，主角都是绝处逢生，越来越无敌，也就不敢兴趣了。</p>
-<p>再然后，我上大学，藏书400百万册的成电图书馆，也并没有引起我读文学类的欲望，大学四年借的专业工具类书比较多，想来也是浪费资源。在一个工科高校，文学方面的课程几乎没有，虽说有个大学语文的选修课，俨然不感兴趣。大学里，再一次看到有人在看红楼梦电视剧，也是大二的时候的人工智能课上，也是闲得无聊。再后来，大四时，手机上自带一个蜻蜓网络电台应用，无聊点开蒋勋老师评述的红楼梦音频，红学大师讲到他与红楼梦的相遇，同时，他介绍的红楼基本背景和人物，通俗易懂，一下子引起我的兴趣。他说红楼梦写的都是15、6岁人的故事，15、16岁就可以读了。回想我15、16岁，基本没看什么名著。要说四大名著，我也就看了三国和水浒的少年版。上次回家，看美剧，老妈突然蹦出句，不能光看英文也应当看看我们老祖宗的文化。</p>
-<p>现在得空，就这样抱着惭愧和一丝尝试我看起了2010版红楼梦。在这我得承认，我是个演员控。不得不说，三大主演都很不错。</p>
-<p>50集过后，原来红楼讲得是这个，并表示有兴趣去读读名著了。原来有这么多原来。</p>
-<ul>
-<li>
-<p>人物家族命运令人感慨。作者写出超越那个时代的朦胧的爱情与不得不提的丧心病狂的全部悲剧，果然是个失意文人的作品。 可叹停机德，堪怜咏絮才。宝钗落落大方德才兼备，黛玉因情而伤而痛去世，宝玉虽与宝钗结婚，最后离家成道去。精于人情世故,，胸有城府的王熙凤，平日的爽朗笑声终究悲剧，贾府里多么好的领导，最后也人情冷暖，不免为其伤心。刘姥姥，其实是个成功的投机分子，但也是朴实善良的“穷亲戚”，最后救了巧儿。十二金钗各有个的悲剧，正如宝玉在虚幻仙境里警幻仙姑给的设定。原来故事一开始就把结局告诉了读者。</p>
-</li>
-<li>
-<p>体验古代贵族文化。里面还有个诗社的组织，古人的结社，好有雅致，也会给人起“绰号”。除此以外还有击鼓传花，有时主题是讲笑话有时对诗。猜灯谜，中秋赏月，生日宴会等等。</p>
-</li>
-<li>
-<p>语言魅力。打秋风，这是形容刘姥姥找找贾府接济用的。恼，生气，或者使生气。不同人的称谓，宝兄弟，宝二爷，宝姐姐或者好姐姐，林妹妹或者好妹妹。</p>
-</li>
-<li>
-<p>情节回味无穷。刘姥姥进大观园，是贾母和姥姥差不多年纪想和她聊聊，邀请她的。乡村来打秋风的刘姥姥像是在参观皇宫。在后面时期  ，家族里一次比一次捉襟见肘的聚会，可以看见这些家族的衰落。中国的各种人情世故体现在这里面。四个大家族，一个小社会。</p>
-</li>
-</ul>
-<p>以上是我的一点点感悟。</p>
-<p>只是，我与红楼梦，还差80章书页，希望还能有计划地读完。</p>
-<p>2016年于成电</p>
-]]></content>
-      <categories>
-        <category>读书笔记</category>
-      </categories>
-      <tags>
-        <tag>故事</tag>
-        <tag>《红楼梦》</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>【转】《中华古籍资源库》中国国家图书馆</title>
-    <url>/public/2021/12/16/readings/zhonghuaguji/</url>
-    <content><![CDATA[<p><strong>简介</strong></p>
-<p>“中华古籍资源库”是“中华古籍保护计划”的重要成果。2016年9月28日，“中华古籍资源库”正式开通运行，陆续发布国家图书馆藏善本和普通古籍、法国国家图书馆藏敦煌遗书、天津图书馆藏普通古籍、日本永青文库捐赠汉籍、云南省图书馆善本古籍、芷兰斋藏稿抄校本等古籍影像资源，总量超过3.3万部。</p>
-<p>《中华古籍资源库》！！！<br>
-网址：<a href="http://www.nlc.cn/pcab/zy/zhgj_zyk/" target="_blank" rel="noopener">http://www.nlc.cn/pcab/zy/zhgj_zyk/</a><br>
-查询：<a href="http://read.nlc.cn/thematDataSearch/toGujiIndex" target="_blank" rel="noopener">http://read.nlc.cn/thematDataSearch/toGujiIndex</a></p>
-<img src="/public/2021/12/16/readings/zhonghuaguji/image-20211216225907506.png" alt="image-20211216225907506" style="zoom:30%;">
-<a id="more"></a>
-<p>比如：《九章算数》的古籍</p>
-<img src="/public/2021/12/16/readings/zhonghuaguji/image-20211216231340351.png" alt="image-20211216231340351" style="zoom:30%;">
-<img src="/public/2021/12/16/readings/zhonghuaguji/image-20211216231141739.png" alt="image-20211216231141739" style="zoom:30%;">
-<p>比如：卷第九的勾股</p>
-<img src="/public/2021/12/16/readings/zhonghuaguji/image-20211216232009068.png" alt="image-20211216232009068" style="zoom:50%;">
-<ul>
-<li>
-<p>数字古籍
-国家图书馆收藏古籍15万部，其中善本古籍直接继承了南宋缉熙殿、元翰林国史院、明文渊阁、清内阁大库等皇家珍藏，以及明清以来许多私人藏书家的毕生所聚。宋元旧椠、明清精刻琳琅满目。通过全彩影像数字化和缩微胶卷转化影像方式建设，从2016年9月28日起陆续在线发布，目前已发布馆藏古籍2万余部，国家图书馆超过三分之二的善本古籍实现了在线阅览。</p>
-</li>
-<li>
-<p>数字方志
-地方志文献为我国所特有，也是国家图书馆独具特色的馆藏之一，所存文献数量与品质极高。该数据库以国家图书馆藏地方志文献建设，主要包括为清代（含清代）以前的方志资源6529种。</p>
-</li>
-<li>
-<p>赵城金藏
-《赵城金藏》被誉为国家图书馆四大镇馆之宝之一。《赵城金藏》是在金代刻的一部大藏，因为它藏在赵城县（今属山西洪洞县）广胜寺，所以后人将它定名为《赵城金藏》。全藏约七千卷左右，六千多万字，现存四千余卷。2017年12月28日，国家图书馆《赵城金藏》1281件正式发布。</p>
-</li>
-<li>
-<p>宋人文集
-国家图书馆精选所藏宋人文集善本二百七十五部，首选宋元刊本，次及明清精抄精刻，或经名家校勘题跋之本，通过缩微胶卷还原数字影像，并辅以详细书目建成本全文影像数据库，目前已发布275部，免费呈献公众利用。</p>
-</li>
-<li>
-<p>碑帖菁华
-以国家图书馆藏有的历代甲骨、青铜器、石刻等类拓片二十三万余件为基础建设的数据库，内容涉及历史、地理、政治、经济、军事、民族、民俗、文学、艺术、科技、建筑等方面。2019年11月12日又新增发布2595种馆藏明清碑刻拓片数字资源，现有元数据2.5万余条，影像3.1万余幅。</p>
-</li>
-<li>
-<p>甲骨世界
-被誉为二十世纪四大文献发现之一的甲骨文，集文献性、文物性、收藏性于一身，是研究我国商朝晚期不可多得的珍贵史料，该库包括甲骨实物元数据2964条，影像5932幅；甲骨拓片元数据2975条，影像3177幅。</p>
-</li>
-<li>
-<p>西夏文献
-以国家图书馆保存的西夏、元代孤本及各种西夏的珍贵实物资料为基础建设的数据库。包括西夏文献书目数据124条，原件影像近5000拍。</p>
-</li>
-<li>
-<p>西夏论著
-包括西夏研究论文篇名数据1200余条。</p>
-</li>
-<li>
-<p>年画撷英
-国家图书馆收藏了杨柳青、朱仙镇等地制作的4000余幅年画作品，从中精选出一部分制作了该库，并为每种年画编写了内容说明，重点介绍了该年画的故事梗概、历史背景、制作特色和相关知识。目前发布元数据及影像302组。</p>
-</li>
-<li>
-<p>前尘旧影
-该资源库收录了国家图书馆收藏的新旧照片3074组，真实生动地记录了过去的社会事件、历史人物、城乡面貌、名胜古迹和建筑服饰等，人们可从中解读出不同历史时期特定事物的形象特征和真实信息，具有十分重要的历史价值。</p>
-</li>
-<li>
-<p>敦煌遗珍
-国际敦煌项目（IDP）建设的数据库，发布来自敦煌和丝绸之路上的写本、绘画、纺织品及器物的信息和图片，其中包括国家图书馆藏敦煌写卷影像18万余拍。</p>
-</li>
-<li>
-<p>徽州善本家谱
-徽州善本家谱印刷资料数据库是中国国家图书馆与法国远东学院的合作项目，收录了中国国家图书馆藏善本古籍中徽州家谱243种286部，配有书影5437幅。</p>
-</li>
-<li>
-<p>中华医药典籍资源库（测试版）
-图书馆收藏的文献典籍是整理研究的基础资料，为使读者能够通过互联网检索、利用中医文献资源，国家图书馆（国家古籍保护中心）将逐步建设中华医药典藏资源库，目前首批对221种中医古籍影像进行发布测试。</p>
-</li>
-<li>
-<p>云南图书馆古籍
-云南省图书馆将该馆古籍数字资源共139种727册提供给国家图书馆（国家古籍保护中心），这批资源均是云南省图书馆所藏珍贵的、有代表性的古籍文献，特别是明代云南丽江木氏土司家族著述，更是明代少数民族汉文著述的代表。该批资源于2019年11月12日正式在线发布。</p>
-</li>
-<li>
-<p>天津图书馆古籍
-为进一步丰富古籍数字资源品种和版本，满足广大读者使用需求，2014年底，天津图书馆向国家图书馆（国家古籍保护中心）提供总量约5,800余种300万拍明清古籍数字资源，该批资源经加工后，于2018年9月28日、2019年1月28日分两批发布。</p>
-</li>
-<li>
-<p>上海图书馆家谱
-上海图书馆现藏有家谱近3万余种30余万册共计365个姓氏，收藏的家谱覆盖全国27个省、自治区及直辖市，是国内外收藏中国家谱原件最多的公藏机构，有着“全球中国家谱第一藏”之美誉。国家图书馆与上海图书馆合作，征集该馆所藏明清家谱资源2200余种，在国图网站发布使用。</p>
-</li>
-<li>
-<p>中华古籍善本联合书目
-中华古籍善本国际联合书目系统是由中文善本书国际联合目录项目发展而来的新数据库，著录了三十余家海内外图书馆所藏古籍善本，数据达2万多条，并配有1.4万余幅书影。</p>
-</li>
-<li>
-<p>东文研汉籍影像库
-东京大学东洋文化研究所收藏有大量中国古籍，其中包括东方文化学院东京研究所的旧藏以及大木幹一、长泽规矩也、仓石武四郎等各具特色的个人收藏。2009年11月，东洋文化研究所将所藏中文古籍4000余种，以数字化方式无偿提供给中国国家图书馆，在国图网站上面向读者提供服务。</p>
-</li>
-<li>
-<p>哈佛大学善本特藏
-哈佛大学哈佛燕京图书馆藏中文善本古籍特藏，以其质量之高、数量之大著称于世。为了方便海内外学人便捷地利用这些资料进行研究，同时以数字化形式保存这些中华古籍精品，2009年国家图书馆与哈佛大学哈佛燕京图书达成协议，对哈佛燕京图书馆所藏中文善本和齐如山专藏进行数字化。目前在线发布经部和史部善本数字资源741部，另有齐如山戏曲小说专藏204种。</p>
-</li>
-<li>
-<p>法藏敦煌遗书
-2015年，在法国国家图书馆与中国国家图书馆达成合作意向，由法国国家图书馆向中国国家图书馆赠送馆藏全部敦煌遗书高清数字资源。在双方共同努力下，实现了这批敦煌遗书的数字化回归，并于2018年3月5日正式在线发布，共计5300余号3.1万余拍。</p>
-</li>
-<li>
-<p>中华寻根网
-中华寻根网是国家图书馆与澳门基金会开展的文化合作项目，是以提供姓氏源流和家谱资源服务为核心、方便海内外华人寻根问祖活动的网络平台。“中华寻根网”目前提供500多个姓氏源流、2000多部家谱和6000种其他文献的阅览，以及自建家谱，交流联谊的互动服务。</p>
-</li>
-</ul>
-]]></content>
-      <categories>
-        <category>书籍</category>
-      </categories>
-      <tags>
-        <tag>资源</tag>
-        <tag>古籍</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Windows笔记本开共享wifi</title>
-    <url>/public/2015/04/14/shells/share_win_wifi/</url>
-    <content><![CDATA[<p><strong>前言</strong>
-网上有很多用笔记本设置无线热点的批处理，我中和了一下。复制下面代码到记事本，改后缀为bat就行了。其中，mssid和mkey可自定义</p>
-<a id="more"></a>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">@echo off</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">set mssid=GOODGOOD</span><br><span class="line">::网络名字</span><br><span class="line">set mkey=123456789</span><br><span class="line">::大于八位密码</span><br><span class="line"></span><br><span class="line">echo ***********************************************</span><br><span class="line">echo              打开承载网络  1</span><br><span class="line">echo              关闭承载网络  2</span><br><span class="line">echo              承载网络信息  3</span><br><span class="line">echo              设置网络信息  set</span><br><span class="line">echo              退出          e</span><br><span class="line">echo        （网络名字、密码可在源文件中改）</span><br><span class="line">echo           （请以管理员身份打开!!!）</span><br><span class="line">echo ***********************************************</span><br><span class="line">:start</span><br><span class="line">set /p var=请选择:</span><br><span class="line">if %var%==1 netsh wlan start hostednetwork &amp;&amp; echo 网络名字:%mssid% 密码:%mkey% &amp;&amp; GOTO start</span><br><span class="line">if %var%==2 netsh wlan stop hostednetwork &amp;&amp; GOTO start</span><br><span class="line">if %var%==3 netsh wlan show hostednetwork &amp;&amp; echo 网络名字:%mssid% 密码:%mkey% &amp;&amp; GOTO start</span><br><span class="line">if %var%==set netsh wlan set hostednetwork mode=allow ssid=%mssid% key=%mkey% &amp;&amp; echo 网络名字:%mssid% 密码:%mkey% &amp;&amp; GOTO start</span><br><span class="line">if %var%==e pause</span><br></pre></td></tr></table></figure>
-<h2 id="播放声音"><a class="header-anchor" href="#播放声音">¶</a>播放声音</h2>
-<p>保存为<code>播放声音.vbs</code>,可以播放声音</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">CreateObject(&quot;SAPI.SpVoice&quot;).Speak &quot;hello world&quot;</span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>常用脚本</category>
-      </categories>
-      <tags>
-        <tag>工具</tag>
-        <tag>Windows脚本</tag>
-        <tag>共享wifi</tag>
-        <tag>cmd</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>srt中英文合并python脚本</title>
-    <url>/public/2016/04/14/shells/youtube_src_combine/</url>
-    <content><![CDATA[<p><strong>前言</strong></p>
-<p>从Youtube上看只有中文或英文分开的字幕，下载好视频，想要中英文字幕。可从 <a href="http://mo.dbxdb.com/Yang/setting.html" target="_blank" rel="noopener">Getting Youtube subtitles</a> 获取中或英文字幕，然后将其合并，即成中英文双字幕。下面是python脚本。</p>
-<a id="more"></a>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">本脚本完成了中英文srt合并的功能</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">srt2lis</span><span class="params">(name)</span>:</span></span><br><span class="line">    lines = open(<span class="string">'srt/'</span>+name, <span class="string">'r'</span>, encoding=<span class="string">'utf-8'</span>).readlines()</span><br><span class="line">    lis = []</span><br><span class="line">    tmp = []</span><br><span class="line">    <span class="keyword">for</span> i, line <span class="keyword">in</span> enumerate(lines):</span><br><span class="line">        <span class="comment"># 以\n 结尾的一个时间点</span></span><br><span class="line">        <span class="keyword">if</span> line == <span class="string">'\n'</span>:</span><br><span class="line">            lis.append(tmp)</span><br><span class="line">            tmp = []</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            tmp.append(line)</span><br><span class="line">    <span class="keyword">return</span> lis</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">hebing</span><span class="params">(name_zh)</span>:</span></span><br><span class="line">    name_en = name_zh[:<span class="number">-7</span>] + <span class="string">'.srt'</span></span><br><span class="line">    out_name=<span class="string">'out/'</span>+name_en</span><br><span class="line">    f=open(out_name,<span class="string">'w'</span>,encoding=<span class="string">'utf-8'</span>)</span><br><span class="line">    lis_en=srt2lis(name_en)</span><br><span class="line">    lis_zh=srt2lis(name_zh)</span><br><span class="line">    <span class="keyword">for</span> i,item <span class="keyword">in</span> enumerate(lis_en):</span><br><span class="line">        print(item[<span class="number">0</span>])</span><br><span class="line">        f.write(item[<span class="number">0</span>])</span><br><span class="line">        f.write(item[<span class="number">1</span>])</span><br><span class="line">        <span class="keyword">for</span> line <span class="keyword">in</span> lis_zh[i][<span class="number">2</span>:]:</span><br><span class="line">            f.write(line)</span><br><span class="line">        <span class="keyword">for</span> line <span class="keyword">in</span> item[<span class="number">2</span>:]:</span><br><span class="line">            f.write(line)</span><br><span class="line">        f.write(<span class="string">'\n'</span>)</span><br><span class="line">    f.close()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">flis=os.listdir(<span class="string">'srt/'</span>)</span><br><span class="line"><span class="keyword">if</span> <span class="keyword">not</span> os.path.exists(<span class="string">'out'</span>):</span><br><span class="line">    os.mkdir(<span class="string">'out'</span>)</span><br><span class="line"><span class="keyword">for</span> name <span class="keyword">in</span> flis:</span><br><span class="line">    print(name)</span><br><span class="line">    <span class="keyword">if</span> name[<span class="number">-6</span>:<span class="number">-4</span>]==<span class="string">'zh'</span>:</span><br><span class="line">        hebing(name)</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>常用脚本</category>
-      </categories>
-      <tags>
-        <tag>工具</tag>
-        <tag>python</tag>
-        <tag>YouTube字幕合并</tag>
-        <tag>src</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>这哈儿是重庆</title>
-    <url>/public/2019/04/25/trips/chongqing/</url>
-    <content><![CDATA[<p>重庆，旅游纪实。20190422 - 20190424</p>
-<a id="more"></a>
-<h2 id="四月二十二"><a class="header-anchor" href="#四月二十二">¶</a>四月二十二</h2>
-<img src="/public/2019/04/25/trips/chongqing/tiankongzhicheng.jpg" alt="tiankongzhicheng" width="50%">
-<div align="center"> <b>天空之城旅店的临江阳台</b></div>
-<p>今天刚来到重庆。前天查天气说是多云，但是来这之后，天气极好。早上9点从成都出发，12点左右到达重庆北站，然后做地铁10号线倒到6号线的小什坊。在解放广场附近，中午吃了个碗杂面很不错，对于我来说有点辣，说是重庆排行第五的小面。</p>
-<p>下午就准备午休一哈，今早上很早起来要赶到成都的市中心乘火车。在江边，也是在洪崖洞旁边，找了一家叫做天空之城的青年旅舍。晚上走在千厮大桥上，脚感受着下面的地铁穿过抖动。从青年旅馆房间里面刚好可以看到江边的夜景，管理人是个可爱的老人家。里面的床单是没有铺上的，得自己铺，老人家解释免得被认为不好，你也可以自己带睡袋。老人家在铁路上工作，与他聊了很久，谈到他在铁路站工作的经历，当然还有很多打理旅舍时的故事。</p>
-<h2 id="四月二十三"><a class="header-anchor" href="#四月二十三">¶</a>四月二十三</h2>
-<img src="/public/2019/04/25/trips/chongqing/guojiang1.jpeg" alt="guojiang1" width="50%">
-<div align="center"> <b>排队2小时，乘过江索道</b></div>
-<img src="/public/2019/04/25/trips/chongqing/goujiang2.jpeg" alt="goujiang2" width="50%">
-<div align="center"> <b>过江索道，晃晃悠悠在路上</b></div>
-<p>早上起来，去楼下买了个早餐，有八宝粥和一个米团（块），那个团米上面加了两个半枣。吃完早饭，阳光正照进那个青年公寓。四月底，节气谷雨过后，算还不是很热，在那个临江的阳台晒了会儿阳光。然后很困，大概是吃饱的缘故，我又回去睡了一个回笼觉。下午出发去白公馆，搭的是轻轨2号线，到大坪换到去烈士墓的地铁上，轻轨是一路沿江跑的，欣赏着嘉陵江的美景，羡慕着重庆人的立体公交系统。嘉陵江水比较清澈，也见到有人在游泳。过会儿就经过网红景点李子坝，轻轨穿房而过。白公馆旁边是四川外国语大学，没有去逛，直接去了白公馆，香山别墅，然后去了渣滓洞，白公馆的地势比较陡，台阶比较多，旁边是歌乐山。</p>
-<img src="/public/2019/04/25/trips/chongqing/eling.jpg" alt="eling" width="50%">
-<div align="center"> <b>鹅岭公园有个塔，从塔上望去</b></div>
-<p>接着到了鹅岭公园，可直接做地铁鹅岭站，进门处分左右路线，我选了左转，然后绕了一大圈到了那个塔，其实可以右转沿着汽车的道往上到那个塔。到了塔顶，可以看到面向朝天门方向，左边是嘉陵江，右边是长江，然后各种大桥，轻轨地铁尽收眼底。吹着微风，站在那个塔上，可见重庆各种摩天大楼，然后就是更远处的山。离开鹅岭公园后，继续搭地铁去了上新街站，下车后往南岸区走，南岸发展比较慢，可以看到明显和渝中区的不同，路边找了一家店，选了几个小菜，吃了个晚饭。晚饭后，去了南山一棵树，人很多，夜景倒是很漂亮，有水有山，两水相交，滋润了这个大都市，今天的行程不错。</p>
-<img src="/public/2019/04/25/trips/chongqing/yejing.jpg" alt="yejing" width="50%">
-<div align="center"> <b>南山一棵松</b></div>
-<h2 id="四月二十四"><a class="header-anchor" href="#四月二十四">¶</a>四月二十四</h2>
-<img src="/public/2019/04/25/trips/chongqing/caotianmen.jpg" alt="caotianmen" width="50%">
-<div align="center"> <b>朝天门码头，水清黄分明</b></div>
-<p>今天也是懒懒起床，吃了个早饭，豆浆是放在那种果冻的包装袋里。今天差不多，就准备看看朝天门，然后回成都。去朝天门还是比较奇怪，随着百度地图导航走，到了一个商城里面，从地面进去是商城的8楼，下了电梯，走了一个商品批发的地方，然后向朝天门赶，今天太阳超级满足，比较热。岸边停了好多游船。到了朝天门，水分了两个颜色，黄的长江，清的嘉陵江。休息一刻，搭了公交车，沿着长江岸跑，居然到了李子坝，然后地铁转到重庆北火车站，这一趟重庆算是画上了一个句号。</p>
-<p>【转载请联系 博主。】</p>
-]]></content>
-      <categories>
-        <category>旅游</category>
-      </categories>
-      <tags>
-        <tag>重庆</tag>
-        <tag>游记</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>希腊罗马神话</title>
-    <url>/public/2018/11/05/readings/Gods_stories/</url>
-    <content><![CDATA[<p><strong>前言</strong></p>
-<p>在我电的图书馆的还书柜子里面偶然所得，一本叫《希腊罗马神话对英语语言文化的影响》吕海平 著 江苏大学初版社，然后莫名的想研究一下，发现挺不错的。</p>
-<a id="more"></a>
-<p>古希腊罗马的神的关系还是比较乱的，尤其是jupiter 或者zeus的奥林匹斯神系。从上古的神系，总共有三代。</p>
-<p>网上有个人（<a href="http://www.veritablehokum.com/" target="_blank" rel="noopener">Korwin Briggs</a>）做的关系图很不错。</p>
-<p>TODO:后面我也会对其进行整理，以后给大家分享。</p>
-<p><img src="http://www.veritablehokum.com/wp-content/uploads/2018/08/Roman-God-Family-Tree.jpg" alt></p>
-]]></content>
-      <categories>
-        <category>读书笔记</category>
-      </categories>
-      <tags>
-        <tag>希腊罗马神话</tag>
-        <tag>语言文化</tag>
       </tags>
   </entry>
   <entry>
@@ -4617,7 +4618,7 @@ todo整理</p>
 <p>易于上手、界面直观是GUI的优点，但是GUI为不意味着简单！或许您有类似经历: 桌面上有几十个程序的启动图标，也知道它们的名字，但是翻出一个来，并不是一件轻松的事情。</p>
 <p>我的Windows系统中，桌面上摆满了各种图标，每当启动一个程序的时候，我都很是困扰。后来尝试了 音速启动 这类的程序启动管理器，效果还是差强人意。</p>
 <p>在我的不懈努力下，这个难道最终得到了解决： 将快捷方式名称简化，放到特定目录下，使用 Win+R 组合键呼出 运行对话框，键入快捷方式的名称来运行该程序。比如 反恐精英 的快捷方式为 cs ，我把它放在 Windows 目录下; 运行 cs命令，就可以去维护世界和平了。</p>
-<p>这么多快捷方式，统统放到 Windows 目录下，非常混乱。因此，我在D盘建立了一个名为 path的目录，并把它的路径加入到环境变量的 path 项中，快捷方式放在 D:\path目录中。即便重装系统，只要在环境变量中重新加入此路径，原来的程序大多可以直接以命令来运行……我的许多朋友强烈要示我帮他们设定这种启动方式，因为这确实很方便：）</p>
+<p>这么多快捷方式，统统放到 Windows 目录下，非常混乱。因此，我在D盘建立了一个名为 path的目录，并把它的路径加入到环境变量的 path 项中，快捷方式放在 <code>D:\path</code>目录中。即便重装系统，只要在环境变量中重新加入此路径，原来的程序大多可以直接以命令来运行……我的许多朋友强烈要示我帮他们设定这种启动方式，因为这确实很方便：）</p>
 <p>其实在Linux下，所有的程序都可以通过命令运行。虽然Linux也有GUI，但是它并不比Windows的GUI更优秀！上面只是简单的介绍了CLI（命令行界面）相对GUI的优越之处，使用CLI还有更多的好处，您会慢慢体会到的。</p>
 <p>当然了，在您的印象中，CLI一定非常的不友善，缺少亲和力，冷漠而拒人于千里之外……您和CLI之间甚至有代沟的存在：）</p>
 <h4 id="命令"><a class="header-anchor" href="#命令">¶</a>命令</h4>
@@ -4660,18 +4661,18 @@ todo整理</p>
 <h2 id="Linux系统简介"><a class="header-anchor" href="#Linux系统简介">¶</a>Linux系统简介</h2>
 <h3 id="路径"><a class="header-anchor" href="#路径">¶</a>路径</h3>
 <p>路径分为绝对路径和相对路径。</p>
-<p><strong>绝对路径</strong>的起始点为根目录 / ，例如 /usr/local/bin 就是绝对路径，它指向系统中一个绝对的位置，不受其它因素影响。</p>
-<p><strong>相对路径</strong>的起始点为当前目录，如果您现在位于 /usr 目录，那么相对路径 local/bin 所指示的位置为 /usr/local/bin</p>
-<p>也就是说，相对路径所指示的位置，除了相对路径本身，还受到当前位置的影响。例如Linux系统中常见的目录 /bin 、 /usr/bin、 /usr/local/bin ，如果只有一个相对路径 bin，那么它指示的位置可能上面三个目录中的任意一个，也可能是其它目录。</p>
-<p>如果我告诉您到 bin 目录寻找一个文件，您可能搞不清楚是哪一个 bin 目录。只有当前位置确定，相对路径指示的位置才能够确定。</p>
-<p>现在我说， /usr/local 目录下，它的相对路径 bin 中有某个文件，这样就比较明确了。</p>
+<p><strong>绝对路径</strong>的起始点为根目录 <code>/</code> ，例如 <code>/usr/local/bin</code> 就是绝对路径，它指向系统中一个绝对的位置，不受其它因素影响。</p>
+<p><strong>相对路径</strong>的起始点为当前目录，如果您现在位于 /usr 目录，那么相对路径 local/bin 所指示的位置为 <code>/usr/local/bin</code></p>
+<p>也就是说，相对路径所指示的位置，除了相对路径本身，还受到当前位置的影响。例如Linux系统中常见的目录 <code>/bin</code> 、 <code>/usr/bin</code>、 <code>/usr/local/bin</code>，如果只有一个相对路径 bin，那么它指示的位置可能上面三个目录中的任意一个，也可能是其它目录。</p>
+<p>如果我告诉您到 <code>bin</code> 目录寻找一个文件，您可能搞不清楚是哪一个 <code>bin</code> 目录。只有当前位置确定，相对路径指示的位置才能够确定。</p>
+<p>现在我说， <code>/usr/local</code> 目录下，它的相对路径 <code>bin</code> 中有某个文件，这样就比较明确了。</p>
 <p>在相对路径中 . 表示当前目录， .. 表示当前目录的上一级目录。</p>
 <p>假设您安装了一个程序，它的主程序没有被放置到上面三个 bin 目录中的任何一个，或者其它系统能够找到的地方，您就得告诉系统，它的可执行文件在哪里。</p>
 <blockquote>
-<p>可以使用绝对路径，例如： /home/user/bin/可执行文件</p>
+<p>可以使用绝对路径，例如： <code>/home/user/bin/</code>可执行文件</p>
 </blockquote>
-<p>或者定位到 /home/user/bin 目录，使用相对目录来定位它 ./可执行文件</p>
-<p>如果您定位到了它的子目录，比如 /home/user/bin/gui，您可以使用 .. 来表示它的上级目录 ../可执行文件</p>
+<p>或者定位到 <code>/home/user/bin</code> 目录，使用相对目录来定位它 ./可执行文件</p>
+<p>如果您定位到了它的子目录，比如 <code>/home/user/bin/gui</code>，您可以使用 <code>..</code> 来表示它的上级目录 <code>../</code>可执行文件</p>
 <p>路径相关命令</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> (change directory) 更改目录。</span><br><span class="line"><span class="built_in">pwd</span> (<span class="built_in">print</span> working directory)显示当前路径。</span><br><span class="line">ls (list) 显示当前目录中的文件列表。</span><br></pre></td></tr></table></figure>
 <p>请尝试以下操作：</p>
@@ -4679,7 +4680,7 @@ todo整理</p>
 <p>远程路径：</p>
 <p>远程路径的表示方法为 <code>协议://用户名:密码@位置/路径:端口</code></p>
 <p>大多数的远程路径可以使用默认端口匿名访问，由此用户名、密码、端口通常不需要填写。例如：</p>
-<p><a href="http://www.ubuntu.org.cn/.../index.html" target="_blank" rel="noopener">http://www.ubuntu.org.cn/.../index.html</a></p>
+<p><code>http://www.ubuntu.org.cn/.../index.html</code></p>
 <p>要求身份验证的远程路径，您可以使用下面的方式访问:</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ftp://user:passwd@ftp.ubuntu.org.cn:21</span><br></pre></td></tr></table></figure>
 <h3 id="软件"><a class="header-anchor" href="#软件">¶</a>软件</h3>
@@ -4737,9 +4738,9 @@ todo整理</p>
 <p>它们的顺便不能颠倒，某一位置为空(-)，则表示不具有相应的权限。</p>
 <p>说明：Linux下的可执行文件并不是由扩展名（例如 .exe ）决定的，而是由其可执行权限位决定。</p>
 <p>权限</p>
-<p>我们已经知道了，文件的权限分为 r （可读）、 w （可写）、 x （可执行）三种类型，而一个文件可以针对归属用户，归属群组，其它用户用户或群组分别设定权限。</p>
+<p>我们已经知道了，文件的权限分为 <code>r</code> （可读）、 <code>w</code> （可写）、 <code>x </code>（可执行）三种类型，而一个文件可以针对归属用户，归属群组，其它用户用户或群组分别设定权限。</p>
 <p>这种权限管理的方式灵活、简单、严密、明晰。尽管如此，在最初的阶段，可能会有一点小小的不适。因为它无所不在，而您习惯了的Windows的权限管理却不是这样（非常混乱，大多数时间形同虚设，偶尔用到却让人伤透脑筋）。</p>
-<p>使用 chmod 命令更改文件的权限，使用 chown 来更改文件的归属。例如：</p>
+<p>使用 <code>chmod</code> 命令更改文件的权限，使用 <code>chown</code> 来更改文件的归属。例如：</p>
 <p>chmod 755 xxx</p>
 <p>chmod a+x xxx</p>
 <p>chown user:group xxx 用来更改文件的归属用户，也可以同时更改其归属群组</p>
@@ -4819,7 +4820,7 @@ todo整理</p>
 <p>我们强烈建议您记住，以大幅度的提高操作效率。而且这是readline控件的键绑定，在任何使用readline控件的程序中，您都可以使用它们。例如bash、lftp、gdb等程序;同时，Linux下最著名的Emacs编辑器，也是这种风格的键绑定（其实是readline使用了Emacs风格的键绑定才对），甚至FireFox中，也可以使用类似风格的快捷键！（Linux下主要有两种风格的键绑定，一种是VI风格，另一种是Emacs风格，我们会在 简明VIM教程中介绍）</p>
 <p>现在列举一些ReadLine的键绑定，您可以自行尝试。（运行 man readline 命令，来查看ReadLine手册）</p>
 <p>先来了解一些约定：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">\C-a 表示 Ctrl+a</span><br><span class="line">\M-a 表示 Meta+a Meta键在PC中通常为ALT键</span><br><span class="line"></span><br><span class="line">A 表示 Shift+a</span><br><span class="line">（下面括号中的\A代表Alt，\S代表Shift）</span><br><span class="line"></span><br><span class="line">移动命令：</span><br><span class="line"></span><br><span class="line">*\C-a* *移动到行首* *Aheah        \C-e* *移动到行末* *End          \C-f* *向前移动一个字符* *Forward*</span><br><span class="line"></span><br><span class="line">*\C-b* *向后移动一个字符* *Backward        \M-f* *向前移动一个单词*        *\M-b* *向后移动一个单词*</span><br><span class="line"></span><br><span class="line">*\C-l* *清空屏幕* *cLear*      *这两个命令也可以理解为移动命令*        *\C-p* *上翻，前一条命令* *Previous*</span><br><span class="line"></span><br><span class="line">*\C-n* *下翻，后一条命令* *Next*        *编辑命令：*</span><br><span class="line"></span><br><span class="line">*\C-d* *删除光标后的一个字符* *\M-d* *删除光标后的一个单词* *Delete*</span><br><span class="line"></span><br><span class="line">*\BackSpace* *删除光标前的一个字符* *\M-BackSpace* *删除光标前的一个单词*</span><br><span class="line"></span><br><span class="line">*\C-k* *删除光标至行末的部分* *Kill         \C-u* *删除光标至行首的部分* *Unix-line-discard*</span><br><span class="line"></span><br><span class="line">*\C-w* *删除光标前的一个单词* *Word       \C-y* *粘贴（最后删除的对象）* *Yank      \C--* *撤消*</span><br><span class="line"></span><br><span class="line">搜索历史纪录：</span><br><span class="line"></span><br><span class="line">*\C-r* *连续使用* *``C-r``* *可以查找下一个*        *\M-p      \M-n*</span><br><span class="line"></span><br><span class="line">补全：</span><br><span class="line"></span><br><span class="line">*\Tab* *使用频率最高的功能！*        *\C-o* *遍历补全* *（未定义）*</span><br><span class="line"></span><br><span class="line">*\M-? M-=* *列出所有可能选项，相当于按两次**Tab**键（**M-**？* *实际按键为**\A+\S+/**）*</span><br><span class="line"></span><br><span class="line">*\M-#* *注释掉当前命令，用于将当前命令暂存于历史纪录列表（**\A+\S+3**）*</span><br><span class="line"></span><br><span class="line">*\M-!* *补全命令，通常用来补全子命令，例如* *``sudo``* *的子命令（**\A+\S+1**）*</span><br><span class="line"></span><br><span class="line">*\M-~* *补全用户名（**\A+\S+`**）*       *\M-@* *补全主机名（**\A+\S+2**）*</span><br><span class="line"></span><br><span class="line">*\M-$* *补全变量（**\A+\S+4**）*         *\M-_* *补全历史纪录中的纪录（**\A+\S+-**）*</span><br><span class="line"></span><br><span class="line">*\M-** *将所有可能选项放到命令行中（**\A+\S+8**）*</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">\C<span class="_">-a</span> 表示 Ctrl+a</span><br><span class="line">\M<span class="_">-a</span> 表示 Meta+a Meta键在PC中通常为ALT键</span><br><span class="line"></span><br><span class="line">A 表示 Shift+a</span><br><span class="line">（下面括号中的\A代表Alt，\S代表Shift）</span><br><span class="line"></span><br><span class="line">移动命令：</span><br><span class="line"></span><br><span class="line"> \C<span class="_">-a</span>  移动到行首  Aheah        \C<span class="_">-e</span>  移动到行末  End          \C<span class="_">-f</span>  向前移动一个字符  Forward </span><br><span class="line"></span><br><span class="line">*\C-b* *向后移动一个字符* *Backward        \M<span class="_">-f</span>* *向前移动一个单词*        *\M-b* *向后移动一个单词*</span><br><span class="line"></span><br><span class="line">*\C<span class="_">-l</span>* *清空屏幕* *cLear*      *这两个命令也可以理解为移动命令*        *\C-p* *上翻，前一条命令* *Previous*</span><br><span class="line"></span><br><span class="line">*\C-n* *下翻，后一条命令* *Next*        *编辑命令：*</span><br><span class="line"></span><br><span class="line">*\C<span class="_">-d</span>* *删除光标后的一个字符* *\M<span class="_">-d</span>* *删除光标后的一个单词* *Delete*</span><br><span class="line"></span><br><span class="line">*\BackSpace* *删除光标前的一个字符* *\M-BackSpace* *删除光标前的一个单词*</span><br><span class="line"></span><br><span class="line">*\C-k* *删除光标至行末的部分* *Kill         \C-u* *删除光标至行首的部分* *Unix-line-discard*</span><br><span class="line"></span><br><span class="line">*\C-w* *删除光标前的一个单词* *Word       \C-y* *粘贴（最后删除的对象）* *Yank      \C--* *撤消*</span><br><span class="line"></span><br><span class="line">搜索历史纪录：</span><br><span class="line"></span><br><span class="line">*\C-r* *连续使用* *``C-r``* *可以查找下一个*        *\M-p      \M-n*</span><br><span class="line"></span><br><span class="line">补全：</span><br><span class="line"></span><br><span class="line">*\Tab* *使用频率最高的功能！*        *\C-o* *遍历补全* *（未定义）*</span><br><span class="line"></span><br><span class="line">*\M-? M-=* *列出所有可能选项，相当于按两次**Tab**键（**M-**？* *实际按键为**\A+\S+/**）*</span><br><span class="line"></span><br><span class="line">*\M-<span class="comment">#* *注释掉当前命令，用于将当前命令暂存于历史纪录列表（**\A+\S+3**）*</span></span><br><span class="line"></span><br><span class="line">*\M-!* *补全命令，通常用来补全子命令，例如* *``sudo``* *的子命令（**\A+\S+1**）*</span><br><span class="line"></span><br><span class="line">*\M-~* *补全用户名（**\A+\S+`**）*       *\M-@* *补全主机名（**\A+\S+2**）*</span><br><span class="line"></span><br><span class="line">*\M-$* *补全变量（**\A+\S+4**）*         *\M-_* *补全历史纪录中的纪录（**\A+\S+-**）*</span><br><span class="line"></span><br><span class="line">*\M-** *将所有可能选项放到命令行中（**\A+\S+8**）*</span><br></pre></td></tr></table></figure>
 <h4 id="自定义键绑定"><a class="header-anchor" href="#自定义键绑定">¶</a>自定义键绑定</h4>
 <p>通过修改 <code>/etc/inputrc</code> 文件，可以更改键绑定。建议您使用默认的键绑定，以避免不必要的烦恼。当然了，Emacs风格的键绑定是通用的，随时都有可能用到。</p>
 <p>在文件中添加该行，可以将ReadLine的键绑定设为VI风格。（Bash、Lftp等使用ReadLine的软件同时生效）</p>
@@ -4835,21 +4836,21 @@ todo整理</p>
 <p>将所有文件名放入命令行，再删除多余的，这真是麻烦极了！所以您可以使用 \C-o 遍历补全，将所有可能的选项轮流放入命令行。</p>
 <p>或者使用Vim编辑器编辑 /etc/inputrc 文件，在插入模式下使用 Ctrl+v 组合键。按下 Ctrl+o ，这时编辑区新增一个 ^O 字符，等价于 \C-o</p>
 <h3 id="通配符"><a class="header-anchor" href="#通配符">¶</a>通配符</h3>
-<p>使用 ? 代表任意单个字符。例如 ???lo ，表示 lo 前有三个字符，它可以匹配 Hello</p>
-<p>使用 * 代表随意几个任意字符。例如 *.iso ，代表所有iso格式的文件。</p>
+<p>使用 <code>?</code> 代表任意单个字符。例如 <code>???lo</code> ，表示 <code>lo</code> 前有三个字符，它可以匹配 <code>Hello</code></p>
+<p>使用 <code>*</code> 代表随意几个任意字符。例如<code>*.iso</code>，代表所有 <code>iso</code> 格式的文件。</p>
 <p>说明：您可以将遍历补全和通配符结合使用，以提高效率。</p>
 <p>例如：</p>
 <p>cd */ 则遍历补全只补全文件夹</p>
 <p>chmview *.chm 则遍历补全只补全chm文件</p>
 <h3 id="任务管理"><a class="header-anchor" href="#任务管理">¶</a>任务管理</h3>
-<p>&amp;--------------------------------在命令的末尾加上一个 &amp; 符号，表示背景任务，例如：</p>
-<p>wget <a href="http://www.download.net/xxx/mp3" target="_blank" rel="noopener">http://www.download.net/xxx/mp3</a> &amp;</p>
-<p>;----------------------------------使用 ; 将多个命令连结起来，则表示任务按顺序执行</p>
-<p>&amp;&amp;------------------------------使用 &amp;&amp; 将多个命令连结起来，则表示只有前面的命令执行成功，后面的命令才能得以执行</p>
-<p><code>-----------------------------------`&lt;命令&gt;` ，如果一个命令中包含以 </code> （Esc键下方的按键）括起来的子命令，那么子命令将被优先执行，执行结果被代入上一级命令继续执行，例如创建一个以当前时间命名的文件：</p>
-<p>touch <code>date +%m.%d_%H:%M:%S</code></p>
-<p>touch 命令能够创建一个文件，它的操作对象，为 date +%m%d%H%M%S 命令的输出 06.06_06:06:60</p>
-<p>这样，我们创建了一个名为 06.06_06:06:60 的文件（六月六日六时六分刚过六十秒-_-!）</p>
+<p><code>&amp;</code> 在命令的末尾加上一个 <code>&amp;</code> 符号，表示背景任务，例如：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">wget http://www.download.net/xxx/mp3 &amp;</span><br></pre></td></tr></table></figure>
+<p><code>;</code> 使用 <code>;</code> 将多个命令连结起来，则表示任务按顺序执行</p>
+<p><code>&amp;&amp;</code> 使用 <code>&amp;&amp;</code> 将多个命令连结起来，则表示只有前面的命令执行成功，后面的命令才能得以执行</p>
+<p>`` `&lt;命令&gt;` ，如果一个命令中包含以 `` （Esc键下方的按键）括起来的子命令，那么子命令将被优先执行，执行结果被代入上一级命令继续执行，例如创建一个以当前时间命名的文件：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">touch `date +%m.%d_%H:%M:%S`</span><br></pre></td></tr></table></figure>
+<p><code>touch</code> 命令能够创建一个文件，它的操作对象，为 <code>date +%m%d%H%M%S 命令的输出 06.06_06:06:60</code></p>
+<p>这样，我们创建了一个名为 <code>06.06_06:06:60</code> 的文件（六月六日六时六分刚过六十秒-_-!）</p>
 <p>Ctrl+z</p>
 <p>将当前Shell中的任务挂起</p>
 <p>这个时候任务的状态为</p>
