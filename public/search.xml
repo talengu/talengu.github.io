@@ -554,6 +554,10 @@ Thank you !!!</p>
 </blockquote>
 <p>放到 <code>/etc/cron.daily/</code></p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="built_in">source</span> /home/xxx/miniconda3/bin/activate</span><br><span class="line">python /home/xxx/txxx.py</span><br></pre></td></tr></table></figure>
+<h2 id="其他"><a class="header-anchor" href="#其他">¶</a>其他</h2>
+<ul>
+<li><a href="https://blog.csdn.net/wokuailewozihao/article/details/82021709" target="_blank" rel="noopener">利用Google翻译实现网站国际化——js插件</a></li>
+</ul>
 ]]></content>
       <categories>
         <category>工具</category>
@@ -874,23 +878,29 @@ markdown 空格</p>
       </tags>
   </entry>
   <entry>
-    <title>RSS跟踪github文件更新</title>
+    <title>RSS跟踪github文件更新+某管子更新</title>
     <url>/public/2021/07/24/rss_github_file/</url>
     <content><![CDATA[<p><strong>前言</strong></p>
-<p>好久没有更新博客了。RSS这种形式的信息获取方式，似乎又流行起来。github上面有很多不错的资源。我的流程是：github readme文件更新-&gt;svn下载对应文件-&gt;生成rss文件。</p>
+<p>好久没有更新博客了。RSS这种形式的信息获取方式，似乎又流行起来。</p>
+<a id="more"></a>
+<h2 id="github文件更新"><a class="header-anchor" href="#github文件更新">¶</a>github文件更新</h2>
+<p>github上面有很多不错的资源。我的流程是：github readme文件更新-&gt;svn下载对应文件-&gt;生成rss文件。</p>
 <p>这里为什么要这么复杂，因为github仓库更新多了好多不需要的rss信息，而且github文件下载比较慢。</p>
 <p>最后效果，获取《经济学人》和《纽约客》的更新～</p>
 <p><img src="/public/2021/07/24/rss_github_file/rss_result.png" alt="image-20210724005152399"></p>
-<a id="more"></a>
-<h2 id="下载脚本"><a class="header-anchor" href="#下载脚本">¶</a>下载脚本</h2>
+<h3 id="下载脚本"><a class="header-anchor" href="#下载脚本">¶</a>下载脚本</h3>
 <p>解析readme中的地址，自动下载，并生成rss源。</p>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="comment"># /etc/cron.hour </span></span><br><span class="line"><span class="keyword">from</span> urllib <span class="keyword">import</span> request</span><br><span class="line"><span class="keyword">import</span> datetime</span><br><span class="line"><span class="keyword">from</span> rfeed <span class="keyword">import</span> * <span class="comment"># 为生成rss.xml的库</span></span><br><span class="line"><span class="keyword">import</span> re</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">from</span> glob <span class="keyword">import</span> glob</span><br><span class="line">URL=<span class="string">"https://raw.githubusercontent.com/hehonghui/the-economist-ebooks/master/README.md"</span></span><br><span class="line">BASE_URL=<span class="string">"http://your_vps_host/download/"</span></span><br><span class="line"></span><br><span class="line">SVN_BASE_URL=<span class="string">"https://github.com/hehonghui/the-economist-ebooks/trunk/"</span></span><br><span class="line"></span><br><span class="line">s=<span class="string">"""</span></span><br><span class="line"><span class="string">* [经济学人 - 周刊, 点击这里下载最新一期](01_economist/te_2021.02.27) , 每周五十一点更新</span></span><br><span class="line"><span class="string">* [纽约客 - 周刊, 点击这里下载最新一期](02_new_yorker/2021.03.01) , 每周六上午更新</span></span><br><span class="line"><span class="string">* [卫报 - 每周两期](09_guardian/), 每周三、周日更新</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line">s = request.urlopen(URL).read().decode(<span class="string">'utf8'</span>)</span><br><span class="line"></span><br><span class="line">res= re.findall(<span class="string">r"\[.+\]\((0.+)\)"</span>,s)[<span class="number">0</span>:<span class="number">2</span>]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># generate xml</span></span><br><span class="line">res_list=[]</span><br><span class="line"><span class="keyword">for</span> item <span class="keyword">in</span> res:</span><br><span class="line">	res_list+=sorted(glob(item.split(<span class="string">'/'</span>)[<span class="number">0</span>]+<span class="string">"/*"</span>))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">item_list=[]</span><br><span class="line">print(item_list)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> item <span class="keyword">in</span> res_list:</span><br><span class="line">    _one = Item(</span><br><span class="line">			title = item[<span class="number">3</span>:],</span><br><span class="line">        link = BASE_URL+item,</span><br><span class="line">		description = <span class="string">'pdf etc. &lt;a href="%s"&gt;link&lt;/a&gt; '</span>% (BASE_URL+item),</span><br><span class="line">        author = <span class="string">"hehonghui"</span>,</span><br><span class="line">        guid = Guid(BASE_URL+item),</span><br><span class="line">        pubDate = datetime.datetime(<span class="number">2020</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">4</span>, <span class="number">0</span>)) <span class="comment"># year, month, date, hh, mm, ss</span></span><br><span class="line">    item_list+=[_one]</span><br><span class="line"></span><br><span class="line">feed = Feed(</span><br><span class="line">        title = <span class="string">"经济学人+纽约客更新"</span>,</span><br><span class="line">        link = <span class="string">"https://www.xxxxx.biz/atom/updated.xml"</span>,</span><br><span class="line">        description = <span class="string">"更新经济学人，纽约客"</span>,</span><br><span class="line">        language = <span class="string">"en-US"</span>,</span><br><span class="line">        lastBuildDate = datetime.datetime.now(),</span><br><span class="line">        items = item_list)</span><br><span class="line"> </span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">save_to_file</span><span class="params">(file_name, contents)</span>:</span></span><br><span class="line">    fh = open(file_name, <span class="string">'w'</span>)</span><br><span class="line">    fh.write(contents)</span><br><span class="line">    fh.close()</span><br><span class="line"></span><br><span class="line">save_to_file(<span class="string">'test.xml'</span>, feed.rss())</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># start downing </span></span><br><span class="line"><span class="keyword">for</span> item <span class="keyword">in</span> res:</span><br><span class="line">    <span class="keyword">if</span> item <span class="keyword">not</span> <span class="keyword">in</span> res_list:</span><br><span class="line">	    print(<span class="string">"downing %s"</span>%item)</span><br><span class="line">	    os.popen(<span class="string">"svn checkout %s %s"</span>%(SVN_BASE_URL+item,item))</span><br><span class="line"></span><br><span class="line">    _now=sorted(glob(item.split(<span class="string">'/'</span>)[<span class="number">0</span>]+<span class="string">"/*"</span>))</span><br><span class="line">    print(_now)</span><br><span class="line">    <span class="keyword">if</span> len(_now)&gt;=<span class="number">5</span>: <span class="comment"># 最多5个，免得服务器下载过多。</span></span><br><span class="line">        <span class="keyword">for</span> _d <span class="keyword">in</span> _now[:<span class="number">-5</span>]:</span><br><span class="line">            os.popen(<span class="string">"rm -rf %s"</span>%_d)</span><br></pre></td></tr></table></figure>
 <p>在linux亦可使用<a href="https://www.runoob.com/w3cnote/linux-crontab-tasks.html" target="_blank" rel="noopener">crontab</a>定时启动下载任务。在 <code>/etc/cron.hourly/</code> 设置即可。</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="meta">#!/bin/sh</span></span><br><span class="line">date &gt;&gt; test.log</span><br><span class="line">python3 down_ecomic.py &gt;&gt;test.log</span><br><span class="line"><span class="built_in">exit</span> 0</span><br></pre></td></tr></table></figure>
-<h2 id="从youtube下载音频，自动转成mp3格式"><a class="header-anchor" href="#从youtube下载音频，自动转成mp3格式">¶</a>从youtube下载音频，自动转成mp3格式</h2>
+<h2 id="下载某管音频，自动转成mp3格式"><a class="header-anchor" href="#下载某管音频，自动转成mp3格式">¶</a>下载某管音频，自动转成mp3格式</h2>
+<p>某管自带rss的，所以只要用feedparser解析一下，然后调用youtube_dl下载一哈。
+各种码包自行安装，哈。</p>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># 2020-04-18</span></span><br><span class="line"><span class="comment"># /etc/cron.hour # https://www.runoob.com/w3cnote/linux-crontab-tasks.html</span></span><br><span class="line"><span class="keyword">from</span> urllib <span class="keyword">import</span> request</span><br><span class="line"><span class="keyword">import</span> datetime</span><br><span class="line"><span class="keyword">from</span> rfeed <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">import</span> re</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">from</span> glob <span class="keyword">import</span> glob</span><br><span class="line"><span class="keyword">import</span> feedparser</span><br><span class="line"><span class="keyword">import</span> pprint</span><br><span class="line">URL=<span class="string">"https://www.youtube.com/feeds/videos.xml?channel_id=UCFhp6N5z8W9Ann2eyHAzbbA"</span></span><br><span class="line">rss = feedparser.parse(URL)</span><br><span class="line">entries=rss[<span class="string">'entries'</span>][:<span class="number">3</span>]</span><br><span class="line"></span><br><span class="line">BASE_URL=<span class="string">"http://xxxxx/down_youtube/"</span></span><br><span class="line"></span><br><span class="line">item_list=[]</span><br><span class="line"><span class="keyword">for</span> entry <span class="keyword">in</span> entries:</span><br><span class="line">    print(entry[<span class="string">'title'</span>])</span><br><span class="line">    print(entry[<span class="string">'published'</span>])</span><br><span class="line">    print(entry[<span class="string">'link'</span>])</span><br><span class="line">    <span class="comment">#print(entry['summary'])</span></span><br><span class="line">    new_link=BASE_URL+<span class="string">"book_audios/%s.mp3"</span>%entry[<span class="string">'yt_videoid'</span>]</span><br><span class="line">    _one = Item(</span><br><span class="line">			title = entry[<span class="string">'title'</span>],</span><br><span class="line">        link = new_link,</span><br><span class="line">		description = <span class="string">'audio: &lt;a href="%s"&gt;mp3&lt;/a&gt; %s'</span>% (new_link,entry[<span class="string">'summary'</span>]),</span><br><span class="line">        author = <span class="string">"Youtube"</span>,</span><br><span class="line">        guid = Guid(new_link),</span><br><span class="line">        pubDate = datetime.datetime(<span class="number">2020</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">4</span>, <span class="number">0</span>)) <span class="comment"># year, month, date, hh, mm, ss</span></span><br><span class="line">    item_list+=[_one]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">feed = Feed(</span><br><span class="line">        title = <span class="string">"知乎读书会更新"</span>,</span><br><span class="line">        link = <span class="string">"https://www.xxxxx.biz/atom/updated.xml"</span>,</span><br><span class="line">        description = <span class="string">"更新Youtube知乎读书会"</span>,</span><br><span class="line">        language = <span class="string">"en-US"</span>,</span><br><span class="line">        lastBuildDate = datetime.datetime.now(),</span><br><span class="line">        items = item_list)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">save_to_file</span><span class="params">(file_name, contents)</span>:</span></span><br><span class="line">    fh = open(file_name, <span class="string">'w'</span>)</span><br><span class="line">    fh.write(contents)</span><br><span class="line">    fh.close()</span><br><span class="line"></span><br><span class="line">save_to_file(<span class="string">'audio.xml'</span>, feed.rss())</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> os <span class="keyword">import</span> rename</span><br><span class="line"><span class="keyword">import</span> youtube_dl</span><br><span class="line"></span><br><span class="line"><span class="comment"># start downing </span></span><br><span class="line"><span class="keyword">if</span> <span class="keyword">not</span> os.path.exists(<span class="string">"book_audios/"</span>):</span><br><span class="line">    os.makedirs(<span class="string">"book_audios/"</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">audio_download</span><span class="params">(youtube_url)</span>:</span></span><br><span class="line">    <span class="comment"># 定义某些下载参数</span></span><br><span class="line">    ydl_opts = &#123;</span><br><span class="line">        <span class="string">'format'</span>: <span class="string">'bestaudio/best'</span>,</span><br><span class="line">     <span class="comment">#   'download_archive': 'downloaded_songs.txt',</span></span><br><span class="line">        <span class="string">'outtmpl'</span>: <span class="string">'book_audios/%(id)s.%(ext)s'</span>,</span><br><span class="line">        <span class="string">'postprocessors'</span>: [&#123;</span><br><span class="line">            <span class="string">'key'</span>: <span class="string">'FFmpegExtractAudio'</span>,</span><br><span class="line">            <span class="string">'preferredcodec'</span>: <span class="string">'mp3'</span>,</span><br><span class="line">            <span class="string">'preferredquality'</span>: <span class="string">'192'</span>,</span><br><span class="line">            &#125;],</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">with</span> youtube_dl.YoutubeDL(ydl_opts) <span class="keyword">as</span> ydl:</span><br><span class="line">        ydl.download([youtube_url])</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">#download('https://www.youtube.com/watch?v=JElpSrsmbTU')</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> entry <span class="keyword">in</span> entries:</span><br><span class="line">    <span class="keyword">if</span> entry[<span class="string">'yt_videoid'</span>]+<span class="string">'.mp3'</span> <span class="keyword">not</span> <span class="keyword">in</span> os.listdir(<span class="string">'book_audios'</span>):</span><br><span class="line">        print(<span class="string">"downing %s, %s"</span>%(entry[<span class="string">'title'</span>], entry[<span class="string">'link'</span>]))</span><br><span class="line">        audio_download(entry[<span class="string">'link'</span>])</span><br><span class="line">   </span><br><span class="line">    _now=sorted(glob(<span class="string">"book_audios/*"</span>),key=os.path.getctime)</span><br><span class="line">    print(_now)</span><br><span class="line">    <span class="keyword">if</span> len(_now)&gt;=<span class="number">6</span>: <span class="comment"># 多余删除</span></span><br><span class="line">        <span class="keyword">for</span> _d <span class="keyword">in</span> _now[:<span class="number">-5</span>]:</span><br><span class="line">            os.popen(<span class="string">"rm -rf %s"</span>%_d)</span><br></pre></td></tr></table></figure>
-<h2 id="python-下载youtube视频"><a class="header-anchor" href="#python-下载youtube视频">¶</a>python 下载youtube视频</h2>
+<h2 id="下载某管视频"><a class="header-anchor" href="#下载某管视频">¶</a>下载某管视频</h2>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># 2020-04-18</span></span><br><span class="line"><span class="comment"># /etc/cron.hour # https://www.runoob.com/w3cnote/linux-crontab-tasks.html</span></span><br><span class="line"><span class="comment"># pip install feedparser youtube_dl</span></span><br><span class="line"><span class="keyword">from</span> urllib <span class="keyword">import</span> request</span><br><span class="line"><span class="keyword">import</span> datetime</span><br><span class="line"><span class="keyword">from</span> rfeed <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">import</span> re</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">from</span> glob <span class="keyword">import</span> glob</span><br><span class="line"><span class="keyword">import</span> feedparser</span><br><span class="line"><span class="keyword">import</span> pprint</span><br><span class="line"><span class="keyword">from</span> os <span class="keyword">import</span> rename</span><br><span class="line"><span class="keyword">import</span> youtube_dl</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">save_to_file</span><span class="params">(file_name, contents)</span>:</span></span><br><span class="line">    fh = open(file_name, <span class="string">'w'</span>)</span><br><span class="line">    fh.write(contents)</span><br><span class="line">    fh.close()</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">audio_download</span><span class="params">(youtube_url, file_root, only_audio=False)</span>:</span></span><br><span class="line">    <span class="comment"># 定义某些下载参数</span></span><br><span class="line">    ydl_opts = &#123;</span><br><span class="line">        <span class="string">'format'</span>: <span class="string">'best'</span>,</span><br><span class="line">        <span class="string">'outtmpl'</span>: file_root+<span class="string">'/%(id)s.%(ext)s'</span>,</span><br><span class="line">    &#125;</span><br><span class="line">        <span class="comment"># 定义某些下载参数</span></span><br><span class="line">    ydl_opts_a = &#123;</span><br><span class="line">        <span class="string">'format'</span>: <span class="string">'bestaudio/best'</span>,</span><br><span class="line">     <span class="comment">#   'download_archive': 'downloaded_songs.txt',</span></span><br><span class="line">        <span class="string">'outtmpl'</span>: file_root+<span class="string">'/%(id)s.%(ext)s'</span>,</span><br><span class="line">        <span class="string">'postprocessors'</span>: [&#123;</span><br><span class="line">            <span class="string">'key'</span>: <span class="string">'FFmpegExtractAudio'</span>,</span><br><span class="line">            <span class="string">'preferredcodec'</span>: <span class="string">'mp3'</span>,</span><br><span class="line">            <span class="string">'preferredquality'</span>: <span class="string">'192'</span>,</span><br><span class="line">            &#125;],</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> only_audio:</span><br><span class="line">        ydl_opts = ydl_opts_a</span><br><span class="line">    <span class="keyword">with</span> youtube_dl.YoutubeDL(ydl_opts) <span class="keyword">as</span> ydl:</span><br><span class="line">        ydl.download([youtube_url])</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">YoutubeDowner</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, yurl, burl, file_root, feed_title, only_audio=False)</span>:</span></span><br><span class="line">        self.yurl = yurl</span><br><span class="line">        self.burl = burl</span><br><span class="line">        self.file_root = file_root</span><br><span class="line">        self.feed_title = feed_title</span><br><span class="line">        self.feed_des = feed_title</span><br><span class="line">        self.only_audio = only_audio</span><br><span class="line">        self.type_name = <span class="string">"mp4"</span></span><br><span class="line">        <span class="keyword">if</span> only_audio:</span><br><span class="line">            self.type_name = <span class="string">"mp3"</span></span><br><span class="line"></span><br><span class="line">        rss = feedparser.parse(yurl)</span><br><span class="line">        self.entries = rss[<span class="string">'entries'</span>][:<span class="number">3</span>]</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> os.path.exists(file_root):</span><br><span class="line">            os.makedirs(file_root)</span><br><span class="line">        self.generate_xml()</span><br><span class="line"></span><br><span class="line">        self.down()</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">generate_xml</span><span class="params">(self)</span>:</span></span><br><span class="line">        item_list = []</span><br><span class="line">        <span class="keyword">for</span> entry <span class="keyword">in</span> self.entries:</span><br><span class="line">            print(entry[<span class="string">'title'</span>],entry[<span class="string">'published'</span>],entry[<span class="string">'link'</span>])</span><br><span class="line">           <span class="comment"># print(entry['summary'])</span></span><br><span class="line">            date_s = entry[<span class="string">'published'</span>].split(<span class="string">'T'</span>)[<span class="number">0</span>].split(<span class="string">'-'</span>)</span><br><span class="line">            dates = [int(x) <span class="keyword">for</span> x <span class="keyword">in</span> date_s]</span><br><span class="line">            <span class="comment"># print(dates)</span></span><br><span class="line">            new_link = self.burl + <span class="string">"/%s.%s"</span> % (entry[<span class="string">'yt_videoid'</span>],self.type_name) <span class="comment"># 下载的实际地址</span></span><br><span class="line">            print(<span class="string">'%s: &lt;a href="%s"&gt;%s&lt;/a&gt; &lt;pre&gt;%s&lt;/pre&gt;'</span> % (self.type_name,new_link,self.type_name,entry[<span class="string">'summary'</span>]))</span><br><span class="line">            _one = Item(</span><br><span class="line">                    title = entry[<span class="string">'title'</span>],</span><br><span class="line">                link = new_link,</span><br><span class="line">                description = <span class="string">'%s: &lt;a href="%s"&gt;%s&lt;/a&gt; &lt;pre&gt;%s&lt;/pre&gt;'</span> % (self.type_name,new_link,self.type_name,entry[<span class="string">'summary'</span>]),</span><br><span class="line">                author = <span class="string">"Youtube"</span>,</span><br><span class="line">                guid = Guid(new_link),</span><br><span class="line">                pubDate = datetime.datetime(dates[<span class="number">0</span>], dates[<span class="number">1</span>], dates[<span class="number">2</span>], <span class="number">6</span>, <span class="number">0</span>)) <span class="comment"># year, month, date, hh, mm, ss</span></span><br><span class="line">            item_list+=[_one]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        feed = Feed(</span><br><span class="line">                title = self.feed_title,</span><br><span class="line">                link = <span class="string">"https://www.xxxxx.biz/atom/updated.xml"</span>,</span><br><span class="line">                description = self.feed_des,</span><br><span class="line">                language = <span class="string">"en-US"</span>,</span><br><span class="line">                lastBuildDate = datetime.datetime.now(),</span><br><span class="line">                items = item_list)</span><br><span class="line"></span><br><span class="line">        save_to_file(<span class="string">'%s.xml'</span> % self.file_root, feed.rss())</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">down</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">for</span> entry <span class="keyword">in</span> self.entries:</span><br><span class="line">            <span class="keyword">if</span> entry[<span class="string">'yt_videoid'</span>]+<span class="string">'.'</span>+self.type_name <span class="keyword">not</span> <span class="keyword">in</span> os.listdir(self.file_root):</span><br><span class="line">                print(<span class="string">"downing %s, %s"</span>%(entry[<span class="string">'title'</span>], entry[<span class="string">'link'</span>]))</span><br><span class="line">                audio_download(entry[<span class="string">'link'</span>], self.file_root, self.only_audio)</span><br><span class="line">    </span><br><span class="line">        _now = sorted(glob(self.file_root + <span class="string">"/*"</span>),key=os.path.getctime)</span><br><span class="line">        print(_now)</span><br><span class="line">        <span class="keyword">if</span> len(_now)&gt;=<span class="number">6</span>: <span class="comment"># 多余删除</span></span><br><span class="line">            <span class="keyword">for</span> _d <span class="keyword">in</span> _now[:<span class="number">-5</span>]:</span><br><span class="line">                os.popen(<span class="string">"rm -rf %s"</span>%_d)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># url_rss = "https://www.youtube.com/feeds/videos.xml?channel_id=UCSs4A6HYKmHA2MG_0z-F0xw"</span></span><br><span class="line"><span class="comment"># url_base="http://xxxxx/"</span></span><br><span class="line"><span class="comment"># root="rss2"</span></span><br><span class="line"><span class="comment"># title="李永乐老师"</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># YoutubeDowner(url_rss, url_base, root, title)</span></span><br></pre></td></tr></table></figure>
+<p>最后效果如下：</p>
+<p><img src="/public/2021/07/24/rss_github_file/20220511-00-35-57.png" alt></p>
 <p>祝大家使用愉快！</p>
 ]]></content>
       <categories>
@@ -1423,58 +1433,211 @@ $$
       </tags>
   </entry>
   <entry>
-    <title>希腊罗马神话</title>
-    <url>/public/2018/11/05/readings/Gods_stories/</url>
-    <content><![CDATA[<p><strong>前言</strong></p>
-<p>在我电的图书馆的还书柜子里面偶然所得，一本叫《希腊罗马神话对英语语言文化的影响》吕海平 著 江苏大学初版社，然后莫名的想研究一下，发现挺不错的。</p>
+    <title>爱立信的百年沉浮</title>
+    <url>/public/2022/04/01/history_ericsson/</url>
+    <content><![CDATA[<blockquote>
+<p>文章来源：<br>
+鲜枣课堂（ID：xzclasscom）<br>
+<a href="https://mp.weixin.qq.com/s?__biz=MjM5NTY1MjY0MQ==&amp;mid=2650814278&amp;idx=1&amp;sn=26083fed8d8dd76340e063fd42a59dea" target="_blank" rel="noopener">原文</a></p>
+</blockquote>
+<p>19 世纪中叶，电报业务在欧洲大陆逐渐开始普及。</p>
+<p>1853 年，北欧小国瑞典动用 “海盗基金”（不是海盗的钱，是政府用来打海盗的钱），架设了自己的第一条电报线路，从首都斯德哥尔摩到乌普萨拉。</p>
+<p>为了确保负责这条线路的正常运营，瑞典政府还成立了自己的第一家电报公司，名字叫 Televerket。</p>
+<p>当时，Televerket 公司急需大量的电报硬件设备。于是，乌普萨拉电报局的局长，<strong>安东 · 亨里克 · 奥勒</strong>（Anton Henric Öller），决定创办一家公司，为 Televerket 生产、修理和改进电报机。</p>
+<p>不久后，这家电气设备维修公司正式成立，名字叫奥勒公司（Öller &amp; Co）。</p>
+<p><img src="/public/2022/04/01/history_ericsson/640.png" alt></p>
+<center><div>安东 · 亨里克 · 奥勒，瑞典电信业的先驱</div></center>
+<p>奥勒公司名义上是一家公司，但实际上就是一个手工作坊，规模很小，只能靠 Televerket 公司的资助才能维持生存。</p>
+<p>在奥勒公司的员工中，有一个勤奋的小伙子，当时专门负责维修电报设备以及其它机械设备。他的名字，叫做<strong>拉什 · 玛格纳斯 · 爱立信</strong>（Lars Magnus Ericsson）。</p>
+<p><img src="/public/2022/04/01/history_ericsson/640-16487839499382.png" alt></p>
+<center><div> 拉什 · 玛格纳斯 · 爱立信</div></center>
 <a id="more"></a>
-<p>古希腊罗马的神的关系还是比较乱的，尤其是jupiter 或者zeus的奥林匹斯神系。从上古的神系，总共有三代。</p>
-<p>网上有个人（<a href="http://www.veritablehokum.com/" target="_blank" rel="noopener">Korwin Briggs</a>）做的关系图很不错。</p>
-<p>TODO:后面我也会对其进行整理，以后给大家分享。</p>
-<p><img src="http://www.veritablehokum.com/wp-content/uploads/2018/08/Roman-God-Family-Tree.jpg" alt></p>
+<p>拉什 · 爱立信 1846 年 5 月 5 日出生于瑞典中部瓦姆兰省的一个小农场里。他的家庭条件贫困，自己在 9 个兄弟姐妹中排行第六。</p>
+<p>11 岁时，由于父亲病逝，他不得不外出工作，养家糊口。这期间，他当过矿工，修过铁路，还在铁匠铺做了很长时间的学徒。</p>
+<p>1867 年，拉什 · 爱立信终于攒够了路费，来到他梦寐以求的瑞典首都——斯德哥尔摩。经过一周的试用后，他成功加入了奥勒公司，成为一名修理工。</p>
+<p>尽管这份工作的工资微薄，拉什 · 爱立信仍然感到十分满足。他后来回忆说：“（这份工作）足以满足我的需求，让我庆幸地看到生活比以往任何时候都更加光明，我心中第一次感受到了生活的快乐。”</p>
+<p>工作之余，拉什 · 爱立信努力学习数学、材料技术、工程制图，以及德语和英语。在公司老板奥勒先生的推荐下，1873 年和 1875 年，拉什 · 爱立信先后两次获得瑞典政府的官方资助，前往德国和瑞士进行游学和实习。</p>
+<p>这期间，拉什 · 爱立信来到了德国柏林的西门子公司（Siemens &amp; Halske），学到了很多电报工程技术知识，也接触到一些先进的机床设备。</p>
+<p><img src="/public/2022/04/01/history_ericsson/640-16487839554904.jpeg" alt></p>
+<center><div> 拉什 · 爱立信在西门子公司时绘制的图纸，相当精妙</div></center>
+<p>游学结束之后，拉什 · 爱立信返回瑞典。此时的他，已经具备了非常丰富的专业知识，有能力开创属于自己的事业。</p>
+<p>1876 年 4 月，拉什 · 爱立信拒绝了奥勒公司升职加薪的提议，在斯德哥尔摩皇后街 15 号一个普通建筑的小厨房里，创建了 <strong>L.M.Ericsson</strong> 公司。</p>
+<p><img src="/public/2022/04/01/history_ericsson/640-16487839586856.png" alt></p>
+<center><div> 爱立信公司最初的商标</div></center>
+<center><div>MEK.WERKSTAD 的意思是 “机械作坊”</div></center>
+<center><div> STOCKHOLM 就是瑞典首都 “斯德哥尔摩”</div></center>
+<p>当时的 L.M.Ericsson 公司，其实就是一个作坊修理铺。启动资金 1000 克朗，是借来的。小厨房不到 13 平方米，是租来的。仅有的一套工作设备，是一架脚踏式机床。</p>
+<p>公司的全部员工，除了拉什 · 爱立信本人之外，只有一名临时雇佣的 12 岁男孩。</p>
+<p>不久后，拉什 · 爱立信在奥勒公司的前同事卡尔 · 乔汗 · 安德森（Carl Johan Andersson）加入了他的新公司，成为合伙人。</p>
+<p>公司创立之后，主要业务是维修各种机械设备、电报机以及电器仪表。他们接到的第一单生意，是维修用于火警的一只机械指示器，收费 2 克朗。</p>
+<p>没过多久，拉什 · 爱立信凭借自己的才华和经验，制造出了一些不错的产品，例如用于铁路系统的拨号电报仪器，以及小型社区的防火电报系统。</p>
+<p>这些产品，逐渐赢得了铁路、消防等部门用户的认可，带来了源源不断的订单。</p>
+<h2 id="█-涉足电话业务，规模迅速扩张"><a class="header-anchor" href="#█-涉足电话业务，规模迅速扩张">¶</a>█  涉足电话业务，规模迅速扩张</h2>
+<p>爱立信公司成立的同一年（1876 年），美国的亚历山大 · 贝尔申请并获得了电话的发明专利，从而将人类带入了电话时代。</p>
+<p>1877 年，电话被引入瑞典。拉什 · 爱立信第一时间去买了一对，并进行了拆解研究。</p>
+<p>后来，很多用户将损坏的电话机送到拉什 · 爱立信这里维修，使得他对电话机内部结构有了更深入的了解。</p>
+<p>凭借敏锐的商业嗅觉，拉什 · 爱立信意识到电话背后的巨大商机。于是，他决定研制自己的电话机型号。</p>
+<p>1878 年底，拉什 · 爱立信在妻子<strong>希尔达 · 爱立信</strong>（Hilda Ericsson）的帮助下，成功研制出第一台电话机产品。这款产品性能出色，价格远低于对手，受到了用户的欢迎。</p>
+<p><img src="/public/2022/04/01/history_ericsson/640-16487981603198.jpeg" alt></p>
+<center><div>拉什 · 爱立信的妻子（左），对他帮助极大</div></center>
+<p>后来，拉什 · 爱立信又推出了自己的墙式电话机，再次获得畅销。</p>
+<p><img src="/public/2022/04/01/history_ericsson/640-164879816421310.png" alt></p>
+<center><div>爱立信的墙式电话机</div></center>
+<p>1880 年，拉什 · 爱立信和他的公司迎来了一次重大的机遇。</p>
+<p>当时，美国贝尔公司在斯德哥尔摩、哥德堡、马尔默、松兹瓦尔和索德港建造了一个电话网络。如果任由贝尔公司发展下去，他们将垄断整个瑞典的电话市场。</p>
+<p>于是，拉什 · 爱立信决定与贝尔公司进行正面竞争。不久后，L.M.Ericsson 公司成功击败对手，先后中标了耶夫勒市和挪威卑尔根市的本地电话系统合同。</p>
+<p>拉什 · 爱立信的胜利，极大地增强了瑞典人民的信心。事实证明，瑞典的工艺和技术，完全可以与世界最领先的公司相媲美。</p>
+<p>1883 年，拉什 · 爱立信遇到了自己创业早期最重要的合作伙伴兼客户，<strong>亨里克 · 托勒 · 塞德格伦</strong>（Henrik Thore Cedergren）。</p>
+<p><img src="/public/2022/04/01/history_ericsson/640-164879816726712.jpeg" alt></p>
+<center><div>亨里克 · 托勒 · 塞德格伦</div></center>
+<p>亨里克 · 塞德格伦原本是一个珠宝商人。作为瑞典最早的电话机用户之一，他非常看好电话的发展潜力。但是，他认为贝尔公司的收费太过昂贵，阻碍了电话业务的普及。</p>
+<p>于是，1883 年 2 月，他成立了一家名为 Stockholms Allmänna Telefonaktiebolag（斯德哥尔摩公共电话公司，以下简称 SAT 公司）的独立瑞典电话公司，旨在为公众提供廉价的电话连接服务。</p>
+<p>起初，拉什 · 爱立信并不看好亨里克 · 塞德格伦和他的公司，因为他们完全没有电话网络方面的经验。后来，亨里克 · 塞德格伦凭借自己的热情，打动了拉什 · 爱立信，说服他支持自己的事业。</p>
+<p>1883 年，L.M.Ericsson 公司和 SAT 公司就电话供应签订了一项供货合同，全面负责 SAT 的电话及相关设备。那一年，L.M.Ericsson 公司完成了 SAT 订购的 1000 部电话机和 22 套电话交换设备的交付。</p>
+<p>此后，L.M.Ericsson 公司进入了发展的快车道。</p>
+<p>1884 年，公司建造完成了自己的第一家大规模工厂。1885 年，生产了第一部手持送受话筒。1887 年，签订了当时的最大的合同，为 SAT 在斯德哥尔摩开办的电话局提供设备。这个电话局，是当时欧洲最大的电话局。</p>
+<p><img src="/public/2022/04/01/history_ericsson/640-164879816988314.png" alt></p>
+<center><div>当时的 SAT 公司电话塔</div></center>
+<p>1890 年，L.M.Ericsson 公司的员工人数上升到 153 人。1896 年，L.M.Ericsson 公司改制为有限责任公司，股份资本为 100 万克朗。这一年的 6 月 1 日，爱立信公司累计生产电话超过十万部。</p>
+<p>此后的爱立信，开始全面开拓海外市场。</p>
+<p>1897 年，爱立信在俄罗斯圣彼得堡开办工厂，组装电话机。1902 年，爱立信在纽约开设办事处。1903 年，爱立信与英国国家电话公司联合组建英国爱立信制造有限公司。</p>
+<p>后来，爱立信陆续进入了挪威、丹麦、芬兰、澳大利亚、新西兰、南非、墨西哥、法国、匈牙利、奥地利等国家，成为一家全球性的电信设备公司。</p>
+<p>1900 年，正当爱立信公司高速发展的时候，创始人拉什 · 爱立信决定辞去总经理职务。次年，他又辞任董事长，并逐步出售他持有的爱立信公司的股票（1905 年全部卖完）。</p>
+<p><img src="/public/2022/04/01/history_ericsson/640-164879817266816.png" alt></p>
+<center><div>拉什 · 爱立信</div></center>
+<p>1926 年 12 月 17 日，拉什 · 爱立信逝世，安葬在距离斯德哥尔摩不远的博基尔卡。按照他的遗嘱，墓地没有立石碑。</p>
+<p>1946 年，拉什 · 爱立信百年诞辰之际，他的家乡为他立了一座石碑，上面刻着——<strong>“瑞典电话工业见证了他的成就”</strong>。</p>
+<h2 id="█-遭遇股权危机，险些沦落敌手"><a class="header-anchor" href="#█-遭遇股权危机，险些沦落敌手">¶</a>█  遭遇股权危机，险些沦落敌手</h2>
+<p>1914 年，第一次世界大战爆发，爱立信的海外市场受到重创。</p>
+<p><img src="/public/2022/04/01/history_ericsson/640-164879817662718.png" alt></p>
+<center><div>瑞典地处波罗的海，战争导致出海口被封，爱立信的设备根本运不出去。</div></center>
+<p>1917 年，俄国十月革命爆发，新成立的布尔什维克政府将爱立信在俄国的工厂和业务全部国有化，夺取了价值约 2000 万瑞典克朗的资产，使得爱立信公司雪上加霜。</p>
+<p><img src="/public/2022/04/01/history_ericsson/640-164879818274520.jpeg" alt></p>
+<center><div>被夺走的工厂，后来被改名为 “红色黎明”</div></center>
+<p>1918 年，为了度过经营危机，L.M.Ericsson 与 SAT 公司正式合并，成为 <strong>Allmänna Telefonaktiebolaget LM Ericsson</strong> 公司。</p>
+<p>合并之后的新公司，得到了瑞典政府支付的约 5000 万克朗电话网络运营费用，大大缓解了经营压力。</p>
+<p>不久后，新公司迎来了一个更大的危机，关于<strong>控制权</strong>的危机。</p>
+<p>当时的情况是这样的：1909 年，SAT 公司创始人亨里克 · 塞德格伦去世时，将公司所有权转移给了一个基金会和他的家人。后来，SAT 公司与 L.M.Ericsson 公司合并，基金会和亨里克 · 塞德格伦的家人继而拥有了新公司的大部分控制权。</p>
+<p>再后来，一战期间的巨额经营亏损，使得他们面临巨大的经济压力，于是，他们将爱立信公司的股权卖给了<strong>卡尔 · 弗雷德里克 · 温克兰茨</strong>（Karl Henrik Wincrantz）。</p>
+<p>温克兰茨是谁？温克兰茨原本是 SAT 公司旗下斯德哥尔摩电信的总裁，1925 年，他被任命为爱立信公司的总裁。</p>
+<p>为了巩固自己的权力，温克兰茨一直在努力增加自己的持股比例。</p>
+<p>1928 年，在温克兰茨的推动下，爱立信公司开始发行 “A” 和“B”股。其中，“B”股只有 “A” 股千分之一的投票权。</p>
+<p>温克兰茨希望通过持有少数 “A” 股来控制公司。同时，他主导发行了大量的 “B” 股，筹措公司发展所需的资金。这一时期，公司更名为 Telefon AB LM Ericsson。</p>
+<p>温克兰茨增持股票肯定需要资金，但自己并没有这么多资金。于是，他找到了国际金融家<strong>伊瓦尔 · 克鲁格</strong>（Ivar Kreuger）。</p>
+<p><img src="/public/2022/04/01/history_ericsson/640-164879818656822.jpeg" alt></p>
+<center><div>伊瓦尔 · 克鲁格</div></center>
+<p>伊瓦尔 · 克鲁格帮助温克兰茨控制了爱立信公司。后来，克鲁格与温克兰茨闹翻，干脆赶走了温克兰茨，委任了自己的亲信担任爱立信公司的总裁。</p>
+<p>克鲁格是一个做火柴生意起家的商人，非常精明，也非常不靠谱。为了从资本市场骗取资金，他长期谎报自己的资产规模和旗下企业的盈利能力。</p>
+<p>1931 年，经济大萧条愈演愈烈，克鲁格资金断链。为了偿还债务，他找到了 ITT 的主席，索申尼斯 · 奔尼（Sosthenes Behn），把自己的爱立信股票以 1100 万美元的价格出售给 ITT。</p>
+<p>ITT 是什么公司？美国国际电话电报公司，爱立信最大的竞争对手。这一举动，相当于把爱立信的控制权拱手交给了死对头。</p>
+<p>1932 年 3 月，克鲁格自杀身亡。此时，ITT 拥有爱立信三分之一的股份。</p>
+<p>事情被揭露之后，瑞典举国哗然。自己的民族企业，竟然被对手完全控制，这是无法接受的事情。</p>
+<p>不过好在瑞典法律规定，禁止外国利益在瑞典公司中行使多数表决权，导致 ITT 公司没有办法完全控制爱立信公司。</p>
+<p>后来，瑞典三大银行——斯堪的纳维亚银行、斯德哥尔摩恩斯基尔达银行和瑞典商业银行——迅速采取行动，拯救爱立信。他们与 ITT 进行谈判，逐渐增加了对爱立信公司的控股，夺回了控制权。</p>
+<p>当时，负责牵头拯救行动的是瓦伦堡家族的<strong>小马库斯 · 瓦伦堡</strong>（Marcus Wallenberg Jr），斯德哥尔摩恩斯基尔达银行就属于他的瓦伦堡家族。</p>
+<p><img src="/public/2022/04/01/history_ericsson/640-164879819009724.jpeg" alt></p>
+<center><div>小马库斯 · 瓦伦堡</div></center>
+<p>后来，经过数十年的漫长周旋，一直到 1960 年，小马库斯 · 瓦伦堡才完全收回了 ITT 所持有的爱立信公司股份。爱立信公司也由此彻底摆脱了伊瓦尔 · 克鲁格事件的阴影。</p>
+<h2 id="█-专注技术研发，成功反超对手"><a class="header-anchor" href="#█-专注技术研发，成功反超对手">¶</a>█  专注技术研发，成功反超对手</h2>
+<p>二战时期，爱立信的业务再度因为出海口问题遭受重创。它的很多国外资产都被战争摧毁，销售额也大幅下降。</p>
+<p>这期间，爱立信不得不临时转行，进行军工生产，为军队制造电话、飞机仪表、机枪和弹药等，维持生存。</p>
+<p>二战结束后，全球电话市场需求激增，爱立信公司的业务也逐渐开始复苏。</p>
+<p>1960 年，爱立信开始业务聚焦，砍掉了电信业务之外的无关业务，专注通信设备的研发。</p>
+<p>当时，爱立信启动了一种名为 AKE 的商用电子交换系统的研发。到了 60 年代末，爱立信意识到，AKE 系统已经跟不上时代，它的速度太慢而且价格过于昂贵。</p>
+<p>因为技术和产品的落后，爱立信在市场竞争中屡次输给自己的对手——ITT、GTE 和西门子等。</p>
+<p>1969 年底，爱立信在一个大额合同上再次输给了 ITT。这次失败，迫使爱立信管理层下定决心，与瑞典电报公司 Televerket 联手，共同开发有竞争力的新型产品。</p>
+<p>于是，1970 年 4 月，爱立信与 Televerket 正式签署协议，成立一家名为 <strong>Ellemtel Utvecklings AB</strong> 的联合研发公司。该公司的主要任务，就是开发一种先进的自动化数字电话交换系统，名为 <strong>AX 系统</strong>。</p>
+<p>1976 年，经过不懈努力，Ellemtel 公司成功研发出世界上首台全数字交换机——<strong>AXE 交换机</strong>。</p>
+<p><img src="/public/2022/04/01/history_ericsson/640-164879819313226.png" alt></p>
+<center><div>AXE 是爱立信历史上最重要和最成功的产品</div></center>
+<p>AXE 是一个划时代的产品。它采用模块化的软硬件设计方式，易于制造和测试，也易于维修。</p>
+<p><img src="/public/2022/04/01/history_ericsson/640-164879819539828.png" alt></p>
+<center><div>AXE 设备</div></center>
+<p>因为技术上非常领先，在推出的两年时间里，AXE 几乎赢得了所有主要的国际电信合同。领导 AXE 开发团队的年轻工程师 Björn Svedberg，1977 年直接被任命为公司总裁。</p>
+<p>AXE 成功商用后，Ellemtel 完成了自己的使命，逐步将研究成果移交给了爱立信和 Televerket。后来，Televerket 将自己的 Ellemtel 股份出售给爱立信，Ellemtel 也因此被完全整合到爱立信中。</p>
+<h2 id="█-移动通信浪潮，百年名企沉浮"><a class="header-anchor" href="#█-移动通信浪潮，百年名企沉浮">¶</a>█ 移动通信浪潮，百年名企沉浮</h2>
+<p>20 世纪 80 年代初，爱立信的数字交换技术继续在行业保持领先。</p>
+<p>这一时期，因为沉迷于自己的 AXE 系统，爱立信错过了移动通信技术崛起的第一波浪潮。等到对手纷纷有所成就后，爱立信公司才反应过来，赶紧调整自身的战略方向，转战蜂窝移动通信市场。</p>
+<p>1981 年 9 月，爱立信在沙特阿拉伯建设完成了世界第一个投入商业运营的 NMT 网络（比瑞典自己还早了 1 个月）。</p>
+<p><img src="/public/2022/04/01/history_ericsson/640-164879819790330.jpeg" alt></p>
+<center><div>项目签约现场</div></center>
+<p>1988 年，爱立信决定继续聚焦核心业务。这一年，它以 2.17 亿美元的价格，将自己的计算机和终端业务出售给了芬兰公司诺基亚。</p>
+<p>与此同时，爱立信最主要的竞争对手，美国 AT&amp;T 公司，因为垄断被美国政府强行拆分。爱立信从中受益，很快占据了全球 40% 的移动系统市场。</p>
+<p>后来，到了 2G 时代。欧洲基于 NMT 推出了 GSM，爱立信也及时地推出了自己的产品。</p>
+<p><img src="/public/2022/04/01/history_ericsson/640-164879820007232.png" alt></p>
+<center><div>爱立信的 2G GSM 原型机</div></center>
+<p>这期间，爱立信保持了连续 10 年<strong>年均 35% 以上</strong>的惊人增长，成为了世界上最大的电话及蜂窝移动通信设备商之一。</p>
+<p>1995 年，爱立信的收入达到 76.1 亿瑞典克朗。1996 年，爱立信全球研发工程师达到 18000 名。1997 年，爱立信在世界移动市场上的份额达到 40%，拥有大约 5400 万用户。</p>
+<p>1998 年，<strong>斯温 · 克里斯特 · 尼尔森</strong>（Sven-Christer Nilsson）当选为爱立信公司的 CEO。</p>
+<p><img src="/public/2022/04/01/history_ericsson/640-164879820245334.png" alt></p>
+<center><div>斯温 · 克里斯特 · 尼尔森</div></center>
+<p>在他的领导下，爱立信进行了重大的组织架构调整。</p>
+<p>他将公司业务分为三个板块，分别是网络运营商部门、消费品部门（包括手机业务）和企业解决方案部门。（是不是有点眼熟？）</p>
+<p>除了重组之外，尼尔森还宣布了 11000 人的裁员计划。</p>
+<p>1999 年，爱立信与高通公司解决了为期两年的 CDMA 技术专利官司。作为和解的一部分，爱立信收购了高通的无线基础设施业务。</p>
+<p>这一年，爱立信的手机业务在与诺基亚的竞争中落后，导致市场份额从 15.1% 下降到 10.5%。当时，爱立信 70% 的收入来自基础设施销售，而 21% 来自手机销售。</p>
+<p>1999 年 7 月，因为业务重组失败，尼尔森被迫辞职。</p>
+<p>进入 21 世纪，爱立信的霉运没有结束。2000 年，因为产品质量问题以及工厂发生的火灾意外，爱立信亏损 240 亿瑞典克朗。</p>
+<p>2001 年，爱立信宣布将其手机的生产外包给<strong>伟创力</strong>国际有限公司，自己则集中力量于手机的技术研发、设计以及市场推广。同时，爱立信大幅裁剪了消费品部门的员工人数。</p>
+<p>同年 10 月，爱立信与日本索尼公司分别出资 50%，组建了<strong>索尼爱立信移动通信公司</strong>，专门生产手机产品。对于这家公司，相信大家都比较熟悉。</p>
+<p><img src="/public/2022/04/01/history_ericsson/640-164879820498536.jpeg" alt></p>
+<p>2002 年，在全球金融危机的持续影响下，爱立信再次遭受巨额亏损。</p>
+<p>面对亏损，爱立信一方面推出了降低运营成本、提高效率的 “成本控制计划”；另一方面，调整市场战略，将公司的核心业务做了全面的优化与整合，出售了一些非核心业务。</p>
+<p>2002 年 6 月，爱立信以 4 亿美元的价格，将自己的微电子部门卖给了<strong>英飞凌</strong>科技股份公司（当时是西门子的子公司）。</p>
+<p>2003 年，随着全球通信产业回暖，加上之前的一系列战略调整显露成效，爱立信宣告结束亏损，恢复盈利。</p>
+<p>复苏后的爱立信，在全球 3G 市场上表现突出，拥有 40% 的 3G WCDMA 市场份额，是当之无愧的全球第一设备商。</p>
+<h2 id="█-遭遇中国对手，迎来严峻挑战"><a class="header-anchor" href="#█-遭遇中国对手，迎来严峻挑战">¶</a>█ 遭遇中国对手，迎来严峻挑战</h2>
+<p>爱立信与中国的历史渊源已超过百年。早在 1892 年，爱立信就接到了来自中国的订单（2000 个电话机），并为中国供货。1906 年，中国代表团还前往斯德哥尔摩，参观了爱立信总部。</p>
+<p><img src="/public/2022/04/01/history_ericsson/640-164879820869638.png" alt></p>
+<center><div>当时的会面场景</div></center>
+<p>一个多世纪以来，爱立信在中国电信发展史上贡献了多个 “第一”。</p>
+<p>中国第一部人工交换机（1900 年）和第一部自动交换机（1924 年），就是来自爱立信。1987 年中国第一套移动电话系统在广州开通，设备也是来自爱立信。</p>
+<p><img src="/public/2022/04/01/history_ericsson/640-164879821103340.jpeg" alt></p>
+<center><div>中国第一套移动电话系统</div></center>
+<p><img src="/public/2022/04/01/history_ericsson/640-164879821453442.png" alt></p>
+<center><div>改革开放后，国内也引进了 AXE（1985 年照片）</div></center>
+<p>爱立信一直非常重视中国市场，不仅成立了合资公司和独资公司，还在中国设立了爱立信学院和研究院。</p>
+<p>不过，拉什 · 爱立信当年卖电话到这个国家的时候，一定不会想到，一百多年后，这个国家会走出来两个名不见经传的小公司，把他开创的通信霸业给搅得鸡犬不宁。</p>
+<p>这两个小公司，当然就是华为和中兴。</p>
+<p><img src="/public/2022/04/01/history_ericsson/640-164879821693844.jpeg" alt></p>
+<p>在这两家公司的挑战和冲击下，爱立信公司在 21 世纪的市场份额不断下滑，CEO 频繁更换。那些年，伴随爱立信的坏消息总是一个接着一个，不是出售业务，就是裁员。</p>
+<p>2013 年，华为全年销售收入正式超过爱立信，爱立信被迫将全球第一的位置拱手相让。</p>
+<p>2016 年，爱立信计划关闭瑞典境内的所有工厂，结束在瑞典制造产品 140 年的历史。</p>
+<p>2017 年，爱立信净亏损 44.76 亿美元，全年裁员达到 1.7 万人。</p>
+<h2 id="█-外部环境变化，业绩迅速复苏"><a class="header-anchor" href="#█-外部环境变化，业绩迅速复苏">¶</a>█ 外部环境变化，业绩迅速复苏</h2>
+<p>2018 年之后，爱立信的形势有了明显的好转，原因包括多个方面。</p>
+<p>首先，就是 5G 市场增长带来的商业机会。</p>
+<p>爱立信非常重视 5G，投入了大量的资源进行研发。2014 年，爱立信就发布了全球首台 5G 移动终端原型。</p>
+<p><img src="/public/2022/04/01/history_ericsson/640-164879822068446.jpeg" alt></p>
+<p>2016 年，爱立信发布了一款号称 “全球首个 5G NR 无线设备” 的 5G 基站——AIR 6468。</p>
+<p><img src="/public/2022/04/01/history_ericsson/640-164879822338648.jpeg" alt></p>
+<p>2017 年 2 月，爱立信推出了自己的 5G 平台。2018 年 1 月，爱立信发布了首个 5G 小基站 “5G Radio Dot”，吸引了行业的广泛关注。</p>
+<p><img src="/public/2022/04/01/history_ericsson/640-164879822621150.png" alt></p>
+<center><div>5G NR DOT 点系统</div></center>
+<p>除了 5G 之外，另一个帮助爱立信业绩复苏的主要原因，是微妙变化的外部环境。</p>
+<p>正如大家所知道的，中美贸易摩擦，美国对中国通信设备商进行强力打压，多个国家宣布 “禁用” 华为和中兴。于是，欧美国家的设备商就有了难得的市场机会。</p>
+<p>综合种种因素，爱立信的业绩迅速转好，扭亏为盈，股价攀升。</p>
+<p>2020 年，爱立信全年净销售额达到 2324 亿瑞典克朗（约合 278 亿美元），同比上涨 2%；净利润 176 亿瑞典克郎（约合 21 亿美元），相比 2019 年，翻了近十倍。</p>
+<h2 id="█-结语"><a class="header-anchor" href="#█-结语">¶</a>█  结语</h2>
+<p>爱立信，是通信行业历史最悠久的企业之一（准确来说，是 145 年的历史）。</p>
+<p>在很长的一段时间里，它都是世界排名第一的通信设备制造商。爱立信的很多技术创新，改变了通信行业的发展走向。很多经典的通信产品和知名的通信项目，都是出于这家企业。</p>
+<p>在一百年的发展过程中，爱立信有过辉煌，也有过挫折，但是它仍然屹立不倒，在世界通信第一阵营中牢牢占据自己的位置。这充分说明，这家企业有着自己的技术积累和文化底蕴，有属于自己的 “韧性”。</p>
+<p>如今，5G 的竞争还在继续，百年老店爱立信的奋斗之路也在继续。面对变幻莫测的市场环境，爱立信究竟会走向何方呢？它还会续写另一段百年辉煌吗？</p>
+<p>（全文完）</p>
+<p><strong>参考文献：</strong></p>
+<p>1、<a href="https://www.ericsson.com/en/about-us/history/company" target="_blank" rel="noopener">https://www.ericsson.com/en/about-us/history/company</a></p>
+<p>2、<a href="https://en.wikipedia.org/wiki/Ericsson" target="_blank" rel="noopener">https://en.wikipedia.org/wiki/Ericsson</a></p>
+<p>3、《改变世界》，2009 年出版</p>
+<p>4、<a href="https://ethw.org/Lars_Magnus_Ericsson" target="_blank" rel="noopener">https://ethw.org/Lars_Magnus_Ericsson</a></p>
+<p>5、<a href="https://www.company-histories.com/Telefonaktiebolaget-LM-Ericsson-Company-History.html" target="_blank" rel="noopener">https://www.company-histories.com/Telefonaktiebolaget-LM-Ericsson-Company-History.html</a></p>
+<p><img src="/public/2022/04/01/history_ericsson/640-164879825241752.gif" alt></p>
 ]]></content>
       <categories>
-        <category>读书笔记</category>
+        <category>通信</category>
       </categories>
       <tags>
-        <tag>希腊罗马神话</tag>
-        <tag>语言文化</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>红楼梦与我</title>
-    <url>/public/2017/05/14/readings/hongloumeng/</url>
-    <content><![CDATA[<p>红楼梦是我国四大名著之一，主要内容是贾府的兴衰和宝黛的悲剧爱情。电视剧红楼梦2010版，我是从八月开始看的，看完到现在，也有小一个月了。在网上大家对这版电视剧褒贬不一。与我来说，我是喜欢这部剧的，不能说拍得很好，但这部剧却勾起了我读书与写字的兴趣。于是乎，做了一篇随笔，以记录我的一些感触。</p>
-<a id="more"></a>
-<p>我记得最早是小学，我们还是顾着打玻璃珠和丢沙包的年纪，学校旁边的小书店里，也都是七龙珠，哆啦A梦，柯南的小人书，老师们讲到四大名著，顺带提了下红楼梦，其他没印象了。我们学习最多的是中文的拼音和书写，作文都是打油，日记也闹了不少笑话。后来上初中，有一次寒假附加作业是阅读红楼梦，我虽毫无兴趣，但还是硬着头皮，去新华书店，试看红楼梦。120章的红楼，厚得连看下去的勇气也没有。略看了几下，最后，做了一个红楼梦不好看的论断，也就放在那边了。那时有老版的红楼梦电视剧播映，打开电视偶尔会遇见，但是立马换台，央视的西游记与情深深雨蒙蒙，湖南电视台的还珠格格，也是欣赏了好几遍。再者，有动画片谁有兴趣去看这些什么破剧，关于书本，最多也就是看看汤姆索亚历险记。</p>
-<p>再后来，去启中读书，学习上比较紧张，再加上理科班的非文学氛围，对这些文学的东西更不感冒。尽管偶尔也会入耳一些其中的人物，比如林妹妹，刘姥姥，也是不用大脑耳朵直接过滤。当时，大伙是杂志，读者，青年文摘读得比较多，班上一本，全班查阅，杂志文章篇幅较小，读起很顺很舒服。期间，与红楼的唯一一次接触是，高中教科书上有刘姥姥进大观园的章节，翻了一遍，当时，感叹人物好多，理不出人物关系，完全放弃看完红楼的欲望。以为姥姥是贾府的姥姥，猩猩然想着以后可以说看过一段红楼，红楼也比较贵不如多买几本读者，积累作文素材。不知什么时候，班上网络小说之风随着mp4和智能手机的普及而吹起，我也用MP4刷完了一两部网络小说，感觉都是一个套路，主角都是绝处逢生，越来越无敌，也就不敢兴趣了。</p>
-<p>再然后，我上大学，藏书400百万册的成电图书馆，也并没有引起我读文学类的欲望，大学四年借的专业工具类书比较多，想来也是浪费资源。在一个工科高校，文学方面的课程几乎没有，虽说有个大学语文的选修课，俨然不感兴趣。大学里，再一次看到有人在看红楼梦电视剧，也是大二的时候的人工智能课上，也是闲得无聊。再后来，大四时，手机上自带一个蜻蜓网络电台应用，无聊点开蒋勋老师评述的红楼梦音频，红学大师讲到他与红楼梦的相遇，同时，他介绍的红楼基本背景和人物，通俗易懂，一下子引起我的兴趣。他说红楼梦写的都是15、6岁人的故事，15、16岁就可以读了。回想我15、16岁，基本没看什么名著。要说四大名著，我也就看了三国和水浒的少年版。上次回家，看美剧，老妈突然蹦出句，不能光看英文也应当看看我们老祖宗的文化。</p>
-<p>现在得空，就这样抱着惭愧和一丝尝试我看起了2010版红楼梦。在这我得承认，我是个演员控。不得不说，三大主演都很不错。</p>
-<p>50集过后，原来红楼讲得是这个，并表示有兴趣去读读名著了。原来有这么多原来。</p>
-<ul>
-<li>
-<p>人物家族命运令人感慨。作者写出超越那个时代的朦胧的爱情与不得不提的丧心病狂的全部悲剧，果然是个失意文人的作品。 可叹停机德，堪怜咏絮才。宝钗落落大方德才兼备，黛玉因情而伤而痛去世，宝玉虽与宝钗结婚，最后离家成道去。精于人情世故,，胸有城府的王熙凤，平日的爽朗笑声终究悲剧，贾府里多么好的领导，最后也人情冷暖，不免为其伤心。刘姥姥，其实是个成功的投机分子，但也是朴实善良的“穷亲戚”，最后救了巧儿。十二金钗各有个的悲剧，正如宝玉在虚幻仙境里警幻仙姑给的设定。原来故事一开始就把结局告诉了读者。</p>
-</li>
-<li>
-<p>体验古代贵族文化。里面还有个诗社的组织，古人的结社，好有雅致，也会给人起“绰号”。除此以外还有击鼓传花，有时主题是讲笑话有时对诗。猜灯谜，中秋赏月，生日宴会等等。</p>
-</li>
-<li>
-<p>语言魅力。打秋风，这是形容刘姥姥找找贾府接济用的。恼，生气，或者使生气。不同人的称谓，宝兄弟，宝二爷，宝姐姐或者好姐姐，林妹妹或者好妹妹。</p>
-</li>
-<li>
-<p>情节回味无穷。刘姥姥进大观园，是贾母和姥姥差不多年纪想和她聊聊，邀请她的。乡村来打秋风的刘姥姥像是在参观皇宫。在后面时期  ，家族里一次比一次捉襟见肘的聚会，可以看见这些家族的衰落。中国的各种人情世故体现在这里面。四个大家族，一个小社会。</p>
-</li>
-</ul>
-<p>以上是我的一点点感悟。</p>
-<p>只是，我与红楼梦，还差80章书页，希望还能有计划地读完。</p>
-<p>2016年于成电</p>
-]]></content>
-      <categories>
-        <category>读书笔记</category>
-      </categories>
-      <tags>
-        <tag>故事</tag>
-        <tag>《红楼梦》</tag>
+        <tag>通信</tag>
+        <tag>历史</tag>
       </tags>
   </entry>
   <entry>
@@ -1727,214 +1890,6 @@ NexT Github  <a href="https://github.com/iissnan/hexo-theme-next" target="_blank
         <tag>工具</tag>
         <tag>Hexo</tag>
         <tag>NexT</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>爱立信的百年沉浮</title>
-    <url>/public/2022/04/01/history_ericsson/</url>
-    <content><![CDATA[<blockquote>
-<p>文章来源：<br>
-鲜枣课堂（ID：xzclasscom）<br>
-<a href="https://mp.weixin.qq.com/s?__biz=MjM5NTY1MjY0MQ==&amp;mid=2650814278&amp;idx=1&amp;sn=26083fed8d8dd76340e063fd42a59dea" target="_blank" rel="noopener">原文</a></p>
-</blockquote>
-<p>19 世纪中叶，电报业务在欧洲大陆逐渐开始普及。</p>
-<p>1853 年，北欧小国瑞典动用 “海盗基金”（不是海盗的钱，是政府用来打海盗的钱），架设了自己的第一条电报线路，从首都斯德哥尔摩到乌普萨拉。</p>
-<p>为了确保负责这条线路的正常运营，瑞典政府还成立了自己的第一家电报公司，名字叫 Televerket。</p>
-<p>当时，Televerket 公司急需大量的电报硬件设备。于是，乌普萨拉电报局的局长，<strong>安东 · 亨里克 · 奥勒</strong>（Anton Henric Öller），决定创办一家公司，为 Televerket 生产、修理和改进电报机。</p>
-<p>不久后，这家电气设备维修公司正式成立，名字叫奥勒公司（Öller &amp; Co）。</p>
-<p><img src="/public/2022/04/01/history_ericsson/640.png" alt></p>
-<center><div>安东 · 亨里克 · 奥勒，瑞典电信业的先驱</div></center>
-<p>奥勒公司名义上是一家公司，但实际上就是一个手工作坊，规模很小，只能靠 Televerket 公司的资助才能维持生存。</p>
-<p>在奥勒公司的员工中，有一个勤奋的小伙子，当时专门负责维修电报设备以及其它机械设备。他的名字，叫做<strong>拉什 · 玛格纳斯 · 爱立信</strong>（Lars Magnus Ericsson）。</p>
-<p><img src="/public/2022/04/01/history_ericsson/640-16487839499382.png" alt></p>
-<center><div> 拉什 · 玛格纳斯 · 爱立信</div></center>
-<a id="more"></a>
-<p>拉什 · 爱立信 1846 年 5 月 5 日出生于瑞典中部瓦姆兰省的一个小农场里。他的家庭条件贫困，自己在 9 个兄弟姐妹中排行第六。</p>
-<p>11 岁时，由于父亲病逝，他不得不外出工作，养家糊口。这期间，他当过矿工，修过铁路，还在铁匠铺做了很长时间的学徒。</p>
-<p>1867 年，拉什 · 爱立信终于攒够了路费，来到他梦寐以求的瑞典首都——斯德哥尔摩。经过一周的试用后，他成功加入了奥勒公司，成为一名修理工。</p>
-<p>尽管这份工作的工资微薄，拉什 · 爱立信仍然感到十分满足。他后来回忆说：“（这份工作）足以满足我的需求，让我庆幸地看到生活比以往任何时候都更加光明，我心中第一次感受到了生活的快乐。”</p>
-<p>工作之余，拉什 · 爱立信努力学习数学、材料技术、工程制图，以及德语和英语。在公司老板奥勒先生的推荐下，1873 年和 1875 年，拉什 · 爱立信先后两次获得瑞典政府的官方资助，前往德国和瑞士进行游学和实习。</p>
-<p>这期间，拉什 · 爱立信来到了德国柏林的西门子公司（Siemens &amp; Halske），学到了很多电报工程技术知识，也接触到一些先进的机床设备。</p>
-<p><img src="/public/2022/04/01/history_ericsson/640-16487839554904.jpeg" alt></p>
-<center><div> 拉什 · 爱立信在西门子公司时绘制的图纸，相当精妙</div></center>
-<p>游学结束之后，拉什 · 爱立信返回瑞典。此时的他，已经具备了非常丰富的专业知识，有能力开创属于自己的事业。</p>
-<p>1876 年 4 月，拉什 · 爱立信拒绝了奥勒公司升职加薪的提议，在斯德哥尔摩皇后街 15 号一个普通建筑的小厨房里，创建了 <strong>L.M.Ericsson</strong> 公司。</p>
-<p><img src="/public/2022/04/01/history_ericsson/640-16487839586856.png" alt></p>
-<center><div> 爱立信公司最初的商标</div></center>
-<center><div>MEK.WERKSTAD 的意思是 “机械作坊”</div></center>
-<center><div> STOCKHOLM 就是瑞典首都 “斯德哥尔摩”</div></center>
-<p>当时的 L.M.Ericsson 公司，其实就是一个作坊修理铺。启动资金 1000 克朗，是借来的。小厨房不到 13 平方米，是租来的。仅有的一套工作设备，是一架脚踏式机床。</p>
-<p>公司的全部员工，除了拉什 · 爱立信本人之外，只有一名临时雇佣的 12 岁男孩。</p>
-<p>不久后，拉什 · 爱立信在奥勒公司的前同事卡尔 · 乔汗 · 安德森（Carl Johan Andersson）加入了他的新公司，成为合伙人。</p>
-<p>公司创立之后，主要业务是维修各种机械设备、电报机以及电器仪表。他们接到的第一单生意，是维修用于火警的一只机械指示器，收费 2 克朗。</p>
-<p>没过多久，拉什 · 爱立信凭借自己的才华和经验，制造出了一些不错的产品，例如用于铁路系统的拨号电报仪器，以及小型社区的防火电报系统。</p>
-<p>这些产品，逐渐赢得了铁路、消防等部门用户的认可，带来了源源不断的订单。</p>
-<h2 id="█-涉足电话业务，规模迅速扩张"><a class="header-anchor" href="#█-涉足电话业务，规模迅速扩张">¶</a>█  涉足电话业务，规模迅速扩张</h2>
-<p>爱立信公司成立的同一年（1876 年），美国的亚历山大 · 贝尔申请并获得了电话的发明专利，从而将人类带入了电话时代。</p>
-<p>1877 年，电话被引入瑞典。拉什 · 爱立信第一时间去买了一对，并进行了拆解研究。</p>
-<p>后来，很多用户将损坏的电话机送到拉什 · 爱立信这里维修，使得他对电话机内部结构有了更深入的了解。</p>
-<p>凭借敏锐的商业嗅觉，拉什 · 爱立信意识到电话背后的巨大商机。于是，他决定研制自己的电话机型号。</p>
-<p>1878 年底，拉什 · 爱立信在妻子<strong>希尔达 · 爱立信</strong>（Hilda Ericsson）的帮助下，成功研制出第一台电话机产品。这款产品性能出色，价格远低于对手，受到了用户的欢迎。</p>
-<p><img src="/public/2022/04/01/history_ericsson/640-16487981603198.jpeg" alt></p>
-<center><div>拉什 · 爱立信的妻子（左），对他帮助极大</div></center>
-<p>后来，拉什 · 爱立信又推出了自己的墙式电话机，再次获得畅销。</p>
-<p><img src="/public/2022/04/01/history_ericsson/640-164879816421310.png" alt></p>
-<center><div>爱立信的墙式电话机</div></center>
-<p>1880 年，拉什 · 爱立信和他的公司迎来了一次重大的机遇。</p>
-<p>当时，美国贝尔公司在斯德哥尔摩、哥德堡、马尔默、松兹瓦尔和索德港建造了一个电话网络。如果任由贝尔公司发展下去，他们将垄断整个瑞典的电话市场。</p>
-<p>于是，拉什 · 爱立信决定与贝尔公司进行正面竞争。不久后，L.M.Ericsson 公司成功击败对手，先后中标了耶夫勒市和挪威卑尔根市的本地电话系统合同。</p>
-<p>拉什 · 爱立信的胜利，极大地增强了瑞典人民的信心。事实证明，瑞典的工艺和技术，完全可以与世界最领先的公司相媲美。</p>
-<p>1883 年，拉什 · 爱立信遇到了自己创业早期最重要的合作伙伴兼客户，<strong>亨里克 · 托勒 · 塞德格伦</strong>（Henrik Thore Cedergren）。</p>
-<p><img src="/public/2022/04/01/history_ericsson/640-164879816726712.jpeg" alt></p>
-<center><div>亨里克 · 托勒 · 塞德格伦</div></center>
-<p>亨里克 · 塞德格伦原本是一个珠宝商人。作为瑞典最早的电话机用户之一，他非常看好电话的发展潜力。但是，他认为贝尔公司的收费太过昂贵，阻碍了电话业务的普及。</p>
-<p>于是，1883 年 2 月，他成立了一家名为 Stockholms Allmänna Telefonaktiebolag（斯德哥尔摩公共电话公司，以下简称 SAT 公司）的独立瑞典电话公司，旨在为公众提供廉价的电话连接服务。</p>
-<p>起初，拉什 · 爱立信并不看好亨里克 · 塞德格伦和他的公司，因为他们完全没有电话网络方面的经验。后来，亨里克 · 塞德格伦凭借自己的热情，打动了拉什 · 爱立信，说服他支持自己的事业。</p>
-<p>1883 年，L.M.Ericsson 公司和 SAT 公司就电话供应签订了一项供货合同，全面负责 SAT 的电话及相关设备。那一年，L.M.Ericsson 公司完成了 SAT 订购的 1000 部电话机和 22 套电话交换设备的交付。</p>
-<p>此后，L.M.Ericsson 公司进入了发展的快车道。</p>
-<p>1884 年，公司建造完成了自己的第一家大规模工厂。1885 年，生产了第一部手持送受话筒。1887 年，签订了当时的最大的合同，为 SAT 在斯德哥尔摩开办的电话局提供设备。这个电话局，是当时欧洲最大的电话局。</p>
-<p><img src="/public/2022/04/01/history_ericsson/640-164879816988314.png" alt></p>
-<center><div>当时的 SAT 公司电话塔</div></center>
-<p>1890 年，L.M.Ericsson 公司的员工人数上升到 153 人。1896 年，L.M.Ericsson 公司改制为有限责任公司，股份资本为 100 万克朗。这一年的 6 月 1 日，爱立信公司累计生产电话超过十万部。</p>
-<p>此后的爱立信，开始全面开拓海外市场。</p>
-<p>1897 年，爱立信在俄罗斯圣彼得堡开办工厂，组装电话机。1902 年，爱立信在纽约开设办事处。1903 年，爱立信与英国国家电话公司联合组建英国爱立信制造有限公司。</p>
-<p>后来，爱立信陆续进入了挪威、丹麦、芬兰、澳大利亚、新西兰、南非、墨西哥、法国、匈牙利、奥地利等国家，成为一家全球性的电信设备公司。</p>
-<p>1900 年，正当爱立信公司高速发展的时候，创始人拉什 · 爱立信决定辞去总经理职务。次年，他又辞任董事长，并逐步出售他持有的爱立信公司的股票（1905 年全部卖完）。</p>
-<p><img src="/public/2022/04/01/history_ericsson/640-164879817266816.png" alt></p>
-<center><div>拉什 · 爱立信</div></center>
-<p>1926 年 12 月 17 日，拉什 · 爱立信逝世，安葬在距离斯德哥尔摩不远的博基尔卡。按照他的遗嘱，墓地没有立石碑。</p>
-<p>1946 年，拉什 · 爱立信百年诞辰之际，他的家乡为他立了一座石碑，上面刻着——<strong>“瑞典电话工业见证了他的成就”</strong>。</p>
-<h2 id="█-遭遇股权危机，险些沦落敌手"><a class="header-anchor" href="#█-遭遇股权危机，险些沦落敌手">¶</a>█  遭遇股权危机，险些沦落敌手</h2>
-<p>1914 年，第一次世界大战爆发，爱立信的海外市场受到重创。</p>
-<p><img src="/public/2022/04/01/history_ericsson/640-164879817662718.png" alt></p>
-<center><div>瑞典地处波罗的海，战争导致出海口被封，爱立信的设备根本运不出去。</div></center>
-<p>1917 年，俄国十月革命爆发，新成立的布尔什维克政府将爱立信在俄国的工厂和业务全部国有化，夺取了价值约 2000 万瑞典克朗的资产，使得爱立信公司雪上加霜。</p>
-<p><img src="/public/2022/04/01/history_ericsson/640-164879818274520.jpeg" alt></p>
-<center><div>被夺走的工厂，后来被改名为 “红色黎明”</div></center>
-<p>1918 年，为了度过经营危机，L.M.Ericsson 与 SAT 公司正式合并，成为 <strong>Allmänna Telefonaktiebolaget LM Ericsson</strong> 公司。</p>
-<p>合并之后的新公司，得到了瑞典政府支付的约 5000 万克朗电话网络运营费用，大大缓解了经营压力。</p>
-<p>不久后，新公司迎来了一个更大的危机，关于<strong>控制权</strong>的危机。</p>
-<p>当时的情况是这样的：1909 年，SAT 公司创始人亨里克 · 塞德格伦去世时，将公司所有权转移给了一个基金会和他的家人。后来，SAT 公司与 L.M.Ericsson 公司合并，基金会和亨里克 · 塞德格伦的家人继而拥有了新公司的大部分控制权。</p>
-<p>再后来，一战期间的巨额经营亏损，使得他们面临巨大的经济压力，于是，他们将爱立信公司的股权卖给了<strong>卡尔 · 弗雷德里克 · 温克兰茨</strong>（Karl Henrik Wincrantz）。</p>
-<p>温克兰茨是谁？温克兰茨原本是 SAT 公司旗下斯德哥尔摩电信的总裁，1925 年，他被任命为爱立信公司的总裁。</p>
-<p>为了巩固自己的权力，温克兰茨一直在努力增加自己的持股比例。</p>
-<p>1928 年，在温克兰茨的推动下，爱立信公司开始发行 “A” 和“B”股。其中，“B”股只有 “A” 股千分之一的投票权。</p>
-<p>温克兰茨希望通过持有少数 “A” 股来控制公司。同时，他主导发行了大量的 “B” 股，筹措公司发展所需的资金。这一时期，公司更名为 Telefon AB LM Ericsson。</p>
-<p>温克兰茨增持股票肯定需要资金，但自己并没有这么多资金。于是，他找到了国际金融家<strong>伊瓦尔 · 克鲁格</strong>（Ivar Kreuger）。</p>
-<p><img src="/public/2022/04/01/history_ericsson/640-164879818656822.jpeg" alt></p>
-<center><div>伊瓦尔 · 克鲁格</div></center>
-<p>伊瓦尔 · 克鲁格帮助温克兰茨控制了爱立信公司。后来，克鲁格与温克兰茨闹翻，干脆赶走了温克兰茨，委任了自己的亲信担任爱立信公司的总裁。</p>
-<p>克鲁格是一个做火柴生意起家的商人，非常精明，也非常不靠谱。为了从资本市场骗取资金，他长期谎报自己的资产规模和旗下企业的盈利能力。</p>
-<p>1931 年，经济大萧条愈演愈烈，克鲁格资金断链。为了偿还债务，他找到了 ITT 的主席，索申尼斯 · 奔尼（Sosthenes Behn），把自己的爱立信股票以 1100 万美元的价格出售给 ITT。</p>
-<p>ITT 是什么公司？美国国际电话电报公司，爱立信最大的竞争对手。这一举动，相当于把爱立信的控制权拱手交给了死对头。</p>
-<p>1932 年 3 月，克鲁格自杀身亡。此时，ITT 拥有爱立信三分之一的股份。</p>
-<p>事情被揭露之后，瑞典举国哗然。自己的民族企业，竟然被对手完全控制，这是无法接受的事情。</p>
-<p>不过好在瑞典法律规定，禁止外国利益在瑞典公司中行使多数表决权，导致 ITT 公司没有办法完全控制爱立信公司。</p>
-<p>后来，瑞典三大银行——斯堪的纳维亚银行、斯德哥尔摩恩斯基尔达银行和瑞典商业银行——迅速采取行动，拯救爱立信。他们与 ITT 进行谈判，逐渐增加了对爱立信公司的控股，夺回了控制权。</p>
-<p>当时，负责牵头拯救行动的是瓦伦堡家族的<strong>小马库斯 · 瓦伦堡</strong>（Marcus Wallenberg Jr），斯德哥尔摩恩斯基尔达银行就属于他的瓦伦堡家族。</p>
-<p><img src="/public/2022/04/01/history_ericsson/640-164879819009724.jpeg" alt></p>
-<center><div>小马库斯 · 瓦伦堡</div></center>
-<p>后来，经过数十年的漫长周旋，一直到 1960 年，小马库斯 · 瓦伦堡才完全收回了 ITT 所持有的爱立信公司股份。爱立信公司也由此彻底摆脱了伊瓦尔 · 克鲁格事件的阴影。</p>
-<h2 id="█-专注技术研发，成功反超对手"><a class="header-anchor" href="#█-专注技术研发，成功反超对手">¶</a>█  专注技术研发，成功反超对手</h2>
-<p>二战时期，爱立信的业务再度因为出海口问题遭受重创。它的很多国外资产都被战争摧毁，销售额也大幅下降。</p>
-<p>这期间，爱立信不得不临时转行，进行军工生产，为军队制造电话、飞机仪表、机枪和弹药等，维持生存。</p>
-<p>二战结束后，全球电话市场需求激增，爱立信公司的业务也逐渐开始复苏。</p>
-<p>1960 年，爱立信开始业务聚焦，砍掉了电信业务之外的无关业务，专注通信设备的研发。</p>
-<p>当时，爱立信启动了一种名为 AKE 的商用电子交换系统的研发。到了 60 年代末，爱立信意识到，AKE 系统已经跟不上时代，它的速度太慢而且价格过于昂贵。</p>
-<p>因为技术和产品的落后，爱立信在市场竞争中屡次输给自己的对手——ITT、GTE 和西门子等。</p>
-<p>1969 年底，爱立信在一个大额合同上再次输给了 ITT。这次失败，迫使爱立信管理层下定决心，与瑞典电报公司 Televerket 联手，共同开发有竞争力的新型产品。</p>
-<p>于是，1970 年 4 月，爱立信与 Televerket 正式签署协议，成立一家名为 <strong>Ellemtel Utvecklings AB</strong> 的联合研发公司。该公司的主要任务，就是开发一种先进的自动化数字电话交换系统，名为 <strong>AX 系统</strong>。</p>
-<p>1976 年，经过不懈努力，Ellemtel 公司成功研发出世界上首台全数字交换机——<strong>AXE 交换机</strong>。</p>
-<p><img src="/public/2022/04/01/history_ericsson/640-164879819313226.png" alt></p>
-<center><div>AXE 是爱立信历史上最重要和最成功的产品</div></center>
-<p>AXE 是一个划时代的产品。它采用模块化的软硬件设计方式，易于制造和测试，也易于维修。</p>
-<p><img src="/public/2022/04/01/history_ericsson/640-164879819539828.png" alt></p>
-<center><div>AXE 设备</div></center>
-<p>因为技术上非常领先，在推出的两年时间里，AXE 几乎赢得了所有主要的国际电信合同。领导 AXE 开发团队的年轻工程师 Björn Svedberg，1977 年直接被任命为公司总裁。</p>
-<p>AXE 成功商用后，Ellemtel 完成了自己的使命，逐步将研究成果移交给了爱立信和 Televerket。后来，Televerket 将自己的 Ellemtel 股份出售给爱立信，Ellemtel 也因此被完全整合到爱立信中。</p>
-<h2 id="█-移动通信浪潮，百年名企沉浮"><a class="header-anchor" href="#█-移动通信浪潮，百年名企沉浮">¶</a>█ 移动通信浪潮，百年名企沉浮</h2>
-<p>20 世纪 80 年代初，爱立信的数字交换技术继续在行业保持领先。</p>
-<p>这一时期，因为沉迷于自己的 AXE 系统，爱立信错过了移动通信技术崛起的第一波浪潮。等到对手纷纷有所成就后，爱立信公司才反应过来，赶紧调整自身的战略方向，转战蜂窝移动通信市场。</p>
-<p>1981 年 9 月，爱立信在沙特阿拉伯建设完成了世界第一个投入商业运营的 NMT 网络（比瑞典自己还早了 1 个月）。</p>
-<p><img src="/public/2022/04/01/history_ericsson/640-164879819790330.jpeg" alt></p>
-<center><div>项目签约现场</div></center>
-<p>1988 年，爱立信决定继续聚焦核心业务。这一年，它以 2.17 亿美元的价格，将自己的计算机和终端业务出售给了芬兰公司诺基亚。</p>
-<p>与此同时，爱立信最主要的竞争对手，美国 AT&amp;T 公司，因为垄断被美国政府强行拆分。爱立信从中受益，很快占据了全球 40% 的移动系统市场。</p>
-<p>后来，到了 2G 时代。欧洲基于 NMT 推出了 GSM，爱立信也及时地推出了自己的产品。</p>
-<p><img src="/public/2022/04/01/history_ericsson/640-164879820007232.png" alt></p>
-<center><div>爱立信的 2G GSM 原型机</div></center>
-<p>这期间，爱立信保持了连续 10 年<strong>年均 35% 以上</strong>的惊人增长，成为了世界上最大的电话及蜂窝移动通信设备商之一。</p>
-<p>1995 年，爱立信的收入达到 76.1 亿瑞典克朗。1996 年，爱立信全球研发工程师达到 18000 名。1997 年，爱立信在世界移动市场上的份额达到 40%，拥有大约 5400 万用户。</p>
-<p>1998 年，<strong>斯温 · 克里斯特 · 尼尔森</strong>（Sven-Christer Nilsson）当选为爱立信公司的 CEO。</p>
-<p><img src="/public/2022/04/01/history_ericsson/640-164879820245334.png" alt></p>
-<center><div>斯温 · 克里斯特 · 尼尔森</div></center>
-<p>在他的领导下，爱立信进行了重大的组织架构调整。</p>
-<p>他将公司业务分为三个板块，分别是网络运营商部门、消费品部门（包括手机业务）和企业解决方案部门。（是不是有点眼熟？）</p>
-<p>除了重组之外，尼尔森还宣布了 11000 人的裁员计划。</p>
-<p>1999 年，爱立信与高通公司解决了为期两年的 CDMA 技术专利官司。作为和解的一部分，爱立信收购了高通的无线基础设施业务。</p>
-<p>这一年，爱立信的手机业务在与诺基亚的竞争中落后，导致市场份额从 15.1% 下降到 10.5%。当时，爱立信 70% 的收入来自基础设施销售，而 21% 来自手机销售。</p>
-<p>1999 年 7 月，因为业务重组失败，尼尔森被迫辞职。</p>
-<p>进入 21 世纪，爱立信的霉运没有结束。2000 年，因为产品质量问题以及工厂发生的火灾意外，爱立信亏损 240 亿瑞典克朗。</p>
-<p>2001 年，爱立信宣布将其手机的生产外包给<strong>伟创力</strong>国际有限公司，自己则集中力量于手机的技术研发、设计以及市场推广。同时，爱立信大幅裁剪了消费品部门的员工人数。</p>
-<p>同年 10 月，爱立信与日本索尼公司分别出资 50%，组建了<strong>索尼爱立信移动通信公司</strong>，专门生产手机产品。对于这家公司，相信大家都比较熟悉。</p>
-<p><img src="/public/2022/04/01/history_ericsson/640-164879820498536.jpeg" alt></p>
-<p>2002 年，在全球金融危机的持续影响下，爱立信再次遭受巨额亏损。</p>
-<p>面对亏损，爱立信一方面推出了降低运营成本、提高效率的 “成本控制计划”；另一方面，调整市场战略，将公司的核心业务做了全面的优化与整合，出售了一些非核心业务。</p>
-<p>2002 年 6 月，爱立信以 4 亿美元的价格，将自己的微电子部门卖给了<strong>英飞凌</strong>科技股份公司（当时是西门子的子公司）。</p>
-<p>2003 年，随着全球通信产业回暖，加上之前的一系列战略调整显露成效，爱立信宣告结束亏损，恢复盈利。</p>
-<p>复苏后的爱立信，在全球 3G 市场上表现突出，拥有 40% 的 3G WCDMA 市场份额，是当之无愧的全球第一设备商。</p>
-<h2 id="█-遭遇中国对手，迎来严峻挑战"><a class="header-anchor" href="#█-遭遇中国对手，迎来严峻挑战">¶</a>█ 遭遇中国对手，迎来严峻挑战</h2>
-<p>爱立信与中国的历史渊源已超过百年。早在 1892 年，爱立信就接到了来自中国的订单（2000 个电话机），并为中国供货。1906 年，中国代表团还前往斯德哥尔摩，参观了爱立信总部。</p>
-<p><img src="/public/2022/04/01/history_ericsson/640-164879820869638.png" alt></p>
-<center><div>当时的会面场景</div></center>
-<p>一个多世纪以来，爱立信在中国电信发展史上贡献了多个 “第一”。</p>
-<p>中国第一部人工交换机（1900 年）和第一部自动交换机（1924 年），就是来自爱立信。1987 年中国第一套移动电话系统在广州开通，设备也是来自爱立信。</p>
-<p><img src="/public/2022/04/01/history_ericsson/640-164879821103340.jpeg" alt></p>
-<center><div>中国第一套移动电话系统</div></center>
-<p><img src="/public/2022/04/01/history_ericsson/640-164879821453442.png" alt></p>
-<center><div>改革开放后，国内也引进了 AXE（1985 年照片）</div></center>
-<p>爱立信一直非常重视中国市场，不仅成立了合资公司和独资公司，还在中国设立了爱立信学院和研究院。</p>
-<p>不过，拉什 · 爱立信当年卖电话到这个国家的时候，一定不会想到，一百多年后，这个国家会走出来两个名不见经传的小公司，把他开创的通信霸业给搅得鸡犬不宁。</p>
-<p>这两个小公司，当然就是华为和中兴。</p>
-<p><img src="/public/2022/04/01/history_ericsson/640-164879821693844.jpeg" alt></p>
-<p>在这两家公司的挑战和冲击下，爱立信公司在 21 世纪的市场份额不断下滑，CEO 频繁更换。那些年，伴随爱立信的坏消息总是一个接着一个，不是出售业务，就是裁员。</p>
-<p>2013 年，华为全年销售收入正式超过爱立信，爱立信被迫将全球第一的位置拱手相让。</p>
-<p>2016 年，爱立信计划关闭瑞典境内的所有工厂，结束在瑞典制造产品 140 年的历史。</p>
-<p>2017 年，爱立信净亏损 44.76 亿美元，全年裁员达到 1.7 万人。</p>
-<h2 id="█-外部环境变化，业绩迅速复苏"><a class="header-anchor" href="#█-外部环境变化，业绩迅速复苏">¶</a>█ 外部环境变化，业绩迅速复苏</h2>
-<p>2018 年之后，爱立信的形势有了明显的好转，原因包括多个方面。</p>
-<p>首先，就是 5G 市场增长带来的商业机会。</p>
-<p>爱立信非常重视 5G，投入了大量的资源进行研发。2014 年，爱立信就发布了全球首台 5G 移动终端原型。</p>
-<p><img src="/public/2022/04/01/history_ericsson/640-164879822068446.jpeg" alt></p>
-<p>2016 年，爱立信发布了一款号称 “全球首个 5G NR 无线设备” 的 5G 基站——AIR 6468。</p>
-<p><img src="/public/2022/04/01/history_ericsson/640-164879822338648.jpeg" alt></p>
-<p>2017 年 2 月，爱立信推出了自己的 5G 平台。2018 年 1 月，爱立信发布了首个 5G 小基站 “5G Radio Dot”，吸引了行业的广泛关注。</p>
-<p><img src="/public/2022/04/01/history_ericsson/640-164879822621150.png" alt></p>
-<center><div>5G NR DOT 点系统</div></center>
-<p>除了 5G 之外，另一个帮助爱立信业绩复苏的主要原因，是微妙变化的外部环境。</p>
-<p>正如大家所知道的，中美贸易摩擦，美国对中国通信设备商进行强力打压，多个国家宣布 “禁用” 华为和中兴。于是，欧美国家的设备商就有了难得的市场机会。</p>
-<p>综合种种因素，爱立信的业绩迅速转好，扭亏为盈，股价攀升。</p>
-<p>2020 年，爱立信全年净销售额达到 2324 亿瑞典克朗（约合 278 亿美元），同比上涨 2%；净利润 176 亿瑞典克郎（约合 21 亿美元），相比 2019 年，翻了近十倍。</p>
-<h2 id="█-结语"><a class="header-anchor" href="#█-结语">¶</a>█  结语</h2>
-<p>爱立信，是通信行业历史最悠久的企业之一（准确来说，是 145 年的历史）。</p>
-<p>在很长的一段时间里，它都是世界排名第一的通信设备制造商。爱立信的很多技术创新，改变了通信行业的发展走向。很多经典的通信产品和知名的通信项目，都是出于这家企业。</p>
-<p>在一百年的发展过程中，爱立信有过辉煌，也有过挫折，但是它仍然屹立不倒，在世界通信第一阵营中牢牢占据自己的位置。这充分说明，这家企业有着自己的技术积累和文化底蕴，有属于自己的 “韧性”。</p>
-<p>如今，5G 的竞争还在继续，百年老店爱立信的奋斗之路也在继续。面对变幻莫测的市场环境，爱立信究竟会走向何方呢？它还会续写另一段百年辉煌吗？</p>
-<p>（全文完）</p>
-<p><strong>参考文献：</strong></p>
-<p>1、<a href="https://www.ericsson.com/en/about-us/history/company" target="_blank" rel="noopener">https://www.ericsson.com/en/about-us/history/company</a></p>
-<p>2、<a href="https://en.wikipedia.org/wiki/Ericsson" target="_blank" rel="noopener">https://en.wikipedia.org/wiki/Ericsson</a></p>
-<p>3、《改变世界》，2009 年出版</p>
-<p>4、<a href="https://ethw.org/Lars_Magnus_Ericsson" target="_blank" rel="noopener">https://ethw.org/Lars_Magnus_Ericsson</a></p>
-<p>5、<a href="https://www.company-histories.com/Telefonaktiebolaget-LM-Ericsson-Company-History.html" target="_blank" rel="noopener">https://www.company-histories.com/Telefonaktiebolaget-LM-Ericsson-Company-History.html</a></p>
-<p><img src="/public/2022/04/01/history_ericsson/640-164879825241752.gif" alt></p>
-]]></content>
-      <categories>
-        <category>通信</category>
-      </categories>
-      <tags>
-        <tag>通信</tag>
-        <tag>历史</tag>
       </tags>
   </entry>
   <entry>
@@ -2254,6 +2209,25 @@ nbextensions的教程<a href="https://jupyter-contrib-nbextensions.readthedocs.i
       </tags>
   </entry>
   <entry>
+    <title>希腊罗马神话</title>
+    <url>/public/2018/11/05/readings/Gods_stories/</url>
+    <content><![CDATA[<p><strong>前言</strong></p>
+<p>在我电的图书馆的还书柜子里面偶然所得，一本叫《希腊罗马神话对英语语言文化的影响》吕海平 著 江苏大学初版社，然后莫名的想研究一下，发现挺不错的。</p>
+<a id="more"></a>
+<p>古希腊罗马的神的关系还是比较乱的，尤其是jupiter 或者zeus的奥林匹斯神系。从上古的神系，总共有三代。</p>
+<p>网上有个人（<a href="http://www.veritablehokum.com/" target="_blank" rel="noopener">Korwin Briggs</a>）做的关系图很不错。</p>
+<p>TODO:后面我也会对其进行整理，以后给大家分享。</p>
+<p><img src="http://www.veritablehokum.com/wp-content/uploads/2018/08/Roman-God-Family-Tree.jpg" alt></p>
+]]></content>
+      <categories>
+        <category>读书笔记</category>
+      </categories>
+      <tags>
+        <tag>希腊罗马神话</tag>
+        <tag>语言文化</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>【转】《中华古籍资源库》中国国家图书馆</title>
     <url>/public/2021/12/16/readings/zhonghuaguji/</url>
     <content><![CDATA[<p><strong>简介</strong></p>
@@ -2434,6 +2408,42 @@ nbextensions的教程<a href="https://jupyter-contrib-nbextensions.readthedocs.i
       <tags>
         <tag>重庆</tag>
         <tag>游记</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>红楼梦与我</title>
+    <url>/public/2017/05/14/readings/hongloumeng/</url>
+    <content><![CDATA[<p>红楼梦是我国四大名著之一，主要内容是贾府的兴衰和宝黛的悲剧爱情。电视剧红楼梦2010版，我是从八月开始看的，看完到现在，也有小一个月了。在网上大家对这版电视剧褒贬不一。与我来说，我是喜欢这部剧的，不能说拍得很好，但这部剧却勾起了我读书与写字的兴趣。于是乎，做了一篇随笔，以记录我的一些感触。</p>
+<a id="more"></a>
+<p>我记得最早是小学，我们还是顾着打玻璃珠和丢沙包的年纪，学校旁边的小书店里，也都是七龙珠，哆啦A梦，柯南的小人书，老师们讲到四大名著，顺带提了下红楼梦，其他没印象了。我们学习最多的是中文的拼音和书写，作文都是打油，日记也闹了不少笑话。后来上初中，有一次寒假附加作业是阅读红楼梦，我虽毫无兴趣，但还是硬着头皮，去新华书店，试看红楼梦。120章的红楼，厚得连看下去的勇气也没有。略看了几下，最后，做了一个红楼梦不好看的论断，也就放在那边了。那时有老版的红楼梦电视剧播映，打开电视偶尔会遇见，但是立马换台，央视的西游记与情深深雨蒙蒙，湖南电视台的还珠格格，也是欣赏了好几遍。再者，有动画片谁有兴趣去看这些什么破剧，关于书本，最多也就是看看汤姆索亚历险记。</p>
+<p>再后来，去启中读书，学习上比较紧张，再加上理科班的非文学氛围，对这些文学的东西更不感冒。尽管偶尔也会入耳一些其中的人物，比如林妹妹，刘姥姥，也是不用大脑耳朵直接过滤。当时，大伙是杂志，读者，青年文摘读得比较多，班上一本，全班查阅，杂志文章篇幅较小，读起很顺很舒服。期间，与红楼的唯一一次接触是，高中教科书上有刘姥姥进大观园的章节，翻了一遍，当时，感叹人物好多，理不出人物关系，完全放弃看完红楼的欲望。以为姥姥是贾府的姥姥，猩猩然想着以后可以说看过一段红楼，红楼也比较贵不如多买几本读者，积累作文素材。不知什么时候，班上网络小说之风随着mp4和智能手机的普及而吹起，我也用MP4刷完了一两部网络小说，感觉都是一个套路，主角都是绝处逢生，越来越无敌，也就不敢兴趣了。</p>
+<p>再然后，我上大学，藏书400百万册的成电图书馆，也并没有引起我读文学类的欲望，大学四年借的专业工具类书比较多，想来也是浪费资源。在一个工科高校，文学方面的课程几乎没有，虽说有个大学语文的选修课，俨然不感兴趣。大学里，再一次看到有人在看红楼梦电视剧，也是大二的时候的人工智能课上，也是闲得无聊。再后来，大四时，手机上自带一个蜻蜓网络电台应用，无聊点开蒋勋老师评述的红楼梦音频，红学大师讲到他与红楼梦的相遇，同时，他介绍的红楼基本背景和人物，通俗易懂，一下子引起我的兴趣。他说红楼梦写的都是15、6岁人的故事，15、16岁就可以读了。回想我15、16岁，基本没看什么名著。要说四大名著，我也就看了三国和水浒的少年版。上次回家，看美剧，老妈突然蹦出句，不能光看英文也应当看看我们老祖宗的文化。</p>
+<p>现在得空，就这样抱着惭愧和一丝尝试我看起了2010版红楼梦。在这我得承认，我是个演员控。不得不说，三大主演都很不错。</p>
+<p>50集过后，原来红楼讲得是这个，并表示有兴趣去读读名著了。原来有这么多原来。</p>
+<ul>
+<li>
+<p>人物家族命运令人感慨。作者写出超越那个时代的朦胧的爱情与不得不提的丧心病狂的全部悲剧，果然是个失意文人的作品。 可叹停机德，堪怜咏絮才。宝钗落落大方德才兼备，黛玉因情而伤而痛去世，宝玉虽与宝钗结婚，最后离家成道去。精于人情世故,，胸有城府的王熙凤，平日的爽朗笑声终究悲剧，贾府里多么好的领导，最后也人情冷暖，不免为其伤心。刘姥姥，其实是个成功的投机分子，但也是朴实善良的“穷亲戚”，最后救了巧儿。十二金钗各有个的悲剧，正如宝玉在虚幻仙境里警幻仙姑给的设定。原来故事一开始就把结局告诉了读者。</p>
+</li>
+<li>
+<p>体验古代贵族文化。里面还有个诗社的组织，古人的结社，好有雅致，也会给人起“绰号”。除此以外还有击鼓传花，有时主题是讲笑话有时对诗。猜灯谜，中秋赏月，生日宴会等等。</p>
+</li>
+<li>
+<p>语言魅力。打秋风，这是形容刘姥姥找找贾府接济用的。恼，生气，或者使生气。不同人的称谓，宝兄弟，宝二爷，宝姐姐或者好姐姐，林妹妹或者好妹妹。</p>
+</li>
+<li>
+<p>情节回味无穷。刘姥姥进大观园，是贾母和姥姥差不多年纪想和她聊聊，邀请她的。乡村来打秋风的刘姥姥像是在参观皇宫。在后面时期  ，家族里一次比一次捉襟见肘的聚会，可以看见这些家族的衰落。中国的各种人情世故体现在这里面。四个大家族，一个小社会。</p>
+</li>
+</ul>
+<p>以上是我的一点点感悟。</p>
+<p>只是，我与红楼梦，还差80章书页，希望还能有计划地读完。</p>
+<p>2016年于成电</p>
+]]></content>
+      <categories>
+        <category>读书笔记</category>
+      </categories>
+      <tags>
+        <tag>故事</tag>
+        <tag>《红楼梦》</tag>
       </tags>
   </entry>
   <entry>
