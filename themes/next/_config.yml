@@ -346,6 +346,7 @@ gitment:
   remote_js: https://www.wenjunjiang.win/js/gitment.js
 
 # https://iochen.com/2018/01/06/use-gitalk-in-hexo/
+# https://www.chenhanpeng.com/create-own-cors-anywhere-to-resolve-the-request-with-403/
 gitalk:
   enable: true
   ClientID: 315ada12fed7a0ffb6b7
@@ -361,6 +362,7 @@ gitalk:
   distractionFreeMode: false
   link_css: //cdn.bootcss.com/gitalk/1.6.2/gitalk.min.css
   link_js: //cdn.bootcss.com/gitalk/1.6.2/gitalk.min.js
+  proxy: https://gitalk.talengu.workers.dev/?https://github.com/login/oauth/access_token
 
   # link_css: https://unpkg.com/gitalk/dist/gitalk.css
   # link_js: https://unpkg.com/gitalk/dist/gitalk.min.js
