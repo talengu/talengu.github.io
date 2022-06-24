@@ -360,9 +360,9 @@ gitalk:
   pagerDirection: last
   createIssueManually: true
   distractionFreeMode: false
-  link_css: //cdn.bootcss.com/gitalk/1.7.2/gitalk.min.css
-  link_js: //cdn.bootcss.com/gitalk/1.7.2/gitalk.min.js
-  proxy: "https://gitalk.talengu.workers.dev/?https://github.com/login/oauth/access_token"
+  link_css: //cdn.bootcss.com/gitalk/1.6.2/gitalk.min.css
+  link_js: //cdn.bootcss.com/gitalk/1.6.2/gitalk.min.js
+  proxy: https://gitalk.talengu.workers.dev/?https://github.com/login/oauth/access_token
 
   # link_css: https://unpkg.com/gitalk/dist/gitalk.css
   # link_js: https://unpkg.com/gitalk/dist/gitalk.min.js

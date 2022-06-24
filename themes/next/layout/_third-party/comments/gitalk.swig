@@ -16,7 +16,7 @@
           pagerDirection: '{{ theme.gitalk.pagerDirection }}',
           createIssueManually: {{ theme.gitalk.createIssueManually }},
           distractionFreeMode: {{ theme.gitalk.distractionFreeMode }},
-          proxy: {{ theme.gitalk.proxy}}
+          proxy: '{{ theme.gitalk.proxy }}'
         })
         gitalk.render('gitalk-container')           
        </script>
