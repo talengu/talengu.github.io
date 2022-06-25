@@ -104,6 +104,7 @@ font:
   headings:
     external: true
     family:
+    # mobile_size_offset: 0px
 
   # Font settings for posts
   # Fallback to `global` font settings.
