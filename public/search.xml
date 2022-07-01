@@ -146,24 +146,6 @@ Thank you !!!</p>
       </tags>
   </entry>
   <entry>
-    <title>现代数学手册</title>
-    <url>/public/2017/05/22/math_handbook/</url>
-    <content><![CDATA[<img src="/public/2017/05/22/math_handbook/Screen Shot 2020-03-06 at 13.24.51.png" alt="Screen Shot 2020-03-06 at 13.24.51" style="zoom:33%;">
-<img src="/public/2017/05/22/math_handbook/Screen Shot 2020-03-06 at 13.24.27.png" alt="Screen Shot 2020-03-06 at 13.24.27" style="zoom: 33%;">
-<img src="/public/2017/05/22/math_handbook/Screen Shot 2020-03-06 at 13.22.44.png" alt="Screen Shot 2020-03-06 at 13.22.44" style="zoom:33%;">
-<img src="/public/2017/05/22/math_handbook/Screen Shot 2020-03-06 at 13.23.48.png" alt="Screen Shot 2020-03-06 at 13.23.48" style="zoom:33%;">
-<img src="/public/2017/05/22/math_handbook/Screen Shot 2020-03-06 at 13.23.57.png" alt="Screen Shot 2020-03-06 at 13.23.57" style="zoom:33%;">
-<p>百度云链接: <a href="https://pan.baidu.com/s/1AwNZNoMLgJcJ5X0G0fpC5w" target="_blank" rel="noopener">https://pan.baidu.com/s/1AwNZNoMLgJcJ5X0G0fpC5w</a> 提取码: pb1n</p>
-]]></content>
-      <categories>
-        <category>现代数学</category>
-      </categories>
-      <tags>
-        <tag>数学</tag>
-        <tag>工具书</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>【转】在 C/C++ 程序中打印当前函数调用栈</title>
     <url>/public/2021/08/25/c_debug/</url>
     <content><![CDATA[<p><strong>背景</strong></p>
@@ -517,8 +499,26 @@ Thank you !!!</p>
         <category>数学</category>
       </categories>
       <tags>
-        <tag>数学</tag>
         <tag>层次分析法</tag>
+        <tag>数学</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>现代数学手册</title>
+    <url>/public/2017/05/22/math_handbook/</url>
+    <content><![CDATA[<img src="/public/2017/05/22/math_handbook/Screen Shot 2020-03-06 at 13.24.51.png" alt="Screen Shot 2020-03-06 at 13.24.51" style="zoom:33%;">
+<img src="/public/2017/05/22/math_handbook/Screen Shot 2020-03-06 at 13.24.27.png" alt="Screen Shot 2020-03-06 at 13.24.27" style="zoom: 33%;">
+<img src="/public/2017/05/22/math_handbook/Screen Shot 2020-03-06 at 13.22.44.png" alt="Screen Shot 2020-03-06 at 13.22.44" style="zoom:33%;">
+<img src="/public/2017/05/22/math_handbook/Screen Shot 2020-03-06 at 13.23.48.png" alt="Screen Shot 2020-03-06 at 13.23.48" style="zoom:33%;">
+<img src="/public/2017/05/22/math_handbook/Screen Shot 2020-03-06 at 13.23.57.png" alt="Screen Shot 2020-03-06 at 13.23.57" style="zoom:33%;">
+<p>百度云链接: <a href="https://pan.baidu.com/s/1AwNZNoMLgJcJ5X0G0fpC5w" target="_blank" rel="noopener">https://pan.baidu.com/s/1AwNZNoMLgJcJ5X0G0fpC5w</a> 提取码: pb1n</p>
+]]></content>
+      <categories>
+        <category>现代数学</category>
+      </categories>
+      <tags>
+        <tag>数学</tag>
+        <tag>工具书</tag>
       </tags>
   </entry>
   <entry>
@@ -1129,8 +1129,8 @@ t   -=   (unsigned   long)GetCycleCount();</p>
   <entry>
     <title>ubuntu引导修复</title>
     <url>/public/2017/06/14/linux/boot_recovery/</url>
-    <content><![CDATA[<p><strong>前言</strong>
-本文记录修复ubuntu引导，并修改ubuntu盘的大小过程。
+    <content><![CDATA[<h2 id="前言"><a class="header-anchor" href="#前言">¶</a>前言</h2>
+<p>本文记录修复ubuntu引导，并修改ubuntu盘的大小过程。
 参考：<a href="http://www.cnblogs.com/jloveu/p/Ubuntu-partition-expansion-record.html" target="_blank" rel="noopener">http://www.cnblogs.com/jloveu/p/Ubuntu-partition-expansion-record.html</a>
 工具：Ubuntu 的live U盘，带有gparted分区工具，和grub修复工具</p>
 <a id="more"></a>
@@ -2214,6 +2214,25 @@ nbextensions的教程<a href="https://jupyter-contrib-nbextensions.readthedocs.i
       </tags>
   </entry>
   <entry>
+    <title>希腊罗马神话</title>
+    <url>/public/2018/11/05/readings/Gods_stories/</url>
+    <content><![CDATA[<p><strong>前言</strong></p>
+<p>在我电的图书馆的还书柜子里面偶然所得，一本叫《希腊罗马神话对英语语言文化的影响》吕海平 著 江苏大学初版社，然后莫名的想研究一下，发现挺不错的。</p>
+<a id="more"></a>
+<p>古希腊罗马的神的关系还是比较乱的，尤其是jupiter 或者zeus的奥林匹斯神系。从上古的神系，总共有三代。</p>
+<p>网上有个人（<a href="http://www.veritablehokum.com/" target="_blank" rel="noopener">Korwin Briggs</a>）做的关系图很不错。</p>
+<p>TODO:后面我也会对其进行整理，以后给大家分享。</p>
+<p><img src="http://www.veritablehokum.com/wp-content/uploads/2018/08/Roman-God-Family-Tree.jpg" alt></p>
+]]></content>
+      <categories>
+        <category>读书笔记</category>
+      </categories>
+      <tags>
+        <tag>希腊罗马神话</tag>
+        <tag>语言文化</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>红楼梦与我</title>
     <url>/public/2017/05/14/readings/hongloumeng/</url>
     <content><![CDATA[<p>红楼梦是我国四大名著之一，主要内容是贾府的兴衰和宝黛的悲剧爱情。电视剧红楼梦2010版，我是从八月开始看的，看完到现在，也有小一个月了。在网上大家对这版电视剧褒贬不一。与我来说，我是喜欢这部剧的，不能说拍得很好，但这部剧却勾起了我读书与写字的兴趣。于是乎，做了一篇随笔，以记录我的一些感触。</p>
@@ -2430,25 +2449,6 @@ nbextensions的教程<a href="https://jupyter-contrib-nbextensions.readthedocs.i
       <tags>
         <tag>重庆</tag>
         <tag>游记</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>希腊罗马神话</title>
-    <url>/public/2018/11/05/readings/Gods_stories/</url>
-    <content><![CDATA[<p><strong>前言</strong></p>
-<p>在我电的图书馆的还书柜子里面偶然所得，一本叫《希腊罗马神话对英语语言文化的影响》吕海平 著 江苏大学初版社，然后莫名的想研究一下，发现挺不错的。</p>
-<a id="more"></a>
-<p>古希腊罗马的神的关系还是比较乱的，尤其是jupiter 或者zeus的奥林匹斯神系。从上古的神系，总共有三代。</p>
-<p>网上有个人（<a href="http://www.veritablehokum.com/" target="_blank" rel="noopener">Korwin Briggs</a>）做的关系图很不错。</p>
-<p>TODO:后面我也会对其进行整理，以后给大家分享。</p>
-<p><img src="http://www.veritablehokum.com/wp-content/uploads/2018/08/Roman-God-Family-Tree.jpg" alt></p>
-]]></content>
-      <categories>
-        <category>读书笔记</category>
-      </categories>
-      <tags>
-        <tag>希腊罗马神话</tag>
-        <tag>语言文化</tag>
       </tags>
   </entry>
   <entry>
