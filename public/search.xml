@@ -146,76 +146,6 @@ Thank you !!!</p>
       </tags>
   </entry>
   <entry>
-    <title>【转】在 C/C++ 程序中打印当前函数调用栈</title>
-    <url>/public/2021/08/25/c_debug/</url>
-    <content><![CDATA[<p><strong>背景</strong></p>
-<p>2011 年 6 月 11 日 <a href="http://www.wuzesheng.com/?author=2" title="由 小武哥 发布" target="_blank" rel="noopener">小武哥</a></p>
-<p>前几天帮同事跟踪的一个程序莫名退出，没有 core dump(当然 ulimit 是打开的) 的问题。我们知道，正常情况下，如果程序因为某种异常条件退出的话，应该会产生 core dump，而如果程序正常退出的话，应该是直接或者间接的调用了 exit() 相关的函数。基于这个事实，我想到了这样一个办法，在程序开始时，通过系统提供的 atexit()，向系统注册一个回调函数，在程序调用 exit() 退出的时候，这个回调函数就会被调用，然后我们在回调函数中打印出当前的函数调用栈，由此便可以知道 exit() 是在哪里调用，从而上述问题便迎刃而解了。上述方法用来解决类似问题是非常行之有效的。在上面，我提到了在 “回调函数中打印出当前的函数调用栈”，相信细心的朋友应该注意到这个了，本文的主要内容就是详细介绍，如何在程序中打印中当前的函数调用栈。</p>
-<a id="more"></a>
-<p>我之前写过一篇题目为《<a href="http://www.wuzesheng.com/?p=1123" target="_blank" rel="noopener">介绍几个关于 C/C++ 程序调试的函数</a>》的文章，看到这里，请读者朋友先看一下前面这篇，因为本文是以前面这篇文章为基础的。我正是用了 backtrace() 和 backtrace_symbols() 这两个函数实现的，下面是一个简单的例子，通过这个例子我们来介绍具体的方法：</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;execinfo .h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio .h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdlib .h&gt;</span></span></span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">fun1</span><span class="params">()</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">fun2</span><span class="params">()</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">fun3</span><span class="params">()</span></span>;</span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">print_stacktrace</span><span class="params">()</span></span>;</span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    fun3();</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">fun1</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"stackstrace begin:\n"</span>);</span><br><span class="line">    print_stacktrace();</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">fun2</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    fun1();</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">fun3</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    fun2();</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">print_stacktrace</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> size = <span class="number">16</span>;</span><br><span class="line">    <span class="keyword">void</span> * <span class="built_in">array</span>[<span class="number">16</span>];</span><br><span class="line">    <span class="keyword">int</span> stack_num = backtrace(<span class="built_in">array</span>, size);</span><br><span class="line">    <span class="keyword">char</span> ** stacktrace = backtrace_symbols(<span class="built_in">array</span>, stack_num);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; stack_num; ++i)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"%s\n"</span>, stacktrace[i]);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">free</span>(stacktrace);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>（说明：下面的介绍采用的环境是 ubuntu 11.04, x86_64, gcc-4.5.2）</p>
-<ol>
-<li>
-<p>通过下面的方式编译运行：</p>
- <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">wuzesheng@ubuntu:~/work/test$ gcc test.cc -o test1</span><br><span class="line">wuzesheng@ubuntu:~/work/test$ ./test1</span><br><span class="line">stackstrace begin:</span><br><span class="line">./test1() [0x400645]</span><br><span class="line">./test1() [0x400607]</span><br><span class="line">./test1() [0x400612]</span><br><span class="line">./test1() [0x40061d]</span><br><span class="line">./test1() [0x4005ed]</span><br><span class="line">/lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0xff) [0x7f5c59a91eff]</span><br><span class="line">./test1() [0x400529]</span><br></pre></td></tr></table></figure>
-<p>从上面的运行结果中，我们的确看到了函数的调用栈，但是都是 16 进制的地址，会有点小小的不爽。当然我们可以通过反汇编得到每个地址对应的函数，但这个还是有点麻烦了。不急，且听我慢慢道来，看第 2 步。</p>
-</li>
-<li>
-<p>通过下面的方式编译运行：</p>
-</li>
-</ol>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">wuzesheng@ubuntu:~/work/test$ gcc test.cc -rdynamic -o test2</span><br><span class="line">wuzesheng@ubuntu:~/work/test$ ./test2</span><br><span class="line">stackstrace begin:</span><br><span class="line">./test2(_Z16print_stacktracev+0x26) [0x4008e5]</span><br><span class="line">./test2(_Z4fun1v+0x13) [0x4008a7]</span><br><span class="line">./test2(_Z4fun2v+0x9) [0x4008b2]</span><br><span class="line">./test2(_Z4fun3v+0x9) [0x4008bd]</span><br><span class="line">./test2(main+0x9) [0x40088d]</span><br><span class="line">/lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0xff) [0x7f9370186eff]</span><br><span class="line">./test2() [0x4007c9]</span><br></pre></td></tr></table></figure>
-<p>这下终于可以看到函数的名字了，对比一下 2 和 1 的编译过程，2 比 1 多了一个 <strong>- rdynamic</strong> 的选项，让我们来看看这个选项是干什么的 (来自 gcc mannual 的说明):</p>
-<pre><code><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">-rdynamic</span><br><span class="line">		Pass the flag -export-dynamic to the ELF linker, on targets that support it. This instructs the linker to add all symbols, not only used ones, to the dynamic symbol table. This option is needed for some uses of "dlopen" or to allow obtaining backtraces from within a program.</span><br></pre></td></tr></table></figure>
-</code></pre>
-<p>从上面的说明可以看出，它的主要作用是让链接器把所有的符号都加入到动态符号表中，这下明白了吧。不过这里还有一个问题，这里的函数名都是 mangle 过的，需要 demangle 才能看到原始的函数。关于 c++ 的 mangle/demangle 机制，不了解的朋友可以在搜索引擎上搜一下，我这里就不多就介绍了。这里介绍如何用命令来 demangle，通过 c++filt 命令便可以:</p>
-<pre><code><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">wuzesheng@ubuntu:~/work/test$ c++filt &lt; &lt;&lt; "_Z16print_stacktracev"</span><br><span class="line">print_stacktrace()</span><br></pre></td></tr></table></figure>
-</code></pre>
-<p>写到这里，大部分工作就 ok 了。不过不知道大家有没有想过这样一个问题，同一个函数可以在代码中多个地方调用，如果我们只是知道函数，而不知道在哪里调用的，有时候还是不够方便，bingo，这个也是有办法的，可以通过 address2line 命令来完成，我们用第 2 步中编译出来的 test2 来做实验 (address2line 的 - f 选项可以打出函数名, -C 选项也可以 demangle)：</p>
-<pre><code><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">wuzesheng@ubuntu:~/work/test$ addr2line -a 0x4008a7 -e test2 -f</span><br><span class="line">0x00000000004008a7</span><br><span class="line">_Z4fun1v</span><br><span class="line">??:0</span><br></pre></td></tr></table></figure>
-</code></pre>
-<p>Oh no，怎么打出来的位置信息是乱码呢？不急，且看我们的第 3 步。</p>
-<ol start="3">
-<li>
-<p>通过下面的方式编译运行：</p>
- <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">wuzesheng@ubuntu:~/work/test$ gcc test.cc -rdynamic -g -o test3</span><br><span class="line">wuzesheng@ubuntu:~/work/test$ ./test3</span><br><span class="line">stackstrace begin:</span><br><span class="line">./test3(_Z16print_stacktracev+0x26) [0x4008e5]</span><br><span class="line">./test3(_Z4fun1v+0x13) [0x4008a7]</span><br><span class="line">./test3(_Z4fun2v+0x9) [0x4008b2]</span><br><span class="line">./test3(_Z4fun3v+0x9) [0x4008bd]</span><br><span class="line">./test3(main+0x9) [0x40088d]</span><br><span class="line">/lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0xff) [0x7fa9558c1eff]</span><br><span class="line">./test3() [0x4007c9]</span><br><span class="line">wuzesheng@ubuntu:~/work/test$ addr2line -a 0x4008a7 -e test3 -f -C</span><br><span class="line">0x00000000004008a7</span><br><span class="line">fun1()</span><br><span class="line">/home/wuzesheng/work/test/test.cc:20</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<p>看上面的结果，我们不仅得到了调用栈，而且可以得到每个函数的名字，以及被调用的位置，大功告成。在这里需要说明一下的是，第 3 步比第 2 步多了一个 - g 选项，-g 选项的主要作用是生成调试信息，位置信息就属于调试信息的范畴，经常用 gdb 的朋友相信不会对这个选项感到陌生。</p>
-<h3 id="在-C-C-程序里打印调用栈信息"><a class="header-anchor" href="#在-C-C-程序里打印调用栈信息">¶</a>在 C/C++ 程序里打印调用栈信息</h3>
-<p>我们知道，GDB 的 backtrace 命令可以查看堆栈信息。但很多时候，GDB 根本用不上。比如说，在线上环境中可能没有 GDB，即使有，也不太可能让我们直接在上面调试。如果能让程序自己输出调用栈，那是最好不过了。本文介绍和调用椎栈相关的几个函数。</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">NAME</span><br><span class="line">    backtrace, backtrace_symbols, backtrace_symbols_fd - support <span class="keyword">for</span> application self-debugging</span><br><span class="line"></span><br><span class="line">SYNOPSIS</span><br><span class="line">    <span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;execinfo.h&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">backtrace</span><span class="params">(<span class="keyword">void</span> **buffer, <span class="keyword">int</span> size)</span></span>;</span><br><span class="line">		<span class="function"><span class="keyword">char</span> **<span class="title">backtrace_symbols</span><span class="params">(<span class="keyword">void</span> *<span class="keyword">const</span> *buffer, <span class="keyword">int</span> size)</span></span>;</span><br><span class="line">		<span class="function"><span class="keyword">void</span> <span class="title">backtrace_symbols_fd</span><span class="params">(<span class="keyword">void</span> *<span class="keyword">const</span> *buffer, <span class="keyword">int</span> size, <span class="keyword">int</span> fd)</span></span>;</span><br></pre></td></tr></table></figure>
-<p>以上内容源自这几个函数的 man 手册。</p>
-<p>先简单介绍一下这几个函数的功能：
-<strong>backtrace</strong>：获取当前的调用栈信息，结果存储在 buffer 中，返回值为栈的深度，参数 size 限制栈的最大深度，即最大取 size 步的栈信息。
-<strong>backtrace_symbols</strong>：把 backtrace 获取的栈信息转化为字符串，以字符指针数组的形式返回，参数 size 限定转换的深度，一般用 backtrace 调用的返回值。
-<strong>backtrace_symbols_fd</strong>：它的功能和 backtrace_symbols 差不多，只不过它不把转换结果返回给调用方，而是写入 fd 指定的文件描述符。</p>
-<p>Man 手册里，给出了一个简单的实例，我们看一下：</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;execinfo.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span>  SIZE 100 </span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">myfunc3</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> j, nptrs;</span><br><span class="line">    <span class="keyword">void</span> *buffer[<span class="number">100</span>];</span><br><span class="line">    <span class="keyword">char</span> **strings;</span><br><span class="line">    nptrs = backtrace(buffer, SIZE);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"backtrace() returned %d addresses\n"</span>, nptrs);</span><br><span class="line">      </span><br><span class="line"> <span class="comment">/* The call backtrace_symbols_fd(buffer, nptrs, STDOUT_FILENO)  </span></span><br><span class="line"><span class="comment">  *  would produce similar output to the following: */</span></span><br><span class="line">        strings = backtrace_symbols(buffer, nptrs);</span><br><span class="line">    <span class="keyword">if</span> (strings == <span class="literal">NULL</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        perror(<span class="string">"backtrace_symbols"</span>);</span><br><span class="line">        <span class="built_in">exit</span>(EXIT_FAILURE);</span><br><span class="line">    &#125; </span><br><span class="line"> </span><br><span class="line">    <span class="keyword">for</span> (j = <span class="number">0</span>; j &lt; nptrs; j++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"%s\n"</span>, strings[j]);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">free</span>(strings);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* "static" means don't export the symbol... */</span></span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">myfunc2</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    myfunc3();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">myfunc</span><span class="params">(<span class="keyword">int</span> ncalls)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (ncalls &gt; <span class="number">1</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        myfunc(ncalls - <span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        myfunc2();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span> *argv[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">     </span><br><span class="line"> 	<span class="keyword">if</span>  (argc != <span class="number">2</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">fprintf</span>(<span class="built_in">stderr</span>, <span class="string">"%s num-calls\n"</span>, argv[<span class="number">0</span>]);</span><br><span class="line">        <span class="built_in">exit</span>(EXIT_FAILURE);  </span><br><span class="line">    &#125;</span><br><span class="line">    myfunc(atoi(argv[<span class="number">1</span>]));</span><br><span class="line">    <span class="built_in">exit</span>(EXIT_SUCCESS);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>编译:</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> cc prog.c -o prog</span></span><br></pre></td></tr></table></figure>
-<p>运行：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> ./prog 0</span></span><br><span class="line">backtrace() returned 6 addresses</span><br><span class="line">./prog() [0x80485a3]</span><br><span class="line">./prog() [0x8048630]</span><br><span class="line">./prog() [0x8048653]</span><br><span class="line">./prog() [0x80486a7]</span><br></pre></td></tr></table></figure>
-<p>这样，是输出了调用栈，不过只是以十六进制输出函数地址而已，可读性很差。仔细看下 man 手册，原来很简单，编译时加上个参数：</p>
-<p>重新编译：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> cc -rdynamic  prog.c -o prog</span></span><br></pre></td></tr></table></figure>
-<p>通过 gcc 手册，我们可以也解下参数的说明:</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">-rdynamic</span><br><span class="line">        Pass the flag -export-dynamic to the ELF linker, on targets that support it. This instructs the linker to add all symbols, not only used ones, to the dynamic symbol table. This option is needed for some uses of "dlopen" or to allow obtaining backtraces from within a program.</span><br></pre></td></tr></table></figure>
-<p>再执行：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> ./prog 0</span></span><br><span class="line">backtrace() returned 6 addresses</span><br><span class="line">./prog(myfunc3+0x1f) [0x8048763]</span><br><span class="line">./prog() [0x80487f0]</span><br><span class="line">./prog(myfunc+0x21) [0x8048813]</span><br><span class="line">./prog(main+0x52) [0x8048867]</span><br><span class="line">/lib/libc.so.6(__libc_start_main+0xe6) [0xaf9cc6]</span><br><span class="line">./prog() [0x80486b1]</span><br></pre></td></tr></table></figure>
-<p>这回，可以看到函数名了。是不是很酷呢？把它封装到你的调试代码中吧。</p>
-<hr>
-<p><strong>原地址</strong></p>
-]]></content>
-      <categories>
-        <category>c语言</category>
-      </categories>
-      <tags>
-        <tag>c语言</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>地表最强大的还有这 14 位程序员</title>
     <url>/public/2020/04/09/cs_fonters/</url>
     <content><![CDATA[<p>原标题：除了 Linus，地表最强大的还有这 14 位程序员，速来膜拜！</p>
@@ -346,6 +276,76 @@ Thank you !!!</p>
       </categories>
       <tags>
         <tag>人物</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>【转】在 C/C++ 程序中打印当前函数调用栈</title>
+    <url>/public/2021/08/25/c_debug/</url>
+    <content><![CDATA[<p><strong>背景</strong></p>
+<p>2011 年 6 月 11 日 <a href="http://www.wuzesheng.com/?author=2" title="由 小武哥 发布" target="_blank" rel="noopener">小武哥</a></p>
+<p>前几天帮同事跟踪的一个程序莫名退出，没有 core dump(当然 ulimit 是打开的) 的问题。我们知道，正常情况下，如果程序因为某种异常条件退出的话，应该会产生 core dump，而如果程序正常退出的话，应该是直接或者间接的调用了 exit() 相关的函数。基于这个事实，我想到了这样一个办法，在程序开始时，通过系统提供的 atexit()，向系统注册一个回调函数，在程序调用 exit() 退出的时候，这个回调函数就会被调用，然后我们在回调函数中打印出当前的函数调用栈，由此便可以知道 exit() 是在哪里调用，从而上述问题便迎刃而解了。上述方法用来解决类似问题是非常行之有效的。在上面，我提到了在 “回调函数中打印出当前的函数调用栈”，相信细心的朋友应该注意到这个了，本文的主要内容就是详细介绍，如何在程序中打印中当前的函数调用栈。</p>
+<a id="more"></a>
+<p>我之前写过一篇题目为《<a href="http://www.wuzesheng.com/?p=1123" target="_blank" rel="noopener">介绍几个关于 C/C++ 程序调试的函数</a>》的文章，看到这里，请读者朋友先看一下前面这篇，因为本文是以前面这篇文章为基础的。我正是用了 backtrace() 和 backtrace_symbols() 这两个函数实现的，下面是一个简单的例子，通过这个例子我们来介绍具体的方法：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;execinfo .h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio .h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdlib .h&gt;</span></span></span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">fun1</span><span class="params">()</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">fun2</span><span class="params">()</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">fun3</span><span class="params">()</span></span>;</span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">print_stacktrace</span><span class="params">()</span></span>;</span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    fun3();</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">fun1</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"stackstrace begin:\n"</span>);</span><br><span class="line">    print_stacktrace();</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">fun2</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    fun1();</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">fun3</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    fun2();</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">print_stacktrace</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> size = <span class="number">16</span>;</span><br><span class="line">    <span class="keyword">void</span> * <span class="built_in">array</span>[<span class="number">16</span>];</span><br><span class="line">    <span class="keyword">int</span> stack_num = backtrace(<span class="built_in">array</span>, size);</span><br><span class="line">    <span class="keyword">char</span> ** stacktrace = backtrace_symbols(<span class="built_in">array</span>, stack_num);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; stack_num; ++i)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"%s\n"</span>, stacktrace[i]);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">free</span>(stacktrace);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>（说明：下面的介绍采用的环境是 ubuntu 11.04, x86_64, gcc-4.5.2）</p>
+<ol>
+<li>
+<p>通过下面的方式编译运行：</p>
+ <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">wuzesheng@ubuntu:~/work/test$ gcc test.cc -o test1</span><br><span class="line">wuzesheng@ubuntu:~/work/test$ ./test1</span><br><span class="line">stackstrace begin:</span><br><span class="line">./test1() [0x400645]</span><br><span class="line">./test1() [0x400607]</span><br><span class="line">./test1() [0x400612]</span><br><span class="line">./test1() [0x40061d]</span><br><span class="line">./test1() [0x4005ed]</span><br><span class="line">/lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0xff) [0x7f5c59a91eff]</span><br><span class="line">./test1() [0x400529]</span><br></pre></td></tr></table></figure>
+<p>从上面的运行结果中，我们的确看到了函数的调用栈，但是都是 16 进制的地址，会有点小小的不爽。当然我们可以通过反汇编得到每个地址对应的函数，但这个还是有点麻烦了。不急，且听我慢慢道来，看第 2 步。</p>
+</li>
+<li>
+<p>通过下面的方式编译运行：</p>
+</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">wuzesheng@ubuntu:~/work/test$ gcc test.cc -rdynamic -o test2</span><br><span class="line">wuzesheng@ubuntu:~/work/test$ ./test2</span><br><span class="line">stackstrace begin:</span><br><span class="line">./test2(_Z16print_stacktracev+0x26) [0x4008e5]</span><br><span class="line">./test2(_Z4fun1v+0x13) [0x4008a7]</span><br><span class="line">./test2(_Z4fun2v+0x9) [0x4008b2]</span><br><span class="line">./test2(_Z4fun3v+0x9) [0x4008bd]</span><br><span class="line">./test2(main+0x9) [0x40088d]</span><br><span class="line">/lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0xff) [0x7f9370186eff]</span><br><span class="line">./test2() [0x4007c9]</span><br></pre></td></tr></table></figure>
+<p>这下终于可以看到函数的名字了，对比一下 2 和 1 的编译过程，2 比 1 多了一个 <strong>- rdynamic</strong> 的选项，让我们来看看这个选项是干什么的 (来自 gcc mannual 的说明):</p>
+<pre><code><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">-rdynamic</span><br><span class="line">		Pass the flag -export-dynamic to the ELF linker, on targets that support it. This instructs the linker to add all symbols, not only used ones, to the dynamic symbol table. This option is needed for some uses of "dlopen" or to allow obtaining backtraces from within a program.</span><br></pre></td></tr></table></figure>
+</code></pre>
+<p>从上面的说明可以看出，它的主要作用是让链接器把所有的符号都加入到动态符号表中，这下明白了吧。不过这里还有一个问题，这里的函数名都是 mangle 过的，需要 demangle 才能看到原始的函数。关于 c++ 的 mangle/demangle 机制，不了解的朋友可以在搜索引擎上搜一下，我这里就不多就介绍了。这里介绍如何用命令来 demangle，通过 c++filt 命令便可以:</p>
+<pre><code><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">wuzesheng@ubuntu:~/work/test$ c++filt &lt; &lt;&lt; "_Z16print_stacktracev"</span><br><span class="line">print_stacktrace()</span><br></pre></td></tr></table></figure>
+</code></pre>
+<p>写到这里，大部分工作就 ok 了。不过不知道大家有没有想过这样一个问题，同一个函数可以在代码中多个地方调用，如果我们只是知道函数，而不知道在哪里调用的，有时候还是不够方便，bingo，这个也是有办法的，可以通过 address2line 命令来完成，我们用第 2 步中编译出来的 test2 来做实验 (address2line 的 - f 选项可以打出函数名, -C 选项也可以 demangle)：</p>
+<pre><code><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">wuzesheng@ubuntu:~/work/test$ addr2line -a 0x4008a7 -e test2 -f</span><br><span class="line">0x00000000004008a7</span><br><span class="line">_Z4fun1v</span><br><span class="line">??:0</span><br></pre></td></tr></table></figure>
+</code></pre>
+<p>Oh no，怎么打出来的位置信息是乱码呢？不急，且看我们的第 3 步。</p>
+<ol start="3">
+<li>
+<p>通过下面的方式编译运行：</p>
+ <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">wuzesheng@ubuntu:~/work/test$ gcc test.cc -rdynamic -g -o test3</span><br><span class="line">wuzesheng@ubuntu:~/work/test$ ./test3</span><br><span class="line">stackstrace begin:</span><br><span class="line">./test3(_Z16print_stacktracev+0x26) [0x4008e5]</span><br><span class="line">./test3(_Z4fun1v+0x13) [0x4008a7]</span><br><span class="line">./test3(_Z4fun2v+0x9) [0x4008b2]</span><br><span class="line">./test3(_Z4fun3v+0x9) [0x4008bd]</span><br><span class="line">./test3(main+0x9) [0x40088d]</span><br><span class="line">/lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0xff) [0x7fa9558c1eff]</span><br><span class="line">./test3() [0x4007c9]</span><br><span class="line">wuzesheng@ubuntu:~/work/test$ addr2line -a 0x4008a7 -e test3 -f -C</span><br><span class="line">0x00000000004008a7</span><br><span class="line">fun1()</span><br><span class="line">/home/wuzesheng/work/test/test.cc:20</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>看上面的结果，我们不仅得到了调用栈，而且可以得到每个函数的名字，以及被调用的位置，大功告成。在这里需要说明一下的是，第 3 步比第 2 步多了一个 - g 选项，-g 选项的主要作用是生成调试信息，位置信息就属于调试信息的范畴，经常用 gdb 的朋友相信不会对这个选项感到陌生。</p>
+<h3 id="在-C-C-程序里打印调用栈信息"><a class="header-anchor" href="#在-C-C-程序里打印调用栈信息">¶</a>在 C/C++ 程序里打印调用栈信息</h3>
+<p>我们知道，GDB 的 backtrace 命令可以查看堆栈信息。但很多时候，GDB 根本用不上。比如说，在线上环境中可能没有 GDB，即使有，也不太可能让我们直接在上面调试。如果能让程序自己输出调用栈，那是最好不过了。本文介绍和调用椎栈相关的几个函数。</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">NAME</span><br><span class="line">    backtrace, backtrace_symbols, backtrace_symbols_fd - support <span class="keyword">for</span> application self-debugging</span><br><span class="line"></span><br><span class="line">SYNOPSIS</span><br><span class="line">    <span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;execinfo.h&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">backtrace</span><span class="params">(<span class="keyword">void</span> **buffer, <span class="keyword">int</span> size)</span></span>;</span><br><span class="line">		<span class="function"><span class="keyword">char</span> **<span class="title">backtrace_symbols</span><span class="params">(<span class="keyword">void</span> *<span class="keyword">const</span> *buffer, <span class="keyword">int</span> size)</span></span>;</span><br><span class="line">		<span class="function"><span class="keyword">void</span> <span class="title">backtrace_symbols_fd</span><span class="params">(<span class="keyword">void</span> *<span class="keyword">const</span> *buffer, <span class="keyword">int</span> size, <span class="keyword">int</span> fd)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>以上内容源自这几个函数的 man 手册。</p>
+<p>先简单介绍一下这几个函数的功能：
+<strong>backtrace</strong>：获取当前的调用栈信息，结果存储在 buffer 中，返回值为栈的深度，参数 size 限制栈的最大深度，即最大取 size 步的栈信息。
+<strong>backtrace_symbols</strong>：把 backtrace 获取的栈信息转化为字符串，以字符指针数组的形式返回，参数 size 限定转换的深度，一般用 backtrace 调用的返回值。
+<strong>backtrace_symbols_fd</strong>：它的功能和 backtrace_symbols 差不多，只不过它不把转换结果返回给调用方，而是写入 fd 指定的文件描述符。</p>
+<p>Man 手册里，给出了一个简单的实例，我们看一下：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;execinfo.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span>  SIZE 100 </span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">myfunc3</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> j, nptrs;</span><br><span class="line">    <span class="keyword">void</span> *buffer[<span class="number">100</span>];</span><br><span class="line">    <span class="keyword">char</span> **strings;</span><br><span class="line">    nptrs = backtrace(buffer, SIZE);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"backtrace() returned %d addresses\n"</span>, nptrs);</span><br><span class="line">      </span><br><span class="line"> <span class="comment">/* The call backtrace_symbols_fd(buffer, nptrs, STDOUT_FILENO)  </span></span><br><span class="line"><span class="comment">  *  would produce similar output to the following: */</span></span><br><span class="line">        strings = backtrace_symbols(buffer, nptrs);</span><br><span class="line">    <span class="keyword">if</span> (strings == <span class="literal">NULL</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        perror(<span class="string">"backtrace_symbols"</span>);</span><br><span class="line">        <span class="built_in">exit</span>(EXIT_FAILURE);</span><br><span class="line">    &#125; </span><br><span class="line"> </span><br><span class="line">    <span class="keyword">for</span> (j = <span class="number">0</span>; j &lt; nptrs; j++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"%s\n"</span>, strings[j]);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">free</span>(strings);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* "static" means don't export the symbol... */</span></span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">myfunc2</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    myfunc3();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">myfunc</span><span class="params">(<span class="keyword">int</span> ncalls)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (ncalls &gt; <span class="number">1</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        myfunc(ncalls - <span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        myfunc2();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span> *argv[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">     </span><br><span class="line"> 	<span class="keyword">if</span>  (argc != <span class="number">2</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">fprintf</span>(<span class="built_in">stderr</span>, <span class="string">"%s num-calls\n"</span>, argv[<span class="number">0</span>]);</span><br><span class="line">        <span class="built_in">exit</span>(EXIT_FAILURE);  </span><br><span class="line">    &#125;</span><br><span class="line">    myfunc(atoi(argv[<span class="number">1</span>]));</span><br><span class="line">    <span class="built_in">exit</span>(EXIT_SUCCESS);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>编译:</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> cc prog.c -o prog</span></span><br></pre></td></tr></table></figure>
+<p>运行：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> ./prog 0</span></span><br><span class="line">backtrace() returned 6 addresses</span><br><span class="line">./prog() [0x80485a3]</span><br><span class="line">./prog() [0x8048630]</span><br><span class="line">./prog() [0x8048653]</span><br><span class="line">./prog() [0x80486a7]</span><br></pre></td></tr></table></figure>
+<p>这样，是输出了调用栈，不过只是以十六进制输出函数地址而已，可读性很差。仔细看下 man 手册，原来很简单，编译时加上个参数：</p>
+<p>重新编译：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> cc -rdynamic  prog.c -o prog</span></span><br></pre></td></tr></table></figure>
+<p>通过 gcc 手册，我们可以也解下参数的说明:</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">-rdynamic</span><br><span class="line">        Pass the flag -export-dynamic to the ELF linker, on targets that support it. This instructs the linker to add all symbols, not only used ones, to the dynamic symbol table. This option is needed for some uses of "dlopen" or to allow obtaining backtraces from within a program.</span><br></pre></td></tr></table></figure>
+<p>再执行：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> ./prog 0</span></span><br><span class="line">backtrace() returned 6 addresses</span><br><span class="line">./prog(myfunc3+0x1f) [0x8048763]</span><br><span class="line">./prog() [0x80487f0]</span><br><span class="line">./prog(myfunc+0x21) [0x8048813]</span><br><span class="line">./prog(main+0x52) [0x8048867]</span><br><span class="line">/lib/libc.so.6(__libc_start_main+0xe6) [0xaf9cc6]</span><br><span class="line">./prog() [0x80486b1]</span><br></pre></td></tr></table></figure>
+<p>这回，可以看到函数名了。是不是很酷呢？把它封装到你的调试代码中吧。</p>
+<hr>
+<p><strong>原地址</strong></p>
+]]></content>
+      <categories>
+        <category>c语言</category>
+      </categories>
+      <tags>
+        <tag>c语言</tag>
       </tags>
   </entry>
   <entry>
@@ -6282,6 +6282,166 @@ error/1)卫生间</p>
       </tags>
   </entry>
   <entry>
+    <title>「转」创建自己的第一个 Power Automate 工作流，从此繁琐操作是路人</title>
+    <url>/public/2022/07/15/test/202207/2022-07-06-112955648077/</url>
+    <content><![CDATA[<p>「转」<a href="https://sspai.com/post/73710" target="_blank" rel="noopener">创建自己的第一个 Power Automate 工作流，从此繁琐操作是路人</a></p>
+<a id="more"></a>
+<p>编注：本文为《<a href="https://sspai.com/series/273" target="_blank" rel="noopener">59 分钟就上手 Power Automate
+Desktop</a>》栏目的试读文章。可能是少数派目前最具「信价比」的栏目，介绍 Power
+Automate Desktop
+这款能把你从重复繁琐的软件操作中解脱出来的效率工具。欢迎前往<a href="https://sspai.com/series/273" target="_blank" rel="noopener">详情页</a>了解栏目的具体内容。</p>
+<p>点击<a href="https://www.jianguoyun.com/p/DRKZb7gQyODhBxjdw8sEIAA" target="_blank" rel="noopener">链接</a>，下载文章中演示时所用到的文件。</p>
+<p>在上一篇文章中，我帮助大家厘清了通过 Power Automate Desktop（下文简称 PAD） 来解决问题的基本思路，那就是「抽象问题 &gt; 确定目标</p>
+<blockquote>
+<p>思考解决方案 &gt; 在 PAD 中实现」。同时，我们也简单地了解了 PAD
+的工作区以及「数据」「变量」「控制结构」这些概念，通过掌握这些最基础的元素我们已经可以在 PAD 上创建一些简单的流了。</p>
+</blockquote>
+<p>那么，在第二节课程中我会带着大家一步步地创建一个流，通过这个案例让大家快速上手 PAD 的基本操作。另外，在本节课的最后我还为大家准备一份 PAD
+的调试指南，可以帮助大家利用一些基本原则来快速定位 bug 以及解决 bug。</p>
+<h2 id="流（Flow）是什么？"><a class="header-anchor" href="#流（Flow）是什么？">¶</a>流（Flow）是什么？</h2>
+<p>流（Flow）是 PAD 中工作流的基本度量单位，一个流即是一系列操作的一个组合。在 PAD
+的主界面中，我们看到的就是一个流列表，列表中的每一个项目都包含了流的名称、最近一次修改时间和状态。如果选中任意一个流，就会出现快速操作栏，在这里我可以对选中的流进行运行、停止以及编辑等操作。</p>
+<p><img src="https://cdn.sspai.com/2022/06/17/de8c3fa824294bf25c005ee739b6fa16.png" alt></p>
+<p>在 PAD 里帮你完整解决一个问题的流程就是流，至于流是简单还是复杂，那就丰俭由人。用 PAD 逐个打开京东、淘宝的网址，这个操作可以是流；用 PAD
+打开商品网址后，复制标题和价格到 Excel，这个操作可以是流；用 PAD 打开商品网址后，复制标题和价格到 Excel，然后把 Excel
+作为附件发送给自己，同时抄送给同事，这个操作也可以是流。因此，一个流中的动作数量和复杂程度没有任何限制，只要这个流可以解决预想中的问题，就可以称之为一个完整的流。</p>
+<h2 id="怎样创建自己的流"><a class="header-anchor" href="#怎样创建自己的流">¶</a>怎样创建自己的流</h2>
+<h3 id="验证需求"><a class="header-anchor" href="#验证需求">¶</a>验证需求</h3>
+<p>一个 PAD
+的流从创建、调试到最终可用，都需要时间和精力去实现，这本身也是一种成本。而发明工具的最终目的还是要提高效率、解决问题，因此在动手创建流之前可以先想一想：</p>
+<ul>
+<li>这项工作是周期性的吗？</li>
+<li>PAD 能为我节省多少时间？</li>
+<li>根据工作的复杂程度，我想要完成创建一个流需要多长时间？</li>
+</ul>
+<p>比如现在你需要把 10 份 Word 文档中的数据汇总到同一个 Excel 中，这份工作可能几个月才需要做一次。这种情况下，用 PAD
+去编写一个流就非常不划算。但如果你每天、每周都需要做同样的汇总操作，手工复制粘贴就应该被机器来替代了，节省的时间累积下来会非常可观。</p>
+<p>如上文的例子所述，如果评估完成本和收益后还是觉得使用 PAD 更划算，那我们再来认真学习如何创建一个流也不迟。</p>
+<h3 id="三步定位"><a class="header-anchor" href="#三步定位">¶</a>三步定位</h3>
+<p>上文提到过，我们可以把 PAD 理解成一种编程工具，而利用编程工具解决问题可以分为三步：</p>
+<ul>
+<li>抽象问题，确定目标</li>
+<li>找出解决方案</li>
+<li>翻译成机器看的懂的语言</li>
+</ul>
+<p>那么把这个流程应用到 PAD 上，就可以得到如下步骤：</p>
+<ul>
+<li>把自己要优化的流程手动多跑几遍，想清楚过程中自己的鼠标键盘做了什么操作，使用了软件内的什么功能，对流程中各处的情况有个基本的认知。</li>
+<li>画出整个流程的「流程图」。如果工作流比较复杂，可以把工作流切分成不同的模块。前期对 PAD 了解不多的时候，可以抽象的层次放得更低一些，甚至到每一个具体的步骤。这里的「流程图」其实就是把整个流程拆成几个不同的模块并用箭头连接一下，方便逐个击破。</li>
+<li>参照流程图分模块拼接流并调试。用 PAD 创建流的时候多想想人工操作在这一步会怎么做，然后再看怎么用 PAD 实现它。</li>
+</ul>
+<h2 id="案例演示"><a class="header-anchor" href="#案例演示">¶</a>案例演示</h2>
+<p>假如说我有一个需求：给定一批京东商品的网址，逐个在浏览器上访问，然后截图保留快照到本地文件夹，最后把文件夹打包压缩。</p>
+<pre><code>https://item.jd.com/100008716820.html
+https://item.jd.com/100001644698.html
+https://item.jd.com/100015047660.html
+</code></pre>
+<p>按照上面说的三部定位法，我先想清楚这个问题需要怎么来解决，然后构思一个流程图，最后就是分模块构建，完成后再进行拼接。</p>
+<p><img src="https://cdn.sspai.com/2022/06/17/e72489a744d32d7ee2c1d05c33c99750.png" alt></p>
+<h3 id="明确流程"><a class="header-anchor" href="#明确流程">¶</a>明确流程</h3>
+<p>这里的需求相对简单，多体验几次就可以直接生成下面这份流程图。我们大致可以将这个流程分为两个部分：Excel 读取、浏览器循环打开网址并截图。</p>
+<p><img src="https://cdn.sspai.com/2022/06/17/ff2858560d6a1910cbe192c22f5ea5b0.png" alt></p>
+<h3 id="分模块拼接"><a class="header-anchor" href="#分模块拼接">¶</a>分模块拼接</h3>
+<h4 id="从获取商品网址列表"><a class="header-anchor" href="#从获取商品网址列表">¶</a>从获取商品网址列表</h4>
+<p>首先我们需要做的是把相关的商品网址从 Excel 中提取出来。人工操作的时候，流程是「打开 Excel-选中所有 item -
+复制」。我们希望这个流通用性更强，因为每次 Excel 中的 <strong>商 品的数量应该是不确定的</strong>。那我们该怎样确保每次都能选中所有的商品网址列表？</p>
+<p><img src="https://cdn.sspai.com/2022/06/17/262d41483b5554d336ceeb7b48bf4737.png" alt></p>
+<p>这时我们就需要想想，在人工操作的时候我们是怎么来确定选中区域的范围的？其实很简单，只要找到文字和空白行交界的地方，从第一行到这里就是该选中的位置。</p>
+<p>所以在 PAD 里面，我们可以先定位出表格里第一个空白行，然后提取表格里面第一行到「第一个空白行-1」范围之间的内容。</p>
+<p><img src="https://cdn.sspai.com/2022/06/17/6cba21a8d0780a742d20350c99fcb0d8.png" alt></p>
+<p>因为不同的模块是靠变量来传递信息的，上一个模块的输出是下一个模块的输入。上一个模块写好了，我们应该检查一下这个模块输出的内容是否满足我们的要求，如果不满足，则下一个模块也无法正常对接运行。</p>
+<p>这里我们希望的输出是一个存放着所有需要遍历的网址列表 <code>ExcelData</code>，所以我们只需要观察在此部分模块结束时，<code>ExcelData</code>
+中的数据是否符合我们的需求即可。</p>
+<p>点击「运行」，等待流执行完成。完成后在「流变量」区域点击
+<code>ExcelData</code>，发现数据类型的确是「数据表」，并且表中存放着需要遍历的所有网址，这就代表着这个模块我们已经创建成功了。</p>
+<p><img src="https://cdn.sspai.com/2022/06/17/ef2cc4d9b12be06a30cdcafb348ec208.png" alt></p>
+<h4 id="单条网址打开后截图保存"><a class="header-anchor" href="#单条网址打开后截图保存">¶</a>单条网址打开后截图保存</h4>
+<p>正常来讲，此处应该直接开始编写循环结构，但这样每次调试都需要运行一次之前的步骤，既耗时又增加了调试的复杂度，和我们「分模块拼接」的思想是相悖的。</p>
+<p>因此，在循环这个模块里，我们其实 **只
+需要一个存放着网址列表的变量输入。**为了方便下面的调试，可以全选上一个模块的动作，然后在右键菜单中选择「禁用操作」。</p>
+<p><img src="https://cdn.sspai.com/2022/06/17/a991d2d9c0d5881c937bef77110c7fc3.png" alt></p>
+<p>这样一来，我们可以专心先把循环这个模块搞定。循环的本质是把一项工作重复很多遍，那要想写好循环，其实我们只需要把里面的工作搞清楚就行了，也就是----
+给定一个网址，浏览器打开网址并截图保存。我们拿 <code>https://item.jd.com/100008716820.html</code> 举例子。</p>
+<p>首先是用浏览器打开：</p>
+<p><img src="https://cdn.sspai.com/2022/06/17/aa58f992a7ac975267fa171c63725a57.png" alt></p>
+<p>通常浏览器打开一个网址还需要等待网页完全加载，网页加载不全的话截图也没意义，所以我们先人工加载一遍网页，估算网页加载时间大概在 2 秒，保险起见那我们就等
+3 秒。</p>
+<p><img src="https://cdn.sspai.com/2022/06/17/5b40b147e38a3a0f82060926ef709f0d.png" alt></p>
+<p>现在网页加载好了，我们该进行截图操作了。PAD 自己提供了三种截图的动作。</p>
+<ul>
+<li>获取屏幕截图：直接在屏幕的可视范围内截图。</li>
+<li>获取网页的屏幕截图：会自动下拉完全网页，是网页的长图。</li>
+<li>获取 UI 元素的屏幕截图：单个元素截图，暂时用不上。</li>
+</ul>
+<p>这里我们选择「获取屏幕截图」这个动作，多显示器的用户可以指定要截取的屏幕，单一屏幕可以直接选「所有屏幕」。</p>
+<p><img src="https://cdn.sspai.com/2022/06/17/69c8725aeee1dd2b85288075ff6c51b8.png" alt></p>
+<p>我们希望截图能够以文件的形式保存，那么就需要指定一个本地路径。这里的本地路径可以在目标文件夹内随意复制一个文件的地址后粘贴进来，然后修改最后的文件名和文件后缀。等截图完了，我们就可以关闭浏览器。</p>
+<p><img src="https://cdn.sspai.com/2022/06/17/638db178bbb5d646eddb6410c6f7c64c.png" alt></p>
+<p>当循环里的任务编写完后也需要做一次检查，点击「运行」看看目标文件夹内是否生成了对应的屏幕截图。</p>
+<h4 id="编写循环任务"><a class="header-anchor" href="#编写循环任务">¶</a>编写循环任务</h4>
+<p>我们现在尝试把单项任务放到循环里面。</p>
+<p>首先，我们需要一个列表作为循环的输入。按照「分模块调试」的思想，我们应该另外创建一个存放网址的列表作为模块测试的输入源，避免前方动作耗时太长而降低模块测试的效率。不过，在这个案例中前方的动作数量较少，耗时不多，所以权且直接启用上一个模块的输出作为循环模块的输入。</p>
+<p>接着，我们对 <code>ExcelData</code> 进行「for each」循环，每次循环到的网址储存到 <code>CurrentItem</code> 里面。</p>
+<p><img src="https://cdn.sspai.com/2022/06/17/3f74b6d20383926333d9924950e12e82.png" alt></p>
+<p>因为循环里每次打开的网址不同，所以我们需要将原来固定的网址 <code>https://item.jd.com/100008716820.html</code>
+变更为每次循环里的网址变量 <code>CurrentItem</code></p>
+<p>点击「运行」，我们来看看是否这个模块按照我们的期望输出了三个商品的截图。很遗憾，没有。文件夹最后只有一张截图，这是因为我们所有的截图文件都采用了同一个文件名，每次新的截图把前一个覆盖直接掉了。</p>
+<p>因此，我们需要让不同的截图拥有不同的名字。方法有很多，这里我想用网址中的数字编号来做唯一的匹配符。从网址里获取第 20 个字符后 12
+个字符长度的内容，赋值为<code>ItemID</code>，然后放入图片的保存路径。</p>
+<p><img src="https://cdn.sspai.com/2022/06/17/9483e5aaf72a6dd00628b353db4ec966.png" alt><img src="https://cdn.sspai.com/2022/06/17/6ea44f11fd5968929f40c0e8999dcc6d.png" alt></p>
+<p>此时再运行一次，就可以发现文件夹里成功包含了三张商品的截图。</p>
+<p><img src="https://cdn.sspai.com/2022/06/17/4456393c90330f0c13095695ed854aad.png" alt></p>
+<h4 id="优化步骤"><a class="header-anchor" href="#优化步骤">¶</a>优化步骤</h4>
+<p>虽然运行成功了，但是我们也能发现每次打开浏览器然后关闭太耗时。当循环次数少时尚能接受，次数增多后则非常难熬。</p>
+<p>与开启关闭浏览器相比，在开启的浏览器中跳转新网址则会快很多，所以我们可以在循环外开启和关闭浏览器，循环内只完成不同网址的跳转。</p>
+<p><img src="https://cdn.sspai.com/2022/06/17/d73fba74e82d344a99243779ed70e2ac.png" alt></p>
+<h4 id="打包文件夹"><a class="header-anchor" href="#打包文件夹">¶</a>打包文件夹</h4>
+<p>打包压缩这一步很简单，PAD 有成熟的动作，拖进工作区填表即可。</p>
+<p><img src="https://cdn.sspai.com/2022/06/17/a37cfa24150e6c99e0d8a6b772ad4a6a.png" alt></p>
+<h2 id="调试的方法"><a class="header-anchor" href="#调试的方法">¶</a>调试的方法</h2>
+<p>在编写流的过程中，通常很难一次就直接跑通，多半都会遇到各种问题（Bug）。处理 Bug 经常会占整体编写时间的一半以上，那怎样相对高效地处理 Bug 呢？</p>
+<p>很不幸，正因为 Bug 是意料之外的，所以我也很难直接告诉你一个框架性的处理 Bug 的流程。不过处理 Bug 可以拆成找 Bug 和解决 Bug
+两个环节，还是有一些基本的原则可以帮助你事半功倍。</p>
+<h3 id="找-Bug"><a class="header-anchor" href="#找-Bug">¶</a>找 Bug</h3>
+<p>通常我们运行一个流，它报错时会直接提示你是在第几个操作上出了什么问题，这个时候你可以直接点开对应的操作看看是不是自己配置上出了什么错误。</p>
+<p>比如下图的「提示-图像不存在」，原因在于我们的文件路径少了文件后缀，即文件的路径应该是
+<code>D:\我的坚果云\常用模块案例\04-批量提取身份证信息\身份证图片集\身份证.png</code> ，而不是
+<code>D:\我的坚果云\常用模块案例\04-批量提取身份证信息\身份证图片集\身份证</code> 。</p>
+<p><img src="https://cdn.sspai.com/2022/06/17/50095c92fd1f361cdf5e5d0aa203b733.png" alt></p>
+<h4 id="设置断点"><a class="header-anchor" href="#设置断点">¶</a>设置断点</h4>
+<p>简单的配置错误其实通过报错的信息就可以解决，但有时候我们会发现报错提示的操作的配置并没有问题，这就说明问题出在更前面的操作里。</p>
+<p>这个时候我们可以通过设置断点，流运行到断点就会自动停止，只有我们点击「运行下一个操作」流才会继续往下运行，然后通过在变量区观察断点操作前后变量值的变化，就可以验证断点处的操作是否符合我们的要求。</p>
+<h4 id="拆分模块"><a class="header-anchor" href="#拆分模块">¶</a>拆分模块</h4>
+<p>在写一些比较复杂的流时，可能涉及到多个软件，以及数百个操作。这个时候如果想要验证的操作是第 80 个，那从头开始运行就会很耗时。</p>
+<p>另外，调试的时候经常会运行数十次才能找到问题，如果每次都需要前面的操作运行几分钟，那整个调试的效率就会非常低。</p>
+<p>这种场景下我会更建议大家将一个复杂的流拆成几个模块（通常是根据不同的软件），上一个模块的输出就是下一个模块的输入。然后除了测试模块，其他模块全部禁用，在测试模块前手动设置测试模块里所需变量的值，观察测试模块的输出是否符合预期。</p>
+<h3 id="解决-Bug"><a class="header-anchor" href="#解决-Bug">¶</a>解决 Bug</h3>
+<p>通常我们定位到 Bug 以后，整个问题其实就解决了一半。解决 Bug 的方法核心其实就是查文档、搜索然后不断修改验证。</p>
+<p>PAD 中的每一个操作微软都提供了一个参考文档，可以点击「详细信息」快速直达。对照文档，可以看看自己的配置是否存在问题。</p>
+<p><img src="https://cdn.sspai.com/2022/06/17/e5425b5fab1d56561d3bbb4fb46612c8.png" alt></p>
+<p>如果不是配置上的问题，那可以直接把报错信息复制到浏览器里查询，看看网络上有没有相关的解决方案。不过目前互联网上 PAD
+的中文内容还是比较少，所以搜索时建议使用英文会得到更多相关的结果。</p>
+<h3 id="PAD-自身的出错处理"><a class="header-anchor" href="#PAD-自身的出错处理">¶</a>PAD 自身的出错处理</h3>
+<p>PAD 里任意一个操作下方其实都有一个「出错时」的配置选项，比如第一次出错后间隔一定时间自动重试，或者忽略错误继续流的运行，这其实也是一个帮助我们应对
+Bug 的地方。</p>
+<p><img src="https://cdn.sspai.com/2022/06/17/c7795d199603815165d04ad9d5f7bfd0.png" alt></p>
+<p>另一个方法是我们可以设置一个 <code>Warning</code>
+变量存放我们想要观察的变量值，然后通过调用子流来输出。这个触发条件可以是报错就触发，也可以指定特定报错类型才触发。</p>
+<p><img src="https://cdn.sspai.com/2022/06/17/24bea7e1c6e25629c410476d68209cb2.png" alt></p>
+<h2 id="小结"><a class="header-anchor" href="#小结">¶</a>小结</h2>
+<p>在本节课程中，我带着大家非常详细地创建了 PAD
+上的第一个流，从验证需求开始，到明确流程，接着分模块把具体的操作动作编写完成，最后拼接成一个完整的流。在创建第一个流之后，我还向大家介绍了一些基本的 bug
+调试方法，可以在最快的时间内找到并解决问题。当然话说回来，处理 Bug
+终究不是一个标准化的过程，很多经验还是需要不断实践来积累。从下一节课开始，我将逐个介绍操作中的各个模块和动作，并辅以对应的实战案例，希望通过这些例子可以帮助大家在较短的时间内掌握这些模块，以应用到日常的流创作中。</p>
+]]></content>
+      <categories>
+        <category>转载</category>
+      </categories>
+      <tags>
+        <tag>转载</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>「转」从盲目崇拜到理性使用，谈谈我眼中的「双向链接」</title>
     <url>/public/2022/07/15/test/202207/2022-07-11-143137724795/</url>
     <content><![CDATA[<p>「转」<a href="https://sspai.com/post/73407" target="_blank" rel="noopener">从盲目崇拜到理性使用，谈谈我眼中的「双向链接」</a></p>
@@ -6488,166 +6648,6 @@ Dynalist 做得是有可取之处的。</p>
 <blockquote>
 <p>实用、好用的 <a href="https://sspai.com/mall" target="_blank" rel="noopener">正版软件</a>，少数派为你呈现 🚀</p>
 </blockquote>
-]]></content>
-      <categories>
-        <category>转载</category>
-      </categories>
-      <tags>
-        <tag>转载</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>「转」创建自己的第一个 Power Automate 工作流，从此繁琐操作是路人</title>
-    <url>/public/2022/07/15/test/202207/2022-07-06-112955648077/</url>
-    <content><![CDATA[<p>「转」<a href="https://sspai.com/post/73710" target="_blank" rel="noopener">创建自己的第一个 Power Automate 工作流，从此繁琐操作是路人</a></p>
-<a id="more"></a>
-<p>编注：本文为《<a href="https://sspai.com/series/273" target="_blank" rel="noopener">59 分钟就上手 Power Automate
-Desktop</a>》栏目的试读文章。可能是少数派目前最具「信价比」的栏目，介绍 Power
-Automate Desktop
-这款能把你从重复繁琐的软件操作中解脱出来的效率工具。欢迎前往<a href="https://sspai.com/series/273" target="_blank" rel="noopener">详情页</a>了解栏目的具体内容。</p>
-<p>点击<a href="https://www.jianguoyun.com/p/DRKZb7gQyODhBxjdw8sEIAA" target="_blank" rel="noopener">链接</a>，下载文章中演示时所用到的文件。</p>
-<p>在上一篇文章中，我帮助大家厘清了通过 Power Automate Desktop（下文简称 PAD） 来解决问题的基本思路，那就是「抽象问题 &gt; 确定目标</p>
-<blockquote>
-<p>思考解决方案 &gt; 在 PAD 中实现」。同时，我们也简单地了解了 PAD
-的工作区以及「数据」「变量」「控制结构」这些概念，通过掌握这些最基础的元素我们已经可以在 PAD 上创建一些简单的流了。</p>
-</blockquote>
-<p>那么，在第二节课程中我会带着大家一步步地创建一个流，通过这个案例让大家快速上手 PAD 的基本操作。另外，在本节课的最后我还为大家准备一份 PAD
-的调试指南，可以帮助大家利用一些基本原则来快速定位 bug 以及解决 bug。</p>
-<h2 id="流（Flow）是什么？"><a class="header-anchor" href="#流（Flow）是什么？">¶</a>流（Flow）是什么？</h2>
-<p>流（Flow）是 PAD 中工作流的基本度量单位，一个流即是一系列操作的一个组合。在 PAD
-的主界面中，我们看到的就是一个流列表，列表中的每一个项目都包含了流的名称、最近一次修改时间和状态。如果选中任意一个流，就会出现快速操作栏，在这里我可以对选中的流进行运行、停止以及编辑等操作。</p>
-<p><img src="https://cdn.sspai.com/2022/06/17/de8c3fa824294bf25c005ee739b6fa16.png" alt></p>
-<p>在 PAD 里帮你完整解决一个问题的流程就是流，至于流是简单还是复杂，那就丰俭由人。用 PAD 逐个打开京东、淘宝的网址，这个操作可以是流；用 PAD
-打开商品网址后，复制标题和价格到 Excel，这个操作可以是流；用 PAD 打开商品网址后，复制标题和价格到 Excel，然后把 Excel
-作为附件发送给自己，同时抄送给同事，这个操作也可以是流。因此，一个流中的动作数量和复杂程度没有任何限制，只要这个流可以解决预想中的问题，就可以称之为一个完整的流。</p>
-<h2 id="怎样创建自己的流"><a class="header-anchor" href="#怎样创建自己的流">¶</a>怎样创建自己的流</h2>
-<h3 id="验证需求"><a class="header-anchor" href="#验证需求">¶</a>验证需求</h3>
-<p>一个 PAD
-的流从创建、调试到最终可用，都需要时间和精力去实现，这本身也是一种成本。而发明工具的最终目的还是要提高效率、解决问题，因此在动手创建流之前可以先想一想：</p>
-<ul>
-<li>这项工作是周期性的吗？</li>
-<li>PAD 能为我节省多少时间？</li>
-<li>根据工作的复杂程度，我想要完成创建一个流需要多长时间？</li>
-</ul>
-<p>比如现在你需要把 10 份 Word 文档中的数据汇总到同一个 Excel 中，这份工作可能几个月才需要做一次。这种情况下，用 PAD
-去编写一个流就非常不划算。但如果你每天、每周都需要做同样的汇总操作，手工复制粘贴就应该被机器来替代了，节省的时间累积下来会非常可观。</p>
-<p>如上文的例子所述，如果评估完成本和收益后还是觉得使用 PAD 更划算，那我们再来认真学习如何创建一个流也不迟。</p>
-<h3 id="三步定位"><a class="header-anchor" href="#三步定位">¶</a>三步定位</h3>
-<p>上文提到过，我们可以把 PAD 理解成一种编程工具，而利用编程工具解决问题可以分为三步：</p>
-<ul>
-<li>抽象问题，确定目标</li>
-<li>找出解决方案</li>
-<li>翻译成机器看的懂的语言</li>
-</ul>
-<p>那么把这个流程应用到 PAD 上，就可以得到如下步骤：</p>
-<ul>
-<li>把自己要优化的流程手动多跑几遍，想清楚过程中自己的鼠标键盘做了什么操作，使用了软件内的什么功能，对流程中各处的情况有个基本的认知。</li>
-<li>画出整个流程的「流程图」。如果工作流比较复杂，可以把工作流切分成不同的模块。前期对 PAD 了解不多的时候，可以抽象的层次放得更低一些，甚至到每一个具体的步骤。这里的「流程图」其实就是把整个流程拆成几个不同的模块并用箭头连接一下，方便逐个击破。</li>
-<li>参照流程图分模块拼接流并调试。用 PAD 创建流的时候多想想人工操作在这一步会怎么做，然后再看怎么用 PAD 实现它。</li>
-</ul>
-<h2 id="案例演示"><a class="header-anchor" href="#案例演示">¶</a>案例演示</h2>
-<p>假如说我有一个需求：给定一批京东商品的网址，逐个在浏览器上访问，然后截图保留快照到本地文件夹，最后把文件夹打包压缩。</p>
-<pre><code>https://item.jd.com/100008716820.html
-https://item.jd.com/100001644698.html
-https://item.jd.com/100015047660.html
-</code></pre>
-<p>按照上面说的三部定位法，我先想清楚这个问题需要怎么来解决，然后构思一个流程图，最后就是分模块构建，完成后再进行拼接。</p>
-<p><img src="https://cdn.sspai.com/2022/06/17/e72489a744d32d7ee2c1d05c33c99750.png" alt></p>
-<h3 id="明确流程"><a class="header-anchor" href="#明确流程">¶</a>明确流程</h3>
-<p>这里的需求相对简单，多体验几次就可以直接生成下面这份流程图。我们大致可以将这个流程分为两个部分：Excel 读取、浏览器循环打开网址并截图。</p>
-<p><img src="https://cdn.sspai.com/2022/06/17/ff2858560d6a1910cbe192c22f5ea5b0.png" alt></p>
-<h3 id="分模块拼接"><a class="header-anchor" href="#分模块拼接">¶</a>分模块拼接</h3>
-<h4 id="从获取商品网址列表"><a class="header-anchor" href="#从获取商品网址列表">¶</a>从获取商品网址列表</h4>
-<p>首先我们需要做的是把相关的商品网址从 Excel 中提取出来。人工操作的时候，流程是「打开 Excel-选中所有 item -
-复制」。我们希望这个流通用性更强，因为每次 Excel 中的 <strong>商 品的数量应该是不确定的</strong>。那我们该怎样确保每次都能选中所有的商品网址列表？</p>
-<p><img src="https://cdn.sspai.com/2022/06/17/262d41483b5554d336ceeb7b48bf4737.png" alt></p>
-<p>这时我们就需要想想，在人工操作的时候我们是怎么来确定选中区域的范围的？其实很简单，只要找到文字和空白行交界的地方，从第一行到这里就是该选中的位置。</p>
-<p>所以在 PAD 里面，我们可以先定位出表格里第一个空白行，然后提取表格里面第一行到「第一个空白行-1」范围之间的内容。</p>
-<p><img src="https://cdn.sspai.com/2022/06/17/6cba21a8d0780a742d20350c99fcb0d8.png" alt></p>
-<p>因为不同的模块是靠变量来传递信息的，上一个模块的输出是下一个模块的输入。上一个模块写好了，我们应该检查一下这个模块输出的内容是否满足我们的要求，如果不满足，则下一个模块也无法正常对接运行。</p>
-<p>这里我们希望的输出是一个存放着所有需要遍历的网址列表 <code>ExcelData</code>，所以我们只需要观察在此部分模块结束时，<code>ExcelData</code>
-中的数据是否符合我们的需求即可。</p>
-<p>点击「运行」，等待流执行完成。完成后在「流变量」区域点击
-<code>ExcelData</code>，发现数据类型的确是「数据表」，并且表中存放着需要遍历的所有网址，这就代表着这个模块我们已经创建成功了。</p>
-<p><img src="https://cdn.sspai.com/2022/06/17/ef2cc4d9b12be06a30cdcafb348ec208.png" alt></p>
-<h4 id="单条网址打开后截图保存"><a class="header-anchor" href="#单条网址打开后截图保存">¶</a>单条网址打开后截图保存</h4>
-<p>正常来讲，此处应该直接开始编写循环结构，但这样每次调试都需要运行一次之前的步骤，既耗时又增加了调试的复杂度，和我们「分模块拼接」的思想是相悖的。</p>
-<p>因此，在循环这个模块里，我们其实 **只
-需要一个存放着网址列表的变量输入。**为了方便下面的调试，可以全选上一个模块的动作，然后在右键菜单中选择「禁用操作」。</p>
-<p><img src="https://cdn.sspai.com/2022/06/17/a991d2d9c0d5881c937bef77110c7fc3.png" alt></p>
-<p>这样一来，我们可以专心先把循环这个模块搞定。循环的本质是把一项工作重复很多遍，那要想写好循环，其实我们只需要把里面的工作搞清楚就行了，也就是----
-给定一个网址，浏览器打开网址并截图保存。我们拿 <code>https://item.jd.com/100008716820.html</code> 举例子。</p>
-<p>首先是用浏览器打开：</p>
-<p><img src="https://cdn.sspai.com/2022/06/17/aa58f992a7ac975267fa171c63725a57.png" alt></p>
-<p>通常浏览器打开一个网址还需要等待网页完全加载，网页加载不全的话截图也没意义，所以我们先人工加载一遍网页，估算网页加载时间大概在 2 秒，保险起见那我们就等
-3 秒。</p>
-<p><img src="https://cdn.sspai.com/2022/06/17/5b40b147e38a3a0f82060926ef709f0d.png" alt></p>
-<p>现在网页加载好了，我们该进行截图操作了。PAD 自己提供了三种截图的动作。</p>
-<ul>
-<li>获取屏幕截图：直接在屏幕的可视范围内截图。</li>
-<li>获取网页的屏幕截图：会自动下拉完全网页，是网页的长图。</li>
-<li>获取 UI 元素的屏幕截图：单个元素截图，暂时用不上。</li>
-</ul>
-<p>这里我们选择「获取屏幕截图」这个动作，多显示器的用户可以指定要截取的屏幕，单一屏幕可以直接选「所有屏幕」。</p>
-<p><img src="https://cdn.sspai.com/2022/06/17/69c8725aeee1dd2b85288075ff6c51b8.png" alt></p>
-<p>我们希望截图能够以文件的形式保存，那么就需要指定一个本地路径。这里的本地路径可以在目标文件夹内随意复制一个文件的地址后粘贴进来，然后修改最后的文件名和文件后缀。等截图完了，我们就可以关闭浏览器。</p>
-<p><img src="https://cdn.sspai.com/2022/06/17/638db178bbb5d646eddb6410c6f7c64c.png" alt></p>
-<p>当循环里的任务编写完后也需要做一次检查，点击「运行」看看目标文件夹内是否生成了对应的屏幕截图。</p>
-<h4 id="编写循环任务"><a class="header-anchor" href="#编写循环任务">¶</a>编写循环任务</h4>
-<p>我们现在尝试把单项任务放到循环里面。</p>
-<p>首先，我们需要一个列表作为循环的输入。按照「分模块调试」的思想，我们应该另外创建一个存放网址的列表作为模块测试的输入源，避免前方动作耗时太长而降低模块测试的效率。不过，在这个案例中前方的动作数量较少，耗时不多，所以权且直接启用上一个模块的输出作为循环模块的输入。</p>
-<p>接着，我们对 <code>ExcelData</code> 进行「for each」循环，每次循环到的网址储存到 <code>CurrentItem</code> 里面。</p>
-<p><img src="https://cdn.sspai.com/2022/06/17/3f74b6d20383926333d9924950e12e82.png" alt></p>
-<p>因为循环里每次打开的网址不同，所以我们需要将原来固定的网址 <code>https://item.jd.com/100008716820.html</code>
-变更为每次循环里的网址变量 <code>CurrentItem</code></p>
-<p>点击「运行」，我们来看看是否这个模块按照我们的期望输出了三个商品的截图。很遗憾，没有。文件夹最后只有一张截图，这是因为我们所有的截图文件都采用了同一个文件名，每次新的截图把前一个覆盖直接掉了。</p>
-<p>因此，我们需要让不同的截图拥有不同的名字。方法有很多，这里我想用网址中的数字编号来做唯一的匹配符。从网址里获取第 20 个字符后 12
-个字符长度的内容，赋值为<code>ItemID</code>，然后放入图片的保存路径。</p>
-<p><img src="https://cdn.sspai.com/2022/06/17/9483e5aaf72a6dd00628b353db4ec966.png" alt><img src="https://cdn.sspai.com/2022/06/17/6ea44f11fd5968929f40c0e8999dcc6d.png" alt></p>
-<p>此时再运行一次，就可以发现文件夹里成功包含了三张商品的截图。</p>
-<p><img src="https://cdn.sspai.com/2022/06/17/4456393c90330f0c13095695ed854aad.png" alt></p>
-<h4 id="优化步骤"><a class="header-anchor" href="#优化步骤">¶</a>优化步骤</h4>
-<p>虽然运行成功了，但是我们也能发现每次打开浏览器然后关闭太耗时。当循环次数少时尚能接受，次数增多后则非常难熬。</p>
-<p>与开启关闭浏览器相比，在开启的浏览器中跳转新网址则会快很多，所以我们可以在循环外开启和关闭浏览器，循环内只完成不同网址的跳转。</p>
-<p><img src="https://cdn.sspai.com/2022/06/17/d73fba74e82d344a99243779ed70e2ac.png" alt></p>
-<h4 id="打包文件夹"><a class="header-anchor" href="#打包文件夹">¶</a>打包文件夹</h4>
-<p>打包压缩这一步很简单，PAD 有成熟的动作，拖进工作区填表即可。</p>
-<p><img src="https://cdn.sspai.com/2022/06/17/a37cfa24150e6c99e0d8a6b772ad4a6a.png" alt></p>
-<h2 id="调试的方法"><a class="header-anchor" href="#调试的方法">¶</a>调试的方法</h2>
-<p>在编写流的过程中，通常很难一次就直接跑通，多半都会遇到各种问题（Bug）。处理 Bug 经常会占整体编写时间的一半以上，那怎样相对高效地处理 Bug 呢？</p>
-<p>很不幸，正因为 Bug 是意料之外的，所以我也很难直接告诉你一个框架性的处理 Bug 的流程。不过处理 Bug 可以拆成找 Bug 和解决 Bug
-两个环节，还是有一些基本的原则可以帮助你事半功倍。</p>
-<h3 id="找-Bug"><a class="header-anchor" href="#找-Bug">¶</a>找 Bug</h3>
-<p>通常我们运行一个流，它报错时会直接提示你是在第几个操作上出了什么问题，这个时候你可以直接点开对应的操作看看是不是自己配置上出了什么错误。</p>
-<p>比如下图的「提示-图像不存在」，原因在于我们的文件路径少了文件后缀，即文件的路径应该是
-<code>D:\我的坚果云\常用模块案例\04-批量提取身份证信息\身份证图片集\身份证.png</code> ，而不是
-<code>D:\我的坚果云\常用模块案例\04-批量提取身份证信息\身份证图片集\身份证</code> 。</p>
-<p><img src="https://cdn.sspai.com/2022/06/17/50095c92fd1f361cdf5e5d0aa203b733.png" alt></p>
-<h4 id="设置断点"><a class="header-anchor" href="#设置断点">¶</a>设置断点</h4>
-<p>简单的配置错误其实通过报错的信息就可以解决，但有时候我们会发现报错提示的操作的配置并没有问题，这就说明问题出在更前面的操作里。</p>
-<p>这个时候我们可以通过设置断点，流运行到断点就会自动停止，只有我们点击「运行下一个操作」流才会继续往下运行，然后通过在变量区观察断点操作前后变量值的变化，就可以验证断点处的操作是否符合我们的要求。</p>
-<h4 id="拆分模块"><a class="header-anchor" href="#拆分模块">¶</a>拆分模块</h4>
-<p>在写一些比较复杂的流时，可能涉及到多个软件，以及数百个操作。这个时候如果想要验证的操作是第 80 个，那从头开始运行就会很耗时。</p>
-<p>另外，调试的时候经常会运行数十次才能找到问题，如果每次都需要前面的操作运行几分钟，那整个调试的效率就会非常低。</p>
-<p>这种场景下我会更建议大家将一个复杂的流拆成几个模块（通常是根据不同的软件），上一个模块的输出就是下一个模块的输入。然后除了测试模块，其他模块全部禁用，在测试模块前手动设置测试模块里所需变量的值，观察测试模块的输出是否符合预期。</p>
-<h3 id="解决-Bug"><a class="header-anchor" href="#解决-Bug">¶</a>解决 Bug</h3>
-<p>通常我们定位到 Bug 以后，整个问题其实就解决了一半。解决 Bug 的方法核心其实就是查文档、搜索然后不断修改验证。</p>
-<p>PAD 中的每一个操作微软都提供了一个参考文档，可以点击「详细信息」快速直达。对照文档，可以看看自己的配置是否存在问题。</p>
-<p><img src="https://cdn.sspai.com/2022/06/17/e5425b5fab1d56561d3bbb4fb46612c8.png" alt></p>
-<p>如果不是配置上的问题，那可以直接把报错信息复制到浏览器里查询，看看网络上有没有相关的解决方案。不过目前互联网上 PAD
-的中文内容还是比较少，所以搜索时建议使用英文会得到更多相关的结果。</p>
-<h3 id="PAD-自身的出错处理"><a class="header-anchor" href="#PAD-自身的出错处理">¶</a>PAD 自身的出错处理</h3>
-<p>PAD 里任意一个操作下方其实都有一个「出错时」的配置选项，比如第一次出错后间隔一定时间自动重试，或者忽略错误继续流的运行，这其实也是一个帮助我们应对
-Bug 的地方。</p>
-<p><img src="https://cdn.sspai.com/2022/06/17/c7795d199603815165d04ad9d5f7bfd0.png" alt></p>
-<p>另一个方法是我们可以设置一个 <code>Warning</code>
-变量存放我们想要观察的变量值，然后通过调用子流来输出。这个触发条件可以是报错就触发，也可以指定特定报错类型才触发。</p>
-<p><img src="https://cdn.sspai.com/2022/06/17/24bea7e1c6e25629c410476d68209cb2.png" alt></p>
-<h2 id="小结"><a class="header-anchor" href="#小结">¶</a>小结</h2>
-<p>在本节课程中，我带着大家非常详细地创建了 PAD
-上的第一个流，从验证需求开始，到明确流程，接着分模块把具体的操作动作编写完成，最后拼接成一个完整的流。在创建第一个流之后，我还向大家介绍了一些基本的 bug
-调试方法，可以在最快的时间内找到并解决问题。当然话说回来，处理 Bug
-终究不是一个标准化的过程，很多经验还是需要不断实践来积累。从下一节课开始，我将逐个介绍操作中的各个模块和动作，并辅以对应的实战案例，希望通过这些例子可以帮助大家在较短的时间内掌握这些模块，以应用到日常的流创作中。</p>
 ]]></content>
       <categories>
         <category>转载</category>
