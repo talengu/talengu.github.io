@@ -6,7 +6,7 @@
   <link href="/public/atom.xml" rel="self"/>
   
   <link href="https://talengu.github.io/public/"/>
-  <updated>2022-07-26T16:00:04.000Z</updated>
+  <updated>2022-07-15T16:00:04.000Z</updated>
   <id>https://talengu.github.io/public/</id>
   
   <author>
@@ -15,28 +15,6 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
-  
-  <entry>
-    <title>「202207月度汇报」obsidian</title>
-    <link href="https://talengu.github.io/public/2022/07/26/test/202207_obsidian/"/>
-    <id>https://talengu.github.io/public/2022/07/26/test/202207_obsidian/</id>
-    <published>2022-07-26T16:00:04.000Z</published>
-    <updated>2022-07-26T16:00:04.000Z</updated>
-    
-    <content type="html"><![CDATA[<p>统计 ✅ : 0 📅 : 0 🔖 : 0</p><a id="more"></a><h2 id="✅-0"><a class="header-anchor" href="#✅-0">¶</a>✅ : 0</h2><h2 id="📅-0"><a class="header-anchor" href="#📅-0">¶</a>📅 : 0</h2><h2 id="🔖-0"><a class="header-anchor" href="#🔖-0">¶</a>🔖 : 0</h2>]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;统计 ✅ : 0 📅 : 0 🔖 : 0&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="转载" scheme="https://talengu.github.io/public/categories/%E8%BD%AC%E8%BD%BD/"/>
-    
-    
-      <category term="转载" scheme="https://talengu.github.io/public/tags/%E8%BD%AC%E8%BD%BD/"/>
-    
-  </entry>
   
   <entry>
     <title>「202207月度汇报」ttrss</title>
@@ -594,9 +572,9 @@ todo整理&lt;/p&gt;
       <category term="数学" scheme="https://talengu.github.io/public/categories/%E6%95%B0%E5%AD%A6/"/>
     
     
-      <category term="层次分析法" scheme="https://talengu.github.io/public/tags/%E5%B1%82%E6%AC%A1%E5%88%86%E6%9E%90%E6%B3%95/"/>
-    
       <category term="数学" scheme="https://talengu.github.io/public/tags/%E6%95%B0%E5%AD%A6/"/>
+    
+      <category term="层次分析法" scheme="https://talengu.github.io/public/tags/%E5%B1%82%E6%AC%A1%E5%88%86%E6%9E%90%E6%B3%95/"/>
     
   </entry>
   
@@ -631,6 +609,33 @@ todo整理&lt;/p&gt;
     
     
       <category term="人物" scheme="https://talengu.github.io/public/tags/%E4%BA%BA%E7%89%A9/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>博客模版</title>
+    <link href="https://talengu.github.io/public/2019/07/25/template/"/>
+    <id>https://talengu.github.io/public/2019/07/25/template/</id>
+    <published>2019-07-25T12:00:00.000Z</published>
+    <updated>2020-02-11T12:00:00.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>文件head，设置标题、日期、分类、标签、评论、版权、是否使用公式，如下。</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">---</span><br><span class="line">title: 模版文件</span><br><span class="line">date: 2019-07-25 12:00:00</span><br><span class="line">updated: 2019-07-25 12:00:00</span><br><span class="line">categories:</span><br><span class="line">  - 博客搭建</span><br><span class="line">  - 模版文件</span><br><span class="line">tags:</span><br><span class="line">  - Writing</span><br><span class="line">comments: true</span><br><span class="line">copyright: true</span><br><span class="line">math: true</span><br><span class="line">---</span><br></pre></td></tr></table></figure><p><strong>摘要</strong></p><p>本部分说明文章的写作意图。涉及的背景、主要内容、本文与其他文章关系等。</p><p>本文为Hexo博客模版文件，以Markdown语言书写。</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">前言一般放到主页，可利用 &lt;!-- more --&gt; 隔断。</span><br></pre></td></tr></table></figure><a id="more"></a><h2 id="1-构思与起草"><a class="header-anchor" href="#1-构思与起草">¶</a>1 构思与起草</h2><ul><li>对文章的阅读群体、写作意图和反馈（Audience Intention Response AIR）要有一个清楚的认识。照顾沟通对象的需要、你的意图（信息）以及希望的反馈。</li><li>在思维导图上，放上你需要的关键名词，然后依次在它基础上添加动词，在加上形容词。最后以一定顺序组织你将要阐述的信息。比如重要性排序，对比优势劣势，方案的不同层面，时间上逻辑上的因果性等等。</li></ul><h2 id="2-主体内容"><a class="header-anchor" href="#2-主体内容">¶</a>2 主体内容</h2><p>文章的主要内容，包括你对跟进过程或发现成果的描述，以数据、事实证据以及其他的信息支撑主要内容。在你的论说中，你应该把对客观事实的描述和写作者对事情的主管阐述区分开来。</p><p>当你在报告中对一个观点进行陈述的时候，你需要记住以下几点：</p><ul><li>清晰的呈现事实</li><li>有逻辑地提出论据</li><li>引用相关的语录、简明易懂的事实和例子来支持你的论点</li><li>给出支持或反对该行为的理由</li><li>始终围绕主要观点进行讨论</li><li>处理好重要的假设关系</li><li>区分说明（具体阐述）和论证（有理有据）</li></ul><p>链接：<a href="https://talengu.github.io/">https://talengu.github.io/</a></p><h3 id="2-1-图"><a class="header-anchor" href="#2-1-图">¶</a>2.1 图</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">![GDP](http://www.stats.gov.cn/tjsj/zxfb/201902/W020190228338754231076_r75.png)</span><br><span class="line">&lt;div align=&apos;center&apos;&gt; &lt;b&gt;图1 2018年国内生产总值及其增速度&lt;/b&gt;&lt;/div&gt;</span><br></pre></td></tr></table></figure><p>这两行代码生成下面的图和标题。</p><p><img src="http://www.stats.gov.cn/tjsj/zxfb/201902/W020190228338754231076_r75.png" alt="GDP"></p><p>图 1 展示的是2014-2018年的GDP和增长速度，来自<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup>。图中数据反应出国内生产总值在2014-2018年度均平稳增长的情况。</p><h3 id="2-2-表"><a class="header-anchor" href="#2-2-表">¶</a>2.2 表</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;div align=&apos;center&apos;&gt; &lt;b&gt;表1 2018年年末人口数及其构成&lt;/b&gt;&lt;/div&gt;</span><br><span class="line"></span><br><span class="line">| 指标       | 年末数（万人） | 比重（%） |</span><br><span class="line">| ---------- | -------------- | --------- |</span><br><span class="line">| 全国总人口 | 139538         | 100.0     |</span><br><span class="line">| 其中：城镇 | 83137          | 59.58     |</span><br><span class="line">| 乡村       | 56401          | 40.42     |</span><br></pre></td></tr></table></figure><p>这两行代码生成下面的表和标题。</p><div align="center"> <b>表1 2018年年末人口数及其构成</b></div><table><thead><tr><th>指标</th><th>年末数（万人）</th><th>比重（%）</th></tr></thead><tbody><tr><td>全国总人口</td><td>139538</td><td>100.0</td></tr><tr><td>城镇</td><td>83137</td><td>59.58</td></tr><tr><td>乡村</td><td>56401</td><td>40.42</td></tr></tbody></table><p>从表1中得出，2018年年末城镇人口占总人口的59.58%，乡村人口占总人口的40.42%，城镇人口大比例超过乡村人口。</p><h3 id="2-3-公式"><a class="header-anchor" href="#2-3-公式">¶</a>2.3 公式</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$$</span><br><span class="line">f=w_1 x_1 + w_2 x_2</span><br><span class="line">\tag&#123;1&#125;</span><br><span class="line">$$</span><br></pre></td></tr></table></figure><p>数学Tex代码渲染成下面的公式，见公式（1）。公式可以在网站<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup> 进行可视化编写。$$f=w_1 x_1 + w_2 x_2\tag{1}$$</p><h4 id="定理证明"><a class="header-anchor" href="#定理证明">¶</a>定理证明</h4><p><strong>定理 3.1</strong> 如果时域混合场积分方程是时域电场积分方程与时域磁场积分方程的线性组合……</p><p><strong>证明：</strong></p><p>首先，由于 ……</p><p>……</p><p>根据 ……，结论得证。                        ■</p><h2 id="3-写作检查"><a class="header-anchor" href="#3-写作检查">¶</a>3 写作检查</h2><p>主体内容完成后，要进行写作检查。</p><ul><li>保证信息的准确性，时间地点等信息的准确。</li><li>确保语法规范性</li><li>段落写作<ul><li>主题句，核心思想</li><li>使用关联词，但勿滥<ul><li>表示转折：虽然，尽管，但是，相反的是，另一方面</li><li>对已阐述观点的强调：此外，与此同时，除此以外，再补充一点</li><li>阐述结果：结果是，相应的结果是，因此</li></ul></li><li>简单的句子 15-25</li></ul></li><li>精心选择词语<ul><li>同一个意思，换一下说法</li><li>少用名词，多用动词。我们想用名词表达意思，采用动名组合，或者一个意群搭配上动词会更有力。</li><li>多用主动动词，少用被动动词</li></ul></li><li>核对标点符号，逗号，与分号。英文的话，检查一下拼写</li><li>注意行为的语气</li><li>保持连贯性，使用一种统一的方式表达。</li></ul><h2 id="4-总结"><a class="header-anchor" href="#4-总结">¶</a>4 总结</h2><p>一个清晰的总结应该概括全部论点。</p><h2 id="其他"><a class="header-anchor" href="#其他">¶</a>其他</h2><ul><li>逻辑清楚，达情切意<sup class="footnote-ref"><a href="#fn3" id="fnref3">[3]</a></sup>。准备看一些基础的逻辑学。</li><li>写完要读两遍，修改错别字，标点，语序连接等等。<sup class="footnote-ref"><a href="#fn3" id="fnref3:1">[3:1]</a></sup></li><li>修改可以反着读，正着读对熟悉的材料会有一种连贯性忽略掉错误或者不顺的地方。</li></ul><hr><p><strong>参考</strong></p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[^statics_report_2018]: [国家统计局：2018年国民经济和社会发展统计公报](http://www.stats.gov.cn/tjsj/zxfb/201902/t20190228_1651265.html)</span><br><span class="line">[^latex_editor]: [Latex公式在线可视化编辑器](http://latex.codecogs.com/eqneditor/editor.php)</span><br><span class="line">[^hetang]: 美学散步系列书籍 - 朱自清的《荷塘清韵》</span><br></pre></td></tr></table></figure><hr class="footnotes-sep"><section class="footnotes"><ol class="footnotes-list"><li id="fn1" class="footnote-item"><p><a href="http://www.stats.gov.cn/tjsj/zxfb/201902/t20190228_1651265.html" target="_blank" rel="noopener">国家统计局：2018年国民经济和社会发展统计公报</a> <a href="#fnref1" class="footnote-backref">↩︎</a></p></li><li id="fn2" class="footnote-item"><p><a href="http://latex.codecogs.com/eqneditor/editor.php" target="_blank" rel="noopener">Latex公式在线可视化编辑器</a> <a href="#fnref2" class="footnote-backref">↩︎</a></p></li><li id="fn3" class="footnote-item"><p>美学散步系列书籍 - 朱自清的《荷塘清韵》 <a href="#fnref3" class="footnote-backref">↩︎</a> <a href="#fnref3:1" class="footnote-backref">↩︎</a></p></li></ol></section>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;文件head，设置标题、日期、分类、标签、评论、版权、是否使用公式，如下。&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;---&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;title: 模版文件&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;date: 2019-07-25 12:00:00&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;updated: 2019-07-25 12:00:00&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;categories:&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  - 博客搭建&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  - 模版文件&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;tags:&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  - Writing&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;comments: true&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;copyright: true&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;math: true&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;---&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;&lt;strong&gt;摘要&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;本部分说明文章的写作意图。涉及的背景、主要内容、本文与其他文章关系等。&lt;/p&gt;
+&lt;p&gt;本文为Hexo博客模版文件，以Markdown语言书写。&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;前言一般放到主页，可利用 &amp;lt;!-- more --&amp;gt; 隔断。&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+    
+    </summary>
+    
+      <category term="博客搭建" scheme="https://talengu.github.io/public/categories/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/"/>
+    
+    
+      <category term="博客模版" scheme="https://talengu.github.io/public/tags/%E5%8D%9A%E5%AE%A2%E6%A8%A1%E7%89%88/"/>
     
   </entry>
   
