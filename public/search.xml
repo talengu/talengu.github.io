@@ -113,7 +113,7 @@ Thank you !!!</p>
 <h2 id="客户端"><a class="header-anchor" href="#客户端">¶</a>客户端</h2>
 <img src="/public/2022/04/14/anki_tips/image-20200424005627732.png" alt="image-20200424005627732" style="zoom:33%;">
 <h3 id="mac-win-客户端"><a class="header-anchor" href="#mac-win-客户端">¶</a>mac/win 客户端</h3>
-<p>从官网下载 【anki mac版本 2.1.21 (f1734a47)】/【Windows PC 客户端】</p>
+<p>从官网下载 anki mac版本 2.1.21 (f1734a47) / Windows PC 客户端</p>
 <p>中文网：<a href="http://www.ankichina.net/" target="_blank" rel="noopener">http://www.ankichina.net/</a></p>
 <p>工具-&gt;附加组件-&gt;<code>获取插件</code>，输入 代码：2124817646</p>
 <img src="/public/2022/04/14/anki_tips/add_server.png" alt="add_server" style="zoom:30%;">
@@ -144,7 +144,7 @@ Thank you !!!</p>
       </tags>
   </entry>
   <entry>
-    <title>【转】在 C/C++ 程序中打印当前函数调用栈</title>
+    <title>「转」在 C/C++ 程序中打印当前函数调用栈</title>
     <url>/public/2021/08/25/c_debug/</url>
     <content><![CDATA[<h2 id="背景"><a class="header-anchor" href="#背景">¶</a>背景</h2>
 <p>2011 年 6 月 11 日 <a href="http://www.wuzesheng.com/?author=2" title="由 小武哥 发布" target="_blank" rel="noopener">小武哥</a></p>
@@ -562,8 +562,8 @@ Thank you !!!</p>
         <category>工具</category>
       </categories>
       <tags>
-        <tag>rss</tag>
         <tag>python</tag>
+        <tag>rss</tag>
       </tags>
   </entry>
   <entry>
@@ -661,8 +661,8 @@ Thank you !!!</p>
         <category>信息收集</category>
       </categories>
       <tags>
-        <tag>rss</tag>
         <tag>工具</tag>
+        <tag>rss</tag>
       </tags>
   </entry>
   <entry>
@@ -714,8 +714,8 @@ Thank you !!!</p>
         <category>工具</category>
       </categories>
       <tags>
-        <tag>rss</tag>
         <tag>python</tag>
+        <tag>rss</tag>
       </tags>
   </entry>
   <entry>
@@ -888,7 +888,7 @@ $$</p>
       </tags>
   </entry>
   <entry>
-    <title>【转】window软件运行时间</title>
+    <title>「转」window软件运行时间</title>
     <url>/public/2022/04/15/soft_run_time/</url>
     <content><![CDATA[<h2 id="背景"><a class="header-anchor" href="#背景">¶</a>背景</h2>
 <p>对关注性能的程序开发人员而言，一个好的计时部件既是益友，也是良师。计时器既可以作为程序组件帮助程序员精确的控制程序进程，又是一件有力的调试武器，在有经验的程序员手里可以尽快的确定程序的性能瓶颈，或者对不同的算法作出有说服力的性能比较。</p>
@@ -1008,7 +1008,7 @@ t   -=   (unsigned   long)GetCycleCount();</p>
     <title>机器学习系列</title>
     <url>/public/2019/07/23/AI/ML_summary/</url>
     <content><![CDATA[<p><strong>前言</strong></p>
-<p>路漫漫其修远兮，吾将上下而求索。2013年，大二接触人工智能课，讲逻辑推理，专家系统等等，神经网络只是一部分，打开当时老师的ppt，还能看到BP等算法。接着在2015年，上了模式识别课程，有一些启发式算法，KNN K-means等算法，同时神经网络也已经有了 GoogLeNet 等深层网络，热门的GAN网络也在2014年被提出。后面，机遇巧合，本科毕业时选了人工智能的坑，直到3年后的现在算是明白了一点。接下来的三年的目标还是<a href="https://talengu.github.io/public/2018/10/01/AI/how_algorithm_engineer/">【成为一名优秀的算法工程师】</a>。</p>
+<p>路漫漫其修远兮，吾将上下而求索。2013年，大二接触人工智能课，讲逻辑推理，专家系统等等，神经网络只是一部分，打开当时老师的ppt，还能看到BP等算法。接着在2015年，上了模式识别课程，有一些启发式算法，KNN K-means等算法，同时神经网络也已经有了 GoogLeNet 等深层网络，热门的GAN网络也在2014年被提出。后面，机遇巧合，本科毕业时选了人工智能的坑，直到3年后的现在算是明白了一点。接下来的三年的目标还是 <a href="https://talengu.github.io/public/2018/10/01/AI/how_algorithm_engineer/">成为一名优秀的算法工程师</a>。</p>
 <p>回望入坑 <strong>机器学习</strong>，没有系统地整理过相关知识。于是想着手整理一份自己笔记系列。本文为序。</p>
 <blockquote>
 <p>雄关漫道真如铁，而今迈步从头越。</p>
@@ -1682,7 +1682,7 @@ NexT Github  <a href="https://github.com/iissnan/hexo-theme-next" target="_blank
 <a href="https://icons8.com/icon/new-icons/all" target="_blank" rel="noopener">icon8 web</a> 比较舒服
 <a href="http://fontawesome.io" target="_blank" rel="noopener">http://fontawesome.io</a> 标准风格
 <a href="https://www.easyicon.net/" target="_blank" rel="noopener">https://www.easyicon.net/</a> 国内的图标</p>
-<p>【正在补充修改内容中～】</p>
+<p>补充修改进行中，，，</p>
 ]]></content>
       <categories>
         <category>博客搭建</category>
@@ -1902,7 +1902,7 @@ NexT Github  <a href="https://github.com/iissnan/hexo-theme-next" target="_blank
       </tags>
   </entry>
   <entry>
-    <title>正则化【一】机器学习中的正则化</title>
+    <title>正则化「一」机器学习中的正则化</title>
     <url>/public/2019/07/17/AI/regulation_baysian/</url>
     <content><![CDATA[<p><strong>前言</strong>
 本<strong>正则化系列</strong>文章我们将讨论<strong>正则化技术在机器学习和深度学习的应用</strong>。本文为该系列的第一篇，主要介绍<strong>机器学习正则化的概念，原理和应用实例</strong>。</p>
@@ -2273,9 +2273,9 @@ nbextensions的教程<a href="https://jupyter-contrib-nbextensions.readthedocs.i
       </tags>
   </entry>
   <entry>
-    <title>【转】《中华古籍资源库》中国国家图书馆</title>
+    <title>「转」《中华古籍资源库》中国国家图书馆</title>
     <url>/public/2021/12/16/readings/zhonghuaguji/</url>
-    <content><![CDATA[<p><strong>简介</strong></p>
+    <content><![CDATA[<h2 id="简介"><a class="header-anchor" href="#简介">¶</a>简介</h2>
 <p>“中华古籍资源库”是“中华古籍保护计划”的重要成果。2016年9月28日，“中华古籍资源库”正式开通运行，陆续发布国家图书馆藏善本和普通古籍、法国国家图书馆藏敦煌遗书、天津图书馆藏普通古籍、日本永青文库捐赠汉籍、云南省图书馆善本古籍、芷兰斋藏稿抄校本等古籍影像资源，总量超过3.3万部。</p>
 <p>《中华古籍资源库》！！！<br>
 网址：<a href="http://www.nlc.cn/pcab/zy/zhgj_zyk/" target="_blank" rel="noopener">http://www.nlc.cn/pcab/zy/zhgj_zyk/</a><br>
@@ -2404,21 +2404,21 @@ nbextensions的教程<a href="https://jupyter-contrib-nbextensions.readthedocs.i
       </tags>
   </entry>
   <entry>
-    <title>srt中英文合并python脚本</title>
+    <title>SRT中英文合并Python脚本</title>
     <url>/public/2016/04/14/shells/youtube_src_combine/</url>
     <content><![CDATA[<h2 id="前言"><a class="header-anchor" href="#前言">¶</a>前言</h2>
-<p>从Youtube上看只有中文或英文分开的字幕，下载好视频，想要中英文字幕。可从 <a href="http://mo.dbxdb.com/Yang/setting.html" target="_blank" rel="noopener">Getting Youtube subtitles</a> 获取中或英文字幕，然后将其合并，即成中英文双字幕。下面是python脚本。</p>
+<p>从YouTube上看只有中文或英文分开的字幕，下载好视频，想要中英文字幕。可从 <a href="http://mo.dbxdb.com/Yang/setting.html" target="_blank" rel="noopener">Getting Youtube subtitles</a> 获取中或英文字幕，然后将其合并，即成中英文双字幕。下面是Python脚本。</p>
 <a id="more"></a>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">本脚本完成了中英文srt合并的功能</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">srt2lis</span><span class="params">(name)</span>:</span></span><br><span class="line">    lines = open(<span class="string">'srt/'</span>+name, <span class="string">'r'</span>, encoding=<span class="string">'utf-8'</span>).readlines()</span><br><span class="line">    lis = []</span><br><span class="line">    tmp = []</span><br><span class="line">    <span class="keyword">for</span> i, line <span class="keyword">in</span> enumerate(lines):</span><br><span class="line">        <span class="comment"># 以\n 结尾的一个时间点</span></span><br><span class="line">        <span class="keyword">if</span> line == <span class="string">'\n'</span>:</span><br><span class="line">            lis.append(tmp)</span><br><span class="line">            tmp = []</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            tmp.append(line)</span><br><span class="line">    <span class="keyword">return</span> lis</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">hebing</span><span class="params">(name_zh)</span>:</span></span><br><span class="line">    name_en = name_zh[:<span class="number">-7</span>] + <span class="string">'.srt'</span></span><br><span class="line">    out_name=<span class="string">'out/'</span>+name_en</span><br><span class="line">    f=open(out_name,<span class="string">'w'</span>,encoding=<span class="string">'utf-8'</span>)</span><br><span class="line">    lis_en=srt2lis(name_en)</span><br><span class="line">    lis_zh=srt2lis(name_zh)</span><br><span class="line">    <span class="keyword">for</span> i,item <span class="keyword">in</span> enumerate(lis_en):</span><br><span class="line">        print(item[<span class="number">0</span>])</span><br><span class="line">        f.write(item[<span class="number">0</span>])</span><br><span class="line">        f.write(item[<span class="number">1</span>])</span><br><span class="line">        <span class="keyword">for</span> line <span class="keyword">in</span> lis_zh[i][<span class="number">2</span>:]:</span><br><span class="line">            f.write(line)</span><br><span class="line">        <span class="keyword">for</span> line <span class="keyword">in</span> item[<span class="number">2</span>:]:</span><br><span class="line">            f.write(line)</span><br><span class="line">        f.write(<span class="string">'\n'</span>)</span><br><span class="line">    f.close()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">flis=os.listdir(<span class="string">'srt/'</span>)</span><br><span class="line"><span class="keyword">if</span> <span class="keyword">not</span> os.path.exists(<span class="string">'out'</span>):</span><br><span class="line">    os.mkdir(<span class="string">'out'</span>)</span><br><span class="line"><span class="keyword">for</span> name <span class="keyword">in</span> flis:</span><br><span class="line">    print(name)</span><br><span class="line">    <span class="keyword">if</span> name[<span class="number">-6</span>:<span class="number">-4</span>]==<span class="string">'zh'</span>:</span><br><span class="line">        hebing(name)</span><br></pre></td></tr></table></figure>
 ]]></content>
       <categories>
         <category>常用脚本</category>
+        <category>工具</category>
       </categories>
       <tags>
-        <tag>工具</tag>
-        <tag>python</tag>
+        <tag>Python</tag>
         <tag>YouTube字幕合并</tag>
-        <tag>src</tag>
+        <tag>SRT(文本格式字幕)</tag>
       </tags>
   </entry>
   <entry>
@@ -2511,7 +2511,7 @@ markdate:2022-07-14 10:28:28.713392</p>
 <img src="/public/2019/04/25/trips/chongqing/caotianmen.jpg" alt="caotianmen" width="50%">
 <div align="center"> <b>朝天门码头，水清黄分明</b></div>
 <p>今天也是懒懒起床，吃了个早饭，豆浆是放在那种果冻的包装袋里。今天差不多，就准备看看朝天门，然后回成都。去朝天门还是比较奇怪，随着百度地图导航走，到了一个商城里面，从地面进去是商城的8楼，下了电梯，走了一个商品批发的地方，然后向朝天门赶，今天太阳超级满足，比较热。岸边停了好多游船。到了朝天门，水分了两个颜色，黄的长江，清的嘉陵江。休息一刻，搭了公交车，沿着长江岸跑，居然到了李子坝，然后地铁转到重庆北火车站，这一趟重庆算是画上了一个句号。</p>
-<p>【转载请联系 博主。】</p>
+<p>『转载』，请联系博主。</p>
 ]]></content>
       <categories>
         <category>旅游</category>
@@ -4577,7 +4577,7 @@ K-means聚类、高斯混合、EM算法</p>
       </tags>
   </entry>
   <entry>
-    <title>【转】一文看懂Linux内核！Linux内核架构和工作原理详解</title>
+    <title>「转」一文看懂Linux内核！Linux内核架构和工作原理详解</title>
     <url>/public/2021/12/23/linux/linux_in_one/</url>
     <content><![CDATA[<p>全文导读</p>
 <ul>
@@ -4779,13 +4779,13 @@ REPORTING-BUGS ---- Bug 上报的指南。</p>
 <p>第三方和封闭源码模块在一些发行版中是可用的，比如 Ubuntu，默认情况下可能无法安装，因为这些模块的源代码是不可用的。该软件的开发人员 (即 nVidia、ATI 等) 不提供源代码，而是构建自己的模块并编译所需的. ko 文件以便分发。虽然这些模块像 beer 一样是免费的，但它们不像 speech 那样是免费的，因此不包括在一些发行版中，因为维护人员认为它通过提供非免费软件 “污染” 了内核。</p>
 <p>内核并不神奇，但对于任何正常运行的计算机来说，它都是必不可少的。Linux 内核不同于 OS X 和 Windows，因为它包含内核级别的驱动程序，并使许多东西 “开箱即用”。希望您能对软件和硬件如何协同工作以及启动计算机所需的文件有更多的了解。</p>
 <h2 id="Linux-内核学习经验总结"><a class="header-anchor" href="#Linux-内核学习经验总结">¶</a>Linux 内核学习经验总结</h2>
-<p>开篇</p>
+<h3 id="开篇"><a class="header-anchor" href="#开篇">¶</a>开篇</h3>
 <p>学习内核，每个人都有自己的学习方法，仁者见仁智者见智。以下是我在学习过程中总结出来的东西，对自身来说，我认为比较有效率，拿出来跟大家交流一下。</p>
 <p>内核学习，一偏之见；疏漏难免，恳请指正。</p>
-<p>为什么写这篇博客</p>
+<h3 id="为什么写这篇博客"><a class="header-anchor" href="#为什么写这篇博客">¶</a>为什么写这篇博客</h3>
 <p>刚开始学内核的时候，不要执着于一个方面，不要专注于一个子系统就一头扎到实际的代码行中去，因为这样的话，牵涉的面会很广，会碰到很多困难，容易产生挫败感，一个函数体中（假设刚开始的时候正在学习某个方面的某个具体的功能函数）很可能掺杂着其他各个子系统方面设计理念（多是大量相关的数据结构或者全局变量，用于支撑该子系统的管理工作）下相应的代码实现，这个时候看到这些东西，纷繁芜杂，是没有头绪而且很不理解的，会产生很多很多的疑问，（这个时候如果对这些疑问纠缠不清，刨根问底，那么事实上就是在学习当前子系统的过程中频繁的去涉足其他子系统，这时候注意力就分散了），而事实上等了解了各个子系统后再回头看这些东西的话，就简单多了，而且思路也会比较清晰。所以，要避免 “只见树木，不见森林”，不要急于深入到底层代码中去，不要过早研究底层代码。</p>
 <p>我在大二的时候刚开始接触内核，就犯了这个错误，一头扎到内存管理里头，去看非常底层的实现代码，虽然也是建立在内存管理的设计思想的基础上，但是相对来说，比较孤立，因为此时并没有学习其它子系统，应该说无论是视野还是思想，都比较狭隘，所以代码中牵涉到的其它子系统的实现我都直接跳过了，这一点还算聪明，当然也是迫不得已的。</p>
-<p>我的学习方法</p>
+<h3 id="我的学习方法"><a class="header-anchor" href="#我的学习方法">¶</a>我的学习方法</h3>
 <p>刚开始，我认为主要的问题在于你知道不知道，而不是理解不理解，某个子系统的实现采用了某种策略、方法，而你在学习中需要做的就是知道有这么一回事儿，然后才是理解所描述的策略或者方法。</p>
 <p>根据自己的学习经验，刚开始学习内核的时候，我认为要做的是在自己的脑海中建立起内核的大体框架，理解各个子系统的设计理念和构建思想，这些理念和思想会从宏观上呈献给你清晰的脉络，就像一个去除了枝枝叶叶的大树的主干，一目了然；当然，肯定还会涉及到具体的实现方法、函数，但是此时接触到的函数或者方法位于内核实现的较高的层次，是主（要）函数，已经了解到这些函数，针对的是哪些设计思想，实现了什么样的功能，达成了什么样的目的，混个脸熟的说法在这儿也是成立的。至于该主函数所调用的其它的辅助性函数就等同于枝枝叶叶了，不必太早就去深究。此时，也就初步建立起了内核子系统框架和代码实现之间的关联，关联其实很简单，比如一看到某个函数名字，就想起这个函数是针对哪个子系统的，实现了什么功能。</p>
 <p>我认为此时要看的就是 LKD3，这本书算是泛泛而谈，主要就是从概念，设计，大的实现方法上描述各个子系统，而对于具体的相关的函数实现的代码讲解很少涉及 (对比于 ULK3，此书主要就是关于具体函数代码的具体实现的深入分析，当然，你也可以看，但是过早看这本书，会感觉很痛苦，很枯燥无味，基本上都是函数的实现)，很少，但不是没有，这就很好，满足我们当前的需求，还避免我们过早深入到实际的代码中去。而且本书在一些重要的点上还给出了写程序时的注意事项，算是指导性建议。主要的子系统包括：内存管理，进程管理和调度，系统调用，中断和异常，内核同步，时间和定时器管理，虚拟文件系统，块 I/O 层，设备和模块。（这里的先后顺序其实就是 LKD3 的目录的顺序）。</p>
@@ -4800,17 +4800,17 @@ REPORTING-BUGS ---- Bug 上报的指南。</p>
 <p>等我们完成了建立框架这一步，就可以选择一个比较感兴趣的子系统，比如驱动、网络，或者文件系统之类的。这个时候你再去深入了解底层代码实现，相较于一开始就钻研代码，更容易一些，而且碰到了不解之处，或者忘记了某个方面的实现，此时你完全可以找到相应的子系统，因为你知道在哪去找，查漏补缺，不仅完成了对当前函数的钻研，而且可以回顾、温习以前的内容，融会贯通的时机就在这里了。</p>
 <p>《深入理解 linux 虚拟内存》(2.4 内核版本)，LDD3，《深入理解 linux 网络技术内幕》，几乎每一个子系统都需要一本书的容量去讲解，所以说，刚开始学习不宜对某个模块太过深入，等对各个子系统都有所了解了，再有针对性的去学习一个特定的子系统。这时候对其它系统的援引都可以让我们不再感到茫然、复杂，不知所云。</p>
 <p>比如，LDD3 中的以下所列章节：构造和运行模块，并发和竞态，时间、延迟及延缓操作, 分配内存，中断处理等，都属于驱动开发的支撑性子系统，虽说本书对这些子系统都专门开辟一个章节进行讲解，但是详细程度怎么能比得上 PLKA，ULK3，LKD3 这三本书，看完这三本书，你会发现读 LDD3 这些章节的时候简直跟喝白开水一样，太随意了，因为 LDD3 的讲解比之 LKD3 更粗略。打好了基础，PCI、USB、TTY 驱动，块设备驱动，网卡驱动，需要了解和学习的东西就比较有针对性了。这些子系统就属于通用子系统，了解之后，基于这些子系统的子系统的开发—驱动 (需进一步针对硬件特性) 和网络(需进一步理解各种协议)—相对而言，其学习难度大大降低，学习进度大大加快，学习效率大大提升。说着容易做来难。达到这样一种效果的前提就是：必须得静下心来，认真读书，要看得进去，PLKA，ULK3 厚得都跟砖头块儿一样，令人望之生畏，如果没有兴趣，没有热情，没有毅力，无论如何都是不行，因为需要时间，需要很长时间。我并不是说必须打好了基础才可以进行驱动开发，只是说打好了基础的情况下进行开发会更轻松，更有效率，而且自己对内核代码的驾驭能力会更强大。这只是我个人见解，我自己的学习方式，仅供参考。</p>
-<p>语言</p>
+<h3 id="语言"><a class="header-anchor" href="#语言">¶</a>语言</h3>
 <p>PLKA 是个德国人用德语写的，后来翻译成英文，又从英文翻译成中文，我在网上书店里没有找到它的纸质英文版，所以就买了中文版的。ULK3 和 LKD3 都是英文版的。大牛们写的书，遣词造句真的是简洁，易懂，看原版对我们学习计算机编程的程序员来说完全不成问题，最好原汁原味。如果一本书确实翻译地很好，我们当然可以看中文版的，用母语进行学习，理解速度和学习进度当然是很快的，不作他想。看英文的时候不要脑子里想着把他翻译成中文，没必要。</p>
-<p>API 感想</p>
+<h3 id="API-感想"><a class="header-anchor" href="#API-感想">¶</a>API 感想</h3>
 <p>“比起知道你所用技术的重要性，成为某一个特别领域的专家是不重要的。知道某一个具体 API 调用一点好处都没有，当你需要他的时候只要查询下就好了。” 这句话源于我看到的一篇翻译过来的博客。我想强调的就是，这句话针应用型编程再合适不过，但是内核 API 就不完全如此。</p>
 <p>内核相当复杂，学习起来很不容易，但是当你学习到一定程度，你会发现，如果自己打算写内核代码，到最后要关注的仍然是 API 接口，只不过这些 API 绝大部分是跨平台的，满足可移植性。内核黑客基本上已经标准化、文档化了这些接口，你所要做的只是调用而已。当然，在使用的时候，最好对可移植性这一话题在内核中的编码约定烂熟于心，这样才会写出可移植性的代码。就像应用程序一样，可以使用开发商提供的动态库 API，或者使用开源 API。同样是调用 API，不同点在于使用内核 API 要比使用应用 API 了解的东西要多出许多。</p>
 <p>当你了解了操作系统的实现—这些实现可都是对应用程序的基础性支撑啊—你再去写应用程序的时候，应用程序中用到的多线程，定时器，同步锁机制等等等等，使用共享库 API 的时候，联系到操作系统，从而把对该 API 的文档描述同自己所了解到的这些方面在内核中的相应支撑性实现结合起来进行考虑，这会指导你选择使用哪一个 API 接口，选出效率最高的实现方式。对系统编程颇有了解的话，对应用编程不无益处，甚至可以说是大有好处。</p>
-<p>设计实现的本质，知道还是理解</p>
+<h3 id="设计实现的本质，知道还是理解"><a class="header-anchor" href="#设计实现的本质，知道还是理解">¶</a>设计实现的本质，知道还是理解</h3>
 <p>操作系统是介于底层硬件和应用软件之间的接口，其各个子系统的实现很大程度上依赖于硬件特性。书上介绍这些子系统的设计和实现的时候，我们读过了，也就知道了，如果再深入考虑一下，为什么整体架构要按照这种方式组织，为什么局部函数要遵循这样的步骤处理，知其然，知其所以然，如果你知道了某个功能的实现是因为芯片就是这么设计的，CPU 就是这么做的，那么你的疑问也就基本上到此为止了。再深究，就是芯片架构方面的设计与实现，对于程序员来讲，无论是系统还是应用程序员，足迹探究到这里，已经解决了很多疑问，因为我们的工作性质偏软，而这些东西实在是够硬。</p>
 <p>比如，ULK3 中讲解的中断和异常的实现，究其根源，那是因为 Intel x86 系列就是这么设计的，去看看 Intel V3 手册中相应章节介绍，都可以为 ULK3 中描述的代码实现方式找到注解。还有时间和定时器管理，同样可以在 Intel V3 对 APIC 的介绍中获取足够的信息，操作系统就是依据这些硬件特性来实现软件方法定义的。</p>
 <p>又是那句话，不是理解不理解的问题，而是知道不知道的问题。有时候，知道了，就理解了。在整个学习过程中，知道，理解，知道，理解，知道……，交叉反复。为什么开始和结尾都是知道，而理解只是中间步骤呢？世界上万事万物自有其规律，人类只是发现而已，实践是第一位的，实践就是知道的过程，实践产生经验，经验的总结就是理论，理论源于实践，理论才需要理解。我们学习内核，深入研究，搞来搞去，又回到了芯片上，芯片是物质的，芯片的功用基于自然界中物质本有的物理和电子特性。追本溯源，此之谓也。</p>
-<p>动手写代码</p>
+<h3 id="动手写代码"><a class="header-anchor" href="#动手写代码">¶</a>动手写代码</h3>
 <p>纸上得来终觉浅，绝知此事要躬行。只看书是绝对不行的，一定要结合课本给出的编程建议自己敲代码。刚开始就以模块形式测试好了，或者自己编译一个开发版本的内核。一台机器的话，使用 UML 方式调试，内核控制路走到哪一步，单步调试看看程序执行过程，比书上的讲解更直观明了。一定要动手实际操作。</p>
 <p>参考书</p>
 <p>LDD3          Linux Device Driver 3rd</p>
@@ -4838,22 +4838,22 @@ REPORTING-BUGS ---- Bug 上报的指南。</p>
 <h2 id="结尾"><a class="header-anchor" href="#结尾">¶</a>结尾</h2>
 <p>兴趣的力量是无穷的。兴趣能带来激情，如果工作可以和兴趣结合到一起，工作起来才会有热情，那么工作就不只是工作了，更是一种享受。</p>
 <p>Linux，我的兴趣，我的动力，我的方向，我的未来！</p>
-<p>原文连接多处：<br>
-图片来自：<a href="http://www.360doc.com/content/19/1103/16/36367108_870849346.shtml" target="_blank" rel="noopener">http://www.360doc.com/content/19/1103/16/36367108_870849346.shtml</a><br>
- <a href="http://www.openpcba.com/web/contents/get?id=4638&amp;tid=15" target="_blank" rel="noopener">http://www.openpcba.com/web/contents/get?id=4638&amp;tid=15</a>【已失效】</p>
+<h2 id="参考"><a class="header-anchor" href="#参考">¶</a>参考</h2>
+<p>图片来自：<a href="http://www.360doc.com/content/19/1103/16/36367108_870849346.shtml" target="_blank" rel="noopener">link</a>
+部分文章来自：<a href="http://www.openpcba.com/web/contents/get?id=4638&amp;tid=15" target="_blank" rel="noopener">link</a> 已失效</p>
 ]]></content>
       <categories>
-        <category>Linux</category>
+        <category>linux</category>
       </categories>
       <tags>
-        <tag>内核开发</tag>
+        <tag>linux kernel</tag>
       </tags>
   </entry>
   <entry>
-    <title>琉璃易碎，人言易坠——关于《莺莺传》的叙事</title>
+    <title>「转」琉璃易碎，人言易坠——关于《莺莺传》的叙事</title>
     <url>/public/2017/04/14/readings/yingyingzhuan/</url>
     <content><![CDATA[<blockquote>
-<p>《西厢记》的书评:【琉璃易碎，人言易坠——关于《莺莺传》的叙事】转载
+<p>《西厢记》的书评:『琉璃易碎，人言易坠——关于《莺莺传》的叙事』转载
 …全文:<a href="https://www.douban.com/doubanapp/dispatch?uri=/review/1200691/" target="_blank" rel="noopener">(豆瓣link)</a></p>
 </blockquote>
 <p>“半欲天明半未明，醉闻花气睡闻莺。 狌儿撼起钟声动，二十年来晓寺情。 ”男人四十的元微之写着酸酸的诗，回忆年少风流。假如我是元微之，我一定会这般写道：天空尚未亮透，微微透着点光，远处传来钟声，让我的思绪一下子回忆到二十年前，也是这样的一个早晨，在那所古寺的西厢，那个散发着鲜花一样香气的女子，用鸟儿般宛转的声音在我耳边低语：“钟声响了，想来我也该回去了。”那声音一直萦绕在耳边，十年、二十年、也许一辈子在我在记忆深处响起……。</p>
