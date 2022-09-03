@@ -2491,6 +2491,111 @@ markdate:2022-07-14 10:28:28.713392</p>
       </tags>
   </entry>
   <entry>
+    <title>「202208月度汇报」ttrss</title>
+    <url>/public/2022/08/15/test/202208/</url>
+    <content><![CDATA[<p>total: 5</p>
+<a id="more"></a>
+<h2 id="🔖AVNC-–-Android-上的开源-VNC-客户端"><a class="header-anchor" href="#🔖AVNC-–-Android-上的开源-VNC-客户端">¶</a>🔖<a href="https://www.appinn.com/avnc-for-android/" target="_blank" rel="noopener">AVNC – Android 上的开源 VNC 客户端</a></h2>
+<p>pubdata:2022-08-07 04:59:52
+markdate:2022-08-07 17:42:37.878979</p>
+<p><img src="/public/2022/08/15/test/202208/2022-08-07-174237878979.jpg" alt="img"></p>
+<h2 id="🔖TigerVNC-–-高性能、跨平台开源-VNC-服务器与客户端"><a class="header-anchor" href="#🔖TigerVNC-–-高性能、跨平台开源-VNC-服务器与客户端">¶</a>🔖<a href="https://www.appinn.com/tigervnc/" target="_blank" rel="noopener">TigerVNC – 高性能、跨平台开源 VNC 服务器与客户端</a></h2>
+<p>pubdata:2022-08-08 04:30:32
+markdate:2022-08-09 00:48:54.680756</p>
+<p><img src="/public/2022/08/15/test/202208/2022-08-09-004854680756.jpg" alt="img"></p>
+<h2 id="🔖Notion-又一开源替代品，诞生了！"><a class="header-anchor" href="#🔖Notion-又一开源替代品，诞生了！">¶</a>🔖<a href="https://zhuanlan.zhihu.com/p/552965032" target="_blank" rel="noopener">Notion 又一开源替代品，诞生了！</a></h2>
+<p>pubdata:2022-08-12 04:42:26
+markdate:2022-08-13 16:16:00.234349</p>
+<p><img src="/public/2022/08/15/test/202208/2022-08-13-161600234349.jpg" alt="img"></p>
+<h2 id="🔖如何写一份高可读性的软件工程设计文档"><a class="header-anchor" href="#🔖如何写一份高可读性的软件工程设计文档">¶</a>🔖<a href="https://zhuanlan.zhihu.com/p/552095835" target="_blank" rel="noopener">如何写一份高可读性的软件工程设计文档</a></h2>
+<p>pubdata:2022-08-10 09:00:14
+markdate:2022-08-20 02:27:47.773301</p>
+<p><img src="/public/2022/08/15/test/202208/2022-08-20-022747773301.jpg" alt="img"></p>
+<h2 id="🔖StrokesPlus-net-–-一款很厉害的鼠标手势软件，还有大佬汉化、以及持续更新脚本"><a class="header-anchor" href="#🔖StrokesPlus-net-–-一款很厉害的鼠标手势软件，还有大佬汉化、以及持续更新脚本">¶</a>🔖<a href="https://www.appinn.com/strokesplus-net/" target="_blank" rel="noopener">StrokesPlus.net – 一款很厉害的鼠标手势软件，还有大佬汉化、以及持续更新脚本</a></h2>
+<p>pubdata:2022-08-24 04:29:23
+markdate:2022-08-25 03:51:08.820884</p>
+<p><img src="/public/2022/08/15/test/202208/2022-08-25-035108820884.jpg" alt="img"></p>
+]]></content>
+      <categories>
+        <category>转载</category>
+      </categories>
+      <tags>
+        <tag>转载</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>「202208月度汇报」obsidian</title>
+    <url>/public/2022/08/26/test/202208_obsidian/</url>
+    <content><![CDATA[<p>统计 ✅ : 1 📅 : 1 🔖 : 26</p>
+<a id="more"></a>
+<h2 id="✅-1"><a class="header-anchor" href="#✅-1">¶</a>✅ : 1</h2>
+<p>✅自动生成rss月报
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W29.md">C日常/2022-W29.md</a></p>
+<h2 id="📅-1"><a class="header-anchor" href="#📅-1">¶</a>📅 : 1</h2>
+<p>📅 加上地区统计
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W32.md">C日常/2022-W32.md</a></p>
+<h2 id="🔖-26"><a class="header-anchor" href="#🔖-26">¶</a>🔖 : 26</h2>
+<p>🔖 <a href="https://github.com/serhack/pdf-diff" target="_blank" rel="noopener">GitHub - serhack/pdf-diff: A tool for visualizing differences between two pdf files.</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W32.md">C日常/2022-W32.md</a><br>
+🔖 <a href="http://arthurchiao.art/blog/conntrack-design-and-implementation-zh/" target="_blank" rel="noopener">连接跟踪（conntrack）：原理、应用及 Linux 内核实现</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W32.md">C日常/2022-W32.md</a><br>
+🔖 <a href="https://codemirror.net/docs/guide/" target="_blank" rel="noopener">CodeMirror System Guide</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W32.md">C日常/2022-W32.md</a><br>
+🔖 <a href="https://zhuanlan.zhihu.com/p/357334969?utm_id=0" target="_blank" rel="noopener">mac使用VNC远程访问Ubuntu图形界面</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W32.md">C日常/2022-W32.md</a><br>
+🔖 <a href="https://mp.weixin.qq.com/s/FBJ_GIvdwNbvGKVKeroZjA" target="_blank" rel="noopener">冠军私教课</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W32.md">C日常/2022-W32.md</a><br>
+🔖 <a href="https://cloud.tencent.com/developer/article/1585686" target="_blank" rel="noopener">如何统计 Hexo 网站的访问地区和IP - 腾讯云开发者社区-腾讯云</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W32.md">C日常/2022-W32.md</a><br>
+🔖 <a href="https://www.appinn.com/navidrome/" target="_blank" rel="noopener">Navidrome - 开源音乐服务器，自建云端音乐播放器 - 小众软件</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W30.md">C日常/2022-W30.md</a><br>
+🔖 <a href="https://sspai.com/post/73443" target="_blank" rel="noopener">力量训练：办卡之前需要了解的训练基础与细节制定 - 少数派</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W30.md">C日常/2022-W30.md</a><br>
+🔖 <a href="https://zhuanlan.zhihu.com/p/495262462" target="_blank" rel="noopener">网站低代码开发</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W29.md">C日常/2022-W29.md</a><br>
+🔖长大后，如果是时间修剪了我们的好奇心，我们应该责怪时间吗？
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W29.md">C日常/2022-W29.md</a><br>
+🔖半导体行业的组成
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W29.md">C日常/2022-W29.md</a><br>
+🔖Weylus – 共享屏幕，将平板作为电脑触摸屏使用[Win/macOS/Linux]
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W29.md">C日常/2022-W29.md</a><br>
+🔖跨平台开发 <a href="https://beeware.org/" target="_blank" rel="noopener">BeeWare</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W29.md">C日常/2022-W29.md</a><br>
+🔖资本论复旦大学
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W29.md">C日常/2022-W29.md</a><br>
+🔖 Linux三剑客
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W29.md">C日常/2022-W29.md</a><br>
+🔖pdf补丁丁
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W29.md">C日常/2022-W29.md</a><br>
+🔖 <a href="https://www.wdbyte.com/java/char-image.html_1-%E5%AD%97%E7%AC%A6%E5%9B%BE%E6%A1%88%E6%80%9D%E8%B7%AF" target="_blank" rel="noopener">字符作画，我用字符画个冰墩墩 | 未读代码</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W29.md">C日常/2022-W29.md</a><br>
+🔖 <a href="https://zhuanlan.zhihu.com/p/474337723?utm_source=ZHShareTargetIDMore&amp;utm_medium=social&amp;utm_oi=619610399826382848" target="_blank" rel="noopener">一文让你读懂Linux五大模块内核源码，内核整体架构设计（超详细）</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W29.md">C日常/2022-W29.md</a><br>
+🔖 <a href="https://zhuanlan.zhihu.com/p/483731291?utm_source=ZHShareTargetIDMore&amp;utm_medium=social&amp;utm_oi=619610399826382848" target="_blank" rel="noopener">学习数学思维推荐阅读的五本数学书籍</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W29.md">C日常/2022-W29.md</a><br>
+🔖Snapdrop for Android – 在电脑与 Android 手机间互传文件
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W29.md">C日常/2022-W29.md</a><br>
+🔖Photoview – 支持人脸识别的开源、自托管本地相册
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W29.md">C日常/2022-W29.md</a><br>
+🔖GitHub - LibrePhotos/librephotos: A self-hosted open source photo management service. This is the repository of the backend.
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W29.md">C日常/2022-W29.md</a><br>
+🔖 <a href="https://www.cnblogs.com/imxiaobei/p/13619630.html" target="_blank" rel="noopener">一文搞懂后台高性能服务器设计的常见套路, BAT 高频面试系列 - 编程指北 - 博客园</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W29.md">C日常/2022-W29.md</a><br>
+🔖 <a href="https://www.appinn.com/dual-subtitles/" target="_blank" rel="noopener">YouTube™ 双字幕 - 显示双语字幕（包括自动翻译）、字幕下载，以及自定义字幕样式[Chrome/Edge] - 小众软件</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W29.md">C日常/2022-W29.md</a><br>
+🔖 <a href="https://mp.weixin.qq.com/s/cd-uS5NDIreT02GaHpdxlw" target="_blank" rel="noopener">一文搞懂WiFi的所有知识点</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W29.md">C日常/2022-W29.md</a><br>
+🔖 <a href="https://zhuanlan.zhihu.com/p/122523174" target="_blank" rel="noopener">Doxygen 中文文档</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W29.md">C日常/2022-W29.md</a></p>
+]]></content>
+      <categories>
+        <category>转载</category>
+      </categories>
+      <tags>
+        <tag>转载</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>这哈儿是重庆</title>
     <url>/public/2019/04/25/trips/chongqing/</url>
     <content><![CDATA[<p>重庆，旅游纪实。20190422 - 20190424</p>
