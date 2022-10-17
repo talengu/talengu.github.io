@@ -144,6 +144,24 @@ Thank you !!!</p>
       </tags>
   </entry>
   <entry>
+    <title>现代数学手册</title>
+    <url>/public/2017/05/22/math_handbook/</url>
+    <content><![CDATA[<img src="/public/2017/05/22/math_handbook/Screen Shot 2020-03-06 at 13.24.51.png" alt="Screen Shot 2020-03-06 at 13.24.51" style="zoom:33%;">
+<img src="/public/2017/05/22/math_handbook/Screen Shot 2020-03-06 at 13.24.27.png" alt="Screen Shot 2020-03-06 at 13.24.27" style="zoom: 33%;">
+<img src="/public/2017/05/22/math_handbook/Screen Shot 2020-03-06 at 13.22.44.png" alt="Screen Shot 2020-03-06 at 13.22.44" style="zoom:33%;">
+<img src="/public/2017/05/22/math_handbook/Screen Shot 2020-03-06 at 13.23.48.png" alt="Screen Shot 2020-03-06 at 13.23.48" style="zoom:33%;">
+<img src="/public/2017/05/22/math_handbook/Screen Shot 2020-03-06 at 13.23.57.png" alt="Screen Shot 2020-03-06 at 13.23.57" style="zoom:33%;">
+<p>百度云链接: <a href="https://pan.baidu.com/s/1AwNZNoMLgJcJ5X0G0fpC5w" target="_blank" rel="noopener">https://pan.baidu.com/s/1AwNZNoMLgJcJ5X0G0fpC5w</a> 提取码: pb1n</p>
+]]></content>
+      <categories>
+        <category>现代数学</category>
+      </categories>
+      <tags>
+        <tag>数学</tag>
+        <tag>工具书</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>「转」在 C/C++ 程序中打印当前函数调用栈</title>
     <url>/public/2021/08/25/c_debug/</url>
     <content><![CDATA[<h2 id="背景"><a class="header-anchor" href="#背景">¶</a>背景</h2>
@@ -343,21 +361,158 @@ Thank you !!!</p>
       </tags>
   </entry>
   <entry>
-    <title>现代数学手册</title>
-    <url>/public/2017/05/22/math_handbook/</url>
-    <content><![CDATA[<img src="/public/2017/05/22/math_handbook/Screen Shot 2020-03-06 at 13.24.51.png" alt="Screen Shot 2020-03-06 at 13.24.51" style="zoom:33%;">
-<img src="/public/2017/05/22/math_handbook/Screen Shot 2020-03-06 at 13.24.27.png" alt="Screen Shot 2020-03-06 at 13.24.27" style="zoom: 33%;">
-<img src="/public/2017/05/22/math_handbook/Screen Shot 2020-03-06 at 13.22.44.png" alt="Screen Shot 2020-03-06 at 13.22.44" style="zoom:33%;">
-<img src="/public/2017/05/22/math_handbook/Screen Shot 2020-03-06 at 13.23.48.png" alt="Screen Shot 2020-03-06 at 13.23.48" style="zoom:33%;">
-<img src="/public/2017/05/22/math_handbook/Screen Shot 2020-03-06 at 13.23.57.png" alt="Screen Shot 2020-03-06 at 13.23.57" style="zoom:33%;">
-<p>百度云链接: <a href="https://pan.baidu.com/s/1AwNZNoMLgJcJ5X0G0fpC5w" target="_blank" rel="noopener">https://pan.baidu.com/s/1AwNZNoMLgJcJ5X0G0fpC5w</a> 提取码: pb1n</p>
+    <title>选择困难者的福音？层次分析法</title>
+    <url>/public/2021/04/02/math_AHP/</url>
+    <content><![CDATA[<h2 id="摘要"><a class="header-anchor" href="#摘要">¶</a>摘要</h2>
+<p>日常生活中，我们面临很多的选择，选择工作offer，选择买哪个牌子的手机，选择哪个地方旅行等等。这些选择难以定量的衡量，有很多不确定性。内心小纠结，我选择了这个，万一那个好呢，怎么办？请看层次分析法。</p>
+<p>层次分析法(Analytic Hierarchy Process，简称 AHP)是对一些较为复杂、较为模糊的问题作出决策的简易方法，它特别适用于那些难于完全定量分析的问题。它是美国运筹学家 T. L. Saaty 教授于上世纪 70 年代初期提出的一种简便、灵活而又实用的多准则决策方法。</p>
+<p>运用层次分析法建模，大体上可按下面四个步骤进行</p>
+<ul>
+<li>建立递阶层次结构模型</li>
+<li>构造出各层次中的所有判断矩阵</li>
+<li>层次单排序及一致性检验</li>
+<li>层次总排序及一致性检验。（一般不用）</li>
+</ul>
+<a id="more"></a>
+<p>让我们从offer大佬的例子开始吧！</p>
+<p>举个栗子，今年有位大学生，有三个offer，C1 C2 C3。</p>
+<p>第一步，建立层次模型。</p>
+<ul>
+<li>目标层A：找工作的目标，自己满意程度。
+<ul>
+<li>这个程度怎么计算呢？比如工作1。</li>
+</ul>
+</li>
+<li>准则层B：研究课题、发展前途、待遇、同事情况、地理位置、单位名气等等。
+<ul>
+<li>尽量列全一点，不需要排列重要顺序。</li>
+<li>小于等于9个，后面要两两拍脑袋给出相对的重要层度，给多了不得把脑袋拍疼了。</li>
+<li>也可以有子准则层，比如待遇中的放假、工作环境等等，列出也小于9个。</li>
+</ul>
+</li>
+<li>方案层C：就是我们的offer</li>
+</ul>
+<img src="/public/2021/04/02/math_AHP/image-20200406145535585.png" alt="image-20200406145535585" style="zoom:50%;">
+<h2 id="构造-A-B-之间判断矩阵"><a class="header-anchor" href="#构造-A-B-之间判断矩阵">¶</a>构造 A B 之间判断矩阵</h2>
+<p>准则层B与目标A之间的关系。为了求出准则层中(B1-6) 对目标的重要层度的排序。比如对于该生工作满意度第一重要是待遇，然后是地点，其实该生自己也很模糊。就是固定A，然后求B中准则，对A重要性的排序。</p>
+<h3 id="我们怎么对B中的准则们的重要排序呢？"><a class="header-anchor" href="#我们怎么对B中的准则们的重要排序呢？">¶</a>我们怎么对B中的准则们的重要排序呢？</h3>
+<p>直接给每一个准则，0-1的评分，然后排序。经常会想，给完分之后，这个不合理呀要不我再给哪个准则加加分。所以这样的方法常常会因考虑不周全、顾此失彼而使决策者提出与他实际认为的重要性程度不相一致的数据。</p>
+<p>我们可以将这个过程细化，我就比较两个准则对于目标的重要性，然后通过下面的矩阵方法，求出优先顺序。</p>
+<p>还能通过一个一致性检验，来检验在你评分的过程中，有没有自相矛盾的地方，当然这种方法允许一些自相矛盾。反正评分的时候尊从内心拍脑袋就对了。</p>
+<p>所以我们拿出一个B1 与 B2 对于目标的重要，想一想然后给出B2/B1，填入下面的表格中的(2,1)的位置。</p>
+<p>整个矩阵i,j 与j，i 是取倒数的关系，所以只要做一半。</p>
+<p>在找工作的目标下，准则i与j相对的重要性表示，B2/B1 的值。采用9个标度。而相比不重要刻度取倒数就可以了</p>
+<table>
+<thead>
+<tr>
+<th>准则i比j的比较</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+<th>5</th>
+<th>6</th>
+<th>7</th>
+<th>8</th>
+<th>9</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td>相同重要</td>
+<td></td>
+<td>比较重要</td>
+<td></td>
+<td>明显重要</td>
+<td></td>
+<td>强烈重要</td>
+<td></td>
+<td>极端重要</td>
+</tr>
+</tbody>
+</table>
+<p>最后的两两相对重要表格</p>
+<img src="/public/2021/04/02/math_AHP/image-20200406145640316.png" alt="image-20200406145640316" style="zoom:50%;">
+<p>对角线对称的两个数互为倒数，即 $$a_{ji}=\frac{1}{a_{ij}}$$  B1/B2 不就是和 B2/B1互为倒数嘛</p>
+<p>从心理学观点来看，分级太多会超越人们的判断能力，既增加了作判断的难度， 又容易因此而提供虚假数据。Saaty 等人还用实验方法比较了在各种不同标度下人们判断结果的正确性，实验结果也表明，采用 1~9 标度最为合适。</p>
+<p>判断矩阵的一致性指标步骤：</p>
+<ul>
+<li>1）计算一致性指标 CI 。$$CI=\frac{ \lambda_{max}-n}{n-1}$$</li>
+<li>2）查表，平均随机一致性指标 RI。</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>n</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+<th>5</th>
+<th>6</th>
+<th>7</th>
+<th>8</th>
+<th>9</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>RI</td>
+<td>0</td>
+<td>0</td>
+<td>0.58</td>
+<td>0.90</td>
+<td>1.12</td>
+<td>1.24</td>
+<td>1.32</td>
+<td>1.41</td>
+<td>1.45</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><em>RI</em> 的值是这样得到的，用随机方法构造500个样本矩阵:随机地从1~9及其倒数中抽取数字构造正互反矩阵，求得最大特征根的平均值 $$\bar \lambda_{max}$$ 并定义$$RI=\frac{\bar \lambda_{max}-n}{n-1}$$</p>
+</blockquote>
+<ul>
+<li>3）计算一致性比例CR。 $$CR=\frac{CI}{RI}$$，当$$CR&lt;0.10$$ 时，认为判断矩阵的一致性是可以接受的，否则应对判断矩阵作适当修正。</li>
+</ul>
+<p>如果一个矩阵满足上面的条件，那么它最大特征值对应的特征向量就可以认为是每个维度的重要性权重。</p>
+<h2 id="构造-B-C-之间判断矩阵"><a class="header-anchor" href="#构造-B-C-之间判断矩阵">¶</a>构造 B C 之间判断矩阵</h2>
+<p>相同的方法，在同一B准则下，考虑不同工作的优先顺序。求工作排序的方法，和上面一样。</p>
+<img src="/public/2021/04/02/math_AHP/image-20200406162644137.png" alt="image-20200406162644137" style="zoom:50%;">
+<p>python代码<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">import</span> warnings</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AHP</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, criteria, b)</span>:</span></span><br><span class="line">        self.RI = (<span class="number">0</span>, <span class="number">0</span>, <span class="number">0.58</span>, <span class="number">0.9</span>, <span class="number">1.12</span>, <span class="number">1.24</span>, <span class="number">1.32</span>, <span class="number">1.41</span>, <span class="number">1.45</span>, <span class="number">1.49</span>)</span><br><span class="line">        self.criteria = criteria</span><br><span class="line">        self.b = b</span><br><span class="line">        self.num_criteria = criteria.shape[<span class="number">0</span>]</span><br><span class="line">        self.num_project = b[<span class="number">0</span>].shape[<span class="number">0</span>]</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">cal_weights</span><span class="params">(self, input_matrix)</span>:</span></span><br><span class="line">        input_matrix = np.array(input_matrix)</span><br><span class="line">        n, n1 = input_matrix.shape</span><br><span class="line">        <span class="keyword">assert</span> n == n1, <span class="string">'不是一个方阵'</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(n):</span><br><span class="line">            <span class="keyword">for</span> j <span class="keyword">in</span> range(n):</span><br><span class="line">                <span class="keyword">if</span> np.abs(input_matrix[i, j] * input_matrix[j, i] - <span class="number">1</span>) &gt; <span class="number">1e-7</span>:</span><br><span class="line">                    <span class="keyword">raise</span> ValueError(<span class="string">'不是反互对称矩阵'</span>)</span><br><span class="line"></span><br><span class="line">        eigenvalues, eigenvectors = np.linalg.eig(input_matrix)</span><br><span class="line"></span><br><span class="line">        max_idx = np.argmax(eigenvalues)</span><br><span class="line">        max_eigen = eigenvalues[max_idx].real</span><br><span class="line">        eigen = eigenvectors[:, max_idx].real</span><br><span class="line">        eigen = eigen / eigen.sum()</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> n &gt; <span class="number">9</span>:</span><br><span class="line">            CR = <span class="literal">None</span></span><br><span class="line">            warnings.warn(<span class="string">'无法判断一致性'</span>)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            CI = (max_eigen - n) / (n - <span class="number">1</span>)</span><br><span class="line">            CR = CI / self.RI[n]</span><br><span class="line">        <span class="keyword">return</span> max_eigen, CR, eigen</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">run</span><span class="params">(self)</span>:</span></span><br><span class="line">        max_eigen, CR, criteria_eigen = self.cal_weights(self.criteria)</span><br><span class="line">        print(<span class="string">'准则层：最大特征值&#123;:&lt;5f&#125;,CR=&#123;:&lt;5f&#125;,检验&#123;&#125;通过'</span>.format(max_eigen, CR, <span class="string">''</span> <span class="keyword">if</span> CR &lt; <span class="number">0.1</span> <span class="keyword">else</span> <span class="string">'不'</span>))</span><br><span class="line">        print(<span class="string">'准则层权重=&#123;&#125;\n'</span>.format(criteria_eigen))</span><br><span class="line"></span><br><span class="line">        max_eigen_list, CR_list, eigen_list = [], [], []</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> self.b:</span><br><span class="line">            max_eigen, CR, eigen = self.cal_weights(i)</span><br><span class="line">            max_eigen_list.append(max_eigen)</span><br><span class="line">            CR_list.append(CR)</span><br><span class="line">            eigen_list.append(eigen)</span><br><span class="line"></span><br><span class="line">        pd_print = pd.DataFrame(eigen_list,</span><br><span class="line">                                index=[<span class="string">'准则'</span> + str(i) <span class="keyword">for</span> i <span class="keyword">in</span> range(self.num_criteria)],</span><br><span class="line">                                columns=[<span class="string">'方案'</span> + str(i) <span class="keyword">for</span> i <span class="keyword">in</span> range(self.num_project)],</span><br><span class="line">                                )</span><br><span class="line">        pd_print.loc[:, <span class="string">'最大特征值'</span>] = max_eigen_list</span><br><span class="line">        pd_print.loc[:, <span class="string">'CR'</span>] = CR_list</span><br><span class="line">        pd_print.loc[:, <span class="string">'一致性检验'</span>] = pd_print.loc[:, <span class="string">'CR'</span>] &lt; <span class="number">0.1</span></span><br><span class="line">        print(<span class="string">'方案层'</span>)</span><br><span class="line">        print(pd_print)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 目标层</span></span><br><span class="line">        obj = np.dot(criteria_eigen.reshape(<span class="number">1</span>, <span class="number">-1</span>), np.array(eigen_list))</span><br><span class="line">        print(<span class="string">'\n目标层'</span>, obj)</span><br><span class="line">        print(<span class="string">'最优选择是方案&#123;&#125;'</span>.format(np.argmax(obj)))</span><br><span class="line">        <span class="keyword">return</span> obj</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    <span class="comment"># 准则重要性矩阵</span></span><br><span class="line">    criteria = np.array([[<span class="number">1</span>, <span class="number">2</span>, <span class="number">7</span>, <span class="number">5</span>, <span class="number">5</span>],</span><br><span class="line">                         [<span class="number">1</span> / <span class="number">2</span>, <span class="number">1</span>, <span class="number">4</span>, <span class="number">3</span>, <span class="number">3</span>],</span><br><span class="line">                         [<span class="number">1</span> / <span class="number">7</span>, <span class="number">1</span> / <span class="number">4</span>, <span class="number">1</span>, <span class="number">1</span> / <span class="number">2</span>, <span class="number">1</span> / <span class="number">3</span>],</span><br><span class="line">                         [<span class="number">1</span> / <span class="number">5</span>, <span class="number">1</span> / <span class="number">3</span>, <span class="number">2</span>, <span class="number">1</span>, <span class="number">1</span>],</span><br><span class="line">                         [<span class="number">1</span> / <span class="number">5</span>, <span class="number">1</span> / <span class="number">3</span>, <span class="number">3</span>, <span class="number">1</span>, <span class="number">1</span>]])</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 对每个准则，方案优劣排序</span></span><br><span class="line">    b1 = np.array([[<span class="number">1</span>, <span class="number">1</span> / <span class="number">3</span>, <span class="number">1</span> / <span class="number">8</span>], [<span class="number">3</span>, <span class="number">1</span>, <span class="number">1</span> / <span class="number">3</span>], [<span class="number">8</span>, <span class="number">3</span>, <span class="number">1</span>]])</span><br><span class="line">    b2 = np.array([[<span class="number">1</span>, <span class="number">2</span>, <span class="number">5</span>], [<span class="number">1</span> / <span class="number">2</span>, <span class="number">1</span>, <span class="number">2</span>], [<span class="number">1</span> / <span class="number">5</span>, <span class="number">1</span> / <span class="number">2</span>, <span class="number">1</span>]])</span><br><span class="line">    b3 = np.array([[<span class="number">1</span>, <span class="number">1</span>, <span class="number">3</span>], [<span class="number">1</span>, <span class="number">1</span>, <span class="number">3</span>], [<span class="number">1</span> / <span class="number">3</span>, <span class="number">1</span> / <span class="number">3</span>, <span class="number">1</span>]])</span><br><span class="line">    b4 = np.array([[<span class="number">1</span>, <span class="number">3</span>, <span class="number">4</span>], [<span class="number">1</span> / <span class="number">3</span>, <span class="number">1</span>, <span class="number">1</span>], [<span class="number">1</span> / <span class="number">4</span>, <span class="number">1</span>, <span class="number">1</span>]])</span><br><span class="line">    b5 = np.array([[<span class="number">1</span>, <span class="number">4</span>, <span class="number">1</span> / <span class="number">2</span>], [<span class="number">1</span> / <span class="number">4</span>, <span class="number">1</span>, <span class="number">1</span> / <span class="number">4</span>], [<span class="number">2</span>, <span class="number">4</span>, <span class="number">1</span>]])</span><br><span class="line"></span><br><span class="line">    b = [b1, b2, b3, b4, b5]</span><br><span class="line">    a = AHP(criteria, b).run()</span><br></pre></td></tr></table></figure>
+<h2 id="层次分析法与控制变量法"><a class="header-anchor" href="#层次分析法与控制变量法">¶</a>层次分析法与控制变量法</h2>
+<p>我们的任务是选择工作，最后使得我们满意，直接选择我们当然一头雾水。所以我们设立一些准则，然后对这些准则对于目标的重要性排序。</p>
+<p>这又有点像概率图模型，只是赋权的方法，是相互比较的方法。</p>
+<h2 id="选择困难者的福音？"><a class="header-anchor" href="#选择困难者的福音？">¶</a>选择困难者的福音？</h2>
+<p>层次分析法对人们的思维过程进行了加工整理，提出了一套系统分析问题的方法，为科学管理和决策提供了较有说服力的依据。</p>
+<p>在应用层次分析法研究问题时，遇到的主要困难有两个:<br>
+(1) 如何根据实际情况抽象出较为贴切的层次结构;<br>
+(2) 如何将某些定性的量作比较接近实际定量化处理。</p>
+<p>层次分析法的其局限性<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup>：<br>
+(1) 它在很大程度上依赖于人们的经验，主观因素的影响很大，它至多只能排除思维过程中的严重非一致性，却无法排除决策者个人可能存在的严重片面性。<br>
+(2) 比较、 判断过程较为粗糙，不能用于精度要求较高的决策问题。</p>
+<p>所以，AHP 至多只能算是一种半定量(或定性与定量结合)的方法。
+本文仅供参考，不负法律责任，哈哈。</p>
+<h2 id="参考"><a class="header-anchor" href="#参考">¶</a>参考</h2>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p>幼鹰me 知乎 <a href="https://zhuanlan.zhihu.com/p/101505929" target="_blank" rel="noopener">层次分析法原理与Python实现</a> <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn2" class="footnote-item"><p>司守奎《数学建模算法与程序》第八章 层次分析法 P167 <a href="#fnref2" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
 ]]></content>
       <categories>
-        <category>现代数学</category>
+        <category>数学</category>
       </categories>
       <tags>
         <tag>数学</tag>
-        <tag>工具书</tag>
+        <tag>层次分析法</tag>
       </tags>
   </entry>
   <entry>
@@ -697,161 +852,6 @@ $$</p>
       </categories>
       <tags>
         <tag>博客模版</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>选择困难者的福音？层次分析法</title>
-    <url>/public/2021/04/02/math_AHP/</url>
-    <content><![CDATA[<h2 id="摘要"><a class="header-anchor" href="#摘要">¶</a>摘要</h2>
-<p>日常生活中，我们面临很多的选择，选择工作offer，选择买哪个牌子的手机，选择哪个地方旅行等等。这些选择难以定量的衡量，有很多不确定性。内心小纠结，我选择了这个，万一那个好呢，怎么办？请看层次分析法。</p>
-<p>层次分析法(Analytic Hierarchy Process，简称 AHP)是对一些较为复杂、较为模糊的问题作出决策的简易方法，它特别适用于那些难于完全定量分析的问题。它是美国运筹学家 T. L. Saaty 教授于上世纪 70 年代初期提出的一种简便、灵活而又实用的多准则决策方法。</p>
-<p>运用层次分析法建模，大体上可按下面四个步骤进行</p>
-<ul>
-<li>建立递阶层次结构模型</li>
-<li>构造出各层次中的所有判断矩阵</li>
-<li>层次单排序及一致性检验</li>
-<li>层次总排序及一致性检验。（一般不用）</li>
-</ul>
-<a id="more"></a>
-<p>让我们从offer大佬的例子开始吧！</p>
-<p>举个栗子，今年有位大学生，有三个offer，C1 C2 C3。</p>
-<p>第一步，建立层次模型。</p>
-<ul>
-<li>目标层A：找工作的目标，自己满意程度。
-<ul>
-<li>这个程度怎么计算呢？比如工作1。</li>
-</ul>
-</li>
-<li>准则层B：研究课题、发展前途、待遇、同事情况、地理位置、单位名气等等。
-<ul>
-<li>尽量列全一点，不需要排列重要顺序。</li>
-<li>小于等于9个，后面要两两拍脑袋给出相对的重要层度，给多了不得把脑袋拍疼了。</li>
-<li>也可以有子准则层，比如待遇中的放假、工作环境等等，列出也小于9个。</li>
-</ul>
-</li>
-<li>方案层C：就是我们的offer</li>
-</ul>
-<img src="/public/2021/04/02/math_AHP/image-20200406145535585.png" alt="image-20200406145535585" style="zoom:50%;">
-<h2 id="构造-A-B-之间判断矩阵"><a class="header-anchor" href="#构造-A-B-之间判断矩阵">¶</a>构造 A B 之间判断矩阵</h2>
-<p>准则层B与目标A之间的关系。为了求出准则层中(B1-6) 对目标的重要层度的排序。比如对于该生工作满意度第一重要是待遇，然后是地点，其实该生自己也很模糊。就是固定A，然后求B中准则，对A重要性的排序。</p>
-<h3 id="我们怎么对B中的准则们的重要排序呢？"><a class="header-anchor" href="#我们怎么对B中的准则们的重要排序呢？">¶</a>我们怎么对B中的准则们的重要排序呢？</h3>
-<p>直接给每一个准则，0-1的评分，然后排序。经常会想，给完分之后，这个不合理呀要不我再给哪个准则加加分。所以这样的方法常常会因考虑不周全、顾此失彼而使决策者提出与他实际认为的重要性程度不相一致的数据。</p>
-<p>我们可以将这个过程细化，我就比较两个准则对于目标的重要性，然后通过下面的矩阵方法，求出优先顺序。</p>
-<p>还能通过一个一致性检验，来检验在你评分的过程中，有没有自相矛盾的地方，当然这种方法允许一些自相矛盾。反正评分的时候尊从内心拍脑袋就对了。</p>
-<p>所以我们拿出一个B1 与 B2 对于目标的重要，想一想然后给出B2/B1，填入下面的表格中的(2,1)的位置。</p>
-<p>整个矩阵i,j 与j，i 是取倒数的关系，所以只要做一半。</p>
-<p>在找工作的目标下，准则i与j相对的重要性表示，B2/B1 的值。采用9个标度。而相比不重要刻度取倒数就可以了</p>
-<table>
-<thead>
-<tr>
-<th>准则i比j的比较</th>
-<th>1</th>
-<th>2</th>
-<th>3</th>
-<th>4</th>
-<th>5</th>
-<th>6</th>
-<th>7</th>
-<th>8</th>
-<th>9</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-<td>相同重要</td>
-<td></td>
-<td>比较重要</td>
-<td></td>
-<td>明显重要</td>
-<td></td>
-<td>强烈重要</td>
-<td></td>
-<td>极端重要</td>
-</tr>
-</tbody>
-</table>
-<p>最后的两两相对重要表格</p>
-<img src="/public/2021/04/02/math_AHP/image-20200406145640316.png" alt="image-20200406145640316" style="zoom:50%;">
-<p>对角线对称的两个数互为倒数，即 $$a_{ji}=\frac{1}{a_{ij}}$$  B1/B2 不就是和 B2/B1互为倒数嘛</p>
-<p>从心理学观点来看，分级太多会超越人们的判断能力，既增加了作判断的难度， 又容易因此而提供虚假数据。Saaty 等人还用实验方法比较了在各种不同标度下人们判断结果的正确性，实验结果也表明，采用 1~9 标度最为合适。</p>
-<p>判断矩阵的一致性指标步骤：</p>
-<ul>
-<li>1）计算一致性指标 CI 。$$CI=\frac{ \lambda_{max}-n}{n-1}$$</li>
-<li>2）查表，平均随机一致性指标 RI。</li>
-</ul>
-<table>
-<thead>
-<tr>
-<th>n</th>
-<th>1</th>
-<th>2</th>
-<th>3</th>
-<th>4</th>
-<th>5</th>
-<th>6</th>
-<th>7</th>
-<th>8</th>
-<th>9</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>RI</td>
-<td>0</td>
-<td>0</td>
-<td>0.58</td>
-<td>0.90</td>
-<td>1.12</td>
-<td>1.24</td>
-<td>1.32</td>
-<td>1.41</td>
-<td>1.45</td>
-</tr>
-</tbody>
-</table>
-<blockquote>
-<p><em>RI</em> 的值是这样得到的，用随机方法构造500个样本矩阵:随机地从1~9及其倒数中抽取数字构造正互反矩阵，求得最大特征根的平均值 $$\bar \lambda_{max}$$ 并定义$$RI=\frac{\bar \lambda_{max}-n}{n-1}$$</p>
-</blockquote>
-<ul>
-<li>3）计算一致性比例CR。 $$CR=\frac{CI}{RI}$$，当$$CR&lt;0.10$$ 时，认为判断矩阵的一致性是可以接受的，否则应对判断矩阵作适当修正。</li>
-</ul>
-<p>如果一个矩阵满足上面的条件，那么它最大特征值对应的特征向量就可以认为是每个维度的重要性权重。</p>
-<h2 id="构造-B-C-之间判断矩阵"><a class="header-anchor" href="#构造-B-C-之间判断矩阵">¶</a>构造 B C 之间判断矩阵</h2>
-<p>相同的方法，在同一B准则下，考虑不同工作的优先顺序。求工作排序的方法，和上面一样。</p>
-<img src="/public/2021/04/02/math_AHP/image-20200406162644137.png" alt="image-20200406162644137" style="zoom:50%;">
-<p>python代码<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup></p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">import</span> warnings</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AHP</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, criteria, b)</span>:</span></span><br><span class="line">        self.RI = (<span class="number">0</span>, <span class="number">0</span>, <span class="number">0.58</span>, <span class="number">0.9</span>, <span class="number">1.12</span>, <span class="number">1.24</span>, <span class="number">1.32</span>, <span class="number">1.41</span>, <span class="number">1.45</span>, <span class="number">1.49</span>)</span><br><span class="line">        self.criteria = criteria</span><br><span class="line">        self.b = b</span><br><span class="line">        self.num_criteria = criteria.shape[<span class="number">0</span>]</span><br><span class="line">        self.num_project = b[<span class="number">0</span>].shape[<span class="number">0</span>]</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">cal_weights</span><span class="params">(self, input_matrix)</span>:</span></span><br><span class="line">        input_matrix = np.array(input_matrix)</span><br><span class="line">        n, n1 = input_matrix.shape</span><br><span class="line">        <span class="keyword">assert</span> n == n1, <span class="string">'不是一个方阵'</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(n):</span><br><span class="line">            <span class="keyword">for</span> j <span class="keyword">in</span> range(n):</span><br><span class="line">                <span class="keyword">if</span> np.abs(input_matrix[i, j] * input_matrix[j, i] - <span class="number">1</span>) &gt; <span class="number">1e-7</span>:</span><br><span class="line">                    <span class="keyword">raise</span> ValueError(<span class="string">'不是反互对称矩阵'</span>)</span><br><span class="line"></span><br><span class="line">        eigenvalues, eigenvectors = np.linalg.eig(input_matrix)</span><br><span class="line"></span><br><span class="line">        max_idx = np.argmax(eigenvalues)</span><br><span class="line">        max_eigen = eigenvalues[max_idx].real</span><br><span class="line">        eigen = eigenvectors[:, max_idx].real</span><br><span class="line">        eigen = eigen / eigen.sum()</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> n &gt; <span class="number">9</span>:</span><br><span class="line">            CR = <span class="literal">None</span></span><br><span class="line">            warnings.warn(<span class="string">'无法判断一致性'</span>)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            CI = (max_eigen - n) / (n - <span class="number">1</span>)</span><br><span class="line">            CR = CI / self.RI[n]</span><br><span class="line">        <span class="keyword">return</span> max_eigen, CR, eigen</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">run</span><span class="params">(self)</span>:</span></span><br><span class="line">        max_eigen, CR, criteria_eigen = self.cal_weights(self.criteria)</span><br><span class="line">        print(<span class="string">'准则层：最大特征值&#123;:&lt;5f&#125;,CR=&#123;:&lt;5f&#125;,检验&#123;&#125;通过'</span>.format(max_eigen, CR, <span class="string">''</span> <span class="keyword">if</span> CR &lt; <span class="number">0.1</span> <span class="keyword">else</span> <span class="string">'不'</span>))</span><br><span class="line">        print(<span class="string">'准则层权重=&#123;&#125;\n'</span>.format(criteria_eigen))</span><br><span class="line"></span><br><span class="line">        max_eigen_list, CR_list, eigen_list = [], [], []</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> self.b:</span><br><span class="line">            max_eigen, CR, eigen = self.cal_weights(i)</span><br><span class="line">            max_eigen_list.append(max_eigen)</span><br><span class="line">            CR_list.append(CR)</span><br><span class="line">            eigen_list.append(eigen)</span><br><span class="line"></span><br><span class="line">        pd_print = pd.DataFrame(eigen_list,</span><br><span class="line">                                index=[<span class="string">'准则'</span> + str(i) <span class="keyword">for</span> i <span class="keyword">in</span> range(self.num_criteria)],</span><br><span class="line">                                columns=[<span class="string">'方案'</span> + str(i) <span class="keyword">for</span> i <span class="keyword">in</span> range(self.num_project)],</span><br><span class="line">                                )</span><br><span class="line">        pd_print.loc[:, <span class="string">'最大特征值'</span>] = max_eigen_list</span><br><span class="line">        pd_print.loc[:, <span class="string">'CR'</span>] = CR_list</span><br><span class="line">        pd_print.loc[:, <span class="string">'一致性检验'</span>] = pd_print.loc[:, <span class="string">'CR'</span>] &lt; <span class="number">0.1</span></span><br><span class="line">        print(<span class="string">'方案层'</span>)</span><br><span class="line">        print(pd_print)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 目标层</span></span><br><span class="line">        obj = np.dot(criteria_eigen.reshape(<span class="number">1</span>, <span class="number">-1</span>), np.array(eigen_list))</span><br><span class="line">        print(<span class="string">'\n目标层'</span>, obj)</span><br><span class="line">        print(<span class="string">'最优选择是方案&#123;&#125;'</span>.format(np.argmax(obj)))</span><br><span class="line">        <span class="keyword">return</span> obj</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    <span class="comment"># 准则重要性矩阵</span></span><br><span class="line">    criteria = np.array([[<span class="number">1</span>, <span class="number">2</span>, <span class="number">7</span>, <span class="number">5</span>, <span class="number">5</span>],</span><br><span class="line">                         [<span class="number">1</span> / <span class="number">2</span>, <span class="number">1</span>, <span class="number">4</span>, <span class="number">3</span>, <span class="number">3</span>],</span><br><span class="line">                         [<span class="number">1</span> / <span class="number">7</span>, <span class="number">1</span> / <span class="number">4</span>, <span class="number">1</span>, <span class="number">1</span> / <span class="number">2</span>, <span class="number">1</span> / <span class="number">3</span>],</span><br><span class="line">                         [<span class="number">1</span> / <span class="number">5</span>, <span class="number">1</span> / <span class="number">3</span>, <span class="number">2</span>, <span class="number">1</span>, <span class="number">1</span>],</span><br><span class="line">                         [<span class="number">1</span> / <span class="number">5</span>, <span class="number">1</span> / <span class="number">3</span>, <span class="number">3</span>, <span class="number">1</span>, <span class="number">1</span>]])</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 对每个准则，方案优劣排序</span></span><br><span class="line">    b1 = np.array([[<span class="number">1</span>, <span class="number">1</span> / <span class="number">3</span>, <span class="number">1</span> / <span class="number">8</span>], [<span class="number">3</span>, <span class="number">1</span>, <span class="number">1</span> / <span class="number">3</span>], [<span class="number">8</span>, <span class="number">3</span>, <span class="number">1</span>]])</span><br><span class="line">    b2 = np.array([[<span class="number">1</span>, <span class="number">2</span>, <span class="number">5</span>], [<span class="number">1</span> / <span class="number">2</span>, <span class="number">1</span>, <span class="number">2</span>], [<span class="number">1</span> / <span class="number">5</span>, <span class="number">1</span> / <span class="number">2</span>, <span class="number">1</span>]])</span><br><span class="line">    b3 = np.array([[<span class="number">1</span>, <span class="number">1</span>, <span class="number">3</span>], [<span class="number">1</span>, <span class="number">1</span>, <span class="number">3</span>], [<span class="number">1</span> / <span class="number">3</span>, <span class="number">1</span> / <span class="number">3</span>, <span class="number">1</span>]])</span><br><span class="line">    b4 = np.array([[<span class="number">1</span>, <span class="number">3</span>, <span class="number">4</span>], [<span class="number">1</span> / <span class="number">3</span>, <span class="number">1</span>, <span class="number">1</span>], [<span class="number">1</span> / <span class="number">4</span>, <span class="number">1</span>, <span class="number">1</span>]])</span><br><span class="line">    b5 = np.array([[<span class="number">1</span>, <span class="number">4</span>, <span class="number">1</span> / <span class="number">2</span>], [<span class="number">1</span> / <span class="number">4</span>, <span class="number">1</span>, <span class="number">1</span> / <span class="number">4</span>], [<span class="number">2</span>, <span class="number">4</span>, <span class="number">1</span>]])</span><br><span class="line"></span><br><span class="line">    b = [b1, b2, b3, b4, b5]</span><br><span class="line">    a = AHP(criteria, b).run()</span><br></pre></td></tr></table></figure>
-<h2 id="层次分析法与控制变量法"><a class="header-anchor" href="#层次分析法与控制变量法">¶</a>层次分析法与控制变量法</h2>
-<p>我们的任务是选择工作，最后使得我们满意，直接选择我们当然一头雾水。所以我们设立一些准则，然后对这些准则对于目标的重要性排序。</p>
-<p>这又有点像概率图模型，只是赋权的方法，是相互比较的方法。</p>
-<h2 id="选择困难者的福音？"><a class="header-anchor" href="#选择困难者的福音？">¶</a>选择困难者的福音？</h2>
-<p>层次分析法对人们的思维过程进行了加工整理，提出了一套系统分析问题的方法，为科学管理和决策提供了较有说服力的依据。</p>
-<p>在应用层次分析法研究问题时，遇到的主要困难有两个:<br>
-(1) 如何根据实际情况抽象出较为贴切的层次结构;<br>
-(2) 如何将某些定性的量作比较接近实际定量化处理。</p>
-<p>层次分析法的其局限性<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup>：<br>
-(1) 它在很大程度上依赖于人们的经验，主观因素的影响很大，它至多只能排除思维过程中的严重非一致性，却无法排除决策者个人可能存在的严重片面性。<br>
-(2) 比较、 判断过程较为粗糙，不能用于精度要求较高的决策问题。</p>
-<p>所以，AHP 至多只能算是一种半定量(或定性与定量结合)的方法。
-本文仅供参考，不负法律责任，哈哈。</p>
-<h2 id="参考"><a class="header-anchor" href="#参考">¶</a>参考</h2>
-<hr class="footnotes-sep">
-<section class="footnotes">
-<ol class="footnotes-list">
-<li id="fn1" class="footnote-item"><p>幼鹰me 知乎 <a href="https://zhuanlan.zhihu.com/p/101505929" target="_blank" rel="noopener">层次分析法原理与Python实现</a> <a href="#fnref1" class="footnote-backref">↩︎</a></p>
-</li>
-<li id="fn2" class="footnote-item"><p>司守奎《数学建模算法与程序》第八章 层次分析法 P167 <a href="#fnref2" class="footnote-backref">↩︎</a></p>
-</li>
-</ol>
-</section>
-]]></content>
-      <categories>
-        <category>数学</category>
-      </categories>
-      <tags>
-        <tag>数学</tag>
-        <tag>层次分析法</tag>
       </tags>
   </entry>
   <entry>
@@ -1355,6 +1355,61 @@ t   -=   (unsigned   long)GetCycleCount();</p>
       <tags>
         <tag>技巧</tag>
         <tag>Ubuntu</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>希腊罗马神话</title>
+    <url>/public/2018/11/05/readings/Gods_stories/</url>
+    <content><![CDATA[<p><strong>前言</strong></p>
+<p>在我电的图书馆的还书柜子里面偶然所得，一本叫《希腊罗马神话对英语语言文化的影响》吕海平 著 江苏大学初版社，然后莫名的想研究一下，发现挺不错的。</p>
+<a id="more"></a>
+<p>古希腊罗马的神的关系还是比较乱的，尤其是jupiter 或者zeus的奥林匹斯神系。从上古的神系，总共有三代。</p>
+<p>网上有个人（<a href="http://www.veritablehokum.com/" target="_blank" rel="noopener">Korwin Briggs</a>）做的关系图很不错。</p>
+<p>TODO:后面我也会对其进行整理，以后给大家分享。</p>
+<p><img src="http://www.veritablehokum.com/wp-content/uploads/2018/08/Roman-God-Family-Tree.jpg" alt></p>
+]]></content>
+      <categories>
+        <category>读书笔记</category>
+      </categories>
+      <tags>
+        <tag>希腊罗马神话</tag>
+        <tag>语言文化</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>红楼梦与我</title>
+    <url>/public/2017/05/14/readings/hongloumeng/</url>
+    <content><![CDATA[<p>红楼梦是我国四大名著之一，主要内容是贾府的兴衰和宝黛的悲剧爱情。电视剧红楼梦2010版，我是从八月开始看的，看完到现在，也有小一个月了。在网上大家对这版电视剧褒贬不一。与我来说，我是喜欢这部剧的，不能说拍得很好，但这部剧却勾起了我读书与写字的兴趣。于是乎，做了一篇随笔，以记录我的一些感触。</p>
+<a id="more"></a>
+<p>我记得最早是小学，我们还是顾着打玻璃珠和丢沙包的年纪，学校旁边的小书店里，也都是七龙珠，哆啦A梦，柯南的小人书，老师们讲到四大名著，顺带提了下红楼梦，其他没印象了。我们学习最多的是中文的拼音和书写，作文都是打油，日记也闹了不少笑话。后来上初中，有一次寒假附加作业是阅读红楼梦，我虽毫无兴趣，但还是硬着头皮，去新华书店，试看红楼梦。120章的红楼，厚得连看下去的勇气也没有。略看了几下，最后，做了一个红楼梦不好看的论断，也就放在那边了。那时有老版的红楼梦电视剧播映，打开电视偶尔会遇见，但是立马换台，央视的西游记与情深深雨蒙蒙，湖南电视台的还珠格格，也是欣赏了好几遍。再者，有动画片谁有兴趣去看这些什么破剧，关于书本，最多也就是看看汤姆索亚历险记。</p>
+<p>再后来，去启中读书，学习上比较紧张，再加上理科班的非文学氛围，对这些文学的东西更不感冒。尽管偶尔也会入耳一些其中的人物，比如林妹妹，刘姥姥，也是不用大脑耳朵直接过滤。当时，大伙是杂志，读者，青年文摘读得比较多，班上一本，全班查阅，杂志文章篇幅较小，读起很顺很舒服。期间，与红楼的唯一一次接触是，高中教科书上有刘姥姥进大观园的章节，翻了一遍，当时，感叹人物好多，理不出人物关系，完全放弃看完红楼的欲望。以为姥姥是贾府的姥姥，猩猩然想着以后可以说看过一段红楼，红楼也比较贵不如多买几本读者，积累作文素材。不知什么时候，班上网络小说之风随着mp4和智能手机的普及而吹起，我也用MP4刷完了一两部网络小说，感觉都是一个套路，主角都是绝处逢生，越来越无敌，也就不敢兴趣了。</p>
+<p>再然后，我上大学，藏书400百万册的成电图书馆，也并没有引起我读文学类的欲望，大学四年借的专业工具类书比较多，想来也是浪费资源。在一个工科高校，文学方面的课程几乎没有，虽说有个大学语文的选修课，俨然不感兴趣。大学里，再一次看到有人在看红楼梦电视剧，也是大二的时候的人工智能课上，也是闲得无聊。再后来，大四时，手机上自带一个蜻蜓网络电台应用，无聊点开蒋勋老师评述的红楼梦音频，红学大师讲到他与红楼梦的相遇，同时，他介绍的红楼基本背景和人物，通俗易懂，一下子引起我的兴趣。他说红楼梦写的都是15、6岁人的故事，15、16岁就可以读了。回想我15、16岁，基本没看什么名著。要说四大名著，我也就看了三国和水浒的少年版。上次回家，看美剧，老妈突然蹦出句，不能光看英文也应当看看我们老祖宗的文化。</p>
+<p>现在得空，就这样抱着惭愧和一丝尝试我看起了2010版红楼梦。在这我得承认，我是个演员控。不得不说，三大主演都很不错。</p>
+<p>50集过后，原来红楼讲得是这个，并表示有兴趣去读读名著了。原来有这么多原来。</p>
+<ul>
+<li>
+<p>人物家族命运令人感慨。作者写出超越那个时代的朦胧的爱情与不得不提的丧心病狂的全部悲剧，果然是个失意文人的作品。 可叹停机德，堪怜咏絮才。宝钗落落大方德才兼备，黛玉因情而伤而痛去世，宝玉虽与宝钗结婚，最后离家成道去。精于人情世故,，胸有城府的王熙凤，平日的爽朗笑声终究悲剧，贾府里多么好的领导，最后也人情冷暖，不免为其伤心。刘姥姥，其实是个成功的投机分子，但也是朴实善良的“穷亲戚”，最后救了巧儿。十二金钗各有个的悲剧，正如宝玉在虚幻仙境里警幻仙姑给的设定。原来故事一开始就把结局告诉了读者。</p>
+</li>
+<li>
+<p>体验古代贵族文化。里面还有个诗社的组织，古人的结社，好有雅致，也会给人起“绰号”。除此以外还有击鼓传花，有时主题是讲笑话有时对诗。猜灯谜，中秋赏月，生日宴会等等。</p>
+</li>
+<li>
+<p>语言魅力。打秋风，这是形容刘姥姥找找贾府接济用的。恼，生气，或者使生气。不同人的称谓，宝兄弟，宝二爷，宝姐姐或者好姐姐，林妹妹或者好妹妹。</p>
+</li>
+<li>
+<p>情节回味无穷。刘姥姥进大观园，是贾母和姥姥差不多年纪想和她聊聊，邀请她的。乡村来打秋风的刘姥姥像是在参观皇宫。在后面时期  ，家族里一次比一次捉襟见肘的聚会，可以看见这些家族的衰落。中国的各种人情世故体现在这里面。四个大家族，一个小社会。</p>
+</li>
+</ul>
+<p>以上是我的一点点感悟。</p>
+<p>只是，我与红楼梦，还差80章书页，希望还能有计划地读完。</p>
+<p>2016年于成电</p>
+]]></content>
+      <categories>
+        <category>读书笔记</category>
+      </categories>
+      <tags>
+        <tag>故事</tag>
+        <tag>《红楼梦》</tag>
       </tags>
   </entry>
   <entry>
@@ -2140,61 +2195,6 @@ nbextensions的教程<a href="https://jupyter-contrib-nbextensions.readthedocs.i
         <tag>工具</tag>
         <tag>Python</tag>
         <tag>笔记应用</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>希腊罗马神话</title>
-    <url>/public/2018/11/05/readings/Gods_stories/</url>
-    <content><![CDATA[<p><strong>前言</strong></p>
-<p>在我电的图书馆的还书柜子里面偶然所得，一本叫《希腊罗马神话对英语语言文化的影响》吕海平 著 江苏大学初版社，然后莫名的想研究一下，发现挺不错的。</p>
-<a id="more"></a>
-<p>古希腊罗马的神的关系还是比较乱的，尤其是jupiter 或者zeus的奥林匹斯神系。从上古的神系，总共有三代。</p>
-<p>网上有个人（<a href="http://www.veritablehokum.com/" target="_blank" rel="noopener">Korwin Briggs</a>）做的关系图很不错。</p>
-<p>TODO:后面我也会对其进行整理，以后给大家分享。</p>
-<p><img src="http://www.veritablehokum.com/wp-content/uploads/2018/08/Roman-God-Family-Tree.jpg" alt></p>
-]]></content>
-      <categories>
-        <category>读书笔记</category>
-      </categories>
-      <tags>
-        <tag>希腊罗马神话</tag>
-        <tag>语言文化</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>红楼梦与我</title>
-    <url>/public/2017/05/14/readings/hongloumeng/</url>
-    <content><![CDATA[<p>红楼梦是我国四大名著之一，主要内容是贾府的兴衰和宝黛的悲剧爱情。电视剧红楼梦2010版，我是从八月开始看的，看完到现在，也有小一个月了。在网上大家对这版电视剧褒贬不一。与我来说，我是喜欢这部剧的，不能说拍得很好，但这部剧却勾起了我读书与写字的兴趣。于是乎，做了一篇随笔，以记录我的一些感触。</p>
-<a id="more"></a>
-<p>我记得最早是小学，我们还是顾着打玻璃珠和丢沙包的年纪，学校旁边的小书店里，也都是七龙珠，哆啦A梦，柯南的小人书，老师们讲到四大名著，顺带提了下红楼梦，其他没印象了。我们学习最多的是中文的拼音和书写，作文都是打油，日记也闹了不少笑话。后来上初中，有一次寒假附加作业是阅读红楼梦，我虽毫无兴趣，但还是硬着头皮，去新华书店，试看红楼梦。120章的红楼，厚得连看下去的勇气也没有。略看了几下，最后，做了一个红楼梦不好看的论断，也就放在那边了。那时有老版的红楼梦电视剧播映，打开电视偶尔会遇见，但是立马换台，央视的西游记与情深深雨蒙蒙，湖南电视台的还珠格格，也是欣赏了好几遍。再者，有动画片谁有兴趣去看这些什么破剧，关于书本，最多也就是看看汤姆索亚历险记。</p>
-<p>再后来，去启中读书，学习上比较紧张，再加上理科班的非文学氛围，对这些文学的东西更不感冒。尽管偶尔也会入耳一些其中的人物，比如林妹妹，刘姥姥，也是不用大脑耳朵直接过滤。当时，大伙是杂志，读者，青年文摘读得比较多，班上一本，全班查阅，杂志文章篇幅较小，读起很顺很舒服。期间，与红楼的唯一一次接触是，高中教科书上有刘姥姥进大观园的章节，翻了一遍，当时，感叹人物好多，理不出人物关系，完全放弃看完红楼的欲望。以为姥姥是贾府的姥姥，猩猩然想着以后可以说看过一段红楼，红楼也比较贵不如多买几本读者，积累作文素材。不知什么时候，班上网络小说之风随着mp4和智能手机的普及而吹起，我也用MP4刷完了一两部网络小说，感觉都是一个套路，主角都是绝处逢生，越来越无敌，也就不敢兴趣了。</p>
-<p>再然后，我上大学，藏书400百万册的成电图书馆，也并没有引起我读文学类的欲望，大学四年借的专业工具类书比较多，想来也是浪费资源。在一个工科高校，文学方面的课程几乎没有，虽说有个大学语文的选修课，俨然不感兴趣。大学里，再一次看到有人在看红楼梦电视剧，也是大二的时候的人工智能课上，也是闲得无聊。再后来，大四时，手机上自带一个蜻蜓网络电台应用，无聊点开蒋勋老师评述的红楼梦音频，红学大师讲到他与红楼梦的相遇，同时，他介绍的红楼基本背景和人物，通俗易懂，一下子引起我的兴趣。他说红楼梦写的都是15、6岁人的故事，15、16岁就可以读了。回想我15、16岁，基本没看什么名著。要说四大名著，我也就看了三国和水浒的少年版。上次回家，看美剧，老妈突然蹦出句，不能光看英文也应当看看我们老祖宗的文化。</p>
-<p>现在得空，就这样抱着惭愧和一丝尝试我看起了2010版红楼梦。在这我得承认，我是个演员控。不得不说，三大主演都很不错。</p>
-<p>50集过后，原来红楼讲得是这个，并表示有兴趣去读读名著了。原来有这么多原来。</p>
-<ul>
-<li>
-<p>人物家族命运令人感慨。作者写出超越那个时代的朦胧的爱情与不得不提的丧心病狂的全部悲剧，果然是个失意文人的作品。 可叹停机德，堪怜咏絮才。宝钗落落大方德才兼备，黛玉因情而伤而痛去世，宝玉虽与宝钗结婚，最后离家成道去。精于人情世故,，胸有城府的王熙凤，平日的爽朗笑声终究悲剧，贾府里多么好的领导，最后也人情冷暖，不免为其伤心。刘姥姥，其实是个成功的投机分子，但也是朴实善良的“穷亲戚”，最后救了巧儿。十二金钗各有个的悲剧，正如宝玉在虚幻仙境里警幻仙姑给的设定。原来故事一开始就把结局告诉了读者。</p>
-</li>
-<li>
-<p>体验古代贵族文化。里面还有个诗社的组织，古人的结社，好有雅致，也会给人起“绰号”。除此以外还有击鼓传花，有时主题是讲笑话有时对诗。猜灯谜，中秋赏月，生日宴会等等。</p>
-</li>
-<li>
-<p>语言魅力。打秋风，这是形容刘姥姥找找贾府接济用的。恼，生气，或者使生气。不同人的称谓，宝兄弟，宝二爷，宝姐姐或者好姐姐，林妹妹或者好妹妹。</p>
-</li>
-<li>
-<p>情节回味无穷。刘姥姥进大观园，是贾母和姥姥差不多年纪想和她聊聊，邀请她的。乡村来打秋风的刘姥姥像是在参观皇宫。在后面时期  ，家族里一次比一次捉襟见肘的聚会，可以看见这些家族的衰落。中国的各种人情世故体现在这里面。四个大家族，一个小社会。</p>
-</li>
-</ul>
-<p>以上是我的一点点感悟。</p>
-<p>只是，我与红楼梦，还差80章书页，希望还能有计划地读完。</p>
-<p>2016年于成电</p>
-]]></content>
-      <categories>
-        <category>读书笔记</category>
-      </categories>
-      <tags>
-        <tag>故事</tag>
-        <tag>《红楼梦》</tag>
       </tags>
   </entry>
   <entry>
@@ -3192,401 +3192,6 @@ ip addr add 10.1.2.2/24 dev Tunnel-1</p>
       </tags>
   </entry>
   <entry>
-    <title>「202207月度汇报」obsidian</title>
-    <url>/public/2022/07/26/test/202207_obsidian/</url>
-    <content><![CDATA[<p>统计 ✅ : 6 📅 : 3 🔖 : 47</p>
-<a id="more"></a>
-<h2 id="✅-6"><a class="header-anchor" href="#✅-6">¶</a>✅ : 6</h2>
-<p>✅目标图标系统
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
-✅ <a href="https://blog.csdn.net/hhhhhyyyyy8/article/details/102133863" target="_blank" rel="noopener">Linux内核数据包bridge上转发流程_hhhhhyyyyy8的博客-CSDN博客_br_multicast_flood</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W27.md">C日常/2022-W27.md</a><br>
-✅ 邮箱转rss
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W23.md">C日常/2022-W23.md</a><br>
-✅  hacker news rss添加
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W23.md">C日常/2022-W23.md</a><br>
-✅ 经济学人转载leader文章
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W23.md">C日常/2022-W23.md</a><br>
-✅ github博客评论系统是否换成【不换】
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W23.md">C日常/2022-W23.md</a></p>
-<h2 id="📅-3"><a class="header-anchor" href="#📅-3">¶</a>📅 : 3</h2>
-<p>📅 端口触发 端口转发
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
-📅 全屋智能
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W26.md">C日常/2022-W26.md</a><br>
-📅 改进
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W26.md">C日常/2022-W26.md</a></p>
-<h2 id="🔖-47"><a class="header-anchor" href="#🔖-47">¶</a>🔖 : 47</h2>
-<p>🔖 ish保持后台运行
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W19.md">C日常/2022-W19.md</a><br>
-🔖 <a href="https://www.jianshu.com/p/f29ca723db4f" target="_blank" rel="noopener">Git 运行配置（git config、gitk、git gui） - michael_jia - 简书</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W19.md">C日常/2022-W19.md</a><br>
-🔖<a href="https://www.cnblogs.com/xuanbjut/p/12624702.html" target="_blank" rel="noopener">wmctrl像xmonad那样方便地用快捷键来控制任务窗口的显示 - pycod - 博客园</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W19.md">C日常/2022-W19.md</a><br>
-🔖 <a href="https://blog.csdn.net/anlian523/article/details/113627568" target="_blank" rel="noopener">VSCode复制代码时去掉样式/语法高亮/代码高亮/黑色背景_anlian523的博客-CSDN博客_idea复制代码不带黑色背景</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W19.md">C日常/2022-W19.md</a><br>
-🔖 <a href="https://blog.csdn.net/dog250/article/details/121400218" target="_blank" rel="noopener">为什么除法，开方，求对数比乘法，乘方，求指数更难_dog250的博客-CSDN博客</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
-🔖学习小林博客的写法
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
-🔖一万字统计学梳理
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
-🔖腾讯 彻底搞清楚tcp
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
-🔖0x5f3759df这个快速开方中的常数的数学依据是什么？
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
-🔖https流程
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
-🔖使用 Clion + QEMU/GDB 远程调试Linux内核（分享自知乎网）<a href="https://zhuanlan.zhihu.com/p/412604505?utm_source=md.obsidian&amp;utm_medium=social&amp;utm_oi=619610399826382848" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/412604505?utm_source=md.obsidian&amp;utm_medium=social&amp;utm_oi=619610399826382848</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
-🔖TCP/IP协议到底在讲什么？ <a href="http://www.zhihu.com/question/51074319?utm_source=md.obsidian&amp;utm_medium=social&amp;utm_oi=619610399826382848" target="_blank" rel="noopener">http://www.zhihu.com/question/51074319?utm_source=md.obsidian&amp;utm_medium=social&amp;utm_oi=619610399826382848</a> （分享自知乎网）
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
-🔖【什么是动态规划（Dynamic Programming）？动态规划的意义是什么？】阮行止：… <a href="https://www.zhihu.com/question/23995189/answer/613096905?utm_source=md.obsidian&amp;utm_medium=social&amp;utm_oi=619610399826382848" target="_blank" rel="noopener">https://www.zhihu.com/question/23995189/answer/613096905?utm_source=md.obsidian&amp;utm_medium=social&amp;utm_oi=619610399826382848</a> （分享自知乎网）
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
-🔖【为什么有人说弄懂了《算法导论》的 90%，就超越了 90%的程序员？】启舰：… <a href="https://www.zhihu.com/question/315201616/answer/1960517601?utm_source=md.obsidian&amp;utm_medium=social&amp;utm_oi=619610399826382848" target="_blank" rel="noopener">https://www.zhihu.com/question/315201616/answer/1960517601?utm_source=md.obsidian&amp;utm_medium=social&amp;utm_oi=619610399826382848</a> （分享自知乎网）
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
-🔖【vs code】【keil】优雅地使用vs code代替keil。by 童话与云 👉 <a href="https://www.zhihu.com/zvideo/1422934459457253376?utm_source=md.obsidian&amp;utm_medium=social&amp;utm_oi=619610399826382848" target="_blank" rel="noopener">https://www.zhihu.com/zvideo/1422934459457253376?utm_source=md.obsidian&amp;utm_medium=social&amp;utm_oi=619610399826382848</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
-🔖图解网络 - 75张图带你了解网络设备、网络地址规划、静态路由、实战演练（分享自知乎网）
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
-🔖vscode-journal：vscode中写日记/便签/提醒，配合nutstore与安卓、ios同步_TeQuL的博客-CSDN博客
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
-🔖结构体（结构体嵌套、结构体指针、结构体参数传递） - 蓝海人 - 博客园
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
-🔖Feedme - 8大 RSS 阅读器第三方客户端[Android] - 小众软件
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
-🔖聪明人必学的停车小技巧！。by Felicidades 👉 <a href="https://www.zhihu.com/zvideo/1414008107094093824?utm_source=md.obsidian&amp;utm_medium=social&amp;utm_oi=619610399826382848" target="_blank" rel="noopener">https://www.zhihu.com/zvideo/1414008107094093824?utm_source=md.obsidian&amp;utm_medium=social&amp;utm_oi=619610399826382848</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
-🔖在线 DOS 游戏 - 近 2000 款怀旧游戏，仙剑、红警、三国志、大富翁、明星志愿、大航海、主题医院等 - 小众软件
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
-🔖Feeddd · 重新掌控你的订阅源
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
-🔖【如何长时间高效学习？】硬核学长2077：… <a href="https://www.zhihu.com/question/28358499/answer/1762418904?utm_source=md.obsidian&amp;utm_medium=social&amp;utm_oi=619610399826382848" target="_blank" rel="noopener">https://www.zhihu.com/question/28358499/answer/1762418904?utm_source=md.obsidian&amp;utm_medium=social&amp;utm_oi=619610399826382848</a> （分享自知乎网）
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
-🔖【你身边的学霸都有怎样的学习方法或习惯？】硬核学长2077：… <a href="https://www.zhihu.com/question/54265751/answer/1995587976?utm_source=md.obsidian&amp;utm_medium=social&amp;utm_oi=619610399826382848" target="_blank" rel="noopener">https://www.zhihu.com/question/54265751/answer/1995587976?utm_source=md.obsidian&amp;utm_medium=social&amp;utm_oi=619610399826382848</a> （分享自知乎网）
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
-🔖【如何不痛苦地早起？】铁木君：… <a href="https://www.zhihu.com/question/22120300/answer/1887544838?utm_source=md.obsidian&amp;utm_medium=social&amp;utm_oi=619610399826382848" target="_blank" rel="noopener">https://www.zhihu.com/question/22120300/answer/1887544838?utm_source=md.obsidian&amp;utm_medium=social&amp;utm_oi=619610399826382848</a> （分享自知乎网）
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
-🔖[[obsidian_tips]]
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
-🔖<a href="https://sspai.com/post/72757" target="_blank" rel="noopener">随时可用的 PC 体验是这样「炼」成的，Windows 新版睡眠机制详解 - 少数派</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
-🔖<a href="https://blog.csdn.net/who538592/article/details/79483323" target="_blank" rel="noopener">TC流量控制_who538592的博客-CSDN博客_tc流量控制</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
-🔖 <a href="https://sspai.com/post/74090" target="_blank" rel="noopener">大家都说好的蛋白粉，我们应该如何取舍 - 少数派</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W28.md">C日常/2022-W28.md</a><br>
-🔖 <a href="https://zhuanlan.zhihu.com/p/508345279" target="_blank" rel="noopener">我的obsidian插件开发的学习过程</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W28.md">C日常/2022-W28.md</a><br>
-🔖 <a href="https://blog.csdn.net/Haywardwang/article/details/108626491" target="_blank" rel="noopener">python 词云构建_Haywardwang的博客-CSDN博客</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W28.md">C日常/2022-W28.md</a><br>
-🔖 <a href="https://blog.csdn.net/weixin_56842628/article/details/117921526?utm_medium=distribute.wap_relevant.none-task-blog-2~default~baidujs_title~default-9-117921526-blog-108626491.wap_blog_relevant_default&amp;spm=1001.2101.3001.4242.6&amp;utm_relevant_index=10" target="_blank" rel="noopener">如何用Python制作简单又好看的词云？来瞅瞅吧~_小熊爱Python的博客-CSDN博客_python词云代码简单</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W28.md">C日常/2022-W28.md</a><br>
-🔖 <a href="https://sspai.com/post/73779" target="_blank" rel="noopener">跨时空圆桌：伟大创作者们如何安排日常生活 - 少数派</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W27.md">C日常/2022-W27.md</a><br>
-🔖 <a href="https://www.appinn.com/typing-learner/" target="_blank" rel="noopener">Typing Learner - 硬核单词记忆：从电影台词筛选生词，边追美剧边学英语，用户直喊「好家伙！」[Windows/macOS] - 小众软件</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W27.md">C日常/2022-W27.md</a><br>
-🔖 <a href="https://www.zhihu.com/question/391756708/answer/2556173863" target="_blank" rel="noopener">SpaceX的可回收火箭有什么神奇之处，为何其他航天大国还不能仿造？ - YY硕 的回答 - 知乎</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W27.md">C日常/2022-W27.md</a><br>
-🔖 <a href="https://mp.weixin.qq.com/s/KBKO4C1d4CkyHAPEkh8D4Q" target="_blank" rel="noopener">这几个通信协议的动图不错</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W27.md">C日常/2022-W27.md</a><br>
-🔖 <a href="https://oorkan.medium.com/emojifying-your-linux-terminal-9a5c1e8f6b3c" target="_blank" rel="noopener">Emojifying your Linux terminal  🚀</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W27.md">C日常/2022-W27.md</a><br>
-🔖 <a href="https://sspai.com/post/74167" target="_blank" rel="noopener">为 WSL 配置这些新功能，不用虚拟机也能体验完整 Linux - 少数派</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W27.md">C日常/2022-W27.md</a><br>
-🔖<a href="https://sspai.com/post/72274" target="_blank" rel="noopener">意识先行，工具辅助：谈谈我们该怎样分辨虚假信息</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W27.md">C日常/2022-W27.md</a><br>
-🔖<a href="https://zhuanlan.zhihu.com/p/495262462" target="_blank" rel="noopener">网站低代码开发</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W27.md">C日常/2022-W27.md</a><br>
-🔖 学习体系化，效率提升
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W27.md">C日常/2022-W27.md</a><br>
-🔖 <a href="https://sspai.com/post/73958" target="_blank" rel="noopener">玩转 Obsidian 08：利用 Dataview 打造自动化 HomePage - 少数派</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W26.md">C日常/2022-W26.md</a><br>
-🔖 <a href="https://post.m.smzdm.com/p/adwgg2rd/" target="_blank" rel="noopener">小爱同学，打开我的三菱空调——米家空调伴侣2使用分享_智能家居_什么值得买</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W26.md">C日常/2022-W26.md</a><br>
-🔖 <a href="https://sspai.com/post/73829" target="_blank" rel="noopener">用 59 分钟，找到工具的效率之源 - 少数派</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W26.md">C日常/2022-W26.md</a><br>
-🔖 <a href="https://cloud.tencent.com/developer/article/1879646" target="_blank" rel="noopener">tcpdump是在哪儿抓到的包？ - 腾讯云开发者社区-腾讯云</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W26.md">C日常/2022-W26.md</a><br>
-🔖 <a href="https://www.jianshu.com/p/79bcf09aed25" target="_blank" rel="noopener">IPTables五----ebtables - marshalzxy - 简书</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W26.md">C日常/2022-W26.md</a><br>
-🔖 <a href="https://david-waiting.medium.com/a-beginners-guide-to-generic-routing-encapsulation-fb2b4fb63abb" target="_blank" rel="noopener">A Beginner’s Guide to Generic Routing Encapsulation</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W26.md">C日常/2022-W26.md</a></p>
-]]></content>
-      <categories>
-        <category>转载</category>
-      </categories>
-      <tags>
-        <tag>转载</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>怎样成为一名优秀的算法工程师</title>
-    <url>/public/2018/10/01/AI/how_algorithm_engineer/</url>
-    <content><![CDATA[<blockquote>
-<p>转载 原创： AI学习与实践平台
-TODO: 看完里面的文章，对每篇文章做个总结，实验+文章。</p>
-</blockquote>
-<h2 id="1-导言"><a class="header-anchor" href="#1-导言">¶</a>1. 导言</h2>
-<p>怎样成为一名优秀的算法工程师？这是很多从事人工智能学术研究和产品研发的同学都关心的一个问题。面对市场对人才的大量需求与供给的严重不足，以及高薪水的诱惑，越来越多的人开始学习这个方向的技术，或者打算向人工智能转型。市面上各种鱼龙混杂的培训班以及误导人的文章会把很多初学者带入歧途，浮躁的跟风将会让你最后收获甚微，根本达不到企业的用人要求。为了更好的帮助大家学习和成长，少走弯路，在今天的文章里，<a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247485551&amp;idx=2&amp;sn=a6689528f10aedab3fce91857eec877b&amp;chksm=fdb695f8cac11cee025ad6d8d77ed90f7169142d6b20b2f5a6945b58edd97c27225f4a2eba91&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">SIGAI</a> 的作者以自己的亲身经历和思考，为大家写下对这一问题的理解与答案。</p>
-<p>首先来看一个高度相关的问题：一个优秀的算法工程师必须具备哪些素质？我们给出的答案是这样的：</p>
-<ul>
-<li>数学知识</li>
-<li>编程能力</li>
-<li>机器学习与深度学习的知识</li>
-<li>应用方向的知识</li>
-<li>对自己所做的问题的思考和经验</li>
-</ul>
-<p>除去教育背景，逻辑思维，学习能力，沟通能力等其他方面的因素，大多数公司在考察算法工程师的技术水平时都会考虑上面这几个因素。接下来我们将按照这几个方面进行展开，详细的说明如何学习这些方面的知识以及积累经验。</p>
-<a id="more"></a>
-<h2 id="2-数学知识"><a class="header-anchor" href="#2-数学知识">¶</a>2. 数学知识</h2>
-<p>与其他工作方向如app、服务器开发相比，以及与计算机科学的其他方向如网络，数据库，分布式计算等相比，人工智能尤其是机器学习属于数学知识密集的方向。在各种书籍，论文，算法中都充斥着大量的数学公式，这让很多打算入门的人或者开始学习的人感到明显的压力。首先我们考虑一个最核心的问题：机器学习和深度学习究竟需要哪些数学知识？在<a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247485551&amp;idx=2&amp;sn=a6689528f10aedab3fce91857eec877b&amp;chksm=fdb695f8cac11cee025ad6d8d77ed90f7169142d6b20b2f5a6945b58edd97c27225f4a2eba91&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">SIGAI</a>之前的公众号文章“<a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247483713&amp;idx=1&amp;sn=1e7c81381d16806ac73e15691fe17aec&amp;chksm=fdb69cd6cac115c05f1f90b0407e3f8ae9be8719e454f908074ac0d079885b5c134e2d60fd64&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">学好机器学习需要哪些数学知识</a>”里，我们已经给出了答案。先看下面这张表：</p>
-<p><img src="/public/2018/10/01/AI/how_algorithm_engineer/clip_image003.gif" alt="EB5E93E91C3643F991C93D61F363373E.jpeg"></p>
-<p>更多算法工程师的必读文章，请关注SIGAICN公众号</p>
-<p>上面的表给出了各种典型的机器学习算法所用到的数学知识点。我们之前已经总结过，理解绝大多数算法和理论，有微积分/高等数学，线性代数，概率论，最优化方法的知识就够了。除流形学习需要简单的微分几何概念之外，深层次的数学知识如实变函数，泛函分析等主要用在一些基础理论结果的证明上，即使不能看懂证明过程，也不影响我们使用具体的机器学习算法。概率图模型、流形学习中基于图的模型会用到图论的一些基本知识，如果学习过离散数学或者数据结构，这些概念很容易理解。除此之外，某些算法会用到离散数学中的树的概念，但很容易理解。</p>
-<h3 id="2-1-高等数学"><a class="header-anchor" href="#2-1-高等数学">¶</a>2.1 高等数学</h3>
-<p>如果你已经学过这些大学数学课，只要把所需的知识点复习一遍就够了。对于微积分，通俗易懂而又被广为采用的是同济版的高等数学：</p>
-<p><img src="/public/2018/10/01/AI/how_algorithm_engineer/clip_image005.gif" alt="88F2EB8BDFE1448EBD2DF61848E355FD.jpeg"></p>
-<p>在机器学习中主要用到了微分部分，积分用的非常少。具体的，用到了下面的概念：</p>
-<ul>
-<li>导数和偏导数的定义与计算方法，与函数性质的关系</li>
-<li>梯度向量的定义</li>
-<li>极值定理，可导函数在极值点处导数或梯度必须为0</li>
-<li>雅克比矩阵，这是向量到向量映射函数的偏导数构成的矩阵，在求导推导中会用到</li>
-<li>Hessian矩阵，这是2阶导数对多元函数的推广，与函数的极值有密切的联系</li>
-<li>凸函数的定义与判断方法</li>
-<li>泰勒展开公式</li>
-<li>拉格朗日乘数法，用于求解带等式约束的极值问题</li>
-</ul>
-<p>其中最核心的是多元函数的泰勒展开公式，根据它我们可以推导出梯度下降法，牛顿法，拟牛顿法等一系列最优化方法。</p>
-<p>如果你想要深入的学习微积分，可以阅读数学系的教程，称为数学分析：</p>
-<p><img src="/public/2018/10/01/AI/how_algorithm_engineer/clip_image007.gif" alt="DEB5F0D2FC584E0B96B263FE1D559AFF.jpeg"></p>
-<p>与工科的高等数学偏重计算不同，它里面有大量的理论证明，对于锻炼数学思维非常有帮助。北大张筑生先生所著的数学分析可谓是国内这方面教材的精品。</p>
-<h3 id="2-2-线性代数"><a class="header-anchor" href="#2-2-线性代数">¶</a>2.2 线性代数</h3>
-<p>下面来看线性代数，同样是同济版的教材：</p>
-<p><img src="/public/2018/10/01/AI/how_algorithm_engineer/clip_image009.gif" alt="48D5E515A7144CE6A9CB78162F6ECAAF.jpeg"></p>
-<p>如果想更全面系统的学习线性代数，可以看这本书：</p>
-<p><img src="/public/2018/10/01/AI/how_algorithm_engineer/clip_image011.gif" alt="BF71AB68DB2B4D71AC8D2B3263C197E5.jpeg"></p>
-<p>相比之下，线性代数用的更多。具体用到的知识点有：</p>
-<ul>
-<li>向量和它的各种运算，包括加法，减法，数乘，转置，内积</li>
-<li>向量和矩阵的范数，L1范数和L2范数</li>
-<li>矩阵和它的各种运算，包括加法，减法，乘法，数乘</li>
-<li>逆矩阵的定义与性质</li>
-<li>行列式的定义与计算方法</li>
-<li>二次型的定义</li>
-<li>矩阵的正定性</li>
-<li>特征值与特征向量</li>
-<li>奇异值分解</li>
-<li>线性方程组的数值解</li>
-</ul>
-<p>机器学习算法处理的数据一般都是向量、矩阵或者张量。经典的机器学习算法输入的数据都是特征向量，深度学习算法在处理图像时输入的2维的矩阵或者3维的张量。掌握这些概念是你理解机器学习和深度学习算法的基础。</p>
-<h3 id="2-3-概率论"><a class="header-anchor" href="#2-3-概率论">¶</a>2.3 概率论</h3>
-<p>概率论国内理工科专业使用最多的是浙大版的教材：</p>
-<p><img src="/public/2018/10/01/AI/how_algorithm_engineer/clip_image013.gif" alt="91E918CF7ED84C7488BDDFFC7594E0D4.jpeg"></p>
-<p>如果把机器学习所处理的样本数据看作随机变量/向量，就可以用概率论的方法对问题进行建模，这代表了机器学习中很大一类方法。在机器学习里用到的概率论知识点有:</p>
-<ul>
-<li>随机事件的概念，概率的定义与计算方法</li>
-<li>随机变量与概率分布，尤其是连续型随机变量的概率密度函数和分布函数</li>
-<li>条件概率与贝叶斯公式</li>
-<li>常用的概率分布，包括正态分布，伯努利二项分布，均匀分布</li>
-<li>随机变量的均值与方差，协方差</li>
-<li>随机变量的独立性</li>
-<li>最大似然估计</li>
-</ul>
-<p>这些知识不超出普通理工科概率论教材的范围。</p>
-<h3 id="最优化"><a class="header-anchor" href="#最优化">¶</a>最优化</h3>
-<p>最后来说最优化，几乎所有机器学习算法归根到底都是在求解最优化问题。求解最优化问题的指导思想是在极值点出函数的导数/梯度必须为0。因此你必须理解梯度下降法，牛顿法这两种常用的算法，它们的迭代公式都可以从泰勒展开公式而得到。</p>
-<p>凸优化是机器学习中经常会提及的一个概念，这是一类特殊的优化问题，它的优化变量的可行域是凸集，目标函数是凸函数。凸优化最好的性质是它的所有局部最优解就是全局最优解，因此求解时不会陷入局部最优解。如果一个问题被证明为是凸优化问题，基本上已经宣告此问题得到了解决。在机器学习中，线性回归、岭回归、支持向量机、logistic回归等很多算法求解的都是凸优化问题。</p>
-<p>拉格朗日对偶为带等式和不等式约束条件的优化问题构造拉格朗日函数，将其变为原问题，这两个问题是等价的。通过这一步变换，将带约束条件的问题转换成不带约束条件的问题。通过变换原始优化变量和拉格朗日乘子的优化次序，进一步将原问题转换为对偶问题，如果满足某种条件，原问题和对偶问题是等价的。这种方法的意义在于可以将一个不易于求解的问题转换成更容易求解的问题。在支持向量机中有拉格朗日对偶的应用。</p>
-<p>KKT条件是拉格朗日乘数法对带不等式约束问题的推广，它给出了带等式和不等式约束的优化问题在极值点处所必须满足的条件。在支持向量机中也有它的应用。</p>
-<p>如果你没有学过最优化方法这门课也不用担心，这些方法根据微积分和线性代数的基础知识可以很容易推导出来。如果需要系统的学习这方面的知识，可以阅读《凸优化》，《非线性规划》两本经典教材。</p>
-<p><img src="/public/2018/10/01/AI/how_algorithm_engineer/clip_image015.gif" alt="B00246CBCFB446789B2F7F63F3292099.jpeg"></p>
-<h2 id="3-编程能力"><a class="header-anchor" href="#3-编程能力">¶</a>3. 编程能力</h2>
-<p>编程能力是学好机器学习和深度学习的又一大基础。对于计算机类专业的学生，由于本科已经学了c语言，c++，数据结构与算法，因此这方面一般不存在问题。对于非计算机专业的人来说，要真正学好机器学习和深度学习，这些知识是绕不开的。</p>
-<h3 id="3-1-C"><a class="header-anchor" href="#3-1-C">¶</a>3.1 C++</h3>
-<p>虽然现在大家热衷于学习python，但要作为一名真正的算法工程师，还是应该好好学习一下c++，至少，机器学习和深度学习的很多底层开源库都是用它写的；很多公司线上的产品，无论是运行在服务器端，还是嵌入式端，都是用c++写的。此外，如果你是应届生，在校园招聘时不少公司都会面试你c++的知识。</p>
-<p>C++最经典的教材无疑是c++ primer：</p>
-<p><img src="/public/2018/10/01/AI/how_algorithm_engineer/clip_image017.gif" alt="3E0DE0E336474B81A2F89F2190628186.jpeg"></p>
-<p>对做算法的人来说，这本书其实不用全部看，把常用的点学完就够了。对于进阶，Effective c++是很好的选择，不少公司的面试题就直接出自这本书的知识点：</p>
-<p><img src="/public/2018/10/01/AI/how_algorithm_engineer/clip_image019.gif" alt="DDCC32DD5E6D405588CB4B6F4A94BFE5.jpeg"></p>
-<p>接下来说python，相比c++来说，学习的门槛要低很多，找一本通俗易懂的入门教程学习一遍即可。</p>
-<h3 id="3-2-数据结构和算法"><a class="header-anchor" href="#3-2-数据结构和算法">¶</a>3.2 数据结构和算法</h3>
-<p>数据结构和算法是编写很多程序的基础，对于机器学习和深度学习程序也不例外。很多算法的实现都依赖于数组，链表，数，排序，查找之类的数据结构和基础算法。如果有时间和精力，把算法导论啃一遍，你会有不一样的感受：</p>
-<p><img src="/public/2018/10/01/AI/how_algorithm_engineer/clip_image021.gif" alt="E077608423D7473ABF1DBF75C482E060.jpeg"></p>
-<p>对于应届生来说，学完它对于你通过大互联网和人工智能公司校园招聘的技术面试也非常有用。</p>
-<p>上面说的只是编程语言的程序设计的理论知识，我们还要考虑实际动手能力。对于开发环境如gcc/g++，visual studio之类的工具，以及gdb之类的调试工具需要做到熟练使用。如果是在linux上开发，对linux的常用命令也要熟记于心。这方面的知识看各种具体的知识点和教程即可。另外，对于编程的一些常识，如进程，线程，虚拟内存，文件系统等，你最好也要进行了解。</p>
-<h2 id="4-机器学习与深度学习的知识"><a class="header-anchor" href="#4-机器学习与深度学习的知识">¶</a>4. 机器学习与深度学习的知识</h2>
-<p>在说完了数学和编程基础之后，下面我来看核心的内容，机器学习和深度学习知识。机器学习是现阶段解决很多人工智能问题的核心方法，尤其是深度学习，因此它们是算法工程师的核心知识。在这里有一个问题：是否需要先学机器学习，还是直接学深度学习？如果是一个专业的算法工程师，我的建议是先学机器学习。至少，你要知道机器学习中的基本概念， 过拟合，生成模型，ROC曲线等，上来就看深度学习，如没有背景知识你将不知所云。另外，神经网络只是机器学习中的一类方法，对于很多问题，其他机器学习算法如logistic回归，随机森林，GBDT，决策树等还在被大规模使用，因此你不要把自己局限在神经网络的小圈子里。</p>
-<h3 id="4-1-ML和DP的教材"><a class="header-anchor" href="#4-1-ML和DP的教材">¶</a>4.1 ML和DP的教材</h3>
-<p>首先来看机器学习，这方面的教材很多，周志华老师的机器学习，李航老师的统计学习方法是国内的经典。这里我们介绍国外的经典教材，首先是PRML：</p>
-<p><img src="/public/2018/10/01/AI/how_algorithm_engineer/clip_image023.gif" alt="BE2D3D5817344DE0831B718D3F891899.jpeg"></p>
-<p>PRML 下载地址 <a href="https://www.microsoft.com/en-us/research/publication/pattern-recognition-machine-learning/" target="_blank" rel="noopener">link</a></p>
-<p>此书深厚，内容全面，涵盖了有监督学习，无监督学习的主要方法，理论推导和证明详细深入，是机器学习的经典。此外还有模式分类这本书，在这里不详细介绍。</p>
-<p>本书主要内容包括：
-<strong>第一章：简介</strong>
-概率论、模型选择、决策理论、信息理论</p>
-<p><strong>第二章：概率分布</strong>
-二元变量、多项变量、高斯分布、指数分布族、非参数方法</p>
-<p><strong>第三章：线性模型回归问题</strong>
-线性基函数模型、偏置方差分解、贝叶斯线性回归、贝叶斯模型比较、The Evidence Approximation、固定基函数的局限性</p>
-<p><strong>第四章：线性模型分类问题</strong>
-判别函数、概率生成模型、概率判别模型、拉普拉斯逼近、贝叶斯逻辑回归</p>
-<p><strong>第五章：神经网络</strong>
-前馈神经网络、网络训练、误差反向传播、Hessian矩阵、神经网络的正则化、混合密度网络、贝叶斯神经网络</p>
-<p><strong>第六章：Kernel方法</strong>
-对偶表示、构造核、径向基函数网络、高斯过程</p>
-<p><strong>第七章：Sparse Kernel Machines</strong>
-最大边缘分类器、相关向量机</p>
-<p><strong>第八章：图模型</strong>
-贝叶斯网络、条件独立性、马尔科夫随机场、图模型的推理</p>
-<p><strong>第九章：混合模型和EM</strong>
-K-means聚类、高斯混合、EM算法</p>
-<p><strong>第十章：近似推断</strong>
-变分推断、高斯的变分混合、变分线性回归、指数族分布、局部变分方法、变分logistic回归、Expectation Propagation</p>
-<p><strong>第十一章：采样方法</strong>
-基本采样算法、马尔科夫链蒙特卡洛、吉布斯采样、切片采样、混合蒙特卡洛算法、估计划分函数</p>
-<p><strong>第十二章：连续潜在变数</strong>
-主成分分析，Probabilistic PCA，Kernel PCA，非线性潜变量模型</p>
-<p><strong>第十三章：序列数据</strong>
-马尔可夫模型，隐马尔可夫模型，Linear Dynamical Systems</p>
-<p><strong>第十四章：混合模型</strong>
-贝叶斯模型平均法，Committees，Boosting，基于树的模型，条件混合模型</p>
-<p>深度学习目前最权威的教程是下面这本书：</p>
-<p><img src="/public/2018/10/01/AI/how_algorithm_engineer/clip_image025.gif" alt="A39AD50565E141F89B08C93CCD7DEDFC.jpeg"></p>
-<p>它涵盖了深度学习的方方面面，从理论到工程，但美中不足的是对应于介绍的相对较少。</p>
-<p>强化学习是机器学习很独特的一个分支，大多数人对它不太了解，这方面的教程非常少，我们推荐下面这本书：</p>
-<p><img src="/public/2018/10/01/AI/how_algorithm_engineer/clip_image027.gif" alt="115B0E32F06F4538A76CB9B610F63B8C.jpeg"></p>
-<p>美中不足的是这本书对深度强化学习没有介绍，因为出版的较早。不知最新的版本有没有加上这方面的内容。</p>
-<p>在这里需要强调的是，你的知识要系统化，有整体感。很多同学都感觉到自己学的机器学习太零散，缺乏整体感。这需要你多思考算法之间的关系，演化历史之类的问题，这样你就做到胸中有图-机器学习算法地图。其实，<a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247485551&amp;idx=2&amp;sn=a6689528f10aedab3fce91857eec877b&amp;chksm=fdb695f8cac11cee025ad6d8d77ed90f7169142d6b20b2f5a6945b58edd97c27225f4a2eba91&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">SIGAI</a>在之前的公众号文章“<a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247485306&amp;idx=1&amp;sn=fc8cc8de313bdb61dcd39c1dedb240a4&amp;chksm=fdb69aedcac113fb4b18c74248a313536ded50bade0e66b26f332ab247b148519da71ff2a3c0&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">机器学习算法地图</a>”里已经给你总结出来了。</p>
-<h3 id="4-2-开源库"><a class="header-anchor" href="#4-2-开源库">¶</a>4.2 开源库</h3>
-<p>上面介绍了机器学习和深度学习的理论教材，下面来说实践问题。我们无需重复造车轮子，熟练的使用主流的开源库是需要掌握的一项技能。对于经典的机器学习，常用的库的有:</p>
-<ul>
-<li>libsvm</li>
-<li>liblinear</li>
-<li>XGBoost</li>
-<li>OpenCV</li>
-<li>HTK</li>
-<li>Weka</li>
-</ul>
-<p>在这里我们不一一列举。借助于这些库，我们可以方便的完成自己的实验，或是研发自己的产品。对于深度学习，目前常用的有：</p>
-<ul>
-<li>Caffe</li>
-<li>TensorFlow</li>
-<li>MXNet</li>
-</ul>
-<p>除此之外，还有其他的。对于你要用到的开源库，一定要理解它的原理，以及使用中的一些细节问题。例如很多算法要求输入的数据先做归一化，否则效果会非常差，而且面临浮点数溢出的问题，这些实际经验需要你在使用中摸索。如果有精力把这些库的核心代码分析一遍，你对实现机器学习算法将会更有底气。以深度学习为例，最核心的代码无非是实现：</p>
-<ul>
-<li>各种层，包括它们的正向传播和反向传播</li>
-<li>激活函数的实现</li>
-<li>损失函数的实现</li>
-<li>输入数据的处理</li>
-<li>求解器，实现各种梯度下降法</li>
-</ul>
-<p>这些代码的量并不大，沉下心来，我相信一周之内肯定能分析完。看完之后你会有一种豁然开朗的感觉。</p>
-<h2 id="5-应用方向的知识"><a class="header-anchor" href="#5-应用方向的知识">¶</a>5. 应用方向的知识</h2>
-<p>接下来是各个方向的知识，与机器学习有关的应用方向当前主要有：</p>
-<ul>
-<li>机器视觉</li>
-<li>语音识别</li>
-<li>自然语言处理</li>
-<li>数据挖掘</li>
-<li>知识图谱</li>
-<li>推荐系统</li>
-</ul>
-<p>除此之外，还有其他一些特定小方向，在这里不一一列举。这些具体的应用方向一般都有自己的教材，如果你以后要从事此方向的研究，系统的学习一遍是必须的。</p>
-<h2 id="6-实践经验与思考"><a class="header-anchor" href="#6-实践经验与思考">¶</a>6. 实践经验与思考</h2>
-<p>在说完理论与实践知识之后，最后我们来说经验与思考。在你确定要做某一个方向之后，对这个方向的方法要有一个全面系统的认识，很多方法是一脉相承的，如果只追求时髦看最新的算法，你很难做出学术上的创新，以及工程上的优化。对于本问题所有的经典论文，都应该化时间细度，清楚的理解它们解决了什么问题，是怎么解决的，还有哪些问题没有解决。例如：</p>
-<ul>
-<li>机器视觉目标检测中的遮挡问题</li>
-<li>推荐系统中的冷启动问题</li>
-<li>自然语言处理中文分词中的歧义切分问题</li>
-</ul>
-<p>只有经过大量的编程和实验训练，以及持续的思考，你才能算得上对这个方向深刻理解，以至于有自己的理解。很多同学对自己实现轮上的算法没有底气，解决这个问题最快的途径就是看论文算法的开源代码，在github上有丰富的资源，选择一些合适的，研究一下别人是怎么实现的，你就能明白怎么实现自己的网络结构和损失函数，照葫芦画瓢即可。</p>
-<p>计算机以及人工智能是一个偏实践的学科，它的方法和理论既需要我们有扎实的理论功底，又需要有丰富的实践能力与经验。这两个方面构成了算法工程师最主要的素质。科学的学习路径能够让你取得好的学习效果，同时也缩短学习时间。错误和浮躁的做法则会让你最后事倍功半。这是  <a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247485551&amp;idx=2&amp;sn=a6689528f10aedab3fce91857eec877b&amp;chksm=fdb695f8cac11cee025ad6d8d77ed90f7169142d6b20b2f5a6945b58edd97c27225f4a2eba91&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">SIGAI</a> 对想进入这个领域，或者刚进入这个领域的每个人要说的！</p>
-<p><img src="/public/2018/10/01/AI/how_algorithm_engineer/clip_image029.gif" alt="07382DFD55044B48927C8B054DE6F745.png"></p>
-<h2 id="7-其他材料"><a class="header-anchor" href="#7-其他材料">¶</a>7. 其他材料</h2>
-<h3 id="7-1-科普类"><a class="header-anchor" href="#7-1-科普类">¶</a>7.1 科普类</h3>
-<p>【‍获取码】SIGAI0413
-​    <a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247483705&amp;idx=1&amp;sn=c6e7c4a2e14a2469308b41eb60f155ac&amp;chksm=fdb69caecac115b8712653600e526e99a3f6976fdaa2f6b6a09388fa6f9677ccb57b40c40ae3&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">机器学习——波澜壮阔四十年 </a></p>
-<p>【获取码】SIGAI0620
-​    <a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247484981&amp;idx=1&amp;sn=d3003468b9853851923844812993e060&amp;chksm=fdb69ba2cac112b4dac620d52100ebd033eb679f29340726a67297c4d6980b16c7cc91122028&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">理解计算：从√2到AlphaGo ——第1季 从√2谈起</a></p>
-<p>【获取码】SIGAI0704
-<a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247485155&amp;idx=1&amp;sn=990cc7400751c36e9fef0a261e6add2a&amp;chksm=fdb69b74cac112628bdae14c6435120f6fece20dae9bf7b1ffc8b8b25e5496a24160feca0a72&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">理解计算：从√2到AlphaGo ——第2季 神经计算的历史背景</a></p>
-<h3 id="7-2-数学类"><a class="header-anchor" href="#7-2-数学类">¶</a>7.2 数学类</h3>
-<p>【获取码】SIGAI0417
-<a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247483713&amp;idx=1&amp;sn=1e7c81381d16806ac73e15691fe17aec&amp;chksm=fdb69cd6cac115c05f1f90b0407e3f8ae9be8719e454f908074ac0d079885b5c134e2d60fd64&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">学好机器学习需要哪些数学知识</a></p>
-<p>【获取码】SIGAI0511
-<a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247484111&amp;idx=1&amp;sn=4ed4480e849298a0aff828611e18f1a8&amp;chksm=fdb69f58cac1164e844726bd429862eb7b38d22509eb4d1826eb851036460cb7ca5a8de7b9bb&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">理解梯度下降法</a></p>
-<p>【获取码】SIGAI0518
-<a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247484439&amp;idx=1&amp;sn=4fa8c71ae9cb777d6e97ebd0dd8672e7&amp;chksm=fdb69980cac110960e08c63061e0719a8dc7945606eeef460404dc2eb21b4f5bdb434fb56f92&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">理解凸优化</a></p>
-<p>【获取码】SIGAI0531
-<a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247484651&amp;idx=1&amp;sn=a0e4ca5edb868fe3eae9101b71dd7103&amp;chksm=fdb6997ccac1106a61f51fe9f8fd532045cc5d13f6c75c2cbbf1a7c94c58bcdf5f2a6661facd&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">理解牛顿法 </a></p>
-<h3 id="7-3-机器学习类"><a class="header-anchor" href="#7-3-机器学习类">¶</a>7.3 机器学习类</h3>
-<p>【获取码】SIGAI0428
-​    <a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247483937&amp;idx=1&amp;sn=84a5acf12e96727b13fd7d456c414c12&amp;chksm=fdb69fb6cac116a02dc68d948958ee731a4ae2b6c3d81196822b665224d9dab21d0f2fccb329&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">用一张图理解SVM的脉络</a></p>
-<p>【获取码】SIGAI0505
-​    <a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247483977&amp;idx=1&amp;sn=401b211bf72bc70f733d6ac90f7352cc&amp;chksm=fdb69fdecac116c81aad9e5adae42142d67f50258106f501af07dc651d2c1473c52fad8678c3&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">理解神经网络的激活函数</a></p>
-<p>【获取码】SIGAI0522
-<a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247484495&amp;idx=1&amp;sn=4f3a6ce21cdd1a048e402ed05c9ead91&amp;chksm=fdb699d8cac110ce53f4fc5e417e107f839059cb76d3cbf640c6f56620f90f8fb4e7f6ee02f9&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">【实验】理解SVM核函数和参数的作用</a></p>
-<p>【获取码】SIGAI0601
-<a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247484658&amp;idx=1&amp;sn=f5c9f92c272c75883bf8e6f532559f11&amp;chksm=fdb69965cac11073f49048caef5d7b9129614090a363d9ef7f3d1b9bc59948d2217d2bca7b7b&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">【群话题精华】五月集锦—机器学习和深度学习中一些值得思考的问题   </a></p>
-<p>【获取码】SIGAI0602
-​    <a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247484692&amp;idx=1&amp;sn=9b389aa65208c778dddf17c601afbee1&amp;chksm=fdb69883cac1119593934734e94c3b71aa68de67bda8a946c1f9f9e1209c3b6f0bf18fed99b8&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">大话AdaBoost算法    </a></p>
-<p>【获取码】SIGAI0606
-​    <a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247484754&amp;idx=1&amp;sn=b2c0d6798f44e13956bb42373e51d18c&amp;chksm=fdb698c5cac111d3e3dca24c50aafbfb61e5b05c5df5b603067bb7edec8db049370b73046b24&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">理解主成分分析（PCA）    </a></p>
-<p>【获取码】SIGAI0611
-​    <a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247484827&amp;idx=1&amp;sn=043d7d0159baaddfbf92ed78ee5b1124&amp;chksm=fdb6980ccac1111a9faeae7f517fee46a1dfab19612f76ccfe5417487b3f090ab8fc702d18b8&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">理解决策树  </a></p>
-<p>【获取码】SIGAI0613
-​    <a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247484859&amp;idx=1&amp;sn=2c4db22fb538953a62a90983e3e1f99d&amp;chksm=fdb6982ccac1113a82e92be325bb07a947d54090274654375f3b50e11e1abd809fb7358bde16&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">用一句话总结常用的机器学习算法</a></p>
-<p>【获取码】SIGAI0618
-​    <a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247484954&amp;idx=1&amp;sn=c28b7f07c22466e91b1ef90e9dbe3ad1&amp;chksm=fdb69b8dcac1129bc6e78fca1d550e2b18238ad1c240c73b280d4e529f9f93c4626b3ac45ea2&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">理解过拟合</a></p>
-<p>【获取码】SIGAI0627
-​    <a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247485074&amp;idx=1&amp;sn=0ebf1bf8f49e9c46075fe3803d04c95d&amp;chksm=fdb69b05cac112132d280c70af3923ca4c3cccfa5fcd8628b79d4b246b3b2decbc80a180abb3&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">k近邻算法</a></p>
-<p>【获取码】SIGAI0704
-​    <a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247485306&amp;idx=1&amp;sn=fc8cc8de313bdb61dcd39c1dedb240a4&amp;chksm=fdb69aedcac113fb4b18c74248a313536ded50bade0e66b26f332ab247b148519da71ff2a3c0&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">机器学习算法地图</a></p>
-<p>【获取码】SIGAI0706
-​    <a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247485446&amp;idx=1&amp;sn=57d7d866443810c20c4ea2c6ee8018cc&amp;chksm=fdb69591cac11c8773638b396abe43c0161e4d339f0fa845e54326be3e8c4933a3b6a2713dae&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">反向传播算法推导—全连接神经网络</a></p>
-<h3 id="7-4-深度学习类"><a class="header-anchor" href="#7-4-深度学习类">¶</a>7.4 深度学习类</h3>
-<p>【获取码】SIGAI0426
-<a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247483816&amp;idx=1&amp;sn=fc52765b012771d4736c9be4109f910e&amp;chksm=fdb69c3fcac115290020c3dd0d677d987086a031c1bde3429339bb3b5bbc0aa154e76325c225&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">卷积神经网络为什么能够称霸计算机视觉领域？</a></p>
-<p>【获取码】SIGAI0508
-<a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247484037&amp;idx=1&amp;sn=13ad0d521b6a3578ff031e14950b41f4&amp;chksm=fdb69f12cac11604a42ccb37913c56001a11c65a8d1125c4a9aeba1aed570a751cb400d276b6&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">深度卷积神经网络演化历史及结构改进脉络-40页长文全面解读 </a></p>
-<p>【获取码】SIGAI0515
-<a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247484310&amp;idx=1&amp;sn=0fc55a2784a894100a1ae64d7dbfa23d&amp;chksm=fdb69e01cac1171758cb021fc8779952e55de41032a66ee5417bd3e826bf703247e243654bd0&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">循环神经网络综述—语音识别与自然语言处理的利器</a></p>
-<p>【获取码】SIGAI0625
-<a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247485042&amp;idx=1&amp;sn=cdcf8d4b07acf64c7a6f5f7c1a731a12&amp;chksm=fdb69be5cac112f377766984afb87313c1e1c58d94c80005f0f6f6af61ee5a4bd1bf6c6157b6&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">卷积神经网络的压缩与加速</a></p>
-<p>【获取码】SIGAI0709
-<a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247485551&amp;idx=1&amp;sn=213f48c4e55bee688cf0731097bb832c&amp;chksm=fdb695f8cac11ceef3ef246c54d811dd64d8cc45fc75488c374c7aa95f72c1abfb55555ef0b7&amp;scene=21#wechat_redirect" target="_blank" rel="noopener"> 生成式对抗网络模型综述</a></p>
-<h3 id="7-5-机器视觉类"><a class="header-anchor" href="#7-5-机器视觉类">¶</a>7.5 机器视觉类</h3>
-<p>【获取码】SIGAI0420
-​    <a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247483726&amp;idx=1&amp;sn=9fef4cc1766ea4258749f8d40cc71a6e&amp;chksm=fdb69cd9cac115cf4eba16081780c3b64c75e1e55a40bf2782783d5c28f00c6f143426e6f0aa&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">人脸识别算法演化史</a></p>
-<p>【获取码】SIGAI0424
-​    <a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247483731&amp;idx=1&amp;sn=237c52bc9ddfe65779b73ef8b5507f3c&amp;chksm=fdb69cc4cac115d2ca505e0deb975960a792a0106a5314ffe3052f8e02a75c9fef458fd3aca2&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">基于深度学习的目标检测算法综述</a></p>
-<p>【获取码】SIGAI0503
-​    <a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247483950&amp;idx=1&amp;sn=a3a5b7907b2552c233f654a529931776&amp;chksm=fdb69fb9cac116af5dd237cf987e56d12b0d2e54c5c565aab752f3e366c0c45bfefa76f5ed16&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">人脸检测算法综述</a></p>
-<p>【获取码】SIGAI0525
-<a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247483950&amp;idx=1&amp;sn=a3a5b7907b2552c233f654a529931776&amp;chksm=fdb69fb9cac116af5dd237cf987e56d12b0d2e54c5c565aab752f3e366c0c45bfefa76f5ed16&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">【SIGAI综述】行人检测算法   </a></p>
-<p>【获取码】SIGAI0604
-​    <a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247484711&amp;idx=1&amp;sn=bb7644e101b5924f54d6800b952dc3aa&amp;chksm=fdb698b0cac111a6605f5b9b6f0478bf21a8527cfad2342dbaaf624b4e9dcc43c0d85ae06deb&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">FlowNet到FlowNet2.0：基于卷积神经网络的光流预测算法 </a></p>
-<p>【获取码】SIGAI0608
-​    <a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247484784&amp;idx=1&amp;sn=ceafb54203f4e930ae457ad392b9f89c&amp;chksm=fdb698e7cac111f13d8229d7dcc00b4a7305d66de3da1bd41e7ecc1d29bfa7be520d205c53e9&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">人体骨骼关键点检测综述 </a></p>
-<p>【获取码】SIGAI0615
-​    <a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247484909&amp;idx=1&amp;sn=c02ee17e5175230ed39ad63e73249f5c&amp;chksm=fdb6987acac1116c0108ec28424baf4ea16ca11d2b13f20d4a825d7b2b82fb8765720ebd1063&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">目标检测算法之YOLO</a></p>
-<p>【获取码】SIGAI0622
-​    <a href="https://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247485005&amp;idx=1&amp;sn=0d4fb43b8db2a8046c64a9cfcbf3f478&amp;chksm=fdb69bdacac112cce05c8b735b4f8b1ccf2348bea55a30af2055fc328958bb8f1ffd0f819bd2&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">场景文本检测——CTPN算法介绍</a></p>
-<p>【获取码】SIGAI0629
-​    <a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247485142&amp;idx=1&amp;sn=c0e01da30eb5e750be453eabe4be2bf4&amp;chksm=fdb69b41cac11257ae22c7dac395e9651dab628fc35dd6d3c02d9566a8c7f5f2b56353d58a64&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">自然场景文本检测识别技术综述</a></p>
-]]></content>
-      <categories>
-        <category>算法</category>
-      </categories>
-      <tags>
-        <tag>人工智能</tag>
-        <tag>机器学习</tag>
-        <tag>深度学习</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>《形象美学》摘录笔记</title>
     <url>/public/2019/07/21/readings/xingxiangmeixue/</url>
     <content><![CDATA[<p><strong>前言</strong></p>
@@ -4049,6 +3654,401 @@ K-means聚类、高斯混合、EM算法</p>
       <tags>
         <tag>个人管理</tag>
         <tag>《形象美学》</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>「202207月度汇报」obsidian</title>
+    <url>/public/2022/07/26/test/202207_obsidian/</url>
+    <content><![CDATA[<p>统计 ✅ : 6 📅 : 3 🔖 : 47</p>
+<a id="more"></a>
+<h2 id="✅-6"><a class="header-anchor" href="#✅-6">¶</a>✅ : 6</h2>
+<p>✅目标图标系统
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
+✅ <a href="https://blog.csdn.net/hhhhhyyyyy8/article/details/102133863" target="_blank" rel="noopener">Linux内核数据包bridge上转发流程_hhhhhyyyyy8的博客-CSDN博客_br_multicast_flood</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W27.md">C日常/2022-W27.md</a><br>
+✅ 邮箱转rss
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W23.md">C日常/2022-W23.md</a><br>
+✅  hacker news rss添加
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W23.md">C日常/2022-W23.md</a><br>
+✅ 经济学人转载leader文章
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W23.md">C日常/2022-W23.md</a><br>
+✅ github博客评论系统是否换成【不换】
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W23.md">C日常/2022-W23.md</a></p>
+<h2 id="📅-3"><a class="header-anchor" href="#📅-3">¶</a>📅 : 3</h2>
+<p>📅 端口触发 端口转发
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
+📅 全屋智能
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W26.md">C日常/2022-W26.md</a><br>
+📅 改进
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W26.md">C日常/2022-W26.md</a></p>
+<h2 id="🔖-47"><a class="header-anchor" href="#🔖-47">¶</a>🔖 : 47</h2>
+<p>🔖 ish保持后台运行
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W19.md">C日常/2022-W19.md</a><br>
+🔖 <a href="https://www.jianshu.com/p/f29ca723db4f" target="_blank" rel="noopener">Git 运行配置（git config、gitk、git gui） - michael_jia - 简书</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W19.md">C日常/2022-W19.md</a><br>
+🔖<a href="https://www.cnblogs.com/xuanbjut/p/12624702.html" target="_blank" rel="noopener">wmctrl像xmonad那样方便地用快捷键来控制任务窗口的显示 - pycod - 博客园</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W19.md">C日常/2022-W19.md</a><br>
+🔖 <a href="https://blog.csdn.net/anlian523/article/details/113627568" target="_blank" rel="noopener">VSCode复制代码时去掉样式/语法高亮/代码高亮/黑色背景_anlian523的博客-CSDN博客_idea复制代码不带黑色背景</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W19.md">C日常/2022-W19.md</a><br>
+🔖 <a href="https://blog.csdn.net/dog250/article/details/121400218" target="_blank" rel="noopener">为什么除法，开方，求对数比乘法，乘方，求指数更难_dog250的博客-CSDN博客</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
+🔖学习小林博客的写法
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
+🔖一万字统计学梳理
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
+🔖腾讯 彻底搞清楚tcp
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
+🔖0x5f3759df这个快速开方中的常数的数学依据是什么？
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
+🔖https流程
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
+🔖使用 Clion + QEMU/GDB 远程调试Linux内核（分享自知乎网）<a href="https://zhuanlan.zhihu.com/p/412604505?utm_source=md.obsidian&amp;utm_medium=social&amp;utm_oi=619610399826382848" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/412604505?utm_source=md.obsidian&amp;utm_medium=social&amp;utm_oi=619610399826382848</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
+🔖TCP/IP协议到底在讲什么？ <a href="http://www.zhihu.com/question/51074319?utm_source=md.obsidian&amp;utm_medium=social&amp;utm_oi=619610399826382848" target="_blank" rel="noopener">http://www.zhihu.com/question/51074319?utm_source=md.obsidian&amp;utm_medium=social&amp;utm_oi=619610399826382848</a> （分享自知乎网）
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
+🔖【什么是动态规划（Dynamic Programming）？动态规划的意义是什么？】阮行止：… <a href="https://www.zhihu.com/question/23995189/answer/613096905?utm_source=md.obsidian&amp;utm_medium=social&amp;utm_oi=619610399826382848" target="_blank" rel="noopener">https://www.zhihu.com/question/23995189/answer/613096905?utm_source=md.obsidian&amp;utm_medium=social&amp;utm_oi=619610399826382848</a> （分享自知乎网）
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
+🔖【为什么有人说弄懂了《算法导论》的 90%，就超越了 90%的程序员？】启舰：… <a href="https://www.zhihu.com/question/315201616/answer/1960517601?utm_source=md.obsidian&amp;utm_medium=social&amp;utm_oi=619610399826382848" target="_blank" rel="noopener">https://www.zhihu.com/question/315201616/answer/1960517601?utm_source=md.obsidian&amp;utm_medium=social&amp;utm_oi=619610399826382848</a> （分享自知乎网）
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
+🔖【vs code】【keil】优雅地使用vs code代替keil。by 童话与云 👉 <a href="https://www.zhihu.com/zvideo/1422934459457253376?utm_source=md.obsidian&amp;utm_medium=social&amp;utm_oi=619610399826382848" target="_blank" rel="noopener">https://www.zhihu.com/zvideo/1422934459457253376?utm_source=md.obsidian&amp;utm_medium=social&amp;utm_oi=619610399826382848</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
+🔖图解网络 - 75张图带你了解网络设备、网络地址规划、静态路由、实战演练（分享自知乎网）
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
+🔖vscode-journal：vscode中写日记/便签/提醒，配合nutstore与安卓、ios同步_TeQuL的博客-CSDN博客
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
+🔖结构体（结构体嵌套、结构体指针、结构体参数传递） - 蓝海人 - 博客园
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
+🔖Feedme - 8大 RSS 阅读器第三方客户端[Android] - 小众软件
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
+🔖聪明人必学的停车小技巧！。by Felicidades 👉 <a href="https://www.zhihu.com/zvideo/1414008107094093824?utm_source=md.obsidian&amp;utm_medium=social&amp;utm_oi=619610399826382848" target="_blank" rel="noopener">https://www.zhihu.com/zvideo/1414008107094093824?utm_source=md.obsidian&amp;utm_medium=social&amp;utm_oi=619610399826382848</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
+🔖在线 DOS 游戏 - 近 2000 款怀旧游戏，仙剑、红警、三国志、大富翁、明星志愿、大航海、主题医院等 - 小众软件
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
+🔖Feeddd · 重新掌控你的订阅源
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
+🔖【如何长时间高效学习？】硬核学长2077：… <a href="https://www.zhihu.com/question/28358499/answer/1762418904?utm_source=md.obsidian&amp;utm_medium=social&amp;utm_oi=619610399826382848" target="_blank" rel="noopener">https://www.zhihu.com/question/28358499/answer/1762418904?utm_source=md.obsidian&amp;utm_medium=social&amp;utm_oi=619610399826382848</a> （分享自知乎网）
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
+🔖【你身边的学霸都有怎样的学习方法或习惯？】硬核学长2077：… <a href="https://www.zhihu.com/question/54265751/answer/1995587976?utm_source=md.obsidian&amp;utm_medium=social&amp;utm_oi=619610399826382848" target="_blank" rel="noopener">https://www.zhihu.com/question/54265751/answer/1995587976?utm_source=md.obsidian&amp;utm_medium=social&amp;utm_oi=619610399826382848</a> （分享自知乎网）
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
+🔖【如何不痛苦地早起？】铁木君：… <a href="https://www.zhihu.com/question/22120300/answer/1887544838?utm_source=md.obsidian&amp;utm_medium=social&amp;utm_oi=619610399826382848" target="_blank" rel="noopener">https://www.zhihu.com/question/22120300/answer/1887544838?utm_source=md.obsidian&amp;utm_medium=social&amp;utm_oi=619610399826382848</a> （分享自知乎网）
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
+🔖[[obsidian_tips]]
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
+🔖<a href="https://sspai.com/post/72757" target="_blank" rel="noopener">随时可用的 PC 体验是这样「炼」成的，Windows 新版睡眠机制详解 - 少数派</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
+🔖<a href="https://blog.csdn.net/who538592/article/details/79483323" target="_blank" rel="noopener">TC流量控制_who538592的博客-CSDN博客_tc流量控制</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
+🔖 <a href="https://sspai.com/post/74090" target="_blank" rel="noopener">大家都说好的蛋白粉，我们应该如何取舍 - 少数派</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W28.md">C日常/2022-W28.md</a><br>
+🔖 <a href="https://zhuanlan.zhihu.com/p/508345279" target="_blank" rel="noopener">我的obsidian插件开发的学习过程</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W28.md">C日常/2022-W28.md</a><br>
+🔖 <a href="https://blog.csdn.net/Haywardwang/article/details/108626491" target="_blank" rel="noopener">python 词云构建_Haywardwang的博客-CSDN博客</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W28.md">C日常/2022-W28.md</a><br>
+🔖 <a href="https://blog.csdn.net/weixin_56842628/article/details/117921526?utm_medium=distribute.wap_relevant.none-task-blog-2~default~baidujs_title~default-9-117921526-blog-108626491.wap_blog_relevant_default&amp;spm=1001.2101.3001.4242.6&amp;utm_relevant_index=10" target="_blank" rel="noopener">如何用Python制作简单又好看的词云？来瞅瞅吧~_小熊爱Python的博客-CSDN博客_python词云代码简单</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W28.md">C日常/2022-W28.md</a><br>
+🔖 <a href="https://sspai.com/post/73779" target="_blank" rel="noopener">跨时空圆桌：伟大创作者们如何安排日常生活 - 少数派</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W27.md">C日常/2022-W27.md</a><br>
+🔖 <a href="https://www.appinn.com/typing-learner/" target="_blank" rel="noopener">Typing Learner - 硬核单词记忆：从电影台词筛选生词，边追美剧边学英语，用户直喊「好家伙！」[Windows/macOS] - 小众软件</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W27.md">C日常/2022-W27.md</a><br>
+🔖 <a href="https://www.zhihu.com/question/391756708/answer/2556173863" target="_blank" rel="noopener">SpaceX的可回收火箭有什么神奇之处，为何其他航天大国还不能仿造？ - YY硕 的回答 - 知乎</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W27.md">C日常/2022-W27.md</a><br>
+🔖 <a href="https://mp.weixin.qq.com/s/KBKO4C1d4CkyHAPEkh8D4Q" target="_blank" rel="noopener">这几个通信协议的动图不错</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W27.md">C日常/2022-W27.md</a><br>
+🔖 <a href="https://oorkan.medium.com/emojifying-your-linux-terminal-9a5c1e8f6b3c" target="_blank" rel="noopener">Emojifying your Linux terminal  🚀</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W27.md">C日常/2022-W27.md</a><br>
+🔖 <a href="https://sspai.com/post/74167" target="_blank" rel="noopener">为 WSL 配置这些新功能，不用虚拟机也能体验完整 Linux - 少数派</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W27.md">C日常/2022-W27.md</a><br>
+🔖<a href="https://sspai.com/post/72274" target="_blank" rel="noopener">意识先行，工具辅助：谈谈我们该怎样分辨虚假信息</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W27.md">C日常/2022-W27.md</a><br>
+🔖<a href="https://zhuanlan.zhihu.com/p/495262462" target="_blank" rel="noopener">网站低代码开发</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W27.md">C日常/2022-W27.md</a><br>
+🔖 学习体系化，效率提升
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W27.md">C日常/2022-W27.md</a><br>
+🔖 <a href="https://sspai.com/post/73958" target="_blank" rel="noopener">玩转 Obsidian 08：利用 Dataview 打造自动化 HomePage - 少数派</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W26.md">C日常/2022-W26.md</a><br>
+🔖 <a href="https://post.m.smzdm.com/p/adwgg2rd/" target="_blank" rel="noopener">小爱同学，打开我的三菱空调——米家空调伴侣2使用分享_智能家居_什么值得买</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W26.md">C日常/2022-W26.md</a><br>
+🔖 <a href="https://sspai.com/post/73829" target="_blank" rel="noopener">用 59 分钟，找到工具的效率之源 - 少数派</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W26.md">C日常/2022-W26.md</a><br>
+🔖 <a href="https://cloud.tencent.com/developer/article/1879646" target="_blank" rel="noopener">tcpdump是在哪儿抓到的包？ - 腾讯云开发者社区-腾讯云</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W26.md">C日常/2022-W26.md</a><br>
+🔖 <a href="https://www.jianshu.com/p/79bcf09aed25" target="_blank" rel="noopener">IPTables五----ebtables - marshalzxy - 简书</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W26.md">C日常/2022-W26.md</a><br>
+🔖 <a href="https://david-waiting.medium.com/a-beginners-guide-to-generic-routing-encapsulation-fb2b4fb63abb" target="_blank" rel="noopener">A Beginner’s Guide to Generic Routing Encapsulation</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W26.md">C日常/2022-W26.md</a></p>
+]]></content>
+      <categories>
+        <category>转载</category>
+      </categories>
+      <tags>
+        <tag>转载</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>怎样成为一名优秀的算法工程师</title>
+    <url>/public/2018/10/01/AI/how_algorithm_engineer/</url>
+    <content><![CDATA[<blockquote>
+<p>转载 原创： AI学习与实践平台
+TODO: 看完里面的文章，对每篇文章做个总结，实验+文章。</p>
+</blockquote>
+<h2 id="1-导言"><a class="header-anchor" href="#1-导言">¶</a>1. 导言</h2>
+<p>怎样成为一名优秀的算法工程师？这是很多从事人工智能学术研究和产品研发的同学都关心的一个问题。面对市场对人才的大量需求与供给的严重不足，以及高薪水的诱惑，越来越多的人开始学习这个方向的技术，或者打算向人工智能转型。市面上各种鱼龙混杂的培训班以及误导人的文章会把很多初学者带入歧途，浮躁的跟风将会让你最后收获甚微，根本达不到企业的用人要求。为了更好的帮助大家学习和成长，少走弯路，在今天的文章里，<a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247485551&amp;idx=2&amp;sn=a6689528f10aedab3fce91857eec877b&amp;chksm=fdb695f8cac11cee025ad6d8d77ed90f7169142d6b20b2f5a6945b58edd97c27225f4a2eba91&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">SIGAI</a> 的作者以自己的亲身经历和思考，为大家写下对这一问题的理解与答案。</p>
+<p>首先来看一个高度相关的问题：一个优秀的算法工程师必须具备哪些素质？我们给出的答案是这样的：</p>
+<ul>
+<li>数学知识</li>
+<li>编程能力</li>
+<li>机器学习与深度学习的知识</li>
+<li>应用方向的知识</li>
+<li>对自己所做的问题的思考和经验</li>
+</ul>
+<p>除去教育背景，逻辑思维，学习能力，沟通能力等其他方面的因素，大多数公司在考察算法工程师的技术水平时都会考虑上面这几个因素。接下来我们将按照这几个方面进行展开，详细的说明如何学习这些方面的知识以及积累经验。</p>
+<a id="more"></a>
+<h2 id="2-数学知识"><a class="header-anchor" href="#2-数学知识">¶</a>2. 数学知识</h2>
+<p>与其他工作方向如app、服务器开发相比，以及与计算机科学的其他方向如网络，数据库，分布式计算等相比，人工智能尤其是机器学习属于数学知识密集的方向。在各种书籍，论文，算法中都充斥着大量的数学公式，这让很多打算入门的人或者开始学习的人感到明显的压力。首先我们考虑一个最核心的问题：机器学习和深度学习究竟需要哪些数学知识？在<a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247485551&amp;idx=2&amp;sn=a6689528f10aedab3fce91857eec877b&amp;chksm=fdb695f8cac11cee025ad6d8d77ed90f7169142d6b20b2f5a6945b58edd97c27225f4a2eba91&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">SIGAI</a>之前的公众号文章“<a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247483713&amp;idx=1&amp;sn=1e7c81381d16806ac73e15691fe17aec&amp;chksm=fdb69cd6cac115c05f1f90b0407e3f8ae9be8719e454f908074ac0d079885b5c134e2d60fd64&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">学好机器学习需要哪些数学知识</a>”里，我们已经给出了答案。先看下面这张表：</p>
+<p><img src="/public/2018/10/01/AI/how_algorithm_engineer/clip_image003.gif" alt="EB5E93E91C3643F991C93D61F363373E.jpeg"></p>
+<p>更多算法工程师的必读文章，请关注SIGAICN公众号</p>
+<p>上面的表给出了各种典型的机器学习算法所用到的数学知识点。我们之前已经总结过，理解绝大多数算法和理论，有微积分/高等数学，线性代数，概率论，最优化方法的知识就够了。除流形学习需要简单的微分几何概念之外，深层次的数学知识如实变函数，泛函分析等主要用在一些基础理论结果的证明上，即使不能看懂证明过程，也不影响我们使用具体的机器学习算法。概率图模型、流形学习中基于图的模型会用到图论的一些基本知识，如果学习过离散数学或者数据结构，这些概念很容易理解。除此之外，某些算法会用到离散数学中的树的概念，但很容易理解。</p>
+<h3 id="2-1-高等数学"><a class="header-anchor" href="#2-1-高等数学">¶</a>2.1 高等数学</h3>
+<p>如果你已经学过这些大学数学课，只要把所需的知识点复习一遍就够了。对于微积分，通俗易懂而又被广为采用的是同济版的高等数学：</p>
+<p><img src="/public/2018/10/01/AI/how_algorithm_engineer/clip_image005.gif" alt="88F2EB8BDFE1448EBD2DF61848E355FD.jpeg"></p>
+<p>在机器学习中主要用到了微分部分，积分用的非常少。具体的，用到了下面的概念：</p>
+<ul>
+<li>导数和偏导数的定义与计算方法，与函数性质的关系</li>
+<li>梯度向量的定义</li>
+<li>极值定理，可导函数在极值点处导数或梯度必须为0</li>
+<li>雅克比矩阵，这是向量到向量映射函数的偏导数构成的矩阵，在求导推导中会用到</li>
+<li>Hessian矩阵，这是2阶导数对多元函数的推广，与函数的极值有密切的联系</li>
+<li>凸函数的定义与判断方法</li>
+<li>泰勒展开公式</li>
+<li>拉格朗日乘数法，用于求解带等式约束的极值问题</li>
+</ul>
+<p>其中最核心的是多元函数的泰勒展开公式，根据它我们可以推导出梯度下降法，牛顿法，拟牛顿法等一系列最优化方法。</p>
+<p>如果你想要深入的学习微积分，可以阅读数学系的教程，称为数学分析：</p>
+<p><img src="/public/2018/10/01/AI/how_algorithm_engineer/clip_image007.gif" alt="DEB5F0D2FC584E0B96B263FE1D559AFF.jpeg"></p>
+<p>与工科的高等数学偏重计算不同，它里面有大量的理论证明，对于锻炼数学思维非常有帮助。北大张筑生先生所著的数学分析可谓是国内这方面教材的精品。</p>
+<h3 id="2-2-线性代数"><a class="header-anchor" href="#2-2-线性代数">¶</a>2.2 线性代数</h3>
+<p>下面来看线性代数，同样是同济版的教材：</p>
+<p><img src="/public/2018/10/01/AI/how_algorithm_engineer/clip_image009.gif" alt="48D5E515A7144CE6A9CB78162F6ECAAF.jpeg"></p>
+<p>如果想更全面系统的学习线性代数，可以看这本书：</p>
+<p><img src="/public/2018/10/01/AI/how_algorithm_engineer/clip_image011.gif" alt="BF71AB68DB2B4D71AC8D2B3263C197E5.jpeg"></p>
+<p>相比之下，线性代数用的更多。具体用到的知识点有：</p>
+<ul>
+<li>向量和它的各种运算，包括加法，减法，数乘，转置，内积</li>
+<li>向量和矩阵的范数，L1范数和L2范数</li>
+<li>矩阵和它的各种运算，包括加法，减法，乘法，数乘</li>
+<li>逆矩阵的定义与性质</li>
+<li>行列式的定义与计算方法</li>
+<li>二次型的定义</li>
+<li>矩阵的正定性</li>
+<li>特征值与特征向量</li>
+<li>奇异值分解</li>
+<li>线性方程组的数值解</li>
+</ul>
+<p>机器学习算法处理的数据一般都是向量、矩阵或者张量。经典的机器学习算法输入的数据都是特征向量，深度学习算法在处理图像时输入的2维的矩阵或者3维的张量。掌握这些概念是你理解机器学习和深度学习算法的基础。</p>
+<h3 id="2-3-概率论"><a class="header-anchor" href="#2-3-概率论">¶</a>2.3 概率论</h3>
+<p>概率论国内理工科专业使用最多的是浙大版的教材：</p>
+<p><img src="/public/2018/10/01/AI/how_algorithm_engineer/clip_image013.gif" alt="91E918CF7ED84C7488BDDFFC7594E0D4.jpeg"></p>
+<p>如果把机器学习所处理的样本数据看作随机变量/向量，就可以用概率论的方法对问题进行建模，这代表了机器学习中很大一类方法。在机器学习里用到的概率论知识点有:</p>
+<ul>
+<li>随机事件的概念，概率的定义与计算方法</li>
+<li>随机变量与概率分布，尤其是连续型随机变量的概率密度函数和分布函数</li>
+<li>条件概率与贝叶斯公式</li>
+<li>常用的概率分布，包括正态分布，伯努利二项分布，均匀分布</li>
+<li>随机变量的均值与方差，协方差</li>
+<li>随机变量的独立性</li>
+<li>最大似然估计</li>
+</ul>
+<p>这些知识不超出普通理工科概率论教材的范围。</p>
+<h3 id="最优化"><a class="header-anchor" href="#最优化">¶</a>最优化</h3>
+<p>最后来说最优化，几乎所有机器学习算法归根到底都是在求解最优化问题。求解最优化问题的指导思想是在极值点出函数的导数/梯度必须为0。因此你必须理解梯度下降法，牛顿法这两种常用的算法，它们的迭代公式都可以从泰勒展开公式而得到。</p>
+<p>凸优化是机器学习中经常会提及的一个概念，这是一类特殊的优化问题，它的优化变量的可行域是凸集，目标函数是凸函数。凸优化最好的性质是它的所有局部最优解就是全局最优解，因此求解时不会陷入局部最优解。如果一个问题被证明为是凸优化问题，基本上已经宣告此问题得到了解决。在机器学习中，线性回归、岭回归、支持向量机、logistic回归等很多算法求解的都是凸优化问题。</p>
+<p>拉格朗日对偶为带等式和不等式约束条件的优化问题构造拉格朗日函数，将其变为原问题，这两个问题是等价的。通过这一步变换，将带约束条件的问题转换成不带约束条件的问题。通过变换原始优化变量和拉格朗日乘子的优化次序，进一步将原问题转换为对偶问题，如果满足某种条件，原问题和对偶问题是等价的。这种方法的意义在于可以将一个不易于求解的问题转换成更容易求解的问题。在支持向量机中有拉格朗日对偶的应用。</p>
+<p>KKT条件是拉格朗日乘数法对带不等式约束问题的推广，它给出了带等式和不等式约束的优化问题在极值点处所必须满足的条件。在支持向量机中也有它的应用。</p>
+<p>如果你没有学过最优化方法这门课也不用担心，这些方法根据微积分和线性代数的基础知识可以很容易推导出来。如果需要系统的学习这方面的知识，可以阅读《凸优化》，《非线性规划》两本经典教材。</p>
+<p><img src="/public/2018/10/01/AI/how_algorithm_engineer/clip_image015.gif" alt="B00246CBCFB446789B2F7F63F3292099.jpeg"></p>
+<h2 id="3-编程能力"><a class="header-anchor" href="#3-编程能力">¶</a>3. 编程能力</h2>
+<p>编程能力是学好机器学习和深度学习的又一大基础。对于计算机类专业的学生，由于本科已经学了c语言，c++，数据结构与算法，因此这方面一般不存在问题。对于非计算机专业的人来说，要真正学好机器学习和深度学习，这些知识是绕不开的。</p>
+<h3 id="3-1-C"><a class="header-anchor" href="#3-1-C">¶</a>3.1 C++</h3>
+<p>虽然现在大家热衷于学习python，但要作为一名真正的算法工程师，还是应该好好学习一下c++，至少，机器学习和深度学习的很多底层开源库都是用它写的；很多公司线上的产品，无论是运行在服务器端，还是嵌入式端，都是用c++写的。此外，如果你是应届生，在校园招聘时不少公司都会面试你c++的知识。</p>
+<p>C++最经典的教材无疑是c++ primer：</p>
+<p><img src="/public/2018/10/01/AI/how_algorithm_engineer/clip_image017.gif" alt="3E0DE0E336474B81A2F89F2190628186.jpeg"></p>
+<p>对做算法的人来说，这本书其实不用全部看，把常用的点学完就够了。对于进阶，Effective c++是很好的选择，不少公司的面试题就直接出自这本书的知识点：</p>
+<p><img src="/public/2018/10/01/AI/how_algorithm_engineer/clip_image019.gif" alt="DDCC32DD5E6D405588CB4B6F4A94BFE5.jpeg"></p>
+<p>接下来说python，相比c++来说，学习的门槛要低很多，找一本通俗易懂的入门教程学习一遍即可。</p>
+<h3 id="3-2-数据结构和算法"><a class="header-anchor" href="#3-2-数据结构和算法">¶</a>3.2 数据结构和算法</h3>
+<p>数据结构和算法是编写很多程序的基础，对于机器学习和深度学习程序也不例外。很多算法的实现都依赖于数组，链表，数，排序，查找之类的数据结构和基础算法。如果有时间和精力，把算法导论啃一遍，你会有不一样的感受：</p>
+<p><img src="/public/2018/10/01/AI/how_algorithm_engineer/clip_image021.gif" alt="E077608423D7473ABF1DBF75C482E060.jpeg"></p>
+<p>对于应届生来说，学完它对于你通过大互联网和人工智能公司校园招聘的技术面试也非常有用。</p>
+<p>上面说的只是编程语言的程序设计的理论知识，我们还要考虑实际动手能力。对于开发环境如gcc/g++，visual studio之类的工具，以及gdb之类的调试工具需要做到熟练使用。如果是在linux上开发，对linux的常用命令也要熟记于心。这方面的知识看各种具体的知识点和教程即可。另外，对于编程的一些常识，如进程，线程，虚拟内存，文件系统等，你最好也要进行了解。</p>
+<h2 id="4-机器学习与深度学习的知识"><a class="header-anchor" href="#4-机器学习与深度学习的知识">¶</a>4. 机器学习与深度学习的知识</h2>
+<p>在说完了数学和编程基础之后，下面我来看核心的内容，机器学习和深度学习知识。机器学习是现阶段解决很多人工智能问题的核心方法，尤其是深度学习，因此它们是算法工程师的核心知识。在这里有一个问题：是否需要先学机器学习，还是直接学深度学习？如果是一个专业的算法工程师，我的建议是先学机器学习。至少，你要知道机器学习中的基本概念， 过拟合，生成模型，ROC曲线等，上来就看深度学习，如没有背景知识你将不知所云。另外，神经网络只是机器学习中的一类方法，对于很多问题，其他机器学习算法如logistic回归，随机森林，GBDT，决策树等还在被大规模使用，因此你不要把自己局限在神经网络的小圈子里。</p>
+<h3 id="4-1-ML和DP的教材"><a class="header-anchor" href="#4-1-ML和DP的教材">¶</a>4.1 ML和DP的教材</h3>
+<p>首先来看机器学习，这方面的教材很多，周志华老师的机器学习，李航老师的统计学习方法是国内的经典。这里我们介绍国外的经典教材，首先是PRML：</p>
+<p><img src="/public/2018/10/01/AI/how_algorithm_engineer/clip_image023.gif" alt="BE2D3D5817344DE0831B718D3F891899.jpeg"></p>
+<p>PRML 下载地址 <a href="https://www.microsoft.com/en-us/research/publication/pattern-recognition-machine-learning/" target="_blank" rel="noopener">link</a></p>
+<p>此书深厚，内容全面，涵盖了有监督学习，无监督学习的主要方法，理论推导和证明详细深入，是机器学习的经典。此外还有模式分类这本书，在这里不详细介绍。</p>
+<p>本书主要内容包括：
+<strong>第一章：简介</strong>
+概率论、模型选择、决策理论、信息理论</p>
+<p><strong>第二章：概率分布</strong>
+二元变量、多项变量、高斯分布、指数分布族、非参数方法</p>
+<p><strong>第三章：线性模型回归问题</strong>
+线性基函数模型、偏置方差分解、贝叶斯线性回归、贝叶斯模型比较、The Evidence Approximation、固定基函数的局限性</p>
+<p><strong>第四章：线性模型分类问题</strong>
+判别函数、概率生成模型、概率判别模型、拉普拉斯逼近、贝叶斯逻辑回归</p>
+<p><strong>第五章：神经网络</strong>
+前馈神经网络、网络训练、误差反向传播、Hessian矩阵、神经网络的正则化、混合密度网络、贝叶斯神经网络</p>
+<p><strong>第六章：Kernel方法</strong>
+对偶表示、构造核、径向基函数网络、高斯过程</p>
+<p><strong>第七章：Sparse Kernel Machines</strong>
+最大边缘分类器、相关向量机</p>
+<p><strong>第八章：图模型</strong>
+贝叶斯网络、条件独立性、马尔科夫随机场、图模型的推理</p>
+<p><strong>第九章：混合模型和EM</strong>
+K-means聚类、高斯混合、EM算法</p>
+<p><strong>第十章：近似推断</strong>
+变分推断、高斯的变分混合、变分线性回归、指数族分布、局部变分方法、变分logistic回归、Expectation Propagation</p>
+<p><strong>第十一章：采样方法</strong>
+基本采样算法、马尔科夫链蒙特卡洛、吉布斯采样、切片采样、混合蒙特卡洛算法、估计划分函数</p>
+<p><strong>第十二章：连续潜在变数</strong>
+主成分分析，Probabilistic PCA，Kernel PCA，非线性潜变量模型</p>
+<p><strong>第十三章：序列数据</strong>
+马尔可夫模型，隐马尔可夫模型，Linear Dynamical Systems</p>
+<p><strong>第十四章：混合模型</strong>
+贝叶斯模型平均法，Committees，Boosting，基于树的模型，条件混合模型</p>
+<p>深度学习目前最权威的教程是下面这本书：</p>
+<p><img src="/public/2018/10/01/AI/how_algorithm_engineer/clip_image025.gif" alt="A39AD50565E141F89B08C93CCD7DEDFC.jpeg"></p>
+<p>它涵盖了深度学习的方方面面，从理论到工程，但美中不足的是对应于介绍的相对较少。</p>
+<p>强化学习是机器学习很独特的一个分支，大多数人对它不太了解，这方面的教程非常少，我们推荐下面这本书：</p>
+<p><img src="/public/2018/10/01/AI/how_algorithm_engineer/clip_image027.gif" alt="115B0E32F06F4538A76CB9B610F63B8C.jpeg"></p>
+<p>美中不足的是这本书对深度强化学习没有介绍，因为出版的较早。不知最新的版本有没有加上这方面的内容。</p>
+<p>在这里需要强调的是，你的知识要系统化，有整体感。很多同学都感觉到自己学的机器学习太零散，缺乏整体感。这需要你多思考算法之间的关系，演化历史之类的问题，这样你就做到胸中有图-机器学习算法地图。其实，<a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247485551&amp;idx=2&amp;sn=a6689528f10aedab3fce91857eec877b&amp;chksm=fdb695f8cac11cee025ad6d8d77ed90f7169142d6b20b2f5a6945b58edd97c27225f4a2eba91&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">SIGAI</a>在之前的公众号文章“<a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247485306&amp;idx=1&amp;sn=fc8cc8de313bdb61dcd39c1dedb240a4&amp;chksm=fdb69aedcac113fb4b18c74248a313536ded50bade0e66b26f332ab247b148519da71ff2a3c0&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">机器学习算法地图</a>”里已经给你总结出来了。</p>
+<h3 id="4-2-开源库"><a class="header-anchor" href="#4-2-开源库">¶</a>4.2 开源库</h3>
+<p>上面介绍了机器学习和深度学习的理论教材，下面来说实践问题。我们无需重复造车轮子，熟练的使用主流的开源库是需要掌握的一项技能。对于经典的机器学习，常用的库的有:</p>
+<ul>
+<li>libsvm</li>
+<li>liblinear</li>
+<li>XGBoost</li>
+<li>OpenCV</li>
+<li>HTK</li>
+<li>Weka</li>
+</ul>
+<p>在这里我们不一一列举。借助于这些库，我们可以方便的完成自己的实验，或是研发自己的产品。对于深度学习，目前常用的有：</p>
+<ul>
+<li>Caffe</li>
+<li>TensorFlow</li>
+<li>MXNet</li>
+</ul>
+<p>除此之外，还有其他的。对于你要用到的开源库，一定要理解它的原理，以及使用中的一些细节问题。例如很多算法要求输入的数据先做归一化，否则效果会非常差，而且面临浮点数溢出的问题，这些实际经验需要你在使用中摸索。如果有精力把这些库的核心代码分析一遍，你对实现机器学习算法将会更有底气。以深度学习为例，最核心的代码无非是实现：</p>
+<ul>
+<li>各种层，包括它们的正向传播和反向传播</li>
+<li>激活函数的实现</li>
+<li>损失函数的实现</li>
+<li>输入数据的处理</li>
+<li>求解器，实现各种梯度下降法</li>
+</ul>
+<p>这些代码的量并不大，沉下心来，我相信一周之内肯定能分析完。看完之后你会有一种豁然开朗的感觉。</p>
+<h2 id="5-应用方向的知识"><a class="header-anchor" href="#5-应用方向的知识">¶</a>5. 应用方向的知识</h2>
+<p>接下来是各个方向的知识，与机器学习有关的应用方向当前主要有：</p>
+<ul>
+<li>机器视觉</li>
+<li>语音识别</li>
+<li>自然语言处理</li>
+<li>数据挖掘</li>
+<li>知识图谱</li>
+<li>推荐系统</li>
+</ul>
+<p>除此之外，还有其他一些特定小方向，在这里不一一列举。这些具体的应用方向一般都有自己的教材，如果你以后要从事此方向的研究，系统的学习一遍是必须的。</p>
+<h2 id="6-实践经验与思考"><a class="header-anchor" href="#6-实践经验与思考">¶</a>6. 实践经验与思考</h2>
+<p>在说完理论与实践知识之后，最后我们来说经验与思考。在你确定要做某一个方向之后，对这个方向的方法要有一个全面系统的认识，很多方法是一脉相承的，如果只追求时髦看最新的算法，你很难做出学术上的创新，以及工程上的优化。对于本问题所有的经典论文，都应该化时间细度，清楚的理解它们解决了什么问题，是怎么解决的，还有哪些问题没有解决。例如：</p>
+<ul>
+<li>机器视觉目标检测中的遮挡问题</li>
+<li>推荐系统中的冷启动问题</li>
+<li>自然语言处理中文分词中的歧义切分问题</li>
+</ul>
+<p>只有经过大量的编程和实验训练，以及持续的思考，你才能算得上对这个方向深刻理解，以至于有自己的理解。很多同学对自己实现轮上的算法没有底气，解决这个问题最快的途径就是看论文算法的开源代码，在github上有丰富的资源，选择一些合适的，研究一下别人是怎么实现的，你就能明白怎么实现自己的网络结构和损失函数，照葫芦画瓢即可。</p>
+<p>计算机以及人工智能是一个偏实践的学科，它的方法和理论既需要我们有扎实的理论功底，又需要有丰富的实践能力与经验。这两个方面构成了算法工程师最主要的素质。科学的学习路径能够让你取得好的学习效果，同时也缩短学习时间。错误和浮躁的做法则会让你最后事倍功半。这是  <a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247485551&amp;idx=2&amp;sn=a6689528f10aedab3fce91857eec877b&amp;chksm=fdb695f8cac11cee025ad6d8d77ed90f7169142d6b20b2f5a6945b58edd97c27225f4a2eba91&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">SIGAI</a> 对想进入这个领域，或者刚进入这个领域的每个人要说的！</p>
+<p><img src="/public/2018/10/01/AI/how_algorithm_engineer/clip_image029.gif" alt="07382DFD55044B48927C8B054DE6F745.png"></p>
+<h2 id="7-其他材料"><a class="header-anchor" href="#7-其他材料">¶</a>7. 其他材料</h2>
+<h3 id="7-1-科普类"><a class="header-anchor" href="#7-1-科普类">¶</a>7.1 科普类</h3>
+<p>【‍获取码】SIGAI0413
+​    <a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247483705&amp;idx=1&amp;sn=c6e7c4a2e14a2469308b41eb60f155ac&amp;chksm=fdb69caecac115b8712653600e526e99a3f6976fdaa2f6b6a09388fa6f9677ccb57b40c40ae3&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">机器学习——波澜壮阔四十年 </a></p>
+<p>【获取码】SIGAI0620
+​    <a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247484981&amp;idx=1&amp;sn=d3003468b9853851923844812993e060&amp;chksm=fdb69ba2cac112b4dac620d52100ebd033eb679f29340726a67297c4d6980b16c7cc91122028&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">理解计算：从√2到AlphaGo ——第1季 从√2谈起</a></p>
+<p>【获取码】SIGAI0704
+<a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247485155&amp;idx=1&amp;sn=990cc7400751c36e9fef0a261e6add2a&amp;chksm=fdb69b74cac112628bdae14c6435120f6fece20dae9bf7b1ffc8b8b25e5496a24160feca0a72&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">理解计算：从√2到AlphaGo ——第2季 神经计算的历史背景</a></p>
+<h3 id="7-2-数学类"><a class="header-anchor" href="#7-2-数学类">¶</a>7.2 数学类</h3>
+<p>【获取码】SIGAI0417
+<a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247483713&amp;idx=1&amp;sn=1e7c81381d16806ac73e15691fe17aec&amp;chksm=fdb69cd6cac115c05f1f90b0407e3f8ae9be8719e454f908074ac0d079885b5c134e2d60fd64&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">学好机器学习需要哪些数学知识</a></p>
+<p>【获取码】SIGAI0511
+<a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247484111&amp;idx=1&amp;sn=4ed4480e849298a0aff828611e18f1a8&amp;chksm=fdb69f58cac1164e844726bd429862eb7b38d22509eb4d1826eb851036460cb7ca5a8de7b9bb&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">理解梯度下降法</a></p>
+<p>【获取码】SIGAI0518
+<a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247484439&amp;idx=1&amp;sn=4fa8c71ae9cb777d6e97ebd0dd8672e7&amp;chksm=fdb69980cac110960e08c63061e0719a8dc7945606eeef460404dc2eb21b4f5bdb434fb56f92&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">理解凸优化</a></p>
+<p>【获取码】SIGAI0531
+<a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247484651&amp;idx=1&amp;sn=a0e4ca5edb868fe3eae9101b71dd7103&amp;chksm=fdb6997ccac1106a61f51fe9f8fd532045cc5d13f6c75c2cbbf1a7c94c58bcdf5f2a6661facd&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">理解牛顿法 </a></p>
+<h3 id="7-3-机器学习类"><a class="header-anchor" href="#7-3-机器学习类">¶</a>7.3 机器学习类</h3>
+<p>【获取码】SIGAI0428
+​    <a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247483937&amp;idx=1&amp;sn=84a5acf12e96727b13fd7d456c414c12&amp;chksm=fdb69fb6cac116a02dc68d948958ee731a4ae2b6c3d81196822b665224d9dab21d0f2fccb329&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">用一张图理解SVM的脉络</a></p>
+<p>【获取码】SIGAI0505
+​    <a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247483977&amp;idx=1&amp;sn=401b211bf72bc70f733d6ac90f7352cc&amp;chksm=fdb69fdecac116c81aad9e5adae42142d67f50258106f501af07dc651d2c1473c52fad8678c3&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">理解神经网络的激活函数</a></p>
+<p>【获取码】SIGAI0522
+<a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247484495&amp;idx=1&amp;sn=4f3a6ce21cdd1a048e402ed05c9ead91&amp;chksm=fdb699d8cac110ce53f4fc5e417e107f839059cb76d3cbf640c6f56620f90f8fb4e7f6ee02f9&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">【实验】理解SVM核函数和参数的作用</a></p>
+<p>【获取码】SIGAI0601
+<a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247484658&amp;idx=1&amp;sn=f5c9f92c272c75883bf8e6f532559f11&amp;chksm=fdb69965cac11073f49048caef5d7b9129614090a363d9ef7f3d1b9bc59948d2217d2bca7b7b&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">【群话题精华】五月集锦—机器学习和深度学习中一些值得思考的问题   </a></p>
+<p>【获取码】SIGAI0602
+​    <a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247484692&amp;idx=1&amp;sn=9b389aa65208c778dddf17c601afbee1&amp;chksm=fdb69883cac1119593934734e94c3b71aa68de67bda8a946c1f9f9e1209c3b6f0bf18fed99b8&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">大话AdaBoost算法    </a></p>
+<p>【获取码】SIGAI0606
+​    <a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247484754&amp;idx=1&amp;sn=b2c0d6798f44e13956bb42373e51d18c&amp;chksm=fdb698c5cac111d3e3dca24c50aafbfb61e5b05c5df5b603067bb7edec8db049370b73046b24&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">理解主成分分析（PCA）    </a></p>
+<p>【获取码】SIGAI0611
+​    <a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247484827&amp;idx=1&amp;sn=043d7d0159baaddfbf92ed78ee5b1124&amp;chksm=fdb6980ccac1111a9faeae7f517fee46a1dfab19612f76ccfe5417487b3f090ab8fc702d18b8&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">理解决策树  </a></p>
+<p>【获取码】SIGAI0613
+​    <a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247484859&amp;idx=1&amp;sn=2c4db22fb538953a62a90983e3e1f99d&amp;chksm=fdb6982ccac1113a82e92be325bb07a947d54090274654375f3b50e11e1abd809fb7358bde16&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">用一句话总结常用的机器学习算法</a></p>
+<p>【获取码】SIGAI0618
+​    <a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247484954&amp;idx=1&amp;sn=c28b7f07c22466e91b1ef90e9dbe3ad1&amp;chksm=fdb69b8dcac1129bc6e78fca1d550e2b18238ad1c240c73b280d4e529f9f93c4626b3ac45ea2&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">理解过拟合</a></p>
+<p>【获取码】SIGAI0627
+​    <a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247485074&amp;idx=1&amp;sn=0ebf1bf8f49e9c46075fe3803d04c95d&amp;chksm=fdb69b05cac112132d280c70af3923ca4c3cccfa5fcd8628b79d4b246b3b2decbc80a180abb3&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">k近邻算法</a></p>
+<p>【获取码】SIGAI0704
+​    <a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247485306&amp;idx=1&amp;sn=fc8cc8de313bdb61dcd39c1dedb240a4&amp;chksm=fdb69aedcac113fb4b18c74248a313536ded50bade0e66b26f332ab247b148519da71ff2a3c0&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">机器学习算法地图</a></p>
+<p>【获取码】SIGAI0706
+​    <a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247485446&amp;idx=1&amp;sn=57d7d866443810c20c4ea2c6ee8018cc&amp;chksm=fdb69591cac11c8773638b396abe43c0161e4d339f0fa845e54326be3e8c4933a3b6a2713dae&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">反向传播算法推导—全连接神经网络</a></p>
+<h3 id="7-4-深度学习类"><a class="header-anchor" href="#7-4-深度学习类">¶</a>7.4 深度学习类</h3>
+<p>【获取码】SIGAI0426
+<a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247483816&amp;idx=1&amp;sn=fc52765b012771d4736c9be4109f910e&amp;chksm=fdb69c3fcac115290020c3dd0d677d987086a031c1bde3429339bb3b5bbc0aa154e76325c225&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">卷积神经网络为什么能够称霸计算机视觉领域？</a></p>
+<p>【获取码】SIGAI0508
+<a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247484037&amp;idx=1&amp;sn=13ad0d521b6a3578ff031e14950b41f4&amp;chksm=fdb69f12cac11604a42ccb37913c56001a11c65a8d1125c4a9aeba1aed570a751cb400d276b6&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">深度卷积神经网络演化历史及结构改进脉络-40页长文全面解读 </a></p>
+<p>【获取码】SIGAI0515
+<a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247484310&amp;idx=1&amp;sn=0fc55a2784a894100a1ae64d7dbfa23d&amp;chksm=fdb69e01cac1171758cb021fc8779952e55de41032a66ee5417bd3e826bf703247e243654bd0&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">循环神经网络综述—语音识别与自然语言处理的利器</a></p>
+<p>【获取码】SIGAI0625
+<a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247485042&amp;idx=1&amp;sn=cdcf8d4b07acf64c7a6f5f7c1a731a12&amp;chksm=fdb69be5cac112f377766984afb87313c1e1c58d94c80005f0f6f6af61ee5a4bd1bf6c6157b6&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">卷积神经网络的压缩与加速</a></p>
+<p>【获取码】SIGAI0709
+<a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247485551&amp;idx=1&amp;sn=213f48c4e55bee688cf0731097bb832c&amp;chksm=fdb695f8cac11ceef3ef246c54d811dd64d8cc45fc75488c374c7aa95f72c1abfb55555ef0b7&amp;scene=21#wechat_redirect" target="_blank" rel="noopener"> 生成式对抗网络模型综述</a></p>
+<h3 id="7-5-机器视觉类"><a class="header-anchor" href="#7-5-机器视觉类">¶</a>7.5 机器视觉类</h3>
+<p>【获取码】SIGAI0420
+​    <a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247483726&amp;idx=1&amp;sn=9fef4cc1766ea4258749f8d40cc71a6e&amp;chksm=fdb69cd9cac115cf4eba16081780c3b64c75e1e55a40bf2782783d5c28f00c6f143426e6f0aa&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">人脸识别算法演化史</a></p>
+<p>【获取码】SIGAI0424
+​    <a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247483731&amp;idx=1&amp;sn=237c52bc9ddfe65779b73ef8b5507f3c&amp;chksm=fdb69cc4cac115d2ca505e0deb975960a792a0106a5314ffe3052f8e02a75c9fef458fd3aca2&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">基于深度学习的目标检测算法综述</a></p>
+<p>【获取码】SIGAI0503
+​    <a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247483950&amp;idx=1&amp;sn=a3a5b7907b2552c233f654a529931776&amp;chksm=fdb69fb9cac116af5dd237cf987e56d12b0d2e54c5c565aab752f3e366c0c45bfefa76f5ed16&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">人脸检测算法综述</a></p>
+<p>【获取码】SIGAI0525
+<a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247483950&amp;idx=1&amp;sn=a3a5b7907b2552c233f654a529931776&amp;chksm=fdb69fb9cac116af5dd237cf987e56d12b0d2e54c5c565aab752f3e366c0c45bfefa76f5ed16&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">【SIGAI综述】行人检测算法   </a></p>
+<p>【获取码】SIGAI0604
+​    <a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247484711&amp;idx=1&amp;sn=bb7644e101b5924f54d6800b952dc3aa&amp;chksm=fdb698b0cac111a6605f5b9b6f0478bf21a8527cfad2342dbaaf624b4e9dcc43c0d85ae06deb&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">FlowNet到FlowNet2.0：基于卷积神经网络的光流预测算法 </a></p>
+<p>【获取码】SIGAI0608
+​    <a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247484784&amp;idx=1&amp;sn=ceafb54203f4e930ae457ad392b9f89c&amp;chksm=fdb698e7cac111f13d8229d7dcc00b4a7305d66de3da1bd41e7ecc1d29bfa7be520d205c53e9&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">人体骨骼关键点检测综述 </a></p>
+<p>【获取码】SIGAI0615
+​    <a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247484909&amp;idx=1&amp;sn=c02ee17e5175230ed39ad63e73249f5c&amp;chksm=fdb6987acac1116c0108ec28424baf4ea16ca11d2b13f20d4a825d7b2b82fb8765720ebd1063&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">目标检测算法之YOLO</a></p>
+<p>【获取码】SIGAI0622
+​    <a href="https://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247485005&amp;idx=1&amp;sn=0d4fb43b8db2a8046c64a9cfcbf3f478&amp;chksm=fdb69bdacac112cce05c8b735b4f8b1ccf2348bea55a30af2055fc328958bb8f1ffd0f819bd2&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">场景文本检测——CTPN算法介绍</a></p>
+<p>【获取码】SIGAI0629
+​    <a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;mid=2247485142&amp;idx=1&amp;sn=c0e01da30eb5e750be453eabe4be2bf4&amp;chksm=fdb69b41cac11257ae22c7dac395e9651dab628fc35dd6d3c02d9566a8c7f5f2b56353d58a64&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">自然场景文本检测识别技术综述</a></p>
+]]></content>
+      <categories>
+        <category>算法</category>
+      </categories>
+      <tags>
+        <tag>人工智能</tag>
+        <tag>机器学习</tag>
+        <tag>深度学习</tag>
       </tags>
   </entry>
   <entry>
