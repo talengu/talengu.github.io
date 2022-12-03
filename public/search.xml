@@ -1185,54 +1185,6 @@ t   -=   (unsigned   long)GetCycleCount();</p>
       </tags>
   </entry>
   <entry>
-    <title>桥初始化（一）</title>
-    <url>/public/2021/12/02/linux_network/br_init/</url>
-    <content><![CDATA[<h2 id="前言"><a class="header-anchor" href="#前言">¶</a>前言</h2>
-<p>注：章节中的源代码，基于 linux 内核 4.7.4</p>
-<p>网桥的背景到处都有，在这里就不浪费的时间说废话了。</p>
-<p>桥接程序的初始化，桥接程序既可以集成在内核中，也可以编译成独立模块。初始化函数br_init和清理函数br_deinit的定义在/net/bridge/br.c中</p>
-<p>在网桥设备初始化的时候，主要是做一些注册和初始化的操作。</p>
-<h2 id="桥初始化"><a class="header-anchor" href="#桥初始化">¶</a>桥初始化</h2>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">int</span> __init <span class="title">br_init</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> err;</span><br><span class="line">    <span class="comment">/*注册协议生成树收包函数*/</span></span><br><span class="line">    err = stp_proto_register(&amp;br_stp_proto);</span><br><span class="line">    <span class="keyword">if</span> (err &lt; <span class="number">0</span>) &#123;</span><br><span class="line">        pr_err(<span class="string">"bridge: can't register sap for STP\n"</span>);</span><br><span class="line">        <span class="keyword">return</span> err;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">/*转发数据库初始化*/</span></span><br><span class="line">    err = br_fdb_init();</span><br><span class="line">    <span class="keyword">if</span> (err)</span><br><span class="line">        <span class="keyword">goto</span> err_out;</span><br><span class="line">   <span class="comment">/*在/proc目录下生成任何与bridge相关的目录，如果我们想在/proc下生成bridge相关的子目录或子文件*/</span></span><br><span class="line">    err = register_pernet_subsys(&amp;br_net_ops);</span><br><span class="line">    <span class="keyword">if</span> (err)</span><br><span class="line">        <span class="keyword">goto</span> err_out1;</span><br><span class="line">    <span class="comment">/*目前好像没有什么实际作用，在内核中所注册的函数为空*/</span></span><br><span class="line">    err = br_nf_core_init();</span><br><span class="line">    <span class="keyword">if</span> (err)</span><br><span class="line">        <span class="keyword">goto</span> err_out2;</span><br><span class="line">    <span class="comment">/*注册相关网络设备的事件通知连*/</span></span><br><span class="line">    err = register_netdevice_notifier(&amp;br_device_notifier);</span><br><span class="line">    <span class="keyword">if</span> (err)</span><br><span class="line">        <span class="keyword">goto</span> err_out3;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/*注册通知连，主要针对桥转发表事件的相关信息*/</span></span><br><span class="line">    err = register_switchdev_notifier(&amp;br_switchdev_notifier);</span><br><span class="line">    <span class="keyword">if</span> (err)</span><br><span class="line">        <span class="keyword">goto</span> err_out4;</span><br><span class="line">    <span class="comment">/*进行netlink的初始化*/</span></span><br><span class="line">    err = br_netlink_init();</span><br><span class="line">    <span class="keyword">if</span> (err)</span><br><span class="line">        <span class="keyword">goto</span> err_out5;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/*用来处理ioctl命令的函数，比如添加和删除网桥*/</span></span><br><span class="line">    brioctl_set(br_ioctl_deviceless_stub);</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">if</span> IS_ENABLED(CONFIG_ATM_LANE)</span></span><br><span class="line">    br_fdb_test_addr_hook = br_fdb_test_addr;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="具体的"><a class="header-anchor" href="#具体的">¶</a>具体的</h2>
-<p>了解了桥初始化大致要做的事情后，我们再来看看这些初始化或者注册的事情到底干了些什么？</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="number">1.</span>注册协议生成树收包函数stp_proto_register</span><br><span class="line">    在桥初始化的时候，注册了一个br_stp_proto参数，此参数的具体模样是这样子的</span><br><span class="line">   <span class="keyword">static</span> <span class="keyword">const</span> <span class="class"><span class="keyword">struct</span> <span class="title">stp_proto</span> <span class="title">br_stp_proto</span> = &#123;</span></span><br><span class="line">         .rcv   = br_stp_rcv,</span><br><span class="line">    &#125;;</span><br><span class="line">    br_stp_rcv函数在/net/bridge/br_stp_bpdu.c中主要针对网桥进行协议交换的帧（BPDU）进行配置操作。</span><br><span class="line"></span><br><span class="line">  <span class="number">2.</span>桥转发数据库初始化br_fdb_init</span><br><span class="line">    此函数就是在内存中建立一块slab cache，以存放net_bridge_fdb_entry</span><br><span class="line">    其中：net_bridge_fdb_entry是一个结构体，用来转发数据库的记录项网桥所学到对的每个MAC地址都有这样一个记录</span><br><span class="line"></span><br><span class="line">  <span class="number">3.</span>在proc目录下生成相关文件的注册函数register_pernet_subsys，初始化的时候给这个函数传递了一个参数br_net_ops，这个参数的模样是这样的</span><br><span class="line">  <span class="keyword">static</span> <span class="class"><span class="keyword">struct</span> <span class="title">pernet_operations</span> <span class="title">br_net_ops</span> = &#123;</span></span><br><span class="line">        .<span class="built_in">exit</span>   = br_net_exit,</span><br><span class="line">  &#125;;</span><br><span class="line">  但是在桥初始化的时候，仅仅注册了br_net_exit，这个函数会将桥下面的所有文件全部清空。</span><br><span class="line"></span><br><span class="line"> <span class="number">4.</span>通知链的相关函数注册register_netdevice_notifier这个注册函数主要针对设备信息的变化，注册参数br_device_notifier，具体如下：</span><br><span class="line"> <span class="keyword">static</span> <span class="class"><span class="keyword">struct</span> <span class="title">notifier_block</span> <span class="title">br_device_notifier</span> = &#123;</span></span><br><span class="line">        .notifier_call = br_device_event</span><br><span class="line">&#125;;</span><br><span class="line">br_device_event函数是用来当桥上的设备状态或者设备信息发生改变时做相应的处理，该函数在/net/bridge/br.c中</span><br><span class="line"></span><br><span class="line"> <span class="number">5.</span>注册通知连，主要针对桥转发表事件的相关信息register_switchdev_notifier，传入的参数br_switchdev_notifier详细信息如下：</span><br><span class="line"><span class="keyword">static</span> <span class="class"><span class="keyword">struct</span> <span class="title">notifier_block</span> <span class="title">br_switchdev_notifier</span> = &#123;</span></span><br><span class="line">    .notifier_call = br_switchdev_event,</span><br><span class="line">&#125;;</span><br><span class="line">br_switchdev_event，主要针对桥转发表的事件做出相应的处理该函数在/net/bridge/br.c中</span><br><span class="line"></span><br><span class="line"><span class="number">6.b</span>rioctl_set用来处理ioctl命令的函数，比如添加和删除网桥，br_ioctl_deviceless_stub给回调函数br_ioctl_hook,而br_ioctl_hook在sock_ioctl中</span><br><span class="line">使用，这样通过在应用层调用socket的ioctl函数，就能够进行网桥的添加与删除了，函数用来处理添加和删除网桥的相关操作，会在下一节详细介绍。</span><br></pre></td></tr></table></figure>
-<p>以上就是网桥初始化的相关操作 <sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup></p>
-<h2 id="参考"><a class="header-anchor" href="#参考">¶</a>参考</h2>
-<hr class="footnotes-sep">
-<section class="footnotes">
-<ol class="footnotes-list">
-<li id="fn1" class="footnote-item"><p><a href="https://blog.csdn.net/NW_NW_NW" target="_blank" rel="noopener">@不留你的名字</a> <a href="https://blog.csdn.net/NW_NW_NW/article/details/75045966" target="_blank" rel="noopener">桥初始化</a> 2010-12-01 <a href="#fnref1" class="footnote-backref">↩︎</a></p>
-</li>
-</ol>
-</section>
-]]></content>
-      <categories>
-        <category>linux</category>
-      </categories>
-      <tags>
-        <tag>linux network</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>现代数学手册</title>
-    <url>/public/2017/05/22/math/math_handbook/</url>
-    <content><![CDATA[<img src="/public/2017/05/22/math/math_handbook/Screen Shot 2020-03-06 at 13.24.51.png" alt="Screen Shot 2020-03-06 at 13.24.51" style="zoom:33%;">
-<img src="/public/2017/05/22/math/math_handbook/Screen Shot 2020-03-06 at 13.24.27.png" alt="Screen Shot 2020-03-06 at 13.24.27" style="zoom: 33%;">
-<img src="/public/2017/05/22/math/math_handbook/Screen Shot 2020-03-06 at 13.22.44.png" alt="Screen Shot 2020-03-06 at 13.22.44" style="zoom:33%;">
-<img src="/public/2017/05/22/math/math_handbook/Screen Shot 2020-03-06 at 13.23.48.png" alt="Screen Shot 2020-03-06 at 13.23.48" style="zoom:33%;">
-<img src="/public/2017/05/22/math/math_handbook/Screen Shot 2020-03-06 at 13.23.57.png" alt="Screen Shot 2020-03-06 at 13.23.57" style="zoom:33%;">
-<p>百度云链接: <a href="https://pan.baidu.com/s/1AwNZNoMLgJcJ5X0G0fpC5w" target="_blank" rel="noopener">https://pan.baidu.com/s/1AwNZNoMLgJcJ5X0G0fpC5w</a> 提取码: pb1n</p>
-]]></content>
-      <categories>
-        <category>现代数学</category>
-      </categories>
-      <tags>
-        <tag>数学</tag>
-        <tag>工具书</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>个人主页搭建</title>
     <url>/public/2016/12/22/build_blog/</url>
     <content><![CDATA[<h2 id="前言"><a class="header-anchor" href="#前言">¶</a>前言</h2>
@@ -2018,158 +1970,155 @@ nbextensions的教程<a href="https://jupyter-contrib-nbextensions.readthedocs.i
       </tags>
   </entry>
   <entry>
-    <title>选择困难者的福音？层次分析法</title>
-    <url>/public/2021/04/02/math/math_AHP/</url>
-    <content><![CDATA[<h2 id="摘要"><a class="header-anchor" href="#摘要">¶</a>摘要</h2>
-<p>日常生活中，我们面临很多的选择，选择工作offer，选择买哪个牌子的手机，选择哪个地方旅行等等。这些选择难以定量的衡量，有很多不确定性。内心小纠结，我选择了这个，万一那个好呢，怎么办？请看层次分析法。</p>
-<p>层次分析法(Analytic Hierarchy Process，简称 AHP)是对一些较为复杂、较为模糊的问题作出决策的简易方法，它特别适用于那些难于完全定量分析的问题。它是美国运筹学家 T. L. Saaty 教授于上世纪 70 年代初期提出的一种简便、灵活而又实用的多准则决策方法。</p>
-<p>运用层次分析法建模，大体上可按下面四个步骤进行</p>
-<ul>
-<li>建立递阶层次结构模型</li>
-<li>构造出各层次中的所有判断矩阵</li>
-<li>层次单排序及一致性检验</li>
-<li>层次总排序及一致性检验。（一般不用）</li>
-</ul>
+    <title>现代数学手册</title>
+    <url>/public/2017/05/22/math/math_handbook/</url>
+    <content><![CDATA[<img src="/public/2017/05/22/math/math_handbook/Screen Shot 2020-03-06 at 13.24.51.png" alt="Screen Shot 2020-03-06 at 13.24.51" style="zoom:33%;">
+<img src="/public/2017/05/22/math/math_handbook/Screen Shot 2020-03-06 at 13.24.27.png" alt="Screen Shot 2020-03-06 at 13.24.27" style="zoom: 33%;">
+<img src="/public/2017/05/22/math/math_handbook/Screen Shot 2020-03-06 at 13.22.44.png" alt="Screen Shot 2020-03-06 at 13.22.44" style="zoom:33%;">
+<img src="/public/2017/05/22/math/math_handbook/Screen Shot 2020-03-06 at 13.23.48.png" alt="Screen Shot 2020-03-06 at 13.23.48" style="zoom:33%;">
+<img src="/public/2017/05/22/math/math_handbook/Screen Shot 2020-03-06 at 13.23.57.png" alt="Screen Shot 2020-03-06 at 13.23.57" style="zoom:33%;">
+<p>百度云链接: <a href="https://pan.baidu.com/s/1AwNZNoMLgJcJ5X0G0fpC5w" target="_blank" rel="noopener">https://pan.baidu.com/s/1AwNZNoMLgJcJ5X0G0fpC5w</a> 提取码: pb1n</p>
+]]></content>
+      <categories>
+        <category>现代数学</category>
+      </categories>
+      <tags>
+        <tag>数学</tag>
+        <tag>工具书</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>为什么正好经过这个空隙？</title>
+    <url>/public/2017/05/05/math/math_q1/</url>
+    <content><![CDATA[<p><strong>前言</strong>
+偶然看到的一个问题，如图1，为什么正好经过这个空隙？我们用空间解析几何来解一下吧。</p>
+<p><img src="/public/2017/05/05/math/math_q1/math_q1_show.gif" alt="动图"></p>
+<div align="center"> 图1 为什么会经过这个空隙？</div>
 <a id="more"></a>
-<p>让我们从offer大佬的例子开始吧！</p>
-<p>举个栗子，今年有位大学生，有三个offer，C1 C2 C3。</p>
-<p>第一步，建立层次模型。</p>
-<ul>
-<li>目标层A：找工作的目标，自己满意程度。
-<ul>
-<li>这个程度怎么计算呢？比如工作1。</li>
-</ul>
-</li>
-<li>准则层B：研究课题、发展前途、待遇、同事情况、地理位置、单位名气等等。
-<ul>
-<li>尽量列全一点，不需要排列重要顺序。</li>
-<li>小于等于9个，后面要两两拍脑袋给出相对的重要层度，给多了不得把脑袋拍疼了。</li>
-<li>也可以有子准则层，比如待遇中的放假、工作环境等等，列出也小于9个。</li>
-</ul>
-</li>
-<li>方案层C：就是我们的offer</li>
-</ul>
-<img src="/public/2021/04/02/math/math_AHP/image-20200406145535585.png" alt="image-20200406145535585" style="zoom:50%;">
-<h2 id="构造-A-B-之间判断矩阵"><a class="header-anchor" href="#构造-A-B-之间判断矩阵">¶</a>构造 A B 之间判断矩阵</h2>
-<p>准则层B与目标A之间的关系。为了求出准则层中(B1-6) 对目标的重要层度的排序。比如对于该生工作满意度第一重要是待遇，然后是地点，其实该生自己也很模糊。就是固定A，然后求B中准则，对A重要性的排序。</p>
-<h3 id="我们怎么对B中的准则们的重要排序呢？"><a class="header-anchor" href="#我们怎么对B中的准则们的重要排序呢？">¶</a>我们怎么对B中的准则们的重要排序呢？</h3>
-<p>直接给每一个准则，0-1的评分，然后排序。经常会想，给完分之后，这个不合理呀要不我再给哪个准则加加分。所以这样的方法常常会因考虑不周全、顾此失彼而使决策者提出与他实际认为的重要性程度不相一致的数据。</p>
-<p>我们可以将这个过程细化，我就比较两个准则对于目标的重要性，然后通过下面的矩阵方法，求出优先顺序。</p>
-<p>还能通过一个一致性检验，来检验在你评分的过程中，有没有自相矛盾的地方，当然这种方法允许一些自相矛盾。反正评分的时候尊从内心拍脑袋就对了。</p>
-<p>所以我们拿出一个B1 与 B2 对于目标的重要，想一想然后给出B2/B1，填入下面的表格中的(2,1)的位置。</p>
-<p>整个矩阵i,j 与j，i 是取倒数的关系，所以只要做一半。</p>
-<p>在找工作的目标下，准则i与j相对的重要性表示，B2/B1 的值。采用9个标度。而相比不重要刻度取倒数就可以了</p>
-<table>
-<thead>
-<tr>
-<th>准则i比j的比较</th>
-<th>1</th>
-<th>2</th>
-<th>3</th>
-<th>4</th>
-<th>5</th>
-<th>6</th>
-<th>7</th>
-<th>8</th>
-<th>9</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-<td>相同重要</td>
-<td></td>
-<td>比较重要</td>
-<td></td>
-<td>明显重要</td>
-<td></td>
-<td>强烈重要</td>
-<td></td>
-<td>极端重要</td>
-</tr>
-</tbody>
-</table>
-<p>最后的两两相对重要表格</p>
-<img src="/public/2021/04/02/math/math_AHP/image-20200406145640316.png" alt="image-20200406145640316" style="zoom:50%;">
-<p>对角线对称的两个数互为倒数，即 $$a_{ji}=\frac{1}{a_{ij}}$$  B1/B2 不就是和 B2/B1互为倒数嘛</p>
-<p>从心理学观点来看，分级太多会超越人们的判断能力，既增加了作判断的难度， 又容易因此而提供虚假数据。Saaty 等人还用实验方法比较了在各种不同标度下人们判断结果的正确性，实验结果也表明，采用 1~9 标度最为合适。</p>
-<p>判断矩阵的一致性指标步骤：</p>
-<ul>
-<li>1）计算一致性指标 CI 。$$CI=\frac{ \lambda_{max}-n}{n-1}$$</li>
-<li>2）查表，平均随机一致性指标 RI。</li>
-</ul>
-<table>
-<thead>
-<tr>
-<th>n</th>
-<th>1</th>
-<th>2</th>
-<th>3</th>
-<th>4</th>
-<th>5</th>
-<th>6</th>
-<th>7</th>
-<th>8</th>
-<th>9</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>RI</td>
-<td>0</td>
-<td>0</td>
-<td>0.58</td>
-<td>0.90</td>
-<td>1.12</td>
-<td>1.24</td>
-<td>1.32</td>
-<td>1.41</td>
-<td>1.45</td>
-</tr>
-</tbody>
-</table>
-<blockquote>
-<p><em>RI</em> 的值是这样得到的，用随机方法构造500个样本矩阵:随机地从1~9及其倒数中抽取数字构造正互反矩阵，求得最大特征根的平均值 $$\bar \lambda_{max}$$ 并定义$$RI=\frac{\bar \lambda_{max}-n}{n-1}$$</p>
-</blockquote>
-<ul>
-<li>3）计算一致性比例CR。 $$CR=\frac{CI}{RI}$$，当$$CR&lt;0.10$$ 时，认为判断矩阵的一致性是可以接受的，否则应对判断矩阵作适当修正。</li>
-</ul>
-<p>如果一个矩阵满足上面的条件，那么它最大特征值对应的特征向量就可以认为是每个维度的重要性权重。</p>
-<h2 id="构造-B-C-之间判断矩阵"><a class="header-anchor" href="#构造-B-C-之间判断矩阵">¶</a>构造 B C 之间判断矩阵</h2>
-<p>相同的方法，在同一B准则下，考虑不同工作的优先顺序。求工作排序的方法，和上面一样。</p>
-<img src="/public/2021/04/02/math/math_AHP/image-20200406162644137.png" alt="image-20200406162644137" style="zoom:50%;">
-<p>python代码<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup></p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">import</span> warnings</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AHP</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, criteria, b)</span>:</span></span><br><span class="line">        self.RI = (<span class="number">0</span>, <span class="number">0</span>, <span class="number">0.58</span>, <span class="number">0.9</span>, <span class="number">1.12</span>, <span class="number">1.24</span>, <span class="number">1.32</span>, <span class="number">1.41</span>, <span class="number">1.45</span>, <span class="number">1.49</span>)</span><br><span class="line">        self.criteria = criteria</span><br><span class="line">        self.b = b</span><br><span class="line">        self.num_criteria = criteria.shape[<span class="number">0</span>]</span><br><span class="line">        self.num_project = b[<span class="number">0</span>].shape[<span class="number">0</span>]</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">cal_weights</span><span class="params">(self, input_matrix)</span>:</span></span><br><span class="line">        input_matrix = np.array(input_matrix)</span><br><span class="line">        n, n1 = input_matrix.shape</span><br><span class="line">        <span class="keyword">assert</span> n == n1, <span class="string">'不是一个方阵'</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(n):</span><br><span class="line">            <span class="keyword">for</span> j <span class="keyword">in</span> range(n):</span><br><span class="line">                <span class="keyword">if</span> np.abs(input_matrix[i, j] * input_matrix[j, i] - <span class="number">1</span>) &gt; <span class="number">1e-7</span>:</span><br><span class="line">                    <span class="keyword">raise</span> ValueError(<span class="string">'不是反互对称矩阵'</span>)</span><br><span class="line"></span><br><span class="line">        eigenvalues, eigenvectors = np.linalg.eig(input_matrix)</span><br><span class="line"></span><br><span class="line">        max_idx = np.argmax(eigenvalues)</span><br><span class="line">        max_eigen = eigenvalues[max_idx].real</span><br><span class="line">        eigen = eigenvectors[:, max_idx].real</span><br><span class="line">        eigen = eigen / eigen.sum()</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> n &gt; <span class="number">9</span>:</span><br><span class="line">            CR = <span class="literal">None</span></span><br><span class="line">            warnings.warn(<span class="string">'无法判断一致性'</span>)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            CI = (max_eigen - n) / (n - <span class="number">1</span>)</span><br><span class="line">            CR = CI / self.RI[n]</span><br><span class="line">        <span class="keyword">return</span> max_eigen, CR, eigen</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">run</span><span class="params">(self)</span>:</span></span><br><span class="line">        max_eigen, CR, criteria_eigen = self.cal_weights(self.criteria)</span><br><span class="line">        print(<span class="string">'准则层：最大特征值&#123;:&lt;5f&#125;,CR=&#123;:&lt;5f&#125;,检验&#123;&#125;通过'</span>.format(max_eigen, CR, <span class="string">''</span> <span class="keyword">if</span> CR &lt; <span class="number">0.1</span> <span class="keyword">else</span> <span class="string">'不'</span>))</span><br><span class="line">        print(<span class="string">'准则层权重=&#123;&#125;\n'</span>.format(criteria_eigen))</span><br><span class="line"></span><br><span class="line">        max_eigen_list, CR_list, eigen_list = [], [], []</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> self.b:</span><br><span class="line">            max_eigen, CR, eigen = self.cal_weights(i)</span><br><span class="line">            max_eigen_list.append(max_eigen)</span><br><span class="line">            CR_list.append(CR)</span><br><span class="line">            eigen_list.append(eigen)</span><br><span class="line"></span><br><span class="line">        pd_print = pd.DataFrame(eigen_list,</span><br><span class="line">                                index=[<span class="string">'准则'</span> + str(i) <span class="keyword">for</span> i <span class="keyword">in</span> range(self.num_criteria)],</span><br><span class="line">                                columns=[<span class="string">'方案'</span> + str(i) <span class="keyword">for</span> i <span class="keyword">in</span> range(self.num_project)],</span><br><span class="line">                                )</span><br><span class="line">        pd_print.loc[:, <span class="string">'最大特征值'</span>] = max_eigen_list</span><br><span class="line">        pd_print.loc[:, <span class="string">'CR'</span>] = CR_list</span><br><span class="line">        pd_print.loc[:, <span class="string">'一致性检验'</span>] = pd_print.loc[:, <span class="string">'CR'</span>] &lt; <span class="number">0.1</span></span><br><span class="line">        print(<span class="string">'方案层'</span>)</span><br><span class="line">        print(pd_print)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 目标层</span></span><br><span class="line">        obj = np.dot(criteria_eigen.reshape(<span class="number">1</span>, <span class="number">-1</span>), np.array(eigen_list))</span><br><span class="line">        print(<span class="string">'\n目标层'</span>, obj)</span><br><span class="line">        print(<span class="string">'最优选择是方案&#123;&#125;'</span>.format(np.argmax(obj)))</span><br><span class="line">        <span class="keyword">return</span> obj</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    <span class="comment"># 准则重要性矩阵</span></span><br><span class="line">    criteria = np.array([[<span class="number">1</span>, <span class="number">2</span>, <span class="number">7</span>, <span class="number">5</span>, <span class="number">5</span>],</span><br><span class="line">                         [<span class="number">1</span> / <span class="number">2</span>, <span class="number">1</span>, <span class="number">4</span>, <span class="number">3</span>, <span class="number">3</span>],</span><br><span class="line">                         [<span class="number">1</span> / <span class="number">7</span>, <span class="number">1</span> / <span class="number">4</span>, <span class="number">1</span>, <span class="number">1</span> / <span class="number">2</span>, <span class="number">1</span> / <span class="number">3</span>],</span><br><span class="line">                         [<span class="number">1</span> / <span class="number">5</span>, <span class="number">1</span> / <span class="number">3</span>, <span class="number">2</span>, <span class="number">1</span>, <span class="number">1</span>],</span><br><span class="line">                         [<span class="number">1</span> / <span class="number">5</span>, <span class="number">1</span> / <span class="number">3</span>, <span class="number">3</span>, <span class="number">1</span>, <span class="number">1</span>]])</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 对每个准则，方案优劣排序</span></span><br><span class="line">    b1 = np.array([[<span class="number">1</span>, <span class="number">1</span> / <span class="number">3</span>, <span class="number">1</span> / <span class="number">8</span>], [<span class="number">3</span>, <span class="number">1</span>, <span class="number">1</span> / <span class="number">3</span>], [<span class="number">8</span>, <span class="number">3</span>, <span class="number">1</span>]])</span><br><span class="line">    b2 = np.array([[<span class="number">1</span>, <span class="number">2</span>, <span class="number">5</span>], [<span class="number">1</span> / <span class="number">2</span>, <span class="number">1</span>, <span class="number">2</span>], [<span class="number">1</span> / <span class="number">5</span>, <span class="number">1</span> / <span class="number">2</span>, <span class="number">1</span>]])</span><br><span class="line">    b3 = np.array([[<span class="number">1</span>, <span class="number">1</span>, <span class="number">3</span>], [<span class="number">1</span>, <span class="number">1</span>, <span class="number">3</span>], [<span class="number">1</span> / <span class="number">3</span>, <span class="number">1</span> / <span class="number">3</span>, <span class="number">1</span>]])</span><br><span class="line">    b4 = np.array([[<span class="number">1</span>, <span class="number">3</span>, <span class="number">4</span>], [<span class="number">1</span> / <span class="number">3</span>, <span class="number">1</span>, <span class="number">1</span>], [<span class="number">1</span> / <span class="number">4</span>, <span class="number">1</span>, <span class="number">1</span>]])</span><br><span class="line">    b5 = np.array([[<span class="number">1</span>, <span class="number">4</span>, <span class="number">1</span> / <span class="number">2</span>], [<span class="number">1</span> / <span class="number">4</span>, <span class="number">1</span>, <span class="number">1</span> / <span class="number">4</span>], [<span class="number">2</span>, <span class="number">4</span>, <span class="number">1</span>]])</span><br><span class="line"></span><br><span class="line">    b = [b1, b2, b3, b4, b5]</span><br><span class="line">    a = AHP(criteria, b).run()</span><br></pre></td></tr></table></figure>
-<h2 id="层次分析法与控制变量法"><a class="header-anchor" href="#层次分析法与控制变量法">¶</a>层次分析法与控制变量法</h2>
-<p>我们的任务是选择工作，最后使得我们满意，直接选择我们当然一头雾水。所以我们设立一些准则，然后对这些准则对于目标的重要性排序。</p>
-<p>这又有点像概率图模型，只是赋权的方法，是相互比较的方法。</p>
-<h2 id="选择困难者的福音？"><a class="header-anchor" href="#选择困难者的福音？">¶</a>选择困难者的福音？</h2>
-<p>层次分析法对人们的思维过程进行了加工整理，提出了一套系统分析问题的方法，为科学管理和决策提供了较有说服力的依据。</p>
-<p>在应用层次分析法研究问题时，遇到的主要困难有两个:<br>
-(1) 如何根据实际情况抽象出较为贴切的层次结构;<br>
-(2) 如何将某些定性的量作比较接近实际定量化处理。</p>
-<p>层次分析法的其局限性<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup>：<br>
-(1) 它在很大程度上依赖于人们的经验，主观因素的影响很大，它至多只能排除思维过程中的严重非一致性，却无法排除决策者个人可能存在的严重片面性。<br>
-(2) 比较、 判断过程较为粗糙，不能用于精度要求较高的决策问题。</p>
-<p>所以，AHP 至多只能算是一种半定量(或定性与定量结合)的方法。
-本文仅供参考，不负法律责任，哈哈。</p>
-<h2 id="参考"><a class="header-anchor" href="#参考">¶</a>参考</h2>
-<hr class="footnotes-sep">
-<section class="footnotes">
-<ol class="footnotes-list">
-<li id="fn1" class="footnote-item"><p>幼鹰me 知乎 <a href="https://zhuanlan.zhihu.com/p/101505929" target="_blank" rel="noopener">层次分析法原理与Python实现</a> <a href="#fnref1" class="footnote-backref">↩︎</a></p>
-</li>
-<li id="fn2" class="footnote-item"><p>司守奎《数学建模算法与程序》第八章 层次分析法 P167 <a href="#fnref2" class="footnote-backref">↩︎</a></p>
-</li>
-</ol>
-</section>
+<p><strong>解答</strong></p>
+<p>如图2，建立空间直角坐标系$xyz$，原点记为 $O$ ， $P$  点为水平杆与斜杆的交点， $Q$ 点为垂直杆与水平杆的交点， 将斜杆标记为 $L$ 。</p>
+<p><img src="/public/2017/05/05/math/math_q1/v2-80ac80b8031d5782412f4f4ef4e22a1a_b.jpeg" alt="img"></p>
+<div align="center"> 图2 建立空间直角坐标系</div>
+<p>设 $OQ=q$  ， $QP=r$  。$Q$ 点坐标为 $(0, 0, q)$  。</p>
+<p>设水平杆  $QP$  绕  $z$   轴以  $\omega, rad/s$  的角速度旋转，并设从开始旋转到现在的时长为 $t$  秒， 则  $P$  点坐标为 $(r\cos{\omega t}, r\sin{\omega t}, q)$  。</p>
+<p>由 $Q$、$P$ 两点坐标得：</p>
+<p>$$
+\overrightarrow{OQ}=(0, 0, q) \qquad \overrightarrow{QP}=(r\cos{\omega t}, r\sin{\omega t}, 0) \tag{1}
+$$</p>
+<p>设 $L$ 的方向向量 $\overrightarrow{S}=(a, b, c) $，由 $L$ 的方向向量 $\overrightarrow{S}$ 和 $P$ 点得，得斜杆  $L$  代表的直线方程：
+$$
+\frac{x-r\cos{\omega t}}{a}=\frac{y-r\sin{\omega t}}{b}=\frac{z-q}{c} \tag{2}
+$$</p>
+<p>我们知道 $\overrightarrow{QP}$ 与斜杆 $L$ 垂直，假设 $\overrightarrow{OQ}$ 与斜杆 $L$ 成固定角 $ \theta$ ，得：
+$$
+\begin{cases} 0=\overrightarrow{QP} \cdot \overrightarrow{S} \ \cos{\theta}=\frac{\overrightarrow{OQ} \cdot \overrightarrow{S}}{\left|\overrightarrow{OQ}\right| \left| \overrightarrow{S}\right|} \end{cases} \tag{3}
+$$</p>
+<p>把 $\overrightarrow{QP}$， $\overrightarrow{S}$， $\overrightarrow{OQ}$ 代入 式(3)，得
+$$
+\begin{cases}  \frac{a}{b}=\frac{-\sin{\omega t}}{\cos{\omega t}} \ c^{2}(\tan{\theta})^{2}=a^{2}+b^{2}  \end{cases} \tag{4}
+$$</p>
+<p>式（4）中第2条等式两边除以 $b^2$ ，再化简得：
+$$
+\frac{c^{2}}{b^{2}}=\frac{1}{(\tan{\theta})^{2}(\cos{\omega t})^{2}} \tag{5}
+$$</p>
+<p>求直线组 $L$ 与 $xoz$ 平面相交的图形，即回答这个缝隙的形状为什么是图1 中这样的曲线。我们令 $y=0$ ，代入直线公式(2) 得：
+$$
+\frac{x-r\cos{\omega t}}{a}=\frac{-r\sin{\omega t}}{b} =\frac{z-q}{c} \tag{6}
+$$
+由式（4）（5）（6）得到方程组（7）。
+$$
+\begin{cases} \frac{a}{b}=\frac{-\sin{\omega t}}{\cos{\omega t}}\  \frac{x-r\cos{\omega t}}{a}=\frac{-r\sin{\omega t}}{b} \  \frac{c^2}{b^2}=\frac{1}{(\tan{\theta})^{2}(\cos{\omega t})^{2}}\  \frac{-r\sin{\omega t}}{b} =\frac{z-q}{c}  \end{cases}  \tag{7}
+$$</p>
+<p>由式（7）中上面两个等式，消去a，b得：
+$$
+\frac{-\sin{\omega t}}{\cos{\omega t}}=\frac{x-r\cos{\omega t}}{-r\sin{\omega t}}=\frac{a}{b} \tag{8}
+$$
+$$
+x \cos{\omega t}=r   \tag{9}
+$$</p>
+<p>由式（7）中下面两个等式，消去b，c得：
+$$
+\frac{1}{(\tan{\theta})^2(\cos{\omega t})^2}
+= \frac{(z-q)^2}{(-r\sin{\omega t})^2}
+=\frac{c^2}{b^2} \tag{10}
+$$</p>
+<p>$$
+\frac{(-r\sin{\omega t})^2}{(\tan{\theta})^2(\cos{\omega t})^2}
+= {(z-q)}^2 \tag{11}
+$$</p>
+<p>由利用式（9），可消去式（11）中的 $(\sin{\omega t})^{2}$  和 $(\cos{\omega t})^{2}$  得：
+$$
+x^{2}-(\tan{\theta})^{2}(z-q)^{2}=r^{2} \tag{12}
+$$
+易知，为双曲线方程，所以在  xoz 平面相交得图形为双曲线。 ■</p>
+<hr>
+<p>欢迎观众老爷们评论回复，一键三连。
+更多有趣问题，欢迎关注投稿 <a href="https://zhuanlan.zhihu.com/shuxuemanyou" target="_blank" rel="noopener">知乎小成 - 数学漫游专栏</a>，
+我们聚焦生活中的数与形的小小问题们。
+转载请注明出处，谢谢！</p>
 ]]></content>
       <categories>
         <category>数学</category>
       </categories>
       <tags>
+        <tag>Latex</tag>
         <tag>数学</tag>
-        <tag>层次分析法</tag>
+        <tag>空间解析几何</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>希腊罗马神话</title>
+    <url>/public/2018/11/05/readings/Gods_stories/</url>
+    <content><![CDATA[<p><strong>前言</strong></p>
+<p>在我电的图书馆的还书柜子里面偶然所得，一本叫《希腊罗马神话对英语语言文化的影响》吕海平 著 江苏大学初版社，然后莫名的想研究一下，发现挺不错的。</p>
+<a id="more"></a>
+<p>古希腊罗马的神的关系还是比较乱的，尤其是jupiter 或者zeus的奥林匹斯神系。从上古的神系，总共有三代。</p>
+<p>网上有个人（<a href="http://www.veritablehokum.com/" target="_blank" rel="noopener">Korwin Briggs</a>）做的关系图很不错。</p>
+<p>TODO:后面我也会对其进行整理，以后给大家分享。</p>
+<p><img src="http://www.veritablehokum.com/wp-content/uploads/2018/08/Roman-God-Family-Tree.jpg" alt></p>
+]]></content>
+      <categories>
+        <category>读书笔记</category>
+      </categories>
+      <tags>
+        <tag>希腊罗马神话</tag>
+        <tag>语言文化</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>红楼梦与我</title>
+    <url>/public/2017/05/14/readings/hongloumeng/</url>
+    <content><![CDATA[<p>红楼梦是我国四大名著之一，主要内容是贾府的兴衰和宝黛的悲剧爱情。电视剧红楼梦2010版，我是从八月开始看的，看完到现在，也有小一个月了。在网上大家对这版电视剧褒贬不一。与我来说，我是喜欢这部剧的，不能说拍得很好，但这部剧却勾起了我读书与写字的兴趣。于是乎，做了一篇随笔，以记录我的一些感触。</p>
+<a id="more"></a>
+<p>我记得最早是小学，我们还是顾着打玻璃珠和丢沙包的年纪，学校旁边的小书店里，也都是七龙珠，哆啦A梦，柯南的小人书，老师们讲到四大名著，顺带提了下红楼梦，其他没印象了。我们学习最多的是中文的拼音和书写，作文都是打油，日记也闹了不少笑话。后来上初中，有一次寒假附加作业是阅读红楼梦，我虽毫无兴趣，但还是硬着头皮，去新华书店，试看红楼梦。120章的红楼，厚得连看下去的勇气也没有。略看了几下，最后，做了一个红楼梦不好看的论断，也就放在那边了。那时有老版的红楼梦电视剧播映，打开电视偶尔会遇见，但是立马换台，央视的西游记与情深深雨蒙蒙，湖南电视台的还珠格格，也是欣赏了好几遍。再者，有动画片谁有兴趣去看这些什么破剧，关于书本，最多也就是看看汤姆索亚历险记。</p>
+<p>再后来，去启中读书，学习上比较紧张，再加上理科班的非文学氛围，对这些文学的东西更不感冒。尽管偶尔也会入耳一些其中的人物，比如林妹妹，刘姥姥，也是不用大脑耳朵直接过滤。当时，大伙是杂志，读者，青年文摘读得比较多，班上一本，全班查阅，杂志文章篇幅较小，读起很顺很舒服。期间，与红楼的唯一一次接触是，高中教科书上有刘姥姥进大观园的章节，翻了一遍，当时，感叹人物好多，理不出人物关系，完全放弃看完红楼的欲望。以为姥姥是贾府的姥姥，猩猩然想着以后可以说看过一段红楼，红楼也比较贵不如多买几本读者，积累作文素材。不知什么时候，班上网络小说之风随着mp4和智能手机的普及而吹起，我也用MP4刷完了一两部网络小说，感觉都是一个套路，主角都是绝处逢生，越来越无敌，也就不敢兴趣了。</p>
+<p>再然后，我上大学，藏书400百万册的成电图书馆，也并没有引起我读文学类的欲望，大学四年借的专业工具类书比较多，想来也是浪费资源。在一个工科高校，文学方面的课程几乎没有，虽说有个大学语文的选修课，俨然不感兴趣。大学里，再一次看到有人在看红楼梦电视剧，也是大二的时候的人工智能课上，也是闲得无聊。再后来，大四时，手机上自带一个蜻蜓网络电台应用，无聊点开蒋勋老师评述的红楼梦音频，红学大师讲到他与红楼梦的相遇，同时，他介绍的红楼基本背景和人物，通俗易懂，一下子引起我的兴趣。他说红楼梦写的都是15、6岁人的故事，15、16岁就可以读了。回想我15、16岁，基本没看什么名著。要说四大名著，我也就看了三国和水浒的少年版。上次回家，看美剧，老妈突然蹦出句，不能光看英文也应当看看我们老祖宗的文化。</p>
+<p>现在得空，就这样抱着惭愧和一丝尝试我看起了2010版红楼梦。在这我得承认，我是个演员控。不得不说，三大主演都很不错。</p>
+<p>50集过后，原来红楼讲得是这个，并表示有兴趣去读读名著了。原来有这么多原来。</p>
+<ul>
+<li>
+<p>人物家族命运令人感慨。作者写出超越那个时代的朦胧的爱情与不得不提的丧心病狂的全部悲剧，果然是个失意文人的作品。 可叹停机德，堪怜咏絮才。宝钗落落大方德才兼备，黛玉因情而伤而痛去世，宝玉虽与宝钗结婚，最后离家成道去。精于人情世故,，胸有城府的王熙凤，平日的爽朗笑声终究悲剧，贾府里多么好的领导，最后也人情冷暖，不免为其伤心。刘姥姥，其实是个成功的投机分子，但也是朴实善良的“穷亲戚”，最后救了巧儿。十二金钗各有个的悲剧，正如宝玉在虚幻仙境里警幻仙姑给的设定。原来故事一开始就把结局告诉了读者。</p>
+</li>
+<li>
+<p>体验古代贵族文化。里面还有个诗社的组织，古人的结社，好有雅致，也会给人起“绰号”。除此以外还有击鼓传花，有时主题是讲笑话有时对诗。猜灯谜，中秋赏月，生日宴会等等。</p>
+</li>
+<li>
+<p>语言魅力。打秋风，这是形容刘姥姥找找贾府接济用的。恼，生气，或者使生气。不同人的称谓，宝兄弟，宝二爷，宝姐姐或者好姐姐，林妹妹或者好妹妹。</p>
+</li>
+<li>
+<p>情节回味无穷。刘姥姥进大观园，是贾母和姥姥差不多年纪想和她聊聊，邀请她的。乡村来打秋风的刘姥姥像是在参观皇宫。在后面时期  ，家族里一次比一次捉襟见肘的聚会，可以看见这些家族的衰落。中国的各种人情世故体现在这里面。四个大家族，一个小社会。</p>
+</li>
+</ul>
+<p>以上是我的一点点感悟。</p>
+<p>只是，我与红楼梦，还差80章书页，希望还能有计划地读完。</p>
+<p>2016年于成电</p>
+]]></content>
+      <categories>
+        <category>读书笔记</category>
+      </categories>
+      <tags>
+        <tag>故事</tag>
+        <tag>《红楼梦》</tag>
       </tags>
   </entry>
   <entry>
@@ -2682,137 +2631,33 @@ markdate:2022-11-17 17:18:09.571032</p>
       </tags>
   </entry>
   <entry>
-    <title>希腊罗马神话</title>
-    <url>/public/2018/11/05/readings/Gods_stories/</url>
-    <content><![CDATA[<p><strong>前言</strong></p>
-<p>在我电的图书馆的还书柜子里面偶然所得，一本叫《希腊罗马神话对英语语言文化的影响》吕海平 著 江苏大学初版社，然后莫名的想研究一下，发现挺不错的。</p>
-<a id="more"></a>
-<p>古希腊罗马的神的关系还是比较乱的，尤其是jupiter 或者zeus的奥林匹斯神系。从上古的神系，总共有三代。</p>
-<p>网上有个人（<a href="http://www.veritablehokum.com/" target="_blank" rel="noopener">Korwin Briggs</a>）做的关系图很不错。</p>
-<p>TODO:后面我也会对其进行整理，以后给大家分享。</p>
-<p><img src="http://www.veritablehokum.com/wp-content/uploads/2018/08/Roman-God-Family-Tree.jpg" alt></p>
+    <title>桥初始化（一）</title>
+    <url>/public/2021/12/02/linux_network/br_init/</url>
+    <content><![CDATA[<h2 id="前言"><a class="header-anchor" href="#前言">¶</a>前言</h2>
+<p>注：章节中的源代码，基于 linux 内核 4.7.4</p>
+<p>网桥的背景到处都有，在这里就不浪费的时间说废话了。</p>
+<p>桥接程序的初始化，桥接程序既可以集成在内核中，也可以编译成独立模块。初始化函数br_init和清理函数br_deinit的定义在/net/bridge/br.c中</p>
+<p>在网桥设备初始化的时候，主要是做一些注册和初始化的操作。</p>
+<h2 id="桥初始化"><a class="header-anchor" href="#桥初始化">¶</a>桥初始化</h2>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">int</span> __init <span class="title">br_init</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> err;</span><br><span class="line">    <span class="comment">/*注册协议生成树收包函数*/</span></span><br><span class="line">    err = stp_proto_register(&amp;br_stp_proto);</span><br><span class="line">    <span class="keyword">if</span> (err &lt; <span class="number">0</span>) &#123;</span><br><span class="line">        pr_err(<span class="string">"bridge: can't register sap for STP\n"</span>);</span><br><span class="line">        <span class="keyword">return</span> err;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">/*转发数据库初始化*/</span></span><br><span class="line">    err = br_fdb_init();</span><br><span class="line">    <span class="keyword">if</span> (err)</span><br><span class="line">        <span class="keyword">goto</span> err_out;</span><br><span class="line">   <span class="comment">/*在/proc目录下生成任何与bridge相关的目录，如果我们想在/proc下生成bridge相关的子目录或子文件*/</span></span><br><span class="line">    err = register_pernet_subsys(&amp;br_net_ops);</span><br><span class="line">    <span class="keyword">if</span> (err)</span><br><span class="line">        <span class="keyword">goto</span> err_out1;</span><br><span class="line">    <span class="comment">/*目前好像没有什么实际作用，在内核中所注册的函数为空*/</span></span><br><span class="line">    err = br_nf_core_init();</span><br><span class="line">    <span class="keyword">if</span> (err)</span><br><span class="line">        <span class="keyword">goto</span> err_out2;</span><br><span class="line">    <span class="comment">/*注册相关网络设备的事件通知连*/</span></span><br><span class="line">    err = register_netdevice_notifier(&amp;br_device_notifier);</span><br><span class="line">    <span class="keyword">if</span> (err)</span><br><span class="line">        <span class="keyword">goto</span> err_out3;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/*注册通知连，主要针对桥转发表事件的相关信息*/</span></span><br><span class="line">    err = register_switchdev_notifier(&amp;br_switchdev_notifier);</span><br><span class="line">    <span class="keyword">if</span> (err)</span><br><span class="line">        <span class="keyword">goto</span> err_out4;</span><br><span class="line">    <span class="comment">/*进行netlink的初始化*/</span></span><br><span class="line">    err = br_netlink_init();</span><br><span class="line">    <span class="keyword">if</span> (err)</span><br><span class="line">        <span class="keyword">goto</span> err_out5;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/*用来处理ioctl命令的函数，比如添加和删除网桥*/</span></span><br><span class="line">    brioctl_set(br_ioctl_deviceless_stub);</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">if</span> IS_ENABLED(CONFIG_ATM_LANE)</span></span><br><span class="line">    br_fdb_test_addr_hook = br_fdb_test_addr;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="具体的"><a class="header-anchor" href="#具体的">¶</a>具体的</h2>
+<p>了解了桥初始化大致要做的事情后，我们再来看看这些初始化或者注册的事情到底干了些什么？</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="number">1.</span>注册协议生成树收包函数stp_proto_register</span><br><span class="line">    在桥初始化的时候，注册了一个br_stp_proto参数，此参数的具体模样是这样子的</span><br><span class="line">   <span class="keyword">static</span> <span class="keyword">const</span> <span class="class"><span class="keyword">struct</span> <span class="title">stp_proto</span> <span class="title">br_stp_proto</span> = &#123;</span></span><br><span class="line">         .rcv   = br_stp_rcv,</span><br><span class="line">    &#125;;</span><br><span class="line">    br_stp_rcv函数在/net/bridge/br_stp_bpdu.c中主要针对网桥进行协议交换的帧（BPDU）进行配置操作。</span><br><span class="line"></span><br><span class="line">  <span class="number">2.</span>桥转发数据库初始化br_fdb_init</span><br><span class="line">    此函数就是在内存中建立一块slab cache，以存放net_bridge_fdb_entry</span><br><span class="line">    其中：net_bridge_fdb_entry是一个结构体，用来转发数据库的记录项网桥所学到对的每个MAC地址都有这样一个记录</span><br><span class="line"></span><br><span class="line">  <span class="number">3.</span>在proc目录下生成相关文件的注册函数register_pernet_subsys，初始化的时候给这个函数传递了一个参数br_net_ops，这个参数的模样是这样的</span><br><span class="line">  <span class="keyword">static</span> <span class="class"><span class="keyword">struct</span> <span class="title">pernet_operations</span> <span class="title">br_net_ops</span> = &#123;</span></span><br><span class="line">        .<span class="built_in">exit</span>   = br_net_exit,</span><br><span class="line">  &#125;;</span><br><span class="line">  但是在桥初始化的时候，仅仅注册了br_net_exit，这个函数会将桥下面的所有文件全部清空。</span><br><span class="line"></span><br><span class="line"> <span class="number">4.</span>通知链的相关函数注册register_netdevice_notifier这个注册函数主要针对设备信息的变化，注册参数br_device_notifier，具体如下：</span><br><span class="line"> <span class="keyword">static</span> <span class="class"><span class="keyword">struct</span> <span class="title">notifier_block</span> <span class="title">br_device_notifier</span> = &#123;</span></span><br><span class="line">        .notifier_call = br_device_event</span><br><span class="line">&#125;;</span><br><span class="line">br_device_event函数是用来当桥上的设备状态或者设备信息发生改变时做相应的处理，该函数在/net/bridge/br.c中</span><br><span class="line"></span><br><span class="line"> <span class="number">5.</span>注册通知连，主要针对桥转发表事件的相关信息register_switchdev_notifier，传入的参数br_switchdev_notifier详细信息如下：</span><br><span class="line"><span class="keyword">static</span> <span class="class"><span class="keyword">struct</span> <span class="title">notifier_block</span> <span class="title">br_switchdev_notifier</span> = &#123;</span></span><br><span class="line">    .notifier_call = br_switchdev_event,</span><br><span class="line">&#125;;</span><br><span class="line">br_switchdev_event，主要针对桥转发表的事件做出相应的处理该函数在/net/bridge/br.c中</span><br><span class="line"></span><br><span class="line"><span class="number">6.b</span>rioctl_set用来处理ioctl命令的函数，比如添加和删除网桥，br_ioctl_deviceless_stub给回调函数br_ioctl_hook,而br_ioctl_hook在sock_ioctl中</span><br><span class="line">使用，这样通过在应用层调用socket的ioctl函数，就能够进行网桥的添加与删除了，函数用来处理添加和删除网桥的相关操作，会在下一节详细介绍。</span><br></pre></td></tr></table></figure>
+<p>以上就是网桥初始化的相关操作 <sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup></p>
+<h2 id="参考"><a class="header-anchor" href="#参考">¶</a>参考</h2>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p><a href="https://blog.csdn.net/NW_NW_NW" target="_blank" rel="noopener">@不留你的名字</a> <a href="https://blog.csdn.net/NW_NW_NW/article/details/75045966" target="_blank" rel="noopener">桥初始化</a> 2010-12-01 <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
 ]]></content>
       <categories>
-        <category>读书笔记</category>
+        <category>linux</category>
       </categories>
       <tags>
-        <tag>希腊罗马神话</tag>
-        <tag>语言文化</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>为什么正好经过这个空隙？</title>
-    <url>/public/2017/05/05/math/math_q1/</url>
-    <content><![CDATA[<p><strong>前言</strong>
-偶然看到的一个问题，如图1，为什么正好经过这个空隙？我们用空间解析几何来解一下吧。</p>
-<p><img src="/public/2017/05/05/math/math_q1/math_q1_show.gif" alt="动图"></p>
-<div align="center"> 图1 为什么会经过这个空隙？</div>
-<a id="more"></a>
-<p><strong>解答</strong></p>
-<p>如图2，建立空间直角坐标系$xyz$，原点记为 $O$ ， $P$  点为水平杆与斜杆的交点， $Q$ 点为垂直杆与水平杆的交点， 将斜杆标记为 $L$ 。</p>
-<p><img src="/public/2017/05/05/math/math_q1/v2-80ac80b8031d5782412f4f4ef4e22a1a_b.jpeg" alt="img"></p>
-<div align="center"> 图2 建立空间直角坐标系</div>
-<p>设 $OQ=q$  ， $QP=r$  。$Q$ 点坐标为 $(0, 0, q)$  。</p>
-<p>设水平杆  $QP$  绕  $z$   轴以  $\omega, rad/s$  的角速度旋转，并设从开始旋转到现在的时长为 $t$  秒， 则  $P$  点坐标为 $(r\cos{\omega t}, r\sin{\omega t}, q)$  。</p>
-<p>由 $Q$、$P$ 两点坐标得：</p>
-<p>$$
-\overrightarrow{OQ}=(0, 0, q) \qquad \overrightarrow{QP}=(r\cos{\omega t}, r\sin{\omega t}, 0) \tag{1}
-$$</p>
-<p>设 $L$ 的方向向量 $\overrightarrow{S}=(a, b, c) $，由 $L$ 的方向向量 $\overrightarrow{S}$ 和 $P$ 点得，得斜杆  $L$  代表的直线方程：
-$$
-\frac{x-r\cos{\omega t}}{a}=\frac{y-r\sin{\omega t}}{b}=\frac{z-q}{c} \tag{2}
-$$</p>
-<p>我们知道 $\overrightarrow{QP}$ 与斜杆 $L$ 垂直，假设 $\overrightarrow{OQ}$ 与斜杆 $L$ 成固定角 $ \theta$ ，得：
-$$
-\begin{cases} 0=\overrightarrow{QP} \cdot \overrightarrow{S} \ \cos{\theta}=\frac{\overrightarrow{OQ} \cdot \overrightarrow{S}}{\left|\overrightarrow{OQ}\right| \left| \overrightarrow{S}\right|} \end{cases} \tag{3}
-$$</p>
-<p>把 $\overrightarrow{QP}$， $\overrightarrow{S}$， $\overrightarrow{OQ}$ 代入 式(3)，得
-$$
-\begin{cases}  \frac{a}{b}=\frac{-\sin{\omega t}}{\cos{\omega t}} \ c^{2}(\tan{\theta})^{2}=a^{2}+b^{2}  \end{cases} \tag{4}
-$$</p>
-<p>式（4）中第2条等式两边除以 $b^2$ ，再化简得：
-$$
-\frac{c^{2}}{b^{2}}=\frac{1}{(\tan{\theta})^{2}(\cos{\omega t})^{2}} \tag{5}
-$$</p>
-<p>求直线组 $L$ 与 $xoz$ 平面相交的图形，即回答这个缝隙的形状为什么是图1 中这样的曲线。我们令 $y=0$ ，代入直线公式(2) 得：
-$$
-\frac{x-r\cos{\omega t}}{a}=\frac{-r\sin{\omega t}}{b} =\frac{z-q}{c} \tag{6}
-$$
-由式（4）（5）（6）得到方程组（7）。
-$$
-\begin{cases} \frac{a}{b}=\frac{-\sin{\omega t}}{\cos{\omega t}}\  \frac{x-r\cos{\omega t}}{a}=\frac{-r\sin{\omega t}}{b} \  \frac{c^2}{b^2}=\frac{1}{(\tan{\theta})^{2}(\cos{\omega t})^{2}}\  \frac{-r\sin{\omega t}}{b} =\frac{z-q}{c}  \end{cases}  \tag{7}
-$$</p>
-<p>由式（7）中上面两个等式，消去a，b得：
-$$
-\frac{-\sin{\omega t}}{\cos{\omega t}}=\frac{x-r\cos{\omega t}}{-r\sin{\omega t}}=\frac{a}{b} \tag{8}
-$$
-$$
-x \cos{\omega t}=r   \tag{9}
-$$</p>
-<p>由式（7）中下面两个等式，消去b，c得：
-$$
-\frac{1}{(\tan{\theta})^2(\cos{\omega t})^2}
-= \frac{(z-q)^2}{(-r\sin{\omega t})^2}
-=\frac{c^2}{b^2} \tag{10}
-$$</p>
-<p>$$
-\frac{(-r\sin{\omega t})^2}{(\tan{\theta})^2(\cos{\omega t})^2}
-= {(z-q)}^2 \tag{11}
-$$</p>
-<p>由利用式（9），可消去式（11）中的 $(\sin{\omega t})^{2}$  和 $(\cos{\omega t})^{2}$  得：
-$$
-x^{2}-(\tan{\theta})^{2}(z-q)^{2}=r^{2} \tag{12}
-$$
-易知，为双曲线方程，所以在  xoz 平面相交得图形为双曲线。 ■</p>
-<hr>
-<p>欢迎观众老爷们评论回复，一键三连。
-更多有趣问题，欢迎关注投稿 <a href="https://zhuanlan.zhihu.com/shuxuemanyou" target="_blank" rel="noopener">知乎小成 - 数学漫游专栏</a>，
-我们聚焦生活中的数与形的小小问题们。
-转载请注明出处，谢谢！</p>
-]]></content>
-      <categories>
-        <category>数学</category>
-      </categories>
-      <tags>
-        <tag>Latex</tag>
-        <tag>数学</tag>
-        <tag>空间解析几何</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>红楼梦与我</title>
-    <url>/public/2017/05/14/readings/hongloumeng/</url>
-    <content><![CDATA[<p>红楼梦是我国四大名著之一，主要内容是贾府的兴衰和宝黛的悲剧爱情。电视剧红楼梦2010版，我是从八月开始看的，看完到现在，也有小一个月了。在网上大家对这版电视剧褒贬不一。与我来说，我是喜欢这部剧的，不能说拍得很好，但这部剧却勾起了我读书与写字的兴趣。于是乎，做了一篇随笔，以记录我的一些感触。</p>
-<a id="more"></a>
-<p>我记得最早是小学，我们还是顾着打玻璃珠和丢沙包的年纪，学校旁边的小书店里，也都是七龙珠，哆啦A梦，柯南的小人书，老师们讲到四大名著，顺带提了下红楼梦，其他没印象了。我们学习最多的是中文的拼音和书写，作文都是打油，日记也闹了不少笑话。后来上初中，有一次寒假附加作业是阅读红楼梦，我虽毫无兴趣，但还是硬着头皮，去新华书店，试看红楼梦。120章的红楼，厚得连看下去的勇气也没有。略看了几下，最后，做了一个红楼梦不好看的论断，也就放在那边了。那时有老版的红楼梦电视剧播映，打开电视偶尔会遇见，但是立马换台，央视的西游记与情深深雨蒙蒙，湖南电视台的还珠格格，也是欣赏了好几遍。再者，有动画片谁有兴趣去看这些什么破剧，关于书本，最多也就是看看汤姆索亚历险记。</p>
-<p>再后来，去启中读书，学习上比较紧张，再加上理科班的非文学氛围，对这些文学的东西更不感冒。尽管偶尔也会入耳一些其中的人物，比如林妹妹，刘姥姥，也是不用大脑耳朵直接过滤。当时，大伙是杂志，读者，青年文摘读得比较多，班上一本，全班查阅，杂志文章篇幅较小，读起很顺很舒服。期间，与红楼的唯一一次接触是，高中教科书上有刘姥姥进大观园的章节，翻了一遍，当时，感叹人物好多，理不出人物关系，完全放弃看完红楼的欲望。以为姥姥是贾府的姥姥，猩猩然想着以后可以说看过一段红楼，红楼也比较贵不如多买几本读者，积累作文素材。不知什么时候，班上网络小说之风随着mp4和智能手机的普及而吹起，我也用MP4刷完了一两部网络小说，感觉都是一个套路，主角都是绝处逢生，越来越无敌，也就不敢兴趣了。</p>
-<p>再然后，我上大学，藏书400百万册的成电图书馆，也并没有引起我读文学类的欲望，大学四年借的专业工具类书比较多，想来也是浪费资源。在一个工科高校，文学方面的课程几乎没有，虽说有个大学语文的选修课，俨然不感兴趣。大学里，再一次看到有人在看红楼梦电视剧，也是大二的时候的人工智能课上，也是闲得无聊。再后来，大四时，手机上自带一个蜻蜓网络电台应用，无聊点开蒋勋老师评述的红楼梦音频，红学大师讲到他与红楼梦的相遇，同时，他介绍的红楼基本背景和人物，通俗易懂，一下子引起我的兴趣。他说红楼梦写的都是15、6岁人的故事，15、16岁就可以读了。回想我15、16岁，基本没看什么名著。要说四大名著，我也就看了三国和水浒的少年版。上次回家，看美剧，老妈突然蹦出句，不能光看英文也应当看看我们老祖宗的文化。</p>
-<p>现在得空，就这样抱着惭愧和一丝尝试我看起了2010版红楼梦。在这我得承认，我是个演员控。不得不说，三大主演都很不错。</p>
-<p>50集过后，原来红楼讲得是这个，并表示有兴趣去读读名著了。原来有这么多原来。</p>
-<ul>
-<li>
-<p>人物家族命运令人感慨。作者写出超越那个时代的朦胧的爱情与不得不提的丧心病狂的全部悲剧，果然是个失意文人的作品。 可叹停机德，堪怜咏絮才。宝钗落落大方德才兼备，黛玉因情而伤而痛去世，宝玉虽与宝钗结婚，最后离家成道去。精于人情世故,，胸有城府的王熙凤，平日的爽朗笑声终究悲剧，贾府里多么好的领导，最后也人情冷暖，不免为其伤心。刘姥姥，其实是个成功的投机分子，但也是朴实善良的“穷亲戚”，最后救了巧儿。十二金钗各有个的悲剧，正如宝玉在虚幻仙境里警幻仙姑给的设定。原来故事一开始就把结局告诉了读者。</p>
-</li>
-<li>
-<p>体验古代贵族文化。里面还有个诗社的组织，古人的结社，好有雅致，也会给人起“绰号”。除此以外还有击鼓传花，有时主题是讲笑话有时对诗。猜灯谜，中秋赏月，生日宴会等等。</p>
-</li>
-<li>
-<p>语言魅力。打秋风，这是形容刘姥姥找找贾府接济用的。恼，生气，或者使生气。不同人的称谓，宝兄弟，宝二爷，宝姐姐或者好姐姐，林妹妹或者好妹妹。</p>
-</li>
-<li>
-<p>情节回味无穷。刘姥姥进大观园，是贾母和姥姥差不多年纪想和她聊聊，邀请她的。乡村来打秋风的刘姥姥像是在参观皇宫。在后面时期  ，家族里一次比一次捉襟见肘的聚会，可以看见这些家族的衰落。中国的各种人情世故体现在这里面。四个大家族，一个小社会。</p>
-</li>
-</ul>
-<p>以上是我的一点点感悟。</p>
-<p>只是，我与红楼梦，还差80章书页，希望还能有计划地读完。</p>
-<p>2016年于成电</p>
-]]></content>
-      <categories>
-        <category>读书笔记</category>
-      </categories>
-      <tags>
-        <tag>故事</tag>
-        <tag>《红楼梦》</tag>
+        <tag>linux network</tag>
       </tags>
   </entry>
   <entry>
@@ -3308,6 +3153,161 @@ ip addr add 10.1.2.2/24 dev Tunnel-1</p>
       <tags>
         <tag>bridge</tag>
         <tag>netfilter</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>选择困难者的福音？层次分析法</title>
+    <url>/public/2021/04/02/math/math_AHP/</url>
+    <content><![CDATA[<h2 id="摘要"><a class="header-anchor" href="#摘要">¶</a>摘要</h2>
+<p>日常生活中，我们面临很多的选择，选择工作offer，选择买哪个牌子的手机，选择哪个地方旅行等等。这些选择难以定量的衡量，有很多不确定性。内心小纠结，我选择了这个，万一那个好呢，怎么办？请看层次分析法。</p>
+<p>层次分析法(Analytic Hierarchy Process，简称 AHP)是对一些较为复杂、较为模糊的问题作出决策的简易方法，它特别适用于那些难于完全定量分析的问题。它是美国运筹学家 T. L. Saaty 教授于上世纪 70 年代初期提出的一种简便、灵活而又实用的多准则决策方法。</p>
+<p>运用层次分析法建模，大体上可按下面四个步骤进行</p>
+<ul>
+<li>建立递阶层次结构模型</li>
+<li>构造出各层次中的所有判断矩阵</li>
+<li>层次单排序及一致性检验</li>
+<li>层次总排序及一致性检验。（一般不用）</li>
+</ul>
+<a id="more"></a>
+<p>让我们从offer大佬的例子开始吧！</p>
+<p>举个栗子，今年有位大学生，有三个offer，C1 C2 C3。</p>
+<p>第一步，建立层次模型。</p>
+<ul>
+<li>目标层A：找工作的目标，自己满意程度。
+<ul>
+<li>这个程度怎么计算呢？比如工作1。</li>
+</ul>
+</li>
+<li>准则层B：研究课题、发展前途、待遇、同事情况、地理位置、单位名气等等。
+<ul>
+<li>尽量列全一点，不需要排列重要顺序。</li>
+<li>小于等于9个，后面要两两拍脑袋给出相对的重要层度，给多了不得把脑袋拍疼了。</li>
+<li>也可以有子准则层，比如待遇中的放假、工作环境等等，列出也小于9个。</li>
+</ul>
+</li>
+<li>方案层C：就是我们的offer</li>
+</ul>
+<img src="/public/2021/04/02/math/math_AHP/image-20200406145535585.png" alt="image-20200406145535585" style="zoom:50%;">
+<h2 id="构造-A-B-之间判断矩阵"><a class="header-anchor" href="#构造-A-B-之间判断矩阵">¶</a>构造 A B 之间判断矩阵</h2>
+<p>准则层B与目标A之间的关系。为了求出准则层中(B1-6) 对目标的重要层度的排序。比如对于该生工作满意度第一重要是待遇，然后是地点，其实该生自己也很模糊。就是固定A，然后求B中准则，对A重要性的排序。</p>
+<h3 id="我们怎么对B中的准则们的重要排序呢？"><a class="header-anchor" href="#我们怎么对B中的准则们的重要排序呢？">¶</a>我们怎么对B中的准则们的重要排序呢？</h3>
+<p>直接给每一个准则，0-1的评分，然后排序。经常会想，给完分之后，这个不合理呀要不我再给哪个准则加加分。所以这样的方法常常会因考虑不周全、顾此失彼而使决策者提出与他实际认为的重要性程度不相一致的数据。</p>
+<p>我们可以将这个过程细化，我就比较两个准则对于目标的重要性，然后通过下面的矩阵方法，求出优先顺序。</p>
+<p>还能通过一个一致性检验，来检验在你评分的过程中，有没有自相矛盾的地方，当然这种方法允许一些自相矛盾。反正评分的时候尊从内心拍脑袋就对了。</p>
+<p>所以我们拿出一个B1 与 B2 对于目标的重要，想一想然后给出B2/B1，填入下面的表格中的(2,1)的位置。</p>
+<p>整个矩阵i,j 与j，i 是取倒数的关系，所以只要做一半。</p>
+<p>在找工作的目标下，准则i与j相对的重要性表示，B2/B1 的值。采用9个标度。而相比不重要刻度取倒数就可以了</p>
+<table>
+<thead>
+<tr>
+<th>准则i比j的比较</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+<th>5</th>
+<th>6</th>
+<th>7</th>
+<th>8</th>
+<th>9</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td>相同重要</td>
+<td></td>
+<td>比较重要</td>
+<td></td>
+<td>明显重要</td>
+<td></td>
+<td>强烈重要</td>
+<td></td>
+<td>极端重要</td>
+</tr>
+</tbody>
+</table>
+<p>最后的两两相对重要表格</p>
+<img src="/public/2021/04/02/math/math_AHP/image-20200406145640316.png" alt="image-20200406145640316" style="zoom:50%;">
+<p>对角线对称的两个数互为倒数，即 $$a_{ji}=\frac{1}{a_{ij}}$$  B1/B2 不就是和 B2/B1互为倒数嘛</p>
+<p>从心理学观点来看，分级太多会超越人们的判断能力，既增加了作判断的难度， 又容易因此而提供虚假数据。Saaty 等人还用实验方法比较了在各种不同标度下人们判断结果的正确性，实验结果也表明，采用 1~9 标度最为合适。</p>
+<p>判断矩阵的一致性指标步骤：</p>
+<ul>
+<li>1）计算一致性指标 CI 。$$CI=\frac{ \lambda_{max}-n}{n-1}$$</li>
+<li>2）查表，平均随机一致性指标 RI。</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>n</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+<th>5</th>
+<th>6</th>
+<th>7</th>
+<th>8</th>
+<th>9</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>RI</td>
+<td>0</td>
+<td>0</td>
+<td>0.58</td>
+<td>0.90</td>
+<td>1.12</td>
+<td>1.24</td>
+<td>1.32</td>
+<td>1.41</td>
+<td>1.45</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><em>RI</em> 的值是这样得到的，用随机方法构造500个样本矩阵:随机地从1~9及其倒数中抽取数字构造正互反矩阵，求得最大特征根的平均值 $$\bar \lambda_{max}$$ 并定义$$RI=\frac{\bar \lambda_{max}-n}{n-1}$$</p>
+</blockquote>
+<ul>
+<li>3）计算一致性比例CR。 $$CR=\frac{CI}{RI}$$，当$$CR&lt;0.10$$ 时，认为判断矩阵的一致性是可以接受的，否则应对判断矩阵作适当修正。</li>
+</ul>
+<p>如果一个矩阵满足上面的条件，那么它最大特征值对应的特征向量就可以认为是每个维度的重要性权重。</p>
+<h2 id="构造-B-C-之间判断矩阵"><a class="header-anchor" href="#构造-B-C-之间判断矩阵">¶</a>构造 B C 之间判断矩阵</h2>
+<p>相同的方法，在同一B准则下，考虑不同工作的优先顺序。求工作排序的方法，和上面一样。</p>
+<img src="/public/2021/04/02/math/math_AHP/image-20200406162644137.png" alt="image-20200406162644137" style="zoom:50%;">
+<p>python代码<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">import</span> warnings</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AHP</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, criteria, b)</span>:</span></span><br><span class="line">        self.RI = (<span class="number">0</span>, <span class="number">0</span>, <span class="number">0.58</span>, <span class="number">0.9</span>, <span class="number">1.12</span>, <span class="number">1.24</span>, <span class="number">1.32</span>, <span class="number">1.41</span>, <span class="number">1.45</span>, <span class="number">1.49</span>)</span><br><span class="line">        self.criteria = criteria</span><br><span class="line">        self.b = b</span><br><span class="line">        self.num_criteria = criteria.shape[<span class="number">0</span>]</span><br><span class="line">        self.num_project = b[<span class="number">0</span>].shape[<span class="number">0</span>]</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">cal_weights</span><span class="params">(self, input_matrix)</span>:</span></span><br><span class="line">        input_matrix = np.array(input_matrix)</span><br><span class="line">        n, n1 = input_matrix.shape</span><br><span class="line">        <span class="keyword">assert</span> n == n1, <span class="string">'不是一个方阵'</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(n):</span><br><span class="line">            <span class="keyword">for</span> j <span class="keyword">in</span> range(n):</span><br><span class="line">                <span class="keyword">if</span> np.abs(input_matrix[i, j] * input_matrix[j, i] - <span class="number">1</span>) &gt; <span class="number">1e-7</span>:</span><br><span class="line">                    <span class="keyword">raise</span> ValueError(<span class="string">'不是反互对称矩阵'</span>)</span><br><span class="line"></span><br><span class="line">        eigenvalues, eigenvectors = np.linalg.eig(input_matrix)</span><br><span class="line"></span><br><span class="line">        max_idx = np.argmax(eigenvalues)</span><br><span class="line">        max_eigen = eigenvalues[max_idx].real</span><br><span class="line">        eigen = eigenvectors[:, max_idx].real</span><br><span class="line">        eigen = eigen / eigen.sum()</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> n &gt; <span class="number">9</span>:</span><br><span class="line">            CR = <span class="literal">None</span></span><br><span class="line">            warnings.warn(<span class="string">'无法判断一致性'</span>)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            CI = (max_eigen - n) / (n - <span class="number">1</span>)</span><br><span class="line">            CR = CI / self.RI[n]</span><br><span class="line">        <span class="keyword">return</span> max_eigen, CR, eigen</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">run</span><span class="params">(self)</span>:</span></span><br><span class="line">        max_eigen, CR, criteria_eigen = self.cal_weights(self.criteria)</span><br><span class="line">        print(<span class="string">'准则层：最大特征值&#123;:&lt;5f&#125;,CR=&#123;:&lt;5f&#125;,检验&#123;&#125;通过'</span>.format(max_eigen, CR, <span class="string">''</span> <span class="keyword">if</span> CR &lt; <span class="number">0.1</span> <span class="keyword">else</span> <span class="string">'不'</span>))</span><br><span class="line">        print(<span class="string">'准则层权重=&#123;&#125;\n'</span>.format(criteria_eigen))</span><br><span class="line"></span><br><span class="line">        max_eigen_list, CR_list, eigen_list = [], [], []</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> self.b:</span><br><span class="line">            max_eigen, CR, eigen = self.cal_weights(i)</span><br><span class="line">            max_eigen_list.append(max_eigen)</span><br><span class="line">            CR_list.append(CR)</span><br><span class="line">            eigen_list.append(eigen)</span><br><span class="line"></span><br><span class="line">        pd_print = pd.DataFrame(eigen_list,</span><br><span class="line">                                index=[<span class="string">'准则'</span> + str(i) <span class="keyword">for</span> i <span class="keyword">in</span> range(self.num_criteria)],</span><br><span class="line">                                columns=[<span class="string">'方案'</span> + str(i) <span class="keyword">for</span> i <span class="keyword">in</span> range(self.num_project)],</span><br><span class="line">                                )</span><br><span class="line">        pd_print.loc[:, <span class="string">'最大特征值'</span>] = max_eigen_list</span><br><span class="line">        pd_print.loc[:, <span class="string">'CR'</span>] = CR_list</span><br><span class="line">        pd_print.loc[:, <span class="string">'一致性检验'</span>] = pd_print.loc[:, <span class="string">'CR'</span>] &lt; <span class="number">0.1</span></span><br><span class="line">        print(<span class="string">'方案层'</span>)</span><br><span class="line">        print(pd_print)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 目标层</span></span><br><span class="line">        obj = np.dot(criteria_eigen.reshape(<span class="number">1</span>, <span class="number">-1</span>), np.array(eigen_list))</span><br><span class="line">        print(<span class="string">'\n目标层'</span>, obj)</span><br><span class="line">        print(<span class="string">'最优选择是方案&#123;&#125;'</span>.format(np.argmax(obj)))</span><br><span class="line">        <span class="keyword">return</span> obj</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    <span class="comment"># 准则重要性矩阵</span></span><br><span class="line">    criteria = np.array([[<span class="number">1</span>, <span class="number">2</span>, <span class="number">7</span>, <span class="number">5</span>, <span class="number">5</span>],</span><br><span class="line">                         [<span class="number">1</span> / <span class="number">2</span>, <span class="number">1</span>, <span class="number">4</span>, <span class="number">3</span>, <span class="number">3</span>],</span><br><span class="line">                         [<span class="number">1</span> / <span class="number">7</span>, <span class="number">1</span> / <span class="number">4</span>, <span class="number">1</span>, <span class="number">1</span> / <span class="number">2</span>, <span class="number">1</span> / <span class="number">3</span>],</span><br><span class="line">                         [<span class="number">1</span> / <span class="number">5</span>, <span class="number">1</span> / <span class="number">3</span>, <span class="number">2</span>, <span class="number">1</span>, <span class="number">1</span>],</span><br><span class="line">                         [<span class="number">1</span> / <span class="number">5</span>, <span class="number">1</span> / <span class="number">3</span>, <span class="number">3</span>, <span class="number">1</span>, <span class="number">1</span>]])</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 对每个准则，方案优劣排序</span></span><br><span class="line">    b1 = np.array([[<span class="number">1</span>, <span class="number">1</span> / <span class="number">3</span>, <span class="number">1</span> / <span class="number">8</span>], [<span class="number">3</span>, <span class="number">1</span>, <span class="number">1</span> / <span class="number">3</span>], [<span class="number">8</span>, <span class="number">3</span>, <span class="number">1</span>]])</span><br><span class="line">    b2 = np.array([[<span class="number">1</span>, <span class="number">2</span>, <span class="number">5</span>], [<span class="number">1</span> / <span class="number">2</span>, <span class="number">1</span>, <span class="number">2</span>], [<span class="number">1</span> / <span class="number">5</span>, <span class="number">1</span> / <span class="number">2</span>, <span class="number">1</span>]])</span><br><span class="line">    b3 = np.array([[<span class="number">1</span>, <span class="number">1</span>, <span class="number">3</span>], [<span class="number">1</span>, <span class="number">1</span>, <span class="number">3</span>], [<span class="number">1</span> / <span class="number">3</span>, <span class="number">1</span> / <span class="number">3</span>, <span class="number">1</span>]])</span><br><span class="line">    b4 = np.array([[<span class="number">1</span>, <span class="number">3</span>, <span class="number">4</span>], [<span class="number">1</span> / <span class="number">3</span>, <span class="number">1</span>, <span class="number">1</span>], [<span class="number">1</span> / <span class="number">4</span>, <span class="number">1</span>, <span class="number">1</span>]])</span><br><span class="line">    b5 = np.array([[<span class="number">1</span>, <span class="number">4</span>, <span class="number">1</span> / <span class="number">2</span>], [<span class="number">1</span> / <span class="number">4</span>, <span class="number">1</span>, <span class="number">1</span> / <span class="number">4</span>], [<span class="number">2</span>, <span class="number">4</span>, <span class="number">1</span>]])</span><br><span class="line"></span><br><span class="line">    b = [b1, b2, b3, b4, b5]</span><br><span class="line">    a = AHP(criteria, b).run()</span><br></pre></td></tr></table></figure>
+<h2 id="层次分析法与控制变量法"><a class="header-anchor" href="#层次分析法与控制变量法">¶</a>层次分析法与控制变量法</h2>
+<p>我们的任务是选择工作，最后使得我们满意，直接选择我们当然一头雾水。所以我们设立一些准则，然后对这些准则对于目标的重要性排序。</p>
+<p>这又有点像概率图模型，只是赋权的方法，是相互比较的方法。</p>
+<h2 id="选择困难者的福音？"><a class="header-anchor" href="#选择困难者的福音？">¶</a>选择困难者的福音？</h2>
+<p>层次分析法对人们的思维过程进行了加工整理，提出了一套系统分析问题的方法，为科学管理和决策提供了较有说服力的依据。</p>
+<p>在应用层次分析法研究问题时，遇到的主要困难有两个:<br>
+(1) 如何根据实际情况抽象出较为贴切的层次结构;<br>
+(2) 如何将某些定性的量作比较接近实际定量化处理。</p>
+<p>层次分析法的其局限性<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup>：<br>
+(1) 它在很大程度上依赖于人们的经验，主观因素的影响很大，它至多只能排除思维过程中的严重非一致性，却无法排除决策者个人可能存在的严重片面性。<br>
+(2) 比较、 判断过程较为粗糙，不能用于精度要求较高的决策问题。</p>
+<p>所以，AHP 至多只能算是一种半定量(或定性与定量结合)的方法。
+本文仅供参考，不负法律责任，哈哈。</p>
+<h2 id="参考"><a class="header-anchor" href="#参考">¶</a>参考</h2>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p>幼鹰me 知乎 <a href="https://zhuanlan.zhihu.com/p/101505929" target="_blank" rel="noopener">层次分析法原理与Python实现</a> <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn2" class="footnote-item"><p>司守奎《数学建模算法与程序》第八章 层次分析法 P167 <a href="#fnref2" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
+]]></content>
+      <categories>
+        <category>数学</category>
+      </categories>
+      <tags>
+        <tag>数学</tag>
+        <tag>层次分析法</tag>
       </tags>
   </entry>
   <entry>
@@ -5343,6 +5343,454 @@ REPORTING-BUGS ---- Bug 上报的指南。</p>
       <tags>
         <tag>故事</tag>
         <tag>《莺莺传》</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>「转」连接跟踪（conntrack）：原理、应用及 Linux 内核实现</title>
+    <url>/public/2022/12/04/linux_network/conntrack_linux/</url>
+    <content><![CDATA[<h2 id="摘要"><a class="header-anchor" href="#摘要">¶</a>摘要</h2>
+<p>本文介绍连接跟踪（connection tracking，conntrack，CT）的原理，应用，及其在 Linux 内核中的实现。</p>
+<p>代码分析基于内核 <code>4.19</code>。为使行文简洁，所贴代码只保留了核心逻辑，但都给出了代码 所在的源文件，如有需要请查阅。</p>
+<p>水平有限，文中不免有错误之处，欢迎指正交流。</p>
+<p>连接跟踪是许多网络应用的基础。例如，Kubernetes Service、ServiceMesh sidecar、 软件四层负载均衡器 LVS/IPVS、Docker network、OVS、iptables 主机防火墙等等，都依赖 连接跟踪功能。</p>
+<h2 id="1-1-概念"><a class="header-anchor" href="#1-1-概念">¶</a>1.1 概念</h2>
+<p>连接跟踪，顾名思义，就是<strong>跟踪（并记录）连接的状态</strong>。</p>
+<p><img src="/public/2022/12/04/linux_network/conntrack_linux/node-conntrack.png" alt></p>
+<p>Fig 1.1. 连接跟踪及其内核位置示意图</p>
+<p>例如，上图是一台 IP 地址为 <code>10.1.1.2</code> 的 Linux 机器，我们能看到这台机器上有三条 连接：</p>
+<ol>
+<li>机器访问外部 HTTP 服务的连接（目的端口 80）</li>
+<li>外部访问机器内 FTP 服务的连接（目的端口 21）</li>
+<li>机器访问外部 DNS 服务的连接（目的端口 53）</li>
+</ol>
+<p>连接跟踪所做的事情就是发现并跟踪这些连接的状态，具体包括：</p>
+<ul>
+<li>从数据包中提取<strong>元组</strong>（tuple）信息，辨别<strong>数据流</strong>（flow）和对应的<strong>连接</strong>（connection）</li>
+<li>为所有连接维护一个<strong>状态数据库</strong>（conntrack table），例如连接的创建时间、发送 包数、发送字节数等等</li>
+<li>回收过期的连接（GC）</li>
+<li>为更上层的功能（例如 NAT）提供服务</li>
+</ul>
+<p>需要注意的是，<strong>连接跟踪中所说的“连接”，概念和 TCP/IP 协议中“面向连接”（ connection oriented）的 “连接” 并不完全相同</strong>，简单来说：</p>
+<ul>
+<li>TCP/IP 协议中，连接是一个四层（Layer 4）的概念。
+<ul>
+<li>TCP 是有连接的，或称面向连接的（connection oriented），发送出去的包都要求对端应答（ACK），并且有重传机制</li>
+<li>UDP 是无连接的，发送的包无需对端应答，也没有重传机制</li>
+</ul>
+</li>
+<li>CT 中，一个元组（tuple）定义的一条数据流（flow ）就表示一条连接（connection）。
+<ul>
+<li>后面会看到 UDP 甚至是 <strong>ICMP 这种三层协议在 CT 中也都是有连接记录的</strong></li>
+<li>但<strong>不是所有协议都会被连接跟踪</strong></li>
+</ul>
+</li>
+</ul>
+<p>本文中用到 “连接” 一词时，大部分情况下指的都是后者，即 “连接跟踪” 中的“连接”。</p>
+<h2 id="1-2-原理"><a class="header-anchor" href="#1-2-原理">¶</a>1.2 原理</h2>
+<p>了解以上概念之后，我们来思考下连接跟踪的技术原理。</p>
+<p>要跟踪一台机器的所有连接状态，就需要</p>
+<ol>
+<li><strong>拦截（或称过滤）流经这台机器的每一个数据包，并进行分析</strong>。</li>
+<li>根据这些信息<strong>建立</strong>起这台机器上的<strong>连接信息数据库</strong>（conntrack table）。</li>
+<li>根据拦截到的包信息，不断更新数据库</li>
+</ol>
+<p>例如，</p>
+<ol>
+<li>拦截到一个 TCP <code>SYNC</code> 包时，说明正在尝试建立 TCP 连接，需要创建一条新 conntrack entry 来记录这条连接</li>
+<li>拦截到一个属于已有 conntrack entry 的包时，需要更新这条 conntrack entry 的收发包数等统计信息</li>
+</ol>
+<p>除了以上两点功能需求，还要考虑<strong>性能问题</strong>，因为连接跟踪要对每个包进行过滤和分析 。性能问题非常重要，但不是本文重点，后面介绍实现时会进一步提及。</p>
+<p>之外，这些功能最好还有配套的管理工具来更方便地使用。</p>
+<h2 id="1-3-设计：Netfilter"><a class="header-anchor" href="#1-3-设计：Netfilter">¶</a>1.3 设计：Netfilter</h2>
+<p><strong>Linux 的连接跟踪是在 <a href="https://en.wikipedia.org/wiki/Netfilter" target="_blank" rel="noopener">Netfilter</a> 中实现的。</strong></p>
+<p><img src="/public/2022/12/04/linux_network/conntrack_linux/netfilter-design.png" alt></p>
+<p>Fig 1.2. Netfilter architecture inside Linux kernel</p>
+<p><a href="https://en.wikipedia.org/wiki/Netfilter" target="_blank" rel="noopener">Netfilter</a> 是 Linux 内核中一个对数据 包进行<strong>控制、修改和过滤</strong>（manipulation and filtering）的框架。它在内核协议 栈中设置了若干 hook 点，以此对数据包进行拦截、过滤或其他处理。</p>
+<blockquote>
+<p>说地更直白一些，hook 机制就是在数据包的必经之路上设置若干检测点，所有到达这 些检测点的包都必须接受检测，根据检测的结果决定：</p>
+<ol>
+<li>放行：不对包进行任何修改，退出检测逻辑，继续后面正常的包处理</li>
+<li>修改：例如修改 IP 地址进行 NAT，然后将包放回正常的包处理逻辑</li>
+<li>丢弃：安全策略或防火墙功能</li>
+</ol>
+<p>连接跟踪模块只是完成连接信息的采集和录入功能，并不会修改或丢弃数据包，后者是其 他模块（例如 NAT）基于 Netfilter hook 完成的。</p>
+</blockquote>
+<p>Netfilter 是最古老的内核框架之一，1998 年开始开发，2000 年合并到 <code>2.4.x</code> 内 核主线版本 [5]。</p>
+<h2 id="1-4-设计：进一步思考"><a class="header-anchor" href="#1-4-设计：进一步思考">¶</a>1.4 设计：进一步思考</h2>
+<p>现在提到连接跟踪（conntrack），可能首先都会想到 Netfilter。但由上节讨论可知， 连接跟踪概念是独立于 Netfilter 的，<strong>Netfilter 只是 Linux 内核中的一种连接跟踪实现</strong>。</p>
+<p>换句话说，<strong>只要具备了 hook 能力，能拦截到进出主机的每个包，完全可以在此基础上自 己实现一套连接跟踪</strong>。</p>
+<p><img src="/public/2022/12/04/linux_network/conntrack_linux/cilium-conntrack.png" alt></p>
+<p>Fig 1.3. Cilium's conntrack and NAT architectrue</p>
+<p>云原生网络方案 Cilium 在 <code>1.7.4+</code> 版本就实现了这样一套独立的连接跟踪和 NAT 机制 （完备功能需要 Kernel <code>4.19+</code>）。其基本原理是：</p>
+<ol>
+<li>基于 BPF hook 实现数据包的拦截功能（等价于 netfilter 里面的 hook 机制）</li>
+<li>在 BPF hook 的基础上，实现一套全新的 conntrack 和 NAT</li>
+</ol>
+<p>因此，即便<a href="https://github.com/cilium/cilium/issues/12879" target="_blank" rel="noopener">卸载 Netfilter</a> ，也不会影响 Cilium 对 Kubernetes ClusterIP、NodePort、ExternalIPs 和 LoadBalancer 等功能的支持 [2]。</p>
+<p>由于这套连接跟踪机制是独立于 Netfilter 的，因此它的 conntrack 和 NAT 信息也没有 存储在内核的（也就是 Netfilter 的）conntrack table 和 NAT table。所以常规的 <code>conntrack/netstats/ss/lsof</code> 等工具是看不到的，要使用 Cilium 的命令，例如：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ cilium bpf nat list</span><br><span class="line">$ cilium bpf ct list global</span><br></pre></td></tr></table></figure>
+<p>配置也是独立的，需要在 Cilium 里面配置，例如命令行选项 <code>--bpf-ct-tcp-max</code>。</p>
+<p>另外，本文会多次提到连接跟踪模块和 NAT 模块独立，但<strong>出于性能考虑，具体实现中 二者代码可能是有耦合的</strong>。例如 Cilium 做 conntrack 的垃圾回收（GC）时就会顺便把 NAT 里相应的 entry 回收掉，而非为 NAT 做单独的 GC。</p>
+<h2 id="1-5-应用"><a class="header-anchor" href="#1-5-应用">¶</a>1.5 应用</h2>
+<p>来看几个 conntrack 的具体应用。</p>
+<h3 id="1-5-1-网络地址转换（NAT）"><a class="header-anchor" href="#1-5-1-网络地址转换（NAT）">¶</a>1.5.1 网络地址转换（NAT）</h3>
+<p>网络地址转换（NAT），名字表达的意思也比较清楚：对（数据包的）网络地址（<code>IP + Port</code>）进行转换。</p>
+<p><img src="/public/2022/12/04/linux_network/conntrack_linux/node-nat.png" alt></p>
+<p>Fig 1.4. NAT 及其内核位置示意图</p>
+<p>例如上图中，机器自己的 IP <code>10.1.1.2</code> 是能与外部正常通信的，但 <code>192.168</code> 网段是私有 IP 段，外界无法访问，也就是说源 IP 地址是 <code>192.168</code> 的包，其<strong>应答包是无 法回来的</strong>。因此，</p>
+<ul>
+<li>当源地址为 <code>192.168</code> 网段的包要出去时，机器会先将源 IP 换成机器自己的 <code>10.1.1.2</code> 再发送出去；</li>
+<li>收到应答包时，再进行相反的转换。</li>
+</ul>
+<p>这就是 NAT 的基本过程。</p>
+<p>Docker 默认的 <code>bridge</code> 网络模式就是这个原理 [4]。每个容器会分一个私有网段的 IP 地址，这个 IP 地址可以在宿主机内的不同容器之间通信，但容器流量出宿主机时要进行 NAT。</p>
+<p>NAT 又可以细分为几类：</p>
+<ul>
+<li>SNAT：对源地址（source）进行转换</li>
+<li>DNAT：对目的地址（destination）进行转换</li>
+<li>Full NAT：同时对源地址和目的地址进行转换</li>
+</ul>
+<p>以上场景属于 SNAT，将不同私有 IP 都映射成同一个 “公有 IP”，以使其能访问外部网络服 务。这种场景也属于正向代理。</p>
+<p>NAT 依赖连接跟踪的结果。连接跟踪<strong>最重要的使用场景</strong>就是 NAT。</p>
+<h4 id="四层负载均衡（L4LB）"><a class="header-anchor" href="#四层负载均衡（L4LB）">¶</a>四层负载均衡（L4LB）</h4>
+<p>再将范围稍微延伸一点，讨论一下 NAT 模式的四层负载均衡。</p>
+<p>四层负载均衡是根据包的四层信息（例如 <code>src/dst ip, src/dst port, proto</code>）做流量分发。</p>
+<p>VIP（Virtual IP）是四层负载均衡的一种实现方式：</p>
+<ul>
+<li>多个后端真实 IP（Real IP）挂到同一个虚拟 IP（VIP）上</li>
+<li>客户端过来的流量先到达 VIP，再经负载均衡算法转发给某个特定的后端 IP</li>
+</ul>
+<p>如果在 VIP 和 Real IP 节点之间使用的 NAT 技术（也可以使用其他技术），那客户端访 问服务端时，L4LB 节点将做双向 NAT（Full NAT），数据流如下图所示：</p>
+<p><img src="/public/2022/12/04/linux_network/conntrack_linux/nat.png" alt></p>
+<p>Fig 1.5. L4LB: Traffic path in NAT mode [3]</p>
+<h3 id="1-5-2-有状态防火墙"><a class="header-anchor" href="#1-5-2-有状态防火墙">¶</a>1.5.2 有状态防火墙</h3>
+<p>有状态防火墙（stateful firewall）是相对于早期的<strong>无状态防火墙</strong>（stateless firewall）而言的：早期防火墙只能写 <code>drop syn to port 443</code> 或者 <code>allow syn to port 80</code> 这种非常简单直接 的规则，<strong>没有 flow 的概念</strong>，因此无法实现诸如 <strong>“如果这个 ack 之前已经有 syn， 就 allow，否则 drop”</strong> 这样的规则，使用非常受限 [6]。</p>
+<p>显然，要实现有状态防火墙，就必须记录 flow 和状态，这正是 conntrack 做的事情。</p>
+<p>来看个更具体的防火墙应用：OpenStack 主机防火墙解决方案 —— 安全组（security group）。</p>
+<h4 id="OpenStack-安全组"><a class="header-anchor" href="#OpenStack-安全组">¶</a>OpenStack 安全组</h4>
+<p>简单来说，安全组实现了<strong>虚拟机级别</strong>的安全隔离，具体实现是：在 node 上连接 VM 的 网络设备上做有状态防火墙。在当时，最能实现这一功能的可能就是 Netfilter/iptables。</p>
+<p>回到宿主机内网络拓扑问题： OpenStack 使用 OVS bridge 来连接一台宿主机内的所有 VM。 如果只从网络连通性考虑，那每个 VM 应该直接连到 OVS bridge <code>br-int</code>。但这里问题 就来了 [7]：</p>
+<ul>
+<li>（较早版本的）OVS 没有 conntrack 模块，</li>
+<li>Linux 中有 conntrack 模块，但基于 conntrack 的防火墙<strong>工作在 IP 层</strong>（L3），通过 iptables 控制，</li>
+<li>而 <strong>OVS 是 L2 模块</strong>，无法使用 L3 模块的功能，</li>
+</ul>
+<p>最终结果是：无法在 OVS （连接虚拟机）的设备上做防火墙。</p>
+<p>所以，2016 之前 OpenStack 的解决方案是，在每个 OVS 和 VM 之间再加一个 Linux bridge ，如下图所示，</p>
+<p><img src="/public/2022/12/04/linux_network/conntrack_linux/ovs-compute.png" alt></p>
+<p>Fig 1.6. Network topology within an OpenStack compute node, picture from <a href="https://thesaitech.wordpress.com/2017/09/24/how-to-trace-the-tap-interfaces-and-linux-bridges-on-the-hypervisor-your-openstack-vm-is-on/" target="_blank" rel="noopener">Sai's Blog</a></p>
+<p>Linux bridge 也是 L2 模块，按道理也无法使用 iptables。但是，<strong>它有一个 L2 工具 ebtables，能够跳转到 iptables</strong>，因此间接支持了 iptables，也就能用到 Netfilter/iptables 防火墙的功能。</p>
+<p>这种暴力堆砌的方式不仅丑陋、增加网络复杂性，而且会导致性能问题。因此， RedHat 在 2016 年提出了一个 OVS conntrack 方案 [7]，从那以后，才有可能干掉 Linux bridge 而仍然具备安全组的功能。</p>
+<h2 id="1-6-小结"><a class="header-anchor" href="#1-6-小结">¶</a>1.6 小结</h2>
+<p>以上是理论篇，接下来看一下内核实现。</p>
+<p>Netfilter 由几个模块构成，其中最主要的是<strong>连接跟踪</strong>（CT）模块和<strong>网络地址转换</strong>（NAT）模块。</p>
+<p>CT 模块的主要职责是识别出可进行连接跟踪的包。 CT 模块独立于 NAT 模块，但主要目的是服务于后者。</p>
+<h2 id="2-1-Netfilter-框架"><a class="header-anchor" href="#2-1-Netfilter-框架">¶</a>2.1 Netfilter 框架</h2>
+<h3 id="5-个-hook-点"><a class="header-anchor" href="#5-个-hook-点">¶</a>5 个 hook 点</h3>
+<p><img src="/public/2022/12/04/linux_network/conntrack_linux/hooks.png" alt></p>
+<p>图 2.1. The 5 hook points in netfilter framework</p>
+<p>如上图所示，Netfilter 在内核协议栈的包处理路径上提供了 5 个 hook 点，分别是：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">// include/uapi/linux/netfilter_ipv4.h</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> NF_IP_PRE_ROUTING    0 <span class="comment">/* After promisc drops, checksum checks. */</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> NF_IP_LOCAL_IN       1 <span class="comment">/* If the packet is destined for this box. */</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> NF_IP_FORWARD        2 <span class="comment">/* If the packet is destined for another interface. */</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> NF_IP_LOCAL_OUT      3 <span class="comment">/* Packets coming from a local process. */</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> NF_IP_POST_ROUTING   4 <span class="comment">/* Packets about to hit the wire. */</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> NF_IP_NUMHOOKS       5</span></span><br></pre></td></tr></table></figure>
+<p>用户可以在这些 hook 点注册自己的处理函数（handlers）。当有数据包经过 hook 点时， 就会调用相应的 handlers。</p>
+<blockquote>
+<p>另外还有一套 <code>NF_INET_</code> 开头的定义，<code>include/uapi/linux/netfilter.h</code>。 这两套是等价的，从注释看，<code>NF_IP_</code> 开头的定义可能是为了保持兼容性。</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">&gt; <span class="keyword">enum</span> nf_inet_hooks &#123;</span><br><span class="line">&gt;  NF_INET_PRE_ROUTING,</span><br><span class="line">&gt;  NF_INET_LOCAL_IN,</span><br><span class="line">&gt;  NF_INET_FORWARD,</span><br><span class="line">&gt;  NF_INET_LOCAL_OUT,</span><br><span class="line">&gt;  NF_INET_POST_ROUTING,</span><br><span class="line">&gt;  NF_INET_NUMHOOKS</span><br><span class="line">&gt; &#125;;</span><br><span class="line">&gt; </span><br><span class="line">&gt; </span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<h3 id="hook-返回值类型"><a class="header-anchor" href="#hook-返回值类型">¶</a>hook 返回值类型</h3>
+<p>hook 函数对包进行判断或处理之后，需要返回一个判断结果，指导接下来要对这个包做什 么。可能的结果有：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">// include/uapi/linux/netfilter.h</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> NF_DROP   0  <span class="comment">// 已丢弃这个包</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> NF_ACCEPT 1  <span class="comment">// 接受这个包，结束判断，继续下一步处理</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> NF_STOLEN 2  <span class="comment">// 临时 hold 这个包，不用再继续穿越协议栈了。常见的情形是缓存分片之后的包（等待重组）</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> NF_QUEUE  3  <span class="comment">// 应当将包放到队列</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> NF_REPEAT 4  <span class="comment">// 当前处理函数应当被再次调用</span></span></span><br></pre></td></tr></table></figure>
+<h3 id="hook-优先级"><a class="header-anchor" href="#hook-优先级">¶</a>hook 优先级</h3>
+<p>每个 hook 点可以注册多个处理函数（handler）。在注册时必须指定这些 handlers 的<strong>优先级</strong>，这样触发 hook 时能够根据优先级依次调用处理函数。</p>
+<h2 id="2-2-过滤规则的组织"><a class="header-anchor" href="#2-2-过滤规则的组织">¶</a>2.2 过滤规则的组织</h2>
+<p><code>iptables</code> 是配置 Netfilter 过滤功能的用户空间工具。为便于管理， 过滤规则按功能分为若干 table：</p>
+<ul>
+<li>raw</li>
+<li>filter</li>
+<li>nat</li>
+<li>mangle</li>
+</ul>
+<p>这不是本文重点。更多信息可参考 <a href="chrome-extension://ijllcpnolfcooahcekpamkbidhejabll/blog/deep-dive-into-iptables-and-netfilter-arch-zh/" target="_blank" rel="noopener">(译) 深入理解 iptables 和 netfilter 架构</a></p>
+<p>连接跟踪模块用于维护<strong>可跟踪协议</strong>（trackable protocols）的连接状态。 也就是说，连接跟踪<strong>针对的是特定协议的包，而不是所有协议的包</strong>。 稍后会看到它支持哪些协议。</p>
+<h2 id="3-1-重要结构体和函数"><a class="header-anchor" href="#3-1-重要结构体和函数">¶</a>3.1 重要结构体和函数</h2>
+<p>重要结构体：</p>
+<ul>
+<li><code>struct nf_conntrack_tuple {}</code>: 定义一个 tuple。
+<ul>
+<li><code>struct nf_conntrack_man {}</code>：tuple 的 manipulable part。
+<ul>
+<li><code>struct nf_conntrack_man_proto {}</code>：manipulable part 中协议相关的部分。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><code>struct nf_conntrack_l4proto {}</code>: 支持连接跟踪的<strong>协议需要实现的方法集</strong>（以及其他协议相关字段）。</li>
+<li><code>struct nf_conntrack_tuple_hash {}</code>：哈希表（conntrack table）中的表项（entry）。</li>
+<li><code>struct nf_conn {}</code>：<strong>定义一个 flow</strong>。</li>
+</ul>
+<p>重要函数：</p>
+<ul>
+<li>
+<p><code>hash_conntrack_raw()</code>：根据 tuple 计算出一个 32 位的哈希值（hash key）。</p>
+</li>
+<li>
+<p><code>nf_conntrack_in()</code>：<strong>连接跟踪模块的核心，包进入连接跟踪的地方</strong>。</p>
+</li>
+<li>
+<p><code>resolve_normal_ct() -&gt; init_conntrack() -&gt; ct = __nf_conntrack_alloc(); l4proto-&gt;new(ct)</code></p>
+<p>创建一个新的连接记录（conntrack entry），然后初始化。</p>
+</li>
+<li>
+<p><code>nf_conntrack_confirm()</code>：确认前面通过 <code>nf_conntrack_in()</code> 创建的新连接（是否被丢弃）。</p>
+</li>
+</ul>
+<h2 id="3-2-struct-nf-conntrack-tuple-：元组（Tuple）"><a class="header-anchor" href="#3-2-struct-nf-conntrack-tuple-：元组（Tuple）">¶</a>3.2 <code>struct nf_conntrack_tuple {}</code>：元组（Tuple）</h2>
+<p>Tuple 是连接跟踪中最重要的概念之一。</p>
+<p><strong>一个 tuple 定义一个单向（unidirectional）flow</strong>。内核代码中有如下注释：</p>
+<blockquote>
+<p>//include/net/netfilter/nf_conntrack_tuple.h</p>
+<p>A <code>tuple</code> is a structure containing the information to uniquely identify a connection. ie. if two packets have the same tuple, they are in the same connection; if not, they are not.</p>
+</blockquote>
+<h3 id="结构体定义"><a class="header-anchor" href="#结构体定义">¶</a>结构体定义</h3>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">//include/net/netfilter/nf_conntrack_tuple.h</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 为方便 NAT 的实现，内核将 tuple 结构体拆分为 "manipulatable" 和 "non-manipulatable" 两部分</span></span><br><span class="line"><span class="comment">// 下面结构体中的 _man 是 manipulatable 的缩写</span></span><br><span class="line">                                               <span class="comment">// ude/uapi/linux/netfilter.h</span></span><br><span class="line">                                               <span class="keyword">union</span> nf_inet_addr &#123;</span><br><span class="line">                                                   __u32            all[<span class="number">4</span>];</span><br><span class="line">                                                   __be32           ip;</span><br><span class="line">                                                   __be32           ip6[<span class="number">4</span>];</span><br><span class="line">                                                   <span class="class"><span class="keyword">struct</span> <span class="title">in_addr</span>   <span class="title">in</span>;</span></span><br><span class="line">                                                   <span class="class"><span class="keyword">struct</span> <span class="title">in6_addr</span>  <span class="title">in6</span>;</span></span><br><span class="line"><span class="comment">/* manipulable part of the tuple */</span>         /  &#125;;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">nf_conntrack_man</span> &#123;</span>                  /</span><br><span class="line">    <span class="keyword">union</span> nf_inet_addr           u3; --&gt;--/</span><br><span class="line">    <span class="keyword">union</span> nf_conntrack_man_proto u;  --&gt;--\</span><br><span class="line">                                           \   <span class="comment">// include/uapi/linux/netfilter/nf_conntrack_tuple_common.h</span></span><br><span class="line">    <span class="keyword">u_int16_t</span> l3num; <span class="comment">// L3 proto            \  // 协议相关的部分</span></span><br><span class="line">&#125;;                                            <span class="keyword">union</span> nf_conntrack_man_proto &#123;</span><br><span class="line">                                                  __be16 all;<span class="comment">/* Add other protocols here. */</span></span><br><span class="line"></span><br><span class="line">                                                  <span class="class"><span class="keyword">struct</span> &#123;</span> __be16 port; &#125; tcp;</span><br><span class="line">                                                  <span class="class"><span class="keyword">struct</span> &#123;</span> __be16 port; &#125; udp;</span><br><span class="line">                                                  <span class="class"><span class="keyword">struct</span> &#123;</span> __be16 id;   &#125; icmp;</span><br><span class="line">                                                  <span class="class"><span class="keyword">struct</span> &#123;</span> __be16 port; &#125; dccp;</span><br><span class="line">                                                  <span class="class"><span class="keyword">struct</span> &#123;</span> __be16 port; &#125; sctp;</span><br><span class="line">                                                  <span class="class"><span class="keyword">struct</span> &#123;</span> __be16 key;  &#125; gre;</span><br><span class="line">                                              &#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">nf_conntrack_tuple</span> &#123;</span> <span class="comment">/* This contains the information to distinguish a connection. */</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">nf_conntrack_man</span> <span class="title">src</span>;</span>  <span class="comment">// 源地址信息，manipulable part</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> &#123;</span></span><br><span class="line">        <span class="keyword">union</span> nf_inet_addr u3;</span><br><span class="line">        <span class="keyword">union</span> &#123;</span><br><span class="line">            __be16 all; <span class="comment">/* Add other protocols here. */</span></span><br><span class="line"></span><br><span class="line">            <span class="class"><span class="keyword">struct</span> &#123;</span> __be16 port;         &#125; tcp;</span><br><span class="line">            <span class="class"><span class="keyword">struct</span> &#123;</span> __be16 port;         &#125; udp;</span><br><span class="line">            <span class="class"><span class="keyword">struct</span> &#123;</span> <span class="keyword">u_int8_t</span> type, code; &#125; icmp;</span><br><span class="line">            <span class="class"><span class="keyword">struct</span> &#123;</span> __be16 port;         &#125; dccp;</span><br><span class="line">            <span class="class"><span class="keyword">struct</span> &#123;</span> __be16 port;         &#125; sctp;</span><br><span class="line">            <span class="class"><span class="keyword">struct</span> &#123;</span> __be16 key;          &#125; gre;</span><br><span class="line">        &#125; u;</span><br><span class="line">        <span class="keyword">u_int8_t</span> protonum; <span class="comment">/* The protocol. */</span></span><br><span class="line">        <span class="keyword">u_int8_t</span> dir;      <span class="comment">/* The direction (for tuplehash) */</span></span><br><span class="line">    &#125; dst;                       <span class="comment">// 目的地址信息</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p><strong>Tuple 结构体中只有两个字段 src 和 dst</strong>，分别保存源和目的信息。<code>src</code> 和 <code>dst</code> 自身也是结构体，能保存不同类型协议的数据。以 IPv4 UDP 为例，五元组分别保存在如下字段：</p>
+<ul>
+<li><code>dst.protonum</code>：协议类型</li>
+<li><code>src.u3.ip</code>：源 IP 地址</li>
+<li><code>dst.u3.ip</code>：目的 IP 地址</li>
+<li><code>src.u.udp.port</code>：源端口号</li>
+<li><code>dst.u.udp.port</code>：目的端口号</li>
+</ul>
+<h3 id="CT-支持的协议"><a class="header-anchor" href="#CT-支持的协议">¶</a>CT 支持的协议</h3>
+<p>从以上定义可以看到，连接跟踪模块<strong>目前只支持以下六种协议</strong>：TCP、UDP、ICMP、DCCP、SCTP、GRE。</p>
+<p><strong>注意其中的 ICMP 协议</strong>。大家可能会认为，连接跟踪模块依据包的三层和四层信息做 哈希，而 ICMP 是三层协议，没有四层信息，因此 ICMP 肯定不会被 CT 记录。但<strong>实际上 是会的</strong>，上面代码可以看到，ICMP 使用了其头信息中的 ICMP <code>type</code>和 <code>code</code> 字段来 定义 tuple。</p>
+<h2 id="3-3-struct-nf-conntrack-l4proto-：协议需要实现的方法集合"><a class="header-anchor" href="#3-3-struct-nf-conntrack-l4proto-：协议需要实现的方法集合">¶</a>3.3 <code>struct nf_conntrack_l4proto {}</code>：协议需要实现的方法集合</h2>
+<p>支持连接跟踪的协议都需要实现 <code>struct nf_conntrack_l4proto {}</code> 结构体 中定义的方法，例如 <code>pkt_to_tuple()</code>。</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">// include/net/netfilter/nf_conntrack_l4proto.h</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">nf_conntrack_l4proto</span> &#123;</span></span><br><span class="line">    <span class="keyword">u_int16_t</span> l3proto; <span class="comment">/* L3 Protocol number. */</span></span><br><span class="line">    <span class="keyword">u_int8_t</span>  l4proto; <span class="comment">/* L4 Protocol number. */</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 从包（skb）中提取 tuple</span></span><br><span class="line">    <span class="keyword">bool</span> (*pkt_to_tuple)(struct sk_buff *skb, ... struct nf_conntrack_tuple *tuple);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 对包进行判决，返回判决结果（returns verdict for packet）</span></span><br><span class="line">    <span class="keyword">int</span> (*packet)(struct nf_conn *ct, <span class="keyword">const</span> struct sk_buff *skb ...);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 创建一个新连接。如果成功返回 TRUE；如果返回的是 TRUE，接下来会调用 packet() 方法</span></span><br><span class="line">    <span class="keyword">bool</span> (*<span class="keyword">new</span>)(struct nf_conn *ct, <span class="keyword">const</span> struct sk_buff *skb, <span class="keyword">unsigned</span> <span class="keyword">int</span> dataoff);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 判断当前数据包能否被连接跟踪。如果返回成功，接下来会调用 packet() 方法</span></span><br><span class="line">    <span class="keyword">int</span> (*error)(struct net *net, struct nf_conn *tmpl, struct sk_buff *skb, ...);</span><br><span class="line"></span><br><span class="line">    ...</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h2 id="3-4-struct-nf-conntrack-tuple-hash-：哈希表项"><a class="header-anchor" href="#3-4-struct-nf-conntrack-tuple-hash-：哈希表项">¶</a>3.4 <code>struct nf_conntrack_tuple_hash {}</code>：哈希表项</h2>
+<p>conntrack 将活动连接的状态存储在一张哈希表中（<code>key: value</code>）。</p>
+<p><code>hash_conntrack_raw()</code> 根据 tuple 计算出一个 32 位的哈希值（key）：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">// net/netfilter/nf_conntrack_core.c</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">static</span> u32 <span class="title">hash_conntrack_raw</span><span class="params">(struct nf_conntrack_tuple *tuple, struct net *net)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    get_random_once(&amp;nf_conntrack_hash_rnd, <span class="keyword">sizeof</span>(nf_conntrack_hash_rnd));</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* The direction must be ignored, so we hash everything up to the</span></span><br><span class="line"><span class="comment">     * destination ports (which is a multiple of 4) and treat the last three bytes manually.  */</span></span><br><span class="line">    u32 seed = nf_conntrack_hash_rnd ^ net_hash_mix(net);</span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">int</span> n = (<span class="keyword">sizeof</span>(tuple-&gt;src) + <span class="keyword">sizeof</span>(tuple-&gt;dst.u3)) / <span class="keyword">sizeof</span>(u32);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> jhash2((u32 *)tuple, n, seed ^ ((tuple-&gt;dst.u.all &lt;&lt; <span class="number">16</span>) | tuple-&gt;dst.protonum));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>注意其中是如何利用 tuple 的不同字段来计算哈希的。</p>
+<p><code>nf_conntrack_tuple_hash</code> 是哈希表中的表项（value）:</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">// include/net/netfilter/nf_conntrack_tuple.h</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 每条连接在哈希表中都对应两项，分别对应两个方向（egress/ingress）</span></span><br><span class="line"><span class="comment">// Connections have two entries in the hash table: one for each way</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">nf_conntrack_tuple_hash</span> &#123;</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">hlist_nulls_node</span>   <span class="title">hnnode</span>;</span>   <span class="comment">// 指向该哈希对应的连接 struct nf_conn，采用 list 形式是为了解决哈希冲突</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">nf_conntrack_tuple</span> <span class="title">tuple</span>;</span>    <span class="comment">// N 元组，前面详细介绍过了</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h2 id="3-5-struct-nf-conn-：连接（connection）"><a class="header-anchor" href="#3-5-struct-nf-conn-：连接（connection）">¶</a>3.5 <code>struct nf_conn {}</code>：连接（connection）</h2>
+<p><strong>Netfilter 中每个 flow 都称为一个 connection</strong>，即使是对那些非面向连接的协议（例 如 UDP）。每个 connection 用 <code>struct nf_conn {}</code> 表示，主要字段如下：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">// include/net/netfilter/nf_conntrack.h</span></span><br><span class="line"></span><br><span class="line">                                                  <span class="comment">// include/linux/skbuff.h</span></span><br><span class="line">                                        ------&gt;   <span class="class"><span class="keyword">struct</span> <span class="title">nf_conntrack</span> &#123;</span></span><br><span class="line">                                        |             <span class="keyword">atomic_t</span> use;  <span class="comment">// 连接引用计数？</span></span><br><span class="line">                                        |         &#125;;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">nf_conn</span> &#123;</span>                        |</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">nf_conntrack</span>            <span class="title">ct_general</span>;</span></span><br><span class="line"></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">nf_conntrack_tuple_hash</span> <span class="title">tuplehash</span>[<span class="title">IP_CT_DIR_MAX</span>];</span> <span class="comment">// 哈希表项，数组是因为要记录两个方向的 flow</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">long</span> status; <span class="comment">// 连接状态，见下文</span></span><br><span class="line">    u32 timeout;          <span class="comment">// 连接状态的定时器</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">possible_net_t</span> ct_net;</span><br><span class="line"></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">hlist_node</span>    <span class="title">nat_bysource</span>;</span></span><br><span class="line">                                                        <span class="comment">// per conntrack: protocol private data</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">nf_conn</span> *<span class="title">master</span>;</span>                             <span class="keyword">union</span> nf_conntrack_proto &#123;</span><br><span class="line">                                                       /    <span class="comment">/* insert conntrack proto private data here */</span></span><br><span class="line">    <span class="keyword">u_int32_t</span> mark;    <span class="comment">/* 对 skb 进行特殊标记 */</span>      /     <span class="class"><span class="keyword">struct</span> <span class="title">nf_ct_dccp</span> <span class="title">dccp</span>;</span></span><br><span class="line">    <span class="keyword">u_int32_t</span> secmark;                               /      <span class="class"><span class="keyword">struct</span> <span class="title">ip_ct_sctp</span> <span class="title">sctp</span>;</span></span><br><span class="line">                                                    /       <span class="class"><span class="keyword">struct</span> <span class="title">ip_ct_tcp</span> <span class="title">tcp</span>;</span></span><br><span class="line">    <span class="keyword">union</span> nf_conntrack_proto proto; ----------&gt;----/        <span class="class"><span class="keyword">struct</span> <span class="title">nf_ct_gre</span> <span class="title">gre</span>;</span></span><br><span class="line">&#125;;                                                          <span class="keyword">unsigned</span> <span class="keyword">int</span> tmpl_padto;</span><br><span class="line">                                                        &#125;;</span><br></pre></td></tr></table></figure>
+<p><strong>连接的状态集合 enum ip_conntrack_status</strong>：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">// include/uapi/linux/netfilter/nf_conntrack_common.h</span><br><span class="line"></span><br><span class="line">enum ip_conntrack_status &#123;</span><br><span class="line">    IPS_EXPECTED      = (1 &lt;&lt; IPS_EXPECTED_BIT),</span><br><span class="line">    IPS_SEEN_REPLY    = (1 &lt;&lt; IPS_SEEN_REPLY_BIT),</span><br><span class="line">    IPS_ASSURED       = (1 &lt;&lt; IPS_ASSURED_BIT),</span><br><span class="line">    IPS_CONFIRMED     = (1 &lt;&lt; IPS_CONFIRMED_BIT),</span><br><span class="line">    IPS_SRC_NAT       = (1 &lt;&lt; IPS_SRC_NAT_BIT),</span><br><span class="line">    IPS_DST_NAT       = (1 &lt;&lt; IPS_DST_NAT_BIT),</span><br><span class="line">    IPS_NAT_MASK      = (IPS_DST_NAT | IPS_SRC_NAT),</span><br><span class="line">    IPS_SEQ_ADJUST    = (1 &lt;&lt; IPS_SEQ_ADJUST_BIT),</span><br><span class="line">    IPS_SRC_NAT_DONE  = (1 &lt;&lt; IPS_SRC_NAT_DONE_BIT),</span><br><span class="line">    IPS_DST_NAT_DONE  = (1 &lt;&lt; IPS_DST_NAT_DONE_BIT),</span><br><span class="line">    IPS_NAT_DONE_MASK = (IPS_DST_NAT_DONE | IPS_SRC_NAT_DONE),</span><br><span class="line">    IPS_DYING         = (1 &lt;&lt; IPS_DYING_BIT),</span><br><span class="line">    IPS_FIXED_TIMEOUT = (1 &lt;&lt; IPS_FIXED_TIMEOUT_BIT),</span><br><span class="line">    IPS_TEMPLATE      = (1 &lt;&lt; IPS_TEMPLATE_BIT),</span><br><span class="line">    IPS_UNTRACKED     = (1 &lt;&lt; IPS_UNTRACKED_BIT),</span><br><span class="line">    IPS_HELPER        = (1 &lt;&lt; IPS_HELPER_BIT),</span><br><span class="line">    IPS_OFFLOAD       = (1 &lt;&lt; IPS_OFFLOAD_BIT),</span><br><span class="line"></span><br><span class="line">    IPS_UNCHANGEABLE_MASK = (IPS_NAT_DONE_MASK | IPS_NAT_MASK |</span><br><span class="line">                 IPS_EXPECTED | IPS_CONFIRMED | IPS_DYING |</span><br><span class="line">                 IPS_SEQ_ADJUST | IPS_TEMPLATE | IPS_OFFLOAD),</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h2 id="3-6-nf-conntrack-in-：进入连接跟踪"><a class="header-anchor" href="#3-6-nf-conntrack-in-：进入连接跟踪">¶</a>3.6 <code>nf_conntrack_in()</code>：进入连接跟踪</h2>
+<p><img src="/public/2022/12/04/linux_network/conntrack_linux/netfilter-conntrack.png" alt></p>
+<p>Fig. Netfilter 中的连接跟踪点</p>
+<p>如上图所示，Netfilter 在四个 Hook 点对包进行跟踪：</p>
+<ol>
+<li>
+<p><code>PRE_ROUTING</code> 和 <code>LOCAL_OUT</code>：<strong>调用 nf_conntrack_in() 开始连接跟踪</strong>， 正常情况下会创建一条新连接记录，然后将 conntrack entry 放到 <strong>unconfirmed list</strong>。</p>
+<p>为什么是这两个 hook 点呢？因为它们都是<strong>新连接的第一个包最先达到的地方</strong>，</p>
+<ul>
+<li><code>PRE_ROUTING</code> 是<strong>外部主动和本机建连</strong>时包最先到达的地方</li>
+<li><code>LOCAL_OUT</code> 是<strong>本机主动和外部建连</strong>时包最先到达的地方</li>
+</ul>
+</li>
+<li>
+<p><code>POST_ROUTING</code> 和 <code>LOCAL_IN</code>：<strong>调用 nf_conntrack_confirm() 将 nf_conntrack_in() 创建的连接移到 confirmed list</strong>。</p>
+<p>同样要问，为什么在这两个 hook 点呢？因为如果新连接的第一个包没有被丢弃，那这 是它们<strong>离开 netfilter 之前的最后 hook 点</strong>：</p>
+<ul>
+<li><strong>外部主动和本机建连</strong>的包，如果在中间处理中没有被丢弃，<code>LOCAL_IN</code> 是其被送到应用（例如 nginx 服务）之前的最后 hook 点</li>
+<li><strong>本机主动和外部建连</strong>的包，如果在中间处理中没有被丢弃，<code>POST_ROUTING</code> 是其离开主机时的最后 hook 点</li>
+</ul>
+</li>
+</ol>
+<p>下面的代码可以看到<strong>这些 handler 是如何注册到 Netfilter hook 点的</strong>：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">// net/netfilter/nf_conntrack_proto.c</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/* Connection tracking may drop packets, but never alters them, so make it the first hook.  */</span></span><br><span class="line"><span class="keyword">static</span> <span class="keyword">const</span> <span class="class"><span class="keyword">struct</span> <span class="title">nf_hook_ops</span> <span class="title">ipv4_conntrack_ops</span>[] = &#123;</span></span><br><span class="line">    &#123;</span><br><span class="line">        .hook        = ipv4_conntrack_in,       <span class="comment">// 调用 nf_conntrack_in() 进入连接跟踪</span></span><br><span class="line">        .pf          = NFPROTO_IPV4,</span><br><span class="line">        .hooknum     = NF_INET_PRE_ROUTING,     <span class="comment">// PRE_ROUTING hook 点</span></span><br><span class="line">        .priority    = NF_IP_PRI_CONNTRACK,</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">        .hook        = ipv4_conntrack_local,    <span class="comment">// 调用 nf_conntrack_in() 进入连接跟踪</span></span><br><span class="line">        .pf          = NFPROTO_IPV4,</span><br><span class="line">        .hooknum     = NF_INET_LOCAL_OUT,       <span class="comment">// LOCAL_OUT hook 点</span></span><br><span class="line">        .priority    = NF_IP_PRI_CONNTRACK,</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">        .hook        = ipv4_confirm,            <span class="comment">// 调用 nf_conntrack_confirm()</span></span><br><span class="line">        .pf          = NFPROTO_IPV4,</span><br><span class="line">        .hooknum     = NF_INET_POST_ROUTING,    <span class="comment">// POST_ROUTING hook 点</span></span><br><span class="line">        .priority    = NF_IP_PRI_CONNTRACK_CONFIRM,</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">        .hook        = ipv4_confirm,            <span class="comment">// 调用 nf_conntrack_confirm()</span></span><br><span class="line">        .pf          = NFPROTO_IPV4,</span><br><span class="line">        .hooknum     = NF_INET_LOCAL_IN,        <span class="comment">// LOCAL_IN hook 点</span></span><br><span class="line">        .priority    = NF_IP_PRI_CONNTRACK_CONFIRM,</span><br><span class="line">    &#125;,</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p><code>nf_conntrack_in()</code> 是<strong>连接跟踪模块的核心</strong>。</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">// net/netfilter/nf_conntrack_core.c</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">unsigned</span> <span class="keyword">int</span></span><br><span class="line">nf_conntrack_in(struct net *net, <span class="keyword">u_int8_t</span> pf, <span class="keyword">unsigned</span> <span class="keyword">int</span> hooknum, struct sk_buff *skb)</span><br><span class="line">&#123;</span><br><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">nf_conn</span> *<span class="title">tmpl</span> = <span class="title">nf_ct_get</span>(<span class="title">skb</span>, &amp;<span class="title">ctinfo</span>);</span> <span class="comment">// 获取 skb 对应的 conntrack_info 和连接记录</span></span><br><span class="line">  <span class="keyword">if</span> (tmpl || ctinfo == IP_CT_UNTRACKED) &#123;        <span class="comment">// 如果记录存在，或者是不需要跟踪的类型</span></span><br><span class="line">      <span class="keyword">if</span> ((tmpl &amp;&amp; !nf_ct_is_template(tmpl)) || ctinfo == IP_CT_UNTRACKED) &#123;</span><br><span class="line">          NF_CT_STAT_INC_ATOMIC(net, ignore);     <span class="comment">// 无需跟踪的类型，增加 ignore 计数</span></span><br><span class="line">          <span class="keyword">return</span> NF_ACCEPT;                       <span class="comment">// 返回 NF_ACCEPT，继续后面的处理</span></span><br><span class="line">      &#125;</span><br><span class="line">      skb-&gt;_nfct = <span class="number">0</span>;                             <span class="comment">// 不属于 ignore 类型，计数器置零，准备后续处理</span></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">nf_conntrack_l4proto</span> *<span class="title">l4proto</span> = __<span class="title">nf_ct_l4proto_find</span>(...);</span>    <span class="comment">// 提取协议相关的 L4 头信息</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (l4proto-&gt;error != <span class="literal">NULL</span>) &#123;                   <span class="comment">// skb 的完整性和合法性验证</span></span><br><span class="line">      <span class="keyword">if</span> (l4proto-&gt;error(net, tmpl, skb, dataoff, pf, hooknum) &lt;= <span class="number">0</span>) &#123;</span><br><span class="line">          NF_CT_STAT_INC_ATOMIC(net, error);</span><br><span class="line">          NF_CT_STAT_INC_ATOMIC(net, invalid);</span><br><span class="line">          <span class="keyword">goto</span> out;</span><br><span class="line">      &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">repeat:</span><br><span class="line">  <span class="comment">// 开始连接跟踪：提取 tuple；创建新连接记录，或者更新已有连接的状态</span></span><br><span class="line">  resolve_normal_ct(net, tmpl, skb, ... l4proto);</span><br><span class="line"></span><br><span class="line">  l4proto-&gt;packet(ct, skb, dataoff, ctinfo); <span class="comment">// 进行一些协议相关的处理，例如 UDP 会更新 timeout</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (ctinfo == IP_CT_ESTABLISHED_REPLY &amp;&amp; !test_and_set_bit(IPS_SEEN_REPLY_BIT, &amp;ct-&gt;status))</span><br><span class="line">      nf_conntrack_event_cache(IPCT_REPLY, ct);</span><br><span class="line">out:</span><br><span class="line">  <span class="keyword">if</span> (tmpl)</span><br><span class="line">      nf_ct_put(tmpl); <span class="comment">// 解除对连接记录 tmpl 的引用</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>大致流程：</p>
+<ol>
+<li>尝试获取这个 skb 对应的连接跟踪记录</li>
+<li>判断是否需要对这个包做连接跟踪，如果不需要，更新 ignore 计数（<code>conntrack -S</code> 能看到这个计数）， 返回 <code>NF_ACCEPT</code>；如果需要，就<strong>初始化这个 skb 的引用计数</strong>。</li>
+<li>从包的 L4 header 中提取信息，初始化协议相关的 <code>struct nf_conntrack_l4proto {}</code> 变量，其中包含了该协议的<strong>连接跟踪相关的回调方法</strong>。</li>
+<li>调用该协议的 <code>error()</code> 方法检查包的完整性、校验和等信息。</li>
+<li>调用 <code>resolve_normal_ct()</code> <strong>开始连接跟踪</strong>，它会创建新 tuple，新 conntrack entry，或者更新已有连接的状态。</li>
+<li>调用该协议的 <code>packet()</code> 方法进行一些协议相关的处理，例如对于 UDP，如果 status bit 里面设置了 <code>IPS_SEEN_REPLY</code> 位，就会更新 timeout。timeout 大小和协 议相关，越小越越可以防止 DoS 攻击（DoS 的基本原理就是将机器的可用连接耗尽）</li>
+</ol>
+<h2 id="3-7-init-conntrack-：创建新连接记录"><a class="header-anchor" href="#3-7-init-conntrack-：创建新连接记录">¶</a>3.7 <code>init_conntrack()</code>：创建新连接记录</h2>
+<p>如果连接不存在（flow 的第一个包），<code>resolve_normal_ct()</code> 会调用 <code>init_conntrack</code> ，后者进而会调用 <code>new()</code> 方法创建一个新的 conntrack entry。</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">// include/net/netfilter/nf_conntrack_core.c</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Allocate a new conntrack</span></span><br><span class="line"><span class="keyword">static</span> noinline <span class="class"><span class="keyword">struct</span> <span class="title">nf_conntrack_tuple_hash</span> *</span></span><br><span class="line"><span class="class"><span class="title">init_conntrack</span>(<span class="title">struct</span> <span class="title">net</span> *<span class="title">net</span>, <span class="title">struct</span> <span class="title">nf_conn</span> *<span class="title">tmpl</span>,</span></span><br><span class="line"><span class="class">           <span class="title">const</span> <span class="title">struct</span> <span class="title">nf_conntrack_tuple</span> *<span class="title">tuple</span>,</span></span><br><span class="line"><span class="class">           <span class="title">const</span> <span class="title">struct</span> <span class="title">nf_conntrack_l4proto</span> *<span class="title">l4proto</span>,</span></span><br><span class="line"><span class="class">           <span class="title">struct</span> <span class="title">sk_buff</span> *<span class="title">skb</span>, <span class="title">unsigned</span> <span class="title">int</span> <span class="title">dataoff</span>, <span class="title">u32</span> <span class="title">hash</span>)</span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">nf_conn</span> *<span class="title">ct</span>;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 从 conntrack table 中分配一个 entry，如果哈希表满了，会在内核日志中打印</span></span><br><span class="line">    <span class="comment">// "nf_conntrack: table full, dropping packet" 信息，通过 `dmesg -T` 能看到</span></span><br><span class="line">    ct = __nf_conntrack_alloc(net, zone, tuple, &amp;repl_tuple, GFP_ATOMIC, hash);</span><br><span class="line"></span><br><span class="line">    l4proto-&gt;<span class="keyword">new</span>(ct, skb, dataoff); <span class="comment">// 协议相关的方法</span></span><br><span class="line"></span><br><span class="line">    local_bh_disable();             <span class="comment">// 关闭软中断</span></span><br><span class="line">    <span class="keyword">if</span> (net-&gt;ct.expect_count) &#123;</span><br><span class="line">        <span class="built_in">exp</span> = nf_ct_find_expectation(net, zone, tuple);</span><br><span class="line">        <span class="keyword">if</span> (<span class="built_in">exp</span>) &#123;</span><br><span class="line">            <span class="comment">/* Welcome, Mr. Bond.  We've been expecting you... */</span></span><br><span class="line">            __set_bit(IPS_EXPECTED_BIT, &amp;ct-&gt;status);</span><br><span class="line"></span><br><span class="line">            <span class="comment">/* exp-&gt;master safe, refcnt bumped in nf_ct_find_expectation */</span></span><br><span class="line">            ct-&gt;master = <span class="built_in">exp</span>-&gt;master;</span><br><span class="line">            ct-&gt;mark = <span class="built_in">exp</span>-&gt;master-&gt;mark;</span><br><span class="line">            ct-&gt;secmark = <span class="built_in">exp</span>-&gt;master-&gt;secmark;</span><br><span class="line">            NF_CT_STAT_INC(net, expect_new);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* Now it is inserted into the unconfirmed list, bump refcount */</span></span><br><span class="line">    <span class="comment">// 至此这个新的 conntrack entry 已经被插入 unconfirmed list</span></span><br><span class="line">    nf_conntrack_get(&amp;ct-&gt;ct_general);</span><br><span class="line">    nf_ct_add_to_unconfirmed_list(ct);</span><br><span class="line"></span><br><span class="line">    local_bh_enable();              <span class="comment">// 重新打开软中断</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (<span class="built_in">exp</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="built_in">exp</span>-&gt;expectfn)</span><br><span class="line">            <span class="built_in">exp</span>-&gt;expectfn(ct, <span class="built_in">exp</span>);</span><br><span class="line">        nf_ct_expect_put(<span class="built_in">exp</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> &amp;ct-&gt;tuplehash[IP_CT_DIR_ORIGINAL];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>每种协议需要实现自己的 <code>l4proto-&gt;new()</code> 方法，代码见：<code>net/netfilter/nf_conntrack_proto_*.c</code>。 例如 TCP 协议对应的 <code>new()</code> 方法是：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">// net/netfilter/nf_conntrack_proto_tcp.c</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/* Called when a new connection for this protocol found. */</span></span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">bool</span> <span class="title">tcp_new</span><span class="params">(struct nf_conn *ct, <span class="keyword">const</span> struct sk_buff *skb, <span class="keyword">unsigned</span> <span class="keyword">int</span> dataoff)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (new_state == TCP_CONNTRACK_SYN_SENT) &#123;</span><br><span class="line">        <span class="built_in">memset</span>(&amp;ct-&gt;proto.tcp, <span class="number">0</span>, <span class="keyword">sizeof</span>(ct-&gt;proto.tcp));</span><br><span class="line">        <span class="comment">/* SYN packet */</span></span><br><span class="line">        ct-&gt;proto.tcp.seen[<span class="number">0</span>].td_end = segment_seq_plus_len(ntohl(th-&gt;seq), skb-&gt;len, dataoff, th);</span><br><span class="line">        ct-&gt;proto.tcp.seen[<span class="number">0</span>].td_maxwin = ntohs(th-&gt;window);</span><br><span class="line">        ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如果当前包会影响后面包的状态判断，<code>init_conntrack()</code> 会设置 <code>struct nf_conn</code> 的 <code>master</code> 字段。面向连接的协议会用到这个特性，例如 TCP。</p>
+<h2 id="3-8-nf-conntrack-confirm-：确认包没有被丢弃"><a class="header-anchor" href="#3-8-nf-conntrack-confirm-：确认包没有被丢弃">¶</a>3.8 <code>nf_conntrack_confirm()</code>：确认包没有被丢弃</h2>
+<p><code>nf_conntrack_in()</code> 创建的新 conntrack entry 会插入到一个 <strong>未确认连接</strong>（ unconfirmed connection）列表。</p>
+<p>如果这个包之后没有被丢弃，那它在经过 <code>POST_ROUTING</code> 时会被 <code>nf_conntrack_confirm()</code> 方法处理，原理我们在分析过了 3.6 节的开头分析过了。 <code>nf_conntrack_confirm()</code> 完成之后，状态就变为了 <code>IPS_CONFIRMED</code>，并且连接记录从 <strong>未确认列表</strong>移到<strong>正常</strong>的列表。</p>
+<p>之所以把创建一个新 entry 的过程分为创建（new）和确认（confirm）两个阶段 ，是因为<strong>包在经过 nf_conntrack_in() 之后，到达 nf_conntrack_confirm() 之前 ，可能会被内核丢弃</strong>。这样会导致系统残留大量的半连接状态记录，在性能和安全性上都 是很大问题。分为两步之后，可以加快半连接状态 conntrack entry 的 GC。</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">// include/net/netfilter/nf_conntrack_core.h</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/* Confirm a connection: returns NF_DROP if packet must be dropped. */</span></span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">inline</span> <span class="keyword">int</span> <span class="title">nf_conntrack_confirm</span><span class="params">(struct sk_buff *skb)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">nf_conn</span> *<span class="title">ct</span> = (<span class="title">struct</span> <span class="title">nf_conn</span> *)<span class="title">skb_nfct</span>(<span class="title">skb</span>);</span></span><br><span class="line">    <span class="keyword">int</span> ret = NF_ACCEPT;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (ct) &#123;</span><br><span class="line">        <span class="keyword">if</span> (!nf_ct_is_confirmed(ct))</span><br><span class="line">            ret = __nf_conntrack_confirm(skb);</span><br><span class="line">        <span class="keyword">if</span> (likely(ret == NF_ACCEPT))</span><br><span class="line">            nf_ct_deliver_cached_events(ct);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> ret;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>confirm 逻辑，省略了各种错误处理逻辑：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">// net/netfilter/nf_conntrack_core.c</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/* Confirm a connection given skb; places it in hash table */</span></span><br><span class="line"><span class="keyword">int</span></span><br><span class="line">__nf_conntrack_confirm(struct sk_buff *skb)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">nf_conn</span> *<span class="title">ct</span>;</span></span><br><span class="line">    ct = nf_ct_get(skb, &amp;ctinfo);</span><br><span class="line"></span><br><span class="line">    local_bh_disable();               <span class="comment">// 关闭软中断</span></span><br><span class="line"></span><br><span class="line">    hash = *(<span class="keyword">unsigned</span> <span class="keyword">long</span> *)&amp;ct-&gt;tuplehash[IP_CT_DIR_REPLY].hnnode.pprev;</span><br><span class="line">    reply_hash = hash_conntrack(net, &amp;ct-&gt;tuplehash[IP_CT_DIR_REPLY].tuple);</span><br><span class="line"></span><br><span class="line">    ct-&gt;timeout += nfct_time_stamp;   <span class="comment">// 更新连接超时时间，超时后会被 GC</span></span><br><span class="line">    atomic_inc(&amp;ct-&gt;ct_general.use);  <span class="comment">// 设置连接引用计数？</span></span><br><span class="line">    ct-&gt;status |= IPS_CONFIRMED;      <span class="comment">// 设置连接状态为 confirmed</span></span><br><span class="line"></span><br><span class="line">    __nf_conntrack_hash_insert(ct, hash, reply_hash);  <span class="comment">// 插入到连接跟踪哈希表</span></span><br><span class="line"></span><br><span class="line">    local_bh_enable();                <span class="comment">// 重新打开软中断</span></span><br><span class="line"></span><br><span class="line">    nf_conntrack_event_cache(master_ct(ct) ? IPCT_RELATED : IPCT_NEW, ct);</span><br><span class="line">    <span class="keyword">return</span> NF_ACCEPT;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>可以看到，<strong>连接跟踪的处理逻辑中需要频繁关闭和打开软中断</strong>，此外还有各种锁， 这是短连高并发场景下连接跟踪性能损耗的主要原因？。</p>
+<p>NAT 是与连接跟踪独立的模块。</p>
+<h2 id="4-1-重要数据结构和函数"><a class="header-anchor" href="#4-1-重要数据结构和函数">¶</a>4.1 重要数据结构和函数</h2>
+<p><strong>重要数据结构：</strong></p>
+<p>支持 NAT 的协议需要实现其中的方法：</p>
+<ul>
+<li><code>struct nf_nat_l3proto {}</code></li>
+<li><code>struct nf_nat_l4proto {}</code></li>
+</ul>
+<p><strong>重要函数：</strong></p>
+<ul>
+<li><code>nf_nat_inet_fn()</code>：NAT 的核心函数，在<strong>除 NF_INET_FORWARD 之外的其他 hook 点都会被调用</strong>。</li>
+</ul>
+<h2 id="4-2-NAT-模块初始化"><a class="header-anchor" href="#4-2-NAT-模块初始化">¶</a>4.2 NAT 模块初始化</h2>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">// net/netfilter/nf_nat_core.c</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">static</span> <span class="class"><span class="keyword">struct</span> <span class="title">nf_nat_hook</span> <span class="title">nat_hook</span> = &#123;</span></span><br><span class="line">    .parse_nat_setup    = nfnetlink_parse_nat_setup,</span><br><span class="line">    .decode_session        = __nf_nat_decode_session,</span><br><span class="line">    .manip_pkt        = nf_nat_manip_pkt,</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">int</span> __init <span class="title">nf_nat_init</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    nf_nat_bysource = nf_ct_alloc_hashtable(&amp;nf_nat_htable_size, <span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">    nf_ct_helper_expectfn_register(&amp;follow_master_nat);</span><br><span class="line"></span><br><span class="line">    RCU_INIT_POINTER(nf_nat_hook, &amp;nat_hook);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">MODULE_LICENSE(<span class="string">"GPL"</span>);</span><br><span class="line">module_init(nf_nat_init);</span><br></pre></td></tr></table></figure>
+<h2 id="4-3-struct-nf-nat-l3proto-：协议相关的-NAT-方法集"><a class="header-anchor" href="#4-3-struct-nf-nat-l3proto-：协议相关的-NAT-方法集">¶</a>4.3 <code>struct nf_nat_l3proto {}</code>：协议相关的 NAT 方法集</h2>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">// include/net/netfilter/nf_nat_l3proto.h</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">nf_nat_l3proto</span> &#123;</span></span><br><span class="line">    u8    l3proto; <span class="comment">// 例如，AF_INET</span></span><br><span class="line"></span><br><span class="line">    u32     (*secure_port    )(<span class="keyword">const</span> struct nf_conntrack_tuple *t, __be16);</span><br><span class="line">    <span class="keyword">bool</span>    (*manip_pkt      )(struct sk_buff *skb, ...);</span><br><span class="line">    <span class="keyword">void</span>    (*csum_update    )(struct sk_buff *skb, ...);</span><br><span class="line">    <span class="keyword">void</span>    (*csum_recalc    )(struct sk_buff *skb, u8 proto, ...);</span><br><span class="line">    <span class="keyword">void</span>    (*decode_session )(struct sk_buff *skb, ...);</span><br><span class="line">    <span class="keyword">int</span>     (*nlattr_to_range)(struct nlattr *tb[], struct nf_nat_range2 *range);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h2 id="4-4-struct-nf-nat-l4proto-：协议相关的-NAT-方法集"><a class="header-anchor" href="#4-4-struct-nf-nat-l4proto-：协议相关的-NAT-方法集">¶</a>4.4 <code>struct nf_nat_l4proto {}</code>：协议相关的 NAT 方法集</h2>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">// include/net/netfilter/nf_nat_l4proto.h</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">nf_nat_l4proto</span> &#123;</span></span><br><span class="line">    u8 l4proto; <span class="comment">// Protocol number，例如 IPPROTO_UDP, IPPROTO_TCP</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 根据传入的 tuple 和 NAT 类型（SNAT/DNAT）修改包的 L3/L4 头</span></span><br><span class="line">    <span class="keyword">bool</span> (*manip_pkt)(struct sk_buff *skb, *l3proto, *tuple, maniptype);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 创建一个唯一的 tuple</span></span><br><span class="line">    <span class="comment">// 例如对于 UDP，会根据 src_ip, dst_ip, src_port 加一个随机数生成一个 16bit 的 dst_port</span></span><br><span class="line">    <span class="keyword">void</span> (*unique_tuple)(*l3proto, tuple, struct nf_nat_range2 *range, maniptype, struct nf_conn *ct);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// If the address range is exhausted the NAT modules will begin to drop packets.</span></span><br><span class="line">    <span class="keyword">int</span> (*nlattr_to_range)(struct nlattr *tb[], struct nf_nat_range2 *range);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>各协议实现的方法，见：<code>net/netfilter/nf_nat_proto_*.c</code>。例如 TCP 的实现：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">// net/netfilter/nf_nat_proto_tcp.c</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="class"><span class="keyword">struct</span> <span class="title">nf_nat_l4proto</span> <span class="title">nf_nat_l4proto_tcp</span> = &#123;</span></span><br><span class="line">    .l4proto        = IPPROTO_TCP,</span><br><span class="line">    .manip_pkt        = tcp_manip_pkt,</span><br><span class="line">    .in_range        = nf_nat_l4proto_in_range,</span><br><span class="line">    .unique_tuple        = tcp_unique_tuple,</span><br><span class="line">    .nlattr_to_range    = nf_nat_l4proto_nlattr_to_range,</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h2 id="4-5-nf-nat-inet-fn-：进入-NAT"><a class="header-anchor" href="#4-5-nf-nat-inet-fn-：进入-NAT">¶</a>4.5 <code>nf_nat_inet_fn()</code>：进入 NAT</h2>
+<p>NAT 的核心函数是 <code>nf_nat_inet_fn()</code>，它会在以下 hook 点被调用：</p>
+<ul>
+<li><code>NF_INET_PRE_ROUTING</code></li>
+<li><code>NF_INET_POST_ROUTING</code></li>
+<li><code>NF_INET_LOCAL_OUT</code></li>
+<li><code>NF_INET_LOCAL_IN</code></li>
+</ul>
+<p>也就是除了 <code>NF_INET_FORWARD</code> 之外其他 hook 点都会被调用。</p>
+<p><strong>在这些 hook 点的优先级</strong>：<strong>Conntrack &gt; NAT &gt; Packet Filtering</strong>。 <strong>连接跟踪的优先级高于 NAT</strong> 是因为 NAT 依赖连接跟踪的结果。</p>
+<p><img src="/public/2022/12/04/linux_network/conntrack_linux/hook-to-nat.png" alt></p>
+<p>Fig. NAT</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">unsigned</span> <span class="keyword">int</span></span><br><span class="line">nf_nat_inet_fn(<span class="keyword">void</span> *priv, struct sk_buff *skb, <span class="keyword">const</span> struct nf_hook_state *state)</span><br><span class="line">&#123;</span><br><span class="line">    ct = nf_ct_get(skb, &amp;ctinfo);</span><br><span class="line">    <span class="keyword">if</span> (!ct)    <span class="comment">// conntrack 不存在就做不了 NAT，直接返回，这也是我们为什么说 NAT 依赖 conntrack 的结果</span></span><br><span class="line">        <span class="keyword">return</span> NF_ACCEPT;</span><br><span class="line"></span><br><span class="line">    nat = nfct_nat(ct);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">switch</span> (ctinfo) &#123;</span><br><span class="line">    <span class="keyword">case</span> IP_CT_RELATED:</span><br><span class="line">    <span class="keyword">case</span> IP_CT_RELATED_REPLY: <span class="comment">/* Only ICMPs can be IP_CT_IS_REPLY.  Fallthrough */</span></span><br><span class="line">    <span class="keyword">case</span> IP_CT_NEW: <span class="comment">/* Seen it before? This can happen for loopback, retrans, or local packets. */</span></span><br><span class="line">        <span class="keyword">if</span> (!nf_nat_initialized(ct, maniptype)) &#123;</span><br><span class="line">            <span class="class"><span class="keyword">struct</span> <span class="title">nf_hook_entries</span> *<span class="title">e</span> = <span class="title">rcu_dereference</span>(<span class="title">lpriv</span>-&gt;<span class="title">entries</span>);</span> <span class="comment">// 获取所有 NAT 规则</span></span><br><span class="line">            <span class="keyword">if</span> (!e)</span><br><span class="line">                <span class="keyword">goto</span> null_bind;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; e-&gt;num_hook_entries; i++) &#123; <span class="comment">// 依次执行 NAT 规则</span></span><br><span class="line">                <span class="keyword">if</span> (e-&gt;hooks[i].hook(e-&gt;hooks[i].priv, skb, state) != NF_ACCEPT )</span><br><span class="line">                    <span class="keyword">return</span> ret;                         <span class="comment">// 任何规则返回非 NF_ACCEPT，就停止当前处理</span></span><br><span class="line"></span><br><span class="line">                <span class="keyword">if</span> (nf_nat_initialized(ct, maniptype))</span><br><span class="line">                    <span class="keyword">goto</span> do_nat;</span><br><span class="line">            &#125;</span><br><span class="line">null_bind:</span><br><span class="line">            nf_nat_alloc_null_binding(ct, state-&gt;hook);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123; <span class="comment">// Already setup manip</span></span><br><span class="line">            <span class="keyword">if</span> (nf_nat_oif_changed(state-&gt;hook, ctinfo, nat, state-&gt;out))</span><br><span class="line">                <span class="keyword">goto</span> oif_changed;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">    <span class="keyword">default</span>: <span class="comment">/* ESTABLISHED */</span></span><br><span class="line">        <span class="keyword">if</span> (nf_nat_oif_changed(state-&gt;hook, ctinfo, nat, state-&gt;out))</span><br><span class="line">            <span class="keyword">goto</span> oif_changed;</span><br><span class="line">    &#125;</span><br><span class="line">do_nat:</span><br><span class="line">    <span class="keyword">return</span> nf_nat_packet(ct, ctinfo, state-&gt;hook, skb);</span><br><span class="line">oif_changed:</span><br><span class="line">    nf_ct_kill_acct(ct, ctinfo, skb);</span><br><span class="line">    <span class="keyword">return</span> NF_DROP;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>首先查询 conntrack 记录，如果不存在，就意味着无法跟踪这个连接，那就更不可能做 NAT 了，因此直接返回。</p>
+<p>如果找到了 conntrack 记录，并且是 <code>IP_CT_RELATED</code>、<code>IP_CT_RELATED_REPLY</code> 或 <code>IP_CT_NEW</code> 状态，就去获取 NAT 规则。如果没有规则，直接返回 <code>NF_ACCEPT</code>，对包不 做任何改动；如果有规则，最后执行 <code>nf_nat_packet</code>，这个函数会进一步调用 <code>manip_pkt</code> 完成对包的修改，如果失败，包将被丢弃。</p>
+<h3 id="Masquerade"><a class="header-anchor" href="#Masquerade">¶</a>Masquerade</h3>
+<p>NAT 模块</p>
+<ul>
+<li>一般配置方式：<code>Change IP1 to IP2 if matching XXX</code>。</li>
+<li>高级配置方式：<code>Change IP1 to dev1's IP if matching XXX</code>，这种方式称为 Masquerade。</li>
+</ul>
+<p>Masquerade 优缺点：</p>
+<ul>
+<li>优点：<strong>当设备（网卡）的 IP 地址发生变化时，NAT 规则无需做任何修改</strong>。</li>
+<li>缺点：<strong>性能比第一种方式要差</strong>。</li>
+</ul>
+<h2 id="4-6-nf-nat-packet-：执行-NAT"><a class="header-anchor" href="#4-6-nf-nat-packet-：执行-NAT">¶</a>4.6 <code>nf_nat_packet()</code>：执行 NAT</h2>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">// net/netfilter/nf_nat_core.c</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/* Do packet manipulations according to nf_nat_setup_info. */</span></span><br><span class="line"><span class="function"><span class="keyword">unsigned</span> <span class="keyword">int</span> <span class="title">nf_nat_packet</span><span class="params">(struct nf_conn *ct, <span class="keyword">enum</span> ip_conntrack_info ctinfo,</span></span></span><br><span class="line"><span class="function"><span class="params">               <span class="keyword">unsigned</span> <span class="keyword">int</span> hooknum, struct sk_buff *skb)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">enum</span> nf_nat_manip_type mtype = HOOK2MANIP(hooknum);</span><br><span class="line">    <span class="keyword">enum</span> ip_conntrack_dir dir = CTINFO2DIR(ctinfo);</span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">int</span> verdict = NF_ACCEPT;</span><br><span class="line"></span><br><span class="line">    statusbit = (mtype == NF_NAT_MANIP_SRC? IPS_SRC_NAT : IPS_DST_NAT)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (dir == IP_CT_DIR_REPLY)     <span class="comment">// Invert if this is reply dir</span></span><br><span class="line">        statusbit ^= IPS_NAT_MASK;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (ct-&gt;status &amp; statusbit)     <span class="comment">// Non-atomic: these bits don't change. */</span></span><br><span class="line">        verdict = nf_nat_manip_pkt(skb, ct, mtype, dir);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> verdict;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">unsigned</span> <span class="keyword">int</span> <span class="title">nf_nat_manip_pkt</span><span class="params">(struct sk_buff *skb, struct nf_conn *ct,</span></span></span><br><span class="line"><span class="function"><span class="params">                     <span class="keyword">enum</span> nf_nat_manip_type mtype, <span class="keyword">enum</span> ip_conntrack_dir dir)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">nf_conntrack_tuple</span> <span class="title">target</span>;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">/* We are aiming to look like inverse of other direction. */</span></span><br><span class="line">    nf_ct_invert_tuplepr(&amp;target, &amp;ct-&gt;tuplehash[!dir].tuple);</span><br><span class="line"></span><br><span class="line">    l3proto = __nf_nat_l3proto_find(target.src.l3num);</span><br><span class="line">    l4proto = __nf_nat_l4proto_find(target.src.l3num, target.dst.protonum);</span><br><span class="line">    <span class="keyword">if</span> (!l3proto-&gt;manip_pkt(skb, <span class="number">0</span>, l4proto, &amp;target, mtype)) <span class="comment">// 协议相关处理</span></span><br><span class="line">        <span class="keyword">return</span> NF_DROP;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> NF_ACCEPT;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="5-1-查看-加载-卸载-nf-conntrack-模块"><a class="header-anchor" href="#5-1-查看-加载-卸载-nf-conntrack-模块">¶</a>5.1 查看 / 加载 / 卸载 nf_conntrack 模块</h2>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ modinfo nf_conntrack</span><br><span class="line">filename:       /lib/modules/5.15.0-46-generic/kernel/net/netfilter/nf_conntrack.ko</span><br><span class="line">license:        GPL</span><br><span class="line"><span class="built_in">alias</span>:          nf_conntrack-10</span><br><span class="line"><span class="built_in">alias</span>:          nf_conntrack-2</span><br><span class="line"><span class="built_in">alias</span>:          ip_conntrack</span><br><span class="line">srcversion:     30B45E5822722ACEDE23A4B</span><br><span class="line">depends:        nf_defrag_ipv6,libcrc32c,nf_defrag_ipv4</span><br><span class="line">retpoline:      Y</span><br><span class="line">intree:         Y</span><br><span class="line">name:           nf_conntrack</span><br><span class="line">vermagic:       5.15.0-46-generic SMP mod_unload modversions</span><br><span class="line">sig_id:         PKCS<span class="comment">#7</span></span><br><span class="line">signer:         Build time autogenerated kernel key</span><br><span class="line">sig_key:        17:6F:92:2F:58:6B:B2:28:13:DC:71:DC:5A:97:EE:BA:D8:4B:C7:DE</span><br><span class="line">sig_hashalgo:   sha512</span><br><span class="line">signature:      0B:32:AA:93:F4:31:52:9C:FE:0D:80:B4:F6:7C:30:63:4C:F6:03:AA:</span><br><span class="line">                ...</span><br><span class="line">                E9:1F:45:C6:77:C2:29:99:B4:3D:1A:D2</span><br><span class="line">parm:           tstamp:Enable connection tracking flow timestamping. (bool)</span><br><span class="line">parm:           acct:Enable connection tracking flow accounting. (bool)</span><br><span class="line">parm:           nf_conntrack_helper:Enable automatic conntrack helper assignment (default 0) (bool)</span><br><span class="line">parm:           expect_hashsize:uint</span><br><span class="line">parm:           enable_hooks:Always <span class="built_in">enable</span> conntrack hooks (bool)</span><br></pre></td></tr></table></figure>
+<p>卸载：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ rmmod nf_conntrack_netlink nf_conntrack</span><br></pre></td></tr></table></figure>
+<p>重新加载：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ modprobe nf_conntrack</span><br><span class="line"></span><br><span class="line"># 加载时还可以指定额外的配置参数，例如：</span><br><span class="line">$ modprobe nf_conntrack nf_conntrack_helper=1 expect_hashsize=131072</span><br></pre></td></tr></table></figure>
+<h2 id="5-2-sysctl-配置项"><a class="header-anchor" href="#5-2-sysctl-配置项">¶</a>5.2 sysctl 配置项</h2>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ sysctl -a | grep nf_conntrack</span><br><span class="line">net.netfilter.nf_conntrack_acct = 0</span><br><span class="line">net.netfilter.nf_conntrack_buckets = 262144                 # hashsize = nf_conntrack_max/nf_conntrack_buckets</span><br><span class="line">net.netfilter.nf_conntrack_checksum = 1</span><br><span class="line">net.netfilter.nf_conntrack_count = 2148</span><br><span class="line">... # DCCP options</span><br><span class="line">net.netfilter.nf_conntrack_events = 1</span><br><span class="line">net.netfilter.nf_conntrack_expect_max = 1024</span><br><span class="line">... # IPv6 options</span><br><span class="line">net.netfilter.nf_conntrack_generic_timeout = 600</span><br><span class="line">net.netfilter.nf_conntrack_helper = 0</span><br><span class="line">net.netfilter.nf_conntrack_icmp_timeout = 30</span><br><span class="line">net.netfilter.nf_conntrack_log_invalid = 0</span><br><span class="line">net.netfilter.nf_conntrack_max = 1048576                    # conntrack table size</span><br><span class="line">... # SCTP options</span><br><span class="line">net.netfilter.nf_conntrack_tcp_be_liberal = 0</span><br><span class="line">net.netfilter.nf_conntrack_tcp_loose = 1</span><br><span class="line">net.netfilter.nf_conntrack_tcp_max_retrans = 3</span><br><span class="line">net.netfilter.nf_conntrack_tcp_timeout_close = 10</span><br><span class="line">net.netfilter.nf_conntrack_tcp_timeout_close_wait = 60</span><br><span class="line">net.netfilter.nf_conntrack_tcp_timeout_established = 21600</span><br><span class="line">net.netfilter.nf_conntrack_tcp_timeout_fin_wait = 120</span><br><span class="line">net.netfilter.nf_conntrack_tcp_timeout_last_ack = 30</span><br><span class="line">net.netfilter.nf_conntrack_tcp_timeout_max_retrans = 300</span><br><span class="line">net.netfilter.nf_conntrack_tcp_timeout_syn_recv = 60</span><br><span class="line">net.netfilter.nf_conntrack_tcp_timeout_syn_sent = 120</span><br><span class="line">net.netfilter.nf_conntrack_tcp_timeout_time_wait = 120</span><br><span class="line">net.netfilter.nf_conntrack_tcp_timeout_unacknowledged = 300</span><br><span class="line">net.netfilter.nf_conntrack_timestamp = 0</span><br><span class="line">net.netfilter.nf_conntrack_udp_timeout = 30</span><br><span class="line">net.netfilter.nf_conntrack_udp_timeout_stream = 180</span><br></pre></td></tr></table></figure>
+<h2 id="5-3-监控"><a class="header-anchor" href="#5-3-监控">¶</a>5.3 监控</h2>
+<h3 id="丢包监控"><a class="header-anchor" href="#丢包监控">¶</a>丢包监控</h3>
+<p><code>/proc/net/stat</code> 下面有一些关于 conntrack 的详细统计：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ cat /proc/net/stat/nf_conntrack</span><br><span class="line">entries   searched found    new      invalid  ignore   delete   delete_list insert   insert_failed drop     early_drop icmp_error  expect_new expect_create expect_delete search_restart</span><br><span class="line">000008e3  00000000 00000000 00000000 0000309d 001e72d4 00000000 00000000    00000000 00000000      00000000 00000000   000000ee    00000000   00000000      00000000       000368d7</span><br><span class="line">000008e3  00000000 00000000 00000000 00007301 002b8e8c 00000000 00000000    00000000 00000000      00000000 00000000   00000170    00000000   00000000      00000000       00035794</span><br><span class="line">000008e3  00000000 00000000 00000000 00001eea 001e6382 00000000 00000000    00000000 00000000      00000000 00000000   00000059    00000000   00000000      00000000       0003f166</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<p>此外，还可以用 <code>conntrack</code> 命令：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ conntrack -S</span><br><span class="line">cpu=0   found=0 invalid=743150 ignore=238069 insert=0 insert_failed=0 drop=195603 early_drop=118583 error=16 search_restart=22391652</span><br><span class="line">cpu=1   found=0 invalid=2004   ignore=402790 insert=0 insert_failed=0 drop=44371  early_drop=34890  error=0  search_restart=1225447</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<ul>
+<li>ignore：不需要做连接跟踪的包（回忆前面，只有特定协议的包才会做连接跟踪）</li>
+</ul>
+<h3 id="conntrack-table-使用量监控"><a class="header-anchor" href="#conntrack-table-使用量监控">¶</a>conntrack table 使用量监控</h3>
+<p>可以定期采集系统的 conntrack 使用量，</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ cat /proc/sys/net/netfilter/nf_conntrack_count</span><br><span class="line">257273</span><br></pre></td></tr></table></figure>
+<p>并与最大值比较：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ cat /proc/sys/net/netfilter/nf_conntrack_max</span><br><span class="line">262144</span><br></pre></td></tr></table></figure>
+<h2 id="6-1-连接太多导致-conntrack-table-被打爆"><a class="header-anchor" href="#6-1-连接太多导致-conntrack-table-被打爆">¶</a>6.1 连接太多导致 conntrack table 被打爆</h2>
+<h3 id="现象"><a class="header-anchor" href="#现象">¶</a>现象</h3>
+<h4 id="业务层（应用层）现象"><a class="header-anchor" href="#业务层（应用层）现象">¶</a>业务层（应用层）现象</h4>
+<ol>
+<li>
+<p>存在随机、偶发的<strong>新建连接</strong>超时（connect timeout）。</p>
+<p>例如，如果业务用的是 Java，那对应的是 <code>jdbc4.CommunicationsException</code> communications link failure 之类的错误。</p>
+</li>
+<li>
+<p><strong>已有连接</strong>正常。</p>
+<p>也就是没有 read timeout 或 write timeout 之类的报错，报错都集中为 connect timeout。</p>
+</li>
+</ol>
+<h4 id="网络层现象"><a class="header-anchor" href="#网络层现象">¶</a>网络层现象</h4>
+<ol>
+<li>
+<p>抓包会看到三次握手的<strong>第一个 SYN 包被宿主机静默丢弃了</strong>。</p>
+<p>需要注意的是，常规的网卡统计（<code>ifconfig</code>）和内核统计（<code>/proc/net/softnet_stat</code>） <strong>无法反映出这些丢包</strong>。</p>
+</li>
+<li>
+<p><code>1s+</code> 之后出发 SYN 重传，或者还没重传连接就关闭了。</p>
+<p><strong>第一个 SYN 的重传是 1s，这个是内核代码里写死的，不可配置</strong>（具体实现见 <a href="#ch_8.1">附录</a>）。</p>
+<p>再考虑到其他一些耗时，第一次重传的实际间隔要大于 1s。 如果客户端设置的超时时间很小，例如 <code>1.05s</code>，那可能来不及重传连接就被关闭了，然后向上层报 connect timeout 错误。</p>
+</li>
+</ol>
+<h4 id="操作系统层现象"><a class="header-anchor" href="#操作系统层现象">¶</a>操作系统层现象</h4>
+<p>内核日志中有如下报错：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ demsg -T</span><br><span class="line">[Tue Apr  6 18:12:30 2021] nf_conntrack: nf_conntrack: table full, dropping packet</span><br><span class="line">[Tue Apr  6 18:12:30 2021] nf_conntrack: nf_conntrack: table full, dropping packet</span><br><span class="line">[Tue Apr  6 18:12:30 2021] nf_conntrack: nf_conntrack: table full, dropping packet</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<p>另外，<code>cat /proc/net/stat/nf_conntrack</code> 或 <code>conntrack -S</code> 能看到有 drop 统计。</p>
+<h3 id="确认-conntrack-table-被打爆"><a class="header-anchor" href="#确认-conntrack-table-被打爆">¶</a>确认 conntrack table 被打爆</h3>
+<p>遇到以上现象，基本就是 conntrack 表被打爆了。确认：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ cat /proc/sys/net/netfilter/nf_conntrack_count</span><br><span class="line">257273</span><br><span class="line"></span><br><span class="line">$ cat /proc/sys/net/netfilter/nf_conntrack_max</span><br><span class="line">net.netfilter.nf_conntrack_max = 262144</span><br></pre></td></tr></table></figure>
+<p>如果有 conntrack count 监控会看的更清楚，因为我们命令行查看时，高峰可能过了。</p>
+<h3 id="解决方式"><a class="header-anchor" href="#解决方式">¶</a>解决方式</h3>
+<p>优先级从高到低：</p>
+<ol>
+<li>
+<p>调大 conntrack 表</p>
+<p>运行时配置（经实际测试，<strong>不会对现有连接造成影响</strong>）：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ sysctl -w net.netfilter.nf_conntrack_max=524288</span><br><span class="line">$ sysctl -w net.netfilter.nf_conntrack_buckets=131072 # 推荐配置 hashsize=nf_conntrack_count/4</span><br></pre></td></tr></table></figure>
+<p>持久化配置：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ echo &apos;net.netfilter.nf_conntrack_max = 524288&apos; &gt;&gt; /etc/sysctl.conf</span><br><span class="line">$ echo &apos;net.netfilter.nf_conntrack_buckets = 131072&apos; &gt;&gt; /etc/sysctl.conf</span><br></pre></td></tr></table></figure>
+<p>影响：连接跟踪模块<strong>会多用一些内存</strong>。具体多用多少内存，可参考 <a href="#ch_8.2">附录</a>。</p>
+</li>
+<li>
+<p>减小 GC 时间</p>
+<p>还可以调小 conntrack 的 GC（也叫 timeout）时间，加快过期 entry 的回收。</p>
+<p><code>nf_conntrack</code> 针对不同 TCP 状态（established、fin_wait、time_wait 等）的 entry 有不同的 GC 时间。</p>
+<p>例如，<strong>默认的 established 状态的 GC 时间是 423000s（5 天）</strong>。设置成这么长的 <strong>可能原因</strong>是：TCP/IP 协议中允许 established 状态的连接无限期不发送任何东西（但仍然活着） [8]，协议的具体实现（Linux、BSD、Windows 等）会设置各自允许的最大 idle timeout。为防止 GC 掉这样长时间没流量但实际还活着的连接，就设置一个足够保守的 timeout 时间。[8] 中建议这个值不小于 2 小时 4 分钟（作为对比和参考， <strong>Cilium 自己实现的 CT 中，默认 established GC 是 6 小时</strong>）。 但也能看到一些厂商推荐比这个小得多的配置，例如 20 分钟。</p>
+<p>如果对自己的网络环境和需求非常清楚，那可以将这个时间调到一个合理的、足够小的值； 如果不是非常确定的话，还是<strong>建议保守一些，例如设置 6 个小时</strong> —— 这已经比默认值 5 天小多了。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ sysctl -w net.netfilter.nf_conntrack_tcp_timeout_established = 21600</span><br></pre></td></tr></table></figure>
+<p>持久化：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ echo &apos;net.netfilter.nf_conntrack_tcp_timeout_established = 21600&apos; &gt;&gt; /etc/sysctl.conf</span><br></pre></td></tr></table></figure>
+<p>其他几个 timeout 值（尤其是 <code>nf_conntrack_tcp_timeout_time_wait</code>，默认 <code>120s</code>）也可以适当调小， 但还是那句话：<strong>如果不确定潜在后果，千万不要激进地调小</strong>。</p>
+</li>
+</ol>
+<p>连接跟踪是一个非常基础且重要的网络模块，但只有在少数场景下才会引起普通开发者的注意。</p>
+<p>例如，L4LB 短时高并发场景下，LB 节点每秒接受大量并发短连接，可能导致 conntrack table 被打爆。此时的现象是：</p>
+<ul>
+<li>客户端和 L4LB 建连失败，失败可能是随机的，也可能是集中在某些时间点。</li>
+<li>客户端重试可能会成功，也可能会失败。</li>
+<li>在 L4LB 节点抓包看，客户端过来的 TCP SYNC 包 L4LB 收到了，但没有回 ACK。即，包 被静默丢弃了（silently dropped）。</li>
+</ul>
+<p>此时的原因可能是 conntrack table 太小，也可能是 GC 不够及 时，甚至是 <a href="https://github.com/cilium/cilium/pull/12729" target="_blank" rel="noopener">GC 有 bug</a>。</p>
+<h2 id="8-1-第一个-SYN-包的重传间隔计算（Linux-4-19-118-实现）"><a class="header-anchor" href="#8-1-第一个-SYN-包的重传间隔计算（Linux-4-19-118-实现）">¶</a>8.1 第一个 SYN 包的重传间隔计算（Linux 4.19.118 实现）</h2>
+<p>调用路径：<code>tcp_connect() -&gt; tcp_connect_init() -&gt; tcp_timeout_init()</code>。</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">// net/ipv4/tcp_output.c</span></span><br><span class="line"><span class="comment">/* Do all connect socket setups that can be done AF independent. */</span></span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">tcp_connect_init</span><span class="params">(struct sock *sk)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    inet_csk(sk)-&gt;icsk_rto = tcp_timeout_init(sk);</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// include/net/tcp.h</span></span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">inline</span> u32 <span class="title">tcp_timeout_init</span><span class="params">(struct sock *sk)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">// 获取 SYN-RTO：如果这个 socket 上没有 BPF 程序，或者有 BPF 程序但执行失败，都返回 -1</span></span><br><span class="line">    <span class="comment">// 除非用户自己编写 BPF 程序并 attach 到 cgroup/socket，否则这里都是没有 BPF 的，因此这里返回 -1</span></span><br><span class="line">    timeout = tcp_call_bpf(sk, BPF_SOCK_OPS_TIMEOUT_INIT, <span class="number">0</span>, <span class="literal">NULL</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (timeout &lt;= <span class="number">0</span>)                <span class="comment">// timeout == -1，接下来使用默认值</span></span><br><span class="line">        timeout = TCP_TIMEOUT_INIT;  <span class="comment">// 宏定义，等于系统的 HZ 数，也就是 1 秒，见下面</span></span><br><span class="line">    <span class="keyword">return</span> timeout;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// include/net/tcp.h</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> TCP_RTO_MAX    ((unsigned)(120*HZ))</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> TCP_RTO_MIN    ((unsigned)(HZ/5))</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> TCP_TIMEOUT_MIN    (2U) <span class="comment">/* Min timeout for TCP timers in jiffies */</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> TCP_TIMEOUT_INIT ((unsigned)(1*HZ))    <span class="comment">/* RFC6298 2.1 initial RTO value    */</span></span></span><br></pre></td></tr></table></figure>
+<h2 id="8-2-根据-nf-conntrack-max-计算-conntrack-模块所需的内存"><a class="header-anchor" href="#8-2-根据-nf-conntrack-max-计算-conntrack-模块所需的内存">¶</a>8.2 根据 nf_conntrack_max 计算 conntrack 模块所需的内存</h2>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ cat /proc/slabinfo | head -n2; cat /proc/slabinfo | grep conntrack</span><br><span class="line">slabinfo - version: 2.1</span><br><span class="line"># name            &lt;active_objs&gt; &lt;num_objs&gt; &lt;objsize&gt; &lt;objperslab&gt; &lt;pagesperslab&gt; : tunables &lt;limit&gt; &lt;batchcount&gt; &lt;sharedfactor&gt; : slabdata &lt;active_slabs&gt; &lt;num_slabs&gt; &lt;sharedavail&gt;</span><br><span class="line">nf_conntrack      512824 599505    320   51    4 : tunables    0    0    0 : slabdata  11755  11755      0</span><br></pre></td></tr></table></figure>
+<p>其中的 <strong>objsize 表示这个内核对象</strong>（这里对应的是 <code>struct nf_conn</code>）的大小， 单位是<strong>字节</strong>，所以以上输出表明<strong>每个 conntrack entry 占用 320 字节的内存空间</strong>。</p>
+<p>如果忽略内存碎片（内存分配单位为 slab），那<strong>不同 size 的 conntrack table 占用的内存</strong>如下：</p>
+<ul>
+<li><code>nf_conntrack_max=512K</code>: <code>512K * 320Byte = 160MB</code></li>
+<li><code>nf_conntrack_max=1M</code>: <code>1M * 320Byte = 320MB</code></li>
+</ul>
+<p>更精确的计算，可以参考 [9]。</p>
+<ol>
+<li><a href="https://wiki.aalto.fi/download/attachments/69901948/netfilter-paper.pdf" target="_blank" rel="noopener">Netfilter connection tracking and NAT implementation</a>. Proc. Seminar on Network Protocols in Operating Systems, Dept. Commun. and Networking, Aalto Univ. 2013.</li>
+<li><a href="https://docs.cilium.io/en/v1.7/gettingstarted/kubeproxy-free/" target="_blank" rel="noopener">Cilium: Kubernetes without kube-proxy</a></li>
+<li><a href="chrome-extension://ijllcpnolfcooahcekpamkbidhejabll/blog/k8s-l4lb/" target="_blank" rel="noopener">L4LB for Kubernetes: Theory and Practice with Cilium+BGP+ECMP</a></li>
+<li><a href="https://docs.docker.com/network/bridge/" target="_blank" rel="noopener">Docker bridge network mode</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Netfilter" target="_blank" rel="noopener">Wikipedia: Netfilter</a></li>
+<li><a href="https://blog.cloudflare.com/conntrack-tales-one-thousand-and-one-flows/" target="_blank" rel="noopener">Conntrack tales - one thousand and one flows</a></li>
+<li><a href="https://www.redhat.com/en/blog/how-connection-tracking-open-vswitch-helps-openstack-performance" target="_blank" rel="noopener">How connection tracking in Open vSwitch helps OpenStack performance</a></li>
+<li><a href="https://tools.ietf.org/html/rfc5382#section-5" target="_blank" rel="noopener">NAT Behavioral Requirements for TCP</a>, RFC5382</li>
+<li><a href="https://johnleach.co.uk/posts/2009/06/17/netfilter-conntrack-memory-usage/" target="_blank" rel="noopener">Netfilter Conntrack Memory Usage</a></li>
+</ol>
+]]></content>
+      <categories>
+        <category>连接跟踪</category>
+      </categories>
+      <tags>
+        <tag>conntrack</tag>
       </tags>
   </entry>
   <entry>
