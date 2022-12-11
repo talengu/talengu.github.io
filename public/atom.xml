@@ -6,7 +6,7 @@
   <link href="/public/atom.xml" rel="self"/>
   
   <link href="https://talengu.github.io/public/"/>
-  <updated>2022-12-08T12:00:00.000Z</updated>
+  <updated>2022-12-11T12:00:00.000Z</updated>
   <id>https://talengu.github.io/public/</id>
   
   <author>
@@ -15,6 +15,42 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>「转」九张图一览 Linux 性能工具 全景图</title>
+    <link href="https://talengu.github.io/public/2022/12/11/linux/linux_tools/"/>
+    <id>https://talengu.github.io/public/2022/12/11/linux/linux_tools/</id>
+    <published>2022-12-11T12:00:00.000Z</published>
+    <updated>2022-12-11T12:00:00.000Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="前言"><a class="header-anchor" href="#前言">¶</a>前言</h2><p>当今时代，绝大多数企业的应用都是运行在 Linux 操作系统上，所以对应用进行性能诊断和性能优化时，离不开 Linux 的各种性能观测工具和性能优化工具。</p><p>笔者使用过的常见的 Linux 性能观测和性能优化工具有：</p><ul><li>top/uptime</li><li>ps/pstree</li><li>df/du/free/lsblk</li><li>ip/ifconfig/ping/telnet</li><li>route/dig/nslookup</li><li>lsof/netstat/ss</li><li>tcpdump/tshark/wireshark</li><li>netstat/vmstat/iostat/pidstat/dstat/mpstat</li><li>sar/sysctl/ethtool</li></ul><p>最近在拜读国际著名的 LINUX 性能专家 Brendan Gregg 的个人博客和技术书籍，摘抄了如下九张图，一览 Linux 性能工具全景图，大家共勉！</p><a id="more"></a><h2 id="2-Linux-性能工具全景图"><a class="header-anchor" href="#2-Linux-性能工具全景图">¶</a><strong>2. Linux 性能工具全景图</strong></h2><ul><li>linux performance observability tools</li></ul><p><img src="/public/2022/12/11/linux/linux_tools/v2-2eadd97c53a3f20f255394c3d90ea914_r.jpg" alt></p><ul><li>linux static performance tools</li></ul><p><img src="/public/2022/12/11/linux/linux_tools/v2-20032bac53c856c5733259eece5c2f76_r.jpg" alt></p><ul><li>linux performance benchmark tools</li></ul><p><img src="/public/2022/12/11/linux/linux_tools/v2-de23423f2eb9deb5410b7128c933f9a9_r.jpg" alt></p><ul><li>linux performance tuning tools</li></ul><p><img src="/public/2022/12/11/linux/linux_tools/v2-cdf37de145763b762ba5af1a620f9686_r.jpg" alt></p><ul><li>linux performance observability: sar</li></ul><p><img src="/public/2022/12/11/linux/linux_tools/v2-eee71a6bf3865367741137da03031411_r.jpg" alt></p><ul><li>linux performance observability: perf-tools</li></ul><p><img src="/public/2022/12/11/linux/linux_tools/v2-1c0134fefbb04597db98ae455a40fad5_r.jpg" alt></p><ul><li><a href="https://www.zhihu.com/search?q=linux%20bcc&amp;search_source=Entity&amp;hybrid_search_source=Entity&amp;hybrid_search_extra=%7B%22sourceType%22%3A%22answer%22%2C%22sourceId%22%3A2795830055%7D" target="_blank" rel="noopener">linux bcc</a>/BPF Tracing tools</li></ul><p><img src="/public/2022/12/11/linux/linux_tools/v2-ffe70303f4d64828ca931d987b12a6d8_r.jpg" alt></p><ul><li>bpftrace/eBPF Tools</li></ul><p><img src="/public/2022/12/11/linux/linux_tools/v2-5985d44e43738933c0b54c89cc20ec09_r.jpg" alt></p><ul><li>BPF Performance Tools: Linux System and Application Observability</li></ul><p><img src="/public/2022/12/11/linux/linux_tools/v2-0f53016fa1d993ffbbf6fc520e318784_r.jpg" alt></p><h2 id="后记"><a class="header-anchor" href="#后记">¶</a>后记</h2><p>更多 LINUX 性能资料，大家可以访问大师的个人网站和和技术书籍</p><ul><li><a href="https://www.brendangregg.com/" target="_blank" rel="noopener">https://www.brendangregg.com/</a></li><li>《性能之巅：洞悉系统、企业与云计算》（《Systems Performance: Enterprise and the Cloud, 2nd Edition (2020)》）</li><li>《洞悉 Linux 系统和应用性能》（《BPF Performance Tools》）</li><li>ps: 要说 LINUX 内核近几年 (和今后几年）最引人注目的发展模块，那就是 <a href="https://www.zhihu.com/search?q=bpf&amp;search_source=Entity&amp;hybrid_search_source=Entity&amp;hybrid_search_extra=%7B%22sourceType%22%3A%22answer%22%2C%22sourceId%22%3A2795830055%7D" target="_blank" rel="noopener">bpf</a> 了，完全值得花点精力学习跟进下。</li><li>如何更深入地学习 Linux？ - michaelli的回答 - 知乎<a href="https://www.zhihu.com/question/23564190/answer/2795830055" target="_blank" rel="noopener">https://www.zhihu.com/question/23564190/answer/2795830055</a></li></ul>]]></content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;前言&quot;&gt;&lt;a class=&quot;header-anchor&quot; href=&quot;#前言&quot;&gt;¶&lt;/a&gt;前言&lt;/h2&gt;
+&lt;p&gt;当今时代，绝大多数企业的应用都是运行在 Linux 操作系统上，所以对应用进行性能诊断和性能优化时，离不开 Linux 的各种性能观测工具和性能优化工具。&lt;/p&gt;
+&lt;p&gt;笔者使用过的常见的 Linux 性能观测和性能优化工具有：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;top/uptime&lt;/li&gt;
+&lt;li&gt;ps/pstree&lt;/li&gt;
+&lt;li&gt;df/du/free/lsblk&lt;/li&gt;
+&lt;li&gt;ip/ifconfig/ping/telnet&lt;/li&gt;
+&lt;li&gt;route/dig/nslookup&lt;/li&gt;
+&lt;li&gt;lsof/netstat/ss&lt;/li&gt;
+&lt;li&gt;tcpdump/tshark/wireshark&lt;/li&gt;
+&lt;li&gt;netstat/vmstat/iostat/pidstat/dstat/mpstat&lt;/li&gt;
+&lt;li&gt;sar/sysctl/ethtool&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;最近在拜读国际著名的 LINUX 性能专家 Brendan Gregg 的个人博客和技术书籍，摘抄了如下九张图，一览 Linux 性能工具全景图，大家共勉！&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="linux" scheme="https://talengu.github.io/public/categories/linux/"/>
+    
+    
+      <category term="linux" scheme="https://talengu.github.io/public/tags/linux/"/>
+    
+  </entry>
   
   <entry>
     <title>tcp ip 协议族</title>
@@ -505,38 +541,6 @@
     
     
       <category term="软件运行" scheme="https://talengu.github.io/public/tags/%E8%BD%AF%E4%BB%B6%E8%BF%90%E8%A1%8C/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>知识记忆软件anki的使用</title>
-    <link href="https://talengu.github.io/public/2022/04/14/anki_tips/"/>
-    <id>https://talengu.github.io/public/2022/04/14/anki_tips/</id>
-    <published>2022-04-14T12:39:04.000Z</published>
-    <updated>2022-04-27T12:39:04.000Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="anki使用-自建-anki-server"><a class="header-anchor" href="#anki使用-自建-anki-server">¶</a>anki使用 - 自建 anki  server</h2><p>当初想设计好用的英语背诵软件，现在发现了anki人家功能全部实现，还要啥自行车。</p><p>我当时设计的单词勇士开源Android软件：<a href="https://github.com/talengu/WordWarrior" target="_blank" rel="noopener">https://github.com/talengu/WordWarrior</a>现在已弃坑。</p><p>我们当然选用docker compose 来安装，相当丝滑。</p><p>在使用Anki过程中，主要工作是制作卡组，我们可以只关心内容而不关心技术。</p><a id="more"></a><h2 id="docker-compose"><a class="header-anchor" href="#docker-compose">¶</a>docker compose</h2><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># docker-compose.yml</span></span><br><span class="line"><span class="attr">version:</span> <span class="string">"2"</span></span><br><span class="line"><span class="attr">services:</span></span><br><span class="line">  <span class="attr">service.anki:</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">kuklinistvan/anki-sync-server</span></span><br><span class="line">    <span class="attr">container_name:</span> <span class="string">anki-container</span></span><br><span class="line">    <span class="attr">ports:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="number">8121</span><span class="string">:27701</span></span><br><span class="line">    <span class="attr">volumes:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">~/anki-sync-server:/app/data</span> <span class="comment"># anki data</span></span><br><span class="line">    <span class="attr">restart:</span> <span class="string">always</span></span><br></pre></td></tr></table></figure><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker-compose up -d</span><br></pre></td></tr></table></figure><h3 id="登陆container"><a class="header-anchor" href="#登陆container">¶</a>登陆container</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">docker exec -it anki-container /bin/sh</span><br><span class="line"></span><br><span class="line">./ankisyncctl.py lsuser             - list users</span><br><span class="line">./ankisyncctl.py adduser &lt;username&gt; - add a new user</span><br><span class="line">./ankisyncctl.py deluser &lt;username&gt; - delete a user</span><br><span class="line">./ankisyncctl.py passwd &lt;username&gt;  - change password of a user</span><br></pre></td></tr></table></figure><h2 id="客户端"><a class="header-anchor" href="#客户端">¶</a>客户端</h2><img src="/public/2022/04/14/anki_tips/image-20200424005627732.png" alt="image-20200424005627732" style="zoom:33%;"><h3 id="mac-win-客户端"><a class="header-anchor" href="#mac-win-客户端">¶</a>mac/win 客户端</h3><p>从官网下载 anki mac版本 2.1.21 (f1734a47) / Windows PC 客户端</p><p>中文网：<a href="http://www.ankichina.net/" target="_blank" rel="noopener">http://www.ankichina.net/</a></p><p>工具-&gt;附加组件-&gt;<code>获取插件</code>，输入 代码：2124817646</p><img src="/public/2022/04/14/anki_tips/add_server.png" alt="add_server" style="zoom:30%;"><img src="/public/2022/04/14/anki_tips/add_on1.png" alt="add_on1" style="zoom:30%;"><p>插件下载完成后设置ip地址，点击<code>设置</code>。</p><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"msyncUrl"</span>: <span class="string">"http://127.0.0.1:27701/msync/"</span>,</span><br><span class="line">    <span class="attr">"syncUrl"</span>: <span class="string">"http://127.0.0.1:27701/sync/"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><img src="/public/2022/04/14/anki_tips/addon_2.png" alt="addon_2" style="zoom:30%;"><p>重启anki，同步并输入输入自定义服务器中配置的账户</p><h3 id="Android客户端-AnkiDroid"><a class="header-anchor" href="#Android客户端-AnkiDroid">¶</a>Android客户端 - AnkiDroid</h3><p>首先配置服务器地址信息，打开<code>设置-&gt;高级设置-&gt;自定义同步服务器</code>，输入同步地址 和 媒体文件同步地址。</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># 同步地址</span><br><span class="line">http://127.0.0.1:27701/</span><br><span class="line"># 媒体文件同步地址</span><br><span class="line">http://127.0.0.1:27701/msync/</span><br></pre></td></tr></table></figure><p>然后打开 <code>设置-&gt;AnkiDroid常用设置-&gt;AnkiWeb账户</code>，输入在服务器里面设置的账户和密码。PS：可在服务器重置密码。</p><table><tr><td><center><img src="/public/2022/04/14/anki_tips/IMG_20200424_010047.jpg">图1    </center></td><td><center><img src="/public/2022/04/14/anki_tips/IMG_20200424_011338.jpg">图2      </center></td></tr></table><p>coco20000 anki 包 <a href="https://www.dazhuanlan.com/2019/11/20/5dd54a6571f01/" target="_blank" rel="noopener">https://www.dazhuanlan.com/2019/11/20/5dd54a6571f01/</a></p><h2 id="使用-Docker-安装"><a class="header-anchor" href="#使用-Docker-安装">¶</a>使用 Docker 安装</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> ANKI_SYNC_DATA_DIR=<span class="variable">$HOME</span>/anki-sync-server</span><br><span class="line"><span class="built_in">export</span> HOST_PORT=27701</span><br><span class="line"></span><br><span class="line">mkdir -p <span class="string">"<span class="variable">$ANKI_SYNC_DATA_DIR</span>"</span></span><br><span class="line"><span class="comment">#export DOCKER_USER=root</span></span><br><span class="line"><span class="comment">#chown "$DOCKER_USER" "$ANKI_SYNC_DATA_DIR"</span></span><br><span class="line">chmod 700 <span class="string">"<span class="variable">$ANKI_SYNC_DATA_DIR</span>"</span></span><br><span class="line"></span><br><span class="line">docker run -itd \</span><br><span class="line">   -v <span class="string">"<span class="variable">$ANKI_SYNC_DATA_DIR</span>"</span>:/app/data \</span><br><span class="line">   -p <span class="string">"<span class="variable">$HOST_PORT</span>"</span>:27701 \</span><br><span class="line">   --name anki-container \</span><br><span class="line">   --restart always \</span><br><span class="line">   kuklinistvan/anki-sync-server:latest</span><br></pre></td></tr></table></figure>]]></content>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;anki使用-自建-anki-server&quot;&gt;&lt;a class=&quot;header-anchor&quot; href=&quot;#anki使用-自建-anki-server&quot;&gt;¶&lt;/a&gt;anki使用 - 自建 anki  server&lt;/h2&gt;
-&lt;p&gt;当初想设计好用的英语背诵软件，现在发现了anki人家功能全部实现，还要啥自行车。&lt;/p&gt;
-&lt;p&gt;我当时设计的单词勇士开源Android软件：
-&lt;a href=&quot;https://github.com/talengu/WordWarrior&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;https://github.com/talengu/WordWarrior&lt;/a&gt;
-现在已弃坑。&lt;/p&gt;
-&lt;p&gt;我们当然选用docker compose 来安装，相当丝滑。&lt;/p&gt;
-&lt;p&gt;在使用Anki过程中，主要工作是制作卡组，我们可以只关心内容而不关心技术。&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="知识管理" scheme="https://talengu.github.io/public/categories/%E7%9F%A5%E8%AF%86%E7%AE%A1%E7%90%86/"/>
-    
-    
-      <category term="工具" scheme="https://talengu.github.io/public/tags/%E5%B7%A5%E5%85%B7/"/>
-    
-      <category term="anki" scheme="https://talengu.github.io/public/tags/anki/"/>
-    
-      <category term="技巧" scheme="https://talengu.github.io/public/tags/%E6%8A%80%E5%B7%A7/"/>
     
   </entry>
   
