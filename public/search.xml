@@ -1893,7 +1893,7 @@ nbextensions的教程<a href="https://jupyter-contrib-nbextensions.readthedocs.i
       </tags>
   </entry>
   <entry>
-    <title>桥初始化（一）</title>
+    <title>「转」桥初始化（一）</title>
     <url>/public/2021/12/02/linux_network/br_init/</url>
     <content><![CDATA[<h2 id="前言"><a class="header-anchor" href="#前言">¶</a>前言</h2>
 <p>注：章节中的源代码，基于 linux 内核 4.7.4</p>
