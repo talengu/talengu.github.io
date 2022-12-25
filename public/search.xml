@@ -219,294 +219,6 @@ Thank you !!!</p>
       </tags>
   </entry>
   <entry>
-    <title>本地安装rss</title>
-    <url>/public/2022/04/16/rss_local_install/</url>
-    <content><![CDATA[<h2 id="前言"><a class="header-anchor" href="#前言">¶</a>前言</h2>
-<p>在 “<a href="https://zhuanlan.zhihu.com/p/149452085" target="_blank" rel="noopener">二零年RSS杂谈</a>”中说到，我想建立一种信息的获取系统，免受广告和推荐算法的困扰。</p>
-<p>我希望其的功能包括：</p>
-<ul>
-<li>多终端 Web、PC、 mobile的同步</li>
-<li>全文获取能力</li>
-<li>可自定义过滤规则</li>
-<li>RSS源自定义</li>
-</ul>
-<p>方案：</p>
-<ul>
-<li>RSS源 rsshub</li>
-<li>RSS服务  ttrss</li>
-<li>RSS电脑手机软件：Android的Readably、Feedme，mac的reeder等等。windows上我暂时没有发现，我用的是ttrss的web界面。</li>
-</ul>
-<a id="more"></a>
-<p>rsshub 是由 DIYgod 开发的开源RSS源生成工具，RSShub原始的网站可能不稳定，所以我选择了自己搭建。</p>
-<p>ttrss 是一个rss源管理配置的工具，可获取全文，可自定义过滤规则。</p>
-<p>本教程我们将完成在window电脑通过docker安装，ttrss与全文插件、rsshub的过程。</p>
-<p>服务器的成本还是有点小贵的，我们可以在本地搭建整个服务，即利用docker安装这些服务，开机的时候记得启动这些服务。
-不爽点：</p>
-<ul>
-<li>需要后台开启docker服务，使得其自动更新信息</li>
-<li>没有公网ip的情况下，无法全网连接服务</li>
-</ul>
-<h2 id="最终ttrss界面"><a class="header-anchor" href="#最终ttrss界面">¶</a>最终ttrss界面</h2>
-<p>在这里我已经添加一些rss源了。</p>
-<p><img src="/public/2022/04/16/rss_local_install/image-20200626135803804.png" alt="image-20200626135803804"></p>
-<h2 id="docker-windows安装"><a class="header-anchor" href="#docker-windows安装">¶</a>docker windows安装</h2>
-<p>从<a href="https://www.docker.com/products/docker-desktop" target="_blank" rel="noopener">docker 官网</a> 下载windows版本安装。完成后，在图标区会有一个鲸鱼船。</p>
-<p><img src="/public/2022/04/16/rss_local_install/image-20200626141604658.png" alt="image-20200626141604658"></p>
-<p>我们使用docker-compose 来进行下一步 网站服务的安装。将下面的资料保存到s<code>docker-compose.yml</code> 然后利用docker-compose方法安装。</p>
-<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">version:</span> <span class="string">"2"</span></span><br><span class="line"><span class="attr">services:</span></span><br><span class="line">  <span class="attr">service.rsshub:</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">diygod/rsshub</span></span><br><span class="line">    <span class="attr">container_name:</span> <span class="string">rsshub</span></span><br><span class="line">    <span class="attr">ports:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">"1200:1200"</span></span><br><span class="line">    <span class="attr">volumes:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">rsshub_data:/app/lib</span></span><br><span class="line">    <span class="attr">restart:</span> <span class="string">always</span></span><br><span class="line"></span><br><span class="line">  <span class="attr">service.rss:</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">wangqiru/ttrss:latest</span></span><br><span class="line">    <span class="attr">container_name:</span> <span class="string">ttrss</span></span><br><span class="line">    <span class="attr">ports:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="number">8118</span><span class="string">:80</span></span><br><span class="line">    <span class="attr">environment:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">SELF_URL_PATH=http://127.0.0.1:8118/</span> <span class="comment"># please change to your own domain</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">DB_HOST=database.postgres</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">DB_PORT=5432</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">DB_NAME=ttrss</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">DB_USER=postgres</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">DB_PASS=ttrss</span> <span class="comment"># please change the password</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">ENABLE_PLUGINS=auth_internal,fever</span> <span class="comment"># auth_internal is required. Plugins enabled here will be enabled for all users as system plugins</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">FEED_LOG_QUIET=true</span></span><br><span class="line">    <span class="attr">stdin_open:</span> <span class="literal">true</span></span><br><span class="line">    <span class="attr">tty:</span> <span class="literal">true</span></span><br><span class="line">    <span class="attr">restart:</span> <span class="string">always</span></span><br><span class="line">    <span class="attr">command:</span> <span class="string">sh</span> <span class="string">-c</span> <span class="string">'sh /wait-for.sh $$DB_HOST:$$DB_PORT -- php /configure-db.php &amp;&amp; exec s6-svscan /etc/s6/'</span></span><br><span class="line">  </span><br><span class="line">  <span class="attr">database.postgres:</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">postgres:alpine</span></span><br><span class="line">    <span class="attr">container_name:</span> <span class="string">postgres</span></span><br><span class="line">    <span class="attr">environment:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">POSTGRES_PASSWORD=ttrss</span> <span class="comment"># please change the password</span></span><br><span class="line">    <span class="attr">volumes:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">postgres_data:/var/lib/postgresql/data</span> <span class="comment"># persist postgres data to ~/postgres/data/ on the host</span></span><br><span class="line">    <span class="attr">restart:</span> <span class="string">always</span></span><br><span class="line">  </span><br><span class="line">  <span class="attr">service.mercury:</span> <span class="comment"># set Mercury Parser API endpoint to `service.mercury:3000` on TTRSS plugin setting page</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">wangqiru/mercury-parser-api:latest</span></span><br><span class="line">    <span class="attr">container_name:</span> <span class="string">mercury</span></span><br><span class="line">    <span class="attr">ports:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="number">3000</span><span class="string">:3000</span></span><br><span class="line">    <span class="attr">restart:</span> <span class="string">always</span></span><br><span class="line"></span><br><span class="line"><span class="attr">volumes:</span></span><br><span class="line">  <span class="attr">postgres_data:</span></span><br><span class="line">  <span class="attr">rsshub_data:</span></span><br></pre></td></tr></table></figure>
-<p><img src="/public/2022/04/16/rss_local_install/image-20200626140114783.png" alt="image-20200626140114783"></p>
-<p>在地址栏输入<code>cmd</code>，我们就可以打开cmd界面了，然后运行<code>docker-compose up -d</code> ，就可以自动安装全部内容了。</p>
-<p><img src="/public/2022/04/16/rss_local_install/image-20200626134626593.png" alt="image-20200626134626593"></p>
-<p>在地址栏输入<code>cmd</code> 然后回车，我们就能进入cmd界面，然后使用docker-compose，进行安装，网速好的话，安装很快。</p>
-<p><img src="/public/2022/04/16/rss_local_install/image-20200626140147402.png" alt="image-20200626140147402"></p>
-<p>安装完毕我们就可以使用了，下面是其资源占用情况。</p>
-<table>
-<thead>
-<tr>
-<th></th>
-<th>内容</th>
-<th>占用内存空间（M）</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>mercury</td>
-<td>全文获取ttrss插件</td>
-<td>66.8</td>
-</tr>
-<tr>
-<td>postgres</td>
-<td>ttrss数据库</td>
-<td>6.8</td>
-</tr>
-<tr>
-<td>ttrss</td>
-<td>ttrss工具</td>
-<td>30.2</td>
-</tr>
-<tr>
-<td>rsshub</td>
-<td>rsshub各种b站源等等</td>
-<td>142.4</td>
-</tr>
-<tr>
-<td></td>
-<td></td>
-<td>246.2</td>
-</tr>
-</tbody>
-</table>
-<p><img src="/public/2022/04/16/rss_local_install/image-20200626140407183.png" alt="image-20200626140407183"></p>
-<p>打开 <a href="http://127.0.0.1:8118/" target="_blank" rel="noopener">http://127.0.0.1:8118/</a></p>
-<p>默认账户：admin 密码：password，请第一时间更改。</p>
-<p><img src="/public/2022/04/16/rss_local_install/image-20200626143320968.png" alt="image-20200626143320968"></p>
-<h2 id="在chrome安装-rsshub-radar"><a class="header-anchor" href="#在chrome安装-rsshub-radar">¶</a>在chrome安装 rsshub radar</h2>
-<p><img src="/public/2022/04/16/rss_local_install/image-20200626144233385.png" alt="image-20200626144233385"></p>
-<p>并设置到本机的rsshub地址，ttrss地址，如上。</p>
-<p><img src="/public/2022/04/16/rss_local_install/image-20200626144330350.png" alt="image-20200626144330350"></p>
-<p>打开bilibili up主的主页就能订阅了，订阅到ttrss。</p>
-<p>这里有问题。需要解决。</p>
-<p><img src="/public/2022/04/16/rss_local_install/image-20200626145153354.png" alt="image-20200626145153354"></p>
-<p>本次安装教程到此结束，下期我们介绍全文获取功能，手机app的联动，即ttrss的设置问题</p>
-]]></content>
-      <categories>
-        <category>信息收集</category>
-      </categories>
-      <tags>
-        <tag>工具</tag>
-        <tag>rss</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>二零年RSS杂谈</title>
-    <url>/public/2022/01/14/rss_talk2020/</url>
-    <content><![CDATA[<p>2020年了，笔者还是使用RSS的原始人。RSS，Really Simple Syndication是一种信息聚合工具。在5G时代信息即将大爆炸之前，我来谈谈rss的杂七杂八吧。我们来打个赌，你不会看完这篇文章。</p>
-<a id="more"></a>
-<p>软件的交互设计有很多心理学理论的应用。比如微信、QQ的三级页面设计，一般经过3次点击就能到达功能或设置。这符合认知原理，人认知记忆能力一般为3-5个的组合。日常生活中要记电话号码，可以3-4-4这样记。软件交互中还有利用人的习惯奖励机制的提醒红点的设计，吸引你去点击，获取红点消失的奖励。对我来说，较难控制住不受这些设计的影响。在《习惯的力量》一书了解到，直接逃离这些环境可有效解决控制不住的问题。比如工作的时候，把手机关进柜子，工作1个小时，然后再回复信息，当然重要电话还是要立即接的。</p>
-<p>铺天盖地的广告，马路上，电视中，手机里，PC页面充斥着各种广告等等。大多数人可能养成了自动过滤的广告的习惯，然而我的情况是一直在用去广告的插件，并没有养成自动忽略广告的习惯。可怜兮兮，难道只有我是有广告洁癖的嘛？广告有点浪费生命。</p>
-<p>我饱受广告的困扰。web的去广告方法，我可使用某款chrome插件可以将web界面上的小红点，推荐信息模块全部屏蔽掉的。哪里不看点哪里，贼方便。</p>
-<p>移动端的广告去掉太难了，我一生气卸载了知乎 b站等等应用，终于有了一个清爽的手机。</p>
-<p>那我还是想获取一些新的内容，根据二八定律，是有20%的网络资料包含了80%的信息，也就是干货，也可能被我这种操作忽略掉了，那一套RSS应用体系应运而生。</p>
-<p>谈谈推荐算法，知乎推荐的都是啥呀，程序员都懂的，把我一个屌丝的形象勾勒的这么明显。于是我回答问题，人在美国，刚下飞机，年薪百万，老婆在旁？</p>
-<p>很多人会说，RSS一定会获取到有用的信息吗，这取决于信息源的可靠程度。也就是需要你自己去选择，由于它是不含推荐算法的，就不会根据你选择的，再给你推荐一些可能是非常有用的。</p>
-<p>再谈谈知识焦虑，每天觉得有大量知识需要吸收。大家都明白mark了也并不会看的，但还是mark很多，但你并不会有时间或者精力去看。既然不会看，那就不mark了，用到啥学啥，或许是个不错的策略。那RSS的即时性还是不错的，最好能当天把信息清理一下，star一些当前重要的东西，然后一周整理一下，像阮一峰老师。吸收完，把它输出出去，与人交流，给人讲明白，能够记得更深。（费曼学习法，把自己当成老师）。</p>
-<p>让我们再回到RSS，RSS是个淘汰的东西，和微信的公众号的形式有点像。然后倒霉的我又在微信的公众号上难以自拔，常常花很多时间在这上面。推荐算法厉害呀，就是让你看得爽。自我节制太难，那就改变环境。于是，我去掉了很多公众号，保留一些本地生活工作的公众号，微信上专注与朋友们侃大山。</p>
-<p>还有一点难受是，各个平台，相互串在一起，在这个地方看了，在其他地方又换了一个马甲它继续晃悠在眼前。信息源在多平台发布，然后信息重叠。</p>
-<p>看来all in one 势在必行，RSS被谷歌放弃后，很多网站傲娇地不提供RSS服务了，毕竟流量至上，钱要赚的，我一直想做一个这种爬的工具，但我不希望有大量使用爬，也就是我们还是要尊重网站的盈利以及持续发展的，这也是仅仅方便个人的信息处理，优化你的自动信息的处理，再也不用一个个打开网站，然后看信息看广告，还要被推荐不重用的信息。这也算我个人的想法。人在于折腾，于是我开始折腾ttrss rsshub等开源软件。</p>
-<p>自由软件的好处，在于自由定制，参与发展，利益化会尽量变慢或者没有，方便的同时并不忘隐私保护。</p>
-<p>我想说的是，<strong>技术应当给人们带来自由和发展，而非接管人们的注意力，浪费宝贵的时间。</strong></p>
-<p>写在5G信息大爆发前，与大家共同反思与成长。</p>
-]]></content>
-      <categories>
-        <category>杂谈</category>
-        <category>工具</category>
-      </categories>
-      <tags>
-        <tag>RSS</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>rss统计 基于ttrss的PostgresQL数据库</title>
-    <url>/public/2022/05/08/rss_ttrss_statics/</url>
-    <content><![CDATA[<p><strong>前言</strong>
-统计ttrss的使用数据。</p>
-<ul>
-<li>月度mark文件分析 OK</li>
-</ul>
-<p>TODO：</p>
-<ul>
-<li>全年阅读报告 doing</li>
-</ul>
-<a id="more"></a>
-<h2 id="按月保存mark的内容"><a class="header-anchor" href="#按月保存mark的内容">¶</a>按月保存mark的内容</h2>
-<p>账号 密码 和你docker文件里面的一致。</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 按月来保存</span></span><br><span class="line"><span class="keyword">import</span> html2text</span><br><span class="line"><span class="comment"># psycopg2 head</span></span><br><span class="line"><span class="keyword">import</span> psycopg2</span><br><span class="line"><span class="comment"># pip3 install psycopg2-binary</span></span><br><span class="line"><span class="comment"># ref:https://blog.csdn.net/Haiqiang1995/article/details/89069791</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_from_dataset</span><span class="params">(cmd_sql)</span>:</span></span><br><span class="line">    conn = <span class="literal">None</span></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        <span class="comment"># read database configuration</span></span><br><span class="line">        params = &#123;</span><br><span class="line">        <span class="string">'host'</span>: <span class="string">"?????"</span>,</span><br><span class="line">        <span class="string">'user'</span>: <span class="string">"????"</span>,</span><br><span class="line">        <span class="string">'password'</span>: <span class="string">"????"</span>,</span><br><span class="line">        <span class="string">'dbname'</span>: <span class="string">"ttrss"</span>,</span><br><span class="line">        'port': ??00</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment"># connect to the PostgresQL database</span></span><br><span class="line">        conn = psycopg2.connect(**params)</span><br><span class="line">        <span class="comment"># create a new cursor object</span></span><br><span class="line">        cur = conn.cursor()</span><br><span class="line">        <span class="comment"># execute the SELECT statement</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        print(cmd_sql)</span><br><span class="line">        cur.execute(cmd_sql)</span><br><span class="line"></span><br><span class="line">        blob = cur.fetchall()</span><br><span class="line">        <span class="comment"># blob = cur.fetchone()</span></span><br><span class="line">        <span class="comment">#open(path_to_dir + str(blob[0]) + '.jpg', 'wb').write(blob[1])</span></span><br><span class="line">        <span class="comment"># close the communication with the PostgresQL database</span></span><br><span class="line">        cur.close()</span><br><span class="line">    <span class="keyword">except</span> (Exception, psycopg2.DatabaseError) <span class="keyword">as</span> error:</span><br><span class="line">        print(error)</span><br><span class="line">    <span class="keyword">finally</span>:</span><br><span class="line">        <span class="keyword">if</span> conn <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">            conn.close()</span><br><span class="line">    print(<span class="string">"get_from_dataset success"</span>)</span><br><span class="line">    <span class="keyword">return</span> blob</span><br><span class="line"></span><br><span class="line">_s=<span class="string">"ref_id,feed_id,last_read,last_marked"</span></span><br><span class="line">cmd_sql=<span class="string">"SELECT %s  FROM public.ttrss_user_entries Where marked=TRUE AND last_marked BETWEEN '2022-04-01' And '2022-5-01'"</span> % _s</span><br><span class="line"><span class="comment"># 可以自己改日期</span></span><br><span class="line"></span><br><span class="line">g_content=<span class="string">""</span></span><br><span class="line"><span class="keyword">for</span> _e <span class="keyword">in</span> sorted(get_from_dataset(cmd_sql),key=<span class="keyword">lambda</span> x:x[<span class="number">3</span>]):</span><br><span class="line">    [ref_id,feed_id,last_read,last_marked] = _e</span><br><span class="line">    _s=<span class="string">"id,title,link,updated,content"</span></span><br><span class="line">    cmd_sql=<span class="string">"SELECT %s FROM public.ttrss_entries WHERE id = %s"</span> % (_s,ref_id)</span><br><span class="line">    [id,title,link,updated,content] =get_from_dataset(cmd_sql)[<span class="number">0</span>]</span><br><span class="line">    </span><br><span class="line">    g_content += <span class="string">"# [%s](%s)\n"</span>%(title,link)</span><br><span class="line">    g_content +=<span class="string">"pubdata:%s\n"</span>%str(updated)</span><br><span class="line">    g_content +=<span class="string">"markdate:%s\n"</span>%str(last_marked)</span><br><span class="line">    g_content+=html2text.html2text(content)</span><br><span class="line">    </span><br><span class="line">    g_content+=<span class="string">"\n\n"</span></span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">D=<span class="string">"C:\\Users\\talen\\Desktop\\"</span></span><br><span class="line"><span class="keyword">with</span> open(D+<span class="string">"cc.md"</span>,<span class="string">'w'</span>,encoding=<span class="string">'utf-8'</span>) <span class="keyword">as</span> f:</span><br><span class="line">        f.write(g_content)</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>工具</category>
-      </categories>
-      <tags>
-        <tag>rss</tag>
-        <tag>python</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>博客模版</title>
-    <url>/public/2019/07/25/template/</url>
-    <content><![CDATA[<p>文件head，设置标题、日期、分类、标签、评论、版权、是否使用公式，如下。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">---</span><br><span class="line">title: 模版文件</span><br><span class="line">date: 2019-07-25 12:00:00</span><br><span class="line">updated: 2019-07-25 12:00:00</span><br><span class="line">categories:</span><br><span class="line">  - 博客搭建</span><br><span class="line">  - 模版文件</span><br><span class="line">tags:</span><br><span class="line">  - Writing</span><br><span class="line">comments: true</span><br><span class="line">copyright: true</span><br><span class="line">math: true</span><br><span class="line">---</span><br></pre></td></tr></table></figure>
-<p><strong>摘要</strong></p>
-<p>本部分说明文章的写作意图。涉及的背景、主要内容、本文与其他文章关系等。</p>
-<p>本文为Hexo博客模版文件，以Markdown语言书写。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">前言一般放到主页，可利用 &lt;!-- more --&gt; 隔断。</span><br></pre></td></tr></table></figure>
-<a id="more"></a>
-<h2 id="1-构思与起草"><a class="header-anchor" href="#1-构思与起草">¶</a>1 构思与起草</h2>
-<ul>
-<li>对文章的阅读群体、写作意图和反馈（Audience Intention Response AIR）要有一个清楚的认识。照顾沟通对象的需要、你的意图（信息）以及希望的反馈。</li>
-<li>在思维导图上，放上你需要的关键名词，然后依次在它基础上添加动词，在加上形容词。最后以一定顺序组织你将要阐述的信息。比如重要性排序，对比优势劣势，方案的不同层面，时间上逻辑上的因果性等等。</li>
-</ul>
-<h2 id="2-主体内容"><a class="header-anchor" href="#2-主体内容">¶</a>2 主体内容</h2>
-<p>文章的主要内容，包括你对跟进过程或发现成果的描述，以数据、事实证据以及其他的信息支撑主要内容。在你的论说中，你应该把对客观事实的描述和写作者对事情的主管阐述区分开来。</p>
-<p>当你在报告中对一个观点进行陈述的时候，你需要记住以下几点：</p>
-<ul>
-<li>清晰的呈现事实</li>
-<li>有逻辑地提出论据</li>
-<li>引用相关的语录、简明易懂的事实和例子来支持你的论点</li>
-<li>给出支持或反对该行为的理由</li>
-<li>始终围绕主要观点进行讨论</li>
-<li>处理好重要的假设关系</li>
-<li>区分说明（具体阐述）和论证（有理有据）</li>
-</ul>
-<p>链接：<a href="https://talengu.github.io/">https://talengu.github.io/</a></p>
-<h3 id="2-1-图"><a class="header-anchor" href="#2-1-图">¶</a>2.1 图</h3>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">![GDP](http://www.stats.gov.cn/tjsj/zxfb/201902/W020190228338754231076_r75.png)</span><br><span class="line">&lt;div align=&apos;center&apos;&gt; &lt;b&gt;图1 2018年国内生产总值及其增速度&lt;/b&gt;&lt;/div&gt;</span><br></pre></td></tr></table></figure>
-<p>这两行代码生成下面的图和标题。</p>
-<p><img src="http://www.stats.gov.cn/tjsj/zxfb/201902/W020190228338754231076_r75.png" alt="GDP"></p>
-<p>图 1 展示的是2014-2018年的GDP和增长速度，来自<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup>。图中数据反应出国内生产总值在2014-2018年度均平稳增长的情况。</p>
-<h3 id="2-2-表"><a class="header-anchor" href="#2-2-表">¶</a>2.2 表</h3>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;div align=&apos;center&apos;&gt; &lt;b&gt;表1 2018年年末人口数及其构成&lt;/b&gt;&lt;/div&gt;</span><br><span class="line"></span><br><span class="line">| 指标       | 年末数（万人） | 比重（%） |</span><br><span class="line">| ---------- | -------------- | --------- |</span><br><span class="line">| 全国总人口 | 139538         | 100.0     |</span><br><span class="line">| 其中：城镇 | 83137          | 59.58     |</span><br><span class="line">| 乡村       | 56401          | 40.42     |</span><br></pre></td></tr></table></figure>
-<p>这两行代码生成下面的表和标题。</p>
-<div align="center"> <b>表1 2018年年末人口数及其构成</b></div>
-<table>
-<thead>
-<tr>
-<th>指标</th>
-<th>年末数（万人）</th>
-<th>比重（%）</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>全国总人口</td>
-<td>139538</td>
-<td>100.0</td>
-</tr>
-<tr>
-<td>城镇</td>
-<td>83137</td>
-<td>59.58</td>
-</tr>
-<tr>
-<td>乡村</td>
-<td>56401</td>
-<td>40.42</td>
-</tr>
-</tbody>
-</table>
-<p>从表1中得出，2018年年末城镇人口占总人口的59.58%，乡村人口占总人口的40.42%，城镇人口大比例超过乡村人口。</p>
-<h3 id="2-3-公式"><a class="header-anchor" href="#2-3-公式">¶</a>2.3 公式</h3>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$$</span><br><span class="line">f=w_1 x_1 + w_2 x_2</span><br><span class="line">\tag&#123;1&#125;</span><br><span class="line">$$</span><br></pre></td></tr></table></figure>
-<p>数学Tex代码渲染成下面的公式，见公式（1）。公式可以在网站<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup> 进行可视化编写。
-$$
-f=w_1 x_1 + w_2 x_2
-\tag{1}
-$$</p>
-<h4 id="定理证明"><a class="header-anchor" href="#定理证明">¶</a>定理证明</h4>
-<p><strong>定理 3.1</strong> 如果时域混合场积分方程是时域电场积分方程与时域磁场积分方程的线性组合……</p>
-<p><strong>证明：</strong></p>
-<p>首先，由于 ……</p>
-<p>……</p>
-<p>根据 ……，结论得证。                        ■</p>
-<h2 id="3-写作检查"><a class="header-anchor" href="#3-写作检查">¶</a>3 写作检查</h2>
-<p>主体内容完成后，要进行写作检查。</p>
-<ul>
-<li>保证信息的准确性，时间地点等信息的准确。</li>
-<li>确保语法规范性</li>
-<li>段落写作
-<ul>
-<li>主题句，核心思想</li>
-<li>使用关联词，但勿滥
-<ul>
-<li>表示转折：虽然，尽管，但是，相反的是，另一方面</li>
-<li>对已阐述观点的强调：此外，与此同时，除此以外，再补充一点</li>
-<li>阐述结果：结果是，相应的结果是，因此</li>
-</ul>
-</li>
-<li>简单的句子 15-25</li>
-</ul>
-</li>
-<li>精心选择词语
-<ul>
-<li>同一个意思，换一下说法</li>
-<li>少用名词，多用动词。我们想用名词表达意思，采用动名组合，或者一个意群搭配上动词会更有力。</li>
-<li>多用主动动词，少用被动动词</li>
-</ul>
-</li>
-<li>核对标点符号，逗号，与分号。英文的话，检查一下拼写</li>
-<li>注意行为的语气</li>
-<li>保持连贯性，使用一种统一的方式表达。</li>
-</ul>
-<h2 id="4-总结"><a class="header-anchor" href="#4-总结">¶</a>4 总结</h2>
-<p>一个清晰的总结应该概括全部论点。</p>
-<h2 id="其他"><a class="header-anchor" href="#其他">¶</a>其他</h2>
-<ul>
-<li>逻辑清楚，达情切意<sup class="footnote-ref"><a href="#fn3" id="fnref3">[3]</a></sup>。准备看一些基础的逻辑学。</li>
-<li>写完要读两遍，修改错别字，标点，语序连接等等。<sup class="footnote-ref"><a href="#fn3" id="fnref3:1">[3:1]</a></sup></li>
-<li>修改可以反着读，正着读对熟悉的材料会有一种连贯性忽略掉错误或者不顺的地方。</li>
-</ul>
-<hr>
-<p><strong>参考</strong></p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[^statics_report_2018]: [国家统计局：2018年国民经济和社会发展统计公报](http://www.stats.gov.cn/tjsj/zxfb/201902/t20190228_1651265.html)</span><br><span class="line">[^latex_editor]: [Latex公式在线可视化编辑器](http://latex.codecogs.com/eqneditor/editor.php)</span><br><span class="line">[^hetang]: 美学散步系列书籍 - 朱自清的《荷塘清韵》</span><br></pre></td></tr></table></figure>
-<hr class="footnotes-sep">
-<section class="footnotes">
-<ol class="footnotes-list">
-<li id="fn1" class="footnote-item"><p><a href="http://www.stats.gov.cn/tjsj/zxfb/201902/t20190228_1651265.html" target="_blank" rel="noopener">国家统计局：2018年国民经济和社会发展统计公报</a> <a href="#fnref1" class="footnote-backref">↩︎</a></p>
-</li>
-<li id="fn2" class="footnote-item"><p><a href="http://latex.codecogs.com/eqneditor/editor.php" target="_blank" rel="noopener">Latex公式在线可视化编辑器</a> <a href="#fnref2" class="footnote-backref">↩︎</a></p>
-</li>
-<li id="fn3" class="footnote-item"><p>美学散步系列书籍 - 朱自清的《荷塘清韵》 <a href="#fnref3" class="footnote-backref">↩︎</a> <a href="#fnref3:1" class="footnote-backref">↩︎</a></p>
-</li>
-</ol>
-</section>
-]]></content>
-      <categories>
-        <category>博客搭建</category>
-      </categories>
-      <tags>
-        <tag>博客模版</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>「转」在 C/C++ 程序中打印当前函数调用栈</title>
     <url>/public/2021/08/25/c_debug/</url>
     <content><![CDATA[<h2 id="背景"><a class="header-anchor" href="#背景">¶</a>背景</h2>
@@ -736,6 +448,313 @@ $$</p>
       </categories>
       <tags>
         <tag>RSS</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>本地安装rss</title>
+    <url>/public/2022/04/16/rss_local_install/</url>
+    <content><![CDATA[<h2 id="前言"><a class="header-anchor" href="#前言">¶</a>前言</h2>
+<p>在 “<a href="https://zhuanlan.zhihu.com/p/149452085" target="_blank" rel="noopener">二零年RSS杂谈</a>”中说到，我想建立一种信息的获取系统，免受广告和推荐算法的困扰。</p>
+<p>我希望其的功能包括：</p>
+<ul>
+<li>多终端 Web、PC、 mobile的同步</li>
+<li>全文获取能力</li>
+<li>可自定义过滤规则</li>
+<li>RSS源自定义</li>
+</ul>
+<p>方案：</p>
+<ul>
+<li>RSS源 rsshub</li>
+<li>RSS服务  ttrss</li>
+<li>RSS电脑手机软件：Android的Readably、Feedme，mac的reeder等等。windows上我暂时没有发现，我用的是ttrss的web界面。</li>
+</ul>
+<a id="more"></a>
+<p>rsshub 是由 DIYgod 开发的开源RSS源生成工具，RSShub原始的网站可能不稳定，所以我选择了自己搭建。</p>
+<p>ttrss 是一个rss源管理配置的工具，可获取全文，可自定义过滤规则。</p>
+<p>本教程我们将完成在window电脑通过docker安装，ttrss与全文插件、rsshub的过程。</p>
+<p>服务器的成本还是有点小贵的，我们可以在本地搭建整个服务，即利用docker安装这些服务，开机的时候记得启动这些服务。
+不爽点：</p>
+<ul>
+<li>需要后台开启docker服务，使得其自动更新信息</li>
+<li>没有公网ip的情况下，无法全网连接服务</li>
+</ul>
+<h2 id="最终ttrss界面"><a class="header-anchor" href="#最终ttrss界面">¶</a>最终ttrss界面</h2>
+<p>在这里我已经添加一些rss源了。</p>
+<p><img src="/public/2022/04/16/rss_local_install/image-20200626135803804.png" alt="image-20200626135803804"></p>
+<h2 id="docker-windows安装"><a class="header-anchor" href="#docker-windows安装">¶</a>docker windows安装</h2>
+<p>从<a href="https://www.docker.com/products/docker-desktop" target="_blank" rel="noopener">docker 官网</a> 下载windows版本安装。完成后，在图标区会有一个鲸鱼船。</p>
+<p><img src="/public/2022/04/16/rss_local_install/image-20200626141604658.png" alt="image-20200626141604658"></p>
+<p>我们使用docker-compose 来进行下一步 网站服务的安装。将下面的资料保存到s<code>docker-compose.yml</code> 然后利用docker-compose方法安装。</p>
+<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">version:</span> <span class="string">"2"</span></span><br><span class="line"><span class="attr">services:</span></span><br><span class="line">  <span class="attr">service.rsshub:</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">diygod/rsshub</span></span><br><span class="line">    <span class="attr">container_name:</span> <span class="string">rsshub</span></span><br><span class="line">    <span class="attr">ports:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">"1200:1200"</span></span><br><span class="line">    <span class="attr">volumes:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">rsshub_data:/app/lib</span></span><br><span class="line">    <span class="attr">restart:</span> <span class="string">always</span></span><br><span class="line"></span><br><span class="line">  <span class="attr">service.rss:</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">wangqiru/ttrss:latest</span></span><br><span class="line">    <span class="attr">container_name:</span> <span class="string">ttrss</span></span><br><span class="line">    <span class="attr">ports:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="number">8118</span><span class="string">:80</span></span><br><span class="line">    <span class="attr">environment:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">SELF_URL_PATH=http://127.0.0.1:8118/</span> <span class="comment"># please change to your own domain</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">DB_HOST=database.postgres</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">DB_PORT=5432</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">DB_NAME=ttrss</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">DB_USER=postgres</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">DB_PASS=ttrss</span> <span class="comment"># please change the password</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">ENABLE_PLUGINS=auth_internal,fever</span> <span class="comment"># auth_internal is required. Plugins enabled here will be enabled for all users as system plugins</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">FEED_LOG_QUIET=true</span></span><br><span class="line">    <span class="attr">stdin_open:</span> <span class="literal">true</span></span><br><span class="line">    <span class="attr">tty:</span> <span class="literal">true</span></span><br><span class="line">    <span class="attr">restart:</span> <span class="string">always</span></span><br><span class="line">    <span class="attr">command:</span> <span class="string">sh</span> <span class="string">-c</span> <span class="string">'sh /wait-for.sh $$DB_HOST:$$DB_PORT -- php /configure-db.php &amp;&amp; exec s6-svscan /etc/s6/'</span></span><br><span class="line">  </span><br><span class="line">  <span class="attr">database.postgres:</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">postgres:alpine</span></span><br><span class="line">    <span class="attr">container_name:</span> <span class="string">postgres</span></span><br><span class="line">    <span class="attr">environment:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">POSTGRES_PASSWORD=ttrss</span> <span class="comment"># please change the password</span></span><br><span class="line">    <span class="attr">volumes:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">postgres_data:/var/lib/postgresql/data</span> <span class="comment"># persist postgres data to ~/postgres/data/ on the host</span></span><br><span class="line">    <span class="attr">restart:</span> <span class="string">always</span></span><br><span class="line">  </span><br><span class="line">  <span class="attr">service.mercury:</span> <span class="comment"># set Mercury Parser API endpoint to `service.mercury:3000` on TTRSS plugin setting page</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">wangqiru/mercury-parser-api:latest</span></span><br><span class="line">    <span class="attr">container_name:</span> <span class="string">mercury</span></span><br><span class="line">    <span class="attr">ports:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="number">3000</span><span class="string">:3000</span></span><br><span class="line">    <span class="attr">restart:</span> <span class="string">always</span></span><br><span class="line"></span><br><span class="line"><span class="attr">volumes:</span></span><br><span class="line">  <span class="attr">postgres_data:</span></span><br><span class="line">  <span class="attr">rsshub_data:</span></span><br></pre></td></tr></table></figure>
+<p><img src="/public/2022/04/16/rss_local_install/image-20200626140114783.png" alt="image-20200626140114783"></p>
+<p>在地址栏输入<code>cmd</code>，我们就可以打开cmd界面了，然后运行<code>docker-compose up -d</code> ，就可以自动安装全部内容了。</p>
+<p><img src="/public/2022/04/16/rss_local_install/image-20200626134626593.png" alt="image-20200626134626593"></p>
+<p>在地址栏输入<code>cmd</code> 然后回车，我们就能进入cmd界面，然后使用docker-compose，进行安装，网速好的话，安装很快。</p>
+<p><img src="/public/2022/04/16/rss_local_install/image-20200626140147402.png" alt="image-20200626140147402"></p>
+<p>安装完毕我们就可以使用了，下面是其资源占用情况。</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>内容</th>
+<th>占用内存空间（M）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>mercury</td>
+<td>全文获取ttrss插件</td>
+<td>66.8</td>
+</tr>
+<tr>
+<td>postgres</td>
+<td>ttrss数据库</td>
+<td>6.8</td>
+</tr>
+<tr>
+<td>ttrss</td>
+<td>ttrss工具</td>
+<td>30.2</td>
+</tr>
+<tr>
+<td>rsshub</td>
+<td>rsshub各种b站源等等</td>
+<td>142.4</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>246.2</td>
+</tr>
+</tbody>
+</table>
+<p><img src="/public/2022/04/16/rss_local_install/image-20200626140407183.png" alt="image-20200626140407183"></p>
+<p>打开 <a href="http://127.0.0.1:8118/" target="_blank" rel="noopener">http://127.0.0.1:8118/</a></p>
+<p>默认账户：admin 密码：password，请第一时间更改。</p>
+<p><img src="/public/2022/04/16/rss_local_install/image-20200626143320968.png" alt="image-20200626143320968"></p>
+<h2 id="在chrome安装-rsshub-radar"><a class="header-anchor" href="#在chrome安装-rsshub-radar">¶</a>在chrome安装 rsshub radar</h2>
+<p><img src="/public/2022/04/16/rss_local_install/image-20200626144233385.png" alt="image-20200626144233385"></p>
+<p>并设置到本机的rsshub地址，ttrss地址，如上。</p>
+<p><img src="/public/2022/04/16/rss_local_install/image-20200626144330350.png" alt="image-20200626144330350"></p>
+<p>打开bilibili up主的主页就能订阅了，订阅到ttrss。</p>
+<p>这里有问题。需要解决。</p>
+<p><img src="/public/2022/04/16/rss_local_install/image-20200626145153354.png" alt="image-20200626145153354"></p>
+<p>本次安装教程到此结束，下期我们介绍全文获取功能，手机app的联动，即ttrss的设置问题</p>
+]]></content>
+      <categories>
+        <category>信息收集</category>
+      </categories>
+      <tags>
+        <tag>工具</tag>
+        <tag>rss</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>二零年RSS杂谈</title>
+    <url>/public/2022/01/14/rss_talk2020/</url>
+    <content><![CDATA[<p>2020年了，笔者还是使用RSS的原始人。RSS，Really Simple Syndication是一种信息聚合工具。在5G时代信息即将大爆炸之前，我来谈谈rss的杂七杂八吧。我们来打个赌，你不会看完这篇文章。</p>
+<a id="more"></a>
+<p>软件的交互设计有很多心理学理论的应用。比如微信、QQ的三级页面设计，一般经过3次点击就能到达功能或设置。这符合认知原理，人认知记忆能力一般为3-5个的组合。日常生活中要记电话号码，可以3-4-4这样记。软件交互中还有利用人的习惯奖励机制的提醒红点的设计，吸引你去点击，获取红点消失的奖励。对我来说，较难控制住不受这些设计的影响。在《习惯的力量》一书了解到，直接逃离这些环境可有效解决控制不住的问题。比如工作的时候，把手机关进柜子，工作1个小时，然后再回复信息，当然重要电话还是要立即接的。</p>
+<p>铺天盖地的广告，马路上，电视中，手机里，PC页面充斥着各种广告等等。大多数人可能养成了自动过滤的广告的习惯，然而我的情况是一直在用去广告的插件，并没有养成自动忽略广告的习惯。可怜兮兮，难道只有我是有广告洁癖的嘛？广告有点浪费生命。</p>
+<p>我饱受广告的困扰。web的去广告方法，我可使用某款chrome插件可以将web界面上的小红点，推荐信息模块全部屏蔽掉的。哪里不看点哪里，贼方便。</p>
+<p>移动端的广告去掉太难了，我一生气卸载了知乎 b站等等应用，终于有了一个清爽的手机。</p>
+<p>那我还是想获取一些新的内容，根据二八定律，是有20%的网络资料包含了80%的信息，也就是干货，也可能被我这种操作忽略掉了，那一套RSS应用体系应运而生。</p>
+<p>谈谈推荐算法，知乎推荐的都是啥呀，程序员都懂的，把我一个屌丝的形象勾勒的这么明显。于是我回答问题，人在美国，刚下飞机，年薪百万，老婆在旁？</p>
+<p>很多人会说，RSS一定会获取到有用的信息吗，这取决于信息源的可靠程度。也就是需要你自己去选择，由于它是不含推荐算法的，就不会根据你选择的，再给你推荐一些可能是非常有用的。</p>
+<p>再谈谈知识焦虑，每天觉得有大量知识需要吸收。大家都明白mark了也并不会看的，但还是mark很多，但你并不会有时间或者精力去看。既然不会看，那就不mark了，用到啥学啥，或许是个不错的策略。那RSS的即时性还是不错的，最好能当天把信息清理一下，star一些当前重要的东西，然后一周整理一下，像阮一峰老师。吸收完，把它输出出去，与人交流，给人讲明白，能够记得更深。（费曼学习法，把自己当成老师）。</p>
+<p>让我们再回到RSS，RSS是个淘汰的东西，和微信的公众号的形式有点像。然后倒霉的我又在微信的公众号上难以自拔，常常花很多时间在这上面。推荐算法厉害呀，就是让你看得爽。自我节制太难，那就改变环境。于是，我去掉了很多公众号，保留一些本地生活工作的公众号，微信上专注与朋友们侃大山。</p>
+<p>还有一点难受是，各个平台，相互串在一起，在这个地方看了，在其他地方又换了一个马甲它继续晃悠在眼前。信息源在多平台发布，然后信息重叠。</p>
+<p>看来all in one 势在必行，RSS被谷歌放弃后，很多网站傲娇地不提供RSS服务了，毕竟流量至上，钱要赚的，我一直想做一个这种爬的工具，但我不希望有大量使用爬，也就是我们还是要尊重网站的盈利以及持续发展的，这也是仅仅方便个人的信息处理，优化你的自动信息的处理，再也不用一个个打开网站，然后看信息看广告，还要被推荐不重用的信息。这也算我个人的想法。人在于折腾，于是我开始折腾ttrss rsshub等开源软件。</p>
+<p>自由软件的好处，在于自由定制，参与发展，利益化会尽量变慢或者没有，方便的同时并不忘隐私保护。</p>
+<p>我想说的是，<strong>技术应当给人们带来自由和发展，而非接管人们的注意力，浪费宝贵的时间。</strong></p>
+<p>写在5G信息大爆发前，与大家共同反思与成长。</p>
+]]></content>
+      <categories>
+        <category>杂谈</category>
+        <category>工具</category>
+      </categories>
+      <tags>
+        <tag>RSS</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>rss翻译github脚本</title>
+    <url>/public/2022/12/21/rss_translate/</url>
+    <content><![CDATA[<h2 id="前言"><a class="header-anchor" href="#前言">¶</a>前言</h2>
+<p>自动翻译 rss，我利用github action 供大家玩乐。</p>
+<a id="more"></a>
+<h2 id="如何fork到自己的仓？"><a class="header-anchor" href="#如何fork到自己的仓？">¶</a>如何fork到自己的仓？</h2>
+<p>设置 对应的名字
+<img src="/public/2022/12/21/rss_translate/image-20221221224857130.png" alt></p>
+<p><img src="/public/2022/12/21/rss_translate/image-20221221225113997.png" alt></p>
+]]></content>
+      <categories>
+        <category>信息收集</category>
+      </categories>
+      <tags>
+        <tag>工具</tag>
+        <tag>rss</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>rss统计 基于ttrss的PostgresQL数据库</title>
+    <url>/public/2022/05/08/rss_ttrss_statics/</url>
+    <content><![CDATA[<p><strong>前言</strong>
+统计ttrss的使用数据。</p>
+<ul>
+<li>月度mark文件分析 OK</li>
+</ul>
+<p>TODO：</p>
+<ul>
+<li>全年阅读报告 doing</li>
+</ul>
+<a id="more"></a>
+<h2 id="按月保存mark的内容"><a class="header-anchor" href="#按月保存mark的内容">¶</a>按月保存mark的内容</h2>
+<p>账号 密码 和你docker文件里面的一致。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 按月来保存</span></span><br><span class="line"><span class="keyword">import</span> html2text</span><br><span class="line"><span class="comment"># psycopg2 head</span></span><br><span class="line"><span class="keyword">import</span> psycopg2</span><br><span class="line"><span class="comment"># pip3 install psycopg2-binary</span></span><br><span class="line"><span class="comment"># ref:https://blog.csdn.net/Haiqiang1995/article/details/89069791</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_from_dataset</span><span class="params">(cmd_sql)</span>:</span></span><br><span class="line">    conn = <span class="literal">None</span></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        <span class="comment"># read database configuration</span></span><br><span class="line">        params = &#123;</span><br><span class="line">        <span class="string">'host'</span>: <span class="string">"?????"</span>,</span><br><span class="line">        <span class="string">'user'</span>: <span class="string">"????"</span>,</span><br><span class="line">        <span class="string">'password'</span>: <span class="string">"????"</span>,</span><br><span class="line">        <span class="string">'dbname'</span>: <span class="string">"ttrss"</span>,</span><br><span class="line">        'port': ??00</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment"># connect to the PostgresQL database</span></span><br><span class="line">        conn = psycopg2.connect(**params)</span><br><span class="line">        <span class="comment"># create a new cursor object</span></span><br><span class="line">        cur = conn.cursor()</span><br><span class="line">        <span class="comment"># execute the SELECT statement</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        print(cmd_sql)</span><br><span class="line">        cur.execute(cmd_sql)</span><br><span class="line"></span><br><span class="line">        blob = cur.fetchall()</span><br><span class="line">        <span class="comment"># blob = cur.fetchone()</span></span><br><span class="line">        <span class="comment">#open(path_to_dir + str(blob[0]) + '.jpg', 'wb').write(blob[1])</span></span><br><span class="line">        <span class="comment"># close the communication with the PostgresQL database</span></span><br><span class="line">        cur.close()</span><br><span class="line">    <span class="keyword">except</span> (Exception, psycopg2.DatabaseError) <span class="keyword">as</span> error:</span><br><span class="line">        print(error)</span><br><span class="line">    <span class="keyword">finally</span>:</span><br><span class="line">        <span class="keyword">if</span> conn <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">            conn.close()</span><br><span class="line">    print(<span class="string">"get_from_dataset success"</span>)</span><br><span class="line">    <span class="keyword">return</span> blob</span><br><span class="line"></span><br><span class="line">_s=<span class="string">"ref_id,feed_id,last_read,last_marked"</span></span><br><span class="line">cmd_sql=<span class="string">"SELECT %s  FROM public.ttrss_user_entries Where marked=TRUE AND last_marked BETWEEN '2022-04-01' And '2022-5-01'"</span> % _s</span><br><span class="line"><span class="comment"># 可以自己改日期</span></span><br><span class="line"></span><br><span class="line">g_content=<span class="string">""</span></span><br><span class="line"><span class="keyword">for</span> _e <span class="keyword">in</span> sorted(get_from_dataset(cmd_sql),key=<span class="keyword">lambda</span> x:x[<span class="number">3</span>]):</span><br><span class="line">    [ref_id,feed_id,last_read,last_marked] = _e</span><br><span class="line">    _s=<span class="string">"id,title,link,updated,content"</span></span><br><span class="line">    cmd_sql=<span class="string">"SELECT %s FROM public.ttrss_entries WHERE id = %s"</span> % (_s,ref_id)</span><br><span class="line">    [id,title,link,updated,content] =get_from_dataset(cmd_sql)[<span class="number">0</span>]</span><br><span class="line">    </span><br><span class="line">    g_content += <span class="string">"# [%s](%s)\n"</span>%(title,link)</span><br><span class="line">    g_content +=<span class="string">"pubdata:%s\n"</span>%str(updated)</span><br><span class="line">    g_content +=<span class="string">"markdate:%s\n"</span>%str(last_marked)</span><br><span class="line">    g_content+=html2text.html2text(content)</span><br><span class="line">    </span><br><span class="line">    g_content+=<span class="string">"\n\n"</span></span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">D=<span class="string">"C:\\Users\\talen\\Desktop\\"</span></span><br><span class="line"><span class="keyword">with</span> open(D+<span class="string">"cc.md"</span>,<span class="string">'w'</span>,encoding=<span class="string">'utf-8'</span>) <span class="keyword">as</span> f:</span><br><span class="line">        f.write(g_content)</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>工具</category>
+      </categories>
+      <tags>
+        <tag>rss</tag>
+        <tag>python</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>博客模版</title>
+    <url>/public/2019/07/25/template/</url>
+    <content><![CDATA[<p>文件head，设置标题、日期、分类、标签、评论、版权、是否使用公式，如下。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">---</span><br><span class="line">title: 模版文件</span><br><span class="line">date: 2019-07-25 12:00:00</span><br><span class="line">updated: 2019-07-25 12:00:00</span><br><span class="line">categories:</span><br><span class="line">  - 博客搭建</span><br><span class="line">  - 模版文件</span><br><span class="line">tags:</span><br><span class="line">  - Writing</span><br><span class="line">comments: true</span><br><span class="line">copyright: true</span><br><span class="line">math: true</span><br><span class="line">---</span><br></pre></td></tr></table></figure>
+<p><strong>摘要</strong></p>
+<p>本部分说明文章的写作意图。涉及的背景、主要内容、本文与其他文章关系等。</p>
+<p>本文为Hexo博客模版文件，以Markdown语言书写。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">前言一般放到主页，可利用 &lt;!-- more --&gt; 隔断。</span><br></pre></td></tr></table></figure>
+<a id="more"></a>
+<h2 id="1-构思与起草"><a class="header-anchor" href="#1-构思与起草">¶</a>1 构思与起草</h2>
+<ul>
+<li>对文章的阅读群体、写作意图和反馈（Audience Intention Response AIR）要有一个清楚的认识。照顾沟通对象的需要、你的意图（信息）以及希望的反馈。</li>
+<li>在思维导图上，放上你需要的关键名词，然后依次在它基础上添加动词，在加上形容词。最后以一定顺序组织你将要阐述的信息。比如重要性排序，对比优势劣势，方案的不同层面，时间上逻辑上的因果性等等。</li>
+</ul>
+<h2 id="2-主体内容"><a class="header-anchor" href="#2-主体内容">¶</a>2 主体内容</h2>
+<p>文章的主要内容，包括你对跟进过程或发现成果的描述，以数据、事实证据以及其他的信息支撑主要内容。在你的论说中，你应该把对客观事实的描述和写作者对事情的主管阐述区分开来。</p>
+<p>当你在报告中对一个观点进行陈述的时候，你需要记住以下几点：</p>
+<ul>
+<li>清晰的呈现事实</li>
+<li>有逻辑地提出论据</li>
+<li>引用相关的语录、简明易懂的事实和例子来支持你的论点</li>
+<li>给出支持或反对该行为的理由</li>
+<li>始终围绕主要观点进行讨论</li>
+<li>处理好重要的假设关系</li>
+<li>区分说明（具体阐述）和论证（有理有据）</li>
+</ul>
+<p>链接：<a href="https://talengu.github.io/">https://talengu.github.io/</a></p>
+<h3 id="2-1-图"><a class="header-anchor" href="#2-1-图">¶</a>2.1 图</h3>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">![GDP](http://www.stats.gov.cn/tjsj/zxfb/201902/W020190228338754231076_r75.png)</span><br><span class="line">&lt;div align=&apos;center&apos;&gt; &lt;b&gt;图1 2018年国内生产总值及其增速度&lt;/b&gt;&lt;/div&gt;</span><br></pre></td></tr></table></figure>
+<p>这两行代码生成下面的图和标题。</p>
+<p><img src="http://www.stats.gov.cn/tjsj/zxfb/201902/W020190228338754231076_r75.png" alt="GDP"></p>
+<p>图 1 展示的是2014-2018年的GDP和增长速度，来自<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup>。图中数据反应出国内生产总值在2014-2018年度均平稳增长的情况。</p>
+<h3 id="2-2-表"><a class="header-anchor" href="#2-2-表">¶</a>2.2 表</h3>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;div align=&apos;center&apos;&gt; &lt;b&gt;表1 2018年年末人口数及其构成&lt;/b&gt;&lt;/div&gt;</span><br><span class="line"></span><br><span class="line">| 指标       | 年末数（万人） | 比重（%） |</span><br><span class="line">| ---------- | -------------- | --------- |</span><br><span class="line">| 全国总人口 | 139538         | 100.0     |</span><br><span class="line">| 其中：城镇 | 83137          | 59.58     |</span><br><span class="line">| 乡村       | 56401          | 40.42     |</span><br></pre></td></tr></table></figure>
+<p>这两行代码生成下面的表和标题。</p>
+<div align="center"> <b>表1 2018年年末人口数及其构成</b></div>
+<table>
+<thead>
+<tr>
+<th>指标</th>
+<th>年末数（万人）</th>
+<th>比重（%）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>全国总人口</td>
+<td>139538</td>
+<td>100.0</td>
+</tr>
+<tr>
+<td>城镇</td>
+<td>83137</td>
+<td>59.58</td>
+</tr>
+<tr>
+<td>乡村</td>
+<td>56401</td>
+<td>40.42</td>
+</tr>
+</tbody>
+</table>
+<p>从表1中得出，2018年年末城镇人口占总人口的59.58%，乡村人口占总人口的40.42%，城镇人口大比例超过乡村人口。</p>
+<h3 id="2-3-公式"><a class="header-anchor" href="#2-3-公式">¶</a>2.3 公式</h3>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$$</span><br><span class="line">f=w_1 x_1 + w_2 x_2</span><br><span class="line">\tag&#123;1&#125;</span><br><span class="line">$$</span><br></pre></td></tr></table></figure>
+<p>数学Tex代码渲染成下面的公式，见公式（1）。公式可以在网站<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup> 进行可视化编写。
+$$
+f=w_1 x_1 + w_2 x_2
+\tag{1}
+$$</p>
+<h4 id="定理证明"><a class="header-anchor" href="#定理证明">¶</a>定理证明</h4>
+<p><strong>定理 3.1</strong> 如果时域混合场积分方程是时域电场积分方程与时域磁场积分方程的线性组合……</p>
+<p><strong>证明：</strong></p>
+<p>首先，由于 ……</p>
+<p>……</p>
+<p>根据 ……，结论得证。                        ■</p>
+<h2 id="3-写作检查"><a class="header-anchor" href="#3-写作检查">¶</a>3 写作检查</h2>
+<p>主体内容完成后，要进行写作检查。</p>
+<ul>
+<li>保证信息的准确性，时间地点等信息的准确。</li>
+<li>确保语法规范性</li>
+<li>段落写作
+<ul>
+<li>主题句，核心思想</li>
+<li>使用关联词，但勿滥
+<ul>
+<li>表示转折：虽然，尽管，但是，相反的是，另一方面</li>
+<li>对已阐述观点的强调：此外，与此同时，除此以外，再补充一点</li>
+<li>阐述结果：结果是，相应的结果是，因此</li>
+</ul>
+</li>
+<li>简单的句子 15-25</li>
+</ul>
+</li>
+<li>精心选择词语
+<ul>
+<li>同一个意思，换一下说法</li>
+<li>少用名词，多用动词。我们想用名词表达意思，采用动名组合，或者一个意群搭配上动词会更有力。</li>
+<li>多用主动动词，少用被动动词</li>
+</ul>
+</li>
+<li>核对标点符号，逗号，与分号。英文的话，检查一下拼写</li>
+<li>注意行为的语气</li>
+<li>保持连贯性，使用一种统一的方式表达。</li>
+</ul>
+<h2 id="4-总结"><a class="header-anchor" href="#4-总结">¶</a>4 总结</h2>
+<p>一个清晰的总结应该概括全部论点。</p>
+<h2 id="其他"><a class="header-anchor" href="#其他">¶</a>其他</h2>
+<ul>
+<li>逻辑清楚，达情切意<sup class="footnote-ref"><a href="#fn3" id="fnref3">[3]</a></sup>。准备看一些基础的逻辑学。</li>
+<li>写完要读两遍，修改错别字，标点，语序连接等等。<sup class="footnote-ref"><a href="#fn3" id="fnref3:1">[3:1]</a></sup></li>
+<li>修改可以反着读，正着读对熟悉的材料会有一种连贯性忽略掉错误或者不顺的地方。</li>
+</ul>
+<hr>
+<p><strong>参考</strong></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[^statics_report_2018]: [国家统计局：2018年国民经济和社会发展统计公报](http://www.stats.gov.cn/tjsj/zxfb/201902/t20190228_1651265.html)</span><br><span class="line">[^latex_editor]: [Latex公式在线可视化编辑器](http://latex.codecogs.com/eqneditor/editor.php)</span><br><span class="line">[^hetang]: 美学散步系列书籍 - 朱自清的《荷塘清韵》</span><br></pre></td></tr></table></figure>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p><a href="http://www.stats.gov.cn/tjsj/zxfb/201902/t20190228_1651265.html" target="_blank" rel="noopener">国家统计局：2018年国民经济和社会发展统计公报</a> <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn2" class="footnote-item"><p><a href="http://latex.codecogs.com/eqneditor/editor.php" target="_blank" rel="noopener">Latex公式在线可视化编辑器</a> <a href="#fnref2" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn3" class="footnote-item"><p>美学散步系列书籍 - 朱自清的《荷塘清韵》 <a href="#fnref3" class="footnote-backref">↩︎</a> <a href="#fnref3:1" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
+]]></content>
+      <categories>
+        <category>博客搭建</category>
+      </categories>
+      <tags>
+        <tag>博客模版</tag>
       </tags>
   </entry>
   <entry>
@@ -1046,6 +1065,181 @@ t   -=   (unsigned   long)GetCycleCount();</p>
       </categories>
       <tags>
         <tag>tcpdump</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>linux代理的使用</title>
+    <url>/public/2018/07/24/linux/linux_proxy/</url>
+    <content><![CDATA[<h2 id="前言"><a class="header-anchor" href="#前言">¶</a>前言</h2>
+<p>最近要下载一个在youtube上的数据库，用来训练神经网络。走国内通道下载比较慢。于是，我使用了vps代理方式下载，速度取决于你的机器连接vps的网速。本文的主要内容有，实现shadowsocks 代理 ，tsocks 代理工具使用，可组合使用的一些下载工具如wget 和axel等。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 举个栗子</span></span><br><span class="line">$ tsocks wget -c https://www.dropbox.com/s/minpyv59crdifk9/datasets.zip</span><br></pre></td></tr></table></figure>
+<p>嗯嗯，这个速度还不错！</p>
+<center><img src="/public/2018/07/24/linux/linux_proxy/1565246896718.png" width="60%">
+</center>
+<p><strong>声明</strong>：本文以科学研究为目的，请勿滥用。</p>
+<a id="more"></a>
+<h2 id="1-Shadowsocks"><a class="header-anchor" href="#1-Shadowsocks">¶</a>1 Shadowsocks</h2>
+<p><strong>Shadowsocks</strong>是一个轻量级socks5代理工具。在linux平台，我们可使用 python 提供的包管理工具 pip <strong>安装 Shadowsocks</strong> ，如下。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># pip 安装 Shadowsocks</span></span><br><span class="line">$ pip install shadowsocks</span><br><span class="line"></span><br><span class="line"><span class="comment"># 或者</span></span><br><span class="line">$ pip install git+https://github.com/shadowsocks/shadowsocks.git@master</span><br></pre></td></tr></table></figure>
+<p>pip安装完之后，可能要重启终端，我们就有ssserver和sslocal小工具了。下面配置server或者client。一般，server配置在国外的vps上，client配置在本地国内机器上。</p>
+<p>PS：其他平台安装 参考 shadowsocks官方 <a href="https://github.com/shadowsocks/shadowsocks/tree/master#install" target="_blank" rel="noopener">install</a></p>
+<h3 id="1-1-配置-Shadowsocks-server"><a class="header-anchor" href="#1-1-配置-Shadowsocks-server">¶</a>1.1 配置 Shadowsocks server</h3>
+<p>按下面的三步走，即可。</p>
+<ul>
+<li>
+<p>通过ssh连接到（Virtual Private Server）vps上，或者本地打开终端。</p>
+</li>
+<li>
+<p>新建一个<strong>server_shadowsocks.json</strong>文件，内容如下：</p>
+</li>
+</ul>
+<figure class="highlight json"><table><tr><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"server"</span>:<span class="string">"0.0.0.0"</span>,</span><br><span class="line">    <span class="attr">"server_port"</span>:<span class="number">443</span>,</span><br><span class="line">    <span class="attr">"local_address"</span>: <span class="string">"127.0.0.1"</span>,</span><br><span class="line">    <span class="attr">"local_port"</span>:<span class="number">1080</span>,</span><br><span class="line">    <span class="attr">"password"</span>:<span class="string">"密码"</span>,</span><br><span class="line">    <span class="attr">"timeout"</span>:<span class="number">300</span>,</span><br><span class="line">    <span class="attr">"method"</span>:<span class="string">"aes-256-cfb"</span>,</span><br><span class="line">    <span class="attr">"fast_open"</span>: <span class="literal">false</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>执行<code>ssserver -c server_shadowsocks.json</code></li>
+</ul>
+<p>说一点: 由于我们的下载任务是临时的，开个screen（终端复用工具）放在后台。当然你也可以设置为开机自启动，这里不再赘述。</p>
+<h3 id="1-2-配置-Shadowsocks-client"><a class="header-anchor" href="#1-2-配置-Shadowsocks-client">¶</a>1.2 配置 Shadowsocks client</h3>
+<ul>
+<li>
+<p>通过ssh连接到机器上，或者本地打开终端。</p>
+</li>
+<li>
+<p>新建文件 <strong>client_shadowsocks.json</strong></p>
+</li>
+</ul>
+<figure class="highlight json"><table><tr><td class="code"><pre><span class="line">&#123;</span><br><span class="line">        <span class="attr">"server"</span>:<span class="string">"服务器ip或域名"</span>,</span><br><span class="line">        <span class="attr">"server_port"</span>:<span class="number">443</span>,</span><br><span class="line">        <span class="attr">"local_address"</span>:<span class="string">"127.0.0.1"</span>,</span><br><span class="line">        <span class="attr">"local_port"</span>:<span class="number">1280</span>,</span><br><span class="line">        <span class="attr">"password"</span>:<span class="string">"密码"</span>,</span><br><span class="line">        <span class="attr">"timeout"</span>:<span class="number">300</span>,</span><br><span class="line">        <span class="attr">"method"</span>:<span class="string">"aes-256-cfb"</span>,</span><br><span class="line">        <span class="attr">"fast_open"</span>:<span class="literal">false</span>,</span><br><span class="line">        <span class="attr">"workers"</span>:<span class="number">1</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>执行<code>sslocal -c client_shadowsocks.json</code>。</li>
+</ul>
+<p>说一点：推荐使用screen方式放在后台。当然也可以使用-d 参数放在后台运行。
+<code>sslocal -c client_shadowsocks.json -d start</code></p>
+<h2 id="2-tsocks"><a class="header-anchor" href="#2-tsocks">¶</a>2 tsocks</h2>
+<p>有些linux工具可能没有proxy的代理功能，或者不支持sock5代理，而用tsocks可以很好的解决这些问题。<strong>tsocks</strong> 是个终端代理工具，可以直接连接shadowsocks提供socks 5代理端口，有点类似于proxychains。</p>
+<p>下面简单介绍下安装与使用：</p>
+<ul>
+<li>安装<strong>tsocks</strong>
+<ul>
+<li>linux安装tsocks 命令：<code>apt install tsocks</code></li>
+<li>mac 安装参考 <a href="https://github.com/Anakros/homebrew-tsocks" target="_blank" rel="noopener">homebrew-tsocks</a></li>
+</ul>
+</li>
+<li>开启上面Shadowsocks的client放在后台。</li>
+<li>修改tsocks 配置文件，在 <code>/etc/tsocks.conf</code>  文件的最后添加：</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">local = 192.168.1.0/255.255.255.0</span><br><span class="line">server = 127.0.0.1</span><br><span class="line">server_type = 5</span><br><span class="line">server_port = 1080</span><br></pre></td></tr></table></figure>
+<h2 id="3-Demo：代理使用"><a class="header-anchor" href="#3-Demo：代理使用">¶</a>3 Demo：代理使用</h2>
+<h3 id="3-1-使用-tsocks"><a class="header-anchor" href="#3-1-使用-tsocks">¶</a>3.1 使用 tsocks</h3>
+<p>在所需代理的命令前加个tsocks就行，如：
+<code>tsocks wget -c xxxx</code>,<code>tsocks axel -n 10 -av xxxx</code>,<code>tsocks curl xxx</code></p>
+<h3 id="3-2-使用-youtube-dl"><a class="header-anchor" href="#3-2-使用-youtube-dl">¶</a>3.2 使用 youtube-dl</h3>
+<p>youtube-dl是批量下载youtube视频的好工具。youtube-dl 可以指定 proxy，<strong>可以不使用tsocks</strong>。</p>
+<ul>
+<li>安装youtube-dl</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">pip install --upgrade youtube-dl</span><br></pre></td></tr></table></figure>
+<ul>
+<li>
+<p>使用举个例子</p>
+<ul>
+<li>下载youtube视频</li>
+</ul>
+  <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">URL=https://www.youtube.com/playlist?list=PLLbeS1kM6teJqdFzw1ICHfa4a1y0hg8Ax</span><br><span class="line">./youtube-dl --proxy socks5://127.0.0.1:1280 $&#123;URL&#125;</span><br><span class="line"># 在 client_shadowsocks.json 的 local_port 设置为1280，这儿也为1280</span><br></pre></td></tr></table></figure>
+<ul>
+<li>下载里面的mp3</li>
+</ul>
+  <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">youtube-dl -x --audio-format mp3 https://www.youtube.com/watch?v=xpVfcZ0ZcFM</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p><strong>youtube-dl 中待解决的问题？</strong>
+想只下载一个视频中的一部分，不用下载整个视频，太费vps流量了。暂未找到解决办法，我找到的一个跟问题很相似的issue，有朋友会整的，望告诉一下。<a href="https://github.com/rg3/youtube-dl/issues/4821" target="_blank" rel="noopener">is it possible to download only desired time interval?</a></p>
+<h3 id="3-3-使用-axel"><a class="header-anchor" href="#3-3-使用-axel">¶</a>3.3 使用 axel</h3>
+<p>axel多线程下载。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">tsocks axel -n 3 -a https://www.dropbox.com/s/minpyv59crdifk9/datasets.zip</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">-n 3 : 3个线程下载</span><br><span class="line">-a   : 有个进度条</span><br></pre></td></tr></table></figure>
+<p>其他方式：下载脚本 <a href="http://axel-bash.sh" target="_blank" rel="noopener">axel-bash.sh</a></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#!/bin/sh -e  </span></span><br><span class="line"><span class="comment"># usage:  ./axel-batch.sh the-download-url.list  </span></span><br><span class="line">cat <span class="variable">$1</span> | <span class="keyword">while</span> <span class="built_in">read</span> LINE  </span><br><span class="line"><span class="keyword">do</span>  </span><br><span class="line">	<span class="keyword">if</span> [ -n <span class="string">"<span class="variable">$LINE</span>"</span> ]; <span class="keyword">then</span>  </span><br><span class="line">	axel -n 3 -a `<span class="built_in">echo</span> <span class="variable">$LINE</span>`  </span><br><span class="line">	<span class="keyword">fi</span>  </span><br><span class="line"><span class="keyword">done</span></span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>Linux</category>
+      </categories>
+      <tags>
+        <tag>工具</tag>
+        <tag>linux</tag>
+        <tag>proxy代理</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>「转」九张图一览 Linux 性能工具 全景图</title>
+    <url>/public/2022/12/11/linux/linux_tools/</url>
+    <content><![CDATA[<h2 id="前言"><a class="header-anchor" href="#前言">¶</a>前言</h2>
+<p>当今时代，绝大多数企业的应用都是运行在 Linux 操作系统上，所以对应用进行性能诊断和性能优化时，离不开 Linux 的各种性能观测工具和性能优化工具。</p>
+<p>笔者使用过的常见的 Linux 性能观测和性能优化工具有：</p>
+<ul>
+<li>top/uptime</li>
+<li>ps/pstree</li>
+<li>df/du/free/lsblk</li>
+<li>ip/ifconfig/ping/telnet</li>
+<li>route/dig/nslookup</li>
+<li>lsof/netstat/ss</li>
+<li>tcpdump/tshark/wireshark</li>
+<li>netstat/vmstat/iostat/pidstat/dstat/mpstat</li>
+<li>sar/sysctl/ethtool</li>
+</ul>
+<p>最近在拜读国际著名的 LINUX 性能专家 Brendan Gregg 的个人博客和技术书籍，摘抄了如下九张图，一览 Linux 性能工具全景图，大家共勉！</p>
+<a id="more"></a>
+<h2 id="2-Linux-性能工具全景图"><a class="header-anchor" href="#2-Linux-性能工具全景图">¶</a><strong>2. Linux 性能工具全景图</strong></h2>
+<ul>
+<li>linux performance observability tools</li>
+</ul>
+<p><img src="/public/2022/12/11/linux/linux_tools/v2-2eadd97c53a3f20f255394c3d90ea914_r.jpg" alt></p>
+<ul>
+<li>linux static performance tools</li>
+</ul>
+<p><img src="/public/2022/12/11/linux/linux_tools/v2-20032bac53c856c5733259eece5c2f76_r.jpg" alt></p>
+<ul>
+<li>linux performance benchmark tools</li>
+</ul>
+<p><img src="/public/2022/12/11/linux/linux_tools/v2-de23423f2eb9deb5410b7128c933f9a9_r.jpg" alt></p>
+<ul>
+<li>linux performance tuning tools</li>
+</ul>
+<p><img src="/public/2022/12/11/linux/linux_tools/v2-cdf37de145763b762ba5af1a620f9686_r.jpg" alt></p>
+<ul>
+<li>linux performance observability: sar</li>
+</ul>
+<p><img src="/public/2022/12/11/linux/linux_tools/v2-eee71a6bf3865367741137da03031411_r.jpg" alt></p>
+<ul>
+<li>linux performance observability: perf-tools</li>
+</ul>
+<p><img src="/public/2022/12/11/linux/linux_tools/v2-1c0134fefbb04597db98ae455a40fad5_r.jpg" alt></p>
+<ul>
+<li><a href="https://www.zhihu.com/search?q=linux%20bcc&amp;search_source=Entity&amp;hybrid_search_source=Entity&amp;hybrid_search_extra=%7B%22sourceType%22%3A%22answer%22%2C%22sourceId%22%3A2795830055%7D" target="_blank" rel="noopener">linux bcc</a>/BPF Tracing tools</li>
+</ul>
+<p><img src="/public/2022/12/11/linux/linux_tools/v2-ffe70303f4d64828ca931d987b12a6d8_r.jpg" alt></p>
+<ul>
+<li>bpftrace/eBPF Tools</li>
+</ul>
+<p><img src="/public/2022/12/11/linux/linux_tools/v2-5985d44e43738933c0b54c89cc20ec09_r.jpg" alt></p>
+<ul>
+<li>BPF Performance Tools: Linux System and Application Observability</li>
+</ul>
+<p><img src="/public/2022/12/11/linux/linux_tools/v2-0f53016fa1d993ffbbf6fc520e318784_r.jpg" alt></p>
+<h2 id="后记"><a class="header-anchor" href="#后记">¶</a>后记</h2>
+<p>更多 LINUX 性能资料，大家可以访问大师的个人网站和和技术书籍</p>
+<ul>
+<li><a href="https://www.brendangregg.com/" target="_blank" rel="noopener">https://www.brendangregg.com/</a></li>
+<li>《性能之巅：洞悉系统、企业与云计算》（《Systems Performance: Enterprise and the Cloud, 2nd Edition (2020)》）</li>
+<li>《洞悉 Linux 系统和应用性能》（《BPF Performance Tools》）</li>
+<li>ps: 要说 LINUX 内核近几年 (和今后几年）最引人注目的发展模块，那就是 <a href="https://www.zhihu.com/search?q=bpf&amp;search_source=Entity&amp;hybrid_search_source=Entity&amp;hybrid_search_extra=%7B%22sourceType%22%3A%22answer%22%2C%22sourceId%22%3A2795830055%7D" target="_blank" rel="noopener">bpf</a> 了，完全值得花点精力学习跟进下。</li>
+<li>如何更深入地学习 Linux？ - michaelli的回答 - 知乎
+<a href="https://www.zhihu.com/question/23564190/answer/2795830055" target="_blank" rel="noopener">https://www.zhihu.com/question/23564190/answer/2795830055</a></li>
+</ul>
+]]></content>
+      <categories>
+        <category>linux</category>
+      </categories>
+      <tags>
+        <tag>linux</tag>
       </tags>
   </entry>
   <entry>
@@ -1412,405 +1606,6 @@ $$
       <tags>
         <tag>资源</tag>
         <tag>古籍</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Windows笔记本开共享wifi</title>
-    <url>/public/2015/04/14/shells/share_win_wifi/</url>
-    <content><![CDATA[<h2 id="前言"><a class="header-anchor" href="#前言">¶</a>前言</h2>
-<p>网上有很多用笔记本设置无线热点的批处理，我中和了一下。复制下面代码到记事本，改后缀为bat就行了。其中，mssid和mkey可自定义</p>
-<a id="more"></a>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">@echo off</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">set mssid=GOODGOOD</span><br><span class="line">::网络名字</span><br><span class="line">set mkey=123456789</span><br><span class="line">::大于八位密码</span><br><span class="line"></span><br><span class="line">echo ***********************************************</span><br><span class="line">echo              打开承载网络  1</span><br><span class="line">echo              关闭承载网络  2</span><br><span class="line">echo              承载网络信息  3</span><br><span class="line">echo              设置网络信息  set</span><br><span class="line">echo              退出          e</span><br><span class="line">echo        （网络名字、密码可在源文件中改）</span><br><span class="line">echo           （请以管理员身份打开!!!）</span><br><span class="line">echo ***********************************************</span><br><span class="line">:start</span><br><span class="line">set /p var=请选择:</span><br><span class="line">if %var%==1 netsh wlan start hostednetwork &amp;&amp; echo 网络名字:%mssid% 密码:%mkey% &amp;&amp; GOTO start</span><br><span class="line">if %var%==2 netsh wlan stop hostednetwork &amp;&amp; GOTO start</span><br><span class="line">if %var%==3 netsh wlan show hostednetwork &amp;&amp; echo 网络名字:%mssid% 密码:%mkey% &amp;&amp; GOTO start</span><br><span class="line">if %var%==set netsh wlan set hostednetwork mode=allow ssid=%mssid% key=%mkey% &amp;&amp; echo 网络名字:%mssid% 密码:%mkey% &amp;&amp; GOTO start</span><br><span class="line">if %var%==e pause</span><br></pre></td></tr></table></figure>
-<h2 id="播放声音"><a class="header-anchor" href="#播放声音">¶</a>播放声音</h2>
-<p>保存为<code>播放声音.vbs</code>,可以播放声音</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">CreateObject(&quot;SAPI.SpVoice&quot;).Speak &quot;hello world&quot;</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>常用脚本</category>
-      </categories>
-      <tags>
-        <tag>工具</tag>
-        <tag>Windows脚本</tag>
-        <tag>共享wifi</tag>
-        <tag>cmd</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>SRT中英文合并Python脚本</title>
-    <url>/public/2016/04/14/shells/youtube_src_combine/</url>
-    <content><![CDATA[<h2 id="前言"><a class="header-anchor" href="#前言">¶</a>前言</h2>
-<p>从YouTube上看只有中文或英文分开的字幕，下载好视频，想要中英文字幕。可从 <a href="http://mo.dbxdb.com/Yang/setting.html" target="_blank" rel="noopener">Getting Youtube subtitles</a> 获取中或英文字幕，然后将其合并，即成中英文双字幕。下面是Python脚本。</p>
-<a id="more"></a>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">本脚本完成了中英文srt合并的功能</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">srt2lis</span><span class="params">(name)</span>:</span></span><br><span class="line">    lines = open(<span class="string">'srt/'</span>+name, <span class="string">'r'</span>, encoding=<span class="string">'utf-8'</span>).readlines()</span><br><span class="line">    lis = []</span><br><span class="line">    tmp = []</span><br><span class="line">    <span class="keyword">for</span> i, line <span class="keyword">in</span> enumerate(lines):</span><br><span class="line">        <span class="comment"># 以\n 结尾的一个时间点</span></span><br><span class="line">        <span class="keyword">if</span> line == <span class="string">'\n'</span>:</span><br><span class="line">            lis.append(tmp)</span><br><span class="line">            tmp = []</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            tmp.append(line)</span><br><span class="line">    <span class="keyword">return</span> lis</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">hebing</span><span class="params">(name_zh)</span>:</span></span><br><span class="line">    name_en = name_zh[:<span class="number">-7</span>] + <span class="string">'.srt'</span></span><br><span class="line">    out_name=<span class="string">'out/'</span>+name_en</span><br><span class="line">    f=open(out_name,<span class="string">'w'</span>,encoding=<span class="string">'utf-8'</span>)</span><br><span class="line">    lis_en=srt2lis(name_en)</span><br><span class="line">    lis_zh=srt2lis(name_zh)</span><br><span class="line">    <span class="keyword">for</span> i,item <span class="keyword">in</span> enumerate(lis_en):</span><br><span class="line">        print(item[<span class="number">0</span>])</span><br><span class="line">        f.write(item[<span class="number">0</span>])</span><br><span class="line">        f.write(item[<span class="number">1</span>])</span><br><span class="line">        <span class="keyword">for</span> line <span class="keyword">in</span> lis_zh[i][<span class="number">2</span>:]:</span><br><span class="line">            f.write(line)</span><br><span class="line">        <span class="keyword">for</span> line <span class="keyword">in</span> item[<span class="number">2</span>:]:</span><br><span class="line">            f.write(line)</span><br><span class="line">        f.write(<span class="string">'\n'</span>)</span><br><span class="line">    f.close()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">flis=os.listdir(<span class="string">'srt/'</span>)</span><br><span class="line"><span class="keyword">if</span> <span class="keyword">not</span> os.path.exists(<span class="string">'out'</span>):</span><br><span class="line">    os.mkdir(<span class="string">'out'</span>)</span><br><span class="line"><span class="keyword">for</span> name <span class="keyword">in</span> flis:</span><br><span class="line">    print(name)</span><br><span class="line">    <span class="keyword">if</span> name[<span class="number">-6</span>:<span class="number">-4</span>]==<span class="string">'zh'</span>:</span><br><span class="line">        hebing(name)</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>常用脚本</category>
-        <category>工具</category>
-      </categories>
-      <tags>
-        <tag>Python</tag>
-        <tag>YouTube字幕合并</tag>
-        <tag>SRT(文本格式字幕)</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>「202207月度汇报」ttrss</title>
-    <url>/public/2022/07/15/test/202207/</url>
-    <content><![CDATA[<p>total: 13</p>
-<a id="more"></a>
-<h2 id="🔖BGmi-–-自动追番的工具：同步最新番剧数据、追番日历、自动下载，适合所有追番懒人"><a class="header-anchor" href="#🔖BGmi-–-自动追番的工具：同步最新番剧数据、追番日历、自动下载，适合所有追番懒人">¶</a>🔖<a href="https://www.appinn.com/bgmi/" target="_blank" rel="noopener">BGmi – 自动追番的工具：同步最新番剧数据、追番日历、自动下载，适合所有追番懒人</a></h2>
-<p>pubdata:2022-06-30 02:48:00
-markdate:2022-07-01 06:32:58.020141</p>
-<p><img src="/public/2022/07/15/test/202207/2022-07-01-063258020141.jpg" alt="img"></p>
-<h2 id="🔖老牌截图工具-PicPick-更新，新增录屏功能，支持-MP4-GIF-格式"><a class="header-anchor" href="#🔖老牌截图工具-PicPick-更新，新增录屏功能，支持-MP4-GIF-格式">¶</a>🔖<a href="https://www.appinn.com/picpick-6-2/" target="_blank" rel="noopener">老牌截图工具 PicPick 更新，新增录屏功能，支持 MP4/GIF 格式</a></h2>
-<p>pubdata:2022-06-29 07:19:19
-markdate:2022-07-02 04:11:20.453414</p>
-<p><img src="/public/2022/07/15/test/202207/2022-07-02-041120453414.jpg" alt="img"></p>
-<h2 id="🔖白板与笔记融合：我的四个氢图使用场景"><a class="header-anchor" href="#🔖白板与笔记融合：我的四个氢图使用场景">¶</a>🔖<a href="https://sspai.com/post/73246" target="_blank" rel="noopener">白板与笔记融合：我的四个氢图使用场景</a></h2>
-<p>pubdata:2022-06-30 03:30:02
-markdate:2022-07-03 01:08:35.583781</p>
-<p><img src="/public/2022/07/15/test/202207/2022-07-03-010835583781.jpg" alt="img"></p>
-<h2 id="🔖跨时空圆桌：伟大创作者们如何安排日常生活"><a class="header-anchor" href="#🔖跨时空圆桌：伟大创作者们如何安排日常生活">¶</a>🔖<a href="https://sspai.com/post/73779" target="_blank" rel="noopener">跨时空圆桌：伟大创作者们如何安排日常生活</a></h2>
-<p>pubdata:2022-06-15 09:30:00
-markdate:2022-07-03 01:50:35.971655</p>
-<p><img src="/public/2022/07/15/test/202207/2022-07-03-015035971655.jpg" alt="img"></p>
-<h2 id="🔖Typing-Learner-–-硬核单词记忆：从电影台词筛选生词，边追美剧边学英语，用户直喊「好家伙！」-Windows-macOS"><a class="header-anchor" href="#🔖Typing-Learner-–-硬核单词记忆：从电影台词筛选生词，边追美剧边学英语，用户直喊「好家伙！」-Windows-macOS">¶</a>🔖<a href="https://www.appinn.com/typing-learner/" target="_blank" rel="noopener">Typing Learner – 硬核单词记忆：从电影台词筛选生词，边追美剧边学英语，用户直喊「好家伙！」[Windows/macOS]</a></h2>
-<p>pubdata:2022-07-03 04:07:39
-markdate:2022-07-04 05:06:58.902152</p>
-<p><img src="/public/2022/07/15/test/202207/2022-07-04-050658902152.jpg" alt="img"></p>
-<h2 id="🔖创建自己的第一个-Power-Automate-工作流，从此繁琐操作是路人"><a class="header-anchor" href="#🔖创建自己的第一个-Power-Automate-工作流，从此繁琐操作是路人">¶</a>🔖<a href="https://sspai.com/post/73710" target="_blank" rel="noopener">创建自己的第一个 Power Automate 工作流，从此繁琐操作是路人</a></h2>
-<p>pubdata:2022-07-05 10:44:47
-markdate:2022-07-06 11:29:55.648077</p>
-<p><img src="/public/2022/07/15/test/202207/2022-07-06-112955648077.jpg" alt="img"></p>
-<h2 id="🔖为-WSL-配置这些新功能，不用虚拟机也能体验完整-Linux"><a class="header-anchor" href="#🔖为-WSL-配置这些新功能，不用虚拟机也能体验完整-Linux">¶</a>🔖<a href="https://sspai.com/post/74167" target="_blank" rel="noopener">为 WSL 配置这些新功能，不用虚拟机也能体验完整 Linux</a></h2>
-<p>pubdata:2022-07-08 03:30:00
-markdate:2022-07-09 03:08:43.747852</p>
-<p><img src="/public/2022/07/15/test/202207/2022-07-09-030843747852.jpg" alt="img"></p>
-<h2 id="🔖当飞盘成为人类的玩具，我们该如何参与这场游戏"><a class="header-anchor" href="#🔖当飞盘成为人类的玩具，我们该如何参与这场游戏">¶</a>🔖<a href="https://sspai.com/post/73505" target="_blank" rel="noopener">当飞盘成为人类的玩具，我们该如何参与这场游戏</a></h2>
-<p>pubdata:2022-06-06 08:00:00
-markdate:2022-07-10 01:36:40.114938</p>
-<p><img src="/public/2022/07/15/test/202207/2022-07-10-013640114938.jpg" alt="img"></p>
-<h2 id="🔖走进小众但不冷门的房车世界"><a class="header-anchor" href="#🔖走进小众但不冷门的房车世界">¶</a>🔖<a href="https://sspai.com/post/74043" target="_blank" rel="noopener">走进小众但不冷门的房车世界</a></h2>
-<p>pubdata:2022-07-01 08:04:43
-markdate:2022-07-10 02:09:34.733003</p>
-<p><img src="/public/2022/07/15/test/202207/2022-07-10-020934733003.jpg" alt="img"></p>
-<h2 id="🔖从盲目崇拜到理性使用，谈谈我眼中的「双向链接」"><a class="header-anchor" href="#🔖从盲目崇拜到理性使用，谈谈我眼中的「双向链接」">¶</a>🔖<a href="https://sspai.com/post/73407" target="_blank" rel="noopener">从盲目崇拜到理性使用，谈谈我眼中的「双向链接」</a></h2>
-<p>pubdata:2022-05-27 06:31:27
-markdate:2022-07-11 14:31:37.724795</p>
-<p><img src="/public/2022/07/15/test/202207/2022-07-11-143137724795.jpg" alt="img"></p>
-<h2 id="🔖打开终端总有好心情：我的美化方案及配置分享"><a class="header-anchor" href="#🔖打开终端总有好心情：我的美化方案及配置分享">¶</a>🔖<a href="https://sspai.com/post/74216" target="_blank" rel="noopener">打开终端总有好心情：我的美化方案及配置分享</a></h2>
-<p>pubdata:2022-07-11 08:00:51
-markdate:2022-07-12 04:52:00.122103</p>
-<p><img src="/public/2022/07/15/test/202207/2022-07-12-045200122103.jpg" alt="img"></p>
-<h2 id="🔖咖啡美酒冷泡茶，这些消暑饮品在家就能动手做"><a class="header-anchor" href="#🔖咖啡美酒冷泡茶，这些消暑饮品在家就能动手做">¶</a>🔖<a href="https://sspai.com/post/74196" target="_blank" rel="noopener">咖啡美酒冷泡茶，这些消暑饮品在家就能动手做</a></h2>
-<p>pubdata:2022-07-10 07:17:11
-markdate:2022-07-12 05:03:55.504330</p>
-<p><img src="/public/2022/07/15/test/202207/2022-07-12-050355504330.jpg" alt="img"></p>
-<h2 id="🔖语雀，即将开源！"><a class="header-anchor" href="#🔖语雀，即将开源！">¶</a>🔖<a href="https://zhuanlan.zhihu.com/p/540713275" target="_blank" rel="noopener">语雀，即将开源！</a></h2>
-<p>pubdata:2022-07-12 08:19:47
-markdate:2022-07-14 10:28:28.713392</p>
-<p><img src="/public/2022/07/15/test/202207/2022-07-14-102828713392.jpg" alt="img"></p>
-]]></content>
-      <categories>
-        <category>转载</category>
-      </categories>
-      <tags>
-        <tag>转载</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>「202208月度汇报」ttrss</title>
-    <url>/public/2022/08/15/test/202208/</url>
-    <content><![CDATA[<p>total: 5</p>
-<a id="more"></a>
-<h2 id="🔖AVNC-–-Android-上的开源-VNC-客户端"><a class="header-anchor" href="#🔖AVNC-–-Android-上的开源-VNC-客户端">¶</a>🔖<a href="https://www.appinn.com/avnc-for-android/" target="_blank" rel="noopener">AVNC – Android 上的开源 VNC 客户端</a></h2>
-<p>pubdata:2022-08-07 04:59:52
-markdate:2022-08-07 17:42:37.878979</p>
-<p><img src="/public/2022/08/15/test/202208/2022-08-07-174237878979.jpg" alt="img"></p>
-<h2 id="🔖TigerVNC-–-高性能、跨平台开源-VNC-服务器与客户端"><a class="header-anchor" href="#🔖TigerVNC-–-高性能、跨平台开源-VNC-服务器与客户端">¶</a>🔖<a href="https://www.appinn.com/tigervnc/" target="_blank" rel="noopener">TigerVNC – 高性能、跨平台开源 VNC 服务器与客户端</a></h2>
-<p>pubdata:2022-08-08 04:30:32
-markdate:2022-08-09 00:48:54.680756</p>
-<p><img src="/public/2022/08/15/test/202208/2022-08-09-004854680756.jpg" alt="img"></p>
-<h2 id="🔖Notion-又一开源替代品，诞生了！"><a class="header-anchor" href="#🔖Notion-又一开源替代品，诞生了！">¶</a>🔖<a href="https://zhuanlan.zhihu.com/p/552965032" target="_blank" rel="noopener">Notion 又一开源替代品，诞生了！</a></h2>
-<p>pubdata:2022-08-12 04:42:26
-markdate:2022-08-13 16:16:00.234349</p>
-<p><img src="/public/2022/08/15/test/202208/2022-08-13-161600234349.jpg" alt="img"></p>
-<h2 id="🔖如何写一份高可读性的软件工程设计文档"><a class="header-anchor" href="#🔖如何写一份高可读性的软件工程设计文档">¶</a>🔖<a href="https://zhuanlan.zhihu.com/p/552095835" target="_blank" rel="noopener">如何写一份高可读性的软件工程设计文档</a></h2>
-<p>pubdata:2022-08-10 09:00:14
-markdate:2022-08-20 02:27:47.773301</p>
-<p><img src="/public/2022/08/15/test/202208/2022-08-20-022747773301.jpg" alt="img"></p>
-<h2 id="🔖StrokesPlus-net-–-一款很厉害的鼠标手势软件，还有大佬汉化、以及持续更新脚本"><a class="header-anchor" href="#🔖StrokesPlus-net-–-一款很厉害的鼠标手势软件，还有大佬汉化、以及持续更新脚本">¶</a>🔖<a href="https://www.appinn.com/strokesplus-net/" target="_blank" rel="noopener">StrokesPlus.net – 一款很厉害的鼠标手势软件，还有大佬汉化、以及持续更新脚本</a></h2>
-<p>pubdata:2022-08-24 04:29:23
-markdate:2022-08-25 03:51:08.820884</p>
-<p><img src="/public/2022/08/15/test/202208/2022-08-25-035108820884.jpg" alt="img"></p>
-]]></content>
-      <categories>
-        <category>转载</category>
-      </categories>
-      <tags>
-        <tag>转载</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>「202208月度汇报」obsidian</title>
-    <url>/public/2022/08/26/test/202208_obsidian/</url>
-    <content><![CDATA[<p>统计 ✅ : 1 📅 : 1 🔖 : 26</p>
-<a id="more"></a>
-<h2 id="✅-1"><a class="header-anchor" href="#✅-1">¶</a>✅ : 1</h2>
-<p>✅自动生成rss月报
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W29.md">C日常/2022-W29.md</a></p>
-<h2 id="📅-1"><a class="header-anchor" href="#📅-1">¶</a>📅 : 1</h2>
-<p>📅 加上地区统计
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W32.md">C日常/2022-W32.md</a></p>
-<h2 id="🔖-26"><a class="header-anchor" href="#🔖-26">¶</a>🔖 : 26</h2>
-<p>🔖 <a href="https://github.com/serhack/pdf-diff" target="_blank" rel="noopener">GitHub - serhack/pdf-diff: A tool for visualizing differences between two pdf files.</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W32.md">C日常/2022-W32.md</a><br>
-🔖 <a href="http://arthurchiao.art/blog/conntrack-design-and-implementation-zh/" target="_blank" rel="noopener">连接跟踪（conntrack）：原理、应用及 Linux 内核实现</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W32.md">C日常/2022-W32.md</a><br>
-🔖 <a href="https://codemirror.net/docs/guide/" target="_blank" rel="noopener">CodeMirror System Guide</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W32.md">C日常/2022-W32.md</a><br>
-🔖 <a href="https://zhuanlan.zhihu.com/p/357334969?utm_id=0" target="_blank" rel="noopener">mac使用VNC远程访问Ubuntu图形界面</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W32.md">C日常/2022-W32.md</a><br>
-🔖 <a href="https://mp.weixin.qq.com/s/FBJ_GIvdwNbvGKVKeroZjA" target="_blank" rel="noopener">冠军私教课</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W32.md">C日常/2022-W32.md</a><br>
-🔖 <a href="https://cloud.tencent.com/developer/article/1585686" target="_blank" rel="noopener">如何统计 Hexo 网站的访问地区和IP - 腾讯云开发者社区-腾讯云</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W32.md">C日常/2022-W32.md</a><br>
-🔖 <a href="https://www.appinn.com/navidrome/" target="_blank" rel="noopener">Navidrome - 开源音乐服务器，自建云端音乐播放器 - 小众软件</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W30.md">C日常/2022-W30.md</a><br>
-🔖 <a href="https://sspai.com/post/73443" target="_blank" rel="noopener">力量训练：办卡之前需要了解的训练基础与细节制定 - 少数派</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W30.md">C日常/2022-W30.md</a><br>
-🔖 <a href="https://zhuanlan.zhihu.com/p/495262462" target="_blank" rel="noopener">网站低代码开发</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W29.md">C日常/2022-W29.md</a><br>
-🔖长大后，如果是时间修剪了我们的好奇心，我们应该责怪时间吗？
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W29.md">C日常/2022-W29.md</a><br>
-🔖半导体行业的组成
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W29.md">C日常/2022-W29.md</a><br>
-🔖Weylus – 共享屏幕，将平板作为电脑触摸屏使用[Win/macOS/Linux]
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W29.md">C日常/2022-W29.md</a><br>
-🔖跨平台开发 <a href="https://beeware.org/" target="_blank" rel="noopener">BeeWare</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W29.md">C日常/2022-W29.md</a><br>
-🔖资本论复旦大学
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W29.md">C日常/2022-W29.md</a><br>
-🔖 Linux三剑客
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W29.md">C日常/2022-W29.md</a><br>
-🔖pdf补丁丁
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W29.md">C日常/2022-W29.md</a><br>
-🔖 <a href="https://www.wdbyte.com/java/char-image.html_1-%E5%AD%97%E7%AC%A6%E5%9B%BE%E6%A1%88%E6%80%9D%E8%B7%AF" target="_blank" rel="noopener">字符作画，我用字符画个冰墩墩 | 未读代码</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W29.md">C日常/2022-W29.md</a><br>
-🔖 <a href="https://zhuanlan.zhihu.com/p/474337723?utm_source=ZHShareTargetIDMore&amp;utm_medium=social&amp;utm_oi=619610399826382848" target="_blank" rel="noopener">一文让你读懂Linux五大模块内核源码，内核整体架构设计（超详细）</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W29.md">C日常/2022-W29.md</a><br>
-🔖 <a href="https://zhuanlan.zhihu.com/p/483731291?utm_source=ZHShareTargetIDMore&amp;utm_medium=social&amp;utm_oi=619610399826382848" target="_blank" rel="noopener">学习数学思维推荐阅读的五本数学书籍</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W29.md">C日常/2022-W29.md</a><br>
-🔖Snapdrop for Android – 在电脑与 Android 手机间互传文件
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W29.md">C日常/2022-W29.md</a><br>
-🔖Photoview – 支持人脸识别的开源、自托管本地相册
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W29.md">C日常/2022-W29.md</a><br>
-🔖GitHub - LibrePhotos/librephotos: A self-hosted open source photo management service. This is the repository of the backend.
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W29.md">C日常/2022-W29.md</a><br>
-🔖 <a href="https://www.cnblogs.com/imxiaobei/p/13619630.html" target="_blank" rel="noopener">一文搞懂后台高性能服务器设计的常见套路, BAT 高频面试系列 - 编程指北 - 博客园</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W29.md">C日常/2022-W29.md</a><br>
-🔖 <a href="https://www.appinn.com/dual-subtitles/" target="_blank" rel="noopener">YouTube™ 双字幕 - 显示双语字幕（包括自动翻译）、字幕下载，以及自定义字幕样式[Chrome/Edge] - 小众软件</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W29.md">C日常/2022-W29.md</a><br>
-🔖 <a href="https://mp.weixin.qq.com/s/cd-uS5NDIreT02GaHpdxlw" target="_blank" rel="noopener">一文搞懂WiFi的所有知识点</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W29.md">C日常/2022-W29.md</a><br>
-🔖 <a href="https://zhuanlan.zhihu.com/p/122523174" target="_blank" rel="noopener">Doxygen 中文文档</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W29.md">C日常/2022-W29.md</a></p>
-]]></content>
-      <categories>
-        <category>转载</category>
-      </categories>
-      <tags>
-        <tag>转载</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>「202209月度汇报」ttrss</title>
-    <url>/public/2022/09/15/test/202209/</url>
-    <content><![CDATA[<p>total: 3</p>
-<a id="more"></a>
-<h2 id="🔖WireGuard-基础教程：wg-quick-路由策略解读"><a class="header-anchor" href="#🔖WireGuard-基础教程：wg-quick-路由策略解读">¶</a>🔖<a href="https://icloudnative.io/posts/linux-routing-of-wireguard/" target="_blank" rel="noopener">WireGuard 基础教程：wg-quick 路由策略解读</a></h2>
-<p>pubdata:2022-08-31 01:06:37
-markdate:2022-09-03 06:23:25.656749</p>
-<p><img src="/public/2022/09/15/test/202209/2022-09-03-062325656749.jpg" alt="img"></p>
-<h2 id="🔖微软官方超实用-15-小工具集-PowerToys-v0-62-0-发布，新增文本提取器-OCR-功能"><a class="header-anchor" href="#🔖微软官方超实用-15-小工具集-PowerToys-v0-62-0-发布，新增文本提取器-OCR-功能">¶</a>🔖<a href="https://www.appinn.com/powertoys-v0-62-0/" target="_blank" rel="noopener">微软官方超实用 15+ 小工具集 PowerToys v0.62.0 发布，新增文本提取器 OCR 功能</a></h2>
-<p>pubdata:2022-09-07 04:11:14
-markdate:2022-09-08 04:19:59.942860</p>
-<p><img src="/public/2022/09/15/test/202209/2022-09-08-041959942860.jpg" alt="img"></p>
-<h2 id="🔖Stream-Deck-太贵了？触屏音箱也能成为你的直播助手"><a class="header-anchor" href="#🔖Stream-Deck-太贵了？触屏音箱也能成为你的直播助手">¶</a>🔖<a href="https://sspai.com/post/75789" target="_blank" rel="noopener">Stream Deck 太贵了？触屏音箱也能成为你的直播助手</a></h2>
-<p>pubdata:2022-09-19 06:31:44
-markdate:2022-09-21 03:28:05.514939</p>
-<p><img src="/public/2022/09/15/test/202209/2022-09-21-032805514939.jpg" alt="img"></p>
-]]></content>
-      <categories>
-        <category>转载</category>
-      </categories>
-      <tags>
-        <tag>转载</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>「202209月度汇报」obsidian</title>
-    <url>/public/2022/09/26/test/202209_obsidian/</url>
-    <content><![CDATA[<p>统计 ✅ : 0 📅 : 2 🔖 : 10</p>
-<a id="more"></a>
-<h2 id="✅-0"><a class="header-anchor" href="#✅-0">¶</a>✅ : 0</h2>
-<h2 id="📅-2"><a class="header-anchor" href="#📅-2">¶</a>📅 : 2</h2>
-<p>📅升级电脑
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W35.md">C日常/2022-W35.md</a><br>
-📅 添加rss
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W33.md">C日常/2022-W33.md</a></p>
-<h2 id="🔖-10"><a class="header-anchor" href="#🔖-10">¶</a>🔖 : 10</h2>
-<p>🔖 <a href="https://www.appinn.com/umi-ocr/" target="_blank" rel="noopener">Umi-OCR - 免费的离线 OCR 文字识别软件[Windows] - 小众软件</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W36.md">C日常/2022-W36.md</a><br>
-🔖 设计模式
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W36.md">C日常/2022-W36.md</a><br>
-🔖 苏炳添向母校捐赠100万元！
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W36.md">C日常/2022-W36.md</a><br>
-🔖 <a href="https://github.com/dlvhdr/gh-dash" target="_blank" rel="noopener">gh-dash</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W36.md">C日常/2022-W36.md</a><br>
-🔖 <a href="https://nginxproxymanager.com/" target="_blank" rel="noopener">Nginx Proxy Manager</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W36.md">C日常/2022-W36.md</a><br>
-🔖1、<a href="https://knots3d.com/knots/en_us/ALL" target="_blank" rel="noopener">Knots 3D</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W33.md">C日常/2022-W33.md</a><br>
-🔖 <a href="https://m.runoob.com/typescript/" target="_blank" rel="noopener">TypeScript 教程 | 菜鸟教程</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W33.md">C日常/2022-W33.md</a><br>
-🔖 <a href="https://m.runoob.com/js/" target="_blank" rel="noopener">Javascript 教程 | 菜鸟教程</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W33.md">C日常/2022-W33.md</a><br>
-🔖 Makefile
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W33.md">C日常/2022-W33.md</a><br>
-🔖 <a href="https://www.zhihu.com/question/450738311/answer/2635126508?utm_medium=social&amp;utm_oi=619610399826382848&amp;utm_psn=1545021439438381056&amp;utm_source=ZHShareTargetIDMore" target="_blank" rel="noopener">windows 有什么好用的截图软件？ - 知乎</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W33.md">C日常/2022-W33.md</a></p>
-]]></content>
-      <categories>
-        <category>转载</category>
-      </categories>
-      <tags>
-        <tag>转载</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>「202210月度汇报」ttrss</title>
-    <url>/public/2022/10/15/test/202210/</url>
-    <content><![CDATA[<p>total: 2</p>
-<a id="more"></a>
-<h2 id="🔖一日一技｜Obsidian-Command-进阶用法三则"><a class="header-anchor" href="#🔖一日一技｜Obsidian-Command-进阶用法三则">¶</a>🔖<a href="https://sspai.com/post/75847" target="_blank" rel="noopener">一日一技｜Obsidian Command 进阶用法三则</a></h2>
-<p>pubdata:2022-10-01 07:00:00
-markdate:2022-10-08 11:41:38.979766</p>
-<p><img src="/public/2022/10/15/test/202210/2022-10-08-114138979766.jpg" alt="img"></p>
-<h2 id="🔖用代码编辑器进行知识管理：我用-VSCode-构建自己的笔记系统"><a class="header-anchor" href="#🔖用代码编辑器进行知识管理：我用-VSCode-构建自己的笔记系统">¶</a>🔖<a href="https://sspai.com/post/75940" target="_blank" rel="noopener">用代码编辑器进行知识管理：我用 VSCode 构建自己的笔记系统</a></h2>
-<p>pubdata:2022-09-28 03:29:57
-markdate:2022-10-09 04:14:05.692239</p>
-<p><img src="/public/2022/10/15/test/202210/2022-10-09-041405692239.jpg" alt="img"></p>
-]]></content>
-      <categories>
-        <category>月度汇报</category>
-      </categories>
-      <tags>
-        <tag>月度汇报</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>「202210月度汇报」obsidian</title>
-    <url>/public/2022/10/26/test/202210_obsidian/</url>
-    <content><![CDATA[<p>统计 ✅ : 0 📅 : 2 🔖 : 8</p>
-<a id="more"></a>
-<h2 id="✅-0"><a class="header-anchor" href="#✅-0">¶</a>✅ : 0</h2>
-<h2 id="📅-2"><a class="header-anchor" href="#📅-2">¶</a>📅 : 2</h2>
-<p>📅 转载一下
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W36.md">C日常/2022-W36.md</a><br>
-📅 tracker更新
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W36.md">C日常/2022-W36.md</a></p>
-<h2 id="🔖-8"><a class="header-anchor" href="#🔖-8">¶</a>🔖 : 8</h2>
-<p>🔖肝下50万字的《Linux内核精通》笔记，你的底层原理水平将从入门到入魔【建议收藏】
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W36.md">C日常/2022-W36.md</a><br>
-🔖计算机组成原理(万字爆肝整理)
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W36.md">C日常/2022-W36.md</a><br>
-🔖 <a href="https://xiaolincoding.com/network/" target="_blank" rel="noopener">图解网络介绍</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W37.md">C日常/2022-W37.md</a><br>
-🔖 <a href="https://refactoringguru.cn/design-patterns" target="_blank" rel="noopener">常用设计模式有哪些？</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W37.md">C日常/2022-W37.md</a><br>
-🔖 智能家庭网关
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W37.md">C日常/2022-W37.md</a><br>
-🔖 <a href="https://sadh.life/post/builtins/" target="_blank" rel="noopener">Understanding all of Python, through its builtins</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W37.md">C日常/2022-W37.md</a><br>
-🔖 操作系统自学
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W37.md">C日常/2022-W37.md</a><br>
-🔖 机器人计划
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W37.md">C日常/2022-W37.md</a></p>
-]]></content>
-      <categories>
-        <category>月度汇报</category>
-      </categories>
-      <tags>
-        <tag>月度汇报</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>「202211月度汇报」ttrss</title>
-    <url>/public/2022/11/15/test/202211/</url>
-    <content><![CDATA[<p>total: 1</p>
-<a id="more"></a>
-<h2 id="🔖微软官方小工具更新，这些新特性你或许也能用得上"><a class="header-anchor" href="#🔖微软官方小工具更新，这些新特性你或许也能用得上">¶</a>🔖<a href="https://sspai.com/post/76649" target="_blank" rel="noopener">微软官方小工具更新，这些新特性你或许也能用得上</a></h2>
-<p>pubdata:2022-11-06 03:40:00
-markdate:2022-11-17 17:18:09.571032</p>
-<p><img src="/public/2022/11/15/test/202211/2022-11-17-171809571032.jpg" alt="img"></p>
-]]></content>
-      <categories>
-        <category>月度汇报</category>
-      </categories>
-      <tags>
-        <tag>月度汇报</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>「202211月度汇报」obsidian</title>
-    <url>/public/2022/11/26/test/202211_obsidian/</url>
-    <content><![CDATA[<p>统计 ✅ : 0 📅 : 0 🔖 : 0</p>
-<a id="more"></a>
-<h2 id="✅-0"><a class="header-anchor" href="#✅-0">¶</a>✅ : 0</h2>
-<h2 id="📅-0"><a class="header-anchor" href="#📅-0">¶</a>📅 : 0</h2>
-<h2 id="🔖-0"><a class="header-anchor" href="#🔖-0">¶</a>🔖 : 0</h2>
-]]></content>
-      <categories>
-        <category>月度汇报</category>
-      </categories>
-      <tags>
-        <tag>月度汇报</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>这哈儿是重庆</title>
-    <url>/public/2019/04/25/trips/chongqing/</url>
-    <content><![CDATA[<p>重庆，旅游纪实。20190422 - 20190424</p>
-<a id="more"></a>
-<h2 id="四月二十二"><a class="header-anchor" href="#四月二十二">¶</a>四月二十二</h2>
-<img src="/public/2019/04/25/trips/chongqing/tiankongzhicheng.jpg" alt="tiankongzhicheng" width="50%">
-<div align="center"> <b>天空之城旅店的临江阳台</b></div>
-<p>今天刚来到重庆。前天查天气说是多云，但是来这之后，天气极好。早上9点从成都出发，12点左右到达重庆北站，然后做地铁10号线倒到6号线的小什坊。在解放广场附近，中午吃了个碗杂面很不错，对于我来说有点辣，说是重庆排行第五的小面。</p>
-<p>下午就准备午休一哈，今早上很早起来要赶到成都的市中心乘火车。在江边，也是在洪崖洞旁边，找了一家叫做天空之城的青年旅舍。晚上走在千厮大桥上，脚感受着下面的地铁穿过抖动。从青年旅馆房间里面刚好可以看到江边的夜景，管理人是个可爱的老人家。里面的床单是没有铺上的，得自己铺，老人家解释免得被认为不好，你也可以自己带睡袋。老人家在铁路上工作，与他聊了很久，谈到他在铁路站工作的经历，当然还有很多打理旅舍时的故事。</p>
-<h2 id="四月二十三"><a class="header-anchor" href="#四月二十三">¶</a>四月二十三</h2>
-<img src="/public/2019/04/25/trips/chongqing/guojiang1.jpeg" alt="guojiang1" width="50%">
-<div align="center"> <b>排队2小时，乘过江索道</b></div>
-<img src="/public/2019/04/25/trips/chongqing/goujiang2.jpeg" alt="goujiang2" width="50%">
-<div align="center"> <b>过江索道，晃晃悠悠在路上</b></div>
-<p>早上起来，去楼下买了个早餐，有八宝粥和一个米团（块），那个团米上面加了两个半枣。吃完早饭，阳光正照进那个青年公寓。四月底，节气谷雨过后，算还不是很热，在那个临江的阳台晒了会儿阳光。然后很困，大概是吃饱的缘故，我又回去睡了一个回笼觉。下午出发去白公馆，搭的是轻轨2号线，到大坪换到去烈士墓的地铁上，轻轨是一路沿江跑的，欣赏着嘉陵江的美景，羡慕着重庆人的立体公交系统。嘉陵江水比较清澈，也见到有人在游泳。过会儿就经过网红景点李子坝，轻轨穿房而过。白公馆旁边是四川外国语大学，没有去逛，直接去了白公馆，香山别墅，然后去了渣滓洞，白公馆的地势比较陡，台阶比较多，旁边是歌乐山。</p>
-<img src="/public/2019/04/25/trips/chongqing/eling.jpg" alt="eling" width="50%">
-<div align="center"> <b>鹅岭公园有个塔，从塔上望去</b></div>
-<p>接着到了鹅岭公园，可直接做地铁鹅岭站，进门处分左右路线，我选了左转，然后绕了一大圈到了那个塔，其实可以右转沿着汽车的道往上到那个塔。到了塔顶，可以看到面向朝天门方向，左边是嘉陵江，右边是长江，然后各种大桥，轻轨地铁尽收眼底。吹着微风，站在那个塔上，可见重庆各种摩天大楼，然后就是更远处的山。离开鹅岭公园后，继续搭地铁去了上新街站，下车后往南岸区走，南岸发展比较慢，可以看到明显和渝中区的不同，路边找了一家店，选了几个小菜，吃了个晚饭。晚饭后，去了南山一棵树，人很多，夜景倒是很漂亮，有水有山，两水相交，滋润了这个大都市，今天的行程不错。</p>
-<img src="/public/2019/04/25/trips/chongqing/yejing.jpg" alt="yejing" width="50%">
-<div align="center"> <b>南山一棵松</b></div>
-<h2 id="四月二十四"><a class="header-anchor" href="#四月二十四">¶</a>四月二十四</h2>
-<img src="/public/2019/04/25/trips/chongqing/caotianmen.jpg" alt="caotianmen" width="50%">
-<div align="center"> <b>朝天门码头，水清黄分明</b></div>
-<p>今天也是懒懒起床，吃了个早饭，豆浆是放在那种果冻的包装袋里。今天差不多，就准备看看朝天门，然后回成都。去朝天门还是比较奇怪，随着百度地图导航走，到了一个商城里面，从地面进去是商城的8楼，下了电梯，走了一个商品批发的地方，然后向朝天门赶，今天太阳超级满足，比较热。岸边停了好多游船。到了朝天门，水分了两个颜色，黄的长江，清的嘉陵江。休息一刻，搭了公交车，沿着长江岸跑，居然到了李子坝，然后地铁转到重庆北火车站，这一趟重庆算是画上了一个句号。</p>
-<p>『转载』，请联系博主。</p>
-]]></content>
-      <categories>
-        <category>旅游</category>
-      </categories>
-      <tags>
-        <tag>重庆</tag>
-        <tag>游记</tag>
       </tags>
   </entry>
   <entry>
@@ -2754,125 +2549,101 @@ nbextensions的教程<a href="https://jupyter-contrib-nbextensions.readthedocs.i
       </tags>
   </entry>
   <entry>
-    <title>「202207月度汇报」obsidian</title>
-    <url>/public/2022/07/26/test/202207_obsidian/</url>
-    <content><![CDATA[<p>统计 ✅ : 6 📅 : 3 🔖 : 47</p>
+    <title>Windows笔记本开共享wifi</title>
+    <url>/public/2015/04/14/shells/share_win_wifi/</url>
+    <content><![CDATA[<h2 id="前言"><a class="header-anchor" href="#前言">¶</a>前言</h2>
+<p>网上有很多用笔记本设置无线热点的批处理，我中和了一下。复制下面代码到记事本，改后缀为bat就行了。其中，mssid和mkey可自定义</p>
 <a id="more"></a>
-<h2 id="✅-6"><a class="header-anchor" href="#✅-6">¶</a>✅ : 6</h2>
-<p>✅目标图标系统
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
-✅ <a href="https://blog.csdn.net/hhhhhyyyyy8/article/details/102133863" target="_blank" rel="noopener">Linux内核数据包bridge上转发流程_hhhhhyyyyy8的博客-CSDN博客_br_multicast_flood</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W27.md">C日常/2022-W27.md</a><br>
-✅ 邮箱转rss
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W23.md">C日常/2022-W23.md</a><br>
-✅  hacker news rss添加
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W23.md">C日常/2022-W23.md</a><br>
-✅ 经济学人转载leader文章
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W23.md">C日常/2022-W23.md</a><br>
-✅ github博客评论系统是否换成【不换】
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W23.md">C日常/2022-W23.md</a></p>
-<h2 id="📅-3"><a class="header-anchor" href="#📅-3">¶</a>📅 : 3</h2>
-<p>📅 端口触发 端口转发
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
-📅 全屋智能
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W26.md">C日常/2022-W26.md</a><br>
-📅 改进
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W26.md">C日常/2022-W26.md</a></p>
-<h2 id="🔖-47"><a class="header-anchor" href="#🔖-47">¶</a>🔖 : 47</h2>
-<p>🔖 ish保持后台运行
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W19.md">C日常/2022-W19.md</a><br>
-🔖 <a href="https://www.jianshu.com/p/f29ca723db4f" target="_blank" rel="noopener">Git 运行配置（git config、gitk、git gui） - michael_jia - 简书</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W19.md">C日常/2022-W19.md</a><br>
-🔖<a href="https://www.cnblogs.com/xuanbjut/p/12624702.html" target="_blank" rel="noopener">wmctrl像xmonad那样方便地用快捷键来控制任务窗口的显示 - pycod - 博客园</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W19.md">C日常/2022-W19.md</a><br>
-🔖 <a href="https://blog.csdn.net/anlian523/article/details/113627568" target="_blank" rel="noopener">VSCode复制代码时去掉样式/语法高亮/代码高亮/黑色背景_anlian523的博客-CSDN博客_idea复制代码不带黑色背景</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W19.md">C日常/2022-W19.md</a><br>
-🔖 <a href="https://blog.csdn.net/dog250/article/details/121400218" target="_blank" rel="noopener">为什么除法，开方，求对数比乘法，乘方，求指数更难_dog250的博客-CSDN博客</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
-🔖学习小林博客的写法
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
-🔖一万字统计学梳理
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
-🔖腾讯 彻底搞清楚tcp
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
-🔖0x5f3759df这个快速开方中的常数的数学依据是什么？
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
-🔖https流程
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
-🔖使用 Clion + QEMU/GDB 远程调试Linux内核（分享自知乎网）<a href="https://zhuanlan.zhihu.com/p/412604505?utm_source=md.obsidian&amp;utm_medium=social&amp;utm_oi=619610399826382848" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/412604505?utm_source=md.obsidian&amp;utm_medium=social&amp;utm_oi=619610399826382848</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
-🔖TCP/IP协议到底在讲什么？ <a href="http://www.zhihu.com/question/51074319?utm_source=md.obsidian&amp;utm_medium=social&amp;utm_oi=619610399826382848" target="_blank" rel="noopener">http://www.zhihu.com/question/51074319?utm_source=md.obsidian&amp;utm_medium=social&amp;utm_oi=619610399826382848</a> （分享自知乎网）
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
-🔖【什么是动态规划（Dynamic Programming）？动态规划的意义是什么？】阮行止：… <a href="https://www.zhihu.com/question/23995189/answer/613096905?utm_source=md.obsidian&amp;utm_medium=social&amp;utm_oi=619610399826382848" target="_blank" rel="noopener">https://www.zhihu.com/question/23995189/answer/613096905?utm_source=md.obsidian&amp;utm_medium=social&amp;utm_oi=619610399826382848</a> （分享自知乎网）
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
-🔖【为什么有人说弄懂了《算法导论》的 90%，就超越了 90%的程序员？】启舰：… <a href="https://www.zhihu.com/question/315201616/answer/1960517601?utm_source=md.obsidian&amp;utm_medium=social&amp;utm_oi=619610399826382848" target="_blank" rel="noopener">https://www.zhihu.com/question/315201616/answer/1960517601?utm_source=md.obsidian&amp;utm_medium=social&amp;utm_oi=619610399826382848</a> （分享自知乎网）
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
-🔖【vs code】【keil】优雅地使用vs code代替keil。by 童话与云 👉 <a href="https://www.zhihu.com/zvideo/1422934459457253376?utm_source=md.obsidian&amp;utm_medium=social&amp;utm_oi=619610399826382848" target="_blank" rel="noopener">https://www.zhihu.com/zvideo/1422934459457253376?utm_source=md.obsidian&amp;utm_medium=social&amp;utm_oi=619610399826382848</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
-🔖图解网络 - 75张图带你了解网络设备、网络地址规划、静态路由、实战演练（分享自知乎网）
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
-🔖vscode-journal：vscode中写日记/便签/提醒，配合nutstore与安卓、ios同步_TeQuL的博客-CSDN博客
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
-🔖结构体（结构体嵌套、结构体指针、结构体参数传递） - 蓝海人 - 博客园
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
-🔖Feedme - 8大 RSS 阅读器第三方客户端[Android] - 小众软件
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
-🔖聪明人必学的停车小技巧！。by Felicidades 👉 <a href="https://www.zhihu.com/zvideo/1414008107094093824?utm_source=md.obsidian&amp;utm_medium=social&amp;utm_oi=619610399826382848" target="_blank" rel="noopener">https://www.zhihu.com/zvideo/1414008107094093824?utm_source=md.obsidian&amp;utm_medium=social&amp;utm_oi=619610399826382848</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
-🔖在线 DOS 游戏 - 近 2000 款怀旧游戏，仙剑、红警、三国志、大富翁、明星志愿、大航海、主题医院等 - 小众软件
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
-🔖Feeddd · 重新掌控你的订阅源
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
-🔖【如何长时间高效学习？】硬核学长2077：… <a href="https://www.zhihu.com/question/28358499/answer/1762418904?utm_source=md.obsidian&amp;utm_medium=social&amp;utm_oi=619610399826382848" target="_blank" rel="noopener">https://www.zhihu.com/question/28358499/answer/1762418904?utm_source=md.obsidian&amp;utm_medium=social&amp;utm_oi=619610399826382848</a> （分享自知乎网）
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
-🔖【你身边的学霸都有怎样的学习方法或习惯？】硬核学长2077：… <a href="https://www.zhihu.com/question/54265751/answer/1995587976?utm_source=md.obsidian&amp;utm_medium=social&amp;utm_oi=619610399826382848" target="_blank" rel="noopener">https://www.zhihu.com/question/54265751/answer/1995587976?utm_source=md.obsidian&amp;utm_medium=social&amp;utm_oi=619610399826382848</a> （分享自知乎网）
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
-🔖【如何不痛苦地早起？】铁木君：… <a href="https://www.zhihu.com/question/22120300/answer/1887544838?utm_source=md.obsidian&amp;utm_medium=social&amp;utm_oi=619610399826382848" target="_blank" rel="noopener">https://www.zhihu.com/question/22120300/answer/1887544838?utm_source=md.obsidian&amp;utm_medium=social&amp;utm_oi=619610399826382848</a> （分享自知乎网）
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
-🔖[[obsidian_tips]]
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
-🔖<a href="https://sspai.com/post/72757" target="_blank" rel="noopener">随时可用的 PC 体验是这样「炼」成的，Windows 新版睡眠机制详解 - 少数派</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
-🔖<a href="https://blog.csdn.net/who538592/article/details/79483323" target="_blank" rel="noopener">TC流量控制_who538592的博客-CSDN博客_tc流量控制</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
-🔖 <a href="https://sspai.com/post/74090" target="_blank" rel="noopener">大家都说好的蛋白粉，我们应该如何取舍 - 少数派</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W28.md">C日常/2022-W28.md</a><br>
-🔖 <a href="https://zhuanlan.zhihu.com/p/508345279" target="_blank" rel="noopener">我的obsidian插件开发的学习过程</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W28.md">C日常/2022-W28.md</a><br>
-🔖 <a href="https://blog.csdn.net/Haywardwang/article/details/108626491" target="_blank" rel="noopener">python 词云构建_Haywardwang的博客-CSDN博客</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W28.md">C日常/2022-W28.md</a><br>
-🔖 <a href="https://blog.csdn.net/weixin_56842628/article/details/117921526?utm_medium=distribute.wap_relevant.none-task-blog-2~default~baidujs_title~default-9-117921526-blog-108626491.wap_blog_relevant_default&amp;spm=1001.2101.3001.4242.6&amp;utm_relevant_index=10" target="_blank" rel="noopener">如何用Python制作简单又好看的词云？来瞅瞅吧~_小熊爱Python的博客-CSDN博客_python词云代码简单</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W28.md">C日常/2022-W28.md</a><br>
-🔖 <a href="https://sspai.com/post/73779" target="_blank" rel="noopener">跨时空圆桌：伟大创作者们如何安排日常生活 - 少数派</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W27.md">C日常/2022-W27.md</a><br>
-🔖 <a href="https://www.appinn.com/typing-learner/" target="_blank" rel="noopener">Typing Learner - 硬核单词记忆：从电影台词筛选生词，边追美剧边学英语，用户直喊「好家伙！」[Windows/macOS] - 小众软件</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W27.md">C日常/2022-W27.md</a><br>
-🔖 <a href="https://www.zhihu.com/question/391756708/answer/2556173863" target="_blank" rel="noopener">SpaceX的可回收火箭有什么神奇之处，为何其他航天大国还不能仿造？ - YY硕 的回答 - 知乎</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W27.md">C日常/2022-W27.md</a><br>
-🔖 <a href="https://mp.weixin.qq.com/s/KBKO4C1d4CkyHAPEkh8D4Q" target="_blank" rel="noopener">这几个通信协议的动图不错</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W27.md">C日常/2022-W27.md</a><br>
-🔖 <a href="https://oorkan.medium.com/emojifying-your-linux-terminal-9a5c1e8f6b3c" target="_blank" rel="noopener">Emojifying your Linux terminal  🚀</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W27.md">C日常/2022-W27.md</a><br>
-🔖 <a href="https://sspai.com/post/74167" target="_blank" rel="noopener">为 WSL 配置这些新功能，不用虚拟机也能体验完整 Linux - 少数派</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W27.md">C日常/2022-W27.md</a><br>
-🔖<a href="https://sspai.com/post/72274" target="_blank" rel="noopener">意识先行，工具辅助：谈谈我们该怎样分辨虚假信息</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W27.md">C日常/2022-W27.md</a><br>
-🔖<a href="https://zhuanlan.zhihu.com/p/495262462" target="_blank" rel="noopener">网站低代码开发</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W27.md">C日常/2022-W27.md</a><br>
-🔖 学习体系化，效率提升
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W27.md">C日常/2022-W27.md</a><br>
-🔖 <a href="https://sspai.com/post/73958" target="_blank" rel="noopener">玩转 Obsidian 08：利用 Dataview 打造自动化 HomePage - 少数派</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W26.md">C日常/2022-W26.md</a><br>
-🔖 <a href="https://post.m.smzdm.com/p/adwgg2rd/" target="_blank" rel="noopener">小爱同学，打开我的三菱空调——米家空调伴侣2使用分享_智能家居_什么值得买</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W26.md">C日常/2022-W26.md</a><br>
-🔖 <a href="https://sspai.com/post/73829" target="_blank" rel="noopener">用 59 分钟，找到工具的效率之源 - 少数派</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W26.md">C日常/2022-W26.md</a><br>
-🔖 <a href="https://cloud.tencent.com/developer/article/1879646" target="_blank" rel="noopener">tcpdump是在哪儿抓到的包？ - 腾讯云开发者社区-腾讯云</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W26.md">C日常/2022-W26.md</a><br>
-🔖 <a href="https://www.jianshu.com/p/79bcf09aed25" target="_blank" rel="noopener">IPTables五----ebtables - marshalzxy - 简书</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W26.md">C日常/2022-W26.md</a><br>
-🔖 <a href="https://david-waiting.medium.com/a-beginners-guide-to-generic-routing-encapsulation-fb2b4fb63abb" target="_blank" rel="noopener">A Beginner’s Guide to Generic Routing Encapsulation</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W26.md">C日常/2022-W26.md</a></p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">@echo off</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">set mssid=GOODGOOD</span><br><span class="line">::网络名字</span><br><span class="line">set mkey=123456789</span><br><span class="line">::大于八位密码</span><br><span class="line"></span><br><span class="line">echo ***********************************************</span><br><span class="line">echo              打开承载网络  1</span><br><span class="line">echo              关闭承载网络  2</span><br><span class="line">echo              承载网络信息  3</span><br><span class="line">echo              设置网络信息  set</span><br><span class="line">echo              退出          e</span><br><span class="line">echo        （网络名字、密码可在源文件中改）</span><br><span class="line">echo           （请以管理员身份打开!!!）</span><br><span class="line">echo ***********************************************</span><br><span class="line">:start</span><br><span class="line">set /p var=请选择:</span><br><span class="line">if %var%==1 netsh wlan start hostednetwork &amp;&amp; echo 网络名字:%mssid% 密码:%mkey% &amp;&amp; GOTO start</span><br><span class="line">if %var%==2 netsh wlan stop hostednetwork &amp;&amp; GOTO start</span><br><span class="line">if %var%==3 netsh wlan show hostednetwork &amp;&amp; echo 网络名字:%mssid% 密码:%mkey% &amp;&amp; GOTO start</span><br><span class="line">if %var%==set netsh wlan set hostednetwork mode=allow ssid=%mssid% key=%mkey% &amp;&amp; echo 网络名字:%mssid% 密码:%mkey% &amp;&amp; GOTO start</span><br><span class="line">if %var%==e pause</span><br></pre></td></tr></table></figure>
+<h2 id="播放声音"><a class="header-anchor" href="#播放声音">¶</a>播放声音</h2>
+<p>保存为<code>播放声音.vbs</code>,可以播放声音</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">CreateObject(&quot;SAPI.SpVoice&quot;).Speak &quot;hello world&quot;</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>常用脚本</category>
+      </categories>
+      <tags>
+        <tag>工具</tag>
+        <tag>Windows脚本</tag>
+        <tag>共享wifi</tag>
+        <tag>cmd</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>SRT中英文合并Python脚本</title>
+    <url>/public/2016/04/14/shells/youtube_src_combine/</url>
+    <content><![CDATA[<h2 id="前言"><a class="header-anchor" href="#前言">¶</a>前言</h2>
+<p>从YouTube上看只有中文或英文分开的字幕，下载好视频，想要中英文字幕。可从 <a href="http://mo.dbxdb.com/Yang/setting.html" target="_blank" rel="noopener">Getting Youtube subtitles</a> 获取中或英文字幕，然后将其合并，即成中英文双字幕。下面是Python脚本。</p>
+<a id="more"></a>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">本脚本完成了中英文srt合并的功能</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">srt2lis</span><span class="params">(name)</span>:</span></span><br><span class="line">    lines = open(<span class="string">'srt/'</span>+name, <span class="string">'r'</span>, encoding=<span class="string">'utf-8'</span>).readlines()</span><br><span class="line">    lis = []</span><br><span class="line">    tmp = []</span><br><span class="line">    <span class="keyword">for</span> i, line <span class="keyword">in</span> enumerate(lines):</span><br><span class="line">        <span class="comment"># 以\n 结尾的一个时间点</span></span><br><span class="line">        <span class="keyword">if</span> line == <span class="string">'\n'</span>:</span><br><span class="line">            lis.append(tmp)</span><br><span class="line">            tmp = []</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            tmp.append(line)</span><br><span class="line">    <span class="keyword">return</span> lis</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">hebing</span><span class="params">(name_zh)</span>:</span></span><br><span class="line">    name_en = name_zh[:<span class="number">-7</span>] + <span class="string">'.srt'</span></span><br><span class="line">    out_name=<span class="string">'out/'</span>+name_en</span><br><span class="line">    f=open(out_name,<span class="string">'w'</span>,encoding=<span class="string">'utf-8'</span>)</span><br><span class="line">    lis_en=srt2lis(name_en)</span><br><span class="line">    lis_zh=srt2lis(name_zh)</span><br><span class="line">    <span class="keyword">for</span> i,item <span class="keyword">in</span> enumerate(lis_en):</span><br><span class="line">        print(item[<span class="number">0</span>])</span><br><span class="line">        f.write(item[<span class="number">0</span>])</span><br><span class="line">        f.write(item[<span class="number">1</span>])</span><br><span class="line">        <span class="keyword">for</span> line <span class="keyword">in</span> lis_zh[i][<span class="number">2</span>:]:</span><br><span class="line">            f.write(line)</span><br><span class="line">        <span class="keyword">for</span> line <span class="keyword">in</span> item[<span class="number">2</span>:]:</span><br><span class="line">            f.write(line)</span><br><span class="line">        f.write(<span class="string">'\n'</span>)</span><br><span class="line">    f.close()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">flis=os.listdir(<span class="string">'srt/'</span>)</span><br><span class="line"><span class="keyword">if</span> <span class="keyword">not</span> os.path.exists(<span class="string">'out'</span>):</span><br><span class="line">    os.mkdir(<span class="string">'out'</span>)</span><br><span class="line"><span class="keyword">for</span> name <span class="keyword">in</span> flis:</span><br><span class="line">    print(name)</span><br><span class="line">    <span class="keyword">if</span> name[<span class="number">-6</span>:<span class="number">-4</span>]==<span class="string">'zh'</span>:</span><br><span class="line">        hebing(name)</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>常用脚本</category>
+        <category>工具</category>
+      </categories>
+      <tags>
+        <tag>Python</tag>
+        <tag>YouTube字幕合并</tag>
+        <tag>SRT(文本格式字幕)</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>「202207月度汇报」ttrss</title>
+    <url>/public/2022/07/15/test/202207/</url>
+    <content><![CDATA[<p>total: 13</p>
+<a id="more"></a>
+<h2 id="🔖BGmi-–-自动追番的工具：同步最新番剧数据、追番日历、自动下载，适合所有追番懒人"><a class="header-anchor" href="#🔖BGmi-–-自动追番的工具：同步最新番剧数据、追番日历、自动下载，适合所有追番懒人">¶</a>🔖<a href="https://www.appinn.com/bgmi/" target="_blank" rel="noopener">BGmi – 自动追番的工具：同步最新番剧数据、追番日历、自动下载，适合所有追番懒人</a></h2>
+<p>pubdata:2022-06-30 02:48:00
+markdate:2022-07-01 06:32:58.020141</p>
+<p><img src="/public/2022/07/15/test/202207/2022-07-01-063258020141.jpg" alt="img"></p>
+<h2 id="🔖老牌截图工具-PicPick-更新，新增录屏功能，支持-MP4-GIF-格式"><a class="header-anchor" href="#🔖老牌截图工具-PicPick-更新，新增录屏功能，支持-MP4-GIF-格式">¶</a>🔖<a href="https://www.appinn.com/picpick-6-2/" target="_blank" rel="noopener">老牌截图工具 PicPick 更新，新增录屏功能，支持 MP4/GIF 格式</a></h2>
+<p>pubdata:2022-06-29 07:19:19
+markdate:2022-07-02 04:11:20.453414</p>
+<p><img src="/public/2022/07/15/test/202207/2022-07-02-041120453414.jpg" alt="img"></p>
+<h2 id="🔖白板与笔记融合：我的四个氢图使用场景"><a class="header-anchor" href="#🔖白板与笔记融合：我的四个氢图使用场景">¶</a>🔖<a href="https://sspai.com/post/73246" target="_blank" rel="noopener">白板与笔记融合：我的四个氢图使用场景</a></h2>
+<p>pubdata:2022-06-30 03:30:02
+markdate:2022-07-03 01:08:35.583781</p>
+<p><img src="/public/2022/07/15/test/202207/2022-07-03-010835583781.jpg" alt="img"></p>
+<h2 id="🔖跨时空圆桌：伟大创作者们如何安排日常生活"><a class="header-anchor" href="#🔖跨时空圆桌：伟大创作者们如何安排日常生活">¶</a>🔖<a href="https://sspai.com/post/73779" target="_blank" rel="noopener">跨时空圆桌：伟大创作者们如何安排日常生活</a></h2>
+<p>pubdata:2022-06-15 09:30:00
+markdate:2022-07-03 01:50:35.971655</p>
+<p><img src="/public/2022/07/15/test/202207/2022-07-03-015035971655.jpg" alt="img"></p>
+<h2 id="🔖Typing-Learner-–-硬核单词记忆：从电影台词筛选生词，边追美剧边学英语，用户直喊「好家伙！」-Windows-macOS"><a class="header-anchor" href="#🔖Typing-Learner-–-硬核单词记忆：从电影台词筛选生词，边追美剧边学英语，用户直喊「好家伙！」-Windows-macOS">¶</a>🔖<a href="https://www.appinn.com/typing-learner/" target="_blank" rel="noopener">Typing Learner – 硬核单词记忆：从电影台词筛选生词，边追美剧边学英语，用户直喊「好家伙！」[Windows/macOS]</a></h2>
+<p>pubdata:2022-07-03 04:07:39
+markdate:2022-07-04 05:06:58.902152</p>
+<p><img src="/public/2022/07/15/test/202207/2022-07-04-050658902152.jpg" alt="img"></p>
+<h2 id="🔖创建自己的第一个-Power-Automate-工作流，从此繁琐操作是路人"><a class="header-anchor" href="#🔖创建自己的第一个-Power-Automate-工作流，从此繁琐操作是路人">¶</a>🔖<a href="https://sspai.com/post/73710" target="_blank" rel="noopener">创建自己的第一个 Power Automate 工作流，从此繁琐操作是路人</a></h2>
+<p>pubdata:2022-07-05 10:44:47
+markdate:2022-07-06 11:29:55.648077</p>
+<p><img src="/public/2022/07/15/test/202207/2022-07-06-112955648077.jpg" alt="img"></p>
+<h2 id="🔖为-WSL-配置这些新功能，不用虚拟机也能体验完整-Linux"><a class="header-anchor" href="#🔖为-WSL-配置这些新功能，不用虚拟机也能体验完整-Linux">¶</a>🔖<a href="https://sspai.com/post/74167" target="_blank" rel="noopener">为 WSL 配置这些新功能，不用虚拟机也能体验完整 Linux</a></h2>
+<p>pubdata:2022-07-08 03:30:00
+markdate:2022-07-09 03:08:43.747852</p>
+<p><img src="/public/2022/07/15/test/202207/2022-07-09-030843747852.jpg" alt="img"></p>
+<h2 id="🔖当飞盘成为人类的玩具，我们该如何参与这场游戏"><a class="header-anchor" href="#🔖当飞盘成为人类的玩具，我们该如何参与这场游戏">¶</a>🔖<a href="https://sspai.com/post/73505" target="_blank" rel="noopener">当飞盘成为人类的玩具，我们该如何参与这场游戏</a></h2>
+<p>pubdata:2022-06-06 08:00:00
+markdate:2022-07-10 01:36:40.114938</p>
+<p><img src="/public/2022/07/15/test/202207/2022-07-10-013640114938.jpg" alt="img"></p>
+<h2 id="🔖走进小众但不冷门的房车世界"><a class="header-anchor" href="#🔖走进小众但不冷门的房车世界">¶</a>🔖<a href="https://sspai.com/post/74043" target="_blank" rel="noopener">走进小众但不冷门的房车世界</a></h2>
+<p>pubdata:2022-07-01 08:04:43
+markdate:2022-07-10 02:09:34.733003</p>
+<p><img src="/public/2022/07/15/test/202207/2022-07-10-020934733003.jpg" alt="img"></p>
+<h2 id="🔖从盲目崇拜到理性使用，谈谈我眼中的「双向链接」"><a class="header-anchor" href="#🔖从盲目崇拜到理性使用，谈谈我眼中的「双向链接」">¶</a>🔖<a href="https://sspai.com/post/73407" target="_blank" rel="noopener">从盲目崇拜到理性使用，谈谈我眼中的「双向链接」</a></h2>
+<p>pubdata:2022-05-27 06:31:27
+markdate:2022-07-11 14:31:37.724795</p>
+<p><img src="/public/2022/07/15/test/202207/2022-07-11-143137724795.jpg" alt="img"></p>
+<h2 id="🔖打开终端总有好心情：我的美化方案及配置分享"><a class="header-anchor" href="#🔖打开终端总有好心情：我的美化方案及配置分享">¶</a>🔖<a href="https://sspai.com/post/74216" target="_blank" rel="noopener">打开终端总有好心情：我的美化方案及配置分享</a></h2>
+<p>pubdata:2022-07-11 08:00:51
+markdate:2022-07-12 04:52:00.122103</p>
+<p><img src="/public/2022/07/15/test/202207/2022-07-12-045200122103.jpg" alt="img"></p>
+<h2 id="🔖咖啡美酒冷泡茶，这些消暑饮品在家就能动手做"><a class="header-anchor" href="#🔖咖啡美酒冷泡茶，这些消暑饮品在家就能动手做">¶</a>🔖<a href="https://sspai.com/post/74196" target="_blank" rel="noopener">咖啡美酒冷泡茶，这些消暑饮品在家就能动手做</a></h2>
+<p>pubdata:2022-07-10 07:17:11
+markdate:2022-07-12 05:03:55.504330</p>
+<p><img src="/public/2022/07/15/test/202207/2022-07-12-050355504330.jpg" alt="img"></p>
+<h2 id="🔖语雀，即将开源！"><a class="header-anchor" href="#🔖语雀，即将开源！">¶</a>🔖<a href="https://zhuanlan.zhihu.com/p/540713275" target="_blank" rel="noopener">语雀，即将开源！</a></h2>
+<p>pubdata:2022-07-12 08:19:47
+markdate:2022-07-14 10:28:28.713392</p>
+<p><img src="/public/2022/07/15/test/202207/2022-07-14-102828713392.jpg" alt="img"></p>
 ]]></content>
       <categories>
         <category>转载</category>
@@ -2882,178 +2653,298 @@ nbextensions的教程<a href="https://jupyter-contrib-nbextensions.readthedocs.i
       </tags>
   </entry>
   <entry>
-    <title>linux代理的使用</title>
-    <url>/public/2018/07/24/linux/linux_proxy/</url>
-    <content><![CDATA[<h2 id="前言"><a class="header-anchor" href="#前言">¶</a>前言</h2>
-<p>最近要下载一个在youtube上的数据库，用来训练神经网络。走国内通道下载比较慢。于是，我使用了vps代理方式下载，速度取决于你的机器连接vps的网速。本文的主要内容有，实现shadowsocks 代理 ，tsocks 代理工具使用，可组合使用的一些下载工具如wget 和axel等。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 举个栗子</span></span><br><span class="line">$ tsocks wget -c https://www.dropbox.com/s/minpyv59crdifk9/datasets.zip</span><br></pre></td></tr></table></figure>
-<p>嗯嗯，这个速度还不错！</p>
-<center><img src="/public/2018/07/24/linux/linux_proxy/1565246896718.png" width="60%">
-</center>
-<p><strong>声明</strong>：本文以科学研究为目的，请勿滥用。</p>
+    <title>「202208月度汇报」ttrss</title>
+    <url>/public/2022/08/15/test/202208/</url>
+    <content><![CDATA[<p>total: 5</p>
 <a id="more"></a>
-<h2 id="1-Shadowsocks"><a class="header-anchor" href="#1-Shadowsocks">¶</a>1 Shadowsocks</h2>
-<p><strong>Shadowsocks</strong>是一个轻量级socks5代理工具。在linux平台，我们可使用 python 提供的包管理工具 pip <strong>安装 Shadowsocks</strong> ，如下。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># pip 安装 Shadowsocks</span></span><br><span class="line">$ pip install shadowsocks</span><br><span class="line"></span><br><span class="line"><span class="comment"># 或者</span></span><br><span class="line">$ pip install git+https://github.com/shadowsocks/shadowsocks.git@master</span><br></pre></td></tr></table></figure>
-<p>pip安装完之后，可能要重启终端，我们就有ssserver和sslocal小工具了。下面配置server或者client。一般，server配置在国外的vps上，client配置在本地国内机器上。</p>
-<p>PS：其他平台安装 参考 shadowsocks官方 <a href="https://github.com/shadowsocks/shadowsocks/tree/master#install" target="_blank" rel="noopener">install</a></p>
-<h3 id="1-1-配置-Shadowsocks-server"><a class="header-anchor" href="#1-1-配置-Shadowsocks-server">¶</a>1.1 配置 Shadowsocks server</h3>
-<p>按下面的三步走，即可。</p>
-<ul>
-<li>
-<p>通过ssh连接到（Virtual Private Server）vps上，或者本地打开终端。</p>
-</li>
-<li>
-<p>新建一个<strong>server_shadowsocks.json</strong>文件，内容如下：</p>
-</li>
-</ul>
-<figure class="highlight json"><table><tr><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"server"</span>:<span class="string">"0.0.0.0"</span>,</span><br><span class="line">    <span class="attr">"server_port"</span>:<span class="number">443</span>,</span><br><span class="line">    <span class="attr">"local_address"</span>: <span class="string">"127.0.0.1"</span>,</span><br><span class="line">    <span class="attr">"local_port"</span>:<span class="number">1080</span>,</span><br><span class="line">    <span class="attr">"password"</span>:<span class="string">"密码"</span>,</span><br><span class="line">    <span class="attr">"timeout"</span>:<span class="number">300</span>,</span><br><span class="line">    <span class="attr">"method"</span>:<span class="string">"aes-256-cfb"</span>,</span><br><span class="line">    <span class="attr">"fast_open"</span>: <span class="literal">false</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>执行<code>ssserver -c server_shadowsocks.json</code></li>
-</ul>
-<p>说一点: 由于我们的下载任务是临时的，开个screen（终端复用工具）放在后台。当然你也可以设置为开机自启动，这里不再赘述。</p>
-<h3 id="1-2-配置-Shadowsocks-client"><a class="header-anchor" href="#1-2-配置-Shadowsocks-client">¶</a>1.2 配置 Shadowsocks client</h3>
-<ul>
-<li>
-<p>通过ssh连接到机器上，或者本地打开终端。</p>
-</li>
-<li>
-<p>新建文件 <strong>client_shadowsocks.json</strong></p>
-</li>
-</ul>
-<figure class="highlight json"><table><tr><td class="code"><pre><span class="line">&#123;</span><br><span class="line">        <span class="attr">"server"</span>:<span class="string">"服务器ip或域名"</span>,</span><br><span class="line">        <span class="attr">"server_port"</span>:<span class="number">443</span>,</span><br><span class="line">        <span class="attr">"local_address"</span>:<span class="string">"127.0.0.1"</span>,</span><br><span class="line">        <span class="attr">"local_port"</span>:<span class="number">1280</span>,</span><br><span class="line">        <span class="attr">"password"</span>:<span class="string">"密码"</span>,</span><br><span class="line">        <span class="attr">"timeout"</span>:<span class="number">300</span>,</span><br><span class="line">        <span class="attr">"method"</span>:<span class="string">"aes-256-cfb"</span>,</span><br><span class="line">        <span class="attr">"fast_open"</span>:<span class="literal">false</span>,</span><br><span class="line">        <span class="attr">"workers"</span>:<span class="number">1</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>执行<code>sslocal -c client_shadowsocks.json</code>。</li>
-</ul>
-<p>说一点：推荐使用screen方式放在后台。当然也可以使用-d 参数放在后台运行。
-<code>sslocal -c client_shadowsocks.json -d start</code></p>
-<h2 id="2-tsocks"><a class="header-anchor" href="#2-tsocks">¶</a>2 tsocks</h2>
-<p>有些linux工具可能没有proxy的代理功能，或者不支持sock5代理，而用tsocks可以很好的解决这些问题。<strong>tsocks</strong> 是个终端代理工具，可以直接连接shadowsocks提供socks 5代理端口，有点类似于proxychains。</p>
-<p>下面简单介绍下安装与使用：</p>
-<ul>
-<li>安装<strong>tsocks</strong>
-<ul>
-<li>linux安装tsocks 命令：<code>apt install tsocks</code></li>
-<li>mac 安装参考 <a href="https://github.com/Anakros/homebrew-tsocks" target="_blank" rel="noopener">homebrew-tsocks</a></li>
-</ul>
-</li>
-<li>开启上面Shadowsocks的client放在后台。</li>
-<li>修改tsocks 配置文件，在 <code>/etc/tsocks.conf</code>  文件的最后添加：</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">local = 192.168.1.0/255.255.255.0</span><br><span class="line">server = 127.0.0.1</span><br><span class="line">server_type = 5</span><br><span class="line">server_port = 1080</span><br></pre></td></tr></table></figure>
-<h2 id="3-Demo：代理使用"><a class="header-anchor" href="#3-Demo：代理使用">¶</a>3 Demo：代理使用</h2>
-<h3 id="3-1-使用-tsocks"><a class="header-anchor" href="#3-1-使用-tsocks">¶</a>3.1 使用 tsocks</h3>
-<p>在所需代理的命令前加个tsocks就行，如：
-<code>tsocks wget -c xxxx</code>,<code>tsocks axel -n 10 -av xxxx</code>,<code>tsocks curl xxx</code></p>
-<h3 id="3-2-使用-youtube-dl"><a class="header-anchor" href="#3-2-使用-youtube-dl">¶</a>3.2 使用 youtube-dl</h3>
-<p>youtube-dl是批量下载youtube视频的好工具。youtube-dl 可以指定 proxy，<strong>可以不使用tsocks</strong>。</p>
-<ul>
-<li>安装youtube-dl</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">pip install --upgrade youtube-dl</span><br></pre></td></tr></table></figure>
-<ul>
-<li>
-<p>使用举个例子</p>
-<ul>
-<li>下载youtube视频</li>
-</ul>
-  <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">URL=https://www.youtube.com/playlist?list=PLLbeS1kM6teJqdFzw1ICHfa4a1y0hg8Ax</span><br><span class="line">./youtube-dl --proxy socks5://127.0.0.1:1280 $&#123;URL&#125;</span><br><span class="line"># 在 client_shadowsocks.json 的 local_port 设置为1280，这儿也为1280</span><br></pre></td></tr></table></figure>
-<ul>
-<li>下载里面的mp3</li>
-</ul>
-  <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">youtube-dl -x --audio-format mp3 https://www.youtube.com/watch?v=xpVfcZ0ZcFM</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<p><strong>youtube-dl 中待解决的问题？</strong>
-想只下载一个视频中的一部分，不用下载整个视频，太费vps流量了。暂未找到解决办法，我找到的一个跟问题很相似的issue，有朋友会整的，望告诉一下。<a href="https://github.com/rg3/youtube-dl/issues/4821" target="_blank" rel="noopener">is it possible to download only desired time interval?</a></p>
-<h3 id="3-3-使用-axel"><a class="header-anchor" href="#3-3-使用-axel">¶</a>3.3 使用 axel</h3>
-<p>axel多线程下载。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">tsocks axel -n 3 -a https://www.dropbox.com/s/minpyv59crdifk9/datasets.zip</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">-n 3 : 3个线程下载</span><br><span class="line">-a   : 有个进度条</span><br></pre></td></tr></table></figure>
-<p>其他方式：下载脚本 <a href="http://axel-bash.sh" target="_blank" rel="noopener">axel-bash.sh</a></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#!/bin/sh -e  </span></span><br><span class="line"><span class="comment"># usage:  ./axel-batch.sh the-download-url.list  </span></span><br><span class="line">cat <span class="variable">$1</span> | <span class="keyword">while</span> <span class="built_in">read</span> LINE  </span><br><span class="line"><span class="keyword">do</span>  </span><br><span class="line">	<span class="keyword">if</span> [ -n <span class="string">"<span class="variable">$LINE</span>"</span> ]; <span class="keyword">then</span>  </span><br><span class="line">	axel -n 3 -a `<span class="built_in">echo</span> <span class="variable">$LINE</span>`  </span><br><span class="line">	<span class="keyword">fi</span>  </span><br><span class="line"><span class="keyword">done</span></span><br></pre></td></tr></table></figure>
+<h2 id="🔖AVNC-–-Android-上的开源-VNC-客户端"><a class="header-anchor" href="#🔖AVNC-–-Android-上的开源-VNC-客户端">¶</a>🔖<a href="https://www.appinn.com/avnc-for-android/" target="_blank" rel="noopener">AVNC – Android 上的开源 VNC 客户端</a></h2>
+<p>pubdata:2022-08-07 04:59:52
+markdate:2022-08-07 17:42:37.878979</p>
+<p><img src="/public/2022/08/15/test/202208/2022-08-07-174237878979.jpg" alt="img"></p>
+<h2 id="🔖TigerVNC-–-高性能、跨平台开源-VNC-服务器与客户端"><a class="header-anchor" href="#🔖TigerVNC-–-高性能、跨平台开源-VNC-服务器与客户端">¶</a>🔖<a href="https://www.appinn.com/tigervnc/" target="_blank" rel="noopener">TigerVNC – 高性能、跨平台开源 VNC 服务器与客户端</a></h2>
+<p>pubdata:2022-08-08 04:30:32
+markdate:2022-08-09 00:48:54.680756</p>
+<p><img src="/public/2022/08/15/test/202208/2022-08-09-004854680756.jpg" alt="img"></p>
+<h2 id="🔖Notion-又一开源替代品，诞生了！"><a class="header-anchor" href="#🔖Notion-又一开源替代品，诞生了！">¶</a>🔖<a href="https://zhuanlan.zhihu.com/p/552965032" target="_blank" rel="noopener">Notion 又一开源替代品，诞生了！</a></h2>
+<p>pubdata:2022-08-12 04:42:26
+markdate:2022-08-13 16:16:00.234349</p>
+<p><img src="/public/2022/08/15/test/202208/2022-08-13-161600234349.jpg" alt="img"></p>
+<h2 id="🔖如何写一份高可读性的软件工程设计文档"><a class="header-anchor" href="#🔖如何写一份高可读性的软件工程设计文档">¶</a>🔖<a href="https://zhuanlan.zhihu.com/p/552095835" target="_blank" rel="noopener">如何写一份高可读性的软件工程设计文档</a></h2>
+<p>pubdata:2022-08-10 09:00:14
+markdate:2022-08-20 02:27:47.773301</p>
+<p><img src="/public/2022/08/15/test/202208/2022-08-20-022747773301.jpg" alt="img"></p>
+<h2 id="🔖StrokesPlus-net-–-一款很厉害的鼠标手势软件，还有大佬汉化、以及持续更新脚本"><a class="header-anchor" href="#🔖StrokesPlus-net-–-一款很厉害的鼠标手势软件，还有大佬汉化、以及持续更新脚本">¶</a>🔖<a href="https://www.appinn.com/strokesplus-net/" target="_blank" rel="noopener">StrokesPlus.net – 一款很厉害的鼠标手势软件，还有大佬汉化、以及持续更新脚本</a></h2>
+<p>pubdata:2022-08-24 04:29:23
+markdate:2022-08-25 03:51:08.820884</p>
+<p><img src="/public/2022/08/15/test/202208/2022-08-25-035108820884.jpg" alt="img"></p>
 ]]></content>
       <categories>
-        <category>Linux</category>
+        <category>转载</category>
       </categories>
       <tags>
-        <tag>工具</tag>
-        <tag>linux</tag>
-        <tag>proxy代理</tag>
+        <tag>转载</tag>
       </tags>
   </entry>
   <entry>
-    <title>「转」九张图一览 Linux 性能工具 全景图</title>
-    <url>/public/2022/12/11/linux/linux_tools/</url>
-    <content><![CDATA[<h2 id="前言"><a class="header-anchor" href="#前言">¶</a>前言</h2>
-<p>当今时代，绝大多数企业的应用都是运行在 Linux 操作系统上，所以对应用进行性能诊断和性能优化时，离不开 Linux 的各种性能观测工具和性能优化工具。</p>
-<p>笔者使用过的常见的 Linux 性能观测和性能优化工具有：</p>
-<ul>
-<li>top/uptime</li>
-<li>ps/pstree</li>
-<li>df/du/free/lsblk</li>
-<li>ip/ifconfig/ping/telnet</li>
-<li>route/dig/nslookup</li>
-<li>lsof/netstat/ss</li>
-<li>tcpdump/tshark/wireshark</li>
-<li>netstat/vmstat/iostat/pidstat/dstat/mpstat</li>
-<li>sar/sysctl/ethtool</li>
-</ul>
-<p>最近在拜读国际著名的 LINUX 性能专家 Brendan Gregg 的个人博客和技术书籍，摘抄了如下九张图，一览 Linux 性能工具全景图，大家共勉！</p>
+    <title>「202208月度汇报」obsidian</title>
+    <url>/public/2022/08/26/test/202208_obsidian/</url>
+    <content><![CDATA[<p>统计 ✅ : 1 📅 : 1 🔖 : 26</p>
 <a id="more"></a>
-<h2 id="2-Linux-性能工具全景图"><a class="header-anchor" href="#2-Linux-性能工具全景图">¶</a><strong>2. Linux 性能工具全景图</strong></h2>
-<ul>
-<li>linux performance observability tools</li>
-</ul>
-<p><img src="/public/2022/12/11/linux/linux_tools/v2-2eadd97c53a3f20f255394c3d90ea914_r.jpg" alt></p>
-<ul>
-<li>linux static performance tools</li>
-</ul>
-<p><img src="/public/2022/12/11/linux/linux_tools/v2-20032bac53c856c5733259eece5c2f76_r.jpg" alt></p>
-<ul>
-<li>linux performance benchmark tools</li>
-</ul>
-<p><img src="/public/2022/12/11/linux/linux_tools/v2-de23423f2eb9deb5410b7128c933f9a9_r.jpg" alt></p>
-<ul>
-<li>linux performance tuning tools</li>
-</ul>
-<p><img src="/public/2022/12/11/linux/linux_tools/v2-cdf37de145763b762ba5af1a620f9686_r.jpg" alt></p>
-<ul>
-<li>linux performance observability: sar</li>
-</ul>
-<p><img src="/public/2022/12/11/linux/linux_tools/v2-eee71a6bf3865367741137da03031411_r.jpg" alt></p>
-<ul>
-<li>linux performance observability: perf-tools</li>
-</ul>
-<p><img src="/public/2022/12/11/linux/linux_tools/v2-1c0134fefbb04597db98ae455a40fad5_r.jpg" alt></p>
-<ul>
-<li><a href="https://www.zhihu.com/search?q=linux%20bcc&amp;search_source=Entity&amp;hybrid_search_source=Entity&amp;hybrid_search_extra=%7B%22sourceType%22%3A%22answer%22%2C%22sourceId%22%3A2795830055%7D" target="_blank" rel="noopener">linux bcc</a>/BPF Tracing tools</li>
-</ul>
-<p><img src="/public/2022/12/11/linux/linux_tools/v2-ffe70303f4d64828ca931d987b12a6d8_r.jpg" alt></p>
-<ul>
-<li>bpftrace/eBPF Tools</li>
-</ul>
-<p><img src="/public/2022/12/11/linux/linux_tools/v2-5985d44e43738933c0b54c89cc20ec09_r.jpg" alt></p>
-<ul>
-<li>BPF Performance Tools: Linux System and Application Observability</li>
-</ul>
-<p><img src="/public/2022/12/11/linux/linux_tools/v2-0f53016fa1d993ffbbf6fc520e318784_r.jpg" alt></p>
-<h2 id="后记"><a class="header-anchor" href="#后记">¶</a>后记</h2>
-<p>更多 LINUX 性能资料，大家可以访问大师的个人网站和和技术书籍</p>
-<ul>
-<li><a href="https://www.brendangregg.com/" target="_blank" rel="noopener">https://www.brendangregg.com/</a></li>
-<li>《性能之巅：洞悉系统、企业与云计算》（《Systems Performance: Enterprise and the Cloud, 2nd Edition (2020)》）</li>
-<li>《洞悉 Linux 系统和应用性能》（《BPF Performance Tools》）</li>
-<li>ps: 要说 LINUX 内核近几年 (和今后几年）最引人注目的发展模块，那就是 <a href="https://www.zhihu.com/search?q=bpf&amp;search_source=Entity&amp;hybrid_search_source=Entity&amp;hybrid_search_extra=%7B%22sourceType%22%3A%22answer%22%2C%22sourceId%22%3A2795830055%7D" target="_blank" rel="noopener">bpf</a> 了，完全值得花点精力学习跟进下。</li>
-<li>如何更深入地学习 Linux？ - michaelli的回答 - 知乎
-<a href="https://www.zhihu.com/question/23564190/answer/2795830055" target="_blank" rel="noopener">https://www.zhihu.com/question/23564190/answer/2795830055</a></li>
-</ul>
+<h2 id="✅-1"><a class="header-anchor" href="#✅-1">¶</a>✅ : 1</h2>
+<p>✅自动生成rss月报
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W29.md">C日常/2022-W29.md</a></p>
+<h2 id="📅-1"><a class="header-anchor" href="#📅-1">¶</a>📅 : 1</h2>
+<p>📅 加上地区统计
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W32.md">C日常/2022-W32.md</a></p>
+<h2 id="🔖-26"><a class="header-anchor" href="#🔖-26">¶</a>🔖 : 26</h2>
+<p>🔖 <a href="https://github.com/serhack/pdf-diff" target="_blank" rel="noopener">GitHub - serhack/pdf-diff: A tool for visualizing differences between two pdf files.</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W32.md">C日常/2022-W32.md</a><br>
+🔖 <a href="http://arthurchiao.art/blog/conntrack-design-and-implementation-zh/" target="_blank" rel="noopener">连接跟踪（conntrack）：原理、应用及 Linux 内核实现</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W32.md">C日常/2022-W32.md</a><br>
+🔖 <a href="https://codemirror.net/docs/guide/" target="_blank" rel="noopener">CodeMirror System Guide</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W32.md">C日常/2022-W32.md</a><br>
+🔖 <a href="https://zhuanlan.zhihu.com/p/357334969?utm_id=0" target="_blank" rel="noopener">mac使用VNC远程访问Ubuntu图形界面</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W32.md">C日常/2022-W32.md</a><br>
+🔖 <a href="https://mp.weixin.qq.com/s/FBJ_GIvdwNbvGKVKeroZjA" target="_blank" rel="noopener">冠军私教课</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W32.md">C日常/2022-W32.md</a><br>
+🔖 <a href="https://cloud.tencent.com/developer/article/1585686" target="_blank" rel="noopener">如何统计 Hexo 网站的访问地区和IP - 腾讯云开发者社区-腾讯云</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W32.md">C日常/2022-W32.md</a><br>
+🔖 <a href="https://www.appinn.com/navidrome/" target="_blank" rel="noopener">Navidrome - 开源音乐服务器，自建云端音乐播放器 - 小众软件</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W30.md">C日常/2022-W30.md</a><br>
+🔖 <a href="https://sspai.com/post/73443" target="_blank" rel="noopener">力量训练：办卡之前需要了解的训练基础与细节制定 - 少数派</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W30.md">C日常/2022-W30.md</a><br>
+🔖 <a href="https://zhuanlan.zhihu.com/p/495262462" target="_blank" rel="noopener">网站低代码开发</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W29.md">C日常/2022-W29.md</a><br>
+🔖长大后，如果是时间修剪了我们的好奇心，我们应该责怪时间吗？
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W29.md">C日常/2022-W29.md</a><br>
+🔖半导体行业的组成
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W29.md">C日常/2022-W29.md</a><br>
+🔖Weylus – 共享屏幕，将平板作为电脑触摸屏使用[Win/macOS/Linux]
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W29.md">C日常/2022-W29.md</a><br>
+🔖跨平台开发 <a href="https://beeware.org/" target="_blank" rel="noopener">BeeWare</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W29.md">C日常/2022-W29.md</a><br>
+🔖资本论复旦大学
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W29.md">C日常/2022-W29.md</a><br>
+🔖 Linux三剑客
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W29.md">C日常/2022-W29.md</a><br>
+🔖pdf补丁丁
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W29.md">C日常/2022-W29.md</a><br>
+🔖 <a href="https://www.wdbyte.com/java/char-image.html_1-%E5%AD%97%E7%AC%A6%E5%9B%BE%E6%A1%88%E6%80%9D%E8%B7%AF" target="_blank" rel="noopener">字符作画，我用字符画个冰墩墩 | 未读代码</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W29.md">C日常/2022-W29.md</a><br>
+🔖 <a href="https://zhuanlan.zhihu.com/p/474337723?utm_source=ZHShareTargetIDMore&amp;utm_medium=social&amp;utm_oi=619610399826382848" target="_blank" rel="noopener">一文让你读懂Linux五大模块内核源码，内核整体架构设计（超详细）</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W29.md">C日常/2022-W29.md</a><br>
+🔖 <a href="https://zhuanlan.zhihu.com/p/483731291?utm_source=ZHShareTargetIDMore&amp;utm_medium=social&amp;utm_oi=619610399826382848" target="_blank" rel="noopener">学习数学思维推荐阅读的五本数学书籍</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W29.md">C日常/2022-W29.md</a><br>
+🔖Snapdrop for Android – 在电脑与 Android 手机间互传文件
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W29.md">C日常/2022-W29.md</a><br>
+🔖Photoview – 支持人脸识别的开源、自托管本地相册
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W29.md">C日常/2022-W29.md</a><br>
+🔖GitHub - LibrePhotos/librephotos: A self-hosted open source photo management service. This is the repository of the backend.
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W29.md">C日常/2022-W29.md</a><br>
+🔖 <a href="https://www.cnblogs.com/imxiaobei/p/13619630.html" target="_blank" rel="noopener">一文搞懂后台高性能服务器设计的常见套路, BAT 高频面试系列 - 编程指北 - 博客园</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W29.md">C日常/2022-W29.md</a><br>
+🔖 <a href="https://www.appinn.com/dual-subtitles/" target="_blank" rel="noopener">YouTube™ 双字幕 - 显示双语字幕（包括自动翻译）、字幕下载，以及自定义字幕样式[Chrome/Edge] - 小众软件</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W29.md">C日常/2022-W29.md</a><br>
+🔖 <a href="https://mp.weixin.qq.com/s/cd-uS5NDIreT02GaHpdxlw" target="_blank" rel="noopener">一文搞懂WiFi的所有知识点</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W29.md">C日常/2022-W29.md</a><br>
+🔖 <a href="https://zhuanlan.zhihu.com/p/122523174" target="_blank" rel="noopener">Doxygen 中文文档</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W29.md">C日常/2022-W29.md</a></p>
 ]]></content>
       <categories>
-        <category>linux</category>
+        <category>转载</category>
       </categories>
       <tags>
-        <tag>linux</tag>
+        <tag>转载</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>「202209月度汇报」ttrss</title>
+    <url>/public/2022/09/15/test/202209/</url>
+    <content><![CDATA[<p>total: 3</p>
+<a id="more"></a>
+<h2 id="🔖WireGuard-基础教程：wg-quick-路由策略解读"><a class="header-anchor" href="#🔖WireGuard-基础教程：wg-quick-路由策略解读">¶</a>🔖<a href="https://icloudnative.io/posts/linux-routing-of-wireguard/" target="_blank" rel="noopener">WireGuard 基础教程：wg-quick 路由策略解读</a></h2>
+<p>pubdata:2022-08-31 01:06:37
+markdate:2022-09-03 06:23:25.656749</p>
+<p><img src="/public/2022/09/15/test/202209/2022-09-03-062325656749.jpg" alt="img"></p>
+<h2 id="🔖微软官方超实用-15-小工具集-PowerToys-v0-62-0-发布，新增文本提取器-OCR-功能"><a class="header-anchor" href="#🔖微软官方超实用-15-小工具集-PowerToys-v0-62-0-发布，新增文本提取器-OCR-功能">¶</a>🔖<a href="https://www.appinn.com/powertoys-v0-62-0/" target="_blank" rel="noopener">微软官方超实用 15+ 小工具集 PowerToys v0.62.0 发布，新增文本提取器 OCR 功能</a></h2>
+<p>pubdata:2022-09-07 04:11:14
+markdate:2022-09-08 04:19:59.942860</p>
+<p><img src="/public/2022/09/15/test/202209/2022-09-08-041959942860.jpg" alt="img"></p>
+<h2 id="🔖Stream-Deck-太贵了？触屏音箱也能成为你的直播助手"><a class="header-anchor" href="#🔖Stream-Deck-太贵了？触屏音箱也能成为你的直播助手">¶</a>🔖<a href="https://sspai.com/post/75789" target="_blank" rel="noopener">Stream Deck 太贵了？触屏音箱也能成为你的直播助手</a></h2>
+<p>pubdata:2022-09-19 06:31:44
+markdate:2022-09-21 03:28:05.514939</p>
+<p><img src="/public/2022/09/15/test/202209/2022-09-21-032805514939.jpg" alt="img"></p>
+]]></content>
+      <categories>
+        <category>转载</category>
+      </categories>
+      <tags>
+        <tag>转载</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>「202209月度汇报」obsidian</title>
+    <url>/public/2022/09/26/test/202209_obsidian/</url>
+    <content><![CDATA[<p>统计 ✅ : 0 📅 : 2 🔖 : 10</p>
+<a id="more"></a>
+<h2 id="✅-0"><a class="header-anchor" href="#✅-0">¶</a>✅ : 0</h2>
+<h2 id="📅-2"><a class="header-anchor" href="#📅-2">¶</a>📅 : 2</h2>
+<p>📅升级电脑
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W35.md">C日常/2022-W35.md</a><br>
+📅 添加rss
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W33.md">C日常/2022-W33.md</a></p>
+<h2 id="🔖-10"><a class="header-anchor" href="#🔖-10">¶</a>🔖 : 10</h2>
+<p>🔖 <a href="https://www.appinn.com/umi-ocr/" target="_blank" rel="noopener">Umi-OCR - 免费的离线 OCR 文字识别软件[Windows] - 小众软件</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W36.md">C日常/2022-W36.md</a><br>
+🔖 设计模式
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W36.md">C日常/2022-W36.md</a><br>
+🔖 苏炳添向母校捐赠100万元！
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W36.md">C日常/2022-W36.md</a><br>
+🔖 <a href="https://github.com/dlvhdr/gh-dash" target="_blank" rel="noopener">gh-dash</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W36.md">C日常/2022-W36.md</a><br>
+🔖 <a href="https://nginxproxymanager.com/" target="_blank" rel="noopener">Nginx Proxy Manager</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W36.md">C日常/2022-W36.md</a><br>
+🔖1、<a href="https://knots3d.com/knots/en_us/ALL" target="_blank" rel="noopener">Knots 3D</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W33.md">C日常/2022-W33.md</a><br>
+🔖 <a href="https://m.runoob.com/typescript/" target="_blank" rel="noopener">TypeScript 教程 | 菜鸟教程</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W33.md">C日常/2022-W33.md</a><br>
+🔖 <a href="https://m.runoob.com/js/" target="_blank" rel="noopener">Javascript 教程 | 菜鸟教程</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W33.md">C日常/2022-W33.md</a><br>
+🔖 Makefile
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W33.md">C日常/2022-W33.md</a><br>
+🔖 <a href="https://www.zhihu.com/question/450738311/answer/2635126508?utm_medium=social&amp;utm_oi=619610399826382848&amp;utm_psn=1545021439438381056&amp;utm_source=ZHShareTargetIDMore" target="_blank" rel="noopener">windows 有什么好用的截图软件？ - 知乎</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W33.md">C日常/2022-W33.md</a></p>
+]]></content>
+      <categories>
+        <category>转载</category>
+      </categories>
+      <tags>
+        <tag>转载</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>「202210月度汇报」ttrss</title>
+    <url>/public/2022/10/15/test/202210/</url>
+    <content><![CDATA[<p>total: 2</p>
+<a id="more"></a>
+<h2 id="🔖一日一技｜Obsidian-Command-进阶用法三则"><a class="header-anchor" href="#🔖一日一技｜Obsidian-Command-进阶用法三则">¶</a>🔖<a href="https://sspai.com/post/75847" target="_blank" rel="noopener">一日一技｜Obsidian Command 进阶用法三则</a></h2>
+<p>pubdata:2022-10-01 07:00:00
+markdate:2022-10-08 11:41:38.979766</p>
+<p><img src="/public/2022/10/15/test/202210/2022-10-08-114138979766.jpg" alt="img"></p>
+<h2 id="🔖用代码编辑器进行知识管理：我用-VSCode-构建自己的笔记系统"><a class="header-anchor" href="#🔖用代码编辑器进行知识管理：我用-VSCode-构建自己的笔记系统">¶</a>🔖<a href="https://sspai.com/post/75940" target="_blank" rel="noopener">用代码编辑器进行知识管理：我用 VSCode 构建自己的笔记系统</a></h2>
+<p>pubdata:2022-09-28 03:29:57
+markdate:2022-10-09 04:14:05.692239</p>
+<p><img src="/public/2022/10/15/test/202210/2022-10-09-041405692239.jpg" alt="img"></p>
+]]></content>
+      <categories>
+        <category>月度汇报</category>
+      </categories>
+      <tags>
+        <tag>月度汇报</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>「202210月度汇报」obsidian</title>
+    <url>/public/2022/10/26/test/202210_obsidian/</url>
+    <content><![CDATA[<p>统计 ✅ : 0 📅 : 2 🔖 : 8</p>
+<a id="more"></a>
+<h2 id="✅-0"><a class="header-anchor" href="#✅-0">¶</a>✅ : 0</h2>
+<h2 id="📅-2"><a class="header-anchor" href="#📅-2">¶</a>📅 : 2</h2>
+<p>📅 转载一下
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W36.md">C日常/2022-W36.md</a><br>
+📅 tracker更新
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W36.md">C日常/2022-W36.md</a></p>
+<h2 id="🔖-8"><a class="header-anchor" href="#🔖-8">¶</a>🔖 : 8</h2>
+<p>🔖肝下50万字的《Linux内核精通》笔记，你的底层原理水平将从入门到入魔【建议收藏】
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W36.md">C日常/2022-W36.md</a><br>
+🔖计算机组成原理(万字爆肝整理)
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W36.md">C日常/2022-W36.md</a><br>
+🔖 <a href="https://xiaolincoding.com/network/" target="_blank" rel="noopener">图解网络介绍</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W37.md">C日常/2022-W37.md</a><br>
+🔖 <a href="https://refactoringguru.cn/design-patterns" target="_blank" rel="noopener">常用设计模式有哪些？</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W37.md">C日常/2022-W37.md</a><br>
+🔖 智能家庭网关
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W37.md">C日常/2022-W37.md</a><br>
+🔖 <a href="https://sadh.life/post/builtins/" target="_blank" rel="noopener">Understanding all of Python, through its builtins</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W37.md">C日常/2022-W37.md</a><br>
+🔖 操作系统自学
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W37.md">C日常/2022-W37.md</a><br>
+🔖 机器人计划
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W37.md">C日常/2022-W37.md</a></p>
+]]></content>
+      <categories>
+        <category>月度汇报</category>
+      </categories>
+      <tags>
+        <tag>月度汇报</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>「202211月度汇报」ttrss</title>
+    <url>/public/2022/11/15/test/202211/</url>
+    <content><![CDATA[<p>total: 1</p>
+<a id="more"></a>
+<h2 id="🔖微软官方小工具更新，这些新特性你或许也能用得上"><a class="header-anchor" href="#🔖微软官方小工具更新，这些新特性你或许也能用得上">¶</a>🔖<a href="https://sspai.com/post/76649" target="_blank" rel="noopener">微软官方小工具更新，这些新特性你或许也能用得上</a></h2>
+<p>pubdata:2022-11-06 03:40:00
+markdate:2022-11-17 17:18:09.571032</p>
+<p><img src="/public/2022/11/15/test/202211/2022-11-17-171809571032.jpg" alt="img"></p>
+]]></content>
+      <categories>
+        <category>月度汇报</category>
+      </categories>
+      <tags>
+        <tag>月度汇报</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>「202211月度汇报」obsidian</title>
+    <url>/public/2022/11/26/test/202211_obsidian/</url>
+    <content><![CDATA[<p>统计 ✅ : 0 📅 : 0 🔖 : 0</p>
+<a id="more"></a>
+<h2 id="✅-0"><a class="header-anchor" href="#✅-0">¶</a>✅ : 0</h2>
+<h2 id="📅-0"><a class="header-anchor" href="#📅-0">¶</a>📅 : 0</h2>
+<h2 id="🔖-0"><a class="header-anchor" href="#🔖-0">¶</a>🔖 : 0</h2>
+]]></content>
+      <categories>
+        <category>月度汇报</category>
+      </categories>
+      <tags>
+        <tag>月度汇报</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>这哈儿是重庆</title>
+    <url>/public/2019/04/25/trips/chongqing/</url>
+    <content><![CDATA[<p>重庆，旅游纪实。20190422 - 20190424</p>
+<a id="more"></a>
+<h2 id="四月二十二"><a class="header-anchor" href="#四月二十二">¶</a>四月二十二</h2>
+<img src="/public/2019/04/25/trips/chongqing/tiankongzhicheng.jpg" alt="tiankongzhicheng" width="50%">
+<div align="center"> <b>天空之城旅店的临江阳台</b></div>
+<p>今天刚来到重庆。前天查天气说是多云，但是来这之后，天气极好。早上9点从成都出发，12点左右到达重庆北站，然后做地铁10号线倒到6号线的小什坊。在解放广场附近，中午吃了个碗杂面很不错，对于我来说有点辣，说是重庆排行第五的小面。</p>
+<p>下午就准备午休一哈，今早上很早起来要赶到成都的市中心乘火车。在江边，也是在洪崖洞旁边，找了一家叫做天空之城的青年旅舍。晚上走在千厮大桥上，脚感受着下面的地铁穿过抖动。从青年旅馆房间里面刚好可以看到江边的夜景，管理人是个可爱的老人家。里面的床单是没有铺上的，得自己铺，老人家解释免得被认为不好，你也可以自己带睡袋。老人家在铁路上工作，与他聊了很久，谈到他在铁路站工作的经历，当然还有很多打理旅舍时的故事。</p>
+<h2 id="四月二十三"><a class="header-anchor" href="#四月二十三">¶</a>四月二十三</h2>
+<img src="/public/2019/04/25/trips/chongqing/guojiang1.jpeg" alt="guojiang1" width="50%">
+<div align="center"> <b>排队2小时，乘过江索道</b></div>
+<img src="/public/2019/04/25/trips/chongqing/goujiang2.jpeg" alt="goujiang2" width="50%">
+<div align="center"> <b>过江索道，晃晃悠悠在路上</b></div>
+<p>早上起来，去楼下买了个早餐，有八宝粥和一个米团（块），那个团米上面加了两个半枣。吃完早饭，阳光正照进那个青年公寓。四月底，节气谷雨过后，算还不是很热，在那个临江的阳台晒了会儿阳光。然后很困，大概是吃饱的缘故，我又回去睡了一个回笼觉。下午出发去白公馆，搭的是轻轨2号线，到大坪换到去烈士墓的地铁上，轻轨是一路沿江跑的，欣赏着嘉陵江的美景，羡慕着重庆人的立体公交系统。嘉陵江水比较清澈，也见到有人在游泳。过会儿就经过网红景点李子坝，轻轨穿房而过。白公馆旁边是四川外国语大学，没有去逛，直接去了白公馆，香山别墅，然后去了渣滓洞，白公馆的地势比较陡，台阶比较多，旁边是歌乐山。</p>
+<img src="/public/2019/04/25/trips/chongqing/eling.jpg" alt="eling" width="50%">
+<div align="center"> <b>鹅岭公园有个塔，从塔上望去</b></div>
+<p>接着到了鹅岭公园，可直接做地铁鹅岭站，进门处分左右路线，我选了左转，然后绕了一大圈到了那个塔，其实可以右转沿着汽车的道往上到那个塔。到了塔顶，可以看到面向朝天门方向，左边是嘉陵江，右边是长江，然后各种大桥，轻轨地铁尽收眼底。吹着微风，站在那个塔上，可见重庆各种摩天大楼，然后就是更远处的山。离开鹅岭公园后，继续搭地铁去了上新街站，下车后往南岸区走，南岸发展比较慢，可以看到明显和渝中区的不同，路边找了一家店，选了几个小菜，吃了个晚饭。晚饭后，去了南山一棵树，人很多，夜景倒是很漂亮，有水有山，两水相交，滋润了这个大都市，今天的行程不错。</p>
+<img src="/public/2019/04/25/trips/chongqing/yejing.jpg" alt="yejing" width="50%">
+<div align="center"> <b>南山一棵松</b></div>
+<h2 id="四月二十四"><a class="header-anchor" href="#四月二十四">¶</a>四月二十四</h2>
+<img src="/public/2019/04/25/trips/chongqing/caotianmen.jpg" alt="caotianmen" width="50%">
+<div align="center"> <b>朝天门码头，水清黄分明</b></div>
+<p>今天也是懒懒起床，吃了个早饭，豆浆是放在那种果冻的包装袋里。今天差不多，就准备看看朝天门，然后回成都。去朝天门还是比较奇怪，随着百度地图导航走，到了一个商城里面，从地面进去是商城的8楼，下了电梯，走了一个商品批发的地方，然后向朝天门赶，今天太阳超级满足，比较热。岸边停了好多游船。到了朝天门，水分了两个颜色，黄的长江，清的嘉陵江。休息一刻，搭了公交车，沿着长江岸跑，居然到了李子坝，然后地铁转到重庆北火车站，这一趟重庆算是画上了一个句号。</p>
+<p>『转载』，请联系博主。</p>
+]]></content>
+      <categories>
+        <category>旅游</category>
+      </categories>
+      <tags>
+        <tag>重庆</tag>
+        <tag>游记</tag>
       </tags>
   </entry>
   <entry>
@@ -4014,6 +3905,134 @@ ip addr add 10.1.2.2/24 dev Tunnel-1</p>
       <tags>
         <tag>个人管理</tag>
         <tag>《形象美学》</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>「202207月度汇报」obsidian</title>
+    <url>/public/2022/07/26/test/202207_obsidian/</url>
+    <content><![CDATA[<p>统计 ✅ : 6 📅 : 3 🔖 : 47</p>
+<a id="more"></a>
+<h2 id="✅-6"><a class="header-anchor" href="#✅-6">¶</a>✅ : 6</h2>
+<p>✅目标图标系统
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
+✅ <a href="https://blog.csdn.net/hhhhhyyyyy8/article/details/102133863" target="_blank" rel="noopener">Linux内核数据包bridge上转发流程_hhhhhyyyyy8的博客-CSDN博客_br_multicast_flood</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W27.md">C日常/2022-W27.md</a><br>
+✅ 邮箱转rss
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W23.md">C日常/2022-W23.md</a><br>
+✅  hacker news rss添加
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W23.md">C日常/2022-W23.md</a><br>
+✅ 经济学人转载leader文章
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W23.md">C日常/2022-W23.md</a><br>
+✅ github博客评论系统是否换成【不换】
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W23.md">C日常/2022-W23.md</a></p>
+<h2 id="📅-3"><a class="header-anchor" href="#📅-3">¶</a>📅 : 3</h2>
+<p>📅 端口触发 端口转发
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
+📅 全屋智能
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W26.md">C日常/2022-W26.md</a><br>
+📅 改进
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W26.md">C日常/2022-W26.md</a></p>
+<h2 id="🔖-47"><a class="header-anchor" href="#🔖-47">¶</a>🔖 : 47</h2>
+<p>🔖 ish保持后台运行
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W19.md">C日常/2022-W19.md</a><br>
+🔖 <a href="https://www.jianshu.com/p/f29ca723db4f" target="_blank" rel="noopener">Git 运行配置（git config、gitk、git gui） - michael_jia - 简书</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W19.md">C日常/2022-W19.md</a><br>
+🔖<a href="https://www.cnblogs.com/xuanbjut/p/12624702.html" target="_blank" rel="noopener">wmctrl像xmonad那样方便地用快捷键来控制任务窗口的显示 - pycod - 博客园</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W19.md">C日常/2022-W19.md</a><br>
+🔖 <a href="https://blog.csdn.net/anlian523/article/details/113627568" target="_blank" rel="noopener">VSCode复制代码时去掉样式/语法高亮/代码高亮/黑色背景_anlian523的博客-CSDN博客_idea复制代码不带黑色背景</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W19.md">C日常/2022-W19.md</a><br>
+🔖 <a href="https://blog.csdn.net/dog250/article/details/121400218" target="_blank" rel="noopener">为什么除法，开方，求对数比乘法，乘方，求指数更难_dog250的博客-CSDN博客</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
+🔖学习小林博客的写法
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
+🔖一万字统计学梳理
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
+🔖腾讯 彻底搞清楚tcp
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
+🔖0x5f3759df这个快速开方中的常数的数学依据是什么？
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
+🔖https流程
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
+🔖使用 Clion + QEMU/GDB 远程调试Linux内核（分享自知乎网）<a href="https://zhuanlan.zhihu.com/p/412604505?utm_source=md.obsidian&amp;utm_medium=social&amp;utm_oi=619610399826382848" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/412604505?utm_source=md.obsidian&amp;utm_medium=social&amp;utm_oi=619610399826382848</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
+🔖TCP/IP协议到底在讲什么？ <a href="http://www.zhihu.com/question/51074319?utm_source=md.obsidian&amp;utm_medium=social&amp;utm_oi=619610399826382848" target="_blank" rel="noopener">http://www.zhihu.com/question/51074319?utm_source=md.obsidian&amp;utm_medium=social&amp;utm_oi=619610399826382848</a> （分享自知乎网）
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
+🔖【什么是动态规划（Dynamic Programming）？动态规划的意义是什么？】阮行止：… <a href="https://www.zhihu.com/question/23995189/answer/613096905?utm_source=md.obsidian&amp;utm_medium=social&amp;utm_oi=619610399826382848" target="_blank" rel="noopener">https://www.zhihu.com/question/23995189/answer/613096905?utm_source=md.obsidian&amp;utm_medium=social&amp;utm_oi=619610399826382848</a> （分享自知乎网）
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
+🔖【为什么有人说弄懂了《算法导论》的 90%，就超越了 90%的程序员？】启舰：… <a href="https://www.zhihu.com/question/315201616/answer/1960517601?utm_source=md.obsidian&amp;utm_medium=social&amp;utm_oi=619610399826382848" target="_blank" rel="noopener">https://www.zhihu.com/question/315201616/answer/1960517601?utm_source=md.obsidian&amp;utm_medium=social&amp;utm_oi=619610399826382848</a> （分享自知乎网）
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
+🔖【vs code】【keil】优雅地使用vs code代替keil。by 童话与云 👉 <a href="https://www.zhihu.com/zvideo/1422934459457253376?utm_source=md.obsidian&amp;utm_medium=social&amp;utm_oi=619610399826382848" target="_blank" rel="noopener">https://www.zhihu.com/zvideo/1422934459457253376?utm_source=md.obsidian&amp;utm_medium=social&amp;utm_oi=619610399826382848</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
+🔖图解网络 - 75张图带你了解网络设备、网络地址规划、静态路由、实战演练（分享自知乎网）
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
+🔖vscode-journal：vscode中写日记/便签/提醒，配合nutstore与安卓、ios同步_TeQuL的博客-CSDN博客
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
+🔖结构体（结构体嵌套、结构体指针、结构体参数传递） - 蓝海人 - 博客园
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
+🔖Feedme - 8大 RSS 阅读器第三方客户端[Android] - 小众软件
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
+🔖聪明人必学的停车小技巧！。by Felicidades 👉 <a href="https://www.zhihu.com/zvideo/1414008107094093824?utm_source=md.obsidian&amp;utm_medium=social&amp;utm_oi=619610399826382848" target="_blank" rel="noopener">https://www.zhihu.com/zvideo/1414008107094093824?utm_source=md.obsidian&amp;utm_medium=social&amp;utm_oi=619610399826382848</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
+🔖在线 DOS 游戏 - 近 2000 款怀旧游戏，仙剑、红警、三国志、大富翁、明星志愿、大航海、主题医院等 - 小众软件
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
+🔖Feeddd · 重新掌控你的订阅源
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
+🔖【如何长时间高效学习？】硬核学长2077：… <a href="https://www.zhihu.com/question/28358499/answer/1762418904?utm_source=md.obsidian&amp;utm_medium=social&amp;utm_oi=619610399826382848" target="_blank" rel="noopener">https://www.zhihu.com/question/28358499/answer/1762418904?utm_source=md.obsidian&amp;utm_medium=social&amp;utm_oi=619610399826382848</a> （分享自知乎网）
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
+🔖【你身边的学霸都有怎样的学习方法或习惯？】硬核学长2077：… <a href="https://www.zhihu.com/question/54265751/answer/1995587976?utm_source=md.obsidian&amp;utm_medium=social&amp;utm_oi=619610399826382848" target="_blank" rel="noopener">https://www.zhihu.com/question/54265751/answer/1995587976?utm_source=md.obsidian&amp;utm_medium=social&amp;utm_oi=619610399826382848</a> （分享自知乎网）
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
+🔖【如何不痛苦地早起？】铁木君：… <a href="https://www.zhihu.com/question/22120300/answer/1887544838?utm_source=md.obsidian&amp;utm_medium=social&amp;utm_oi=619610399826382848" target="_blank" rel="noopener">https://www.zhihu.com/question/22120300/answer/1887544838?utm_source=md.obsidian&amp;utm_medium=social&amp;utm_oi=619610399826382848</a> （分享自知乎网）
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
+🔖[[obsidian_tips]]
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
+🔖<a href="https://sspai.com/post/72757" target="_blank" rel="noopener">随时可用的 PC 体验是这样「炼」成的，Windows 新版睡眠机制详解 - 少数派</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
+🔖<a href="https://blog.csdn.net/who538592/article/details/79483323" target="_blank" rel="noopener">TC流量控制_who538592的博客-CSDN博客_tc流量控制</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
+🔖 <a href="https://sspai.com/post/74090" target="_blank" rel="noopener">大家都说好的蛋白粉，我们应该如何取舍 - 少数派</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W28.md">C日常/2022-W28.md</a><br>
+🔖 <a href="https://zhuanlan.zhihu.com/p/508345279" target="_blank" rel="noopener">我的obsidian插件开发的学习过程</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W28.md">C日常/2022-W28.md</a><br>
+🔖 <a href="https://blog.csdn.net/Haywardwang/article/details/108626491" target="_blank" rel="noopener">python 词云构建_Haywardwang的博客-CSDN博客</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W28.md">C日常/2022-W28.md</a><br>
+🔖 <a href="https://blog.csdn.net/weixin_56842628/article/details/117921526?utm_medium=distribute.wap_relevant.none-task-blog-2~default~baidujs_title~default-9-117921526-blog-108626491.wap_blog_relevant_default&amp;spm=1001.2101.3001.4242.6&amp;utm_relevant_index=10" target="_blank" rel="noopener">如何用Python制作简单又好看的词云？来瞅瞅吧~_小熊爱Python的博客-CSDN博客_python词云代码简单</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W28.md">C日常/2022-W28.md</a><br>
+🔖 <a href="https://sspai.com/post/73779" target="_blank" rel="noopener">跨时空圆桌：伟大创作者们如何安排日常生活 - 少数派</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W27.md">C日常/2022-W27.md</a><br>
+🔖 <a href="https://www.appinn.com/typing-learner/" target="_blank" rel="noopener">Typing Learner - 硬核单词记忆：从电影台词筛选生词，边追美剧边学英语，用户直喊「好家伙！」[Windows/macOS] - 小众软件</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W27.md">C日常/2022-W27.md</a><br>
+🔖 <a href="https://www.zhihu.com/question/391756708/answer/2556173863" target="_blank" rel="noopener">SpaceX的可回收火箭有什么神奇之处，为何其他航天大国还不能仿造？ - YY硕 的回答 - 知乎</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W27.md">C日常/2022-W27.md</a><br>
+🔖 <a href="https://mp.weixin.qq.com/s/KBKO4C1d4CkyHAPEkh8D4Q" target="_blank" rel="noopener">这几个通信协议的动图不错</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W27.md">C日常/2022-W27.md</a><br>
+🔖 <a href="https://oorkan.medium.com/emojifying-your-linux-terminal-9a5c1e8f6b3c" target="_blank" rel="noopener">Emojifying your Linux terminal  🚀</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W27.md">C日常/2022-W27.md</a><br>
+🔖 <a href="https://sspai.com/post/74167" target="_blank" rel="noopener">为 WSL 配置这些新功能，不用虚拟机也能体验完整 Linux - 少数派</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W27.md">C日常/2022-W27.md</a><br>
+🔖<a href="https://sspai.com/post/72274" target="_blank" rel="noopener">意识先行，工具辅助：谈谈我们该怎样分辨虚假信息</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W27.md">C日常/2022-W27.md</a><br>
+🔖<a href="https://zhuanlan.zhihu.com/p/495262462" target="_blank" rel="noopener">网站低代码开发</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W27.md">C日常/2022-W27.md</a><br>
+🔖 学习体系化，效率提升
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W27.md">C日常/2022-W27.md</a><br>
+🔖 <a href="https://sspai.com/post/73958" target="_blank" rel="noopener">玩转 Obsidian 08：利用 Dataview 打造自动化 HomePage - 少数派</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W26.md">C日常/2022-W26.md</a><br>
+🔖 <a href="https://post.m.smzdm.com/p/adwgg2rd/" target="_blank" rel="noopener">小爱同学，打开我的三菱空调——米家空调伴侣2使用分享_智能家居_什么值得买</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W26.md">C日常/2022-W26.md</a><br>
+🔖 <a href="https://sspai.com/post/73829" target="_blank" rel="noopener">用 59 分钟，找到工具的效率之源 - 少数派</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W26.md">C日常/2022-W26.md</a><br>
+🔖 <a href="https://cloud.tencent.com/developer/article/1879646" target="_blank" rel="noopener">tcpdump是在哪儿抓到的包？ - 腾讯云开发者社区-腾讯云</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W26.md">C日常/2022-W26.md</a><br>
+🔖 <a href="https://www.jianshu.com/p/79bcf09aed25" target="_blank" rel="noopener">IPTables五----ebtables - marshalzxy - 简书</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W26.md">C日常/2022-W26.md</a><br>
+🔖 <a href="https://david-waiting.medium.com/a-beginners-guide-to-generic-routing-encapsulation-fb2b4fb63abb" target="_blank" rel="noopener">A Beginner’s Guide to Generic Routing Encapsulation</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W26.md">C日常/2022-W26.md</a></p>
+]]></content>
+      <categories>
+        <category>转载</category>
+      </categories>
+      <tags>
+        <tag>转载</tag>
       </tags>
   </entry>
   <entry>
