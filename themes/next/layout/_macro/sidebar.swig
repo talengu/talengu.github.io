@@ -11,7 +11,8 @@
     <div class="sidebar-inner">
 
       {% set display_toc = is_post and theme.toc.enable %}
-
+      <script type="text/javascript" id="clustrmaps" src="{{ theme.clustrmaps.url }}"></script>
+      
       {% if display_toc and toc(page.content).length > 1 %}
         <ul class="sidebar-nav motion-element">
           <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
