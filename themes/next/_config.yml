@@ -300,7 +300,7 @@ mathjax:
 
 clustrmaps:
   enable: true
-  url: //cdn.clustrmaps.com/map_v2.js?d=5Y5S382WVdS5Rafm-8SR-tSr5c6erGKcUlEEEb5LZBc
+  key: 5Y5S382WVdS5Rafm-8SR-tSr5c6erGKcUlEEEb5LZBc&cl=ffffff&w=a
 
 # Swiftype Search API Key
 #swiftype_key:
