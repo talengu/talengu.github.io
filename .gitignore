@@ -7,7 +7,3 @@ node_modules/
 .deploy*/
 blog.zip
 source/*
-public/tags/python/index.html
-public/tags/RSS/index.html
-public/tags/Python/index.html
-public/tags/rss/index.html
