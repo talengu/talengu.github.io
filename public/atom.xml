@@ -6,7 +6,7 @@
   <link href="/public/atom.xml" rel="self"/>
   
   <link href="https://talengu.github.io/public/"/>
-  <updated>2023-04-26T16:00:04.000Z</updated>
+  <updated>2023-05-15T16:00:04.000Z</updated>
   <id>https://talengu.github.io/public/</id>
   
   <author>
@@ -15,6 +15,28 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>「202305月度汇报」ttrss</title>
+    <link href="https://talengu.github.io/public/2023/05/15/test/202305/"/>
+    <id>https://talengu.github.io/public/2023/05/15/test/202305/</id>
+    <published>2023-05-15T16:00:04.000Z</published>
+    <updated>2023-05-15T16:00:04.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>total: 4</p><a id="more"></a><h2 id="🔖Ebook-Translator-–-用-Google、ChatGPT-和-DeepL-翻译整本电子书-Calibre-插件"><a class="header-anchor" href="#🔖Ebook-Translator-–-用-Google、ChatGPT-和-DeepL-翻译整本电子书-Calibre-插件">¶</a>🔖<a href="https://www.appinn.com/ebook-translator/" target="_blank" rel="noopener">Ebook Translator – 用 Google、ChatGPT 和 DeepL 翻译整本电子书[Calibre 插件]</a></h2><p>pubdata:2023-05-01 13:08:41markdate:2023-05-05 09:35:30.733521</p><p><img src="/public/2023/05/15/test/202305/2023-05-05-093530733521.jpg" alt="img"></p><h2 id="🔖Alist-Helper-–-图形界面的-Alist：聚合加载-115-阿里云盘-百度网盘-OneDrive-迅雷-夸克-等-20-网盘文件，支持播放视频-Windows"><a class="header-anchor" href="#🔖Alist-Helper-–-图形界面的-Alist：聚合加载-115-阿里云盘-百度网盘-OneDrive-迅雷-夸克-等-20-网盘文件，支持播放视频-Windows">¶</a>🔖<a href="https://www.appinn.com/alist-helper/" target="_blank" rel="noopener">Alist Helper – 图形界面的 Alist：聚合加载 115/阿里云盘/百度网盘/OneDrive/迅雷/夸克/等 20+ 网盘文件，支持播放视频[Windows]</a></h2><p>pubdata:2023-05-14 06:12:50markdate:2023-05-15 01:02:12.031514</p><p><img src="/public/2023/05/15/test/202305/2023-05-15-010212031514.jpg" alt="img"></p><h2 id="🔖Pot-–-开源免费的跨平台划词翻译软件，拥有-DeepL、彩云小译、OpenAI-等-7-家翻译引擎，整合-Anki、欧路词典生词本"><a class="header-anchor" href="#🔖Pot-–-开源免费的跨平台划词翻译软件，拥有-DeepL、彩云小译、OpenAI-等-7-家翻译引擎，整合-Anki、欧路词典生词本">¶</a>🔖<a href="https://www.appinn.com/pot-translation/" target="_blank" rel="noopener">Pot – 开源免费的跨平台划词翻译软件，拥有 DeepL、彩云小译、OpenAI 等 7 家翻译引擎，整合 Anki、欧路词典生词本</a></h2><p>pubdata:2023-05-16 07:26:43markdate:2023-05-17 06:39:13.020731</p><p><img src="/public/2023/05/15/test/202305/2023-05-17-063913020731.jpg" alt="img"></p><h2 id="🔖RSS-Translate-–-自动翻译外语-RSS-至中文"><a class="header-anchor" href="#🔖RSS-Translate-–-自动翻译外语-RSS-至中文">¶</a>🔖<a href="https://www.appinn.com/rss-translate/" target="_blank" rel="noopener">RSS-Translate – 自动翻译外语 RSS 至中文</a></h2><p>pubdata:2023-05-23 08:52:56markdate:2023-05-23 17:44:30.584987</p><p><img src="/public/2023/05/15/test/202305/2023-05-23-174430584987.jpg" alt="img"></p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;total: 4&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="月度汇报" scheme="https://talengu.github.io/public/categories/%E6%9C%88%E5%BA%A6%E6%B1%87%E6%8A%A5/"/>
+    
+    
+      <category term="月度汇报" scheme="https://talengu.github.io/public/tags/%E6%9C%88%E5%BA%A6%E6%B1%87%E6%8A%A5/"/>
+    
+  </entry>
   
   <entry>
     <title>「202304月度汇报」obsidian</title>
@@ -462,28 +484,6 @@
     
     
       <category term="月度汇报" scheme="https://talengu.github.io/public/tags/%E6%9C%88%E5%BA%A6%E6%B1%87%E6%8A%A5/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>「202209月度汇报」obsidian</title>
-    <link href="https://talengu.github.io/public/2022/09/26/test/202209_obsidian/"/>
-    <id>https://talengu.github.io/public/2022/09/26/test/202209_obsidian/</id>
-    <published>2022-09-26T16:00:04.000Z</published>
-    <updated>2022-09-26T16:00:04.000Z</updated>
-    
-    <content type="html"><![CDATA[<p>统计 ✅ : 0 📅 : 2 🔖 : 10</p><a id="more"></a><h2 id="✅-0"><a class="header-anchor" href="#✅-0">¶</a>✅ : 0</h2><h2 id="📅-2"><a class="header-anchor" href="#📅-2">¶</a>📅 : 2</h2><p>📅升级电脑-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W35.md">C日常/2022-W35.md</a><br>📅 添加rss-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W33.md">C日常/2022-W33.md</a></p><h2 id="🔖-10"><a class="header-anchor" href="#🔖-10">¶</a>🔖 : 10</h2><p>🔖 <a href="https://www.appinn.com/umi-ocr/" target="_blank" rel="noopener">Umi-OCR - 免费的离线 OCR 文字识别软件[Windows] - 小众软件</a>-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W36.md">C日常/2022-W36.md</a><br>🔖 设计模式-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W36.md">C日常/2022-W36.md</a><br>🔖 苏炳添向母校捐赠100万元！-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W36.md">C日常/2022-W36.md</a><br>🔖 <a href="https://github.com/dlvhdr/gh-dash" target="_blank" rel="noopener">gh-dash</a>-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W36.md">C日常/2022-W36.md</a><br>🔖 <a href="https://nginxproxymanager.com/" target="_blank" rel="noopener">Nginx Proxy Manager</a>-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W36.md">C日常/2022-W36.md</a><br>🔖1、<a href="https://knots3d.com/knots/en_us/ALL" target="_blank" rel="noopener">Knots 3D</a>-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W33.md">C日常/2022-W33.md</a><br>🔖 <a href="https://m.runoob.com/typescript/" target="_blank" rel="noopener">TypeScript 教程 | 菜鸟教程</a>-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W33.md">C日常/2022-W33.md</a><br>🔖 <a href="https://m.runoob.com/js/" target="_blank" rel="noopener">Javascript 教程 | 菜鸟教程</a>-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W33.md">C日常/2022-W33.md</a><br>🔖 Makefile-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W33.md">C日常/2022-W33.md</a><br>🔖 <a href="https://www.zhihu.com/question/450738311/answer/2635126508?utm_medium=social&amp;utm_oi=619610399826382848&amp;utm_psn=1545021439438381056&amp;utm_source=ZHShareTargetIDMore" target="_blank" rel="noopener">windows 有什么好用的截图软件？ - 知乎</a>-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W33.md">C日常/2022-W33.md</a></p>]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;统计 ✅ : 0 📅 : 2 🔖 : 10&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="转载" scheme="https://talengu.github.io/public/categories/%E8%BD%AC%E8%BD%BD/"/>
-    
-    
-      <category term="转载" scheme="https://talengu.github.io/public/tags/%E8%BD%AC%E8%BD%BD/"/>
     
   </entry>
   
