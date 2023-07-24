@@ -1260,6 +1260,83 @@ t   -=   (unsigned   long)GetCycleCount();</p>
       </tags>
   </entry>
   <entry>
+    <title>Ubuntu的优化与设置</title>
+    <url>/public/2017/05/22/linux/ubuntu/</url>
+    <content><![CDATA[<h1></h1>
+<h2 id="前言"><a class="header-anchor" href="#前言">¶</a>前言</h2>
+<ul>
+<li>
+<h2 id="窗口颜色设置浅绿色"><a class="header-anchor" href="#窗口颜色设置浅绿色">¶</a>窗口颜色设置浅绿色</h2>
+   <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">cd /usr/share/themes/Ambiance/gtk-3.0</span><br><span class="line">sudo gedit gtk-main.css</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="2-常用环境"><a class="header-anchor" href="#2-常用环境">¶</a>2  常用环境</h2>
+<ul>
+<li>
+<h2 id="安装jdk"><a class="header-anchor" href="#安装jdk">¶</a>安装jdk</h2>
+   <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># add java path</span></span><br><span class="line"><span class="built_in">export</span> JAVA_HOME=/usr/<span class="built_in">local</span>/java/jdk1.7</span><br><span class="line"><span class="built_in">export</span> JRE_HOME=<span class="variable">$&#123;JAVA_HOME&#125;</span>/jre</span><br><span class="line"><span class="built_in">export</span> CLASSPATH=.:<span class="variable">$&#123;JAVA_HOME&#125;</span>/lib:<span class="variable">$&#123;JRE_HOME&#125;</span>/lib</span><br><span class="line"><span class="built_in">export</span> PATH=<span class="variable">$&#123;JAVA_HOME&#125;</span>/bin:<span class="variable">$PATH</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="3-安装软件"><a class="header-anchor" href="#3-安装软件">¶</a>3 安装软件</h2>
+<ul>
+<li>
+<h2 id="在线软件安装"><a class="header-anchor" href="#在线软件安装">¶</a>在线软件安装</h2>
+   <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 备份源列表地址</span></span><br><span class="line">sudo cp /etc/apt/sources.list /etc/apt/sources.list_backup</span><br><span class="line"><span class="comment"># 修改</span></span><br><span class="line">sudo vim /etc/apt/sources.list</span><br></pre></td></tr></table></figure>
+<ul>
+<li>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 更新源</span></span><br><span class="line">apt-get update</span><br><span class="line">apt-get install xxx</span><br><span class="line"></span><br><span class="line"><span class="comment"># 包search</span></span><br><span class="line">apt-cache search xxx</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li>
+<h2 id="deb本地软件安装"><a class="header-anchor" href="#deb本地软件安装">¶</a>deb本地软件安装</h2>
+   <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 安装deb包命令</span></span><br><span class="line">dpkg -i *.deb</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 如果缺少依赖执行</span></span><br><span class="line">apt-get -f install</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="4-常用软件"><a class="header-anchor" href="#4-常用软件">¶</a>4 常用软件</h2>
+<ul>
+<li>
+<p>mpv播放器</p>
+</li>
+<li>
+<p>有道字典</p>
+</li>
+<li>
+<h2 id="atom"><a class="header-anchor" href="#atom">¶</a>atom</h2>
+   <figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-tag">atom-pane</span> &#123;</span><br><span class="line"><span class="attribute">font-size</span>: <span class="number">16px</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.command-palette</span> &#123;</span><br><span class="line"><span class="attribute">font-size</span>: <span class="number">16px</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<h2 id="图标设置"><a class="header-anchor" href="#图标设置">¶</a>图标设置</h2>
+   <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">cd /usr/share/applications</span><br><span class="line">vim eclipse.desktop</span><br></pre></td></tr></table></figure>
+<ul>
+<li>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">!/usr/bin/env xdg-open</span></span><br><span class="line"></span><br><span class="line">[Desktop Entry]</span><br><span class="line">Version=22.0</span><br><span class="line">Name=eclipse</span><br><span class="line">Exec=/home/gtc/Android/adt-bundle-linux/eclipse/eclipse</span><br><span class="line">Terminal=false</span><br><span class="line">Icon=/home/gtc/Android/adt-bundle-linux/eclipse/icon.xpm</span><br><span class="line">Type=Application</span><br><span class="line">Categories=Development</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="设备使用率指示"><a class="header-anchor" href="#设备使用率指示">¶</a>设备使用率指示</h3>
+<p><a href="https://github.com/fossfreedom/indicator-sysmonitor" target="_blank" rel="noopener">https://github.com/fossfreedom/indicator-sysmonitor</a></p>
+<h2 id="5-其他优化"><a class="header-anchor" href="#5-其他优化">¶</a>5 其他优化</h2>
+<ul>
+<li>
+<h2 id="关闭错误报告"><a class="header-anchor" href="#关闭错误报告">¶</a>关闭错误报告</h2>
+   <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 关闭烦人的错误报告</span></span><br><span class="line">sudo gedit /etc/default/apport</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<h2 id="CPU-100-占用"><a class="header-anchor" href="#CPU-100-占用">¶</a>CPU 100%占用</h2>
+   <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">cd /usr/lib/gvfs</span><br><span class="line"><span class="meta">#</span><span class="bash"> 将gvfsd-smb-brows权限改成744，取消普通用户的执行权限，</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 也挺有意思，暂时没引发别的问题</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+]]></content>
+      <categories>
+        <category>Linux</category>
+      </categories>
+      <tags>
+        <tag>技巧</tag>
+        <tag>Ubuntu</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>个人主页搭建</title>
     <url>/public/2016/12/22/build_blog/</url>
     <content><![CDATA[<h2 id="前言"><a class="header-anchor" href="#前言">¶</a>前言</h2>
@@ -2051,83 +2128,6 @@ nbextensions的教程<a href="https://jupyter-contrib-nbextensions.readthedocs.i
         <tag>工具</tag>
         <tag>Python</tag>
         <tag>笔记应用</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Ubuntu的优化与设置</title>
-    <url>/public/2017/05/22/linux/ubuntu/</url>
-    <content><![CDATA[<h1></h1>
-<h2 id="前言"><a class="header-anchor" href="#前言">¶</a>前言</h2>
-<ul>
-<li>
-<h2 id="窗口颜色设置浅绿色"><a class="header-anchor" href="#窗口颜色设置浅绿色">¶</a>窗口颜色设置浅绿色</h2>
-   <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">cd /usr/share/themes/Ambiance/gtk-3.0</span><br><span class="line">sudo gedit gtk-main.css</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<h2 id="2-常用环境"><a class="header-anchor" href="#2-常用环境">¶</a>2  常用环境</h2>
-<ul>
-<li>
-<h2 id="安装jdk"><a class="header-anchor" href="#安装jdk">¶</a>安装jdk</h2>
-   <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># add java path</span></span><br><span class="line"><span class="built_in">export</span> JAVA_HOME=/usr/<span class="built_in">local</span>/java/jdk1.7</span><br><span class="line"><span class="built_in">export</span> JRE_HOME=<span class="variable">$&#123;JAVA_HOME&#125;</span>/jre</span><br><span class="line"><span class="built_in">export</span> CLASSPATH=.:<span class="variable">$&#123;JAVA_HOME&#125;</span>/lib:<span class="variable">$&#123;JRE_HOME&#125;</span>/lib</span><br><span class="line"><span class="built_in">export</span> PATH=<span class="variable">$&#123;JAVA_HOME&#125;</span>/bin:<span class="variable">$PATH</span></span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<h2 id="3-安装软件"><a class="header-anchor" href="#3-安装软件">¶</a>3 安装软件</h2>
-<ul>
-<li>
-<h2 id="在线软件安装"><a class="header-anchor" href="#在线软件安装">¶</a>在线软件安装</h2>
-   <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 备份源列表地址</span></span><br><span class="line">sudo cp /etc/apt/sources.list /etc/apt/sources.list_backup</span><br><span class="line"><span class="comment"># 修改</span></span><br><span class="line">sudo vim /etc/apt/sources.list</span><br></pre></td></tr></table></figure>
-<ul>
-<li>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 更新源</span></span><br><span class="line">apt-get update</span><br><span class="line">apt-get install xxx</span><br><span class="line"></span><br><span class="line"><span class="comment"># 包search</span></span><br><span class="line">apt-cache search xxx</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-</li>
-<li>
-<h2 id="deb本地软件安装"><a class="header-anchor" href="#deb本地软件安装">¶</a>deb本地软件安装</h2>
-   <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 安装deb包命令</span></span><br><span class="line">dpkg -i *.deb</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 如果缺少依赖执行</span></span><br><span class="line">apt-get -f install</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<h2 id="4-常用软件"><a class="header-anchor" href="#4-常用软件">¶</a>4 常用软件</h2>
-<ul>
-<li>
-<p>mpv播放器</p>
-</li>
-<li>
-<p>有道字典</p>
-</li>
-<li>
-<h2 id="atom"><a class="header-anchor" href="#atom">¶</a>atom</h2>
-   <figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-tag">atom-pane</span> &#123;</span><br><span class="line"><span class="attribute">font-size</span>: <span class="number">16px</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.command-palette</span> &#123;</span><br><span class="line"><span class="attribute">font-size</span>: <span class="number">16px</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-<li>
-<h2 id="图标设置"><a class="header-anchor" href="#图标设置">¶</a>图标设置</h2>
-   <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">cd /usr/share/applications</span><br><span class="line">vim eclipse.desktop</span><br></pre></td></tr></table></figure>
-<ul>
-<li>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">!/usr/bin/env xdg-open</span></span><br><span class="line"></span><br><span class="line">[Desktop Entry]</span><br><span class="line">Version=22.0</span><br><span class="line">Name=eclipse</span><br><span class="line">Exec=/home/gtc/Android/adt-bundle-linux/eclipse/eclipse</span><br><span class="line">Terminal=false</span><br><span class="line">Icon=/home/gtc/Android/adt-bundle-linux/eclipse/icon.xpm</span><br><span class="line">Type=Application</span><br><span class="line">Categories=Development</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-</li>
-</ul>
-<h3 id="设备使用率指示"><a class="header-anchor" href="#设备使用率指示">¶</a>设备使用率指示</h3>
-<p><a href="https://github.com/fossfreedom/indicator-sysmonitor" target="_blank" rel="noopener">https://github.com/fossfreedom/indicator-sysmonitor</a></p>
-<h2 id="5-其他优化"><a class="header-anchor" href="#5-其他优化">¶</a>5 其他优化</h2>
-<ul>
-<li>
-<h2 id="关闭错误报告"><a class="header-anchor" href="#关闭错误报告">¶</a>关闭错误报告</h2>
-   <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 关闭烦人的错误报告</span></span><br><span class="line">sudo gedit /etc/default/apport</span><br></pre></td></tr></table></figure>
-</li>
-<li>
-<h2 id="CPU-100-占用"><a class="header-anchor" href="#CPU-100-占用">¶</a>CPU 100%占用</h2>
-   <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">cd /usr/lib/gvfs</span><br><span class="line"><span class="meta">#</span><span class="bash"> 将gvfsd-smb-brows权限改成744，取消普通用户的执行权限，</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 也挺有意思，暂时没引发别的问题</span></span><br></pre></td></tr></table></figure></li>
-</ul>
-]]></content>
-      <categories>
-        <category>Linux</category>
-      </categories>
-      <tags>
-        <tag>技巧</tag>
-        <tag>Ubuntu</tag>
       </tags>
   </entry>
   <entry>
