@@ -1978,6 +1978,609 @@ markdate:2022-11-17 17:18:09.571032</p>
       </tags>
   </entry>
   <entry>
+    <title>正则化「一」机器学习中的正则化</title>
+    <url>/public/2019/07/17/AI/regulation_baysian/</url>
+    <content><![CDATA[<p><strong>前言</strong>
+本<strong>正则化系列</strong>文章我们将讨论<strong>正则化技术在机器学习和深度学习的应用</strong>。本文为该系列的第一篇，主要介绍<strong>机器学习正则化的概念，原理和应用实例</strong>。</p>
+<p><a href="https://en.wikipedia.org/wiki/Regularization_(mathematics)" target="_blank" rel="noopener">正则化</a> 技术广泛应用在机器学习和深度学习算法中，本质作用是<strong>防止过拟合、提高模型泛化能力</strong>。其中过拟合的简单理解就是训练的算法模型太过复杂，模型过分考虑了当前样本的结构。</p>
+<p>在早期的机器学习领域一般只是将范数惩罚叫做正则化技术，而在深度学习领域认为，能够显著减少方差，而不过度增加偏差的策略都可以认为是正则化技术。故<strong>推广的正则化技术</strong>还有：扩增样本集、早停止、Dropout、集成学习、多任务学习、对抗训练、参数共享等。(具体见“花书 第七章 <a href="http://www.deeplearningbook.org/contents/regularization.html" target="_blank" rel="noopener">Regularization for Deep Learning</a>”），关于<strong>深度学习正则化</strong>会在下一篇正则化文章中重点分析。</p>
+<p>转载自：<a href="https://blog.csdn.net/BigData_Mining/article/details/81631249" target="_blank" rel="noopener">https://blog.csdn.net/BigData_Mining/article/details/81631249</a></p>
+<a id="more"></a>
+<h2 id="1-多角度看机器学习正则化"><a class="header-anchor" href="#1-多角度看机器学习正则化">¶</a>1. 多角度看机器学习正则化</h2>
+<p><strong>机器学习领域正则化</strong>可以从以下三个角度进行理解：</p>
+<p><strong>(1)</strong> <strong>正则化等价于结构风险最小化，其是通过在经验风险项后加上表示模型复杂度的正则化项或惩罚项，达到选择经验风险和模型复杂度都较小的模型目的</strong>。</p>
+<p>​	<strong>经验风险</strong>：机器学习中的风险是指模型与真实解之间的误差的积累，经验风险是指使用训练出来的模型进行预测或者分类，存在多大的误差，可以简单理解为训练误差，经验风险最小化即为训练误差最小。</p>
+<p>​	<strong>结构风险</strong>：结构风险定义为经验风险与置信风险(置信是指可信程度)的和，置信风险越大，模型推广能力越差。可以简单认为结构风险是经验风险后面多加了一项表示模型复杂度的函数项，从而可以同时控制模型训练误差和测试误差，结构风险最小化即为在保证模型分类精度(经验风险)的同时，降低模型复杂度，提高泛化能力。</p>
+<p>​	<strong>公式表达</strong>
+$$
+R(f)=\frac{1}{n}\sum_{i=1}^{n}L(y_i,f(x_i)) + \lambda \Omega (f)
+\tag{1}
+$$
+​		其中，$R(f)$表示结构风险，$L(y_i,f(x_i))$表示第 $i$ 个样本的经验风险，$\Omega(f)$是表征模型复杂度的正则项，$\lambda$ 是正则化参数。根据奥姆剃刀定律，“如无必要，勿增实体”，即认为相对简单的模型泛化能力更好。而模型泛化能力强、泛化误差小，即表示模型推广能力强，通俗理解就是在训练集中训练得到的优秀模型能够很好的适用于实际测试数据，而不仅仅是减少训练误差或者测试误差。泛化误差定义如下：
+$$
+E={Bias}^2(X) + {Var}(X) +{Noise}
+\tag{2}
+$$
+​		其中，$E$ 表示泛化误差，${Bias}$ 代表偏差，${Var}$ 代表方差， ${Noise}$ 代表噪声。</p>
+<p>​	<strong>关系图</strong></p>
+<p><img src="/public/2019/07/17/AI/regulation_baysian/1563350068097.png" alt="1563350068097"></p>
+<div align="center"> Fig 1. 泛化误差与偏差和方差的关系</div>
+​		从 Fig 1 可以看出，随着训练程度加深，模型复杂度会增加，偏差减少，方差增大，而泛化误差呈现U型变化。对于一个“好的系统”通常要求误差小，正则化的作用即为适当的控制模型复杂度，从而使得**泛化误差曲线**取最小值。
+<p><strong>(2)</strong> <strong>正则化等价于带约束的目标函数中的约束项</strong></p>
+<p>以平方误差损失和L2范数为例，优化问题的数学模型如下：
+$$
+J(\theta)=\sum_{i=1}^{n}(y_i-\theta^Tx_i)^2
+\tag{3}
+$$
+$$
+{s.t.}{|| \theta ||}_2^2 \leq C\<br>
+\tag{4}
+$$</p>
+<p>针对上述约束条件的优化问题，采用拉格朗日乘积算子法可以转化为无约束化问题，即
+$$
+J(\theta)=\sum_{i=1}^{n}(y_i-w^Tx_i)^2 + \lambda({|| \theta ||}_2^2-C)
+\tag{5}
+$$</p>
+<p>由于参数 $C$ 为常数，可以忽略，故上述公式和标准的正则化 公式完全一致。</p>
+<p><strong>(3)</strong> <strong>从贝叶斯角度考虑</strong></p>
+<p>正则项等价于引入参数的模型先验概率，可以简单理解为对最大似然估计引入先验概率，从而转化为最大后验估计，其中的先验概率即对于正则项（这部分内容后面详细讲解）。</p>
+<h2 id="2-基本概念"><a class="header-anchor" href="#2-基本概念">¶</a>2 基本概念</h2>
+<p>正则化也可以成为规则化、权重衰减技术，不同的领域叫法不一样，数学上常用范数实现，例如L1和L2范数，统计学领域叫做惩罚项、罚因子。</p>
+<p>下面给出范数的数学公式，方便以后分析：</p>
+<p>​	(1) $p$ 范数：
+$$
+Lp=(\sum_{i=1}^{n}{|| x_i ||}^p)^{\frac{1}{p}}
+\tag{6}
+$$
+​	(2) $L0$ 范数：0 范数表示向量中非零元素的个数（即为其稀疏度）</p>
+<p>​	(3) $L1$ 范数：即向量元素绝对值之和，$p$ 范数取1，即为1范数
+$$
+{||x||}_1=\sum^n_1 {|| x_i || }
+\tag{7}
+$$</p>
+<p>​	(4) $L2$ 范数：即向量元素绝对值的平方和再开发，也称欧几里得距离，$p$ 范数取2，即为2范数
+$$
+{||x||}_{2}=\sqrt{\sum^{n}_1|| x_i ||^2}
+\tag{8}
+$$</p>
+<p>​	(5) $\infty $ 范数：即所有向量元素的绝对值中的最大值，$p$ 范数取 $\infty $，即为 $\infty $ 范数
+$$
+{||x  ||}_{\infty }=\underset{i}{\max}{\left | x_i \right |}
+\tag{9}
+$$</p>
+<p>​	(6) $-\infty $ 范数：即所有向量元素绝对值中的最小值，$p$ 范数取$-\infty $，即为 $-\infty $ 范数
+$$
+{||x  ||}_{-\infty }=\underset{i}{\min}{\left | x_i \right |}
+\tag{10}
+$$
+<strong>图形描述</strong></p>
+<p>​		从 Fig 2、Fig 3 图可以看出：q(p)越小，曲线越贴近坐标轴，q(p)越大，曲线越远离坐标轴，并且棱角越明显，当q(p)取0时候，是完全和坐标轴贴合，当q(p)取无穷的时候，呈现正方体形状。同时也可以看出，采用不同的范数作为正则项，会得到完全不同的算法模型结果，故而对于不同要求的模型，应该采用不同的范数作为正则项。</p>
+<p><img src="/public/2019/07/17/AI/regulation_baysian/1563354053269.png" alt="1563354053269"></p>
+<div align="center"> Fig 2. 向量长度为2维的范数约束</div>
+![1563354456894](regulation_baysian/1563354456894.png)
+<div align="center"> Fig 3. 向量长度为3维的范数约束</div>
+## 3 深度理解
+<p>​		为了更好的理解正则化技术原理，下面从4个方面进行深度分析，希望对大家理解有帮助。</p>
+<h3 id="3-1-简单数值假设分析法"><a class="header-anchor" href="#3-1-简单数值假设分析法">¶</a>3.1 简单数值假设分析法</h3>
+<p>​		此处以L2范数讲解，下面的各图形来自吴恩达的机器学习课程。</p>
+<p><img src="/public/2019/07/17/AI/regulation_baysian/image-20190619002115576.png" alt="image-20190619002115576"></p>
+<div align="center"> Fig 4. 不同参数下的曲线拟合结果</div>
+​		左边的曲线拟合是欠拟合，中间的曲线拟合是刚好合适，右边的曲线拟合是过拟合。对于右边的拟合曲线，有
+$$
+h_{\theta}(x)={\theta}_0+{\theta}_0 x_1 +{\theta}_2 x_2^2 +{\theta}_3 x_3^3 +{\theta}_4 x_4^4
+\tag{11}
+$$
+​		从上式可以看出，由于$\theta_3$和$\theta_4$对应了高阶，导致拟合曲线是4阶曲线，出现了过拟合。正则化的目的为适当缩减$\theta_3$和$\theta_4$的值，例如都为0.0001，则上述曲线本质上等价与
+$$
+h_{\theta}(x)={\theta}_0 + {\theta}_1 x_1 +{\theta}_2 x_2^2
+\tag{12}
+$$
+​		也就是变成了中间的刚好合适的拟合曲线。对于$\theta_3$ 和$\theta_4$增加 L2 正则项后的代价函数表达式为：
+$$
+J(\theta)= \underset{\theta}{\min}\frac{1}{n}\sum_{i=1}^{n}((h_{\theta}(x_i)-y_i)+1000{\theta}_3^2 + 1000 {\theta}_4^2)
+\tag{13}
+$$
+​		从上式可以看出，$\theta_3^2$ 和 $\theta_4^2$ 均大于 0，其乘上了1000，要 $J(\theta)$ 是最小，则会迫使模型学习到的$\theta_3$ 和 $\theta_4$ 会非常小，因为只有在$\theta_3$ 和 $\theta_4$ 会非常小的情况下整个代价函数值才会取的较小值。在实际开发中，是对所有参数进行正则化，为了使代价函数尽可能的小，所有的参数 $\theta$ 的值（不包括 $\theta_0$）都会在一定程度上减小，但是减小程度会不一样，从而实现了权重衰减、简化模型复杂度的作用。
+<h3 id="3-2-图形分析法"><a class="header-anchor" href="#3-2-图形分析法">¶</a>3.2 图形分析法</h3>
+<p>​		此处采用L1和L2范数讲解：
+<strong>(1) L2 范数正则</strong>
+$$
+J(\beta)=\sum_{i=1}^{n}(y_i-{\beta}^T x_i)^2 + \lambda {|| {\beta} ||}_2^2
+\tag{14}
+$$
+<img src="/public/2019/07/17/AI/regulation_baysian/1563366078400.png" alt="1563366078400"></p>
+<div align="center"> Fig 5. L2 范数与代价函数的寻优图示</div>
+​		在 Fig 5 中，蓝色的圆形空间表示 L2 范数空间，设为 $\beta_1^2 + \beta_2^2 = r^2$，可以看出，当 $r$ 从 0 逐渐增大时候，该圆形也逐渐增大，红色的线表示原始代价函数解空间即 $\sum_{i=1}^{n}(y_i-\beta^T x_i)^2$，此处为了方便绘图，设参数只有2维。红色圆环上的任何一点都表示一个可行解即代表一组$\beta_1$、$\beta_2$，其中任何一个红色圆环上面的$\beta_1$，$\beta_2$对应的代价函数值一样（可以简单理解为等值线），$\hat{\beta}$ 代表最佳解空间。
+<h2 id="4-贝叶斯角度分析"><a class="header-anchor" href="#4-贝叶斯角度分析">¶</a>4. 贝叶斯角度分析</h2>
+<p>​		以L1和L2范数为例，所得结论可以推广到P范数中，首先需要知道：整个最优化问题从贝叶斯观点来看是一种贝叶斯最大后验估计，其中正则化项对应后验估计中的先验信息，损失函数对应后验估计中的似然函数，两者的乘积即对应贝叶斯最大后验估计的形式。针对L1和L2范数还有结论：<strong>L2 范数相当于给模型参数设置一个协方差为1/alpha的零均值高斯先验分布，L1 范数相当于给模型参数 设置一个参数为1/alpha 拉普拉斯先验分布</strong>。</p>
+<p>​		为了讲清楚上述结论，需要具备几点前置知识点：(1) 高斯分布和拉普拉斯分布的定义和形状；(2) 贝叶斯定理；(3) 最大似然估计；(4) 最大后验估计。下面我对这4个知识点进行解释。</p>
+<p><strong>(1)</strong> <strong>高斯分布和拉普拉斯分布</strong></p>
+<p><img src="/public/2019/07/17/AI/regulation_baysian/0.png" alt="0?wx_fmt=png"></p>
+<p><img src="/public/2019/07/17/AI/regulation_baysian/0-20190610163845194.png" alt="0?wx_fmt=png"></p>
+<p><strong>(2)</strong> <strong>最大似然估计</strong></p>
+<p><img src="/public/2019/07/17/AI/regulation_baysian/0-20190610163845276.png" alt="0?wx_fmt=png"></p>
+<p>​		如果上述公式不能理解，请各位读者去复习一下大学课程《概率论与数理统计》中的参数估计章节，为了更方便理解，下面举一个例子：假设我要统计出整个大学内所有同学的身高分布情况，设全校一共20000人，数量庞大，所有人都去问一遍不太靠谱，所以我打算采用抽样方法来估计，假设我已经知道身高分布服从高斯分布，但是我不知道高斯分布中的均值和方差参数，现在我打算采用最大似然估计方法来确定这两个参数。首先需要明确，全校20000即为总体X，我随机从各个班抽取10名同学，假设一共抽了2000个同学，那么2000同学就构成了样本空间，由于每个样本的概率密度函数已知，则很容易写出似然函数，对数求导即可求解参数。</p>
+<p><strong>(3)</strong> <strong>最大后验估计</strong></p>
+<p><img src="/public/2019/07/17/AI/regulation_baysian/0-20190610163845259.png" alt="0?wx_fmt=png"></p>
+<p><img src="/public/2019/07/17/AI/regulation_baysian/0-20190610163845297.png" alt="0?wx_fmt=png"></p>
+<p><img src="/public/2019/07/17/AI/regulation_baysian/0-20190610163845289.png" alt="0?wx_fmt=png"></p>
+<h2 id="5-例子"><a class="header-anchor" href="#5-例子">¶</a>5. 例子</h2>
+<h3 id="5-1-逻辑回归"><a class="header-anchor" href="#5-1-逻辑回归">¶</a>5.1 逻辑回归</h3>
+<p>​		二分类逻辑回归使用Sigmoid作为决策函数进行分类，该函数可以将任意的输入映射到[0,1]区间，当预测结果小于0.5，则表示负类，当预测结果大于0.5.则表示正类，其模型本质是求最大似然估计，具体求解似然函数通常使用梯度下降法，而前面说过：最大似然估计法没有考虑训练集以外的因素，很容易造成过拟合，故而逻辑回归一般采用L2范数进行正则化操作，Sigmoid函数定义和图形如下：</p>
+<p><img src="/public/2019/07/17/AI/regulation_baysian/0.jpeg" alt="0?wx_fmt=png"></p>
+<h3 id="5-2-岭回归-Ridge-Regression"><a class="header-anchor" href="#5-2-岭回归-Ridge-Regression">¶</a>5.2 岭回归(Ridge Regression)</h3>
+<p>​		岭回归本质上是针对线性回归问题引入了L2范数正则，通过缩减回归系数避免过拟合问题，最先用来处理特征数多于样本数的情况(高维小样本问题)，现在也用于在估计中加人偏差，从而得到更好的估计，加了正则化后的代价函数如下：</p>
+<p><img src="/public/2019/07/17/AI/regulation_baysian/0-20190610174921016.png" alt="0?wx_fmt=png"></p>
+<h3 id="5-3-Lasso-回归"><a class="header-anchor" href="#5-3-Lasso-回归">¶</a>5.3 Lasso 回归</h3>
+<p>​		拉索回归(lasso回归)本质上是针对线性回归问题引入了L1范数正则，通过缩减回归系数避免过拟合问题，其不同于L2范数，其可以将某些系数缩减为0即所谓的具备稀疏性(稀疏性的好处是简化计算、容易理解模型、减少存储空间、不容易出现过拟合等等)，加了正则化后的代价函数如下：</p>
+<p><img src="/public/2019/07/17/AI/regulation_baysian/0-20190610174920968.png" alt="0?wx_fmt=png"></p>
+<p>​		其中，参数函数和岭回归中相同。L1范数罚有一个问题：由于|X|函数在0处不可导，故而直接使用最小二乘法、梯度下降法等方法均失效，但是由于其为第一类间断点中的可去间断点，可以通过补充该点的定义解决，通常，对于线性回归中的lasso回归可以采用近似的前向逐步回归替代。</p>
+<h3 id="5-4-SVM"><a class="header-anchor" href="#5-4-SVM">¶</a>5.4 SVM</h3>
+<p>​		支持向量机SVM优化目的为寻找一个超平面，使得正负样本能够以最大间隔分离开，从而得到更好的泛化性能，其通过引入核函数来将低维线性不可分的样本映射到高维空间从而线性可分，通过引入惩罚参数C(类似于正则化参数)来对错分样本进行惩罚，从而减少模型复杂度，提高泛化能力，其优化目标如下：</p>
+<p><img src="/public/2019/07/17/AI/regulation_baysian/0-20190610174921029.png" alt="0?wx_fmt=png"></p>
+<p>​		大家如果不知道上面公式的推导，不用紧张，对于本次内容不是重点，只需要关注后面正则项部分，惩罚参数C作用和正则化参数作用一致，只是反相关而已。需要明白以下结论：</p>
+<p>​		<strong>(1)</strong> C越大，正则化参数越小，表示对分错样本的惩罚程度越大，正则化作用越小，偏差越小，方差越大，越容易出现过拟合(通俗理解，原本将低维空间映射到5维空间正好线性可分，但是由于惩罚过于严重，任何一个样本分错了都不可原谅，结果系统只能不断提高维数来拟合样本，假设为10维，最终导致映射维数过高，出现过拟合样本现象，数学上称为VC维较大)；</p>
+<p>​		<strong>(2)</strong> C越小，正则化参数越大，表示对分错样本的惩罚程度越小，正则化作用越大，偏差越大，方差越小，越容易出现欠拟合(通俗理解，原本将低维空间映射到5维空间正好线性可分，但是由于惩罚过小，分错了好多样本都可以理解，比较随意，结果系统也采用简化版来拟合样本，假设为3维，最终导致映射维数过低，出现欠拟合样本现象，数学上称为VC维较小)。</p>
+<h2 id="6-总结"><a class="header-anchor" href="#6-总结">¶</a>6. 总结</h2>
+<p>根本目的本质：防止过拟合，提高模型泛化能力。</p>
+<p>正则化技术分类：
+<strong>狭义上</strong>（不同地方叫法不同）</p>
+<ul>
+<li>在早期的机器学习领域一般只是将范数惩罚叫做正则化技术</li>
+<li>规则化、权重衰减</li>
+<li>从贝叶斯角度考虑，正则项等价于引入参数的模型先验概率</li>
+</ul>
+<p><strong>广义上</strong>：
+能够显著减少方差，而不过度增加偏差的策略都可以认为是正则化技术，推广的正则化技术还有：扩增样本集、早停止、Dropout、集成学习、多任务学习、对抗训练、参数共享等。</p>
+<h2 id="Reference"><a class="header-anchor" href="#Reference">¶</a>Reference</h2>
+<p><a href="https://blog.csdn.net/BigData_Mining/article/details/81631249" target="_blank" rel="noopener">正则化总结的比较好比较全面的文章</a></p>
+]]></content>
+      <categories>
+        <category>机器学习</category>
+        <category>正则化</category>
+      </categories>
+      <tags>
+        <tag>人工智能</tag>
+        <tag>机器学习</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Jupyter notebook的配置</title>
+    <url>/public/2017/07/03/linux/jupyter_notebook/</url>
+    <content><![CDATA[<p><strong>前言</strong>
+本文介绍jupyter notebook的安装配置过程和实用技巧。
+<a href="https://jupyter.readthedocs.io/en/latest/index.html" target="_blank" rel="noopener">jupyter.readthedocs教程</a></p>
+<a id="more"></a>
+<h2 id="1-安装与配置"><a class="header-anchor" href="#1-安装与配置">¶</a>1 安装与配置</h2>
+<h3 id="1-1-安装-jupyter"><a class="header-anchor" href="#1-1-安装-jupyter">¶</a>1.1 安装 jupyter</h3>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">conda install jupyter</span><br><span class="line"><span class="comment"># pip install -i https://pypi.tuna.tsinghua.edu.cn/simple jupyter</span></span><br><span class="line"><span class="comment"># pip install jupyter -y</span></span><br></pre></td></tr></table></figure>
+<h3 id="1-2-修改配置文件"><a class="header-anchor" href="#1-2-修改配置文件">¶</a>1.2 修改配置文件</h3>
+<ul>
+<li>生成配置文件</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">jupyter notebook --generate-config</span><br><span class="line">vim ~/.jupyter/jupyter_notebook_config.py</span><br></pre></td></tr></table></figure>
+<ul>
+<li>修改配置文件内容</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">c.NotebookApp.ip = <span class="string">'0.0.0.0'</span></span><br><span class="line">c.NotebookApp.port = <span class="number">8018</span></span><br><span class="line"><span class="comment"># 设置密码</span></span><br><span class="line">c.NotebookApp.password = <span class="string">u'sha1:bcd259ccf...your hashed password here'</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>Tip: 利用ipython 生成密码</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&gt; In [1]: from IPython.lib import passwd</span><br><span class="line">&gt; In [2]: passwd()</span><br><span class="line">&gt;   Enter password:</span><br><span class="line">&gt;   Verify password:</span><br><span class="line">&gt;   Out[2]: &apos;sha1:67xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&apos;</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<p>我选用的是password密码登陆jupyter的方案，其他的密码登陆方案见 <a href="https://zhuanlan.zhihu.com/p/23110830" target="_blank" rel="noopener">link</a></p>
+<blockquote>
+<p>新的方法
+from notebook.auth import passwd; passwd()</p>
+</blockquote>
+<h3 id="1-3-安装插件管理"><a class="header-anchor" href="#1-3-安装插件管理">¶</a>1.3 安装插件管理</h3>
+<p>jupyter_contrib_nbextensions 为 jupyter notebook 扩展插件管理器，下面简称nbextensions。</p>
+<p>nbextensions的github <a href="https://github.com/ipython-contrib/jupyter_contrib_nbextensions" target="_blank" rel="noopener">repo</a>
+nbextensions的教程<a href="https://jupyter-contrib-nbextensions.readthedocs.io/en/latest/" target="_blank" rel="noopener">nbextensions_manual_readthedocs</a></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 用conda安装</span></span><br><span class="line">conda install jupyter</span><br><span class="line">conda install -c conda-forge jupyter_contrib_nbextensions</span><br><span class="line"></span><br><span class="line"><span class="comment"># pip安装</span></span><br><span class="line">pip install jupyter_contrib_nbextensions</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使能</span></span><br><span class="line">jupyter contrib nbextension install</span><br></pre></td></tr></table></figure>
+<p>我启用的一些插件</p>
+<table>
+<thead>
+<tr>
+<th>plugins</th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Table of Contents (2)</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Freeze</td>
+<td>比较好的一个插件，可以用来冻住cell</td>
+<td></td>
+</tr>
+<tr>
+<td>nbTranslate</td>
+<td>这个插件利用Google翻译cell很好用</td>
+<td><a href="https://github.com/jfbercher/jupyter_nbTranslate/blob/master/languages.js" target="_blank" rel="noopener">support languages</a></td>
+</tr>
+<tr>
+<td>ExecuteTime</td>
+<td>显示执行时间</td>
+<td></td>
+</tr>
+<tr>
+<td>Ruler</td>
+<td>代码标尺</td>
+<td></td>
+</tr>
+<tr>
+<td>Autopep8</td>
+<td>代码美化</td>
+<td></td>
+</tr>
+<tr>
+<td>Scratchpad</td>
+<td>代码测试</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>其他花样的配置</p>
+<p><a href="https://zhuanlan.zhihu.com/p/74950682" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/74950682</a></p>
+<h3 id="1-4-conda环境的设置"><a class="header-anchor" href="#1-4-conda环境的设置">¶</a>1.4 conda环境的设置</h3>
+<p>jupyter使用Anaconda miniconda环境需要安装的组件。
+<a href="https://repo.anaconda.com" target="_blank" rel="noopener">conda repo</a></p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 创建虚拟环境</span></span><br><span class="line">conda create -n env_name python=3.6</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> conda虚拟核组件 切换kernel</span></span><br><span class="line">conda install nb_conda_kernels</span><br></pre></td></tr></table></figure>
+<h3 id="1-5-解决界面中英文混杂"><a class="header-anchor" href="#1-5-解决界面中英文混杂">¶</a>1.5 解决界面中英文混杂</h3>
+<img src="/public/2017/07/03/linux/jupyter_notebook/image-20200413125705473.png" alt="image-20200413125705473" style="zoom:50%;">
+<p>如图，jupyter 界面中中英文混杂，解决方法为将界面文字中文切换成英文。</p>
+<p>原理：让jupyter就找不到他的中文配置文件夹。</p>
+<p>找到notebook的汉化文件夹的路径，比如<code>~/miniconda3/lib/python3.6/site-packages/notebook/i18n/zh_CN</code>。将其重命名如加个下划线作为后缀<code>zh_CN_old</code>，重启jupyter就行了。</p>
+<p>为了方便，我作了个脚本自动找<code>notebook/i18n/zh_CN</code>位置并改名此文件夹，如下。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> shutil</span><br><span class="line"><span class="keyword">from</span> distutils.sysconfig <span class="keyword">import</span> get_python_lib</span><br><span class="line"><span class="comment"># 获取site-package包的位置</span></span><br><span class="line">path_zh=get_python_lib()+<span class="string">'/notebook/i18n/zh_CN'</span></span><br><span class="line">path_zh_old=get_python_lib()+<span class="string">'/notebook/i18n/zh_CN_old'</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 将 notebook/i18n/zh_CN 改为 notebook/i18n/zh_CN_old</span></span><br><span class="line">shutil.move(path_zh,path_zh_old)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 返回中文</span></span><br><span class="line"><span class="comment"># shutil.move(path_zh_old,path_zh)</span></span><br></pre></td></tr></table></figure>
+<p>重启jupyter就行了, 这样jupyter就找不到这个中文配置，返回中文改回去就行了<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup>。</p>
+<h2 id="2-使用的技巧"><a class="header-anchor" href="#2-使用的技巧">¶</a>2 使用的技巧</h2>
+<h3 id="2-1-快捷键"><a class="header-anchor" href="#2-1-快捷键">¶</a>2.1 快捷键</h3>
+<hr>
+<table>
+<thead>
+<tr>
+<th>在非激活状态即是蓝颜色的边框</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A</td>
+<td>insert cell above</td>
+</tr>
+<tr>
+<td>B</td>
+<td>insert cell below</td>
+</tr>
+<tr>
+<td>H</td>
+<td>查看帮助</td>
+</tr>
+<tr>
+<td>⌃↩(ctrl + enter)</td>
+<td>run selected cells</td>
+</tr>
+</tbody>
+</table>
+<h3 id="2-2-显示图片-视频-音频"><a class="header-anchor" href="#2-2-显示图片-视频-音频">¶</a>2.2 显示图片 视频 音频</h3>
+<p>主要是画图、显示视频和音频的方法。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 图片</span></span><br><span class="line">%%HTML</span><br><span class="line">&lt;img src=<span class="string">"xxx.jpg"</span>  alt=<span class="string">"title"</span> /&gt;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 视频</span></span><br><span class="line">%%HTML</span><br><span class="line">&lt;video width=<span class="string">"330"</span> height=<span class="string">"150"</span> controls&gt;</span><br><span class="line">&lt;source src=<span class="string">"out_all.mp4"</span> type=<span class="string">"video/mp4"</span>&gt;</span><br><span class="line">&lt;/video&gt;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 语音</span></span><br><span class="line">%%HTML</span><br><span class="line">&lt;audio src=<span class="string">"out.wav"</span> controls=<span class="string">"controls"</span>&gt;</span><br><span class="line">Your browser does <span class="keyword">not</span> support the audio element.</span><br><span class="line">&lt;/audio&gt;</span><br><span class="line"></span><br><span class="line"><span class="comment"># html t是html的字符串</span></span><br><span class="line"><span class="keyword">from</span> IPython.core.display <span class="keyword">import</span> HTML</span><br><span class="line">HTML(str(t))</span><br></pre></td></tr></table></figure>
+<h3 id="2-3-其他技巧"><a class="header-anchor" href="#2-3-其他技巧">¶</a>2.3 其他技巧</h3>
+<h4 id="修复视频文件"><a class="header-anchor" href="#修复视频文件">¶</a>修复视频文件</h4>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fix_use_ffmpeg</span><span class="params">(in_name, out_name,message=<span class="string">""</span>)</span>:</span></span><br><span class="line">    <span class="keyword">import</span> os</span><br><span class="line">    <span class="keyword">if</span> os.path.isfile(out_name):</span><br><span class="line">    os.remove(out_name)</span><br><span class="line">    cmd = <span class="string">'ffmpeg -i %s %s'</span> % (in_name, out_name)</span><br><span class="line">    log_lines = os.popen(cmd).readlines()</span><br><span class="line">    print(message,<span class="string">"ok"</span>)</span><br></pre></td></tr></table></figure>
+<h4 id="加载自己的模块文件"><a class="header-anchor" href="#加载自己的模块文件">¶</a>加载自己的模块文件</h4>
+<p>出于性能考虑，每个模块在每个解释器会话中只导入一遍。因此，如果你修改了你的模块，需要重启解释器；或者，如果你就是想交互式的测试这么一个模块，可以用 imp.reload() 重新加载，例如 <code>import imp; imp.reload(modulename)</code></p>
+<h4 id="导出pdf支持中文"><a class="header-anchor" href="#导出pdf支持中文">¶</a>导出pdf支持中文</h4>
+<p>Jupyter Notebook 输出PDF中文支持 <a href="https://www.jianshu.com/p/c3f660188766" target="_blank" rel="noopener">link</a></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> /usr/<span class="built_in">local</span>/lib/python3.6/site-packages/nbconvert/templates/latex</span><br><span class="line"></span><br><span class="line"><span class="comment"># 在里面的模版中添加，前提是安装好了texlive</span></span><br><span class="line">% add</span><br><span class="line">\usepackage&#123;ctex&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="ipynb2pdf"><a class="header-anchor" href="#ipynb2pdf">¶</a>ipynb2pdf</h4>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python3</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string">Current version of Jupyter doesn't support pdf exporting when it comes to</span></span><br><span class="line"><span class="string">russian language in the document. To fix this, current script has born.</span></span><br><span class="line"><span class="string">It requires nbconvert as long as jupyter to be installed.</span></span><br><span class="line"><span class="string">Author:     Sergey Ivanychev</span></span><br><span class="line"><span class="string">Email:      sergeyivanychev@gmail.com</span></span><br><span class="line"><span class="string">Revision:   1</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> subprocess</span><br><span class="line"></span><br><span class="line">FORMAT = <span class="string">".ipynb"</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string">TODO:   What if user has ___o.tex in current folder?</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line">TEMP_TEX = <span class="string">"___o.tex"</span></span><br><span class="line">TEMP_FOLDER = <span class="string">"/tmp"</span></span><br><span class="line">TRASH_EXTENSIONS = [<span class="string">".aux"</span>, <span class="string">".out"</span>, <span class="string">".log"</span>]</span><br><span class="line">OLD1 = <span class="string">r"\usepackage[utf8x]&#123;inputenc&#125;"</span></span><br><span class="line">NEW1 = <span class="string">r"""</span></span><br><span class="line"><span class="string">    \usepackage[utf8x]&#123;inputenc&#125;</span></span><br><span class="line"><span class="string">    \usepackage&#123;ctex&#125;</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line">REPLACE = [(OLD1, NEW1)]</span><br><span class="line">HELP = <span class="string">"""</span></span><br><span class="line"><span class="string">This script is aimed at correctly converting .ipynb to .pdf files.</span></span><br><span class="line"><span class="string">You may use it via</span></span><br><span class="line"><span class="string"># ipynb2pdf Solution.ipynb</span></span><br><span class="line"><span class="string">To get .pdf in the same directory</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">check_args</span><span class="params">(argv)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> (len(argv) &gt; <span class="number">2</span>):</span><br><span class="line">        print(<span class="string">"Please, type .ipynb filename as argument"</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span></span><br><span class="line">    <span class="keyword">if</span> (len(argv) == <span class="number">1</span>):</span><br><span class="line">        print(HELP)</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span></span><br><span class="line">    script, filename = argv</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> is_ipynb(filename):</span><br><span class="line">        print(<span class="string">"Please, type .ipynb filename as argument"</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">remove_extention</span><span class="params">(string, extention)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    Removes argumented extention from the end of the string</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    <span class="keyword">if</span> extention[<span class="number">0</span>] != <span class="string">'.'</span>:</span><br><span class="line">        extention = <span class="string">"."</span> + extention</span><br><span class="line">    <span class="keyword">if</span> string.endswith(extention):</span><br><span class="line">        string = string[<span class="number">0</span>:-len(extention)]</span><br><span class="line">    <span class="keyword">return</span> string</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">is_ipynb</span><span class="params">(filename)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> filename.endswith(<span class="string">".ipynb"</span>):</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">    <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">tex2pdf</span><span class="params">(filename, desired_name)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    Converts filename (which is tex document) to desired_name (which is pdf)</span></span><br><span class="line"><span class="string">    leaving no trash in current folder</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    base = remove_extention(filename, <span class="string">"tex"</span>)</span><br><span class="line">    output = base + <span class="string">".pdf"</span></span><br><span class="line">    ret = subprocess.call(<span class="string">"xelatex %s"</span> % filename , </span><br><span class="line">                                        shell=<span class="literal">True</span>, stdout=subprocess.PIPE)</span><br><span class="line">    <span class="keyword">for</span> ext <span class="keyword">in</span> TRASH_EXTENSIONS:</span><br><span class="line">        os.unlink(base + ext)</span><br><span class="line">    os.rename(output, desired_name)</span><br><span class="line">    <span class="keyword">return</span> ret</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">(argv)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> check_args(argv) == <span class="number">-1</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span></span><br><span class="line">    script, filename = argv</span><br><span class="line">    ret = subprocess.call(<span class="string">"jupyter nbconvert %s --to latex --output %s"</span> %</span><br><span class="line">                                            (filename, TEMP_TEX), shell=<span class="literal">True</span>,</span><br><span class="line">                                            stdout=subprocess.PIPE)</span><br><span class="line">    <span class="keyword">if</span> (ret != <span class="number">0</span>):</span><br><span class="line">        print(<span class="string">"ret = %d"</span> % ret)</span><br><span class="line">        os.unlink(TEMP_TEX)</span><br><span class="line">        print(<span class="string">"Converting to LaTeX failed. Return code: %d"</span> % ret)</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span></span><br><span class="line">    tex_file = open(TEMP_TEX, <span class="string">"r"</span>)</span><br><span class="line">    tex = tex_file.read()</span><br><span class="line">    <span class="keyword">for</span> old, new <span class="keyword">in</span> REPLACE:</span><br><span class="line">        tex = tex.replace(old, new)</span><br><span class="line">    tex_file.close()</span><br><span class="line">    os.unlink(TEMP_TEX)</span><br><span class="line">    tex_file = open(TEMP_TEX, <span class="string">"w+"</span>)</span><br><span class="line">    tex_file.write(tex)</span><br><span class="line">    tex_file.close()</span><br><span class="line">    ret = tex2pdf(TEMP_TEX, remove_extention(filename, <span class="string">".ipynb"</span>) + <span class="string">".pdf"</span>)</span><br><span class="line">    tex_file.close()</span><br><span class="line">    os.unlink(TEMP_TEX)</span><br><span class="line">    print(remove_extention(filename, <span class="string">".ipynb"</span>) + <span class="string">".pdf - DONE"</span>)</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</span><br><span class="line">    exit(main(sys.argv))</span><br></pre></td></tr></table></figure>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p><a href="https://www.zhihu.com/question/302814218/answer/1029684239" target="_blank" rel="noopener">https://www.zhihu.com/question/302814218/answer/1029684239</a> <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
+]]></content>
+      <categories>
+        <category>jupyter</category>
+      </categories>
+      <tags>
+        <tag>工具</tag>
+        <tag>Python</tag>
+        <tag>笔记应用</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>选择困难者的福音？层次分析法</title>
+    <url>/public/2021/04/02/math/math_AHP/</url>
+    <content><![CDATA[<h2 id="摘要"><a class="header-anchor" href="#摘要">¶</a>摘要</h2>
+<p>日常生活中，我们面临很多的选择，选择工作offer，选择买哪个牌子的手机，选择哪个地方旅行等等。这些选择难以定量的衡量，有很多不确定性。内心小纠结，我选择了这个，万一那个好呢，怎么办？请看层次分析法。</p>
+<p>层次分析法(Analytic Hierarchy Process，简称 AHP)是对一些较为复杂、较为模糊的问题作出决策的简易方法，它特别适用于那些难于完全定量分析的问题。它是美国运筹学家 T. L. Saaty 教授于上世纪 70 年代初期提出的一种简便、灵活而又实用的多准则决策方法。</p>
+<p>运用层次分析法建模，大体上可按下面四个步骤进行</p>
+<ul>
+<li>建立递阶层次结构模型</li>
+<li>构造出各层次中的所有判断矩阵</li>
+<li>层次单排序及一致性检验</li>
+<li>层次总排序及一致性检验。（一般不用）</li>
+</ul>
+<a id="more"></a>
+<p>让我们从offer大佬的例子开始吧！</p>
+<p>举个栗子，今年有位大学生，有三个offer，C1 C2 C3。</p>
+<p>第一步，建立层次模型。</p>
+<ul>
+<li>目标层A：找工作的目标，自己满意程度。
+<ul>
+<li>这个程度怎么计算呢？比如工作1。</li>
+</ul>
+</li>
+<li>准则层B：研究课题、发展前途、待遇、同事情况、地理位置、单位名气等等。
+<ul>
+<li>尽量列全一点，不需要排列重要顺序。</li>
+<li>小于等于9个，后面要两两拍脑袋给出相对的重要层度，给多了不得把脑袋拍疼了。</li>
+<li>也可以有子准则层，比如待遇中的放假、工作环境等等，列出也小于9个。</li>
+</ul>
+</li>
+<li>方案层C：就是我们的offer</li>
+</ul>
+<img src="/public/2021/04/02/math/math_AHP/image-20200406145535585.png" alt="image-20200406145535585" style="zoom:50%;">
+<h2 id="构造-A-B-之间判断矩阵"><a class="header-anchor" href="#构造-A-B-之间判断矩阵">¶</a>构造 A B 之间判断矩阵</h2>
+<p>准则层B与目标A之间的关系。为了求出准则层中(B1-6) 对目标的重要层度的排序。比如对于该生工作满意度第一重要是待遇，然后是地点，其实该生自己也很模糊。就是固定A，然后求B中准则，对A重要性的排序。</p>
+<h3 id="我们怎么对B中的准则们的重要排序呢？"><a class="header-anchor" href="#我们怎么对B中的准则们的重要排序呢？">¶</a>我们怎么对B中的准则们的重要排序呢？</h3>
+<p>直接给每一个准则，0-1的评分，然后排序。经常会想，给完分之后，这个不合理呀要不我再给哪个准则加加分。所以这样的方法常常会因考虑不周全、顾此失彼而使决策者提出与他实际认为的重要性程度不相一致的数据。</p>
+<p>我们可以将这个过程细化，我就比较两个准则对于目标的重要性，然后通过下面的矩阵方法，求出优先顺序。</p>
+<p>还能通过一个一致性检验，来检验在你评分的过程中，有没有自相矛盾的地方，当然这种方法允许一些自相矛盾。反正评分的时候尊从内心拍脑袋就对了。</p>
+<p>所以我们拿出一个B1 与 B2 对于目标的重要，想一想然后给出B2/B1，填入下面的表格中的(2,1)的位置。</p>
+<p>整个矩阵i,j 与j，i 是取倒数的关系，所以只要做一半。</p>
+<p>在找工作的目标下，准则i与j相对的重要性表示，B2/B1 的值。采用9个标度。而相比不重要刻度取倒数就可以了</p>
+<table>
+<thead>
+<tr>
+<th>准则i比j的比较</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+<th>5</th>
+<th>6</th>
+<th>7</th>
+<th>8</th>
+<th>9</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td>相同重要</td>
+<td></td>
+<td>比较重要</td>
+<td></td>
+<td>明显重要</td>
+<td></td>
+<td>强烈重要</td>
+<td></td>
+<td>极端重要</td>
+</tr>
+</tbody>
+</table>
+<p>最后的两两相对重要表格</p>
+<img src="/public/2021/04/02/math/math_AHP/image-20200406145640316.png" alt="image-20200406145640316" style="zoom:50%;">
+<p>对角线对称的两个数互为倒数，即 $$a_{ji}=\frac{1}{a_{ij}}$$  B1/B2 不就是和 B2/B1互为倒数嘛</p>
+<p>从心理学观点来看，分级太多会超越人们的判断能力，既增加了作判断的难度， 又容易因此而提供虚假数据。Saaty 等人还用实验方法比较了在各种不同标度下人们判断结果的正确性，实验结果也表明，采用 1~9 标度最为合适。</p>
+<p>判断矩阵的一致性指标步骤：</p>
+<ul>
+<li>1）计算一致性指标 CI 。$$CI=\frac{ \lambda_{max}-n}{n-1}$$</li>
+<li>2）查表，平均随机一致性指标 RI。</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>n</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+<th>5</th>
+<th>6</th>
+<th>7</th>
+<th>8</th>
+<th>9</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>RI</td>
+<td>0</td>
+<td>0</td>
+<td>0.58</td>
+<td>0.90</td>
+<td>1.12</td>
+<td>1.24</td>
+<td>1.32</td>
+<td>1.41</td>
+<td>1.45</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><em>RI</em> 的值是这样得到的，用随机方法构造500个样本矩阵:随机地从1~9及其倒数中抽取数字构造正互反矩阵，求得最大特征根的平均值 $$\bar \lambda_{max}$$ 并定义$$RI=\frac{\bar \lambda_{max}-n}{n-1}$$</p>
+</blockquote>
+<ul>
+<li>3）计算一致性比例CR。 $$CR=\frac{CI}{RI}$$，当$$CR&lt;0.10$$ 时，认为判断矩阵的一致性是可以接受的，否则应对判断矩阵作适当修正。</li>
+</ul>
+<p>如果一个矩阵满足上面的条件，那么它最大特征值对应的特征向量就可以认为是每个维度的重要性权重。</p>
+<h2 id="构造-B-C-之间判断矩阵"><a class="header-anchor" href="#构造-B-C-之间判断矩阵">¶</a>构造 B C 之间判断矩阵</h2>
+<p>相同的方法，在同一B准则下，考虑不同工作的优先顺序。求工作排序的方法，和上面一样。</p>
+<img src="/public/2021/04/02/math/math_AHP/image-20200406162644137.png" alt="image-20200406162644137" style="zoom:50%;">
+<p>python代码<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">import</span> warnings</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AHP</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, criteria, b)</span>:</span></span><br><span class="line">        self.RI = (<span class="number">0</span>, <span class="number">0</span>, <span class="number">0.58</span>, <span class="number">0.9</span>, <span class="number">1.12</span>, <span class="number">1.24</span>, <span class="number">1.32</span>, <span class="number">1.41</span>, <span class="number">1.45</span>, <span class="number">1.49</span>)</span><br><span class="line">        self.criteria = criteria</span><br><span class="line">        self.b = b</span><br><span class="line">        self.num_criteria = criteria.shape[<span class="number">0</span>]</span><br><span class="line">        self.num_project = b[<span class="number">0</span>].shape[<span class="number">0</span>]</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">cal_weights</span><span class="params">(self, input_matrix)</span>:</span></span><br><span class="line">        input_matrix = np.array(input_matrix)</span><br><span class="line">        n, n1 = input_matrix.shape</span><br><span class="line">        <span class="keyword">assert</span> n == n1, <span class="string">'不是一个方阵'</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(n):</span><br><span class="line">            <span class="keyword">for</span> j <span class="keyword">in</span> range(n):</span><br><span class="line">                <span class="keyword">if</span> np.abs(input_matrix[i, j] * input_matrix[j, i] - <span class="number">1</span>) &gt; <span class="number">1e-7</span>:</span><br><span class="line">                    <span class="keyword">raise</span> ValueError(<span class="string">'不是反互对称矩阵'</span>)</span><br><span class="line"></span><br><span class="line">        eigenvalues, eigenvectors = np.linalg.eig(input_matrix)</span><br><span class="line"></span><br><span class="line">        max_idx = np.argmax(eigenvalues)</span><br><span class="line">        max_eigen = eigenvalues[max_idx].real</span><br><span class="line">        eigen = eigenvectors[:, max_idx].real</span><br><span class="line">        eigen = eigen / eigen.sum()</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> n &gt; <span class="number">9</span>:</span><br><span class="line">            CR = <span class="literal">None</span></span><br><span class="line">            warnings.warn(<span class="string">'无法判断一致性'</span>)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            CI = (max_eigen - n) / (n - <span class="number">1</span>)</span><br><span class="line">            CR = CI / self.RI[n]</span><br><span class="line">        <span class="keyword">return</span> max_eigen, CR, eigen</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">run</span><span class="params">(self)</span>:</span></span><br><span class="line">        max_eigen, CR, criteria_eigen = self.cal_weights(self.criteria)</span><br><span class="line">        print(<span class="string">'准则层：最大特征值&#123;:&lt;5f&#125;,CR=&#123;:&lt;5f&#125;,检验&#123;&#125;通过'</span>.format(max_eigen, CR, <span class="string">''</span> <span class="keyword">if</span> CR &lt; <span class="number">0.1</span> <span class="keyword">else</span> <span class="string">'不'</span>))</span><br><span class="line">        print(<span class="string">'准则层权重=&#123;&#125;\n'</span>.format(criteria_eigen))</span><br><span class="line"></span><br><span class="line">        max_eigen_list, CR_list, eigen_list = [], [], []</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> self.b:</span><br><span class="line">            max_eigen, CR, eigen = self.cal_weights(i)</span><br><span class="line">            max_eigen_list.append(max_eigen)</span><br><span class="line">            CR_list.append(CR)</span><br><span class="line">            eigen_list.append(eigen)</span><br><span class="line"></span><br><span class="line">        pd_print = pd.DataFrame(eigen_list,</span><br><span class="line">                                index=[<span class="string">'准则'</span> + str(i) <span class="keyword">for</span> i <span class="keyword">in</span> range(self.num_criteria)],</span><br><span class="line">                                columns=[<span class="string">'方案'</span> + str(i) <span class="keyword">for</span> i <span class="keyword">in</span> range(self.num_project)],</span><br><span class="line">                                )</span><br><span class="line">        pd_print.loc[:, <span class="string">'最大特征值'</span>] = max_eigen_list</span><br><span class="line">        pd_print.loc[:, <span class="string">'CR'</span>] = CR_list</span><br><span class="line">        pd_print.loc[:, <span class="string">'一致性检验'</span>] = pd_print.loc[:, <span class="string">'CR'</span>] &lt; <span class="number">0.1</span></span><br><span class="line">        print(<span class="string">'方案层'</span>)</span><br><span class="line">        print(pd_print)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 目标层</span></span><br><span class="line">        obj = np.dot(criteria_eigen.reshape(<span class="number">1</span>, <span class="number">-1</span>), np.array(eigen_list))</span><br><span class="line">        print(<span class="string">'\n目标层'</span>, obj)</span><br><span class="line">        print(<span class="string">'最优选择是方案&#123;&#125;'</span>.format(np.argmax(obj)))</span><br><span class="line">        <span class="keyword">return</span> obj</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    <span class="comment"># 准则重要性矩阵</span></span><br><span class="line">    criteria = np.array([[<span class="number">1</span>, <span class="number">2</span>, <span class="number">7</span>, <span class="number">5</span>, <span class="number">5</span>],</span><br><span class="line">                         [<span class="number">1</span> / <span class="number">2</span>, <span class="number">1</span>, <span class="number">4</span>, <span class="number">3</span>, <span class="number">3</span>],</span><br><span class="line">                         [<span class="number">1</span> / <span class="number">7</span>, <span class="number">1</span> / <span class="number">4</span>, <span class="number">1</span>, <span class="number">1</span> / <span class="number">2</span>, <span class="number">1</span> / <span class="number">3</span>],</span><br><span class="line">                         [<span class="number">1</span> / <span class="number">5</span>, <span class="number">1</span> / <span class="number">3</span>, <span class="number">2</span>, <span class="number">1</span>, <span class="number">1</span>],</span><br><span class="line">                         [<span class="number">1</span> / <span class="number">5</span>, <span class="number">1</span> / <span class="number">3</span>, <span class="number">3</span>, <span class="number">1</span>, <span class="number">1</span>]])</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 对每个准则，方案优劣排序</span></span><br><span class="line">    b1 = np.array([[<span class="number">1</span>, <span class="number">1</span> / <span class="number">3</span>, <span class="number">1</span> / <span class="number">8</span>], [<span class="number">3</span>, <span class="number">1</span>, <span class="number">1</span> / <span class="number">3</span>], [<span class="number">8</span>, <span class="number">3</span>, <span class="number">1</span>]])</span><br><span class="line">    b2 = np.array([[<span class="number">1</span>, <span class="number">2</span>, <span class="number">5</span>], [<span class="number">1</span> / <span class="number">2</span>, <span class="number">1</span>, <span class="number">2</span>], [<span class="number">1</span> / <span class="number">5</span>, <span class="number">1</span> / <span class="number">2</span>, <span class="number">1</span>]])</span><br><span class="line">    b3 = np.array([[<span class="number">1</span>, <span class="number">1</span>, <span class="number">3</span>], [<span class="number">1</span>, <span class="number">1</span>, <span class="number">3</span>], [<span class="number">1</span> / <span class="number">3</span>, <span class="number">1</span> / <span class="number">3</span>, <span class="number">1</span>]])</span><br><span class="line">    b4 = np.array([[<span class="number">1</span>, <span class="number">3</span>, <span class="number">4</span>], [<span class="number">1</span> / <span class="number">3</span>, <span class="number">1</span>, <span class="number">1</span>], [<span class="number">1</span> / <span class="number">4</span>, <span class="number">1</span>, <span class="number">1</span>]])</span><br><span class="line">    b5 = np.array([[<span class="number">1</span>, <span class="number">4</span>, <span class="number">1</span> / <span class="number">2</span>], [<span class="number">1</span> / <span class="number">4</span>, <span class="number">1</span>, <span class="number">1</span> / <span class="number">4</span>], [<span class="number">2</span>, <span class="number">4</span>, <span class="number">1</span>]])</span><br><span class="line"></span><br><span class="line">    b = [b1, b2, b3, b4, b5]</span><br><span class="line">    a = AHP(criteria, b).run()</span><br></pre></td></tr></table></figure>
+<h2 id="层次分析法与控制变量法"><a class="header-anchor" href="#层次分析法与控制变量法">¶</a>层次分析法与控制变量法</h2>
+<p>我们的任务是选择工作，最后使得我们满意，直接选择我们当然一头雾水。所以我们设立一些准则，然后对这些准则对于目标的重要性排序。</p>
+<p>这又有点像概率图模型，只是赋权的方法，是相互比较的方法。</p>
+<h2 id="选择困难者的福音？"><a class="header-anchor" href="#选择困难者的福音？">¶</a>选择困难者的福音？</h2>
+<p>层次分析法对人们的思维过程进行了加工整理，提出了一套系统分析问题的方法，为科学管理和决策提供了较有说服力的依据。</p>
+<p>在应用层次分析法研究问题时，遇到的主要困难有两个:<br>
+(1) 如何根据实际情况抽象出较为贴切的层次结构;<br>
+(2) 如何将某些定性的量作比较接近实际定量化处理。</p>
+<p>层次分析法的其局限性<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup>：<br>
+(1) 它在很大程度上依赖于人们的经验，主观因素的影响很大，它至多只能排除思维过程中的严重非一致性，却无法排除决策者个人可能存在的严重片面性。<br>
+(2) 比较、 判断过程较为粗糙，不能用于精度要求较高的决策问题。</p>
+<p>所以，AHP 至多只能算是一种半定量(或定性与定量结合)的方法。
+本文仅供参考，不负法律责任，哈哈。</p>
+<h2 id="参考"><a class="header-anchor" href="#参考">¶</a>参考</h2>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p>幼鹰me 知乎 <a href="https://zhuanlan.zhihu.com/p/101505929" target="_blank" rel="noopener">层次分析法原理与Python实现</a> <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn2" class="footnote-item"><p>司守奎《数学建模算法与程序》第八章 层次分析法 P167 <a href="#fnref2" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
+]]></content>
+      <categories>
+        <category>数学</category>
+      </categories>
+      <tags>
+        <tag>数学</tag>
+        <tag>层次分析法</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>「202207月度汇报」obsidian</title>
+    <url>/public/2022/07/26/test/202207_obsidian/</url>
+    <content><![CDATA[<p>统计 ✅ : 6 📅 : 3 🔖 : 47</p>
+<a id="more"></a>
+<h2 id="✅-6"><a class="header-anchor" href="#✅-6">¶</a>✅ : 6</h2>
+<p>✅目标图标系统
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
+✅ <a href="https://blog.csdn.net/hhhhhyyyyy8/article/details/102133863" target="_blank" rel="noopener">Linux内核数据包bridge上转发流程_hhhhhyyyyy8的博客-CSDN博客_br_multicast_flood</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W27.md">C日常/2022-W27.md</a><br>
+✅ 邮箱转rss
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W23.md">C日常/2022-W23.md</a><br>
+✅  hacker news rss添加
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W23.md">C日常/2022-W23.md</a><br>
+✅ 经济学人转载leader文章
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W23.md">C日常/2022-W23.md</a><br>
+✅ github博客评论系统是否换成【不换】
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W23.md">C日常/2022-W23.md</a></p>
+<h2 id="📅-3"><a class="header-anchor" href="#📅-3">¶</a>📅 : 3</h2>
+<p>📅 端口触发 端口转发
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
+📅 全屋智能
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W26.md">C日常/2022-W26.md</a><br>
+📅 改进
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W26.md">C日常/2022-W26.md</a></p>
+<h2 id="🔖-47"><a class="header-anchor" href="#🔖-47">¶</a>🔖 : 47</h2>
+<p>🔖 ish保持后台运行
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W19.md">C日常/2022-W19.md</a><br>
+🔖 <a href="https://www.jianshu.com/p/f29ca723db4f" target="_blank" rel="noopener">Git 运行配置（git config、gitk、git gui） - michael_jia - 简书</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W19.md">C日常/2022-W19.md</a><br>
+🔖<a href="https://www.cnblogs.com/xuanbjut/p/12624702.html" target="_blank" rel="noopener">wmctrl像xmonad那样方便地用快捷键来控制任务窗口的显示 - pycod - 博客园</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W19.md">C日常/2022-W19.md</a><br>
+🔖 <a href="https://blog.csdn.net/anlian523/article/details/113627568" target="_blank" rel="noopener">VSCode复制代码时去掉样式/语法高亮/代码高亮/黑色背景_anlian523的博客-CSDN博客_idea复制代码不带黑色背景</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W19.md">C日常/2022-W19.md</a><br>
+🔖 <a href="https://blog.csdn.net/dog250/article/details/121400218" target="_blank" rel="noopener">为什么除法，开方，求对数比乘法，乘方，求指数更难_dog250的博客-CSDN博客</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
+🔖学习小林博客的写法
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
+🔖一万字统计学梳理
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
+🔖腾讯 彻底搞清楚tcp
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
+🔖0x5f3759df这个快速开方中的常数的数学依据是什么？
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
+🔖https流程
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
+🔖使用 Clion + QEMU/GDB 远程调试Linux内核（分享自知乎网）<a href="https://zhuanlan.zhihu.com/p/412604505?utm_source=md.obsidian&amp;utm_medium=social&amp;utm_oi=619610399826382848" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/412604505?utm_source=md.obsidian&amp;utm_medium=social&amp;utm_oi=619610399826382848</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
+🔖TCP/IP协议到底在讲什么？ <a href="http://www.zhihu.com/question/51074319?utm_source=md.obsidian&amp;utm_medium=social&amp;utm_oi=619610399826382848" target="_blank" rel="noopener">http://www.zhihu.com/question/51074319?utm_source=md.obsidian&amp;utm_medium=social&amp;utm_oi=619610399826382848</a> （分享自知乎网）
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
+🔖【什么是动态规划（Dynamic Programming）？动态规划的意义是什么？】阮行止：… <a href="https://www.zhihu.com/question/23995189/answer/613096905?utm_source=md.obsidian&amp;utm_medium=social&amp;utm_oi=619610399826382848" target="_blank" rel="noopener">https://www.zhihu.com/question/23995189/answer/613096905?utm_source=md.obsidian&amp;utm_medium=social&amp;utm_oi=619610399826382848</a> （分享自知乎网）
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
+🔖【为什么有人说弄懂了《算法导论》的 90%，就超越了 90%的程序员？】启舰：… <a href="https://www.zhihu.com/question/315201616/answer/1960517601?utm_source=md.obsidian&amp;utm_medium=social&amp;utm_oi=619610399826382848" target="_blank" rel="noopener">https://www.zhihu.com/question/315201616/answer/1960517601?utm_source=md.obsidian&amp;utm_medium=social&amp;utm_oi=619610399826382848</a> （分享自知乎网）
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
+🔖【vs code】【keil】优雅地使用vs code代替keil。by 童话与云 👉 <a href="https://www.zhihu.com/zvideo/1422934459457253376?utm_source=md.obsidian&amp;utm_medium=social&amp;utm_oi=619610399826382848" target="_blank" rel="noopener">https://www.zhihu.com/zvideo/1422934459457253376?utm_source=md.obsidian&amp;utm_medium=social&amp;utm_oi=619610399826382848</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
+🔖图解网络 - 75张图带你了解网络设备、网络地址规划、静态路由、实战演练（分享自知乎网）
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
+🔖vscode-journal：vscode中写日记/便签/提醒，配合nutstore与安卓、ios同步_TeQuL的博客-CSDN博客
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
+🔖结构体（结构体嵌套、结构体指针、结构体参数传递） - 蓝海人 - 博客园
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
+🔖Feedme - 8大 RSS 阅读器第三方客户端[Android] - 小众软件
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
+🔖聪明人必学的停车小技巧！。by Felicidades 👉 <a href="https://www.zhihu.com/zvideo/1414008107094093824?utm_source=md.obsidian&amp;utm_medium=social&amp;utm_oi=619610399826382848" target="_blank" rel="noopener">https://www.zhihu.com/zvideo/1414008107094093824?utm_source=md.obsidian&amp;utm_medium=social&amp;utm_oi=619610399826382848</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
+🔖在线 DOS 游戏 - 近 2000 款怀旧游戏，仙剑、红警、三国志、大富翁、明星志愿、大航海、主题医院等 - 小众软件
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
+🔖Feeddd · 重新掌控你的订阅源
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
+🔖【如何长时间高效学习？】硬核学长2077：… <a href="https://www.zhihu.com/question/28358499/answer/1762418904?utm_source=md.obsidian&amp;utm_medium=social&amp;utm_oi=619610399826382848" target="_blank" rel="noopener">https://www.zhihu.com/question/28358499/answer/1762418904?utm_source=md.obsidian&amp;utm_medium=social&amp;utm_oi=619610399826382848</a> （分享自知乎网）
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
+🔖【你身边的学霸都有怎样的学习方法或习惯？】硬核学长2077：… <a href="https://www.zhihu.com/question/54265751/answer/1995587976?utm_source=md.obsidian&amp;utm_medium=social&amp;utm_oi=619610399826382848" target="_blank" rel="noopener">https://www.zhihu.com/question/54265751/answer/1995587976?utm_source=md.obsidian&amp;utm_medium=social&amp;utm_oi=619610399826382848</a> （分享自知乎网）
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
+🔖【如何不痛苦地早起？】铁木君：… <a href="https://www.zhihu.com/question/22120300/answer/1887544838?utm_source=md.obsidian&amp;utm_medium=social&amp;utm_oi=619610399826382848" target="_blank" rel="noopener">https://www.zhihu.com/question/22120300/answer/1887544838?utm_source=md.obsidian&amp;utm_medium=social&amp;utm_oi=619610399826382848</a> （分享自知乎网）
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
+🔖[[obsidian_tips]]
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
+🔖<a href="https://sspai.com/post/72757" target="_blank" rel="noopener">随时可用的 PC 体验是这样「炼」成的，Windows 新版睡眠机制详解 - 少数派</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
+🔖<a href="https://blog.csdn.net/who538592/article/details/79483323" target="_blank" rel="noopener">TC流量控制_who538592的博客-CSDN博客_tc流量控制</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
+🔖 <a href="https://sspai.com/post/74090" target="_blank" rel="noopener">大家都说好的蛋白粉，我们应该如何取舍 - 少数派</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W28.md">C日常/2022-W28.md</a><br>
+🔖 <a href="https://zhuanlan.zhihu.com/p/508345279" target="_blank" rel="noopener">我的obsidian插件开发的学习过程</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W28.md">C日常/2022-W28.md</a><br>
+🔖 <a href="https://blog.csdn.net/Haywardwang/article/details/108626491" target="_blank" rel="noopener">python 词云构建_Haywardwang的博客-CSDN博客</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W28.md">C日常/2022-W28.md</a><br>
+🔖 <a href="https://blog.csdn.net/weixin_56842628/article/details/117921526?utm_medium=distribute.wap_relevant.none-task-blog-2~default~baidujs_title~default-9-117921526-blog-108626491.wap_blog_relevant_default&amp;spm=1001.2101.3001.4242.6&amp;utm_relevant_index=10" target="_blank" rel="noopener">如何用Python制作简单又好看的词云？来瞅瞅吧~_小熊爱Python的博客-CSDN博客_python词云代码简单</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W28.md">C日常/2022-W28.md</a><br>
+🔖 <a href="https://sspai.com/post/73779" target="_blank" rel="noopener">跨时空圆桌：伟大创作者们如何安排日常生活 - 少数派</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W27.md">C日常/2022-W27.md</a><br>
+🔖 <a href="https://www.appinn.com/typing-learner/" target="_blank" rel="noopener">Typing Learner - 硬核单词记忆：从电影台词筛选生词，边追美剧边学英语，用户直喊「好家伙！」[Windows/macOS] - 小众软件</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W27.md">C日常/2022-W27.md</a><br>
+🔖 <a href="https://www.zhihu.com/question/391756708/answer/2556173863" target="_blank" rel="noopener">SpaceX的可回收火箭有什么神奇之处，为何其他航天大国还不能仿造？ - YY硕 的回答 - 知乎</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W27.md">C日常/2022-W27.md</a><br>
+🔖 <a href="https://mp.weixin.qq.com/s/KBKO4C1d4CkyHAPEkh8D4Q" target="_blank" rel="noopener">这几个通信协议的动图不错</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W27.md">C日常/2022-W27.md</a><br>
+🔖 <a href="https://oorkan.medium.com/emojifying-your-linux-terminal-9a5c1e8f6b3c" target="_blank" rel="noopener">Emojifying your Linux terminal  🚀</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W27.md">C日常/2022-W27.md</a><br>
+🔖 <a href="https://sspai.com/post/74167" target="_blank" rel="noopener">为 WSL 配置这些新功能，不用虚拟机也能体验完整 Linux - 少数派</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W27.md">C日常/2022-W27.md</a><br>
+🔖<a href="https://sspai.com/post/72274" target="_blank" rel="noopener">意识先行，工具辅助：谈谈我们该怎样分辨虚假信息</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W27.md">C日常/2022-W27.md</a><br>
+🔖<a href="https://zhuanlan.zhihu.com/p/495262462" target="_blank" rel="noopener">网站低代码开发</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W27.md">C日常/2022-W27.md</a><br>
+🔖 学习体系化，效率提升
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W27.md">C日常/2022-W27.md</a><br>
+🔖 <a href="https://sspai.com/post/73958" target="_blank" rel="noopener">玩转 Obsidian 08：利用 Dataview 打造自动化 HomePage - 少数派</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W26.md">C日常/2022-W26.md</a><br>
+🔖 <a href="https://post.m.smzdm.com/p/adwgg2rd/" target="_blank" rel="noopener">小爱同学，打开我的三菱空调——米家空调伴侣2使用分享_智能家居_什么值得买</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W26.md">C日常/2022-W26.md</a><br>
+🔖 <a href="https://sspai.com/post/73829" target="_blank" rel="noopener">用 59 分钟，找到工具的效率之源 - 少数派</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W26.md">C日常/2022-W26.md</a><br>
+🔖 <a href="https://cloud.tencent.com/developer/article/1879646" target="_blank" rel="noopener">tcpdump是在哪儿抓到的包？ - 腾讯云开发者社区-腾讯云</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W26.md">C日常/2022-W26.md</a><br>
+🔖 <a href="https://www.jianshu.com/p/79bcf09aed25" target="_blank" rel="noopener">IPTables五----ebtables - marshalzxy - 简书</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W26.md">C日常/2022-W26.md</a><br>
+🔖 <a href="https://david-waiting.medium.com/a-beginners-guide-to-generic-routing-encapsulation-fb2b4fb63abb" target="_blank" rel="noopener">A Beginner’s Guide to Generic Routing Encapsulation</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W26.md">C日常/2022-W26.md</a></p>
+]]></content>
+      <categories>
+        <category>转载</category>
+      </categories>
+      <tags>
+        <tag>转载</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>「202212月度汇报」ttrss</title>
     <url>/public/2022/12/15/test/202212/</url>
     <content><![CDATA[<p>total: 7</p>
@@ -3026,609 +3629,6 @@ NexT Github  <a href="https://github.com/iissnan/hexo-theme-next" target="_blank
       <tags>
         <tag>通信</tag>
         <tag>历史</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>正则化「一」机器学习中的正则化</title>
-    <url>/public/2019/07/17/AI/regulation_baysian/</url>
-    <content><![CDATA[<p><strong>前言</strong>
-本<strong>正则化系列</strong>文章我们将讨论<strong>正则化技术在机器学习和深度学习的应用</strong>。本文为该系列的第一篇，主要介绍<strong>机器学习正则化的概念，原理和应用实例</strong>。</p>
-<p><a href="https://en.wikipedia.org/wiki/Regularization_(mathematics)" target="_blank" rel="noopener">正则化</a> 技术广泛应用在机器学习和深度学习算法中，本质作用是<strong>防止过拟合、提高模型泛化能力</strong>。其中过拟合的简单理解就是训练的算法模型太过复杂，模型过分考虑了当前样本的结构。</p>
-<p>在早期的机器学习领域一般只是将范数惩罚叫做正则化技术，而在深度学习领域认为，能够显著减少方差，而不过度增加偏差的策略都可以认为是正则化技术。故<strong>推广的正则化技术</strong>还有：扩增样本集、早停止、Dropout、集成学习、多任务学习、对抗训练、参数共享等。(具体见“花书 第七章 <a href="http://www.deeplearningbook.org/contents/regularization.html" target="_blank" rel="noopener">Regularization for Deep Learning</a>”），关于<strong>深度学习正则化</strong>会在下一篇正则化文章中重点分析。</p>
-<p>转载自：<a href="https://blog.csdn.net/BigData_Mining/article/details/81631249" target="_blank" rel="noopener">https://blog.csdn.net/BigData_Mining/article/details/81631249</a></p>
-<a id="more"></a>
-<h2 id="1-多角度看机器学习正则化"><a class="header-anchor" href="#1-多角度看机器学习正则化">¶</a>1. 多角度看机器学习正则化</h2>
-<p><strong>机器学习领域正则化</strong>可以从以下三个角度进行理解：</p>
-<p><strong>(1)</strong> <strong>正则化等价于结构风险最小化，其是通过在经验风险项后加上表示模型复杂度的正则化项或惩罚项，达到选择经验风险和模型复杂度都较小的模型目的</strong>。</p>
-<p>​	<strong>经验风险</strong>：机器学习中的风险是指模型与真实解之间的误差的积累，经验风险是指使用训练出来的模型进行预测或者分类，存在多大的误差，可以简单理解为训练误差，经验风险最小化即为训练误差最小。</p>
-<p>​	<strong>结构风险</strong>：结构风险定义为经验风险与置信风险(置信是指可信程度)的和，置信风险越大，模型推广能力越差。可以简单认为结构风险是经验风险后面多加了一项表示模型复杂度的函数项，从而可以同时控制模型训练误差和测试误差，结构风险最小化即为在保证模型分类精度(经验风险)的同时，降低模型复杂度，提高泛化能力。</p>
-<p>​	<strong>公式表达</strong>
-$$
-R(f)=\frac{1}{n}\sum_{i=1}^{n}L(y_i,f(x_i)) + \lambda \Omega (f)
-\tag{1}
-$$
-​		其中，$R(f)$表示结构风险，$L(y_i,f(x_i))$表示第 $i$ 个样本的经验风险，$\Omega(f)$是表征模型复杂度的正则项，$\lambda$ 是正则化参数。根据奥姆剃刀定律，“如无必要，勿增实体”，即认为相对简单的模型泛化能力更好。而模型泛化能力强、泛化误差小，即表示模型推广能力强，通俗理解就是在训练集中训练得到的优秀模型能够很好的适用于实际测试数据，而不仅仅是减少训练误差或者测试误差。泛化误差定义如下：
-$$
-E={Bias}^2(X) + {Var}(X) +{Noise}
-\tag{2}
-$$
-​		其中，$E$ 表示泛化误差，${Bias}$ 代表偏差，${Var}$ 代表方差， ${Noise}$ 代表噪声。</p>
-<p>​	<strong>关系图</strong></p>
-<p><img src="/public/2019/07/17/AI/regulation_baysian/1563350068097.png" alt="1563350068097"></p>
-<div align="center"> Fig 1. 泛化误差与偏差和方差的关系</div>
-​		从 Fig 1 可以看出，随着训练程度加深，模型复杂度会增加，偏差减少，方差增大，而泛化误差呈现U型变化。对于一个“好的系统”通常要求误差小，正则化的作用即为适当的控制模型复杂度，从而使得**泛化误差曲线**取最小值。
-<p><strong>(2)</strong> <strong>正则化等价于带约束的目标函数中的约束项</strong></p>
-<p>以平方误差损失和L2范数为例，优化问题的数学模型如下：
-$$
-J(\theta)=\sum_{i=1}^{n}(y_i-\theta^Tx_i)^2
-\tag{3}
-$$
-$$
-{s.t.}{|| \theta ||}_2^2 \leq C\<br>
-\tag{4}
-$$</p>
-<p>针对上述约束条件的优化问题，采用拉格朗日乘积算子法可以转化为无约束化问题，即
-$$
-J(\theta)=\sum_{i=1}^{n}(y_i-w^Tx_i)^2 + \lambda({|| \theta ||}_2^2-C)
-\tag{5}
-$$</p>
-<p>由于参数 $C$ 为常数，可以忽略，故上述公式和标准的正则化 公式完全一致。</p>
-<p><strong>(3)</strong> <strong>从贝叶斯角度考虑</strong></p>
-<p>正则项等价于引入参数的模型先验概率，可以简单理解为对最大似然估计引入先验概率，从而转化为最大后验估计，其中的先验概率即对于正则项（这部分内容后面详细讲解）。</p>
-<h2 id="2-基本概念"><a class="header-anchor" href="#2-基本概念">¶</a>2 基本概念</h2>
-<p>正则化也可以成为规则化、权重衰减技术，不同的领域叫法不一样，数学上常用范数实现，例如L1和L2范数，统计学领域叫做惩罚项、罚因子。</p>
-<p>下面给出范数的数学公式，方便以后分析：</p>
-<p>​	(1) $p$ 范数：
-$$
-Lp=(\sum_{i=1}^{n}{|| x_i ||}^p)^{\frac{1}{p}}
-\tag{6}
-$$
-​	(2) $L0$ 范数：0 范数表示向量中非零元素的个数（即为其稀疏度）</p>
-<p>​	(3) $L1$ 范数：即向量元素绝对值之和，$p$ 范数取1，即为1范数
-$$
-{||x||}_1=\sum^n_1 {|| x_i || }
-\tag{7}
-$$</p>
-<p>​	(4) $L2$ 范数：即向量元素绝对值的平方和再开发，也称欧几里得距离，$p$ 范数取2，即为2范数
-$$
-{||x||}_{2}=\sqrt{\sum^{n}_1|| x_i ||^2}
-\tag{8}
-$$</p>
-<p>​	(5) $\infty $ 范数：即所有向量元素的绝对值中的最大值，$p$ 范数取 $\infty $，即为 $\infty $ 范数
-$$
-{||x  ||}_{\infty }=\underset{i}{\max}{\left | x_i \right |}
-\tag{9}
-$$</p>
-<p>​	(6) $-\infty $ 范数：即所有向量元素绝对值中的最小值，$p$ 范数取$-\infty $，即为 $-\infty $ 范数
-$$
-{||x  ||}_{-\infty }=\underset{i}{\min}{\left | x_i \right |}
-\tag{10}
-$$
-<strong>图形描述</strong></p>
-<p>​		从 Fig 2、Fig 3 图可以看出：q(p)越小，曲线越贴近坐标轴，q(p)越大，曲线越远离坐标轴，并且棱角越明显，当q(p)取0时候，是完全和坐标轴贴合，当q(p)取无穷的时候，呈现正方体形状。同时也可以看出，采用不同的范数作为正则项，会得到完全不同的算法模型结果，故而对于不同要求的模型，应该采用不同的范数作为正则项。</p>
-<p><img src="/public/2019/07/17/AI/regulation_baysian/1563354053269.png" alt="1563354053269"></p>
-<div align="center"> Fig 2. 向量长度为2维的范数约束</div>
-![1563354456894](regulation_baysian/1563354456894.png)
-<div align="center"> Fig 3. 向量长度为3维的范数约束</div>
-## 3 深度理解
-<p>​		为了更好的理解正则化技术原理，下面从4个方面进行深度分析，希望对大家理解有帮助。</p>
-<h3 id="3-1-简单数值假设分析法"><a class="header-anchor" href="#3-1-简单数值假设分析法">¶</a>3.1 简单数值假设分析法</h3>
-<p>​		此处以L2范数讲解，下面的各图形来自吴恩达的机器学习课程。</p>
-<p><img src="/public/2019/07/17/AI/regulation_baysian/image-20190619002115576.png" alt="image-20190619002115576"></p>
-<div align="center"> Fig 4. 不同参数下的曲线拟合结果</div>
-​		左边的曲线拟合是欠拟合，中间的曲线拟合是刚好合适，右边的曲线拟合是过拟合。对于右边的拟合曲线，有
-$$
-h_{\theta}(x)={\theta}_0+{\theta}_0 x_1 +{\theta}_2 x_2^2 +{\theta}_3 x_3^3 +{\theta}_4 x_4^4
-\tag{11}
-$$
-​		从上式可以看出，由于$\theta_3$和$\theta_4$对应了高阶，导致拟合曲线是4阶曲线，出现了过拟合。正则化的目的为适当缩减$\theta_3$和$\theta_4$的值，例如都为0.0001，则上述曲线本质上等价与
-$$
-h_{\theta}(x)={\theta}_0 + {\theta}_1 x_1 +{\theta}_2 x_2^2
-\tag{12}
-$$
-​		也就是变成了中间的刚好合适的拟合曲线。对于$\theta_3$ 和$\theta_4$增加 L2 正则项后的代价函数表达式为：
-$$
-J(\theta)= \underset{\theta}{\min}\frac{1}{n}\sum_{i=1}^{n}((h_{\theta}(x_i)-y_i)+1000{\theta}_3^2 + 1000 {\theta}_4^2)
-\tag{13}
-$$
-​		从上式可以看出，$\theta_3^2$ 和 $\theta_4^2$ 均大于 0，其乘上了1000，要 $J(\theta)$ 是最小，则会迫使模型学习到的$\theta_3$ 和 $\theta_4$ 会非常小，因为只有在$\theta_3$ 和 $\theta_4$ 会非常小的情况下整个代价函数值才会取的较小值。在实际开发中，是对所有参数进行正则化，为了使代价函数尽可能的小，所有的参数 $\theta$ 的值（不包括 $\theta_0$）都会在一定程度上减小，但是减小程度会不一样，从而实现了权重衰减、简化模型复杂度的作用。
-<h3 id="3-2-图形分析法"><a class="header-anchor" href="#3-2-图形分析法">¶</a>3.2 图形分析法</h3>
-<p>​		此处采用L1和L2范数讲解：
-<strong>(1) L2 范数正则</strong>
-$$
-J(\beta)=\sum_{i=1}^{n}(y_i-{\beta}^T x_i)^2 + \lambda {|| {\beta} ||}_2^2
-\tag{14}
-$$
-<img src="/public/2019/07/17/AI/regulation_baysian/1563366078400.png" alt="1563366078400"></p>
-<div align="center"> Fig 5. L2 范数与代价函数的寻优图示</div>
-​		在 Fig 5 中，蓝色的圆形空间表示 L2 范数空间，设为 $\beta_1^2 + \beta_2^2 = r^2$，可以看出，当 $r$ 从 0 逐渐增大时候，该圆形也逐渐增大，红色的线表示原始代价函数解空间即 $\sum_{i=1}^{n}(y_i-\beta^T x_i)^2$，此处为了方便绘图，设参数只有2维。红色圆环上的任何一点都表示一个可行解即代表一组$\beta_1$、$\beta_2$，其中任何一个红色圆环上面的$\beta_1$，$\beta_2$对应的代价函数值一样（可以简单理解为等值线），$\hat{\beta}$ 代表最佳解空间。
-<h2 id="4-贝叶斯角度分析"><a class="header-anchor" href="#4-贝叶斯角度分析">¶</a>4. 贝叶斯角度分析</h2>
-<p>​		以L1和L2范数为例，所得结论可以推广到P范数中，首先需要知道：整个最优化问题从贝叶斯观点来看是一种贝叶斯最大后验估计，其中正则化项对应后验估计中的先验信息，损失函数对应后验估计中的似然函数，两者的乘积即对应贝叶斯最大后验估计的形式。针对L1和L2范数还有结论：<strong>L2 范数相当于给模型参数设置一个协方差为1/alpha的零均值高斯先验分布，L1 范数相当于给模型参数 设置一个参数为1/alpha 拉普拉斯先验分布</strong>。</p>
-<p>​		为了讲清楚上述结论，需要具备几点前置知识点：(1) 高斯分布和拉普拉斯分布的定义和形状；(2) 贝叶斯定理；(3) 最大似然估计；(4) 最大后验估计。下面我对这4个知识点进行解释。</p>
-<p><strong>(1)</strong> <strong>高斯分布和拉普拉斯分布</strong></p>
-<p><img src="/public/2019/07/17/AI/regulation_baysian/0.png" alt="0?wx_fmt=png"></p>
-<p><img src="/public/2019/07/17/AI/regulation_baysian/0-20190610163845194.png" alt="0?wx_fmt=png"></p>
-<p><strong>(2)</strong> <strong>最大似然估计</strong></p>
-<p><img src="/public/2019/07/17/AI/regulation_baysian/0-20190610163845276.png" alt="0?wx_fmt=png"></p>
-<p>​		如果上述公式不能理解，请各位读者去复习一下大学课程《概率论与数理统计》中的参数估计章节，为了更方便理解，下面举一个例子：假设我要统计出整个大学内所有同学的身高分布情况，设全校一共20000人，数量庞大，所有人都去问一遍不太靠谱，所以我打算采用抽样方法来估计，假设我已经知道身高分布服从高斯分布，但是我不知道高斯分布中的均值和方差参数，现在我打算采用最大似然估计方法来确定这两个参数。首先需要明确，全校20000即为总体X，我随机从各个班抽取10名同学，假设一共抽了2000个同学，那么2000同学就构成了样本空间，由于每个样本的概率密度函数已知，则很容易写出似然函数，对数求导即可求解参数。</p>
-<p><strong>(3)</strong> <strong>最大后验估计</strong></p>
-<p><img src="/public/2019/07/17/AI/regulation_baysian/0-20190610163845259.png" alt="0?wx_fmt=png"></p>
-<p><img src="/public/2019/07/17/AI/regulation_baysian/0-20190610163845297.png" alt="0?wx_fmt=png"></p>
-<p><img src="/public/2019/07/17/AI/regulation_baysian/0-20190610163845289.png" alt="0?wx_fmt=png"></p>
-<h2 id="5-例子"><a class="header-anchor" href="#5-例子">¶</a>5. 例子</h2>
-<h3 id="5-1-逻辑回归"><a class="header-anchor" href="#5-1-逻辑回归">¶</a>5.1 逻辑回归</h3>
-<p>​		二分类逻辑回归使用Sigmoid作为决策函数进行分类，该函数可以将任意的输入映射到[0,1]区间，当预测结果小于0.5，则表示负类，当预测结果大于0.5.则表示正类，其模型本质是求最大似然估计，具体求解似然函数通常使用梯度下降法，而前面说过：最大似然估计法没有考虑训练集以外的因素，很容易造成过拟合，故而逻辑回归一般采用L2范数进行正则化操作，Sigmoid函数定义和图形如下：</p>
-<p><img src="/public/2019/07/17/AI/regulation_baysian/0.jpeg" alt="0?wx_fmt=png"></p>
-<h3 id="5-2-岭回归-Ridge-Regression"><a class="header-anchor" href="#5-2-岭回归-Ridge-Regression">¶</a>5.2 岭回归(Ridge Regression)</h3>
-<p>​		岭回归本质上是针对线性回归问题引入了L2范数正则，通过缩减回归系数避免过拟合问题，最先用来处理特征数多于样本数的情况(高维小样本问题)，现在也用于在估计中加人偏差，从而得到更好的估计，加了正则化后的代价函数如下：</p>
-<p><img src="/public/2019/07/17/AI/regulation_baysian/0-20190610174921016.png" alt="0?wx_fmt=png"></p>
-<h3 id="5-3-Lasso-回归"><a class="header-anchor" href="#5-3-Lasso-回归">¶</a>5.3 Lasso 回归</h3>
-<p>​		拉索回归(lasso回归)本质上是针对线性回归问题引入了L1范数正则，通过缩减回归系数避免过拟合问题，其不同于L2范数，其可以将某些系数缩减为0即所谓的具备稀疏性(稀疏性的好处是简化计算、容易理解模型、减少存储空间、不容易出现过拟合等等)，加了正则化后的代价函数如下：</p>
-<p><img src="/public/2019/07/17/AI/regulation_baysian/0-20190610174920968.png" alt="0?wx_fmt=png"></p>
-<p>​		其中，参数函数和岭回归中相同。L1范数罚有一个问题：由于|X|函数在0处不可导，故而直接使用最小二乘法、梯度下降法等方法均失效，但是由于其为第一类间断点中的可去间断点，可以通过补充该点的定义解决，通常，对于线性回归中的lasso回归可以采用近似的前向逐步回归替代。</p>
-<h3 id="5-4-SVM"><a class="header-anchor" href="#5-4-SVM">¶</a>5.4 SVM</h3>
-<p>​		支持向量机SVM优化目的为寻找一个超平面，使得正负样本能够以最大间隔分离开，从而得到更好的泛化性能，其通过引入核函数来将低维线性不可分的样本映射到高维空间从而线性可分，通过引入惩罚参数C(类似于正则化参数)来对错分样本进行惩罚，从而减少模型复杂度，提高泛化能力，其优化目标如下：</p>
-<p><img src="/public/2019/07/17/AI/regulation_baysian/0-20190610174921029.png" alt="0?wx_fmt=png"></p>
-<p>​		大家如果不知道上面公式的推导，不用紧张，对于本次内容不是重点，只需要关注后面正则项部分，惩罚参数C作用和正则化参数作用一致，只是反相关而已。需要明白以下结论：</p>
-<p>​		<strong>(1)</strong> C越大，正则化参数越小，表示对分错样本的惩罚程度越大，正则化作用越小，偏差越小，方差越大，越容易出现过拟合(通俗理解，原本将低维空间映射到5维空间正好线性可分，但是由于惩罚过于严重，任何一个样本分错了都不可原谅，结果系统只能不断提高维数来拟合样本，假设为10维，最终导致映射维数过高，出现过拟合样本现象，数学上称为VC维较大)；</p>
-<p>​		<strong>(2)</strong> C越小，正则化参数越大，表示对分错样本的惩罚程度越小，正则化作用越大，偏差越大，方差越小，越容易出现欠拟合(通俗理解，原本将低维空间映射到5维空间正好线性可分，但是由于惩罚过小，分错了好多样本都可以理解，比较随意，结果系统也采用简化版来拟合样本，假设为3维，最终导致映射维数过低，出现欠拟合样本现象，数学上称为VC维较小)。</p>
-<h2 id="6-总结"><a class="header-anchor" href="#6-总结">¶</a>6. 总结</h2>
-<p>根本目的本质：防止过拟合，提高模型泛化能力。</p>
-<p>正则化技术分类：
-<strong>狭义上</strong>（不同地方叫法不同）</p>
-<ul>
-<li>在早期的机器学习领域一般只是将范数惩罚叫做正则化技术</li>
-<li>规则化、权重衰减</li>
-<li>从贝叶斯角度考虑，正则项等价于引入参数的模型先验概率</li>
-</ul>
-<p><strong>广义上</strong>：
-能够显著减少方差，而不过度增加偏差的策略都可以认为是正则化技术，推广的正则化技术还有：扩增样本集、早停止、Dropout、集成学习、多任务学习、对抗训练、参数共享等。</p>
-<h2 id="Reference"><a class="header-anchor" href="#Reference">¶</a>Reference</h2>
-<p><a href="https://blog.csdn.net/BigData_Mining/article/details/81631249" target="_blank" rel="noopener">正则化总结的比较好比较全面的文章</a></p>
-]]></content>
-      <categories>
-        <category>机器学习</category>
-        <category>正则化</category>
-      </categories>
-      <tags>
-        <tag>人工智能</tag>
-        <tag>机器学习</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Jupyter notebook的配置</title>
-    <url>/public/2017/07/03/linux/jupyter_notebook/</url>
-    <content><![CDATA[<p><strong>前言</strong>
-本文介绍jupyter notebook的安装配置过程和实用技巧。
-<a href="https://jupyter.readthedocs.io/en/latest/index.html" target="_blank" rel="noopener">jupyter.readthedocs教程</a></p>
-<a id="more"></a>
-<h2 id="1-安装与配置"><a class="header-anchor" href="#1-安装与配置">¶</a>1 安装与配置</h2>
-<h3 id="1-1-安装-jupyter"><a class="header-anchor" href="#1-1-安装-jupyter">¶</a>1.1 安装 jupyter</h3>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">conda install jupyter</span><br><span class="line"><span class="comment"># pip install -i https://pypi.tuna.tsinghua.edu.cn/simple jupyter</span></span><br><span class="line"><span class="comment"># pip install jupyter -y</span></span><br></pre></td></tr></table></figure>
-<h3 id="1-2-修改配置文件"><a class="header-anchor" href="#1-2-修改配置文件">¶</a>1.2 修改配置文件</h3>
-<ul>
-<li>生成配置文件</li>
-</ul>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">jupyter notebook --generate-config</span><br><span class="line">vim ~/.jupyter/jupyter_notebook_config.py</span><br></pre></td></tr></table></figure>
-<ul>
-<li>修改配置文件内容</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">c.NotebookApp.ip = <span class="string">'0.0.0.0'</span></span><br><span class="line">c.NotebookApp.port = <span class="number">8018</span></span><br><span class="line"><span class="comment"># 设置密码</span></span><br><span class="line">c.NotebookApp.password = <span class="string">u'sha1:bcd259ccf...your hashed password here'</span></span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>Tip: 利用ipython 生成密码</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&gt; In [1]: from IPython.lib import passwd</span><br><span class="line">&gt; In [2]: passwd()</span><br><span class="line">&gt;   Enter password:</span><br><span class="line">&gt;   Verify password:</span><br><span class="line">&gt;   Out[2]: &apos;sha1:67xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&apos;</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
-</blockquote>
-<p>我选用的是password密码登陆jupyter的方案，其他的密码登陆方案见 <a href="https://zhuanlan.zhihu.com/p/23110830" target="_blank" rel="noopener">link</a></p>
-<blockquote>
-<p>新的方法
-from notebook.auth import passwd; passwd()</p>
-</blockquote>
-<h3 id="1-3-安装插件管理"><a class="header-anchor" href="#1-3-安装插件管理">¶</a>1.3 安装插件管理</h3>
-<p>jupyter_contrib_nbextensions 为 jupyter notebook 扩展插件管理器，下面简称nbextensions。</p>
-<p>nbextensions的github <a href="https://github.com/ipython-contrib/jupyter_contrib_nbextensions" target="_blank" rel="noopener">repo</a>
-nbextensions的教程<a href="https://jupyter-contrib-nbextensions.readthedocs.io/en/latest/" target="_blank" rel="noopener">nbextensions_manual_readthedocs</a></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 用conda安装</span></span><br><span class="line">conda install jupyter</span><br><span class="line">conda install -c conda-forge jupyter_contrib_nbextensions</span><br><span class="line"></span><br><span class="line"><span class="comment"># pip安装</span></span><br><span class="line">pip install jupyter_contrib_nbextensions</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使能</span></span><br><span class="line">jupyter contrib nbextension install</span><br></pre></td></tr></table></figure>
-<p>我启用的一些插件</p>
-<table>
-<thead>
-<tr>
-<th>plugins</th>
-<th></th>
-<th></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Table of Contents (2)</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>Freeze</td>
-<td>比较好的一个插件，可以用来冻住cell</td>
-<td></td>
-</tr>
-<tr>
-<td>nbTranslate</td>
-<td>这个插件利用Google翻译cell很好用</td>
-<td><a href="https://github.com/jfbercher/jupyter_nbTranslate/blob/master/languages.js" target="_blank" rel="noopener">support languages</a></td>
-</tr>
-<tr>
-<td>ExecuteTime</td>
-<td>显示执行时间</td>
-<td></td>
-</tr>
-<tr>
-<td>Ruler</td>
-<td>代码标尺</td>
-<td></td>
-</tr>
-<tr>
-<td>Autopep8</td>
-<td>代码美化</td>
-<td></td>
-</tr>
-<tr>
-<td>Scratchpad</td>
-<td>代码测试</td>
-<td></td>
-</tr>
-</tbody>
-</table>
-<p>其他花样的配置</p>
-<p><a href="https://zhuanlan.zhihu.com/p/74950682" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/74950682</a></p>
-<h3 id="1-4-conda环境的设置"><a class="header-anchor" href="#1-4-conda环境的设置">¶</a>1.4 conda环境的设置</h3>
-<p>jupyter使用Anaconda miniconda环境需要安装的组件。
-<a href="https://repo.anaconda.com" target="_blank" rel="noopener">conda repo</a></p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 创建虚拟环境</span></span><br><span class="line">conda create -n env_name python=3.6</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> conda虚拟核组件 切换kernel</span></span><br><span class="line">conda install nb_conda_kernels</span><br></pre></td></tr></table></figure>
-<h3 id="1-5-解决界面中英文混杂"><a class="header-anchor" href="#1-5-解决界面中英文混杂">¶</a>1.5 解决界面中英文混杂</h3>
-<img src="/public/2017/07/03/linux/jupyter_notebook/image-20200413125705473.png" alt="image-20200413125705473" style="zoom:50%;">
-<p>如图，jupyter 界面中中英文混杂，解决方法为将界面文字中文切换成英文。</p>
-<p>原理：让jupyter就找不到他的中文配置文件夹。</p>
-<p>找到notebook的汉化文件夹的路径，比如<code>~/miniconda3/lib/python3.6/site-packages/notebook/i18n/zh_CN</code>。将其重命名如加个下划线作为后缀<code>zh_CN_old</code>，重启jupyter就行了。</p>
-<p>为了方便，我作了个脚本自动找<code>notebook/i18n/zh_CN</code>位置并改名此文件夹，如下。</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> shutil</span><br><span class="line"><span class="keyword">from</span> distutils.sysconfig <span class="keyword">import</span> get_python_lib</span><br><span class="line"><span class="comment"># 获取site-package包的位置</span></span><br><span class="line">path_zh=get_python_lib()+<span class="string">'/notebook/i18n/zh_CN'</span></span><br><span class="line">path_zh_old=get_python_lib()+<span class="string">'/notebook/i18n/zh_CN_old'</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 将 notebook/i18n/zh_CN 改为 notebook/i18n/zh_CN_old</span></span><br><span class="line">shutil.move(path_zh,path_zh_old)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 返回中文</span></span><br><span class="line"><span class="comment"># shutil.move(path_zh_old,path_zh)</span></span><br></pre></td></tr></table></figure>
-<p>重启jupyter就行了, 这样jupyter就找不到这个中文配置，返回中文改回去就行了<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup>。</p>
-<h2 id="2-使用的技巧"><a class="header-anchor" href="#2-使用的技巧">¶</a>2 使用的技巧</h2>
-<h3 id="2-1-快捷键"><a class="header-anchor" href="#2-1-快捷键">¶</a>2.1 快捷键</h3>
-<hr>
-<table>
-<thead>
-<tr>
-<th>在非激活状态即是蓝颜色的边框</th>
-<th>内容</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>A</td>
-<td>insert cell above</td>
-</tr>
-<tr>
-<td>B</td>
-<td>insert cell below</td>
-</tr>
-<tr>
-<td>H</td>
-<td>查看帮助</td>
-</tr>
-<tr>
-<td>⌃↩(ctrl + enter)</td>
-<td>run selected cells</td>
-</tr>
-</tbody>
-</table>
-<h3 id="2-2-显示图片-视频-音频"><a class="header-anchor" href="#2-2-显示图片-视频-音频">¶</a>2.2 显示图片 视频 音频</h3>
-<p>主要是画图、显示视频和音频的方法。</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 图片</span></span><br><span class="line">%%HTML</span><br><span class="line">&lt;img src=<span class="string">"xxx.jpg"</span>  alt=<span class="string">"title"</span> /&gt;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 视频</span></span><br><span class="line">%%HTML</span><br><span class="line">&lt;video width=<span class="string">"330"</span> height=<span class="string">"150"</span> controls&gt;</span><br><span class="line">&lt;source src=<span class="string">"out_all.mp4"</span> type=<span class="string">"video/mp4"</span>&gt;</span><br><span class="line">&lt;/video&gt;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 语音</span></span><br><span class="line">%%HTML</span><br><span class="line">&lt;audio src=<span class="string">"out.wav"</span> controls=<span class="string">"controls"</span>&gt;</span><br><span class="line">Your browser does <span class="keyword">not</span> support the audio element.</span><br><span class="line">&lt;/audio&gt;</span><br><span class="line"></span><br><span class="line"><span class="comment"># html t是html的字符串</span></span><br><span class="line"><span class="keyword">from</span> IPython.core.display <span class="keyword">import</span> HTML</span><br><span class="line">HTML(str(t))</span><br></pre></td></tr></table></figure>
-<h3 id="2-3-其他技巧"><a class="header-anchor" href="#2-3-其他技巧">¶</a>2.3 其他技巧</h3>
-<h4 id="修复视频文件"><a class="header-anchor" href="#修复视频文件">¶</a>修复视频文件</h4>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fix_use_ffmpeg</span><span class="params">(in_name, out_name,message=<span class="string">""</span>)</span>:</span></span><br><span class="line">    <span class="keyword">import</span> os</span><br><span class="line">    <span class="keyword">if</span> os.path.isfile(out_name):</span><br><span class="line">    os.remove(out_name)</span><br><span class="line">    cmd = <span class="string">'ffmpeg -i %s %s'</span> % (in_name, out_name)</span><br><span class="line">    log_lines = os.popen(cmd).readlines()</span><br><span class="line">    print(message,<span class="string">"ok"</span>)</span><br></pre></td></tr></table></figure>
-<h4 id="加载自己的模块文件"><a class="header-anchor" href="#加载自己的模块文件">¶</a>加载自己的模块文件</h4>
-<p>出于性能考虑，每个模块在每个解释器会话中只导入一遍。因此，如果你修改了你的模块，需要重启解释器；或者，如果你就是想交互式的测试这么一个模块，可以用 imp.reload() 重新加载，例如 <code>import imp; imp.reload(modulename)</code></p>
-<h4 id="导出pdf支持中文"><a class="header-anchor" href="#导出pdf支持中文">¶</a>导出pdf支持中文</h4>
-<p>Jupyter Notebook 输出PDF中文支持 <a href="https://www.jianshu.com/p/c3f660188766" target="_blank" rel="noopener">link</a></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> /usr/<span class="built_in">local</span>/lib/python3.6/site-packages/nbconvert/templates/latex</span><br><span class="line"></span><br><span class="line"><span class="comment"># 在里面的模版中添加，前提是安装好了texlive</span></span><br><span class="line">% add</span><br><span class="line">\usepackage&#123;ctex&#125;</span><br></pre></td></tr></table></figure>
-<h4 id="ipynb2pdf"><a class="header-anchor" href="#ipynb2pdf">¶</a>ipynb2pdf</h4>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python3</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string">Current version of Jupyter doesn't support pdf exporting when it comes to</span></span><br><span class="line"><span class="string">russian language in the document. To fix this, current script has born.</span></span><br><span class="line"><span class="string">It requires nbconvert as long as jupyter to be installed.</span></span><br><span class="line"><span class="string">Author:     Sergey Ivanychev</span></span><br><span class="line"><span class="string">Email:      sergeyivanychev@gmail.com</span></span><br><span class="line"><span class="string">Revision:   1</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> subprocess</span><br><span class="line"></span><br><span class="line">FORMAT = <span class="string">".ipynb"</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string">TODO:   What if user has ___o.tex in current folder?</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line">TEMP_TEX = <span class="string">"___o.tex"</span></span><br><span class="line">TEMP_FOLDER = <span class="string">"/tmp"</span></span><br><span class="line">TRASH_EXTENSIONS = [<span class="string">".aux"</span>, <span class="string">".out"</span>, <span class="string">".log"</span>]</span><br><span class="line">OLD1 = <span class="string">r"\usepackage[utf8x]&#123;inputenc&#125;"</span></span><br><span class="line">NEW1 = <span class="string">r"""</span></span><br><span class="line"><span class="string">    \usepackage[utf8x]&#123;inputenc&#125;</span></span><br><span class="line"><span class="string">    \usepackage&#123;ctex&#125;</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line">REPLACE = [(OLD1, NEW1)]</span><br><span class="line">HELP = <span class="string">"""</span></span><br><span class="line"><span class="string">This script is aimed at correctly converting .ipynb to .pdf files.</span></span><br><span class="line"><span class="string">You may use it via</span></span><br><span class="line"><span class="string"># ipynb2pdf Solution.ipynb</span></span><br><span class="line"><span class="string">To get .pdf in the same directory</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">check_args</span><span class="params">(argv)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> (len(argv) &gt; <span class="number">2</span>):</span><br><span class="line">        print(<span class="string">"Please, type .ipynb filename as argument"</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span></span><br><span class="line">    <span class="keyword">if</span> (len(argv) == <span class="number">1</span>):</span><br><span class="line">        print(HELP)</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span></span><br><span class="line">    script, filename = argv</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> is_ipynb(filename):</span><br><span class="line">        print(<span class="string">"Please, type .ipynb filename as argument"</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">remove_extention</span><span class="params">(string, extention)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    Removes argumented extention from the end of the string</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    <span class="keyword">if</span> extention[<span class="number">0</span>] != <span class="string">'.'</span>:</span><br><span class="line">        extention = <span class="string">"."</span> + extention</span><br><span class="line">    <span class="keyword">if</span> string.endswith(extention):</span><br><span class="line">        string = string[<span class="number">0</span>:-len(extention)]</span><br><span class="line">    <span class="keyword">return</span> string</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">is_ipynb</span><span class="params">(filename)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> filename.endswith(<span class="string">".ipynb"</span>):</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">    <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">tex2pdf</span><span class="params">(filename, desired_name)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    Converts filename (which is tex document) to desired_name (which is pdf)</span></span><br><span class="line"><span class="string">    leaving no trash in current folder</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    base = remove_extention(filename, <span class="string">"tex"</span>)</span><br><span class="line">    output = base + <span class="string">".pdf"</span></span><br><span class="line">    ret = subprocess.call(<span class="string">"xelatex %s"</span> % filename , </span><br><span class="line">                                        shell=<span class="literal">True</span>, stdout=subprocess.PIPE)</span><br><span class="line">    <span class="keyword">for</span> ext <span class="keyword">in</span> TRASH_EXTENSIONS:</span><br><span class="line">        os.unlink(base + ext)</span><br><span class="line">    os.rename(output, desired_name)</span><br><span class="line">    <span class="keyword">return</span> ret</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">(argv)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> check_args(argv) == <span class="number">-1</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span></span><br><span class="line">    script, filename = argv</span><br><span class="line">    ret = subprocess.call(<span class="string">"jupyter nbconvert %s --to latex --output %s"</span> %</span><br><span class="line">                                            (filename, TEMP_TEX), shell=<span class="literal">True</span>,</span><br><span class="line">                                            stdout=subprocess.PIPE)</span><br><span class="line">    <span class="keyword">if</span> (ret != <span class="number">0</span>):</span><br><span class="line">        print(<span class="string">"ret = %d"</span> % ret)</span><br><span class="line">        os.unlink(TEMP_TEX)</span><br><span class="line">        print(<span class="string">"Converting to LaTeX failed. Return code: %d"</span> % ret)</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span></span><br><span class="line">    tex_file = open(TEMP_TEX, <span class="string">"r"</span>)</span><br><span class="line">    tex = tex_file.read()</span><br><span class="line">    <span class="keyword">for</span> old, new <span class="keyword">in</span> REPLACE:</span><br><span class="line">        tex = tex.replace(old, new)</span><br><span class="line">    tex_file.close()</span><br><span class="line">    os.unlink(TEMP_TEX)</span><br><span class="line">    tex_file = open(TEMP_TEX, <span class="string">"w+"</span>)</span><br><span class="line">    tex_file.write(tex)</span><br><span class="line">    tex_file.close()</span><br><span class="line">    ret = tex2pdf(TEMP_TEX, remove_extention(filename, <span class="string">".ipynb"</span>) + <span class="string">".pdf"</span>)</span><br><span class="line">    tex_file.close()</span><br><span class="line">    os.unlink(TEMP_TEX)</span><br><span class="line">    print(remove_extention(filename, <span class="string">".ipynb"</span>) + <span class="string">".pdf - DONE"</span>)</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</span><br><span class="line">    exit(main(sys.argv))</span><br></pre></td></tr></table></figure>
-<hr class="footnotes-sep">
-<section class="footnotes">
-<ol class="footnotes-list">
-<li id="fn1" class="footnote-item"><p><a href="https://www.zhihu.com/question/302814218/answer/1029684239" target="_blank" rel="noopener">https://www.zhihu.com/question/302814218/answer/1029684239</a> <a href="#fnref1" class="footnote-backref">↩︎</a></p>
-</li>
-</ol>
-</section>
-]]></content>
-      <categories>
-        <category>jupyter</category>
-      </categories>
-      <tags>
-        <tag>工具</tag>
-        <tag>Python</tag>
-        <tag>笔记应用</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>选择困难者的福音？层次分析法</title>
-    <url>/public/2021/04/02/math/math_AHP/</url>
-    <content><![CDATA[<h2 id="摘要"><a class="header-anchor" href="#摘要">¶</a>摘要</h2>
-<p>日常生活中，我们面临很多的选择，选择工作offer，选择买哪个牌子的手机，选择哪个地方旅行等等。这些选择难以定量的衡量，有很多不确定性。内心小纠结，我选择了这个，万一那个好呢，怎么办？请看层次分析法。</p>
-<p>层次分析法(Analytic Hierarchy Process，简称 AHP)是对一些较为复杂、较为模糊的问题作出决策的简易方法，它特别适用于那些难于完全定量分析的问题。它是美国运筹学家 T. L. Saaty 教授于上世纪 70 年代初期提出的一种简便、灵活而又实用的多准则决策方法。</p>
-<p>运用层次分析法建模，大体上可按下面四个步骤进行</p>
-<ul>
-<li>建立递阶层次结构模型</li>
-<li>构造出各层次中的所有判断矩阵</li>
-<li>层次单排序及一致性检验</li>
-<li>层次总排序及一致性检验。（一般不用）</li>
-</ul>
-<a id="more"></a>
-<p>让我们从offer大佬的例子开始吧！</p>
-<p>举个栗子，今年有位大学生，有三个offer，C1 C2 C3。</p>
-<p>第一步，建立层次模型。</p>
-<ul>
-<li>目标层A：找工作的目标，自己满意程度。
-<ul>
-<li>这个程度怎么计算呢？比如工作1。</li>
-</ul>
-</li>
-<li>准则层B：研究课题、发展前途、待遇、同事情况、地理位置、单位名气等等。
-<ul>
-<li>尽量列全一点，不需要排列重要顺序。</li>
-<li>小于等于9个，后面要两两拍脑袋给出相对的重要层度，给多了不得把脑袋拍疼了。</li>
-<li>也可以有子准则层，比如待遇中的放假、工作环境等等，列出也小于9个。</li>
-</ul>
-</li>
-<li>方案层C：就是我们的offer</li>
-</ul>
-<img src="/public/2021/04/02/math/math_AHP/image-20200406145535585.png" alt="image-20200406145535585" style="zoom:50%;">
-<h2 id="构造-A-B-之间判断矩阵"><a class="header-anchor" href="#构造-A-B-之间判断矩阵">¶</a>构造 A B 之间判断矩阵</h2>
-<p>准则层B与目标A之间的关系。为了求出准则层中(B1-6) 对目标的重要层度的排序。比如对于该生工作满意度第一重要是待遇，然后是地点，其实该生自己也很模糊。就是固定A，然后求B中准则，对A重要性的排序。</p>
-<h3 id="我们怎么对B中的准则们的重要排序呢？"><a class="header-anchor" href="#我们怎么对B中的准则们的重要排序呢？">¶</a>我们怎么对B中的准则们的重要排序呢？</h3>
-<p>直接给每一个准则，0-1的评分，然后排序。经常会想，给完分之后，这个不合理呀要不我再给哪个准则加加分。所以这样的方法常常会因考虑不周全、顾此失彼而使决策者提出与他实际认为的重要性程度不相一致的数据。</p>
-<p>我们可以将这个过程细化，我就比较两个准则对于目标的重要性，然后通过下面的矩阵方法，求出优先顺序。</p>
-<p>还能通过一个一致性检验，来检验在你评分的过程中，有没有自相矛盾的地方，当然这种方法允许一些自相矛盾。反正评分的时候尊从内心拍脑袋就对了。</p>
-<p>所以我们拿出一个B1 与 B2 对于目标的重要，想一想然后给出B2/B1，填入下面的表格中的(2,1)的位置。</p>
-<p>整个矩阵i,j 与j，i 是取倒数的关系，所以只要做一半。</p>
-<p>在找工作的目标下，准则i与j相对的重要性表示，B2/B1 的值。采用9个标度。而相比不重要刻度取倒数就可以了</p>
-<table>
-<thead>
-<tr>
-<th>准则i比j的比较</th>
-<th>1</th>
-<th>2</th>
-<th>3</th>
-<th>4</th>
-<th>5</th>
-<th>6</th>
-<th>7</th>
-<th>8</th>
-<th>9</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-<td>相同重要</td>
-<td></td>
-<td>比较重要</td>
-<td></td>
-<td>明显重要</td>
-<td></td>
-<td>强烈重要</td>
-<td></td>
-<td>极端重要</td>
-</tr>
-</tbody>
-</table>
-<p>最后的两两相对重要表格</p>
-<img src="/public/2021/04/02/math/math_AHP/image-20200406145640316.png" alt="image-20200406145640316" style="zoom:50%;">
-<p>对角线对称的两个数互为倒数，即 $$a_{ji}=\frac{1}{a_{ij}}$$  B1/B2 不就是和 B2/B1互为倒数嘛</p>
-<p>从心理学观点来看，分级太多会超越人们的判断能力，既增加了作判断的难度， 又容易因此而提供虚假数据。Saaty 等人还用实验方法比较了在各种不同标度下人们判断结果的正确性，实验结果也表明，采用 1~9 标度最为合适。</p>
-<p>判断矩阵的一致性指标步骤：</p>
-<ul>
-<li>1）计算一致性指标 CI 。$$CI=\frac{ \lambda_{max}-n}{n-1}$$</li>
-<li>2）查表，平均随机一致性指标 RI。</li>
-</ul>
-<table>
-<thead>
-<tr>
-<th>n</th>
-<th>1</th>
-<th>2</th>
-<th>3</th>
-<th>4</th>
-<th>5</th>
-<th>6</th>
-<th>7</th>
-<th>8</th>
-<th>9</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>RI</td>
-<td>0</td>
-<td>0</td>
-<td>0.58</td>
-<td>0.90</td>
-<td>1.12</td>
-<td>1.24</td>
-<td>1.32</td>
-<td>1.41</td>
-<td>1.45</td>
-</tr>
-</tbody>
-</table>
-<blockquote>
-<p><em>RI</em> 的值是这样得到的，用随机方法构造500个样本矩阵:随机地从1~9及其倒数中抽取数字构造正互反矩阵，求得最大特征根的平均值 $$\bar \lambda_{max}$$ 并定义$$RI=\frac{\bar \lambda_{max}-n}{n-1}$$</p>
-</blockquote>
-<ul>
-<li>3）计算一致性比例CR。 $$CR=\frac{CI}{RI}$$，当$$CR&lt;0.10$$ 时，认为判断矩阵的一致性是可以接受的，否则应对判断矩阵作适当修正。</li>
-</ul>
-<p>如果一个矩阵满足上面的条件，那么它最大特征值对应的特征向量就可以认为是每个维度的重要性权重。</p>
-<h2 id="构造-B-C-之间判断矩阵"><a class="header-anchor" href="#构造-B-C-之间判断矩阵">¶</a>构造 B C 之间判断矩阵</h2>
-<p>相同的方法，在同一B准则下，考虑不同工作的优先顺序。求工作排序的方法，和上面一样。</p>
-<img src="/public/2021/04/02/math/math_AHP/image-20200406162644137.png" alt="image-20200406162644137" style="zoom:50%;">
-<p>python代码<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup></p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">import</span> warnings</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AHP</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, criteria, b)</span>:</span></span><br><span class="line">        self.RI = (<span class="number">0</span>, <span class="number">0</span>, <span class="number">0.58</span>, <span class="number">0.9</span>, <span class="number">1.12</span>, <span class="number">1.24</span>, <span class="number">1.32</span>, <span class="number">1.41</span>, <span class="number">1.45</span>, <span class="number">1.49</span>)</span><br><span class="line">        self.criteria = criteria</span><br><span class="line">        self.b = b</span><br><span class="line">        self.num_criteria = criteria.shape[<span class="number">0</span>]</span><br><span class="line">        self.num_project = b[<span class="number">0</span>].shape[<span class="number">0</span>]</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">cal_weights</span><span class="params">(self, input_matrix)</span>:</span></span><br><span class="line">        input_matrix = np.array(input_matrix)</span><br><span class="line">        n, n1 = input_matrix.shape</span><br><span class="line">        <span class="keyword">assert</span> n == n1, <span class="string">'不是一个方阵'</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(n):</span><br><span class="line">            <span class="keyword">for</span> j <span class="keyword">in</span> range(n):</span><br><span class="line">                <span class="keyword">if</span> np.abs(input_matrix[i, j] * input_matrix[j, i] - <span class="number">1</span>) &gt; <span class="number">1e-7</span>:</span><br><span class="line">                    <span class="keyword">raise</span> ValueError(<span class="string">'不是反互对称矩阵'</span>)</span><br><span class="line"></span><br><span class="line">        eigenvalues, eigenvectors = np.linalg.eig(input_matrix)</span><br><span class="line"></span><br><span class="line">        max_idx = np.argmax(eigenvalues)</span><br><span class="line">        max_eigen = eigenvalues[max_idx].real</span><br><span class="line">        eigen = eigenvectors[:, max_idx].real</span><br><span class="line">        eigen = eigen / eigen.sum()</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> n &gt; <span class="number">9</span>:</span><br><span class="line">            CR = <span class="literal">None</span></span><br><span class="line">            warnings.warn(<span class="string">'无法判断一致性'</span>)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            CI = (max_eigen - n) / (n - <span class="number">1</span>)</span><br><span class="line">            CR = CI / self.RI[n]</span><br><span class="line">        <span class="keyword">return</span> max_eigen, CR, eigen</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">run</span><span class="params">(self)</span>:</span></span><br><span class="line">        max_eigen, CR, criteria_eigen = self.cal_weights(self.criteria)</span><br><span class="line">        print(<span class="string">'准则层：最大特征值&#123;:&lt;5f&#125;,CR=&#123;:&lt;5f&#125;,检验&#123;&#125;通过'</span>.format(max_eigen, CR, <span class="string">''</span> <span class="keyword">if</span> CR &lt; <span class="number">0.1</span> <span class="keyword">else</span> <span class="string">'不'</span>))</span><br><span class="line">        print(<span class="string">'准则层权重=&#123;&#125;\n'</span>.format(criteria_eigen))</span><br><span class="line"></span><br><span class="line">        max_eigen_list, CR_list, eigen_list = [], [], []</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> self.b:</span><br><span class="line">            max_eigen, CR, eigen = self.cal_weights(i)</span><br><span class="line">            max_eigen_list.append(max_eigen)</span><br><span class="line">            CR_list.append(CR)</span><br><span class="line">            eigen_list.append(eigen)</span><br><span class="line"></span><br><span class="line">        pd_print = pd.DataFrame(eigen_list,</span><br><span class="line">                                index=[<span class="string">'准则'</span> + str(i) <span class="keyword">for</span> i <span class="keyword">in</span> range(self.num_criteria)],</span><br><span class="line">                                columns=[<span class="string">'方案'</span> + str(i) <span class="keyword">for</span> i <span class="keyword">in</span> range(self.num_project)],</span><br><span class="line">                                )</span><br><span class="line">        pd_print.loc[:, <span class="string">'最大特征值'</span>] = max_eigen_list</span><br><span class="line">        pd_print.loc[:, <span class="string">'CR'</span>] = CR_list</span><br><span class="line">        pd_print.loc[:, <span class="string">'一致性检验'</span>] = pd_print.loc[:, <span class="string">'CR'</span>] &lt; <span class="number">0.1</span></span><br><span class="line">        print(<span class="string">'方案层'</span>)</span><br><span class="line">        print(pd_print)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 目标层</span></span><br><span class="line">        obj = np.dot(criteria_eigen.reshape(<span class="number">1</span>, <span class="number">-1</span>), np.array(eigen_list))</span><br><span class="line">        print(<span class="string">'\n目标层'</span>, obj)</span><br><span class="line">        print(<span class="string">'最优选择是方案&#123;&#125;'</span>.format(np.argmax(obj)))</span><br><span class="line">        <span class="keyword">return</span> obj</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    <span class="comment"># 准则重要性矩阵</span></span><br><span class="line">    criteria = np.array([[<span class="number">1</span>, <span class="number">2</span>, <span class="number">7</span>, <span class="number">5</span>, <span class="number">5</span>],</span><br><span class="line">                         [<span class="number">1</span> / <span class="number">2</span>, <span class="number">1</span>, <span class="number">4</span>, <span class="number">3</span>, <span class="number">3</span>],</span><br><span class="line">                         [<span class="number">1</span> / <span class="number">7</span>, <span class="number">1</span> / <span class="number">4</span>, <span class="number">1</span>, <span class="number">1</span> / <span class="number">2</span>, <span class="number">1</span> / <span class="number">3</span>],</span><br><span class="line">                         [<span class="number">1</span> / <span class="number">5</span>, <span class="number">1</span> / <span class="number">3</span>, <span class="number">2</span>, <span class="number">1</span>, <span class="number">1</span>],</span><br><span class="line">                         [<span class="number">1</span> / <span class="number">5</span>, <span class="number">1</span> / <span class="number">3</span>, <span class="number">3</span>, <span class="number">1</span>, <span class="number">1</span>]])</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 对每个准则，方案优劣排序</span></span><br><span class="line">    b1 = np.array([[<span class="number">1</span>, <span class="number">1</span> / <span class="number">3</span>, <span class="number">1</span> / <span class="number">8</span>], [<span class="number">3</span>, <span class="number">1</span>, <span class="number">1</span> / <span class="number">3</span>], [<span class="number">8</span>, <span class="number">3</span>, <span class="number">1</span>]])</span><br><span class="line">    b2 = np.array([[<span class="number">1</span>, <span class="number">2</span>, <span class="number">5</span>], [<span class="number">1</span> / <span class="number">2</span>, <span class="number">1</span>, <span class="number">2</span>], [<span class="number">1</span> / <span class="number">5</span>, <span class="number">1</span> / <span class="number">2</span>, <span class="number">1</span>]])</span><br><span class="line">    b3 = np.array([[<span class="number">1</span>, <span class="number">1</span>, <span class="number">3</span>], [<span class="number">1</span>, <span class="number">1</span>, <span class="number">3</span>], [<span class="number">1</span> / <span class="number">3</span>, <span class="number">1</span> / <span class="number">3</span>, <span class="number">1</span>]])</span><br><span class="line">    b4 = np.array([[<span class="number">1</span>, <span class="number">3</span>, <span class="number">4</span>], [<span class="number">1</span> / <span class="number">3</span>, <span class="number">1</span>, <span class="number">1</span>], [<span class="number">1</span> / <span class="number">4</span>, <span class="number">1</span>, <span class="number">1</span>]])</span><br><span class="line">    b5 = np.array([[<span class="number">1</span>, <span class="number">4</span>, <span class="number">1</span> / <span class="number">2</span>], [<span class="number">1</span> / <span class="number">4</span>, <span class="number">1</span>, <span class="number">1</span> / <span class="number">4</span>], [<span class="number">2</span>, <span class="number">4</span>, <span class="number">1</span>]])</span><br><span class="line"></span><br><span class="line">    b = [b1, b2, b3, b4, b5]</span><br><span class="line">    a = AHP(criteria, b).run()</span><br></pre></td></tr></table></figure>
-<h2 id="层次分析法与控制变量法"><a class="header-anchor" href="#层次分析法与控制变量法">¶</a>层次分析法与控制变量法</h2>
-<p>我们的任务是选择工作，最后使得我们满意，直接选择我们当然一头雾水。所以我们设立一些准则，然后对这些准则对于目标的重要性排序。</p>
-<p>这又有点像概率图模型，只是赋权的方法，是相互比较的方法。</p>
-<h2 id="选择困难者的福音？"><a class="header-anchor" href="#选择困难者的福音？">¶</a>选择困难者的福音？</h2>
-<p>层次分析法对人们的思维过程进行了加工整理，提出了一套系统分析问题的方法，为科学管理和决策提供了较有说服力的依据。</p>
-<p>在应用层次分析法研究问题时，遇到的主要困难有两个:<br>
-(1) 如何根据实际情况抽象出较为贴切的层次结构;<br>
-(2) 如何将某些定性的量作比较接近实际定量化处理。</p>
-<p>层次分析法的其局限性<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup>：<br>
-(1) 它在很大程度上依赖于人们的经验，主观因素的影响很大，它至多只能排除思维过程中的严重非一致性，却无法排除决策者个人可能存在的严重片面性。<br>
-(2) 比较、 判断过程较为粗糙，不能用于精度要求较高的决策问题。</p>
-<p>所以，AHP 至多只能算是一种半定量(或定性与定量结合)的方法。
-本文仅供参考，不负法律责任，哈哈。</p>
-<h2 id="参考"><a class="header-anchor" href="#参考">¶</a>参考</h2>
-<hr class="footnotes-sep">
-<section class="footnotes">
-<ol class="footnotes-list">
-<li id="fn1" class="footnote-item"><p>幼鹰me 知乎 <a href="https://zhuanlan.zhihu.com/p/101505929" target="_blank" rel="noopener">层次分析法原理与Python实现</a> <a href="#fnref1" class="footnote-backref">↩︎</a></p>
-</li>
-<li id="fn2" class="footnote-item"><p>司守奎《数学建模算法与程序》第八章 层次分析法 P167 <a href="#fnref2" class="footnote-backref">↩︎</a></p>
-</li>
-</ol>
-</section>
-]]></content>
-      <categories>
-        <category>数学</category>
-      </categories>
-      <tags>
-        <tag>数学</tag>
-        <tag>层次分析法</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>「202207月度汇报」obsidian</title>
-    <url>/public/2022/07/26/test/202207_obsidian/</url>
-    <content><![CDATA[<p>统计 ✅ : 6 📅 : 3 🔖 : 47</p>
-<a id="more"></a>
-<h2 id="✅-6"><a class="header-anchor" href="#✅-6">¶</a>✅ : 6</h2>
-<p>✅目标图标系统
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
-✅ <a href="https://blog.csdn.net/hhhhhyyyyy8/article/details/102133863" target="_blank" rel="noopener">Linux内核数据包bridge上转发流程_hhhhhyyyyy8的博客-CSDN博客_br_multicast_flood</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W27.md">C日常/2022-W27.md</a><br>
-✅ 邮箱转rss
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W23.md">C日常/2022-W23.md</a><br>
-✅  hacker news rss添加
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W23.md">C日常/2022-W23.md</a><br>
-✅ 经济学人转载leader文章
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W23.md">C日常/2022-W23.md</a><br>
-✅ github博客评论系统是否换成【不换】
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W23.md">C日常/2022-W23.md</a></p>
-<h2 id="📅-3"><a class="header-anchor" href="#📅-3">¶</a>📅 : 3</h2>
-<p>📅 端口触发 端口转发
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
-📅 全屋智能
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W26.md">C日常/2022-W26.md</a><br>
-📅 改进
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W26.md">C日常/2022-W26.md</a></p>
-<h2 id="🔖-47"><a class="header-anchor" href="#🔖-47">¶</a>🔖 : 47</h2>
-<p>🔖 ish保持后台运行
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W19.md">C日常/2022-W19.md</a><br>
-🔖 <a href="https://www.jianshu.com/p/f29ca723db4f" target="_blank" rel="noopener">Git 运行配置（git config、gitk、git gui） - michael_jia - 简书</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W19.md">C日常/2022-W19.md</a><br>
-🔖<a href="https://www.cnblogs.com/xuanbjut/p/12624702.html" target="_blank" rel="noopener">wmctrl像xmonad那样方便地用快捷键来控制任务窗口的显示 - pycod - 博客园</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W19.md">C日常/2022-W19.md</a><br>
-🔖 <a href="https://blog.csdn.net/anlian523/article/details/113627568" target="_blank" rel="noopener">VSCode复制代码时去掉样式/语法高亮/代码高亮/黑色背景_anlian523的博客-CSDN博客_idea复制代码不带黑色背景</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W19.md">C日常/2022-W19.md</a><br>
-🔖 <a href="https://blog.csdn.net/dog250/article/details/121400218" target="_blank" rel="noopener">为什么除法，开方，求对数比乘法，乘方，求指数更难_dog250的博客-CSDN博客</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
-🔖学习小林博客的写法
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
-🔖一万字统计学梳理
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
-🔖腾讯 彻底搞清楚tcp
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
-🔖0x5f3759df这个快速开方中的常数的数学依据是什么？
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
-🔖https流程
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
-🔖使用 Clion + QEMU/GDB 远程调试Linux内核（分享自知乎网）<a href="https://zhuanlan.zhihu.com/p/412604505?utm_source=md.obsidian&amp;utm_medium=social&amp;utm_oi=619610399826382848" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/412604505?utm_source=md.obsidian&amp;utm_medium=social&amp;utm_oi=619610399826382848</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
-🔖TCP/IP协议到底在讲什么？ <a href="http://www.zhihu.com/question/51074319?utm_source=md.obsidian&amp;utm_medium=social&amp;utm_oi=619610399826382848" target="_blank" rel="noopener">http://www.zhihu.com/question/51074319?utm_source=md.obsidian&amp;utm_medium=social&amp;utm_oi=619610399826382848</a> （分享自知乎网）
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
-🔖【什么是动态规划（Dynamic Programming）？动态规划的意义是什么？】阮行止：… <a href="https://www.zhihu.com/question/23995189/answer/613096905?utm_source=md.obsidian&amp;utm_medium=social&amp;utm_oi=619610399826382848" target="_blank" rel="noopener">https://www.zhihu.com/question/23995189/answer/613096905?utm_source=md.obsidian&amp;utm_medium=social&amp;utm_oi=619610399826382848</a> （分享自知乎网）
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
-🔖【为什么有人说弄懂了《算法导论》的 90%，就超越了 90%的程序员？】启舰：… <a href="https://www.zhihu.com/question/315201616/answer/1960517601?utm_source=md.obsidian&amp;utm_medium=social&amp;utm_oi=619610399826382848" target="_blank" rel="noopener">https://www.zhihu.com/question/315201616/answer/1960517601?utm_source=md.obsidian&amp;utm_medium=social&amp;utm_oi=619610399826382848</a> （分享自知乎网）
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
-🔖【vs code】【keil】优雅地使用vs code代替keil。by 童话与云 👉 <a href="https://www.zhihu.com/zvideo/1422934459457253376?utm_source=md.obsidian&amp;utm_medium=social&amp;utm_oi=619610399826382848" target="_blank" rel="noopener">https://www.zhihu.com/zvideo/1422934459457253376?utm_source=md.obsidian&amp;utm_medium=social&amp;utm_oi=619610399826382848</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
-🔖图解网络 - 75张图带你了解网络设备、网络地址规划、静态路由、实战演练（分享自知乎网）
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
-🔖vscode-journal：vscode中写日记/便签/提醒，配合nutstore与安卓、ios同步_TeQuL的博客-CSDN博客
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
-🔖结构体（结构体嵌套、结构体指针、结构体参数传递） - 蓝海人 - 博客园
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
-🔖Feedme - 8大 RSS 阅读器第三方客户端[Android] - 小众软件
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
-🔖聪明人必学的停车小技巧！。by Felicidades 👉 <a href="https://www.zhihu.com/zvideo/1414008107094093824?utm_source=md.obsidian&amp;utm_medium=social&amp;utm_oi=619610399826382848" target="_blank" rel="noopener">https://www.zhihu.com/zvideo/1414008107094093824?utm_source=md.obsidian&amp;utm_medium=social&amp;utm_oi=619610399826382848</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
-🔖在线 DOS 游戏 - 近 2000 款怀旧游戏，仙剑、红警、三国志、大富翁、明星志愿、大航海、主题医院等 - 小众软件
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
-🔖Feeddd · 重新掌控你的订阅源
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
-🔖【如何长时间高效学习？】硬核学长2077：… <a href="https://www.zhihu.com/question/28358499/answer/1762418904?utm_source=md.obsidian&amp;utm_medium=social&amp;utm_oi=619610399826382848" target="_blank" rel="noopener">https://www.zhihu.com/question/28358499/answer/1762418904?utm_source=md.obsidian&amp;utm_medium=social&amp;utm_oi=619610399826382848</a> （分享自知乎网）
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
-🔖【你身边的学霸都有怎样的学习方法或习惯？】硬核学长2077：… <a href="https://www.zhihu.com/question/54265751/answer/1995587976?utm_source=md.obsidian&amp;utm_medium=social&amp;utm_oi=619610399826382848" target="_blank" rel="noopener">https://www.zhihu.com/question/54265751/answer/1995587976?utm_source=md.obsidian&amp;utm_medium=social&amp;utm_oi=619610399826382848</a> （分享自知乎网）
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
-🔖【如何不痛苦地早起？】铁木君：… <a href="https://www.zhihu.com/question/22120300/answer/1887544838?utm_source=md.obsidian&amp;utm_medium=social&amp;utm_oi=619610399826382848" target="_blank" rel="noopener">https://www.zhihu.com/question/22120300/answer/1887544838?utm_source=md.obsidian&amp;utm_medium=social&amp;utm_oi=619610399826382848</a> （分享自知乎网）
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
-🔖[[obsidian_tips]]
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
-🔖<a href="https://sspai.com/post/72757" target="_blank" rel="noopener">随时可用的 PC 体验是这样「炼」成的，Windows 新版睡眠机制详解 - 少数派</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
-🔖<a href="https://blog.csdn.net/who538592/article/details/79483323" target="_blank" rel="noopener">TC流量控制_who538592的博客-CSDN博客_tc流量控制</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
-🔖 <a href="https://sspai.com/post/74090" target="_blank" rel="noopener">大家都说好的蛋白粉，我们应该如何取舍 - 少数派</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W28.md">C日常/2022-W28.md</a><br>
-🔖 <a href="https://zhuanlan.zhihu.com/p/508345279" target="_blank" rel="noopener">我的obsidian插件开发的学习过程</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W28.md">C日常/2022-W28.md</a><br>
-🔖 <a href="https://blog.csdn.net/Haywardwang/article/details/108626491" target="_blank" rel="noopener">python 词云构建_Haywardwang的博客-CSDN博客</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W28.md">C日常/2022-W28.md</a><br>
-🔖 <a href="https://blog.csdn.net/weixin_56842628/article/details/117921526?utm_medium=distribute.wap_relevant.none-task-blog-2~default~baidujs_title~default-9-117921526-blog-108626491.wap_blog_relevant_default&amp;spm=1001.2101.3001.4242.6&amp;utm_relevant_index=10" target="_blank" rel="noopener">如何用Python制作简单又好看的词云？来瞅瞅吧~_小熊爱Python的博客-CSDN博客_python词云代码简单</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W28.md">C日常/2022-W28.md</a><br>
-🔖 <a href="https://sspai.com/post/73779" target="_blank" rel="noopener">跨时空圆桌：伟大创作者们如何安排日常生活 - 少数派</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W27.md">C日常/2022-W27.md</a><br>
-🔖 <a href="https://www.appinn.com/typing-learner/" target="_blank" rel="noopener">Typing Learner - 硬核单词记忆：从电影台词筛选生词，边追美剧边学英语，用户直喊「好家伙！」[Windows/macOS] - 小众软件</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W27.md">C日常/2022-W27.md</a><br>
-🔖 <a href="https://www.zhihu.com/question/391756708/answer/2556173863" target="_blank" rel="noopener">SpaceX的可回收火箭有什么神奇之处，为何其他航天大国还不能仿造？ - YY硕 的回答 - 知乎</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W27.md">C日常/2022-W27.md</a><br>
-🔖 <a href="https://mp.weixin.qq.com/s/KBKO4C1d4CkyHAPEkh8D4Q" target="_blank" rel="noopener">这几个通信协议的动图不错</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W27.md">C日常/2022-W27.md</a><br>
-🔖 <a href="https://oorkan.medium.com/emojifying-your-linux-terminal-9a5c1e8f6b3c" target="_blank" rel="noopener">Emojifying your Linux terminal  🚀</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W27.md">C日常/2022-W27.md</a><br>
-🔖 <a href="https://sspai.com/post/74167" target="_blank" rel="noopener">为 WSL 配置这些新功能，不用虚拟机也能体验完整 Linux - 少数派</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W27.md">C日常/2022-W27.md</a><br>
-🔖<a href="https://sspai.com/post/72274" target="_blank" rel="noopener">意识先行，工具辅助：谈谈我们该怎样分辨虚假信息</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W27.md">C日常/2022-W27.md</a><br>
-🔖<a href="https://zhuanlan.zhihu.com/p/495262462" target="_blank" rel="noopener">网站低代码开发</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W27.md">C日常/2022-W27.md</a><br>
-🔖 学习体系化，效率提升
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W27.md">C日常/2022-W27.md</a><br>
-🔖 <a href="https://sspai.com/post/73958" target="_blank" rel="noopener">玩转 Obsidian 08：利用 Dataview 打造自动化 HomePage - 少数派</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W26.md">C日常/2022-W26.md</a><br>
-🔖 <a href="https://post.m.smzdm.com/p/adwgg2rd/" target="_blank" rel="noopener">小爱同学，打开我的三菱空调——米家空调伴侣2使用分享_智能家居_什么值得买</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W26.md">C日常/2022-W26.md</a><br>
-🔖 <a href="https://sspai.com/post/73829" target="_blank" rel="noopener">用 59 分钟，找到工具的效率之源 - 少数派</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W26.md">C日常/2022-W26.md</a><br>
-🔖 <a href="https://cloud.tencent.com/developer/article/1879646" target="_blank" rel="noopener">tcpdump是在哪儿抓到的包？ - 腾讯云开发者社区-腾讯云</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W26.md">C日常/2022-W26.md</a><br>
-🔖 <a href="https://www.jianshu.com/p/79bcf09aed25" target="_blank" rel="noopener">IPTables五----ebtables - marshalzxy - 简书</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W26.md">C日常/2022-W26.md</a><br>
-🔖 <a href="https://david-waiting.medium.com/a-beginners-guide-to-generic-routing-encapsulation-fb2b4fb63abb" target="_blank" rel="noopener">A Beginner’s Guide to Generic Routing Encapsulation</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W26.md">C日常/2022-W26.md</a></p>
-]]></content>
-      <categories>
-        <category>转载</category>
-      </categories>
-      <tags>
-        <tag>转载</tag>
       </tags>
   </entry>
   <entry>
