@@ -6,7 +6,7 @@
   <link href="/public/atom.xml" rel="self"/>
   
   <link href="https://talengu.github.io/public/"/>
-  <updated>2023-09-26T16:00:04.000Z</updated>
+  <updated>2023-10-15T16:00:04.000Z</updated>
   <id>https://talengu.github.io/public/</id>
   
   <author>
@@ -15,6 +15,28 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>「202310月度汇报」ttrss</title>
+    <link href="https://talengu.github.io/public/2023/10/15/test/202310/"/>
+    <id>https://talengu.github.io/public/2023/10/15/test/202310/</id>
+    <published>2023-10-15T16:00:04.000Z</published>
+    <updated>2023-10-15T16:00:04.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>total: 6</p><a id="more"></a><h2 id="🔖四个-All-in-One-工具，帮我优化工作与生活流程"><a class="header-anchor" href="#🔖四个-All-in-One-工具，帮我优化工作与生活流程">¶</a>🔖<a href="https://sspai.com/post/83315" target="_blank" rel="noopener">四个 All-in-One 工具，帮我优化工作与生活流程</a></h2><p>pubdata:2023-10-10 03:47:30markdate:2023-10-12 06:16:53.456318</p><p><img src="/public/2023/10/15/test/202310/2023-10-12-061653456318.jpg" alt="img"></p><h2 id="🔖-云计算-双-11-活动提前来了，冲"><a class="header-anchor" href="#🔖-云计算-双-11-活动提前来了，冲">¶</a>🔖<a href="https://www.v2ex.com/t/981377#reply4" target="_blank" rel="noopener">[云计算] 双 11 活动提前来了，冲</a></h2><p>pubdata:2023-10-12 08:27:03markdate:2023-10-13 02:22:25.055100</p><p><img src="/public/2023/10/15/test/202310/2023-10-13-022225055100.jpg" alt="img"></p><h2 id="🔖-分享创造-小爱音箱播放自定义音乐"><a class="header-anchor" href="#🔖-分享创造-小爱音箱播放自定义音乐">¶</a>🔖<a href="https://www.v2ex.com/t/982027#reply4" target="_blank" rel="noopener">[分享创造] 小爱音箱播放自定义音乐</a></h2><p>pubdata:2023-10-14 14:03:33markdate:2023-10-15 04:41:33.976215</p><p><img src="/public/2023/10/15/test/202310/2023-10-15-044133976215.jpg" alt="img"></p><h2 id="🔖3-个工具，将网页转换为-Markdown：安卓、Edge、Chrome、Firefox、Obsidian、Safari"><a class="header-anchor" href="#🔖3-个工具，将网页转换为-Markdown：安卓、Edge、Chrome、Firefox、Obsidian、Safari">¶</a>🔖<a href="https://www.appinn.com/webpage-to-markdown/" target="_blank" rel="noopener">3 个工具，将网页转换为 Markdown：安卓、Edge、Chrome、Firefox、Obsidian、Safari</a></h2><p>pubdata:2023-10-14 07:25:00markdate:2023-10-15 04:45:43.200312</p><p><img src="/public/2023/10/15/test/202310/2023-10-15-044543200312.jpg" alt="img"></p><h2 id="🔖3-年、4-个库目录、100-万字：也谈我的-Obsidian-笔记工作流"><a class="header-anchor" href="#🔖3-年、4-个库目录、100-万字：也谈我的-Obsidian-笔记工作流">¶</a>🔖<a href="https://sspai.com/post/83042" target="_blank" rel="noopener">3 年、4 个库目录、100 万字：也谈我的 Obsidian 笔记工作流</a></h2><p>pubdata:2023-10-13 03:39:51markdate:2023-10-17 11:32:49.709021</p><p><img src="/public/2023/10/15/test/202310/2023-10-17-113249709021.jpg" alt="img"></p><h2 id="🔖zTasker-–-万能计划任务工具：用-16种触发方式执行-Windows-上的-50-多种任务、程序"><a class="header-anchor" href="#🔖zTasker-–-万能计划任务工具：用-16种触发方式执行-Windows-上的-50-多种任务、程序">¶</a>🔖<a href="https://www.appinn.com/ztasker/" target="_blank" rel="noopener">zTasker – 万能计划任务工具：用 16种触发方式执行 Windows 上的 50 多种任务、程序</a></h2><p>pubdata:2023-10-18 06:30:04markdate:2023-10-19 04:36:51.693584</p><p><img src="/public/2023/10/15/test/202310/2023-10-19-043651693584.jpg" alt="img"></p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;total: 6&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="月度汇报" scheme="https://talengu.github.io/public/categories/%E6%9C%88%E5%BA%A6%E6%B1%87%E6%8A%A5/"/>
+    
+    
+      <category term="月度汇报" scheme="https://talengu.github.io/public/tags/%E6%9C%88%E5%BA%A6%E6%B1%87%E6%8A%A5/"/>
+    
+  </entry>
   
   <entry>
     <title>「202309月度汇报」obsidian</title>
@@ -438,28 +460,6 @@
       <category term="工具" scheme="https://talengu.github.io/public/tags/%E5%B7%A5%E5%85%B7/"/>
     
       <category term="rss" scheme="https://talengu.github.io/public/tags/rss/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>「202212月度汇报」ttrss</title>
-    <link href="https://talengu.github.io/public/2022/12/15/test/202212/"/>
-    <id>https://talengu.github.io/public/2022/12/15/test/202212/</id>
-    <published>2022-12-15T16:00:04.000Z</published>
-    <updated>2022-12-15T16:00:04.000Z</updated>
-    
-    <content type="html"><![CDATA[<p>total: 7</p><a id="more"></a><h2 id="🔖TextLocator-–-卖萌的小老头：低-CPU-占用的本地文档全文搜索工具-Win"><a class="header-anchor" href="#🔖TextLocator-–-卖萌的小老头：低-CPU-占用的本地文档全文搜索工具-Win">¶</a>🔖<a href="https://www.appinn.com/textlocator/" target="_blank" rel="noopener">TextLocator – 卖萌的小老头：低 CPU 占用的本地文档全文搜索工具[Win]</a></h2><p>pubdata:2022-11-30 08:25:46markdate:2022-12-04 02:42:46.065650</p><p><img src="/public/2022/12/15/test/202212/2022-12-04-024246065650.jpg" alt="img"></p><h2 id="🔖OpenSearcher-–-开源的全文搜索工具：支持-Word、PPT、PDF，以及电子书-ePub、Mobi-等格式-Windows"><a class="header-anchor" href="#🔖OpenSearcher-–-开源的全文搜索工具：支持-Word、PPT、PDF，以及电子书-ePub、Mobi-等格式-Windows">¶</a>🔖<a href="https://www.appinn.com/opensearcher/" target="_blank" rel="noopener">OpenSearcher – 开源的全文搜索工具：支持 Word、PPT、PDF，以及电子书 ePub、Mobi 等格式[Windows]</a></h2><p>pubdata:2022-12-01 07:31:17markdate:2022-12-04 02:42:48.883434</p><p><img src="/public/2022/12/15/test/202212/2022-12-04-024248883434.jpg" alt="img"></p><h2 id="🔖App-1-入门-Android-自动化，它比-Tasker-更好上手：MacroDroid"><a class="header-anchor" href="#🔖App-1-入门-Android-自动化，它比-Tasker-更好上手：MacroDroid">¶</a>🔖<a href="https://sspai.com/post/77077" target="_blank" rel="noopener">App+1 | 入门 Android 自动化，它比 Tasker 更好上手：MacroDroid</a></h2><p>pubdata:2022-12-02 06:30:00markdate:2022-12-04 04:03:56.824102</p><p><img src="/public/2022/12/15/test/202212/2022-12-04-040356824102.jpg" alt="img"></p><h2 id="🔖为纸质书籍进行数字备份：如何制作一本功能完备的-PDF-电子书"><a class="header-anchor" href="#🔖为纸质书籍进行数字备份：如何制作一本功能完备的-PDF-电子书">¶</a>🔖<a href="https://sspai.com/post/77118" target="_blank" rel="noopener">为纸质书籍进行数字备份：如何制作一本功能完备的 PDF 电子书</a></h2><p>pubdata:2022-12-06 06:34:06markdate:2022-12-08 13:52:36.058996</p><p><img src="/public/2022/12/15/test/202212/2022-12-08-135236058996.jpg" alt="img"></p><h2 id="🔖找笔记方便、写作又给力的知识库，我是这么搭建出来的"><a class="header-anchor" href="#🔖找笔记方便、写作又给力的知识库，我是这么搭建出来的">¶</a>🔖<a href="https://sspai.com/post/77144" target="_blank" rel="noopener">找笔记方便、写作又给力的知识库，我是这么搭建出来的</a></h2><p>pubdata:2022-12-09 06:32:24markdate:2022-12-12 05:12:48.101671</p><p><img src="/public/2022/12/15/test/202212/2022-12-12-051248101671.jpg" alt="img"></p><h2 id="🔖如何满足小众的录屏需求？自己配置-FFmpeg-解决问题"><a class="header-anchor" href="#🔖如何满足小众的录屏需求？自己配置-FFmpeg-解决问题">¶</a>🔖<a href="https://sspai.com/post/76637" target="_blank" rel="noopener">如何满足小众的录屏需求？自己配置 FFmpeg 解决问题</a></h2><p>pubdata:2022-11-05 03:00:00markdate:2022-12-24 03:02:42.639305</p><p><img src="/public/2022/12/15/test/202212/2022-12-24-030242639305.jpg" alt="img"></p><h2 id="🔖家用NAS推荐买什么价位的？"><a class="header-anchor" href="#🔖家用NAS推荐买什么价位的？">¶</a>🔖<a href="http://www.zhihu.com/question/566650643/answer/2809190517?utm_campaign=rss&amp;utm_medium=rss&amp;utm_source=rss&amp;utm_content=title" target="_blank" rel="noopener">家用NAS推荐买什么价位的？</a></h2><p>pubdata:2022-12-21 09:26:21markdate:2022-12-25 03:49:49.009390</p><p><img src="/public/2022/12/15/test/202212/2022-12-25-034949009390.jpg" alt="img"></p>]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;total: 7&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="月度汇报" scheme="https://talengu.github.io/public/categories/%E6%9C%88%E5%BA%A6%E6%B1%87%E6%8A%A5/"/>
-    
-    
-      <category term="月度汇报" scheme="https://talengu.github.io/public/tags/%E6%9C%88%E5%BA%A6%E6%B1%87%E6%8A%A5/"/>
     
   </entry>
   
