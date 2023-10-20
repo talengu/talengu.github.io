@@ -511,10 +511,12 @@ $$</p>
 <li>注意行为的语气</li>
 <li>保持连贯性，使用一种统一的方式表达。</li>
 </ul>
-<iframe src="https://player.bilibili.com/player.html?bvid=BV1Wb411v7WN" width="360" height="300">
+<h3 id="添加iframes"><a class="header-anchor" href="#添加iframes">¶</a>添加iframes</h3>
+<iframe src="https://player.bilibili.com/player.html?bvid=BV1Wb411v7WN" width="640" height="430">
 </iframe>
-<iframe width="360" height="315" src="https://www.youtube.com/embed/OyCN04p-uS8" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">iframe</span> <span class="attr">width</span>=<span class="string">"360"</span> <span class="attr">height</span>=<span class="string">"315"</span> <span class="attr">src</span>=<span class="string">"https://www.youtube.com/embed/OyCN04p-uS8"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">iframe</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">iframe</span> <span class="attr">src</span>=<span class="string">"https://player.bilibili.com/player.html?bvid=BV1Wb411v7WN"</span> <span class="attr">width</span>=<span class="string">"360"</span> <span class="attr">height</span>=<span class="string">"300"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">iframe</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<iframe src="https://www.youtube.com/embed/OyCN04p-uS8" width="640" height="430">
+</iframe>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- &#123;&#125;替换为视频id，同时去掉&#123;&#125; --&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- 小破站 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">iframe</span> <span class="attr">src</span>=<span class="string">"https://player.bilibili.com/player.html?bvid=&#123;&#125;"</span> <span class="attr">width</span>=<span class="string">"640"</span> <span class="attr">height</span>=<span class="string">"430"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">iframe</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- youtube --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">iframe</span> <span class="attr">src</span>=<span class="string">"https://www.youtube.com/embed/&#123;&#125;"</span> <span class="attr">width</span>=<span class="string">"640"</span> <span class="attr">height</span>=<span class="string">"430"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">iframe</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- 腾讯视频 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">iframe</span> <span class="attr">src</span>=<span class="string">"http://v.qq.com/iframe/player.html?vid=&#123;&#125;"</span> <span class="attr">width</span>=<span class="string">"640"</span> <span class="attr">height</span>=<span class="string">"430"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">iframe</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- 优酷视频 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">iframe</span>  <span class="attr">src</span>=<span class="string">'https://player.youku.com/embed/&#123;&#125;'</span> <span class="attr">width</span>=<span class="string">"640"</span> <span class="attr">height</span>=<span class="string">"430"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">iframe</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- PDF --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">iframe</span>  <span class="attr">src</span>=<span class="string">'https://arxiv.org/pdf/1406.2661.pdf'</span> <span class="attr">width</span>=<span class="string">"800"</span> <span class="attr">height</span>=<span class="string">"450"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">iframe</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- HTML --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">iframe</span>  <span class="attr">src</span>=<span class="string">'https://www.sohu.com/a/287817933_100118081'</span> <span class="attr">width</span>=<span class="string">"800"</span> <span class="attr">height</span>=<span class="string">"450"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">iframe</span>&gt;</span></span><br></pre></td></tr></table></figure>
 <h2 id="4-总结"><a class="header-anchor" href="#4-总结">¶</a>4 总结</h2>
 <p>一个清晰的总结应该概括全部论点。</p>
 <h2 id="其他"><a class="header-anchor" href="#其他">¶</a>其他</h2>
@@ -531,7 +533,7 @@ $$</p>
 <ol class="footnotes-list">
 <li id="fn1" class="footnote-item"><p><a href="http://www.stats.gov.cn/sj/zxfb/202302/t20230228_1919011.html" target="_blank" rel="noopener">国家统计局：2022年国民经济和社会发展统计公报</a> <a href="#fnref1" class="footnote-backref">↩︎</a></p>
 </li>
-<li id="fn2" class="footnote-item"><p><a href="http://latex.codecogs.com/eqneditor/editor.php" target="_blank" rel="noopener">Latex公式在线可视化编辑器</a> <a href="#fnref2" class="footnote-backref">↩︎</a></p>
+<li id="fn2" class="footnote-item"><p><a href="http://latex.codecogs.com/eqneditor/editor.php" target="_blank" rel="noopener">Latex公式在线可视化编辑器</a> or <a href="https://www.latexlive.com/" target="_blank" rel="noopener">Latex</a> <a href="#fnref2" class="footnote-backref">↩︎</a></p>
 </li>
 <li id="fn3" class="footnote-item"><p>美学散步系列书籍 - 朱自清的《荷塘清韵》 <a href="#fnref3" class="footnote-backref">↩︎</a> <a href="#fnref3:1" class="footnote-backref">↩︎</a></p>
 </li>
@@ -1263,83 +1265,6 @@ t   -=   (unsigned   long)GetCycleCount();</p>
       </tags>
   </entry>
   <entry>
-    <title>Ubuntu的优化与设置</title>
-    <url>/public/2017/05/22/linux/ubuntu/</url>
-    <content><![CDATA[<h1></h1>
-<h2 id="前言"><a class="header-anchor" href="#前言">¶</a>前言</h2>
-<ul>
-<li>
-<h2 id="窗口颜色设置浅绿色"><a class="header-anchor" href="#窗口颜色设置浅绿色">¶</a>窗口颜色设置浅绿色</h2>
-   <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">cd /usr/share/themes/Ambiance/gtk-3.0</span><br><span class="line">sudo gedit gtk-main.css</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<h2 id="2-常用环境"><a class="header-anchor" href="#2-常用环境">¶</a>2  常用环境</h2>
-<ul>
-<li>
-<h2 id="安装jdk"><a class="header-anchor" href="#安装jdk">¶</a>安装jdk</h2>
-   <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># add java path</span></span><br><span class="line"><span class="built_in">export</span> JAVA_HOME=/usr/<span class="built_in">local</span>/java/jdk1.7</span><br><span class="line"><span class="built_in">export</span> JRE_HOME=<span class="variable">$&#123;JAVA_HOME&#125;</span>/jre</span><br><span class="line"><span class="built_in">export</span> CLASSPATH=.:<span class="variable">$&#123;JAVA_HOME&#125;</span>/lib:<span class="variable">$&#123;JRE_HOME&#125;</span>/lib</span><br><span class="line"><span class="built_in">export</span> PATH=<span class="variable">$&#123;JAVA_HOME&#125;</span>/bin:<span class="variable">$PATH</span></span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<h2 id="3-安装软件"><a class="header-anchor" href="#3-安装软件">¶</a>3 安装软件</h2>
-<ul>
-<li>
-<h2 id="在线软件安装"><a class="header-anchor" href="#在线软件安装">¶</a>在线软件安装</h2>
-   <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 备份源列表地址</span></span><br><span class="line">sudo cp /etc/apt/sources.list /etc/apt/sources.list_backup</span><br><span class="line"><span class="comment"># 修改</span></span><br><span class="line">sudo vim /etc/apt/sources.list</span><br></pre></td></tr></table></figure>
-<ul>
-<li>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 更新源</span></span><br><span class="line">apt-get update</span><br><span class="line">apt-get install xxx</span><br><span class="line"></span><br><span class="line"><span class="comment"># 包search</span></span><br><span class="line">apt-cache search xxx</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-</li>
-<li>
-<h2 id="deb本地软件安装"><a class="header-anchor" href="#deb本地软件安装">¶</a>deb本地软件安装</h2>
-   <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 安装deb包命令</span></span><br><span class="line">dpkg -i *.deb</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 如果缺少依赖执行</span></span><br><span class="line">apt-get -f install</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<h2 id="4-常用软件"><a class="header-anchor" href="#4-常用软件">¶</a>4 常用软件</h2>
-<ul>
-<li>
-<p>mpv播放器</p>
-</li>
-<li>
-<p>有道字典</p>
-</li>
-<li>
-<h2 id="atom"><a class="header-anchor" href="#atom">¶</a>atom</h2>
-   <figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-tag">atom-pane</span> &#123;</span><br><span class="line"><span class="attribute">font-size</span>: <span class="number">16px</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.command-palette</span> &#123;</span><br><span class="line"><span class="attribute">font-size</span>: <span class="number">16px</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-<li>
-<h2 id="图标设置"><a class="header-anchor" href="#图标设置">¶</a>图标设置</h2>
-   <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">cd /usr/share/applications</span><br><span class="line">vim eclipse.desktop</span><br></pre></td></tr></table></figure>
-<ul>
-<li>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">!/usr/bin/env xdg-open</span></span><br><span class="line"></span><br><span class="line">[Desktop Entry]</span><br><span class="line">Version=22.0</span><br><span class="line">Name=eclipse</span><br><span class="line">Exec=/home/gtc/Android/adt-bundle-linux/eclipse/eclipse</span><br><span class="line">Terminal=false</span><br><span class="line">Icon=/home/gtc/Android/adt-bundle-linux/eclipse/icon.xpm</span><br><span class="line">Type=Application</span><br><span class="line">Categories=Development</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-</li>
-</ul>
-<h3 id="设备使用率指示"><a class="header-anchor" href="#设备使用率指示">¶</a>设备使用率指示</h3>
-<p><a href="https://github.com/fossfreedom/indicator-sysmonitor" target="_blank" rel="noopener">https://github.com/fossfreedom/indicator-sysmonitor</a></p>
-<h2 id="5-其他优化"><a class="header-anchor" href="#5-其他优化">¶</a>5 其他优化</h2>
-<ul>
-<li>
-<h2 id="关闭错误报告"><a class="header-anchor" href="#关闭错误报告">¶</a>关闭错误报告</h2>
-   <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 关闭烦人的错误报告</span></span><br><span class="line">sudo gedit /etc/default/apport</span><br></pre></td></tr></table></figure>
-</li>
-<li>
-<h2 id="CPU-100-占用"><a class="header-anchor" href="#CPU-100-占用">¶</a>CPU 100%占用</h2>
-   <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">cd /usr/lib/gvfs</span><br><span class="line"><span class="meta">#</span><span class="bash"> 将gvfsd-smb-brows权限改成744，取消普通用户的执行权限，</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 也挺有意思，暂时没引发别的问题</span></span><br></pre></td></tr></table></figure></li>
-</ul>
-]]></content>
-      <categories>
-        <category>Linux</category>
-      </categories>
-      <tags>
-        <tag>技巧</tag>
-        <tag>Ubuntu</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>tcp ip 协议族</title>
     <url>/public/2022/12/08/linux_network/tcp_ip/</url>
     <content><![CDATA[<h2 id="前言"><a class="header-anchor" href="#前言">¶</a>前言</h2>
@@ -1653,36 +1578,6 @@ $$
         <tag>Python</tag>
         <tag>YouTube字幕合并</tag>
         <tag>SRT(文本格式字幕)</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>「转」桥初始化（一）</title>
-    <url>/public/2021/12/02/linux_network/br_init/</url>
-    <content><![CDATA[<h2 id="前言"><a class="header-anchor" href="#前言">¶</a>前言</h2>
-<p>注：章节中的源代码，基于 linux 内核 4.7.4</p>
-<p>网桥的背景到处都有，在这里就不浪费的时间说废话了。</p>
-<p>桥接程序的初始化，桥接程序既可以集成在内核中，也可以编译成独立模块。初始化函数br_init和清理函数br_deinit的定义在/net/bridge/br.c中</p>
-<p>在网桥设备初始化的时候，主要是做一些注册和初始化的操作。</p>
-<h2 id="桥初始化"><a class="header-anchor" href="#桥初始化">¶</a>桥初始化</h2>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">int</span> __init <span class="title">br_init</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> err;</span><br><span class="line">    <span class="comment">/*注册协议生成树收包函数*/</span></span><br><span class="line">    err = stp_proto_register(&amp;br_stp_proto);</span><br><span class="line">    <span class="keyword">if</span> (err &lt; <span class="number">0</span>) &#123;</span><br><span class="line">        pr_err(<span class="string">"bridge: can't register sap for STP\n"</span>);</span><br><span class="line">        <span class="keyword">return</span> err;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">/*转发数据库初始化*/</span></span><br><span class="line">    err = br_fdb_init();</span><br><span class="line">    <span class="keyword">if</span> (err)</span><br><span class="line">        <span class="keyword">goto</span> err_out;</span><br><span class="line">   <span class="comment">/*在/proc目录下生成任何与bridge相关的目录，如果我们想在/proc下生成bridge相关的子目录或子文件*/</span></span><br><span class="line">    err = register_pernet_subsys(&amp;br_net_ops);</span><br><span class="line">    <span class="keyword">if</span> (err)</span><br><span class="line">        <span class="keyword">goto</span> err_out1;</span><br><span class="line">    <span class="comment">/*目前好像没有什么实际作用，在内核中所注册的函数为空*/</span></span><br><span class="line">    err = br_nf_core_init();</span><br><span class="line">    <span class="keyword">if</span> (err)</span><br><span class="line">        <span class="keyword">goto</span> err_out2;</span><br><span class="line">    <span class="comment">/*注册相关网络设备的事件通知连*/</span></span><br><span class="line">    err = register_netdevice_notifier(&amp;br_device_notifier);</span><br><span class="line">    <span class="keyword">if</span> (err)</span><br><span class="line">        <span class="keyword">goto</span> err_out3;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/*注册通知连，主要针对桥转发表事件的相关信息*/</span></span><br><span class="line">    err = register_switchdev_notifier(&amp;br_switchdev_notifier);</span><br><span class="line">    <span class="keyword">if</span> (err)</span><br><span class="line">        <span class="keyword">goto</span> err_out4;</span><br><span class="line">    <span class="comment">/*进行netlink的初始化*/</span></span><br><span class="line">    err = br_netlink_init();</span><br><span class="line">    <span class="keyword">if</span> (err)</span><br><span class="line">        <span class="keyword">goto</span> err_out5;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/*用来处理ioctl命令的函数，比如添加和删除网桥*/</span></span><br><span class="line">    brioctl_set(br_ioctl_deviceless_stub);</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">if</span> IS_ENABLED(CONFIG_ATM_LANE)</span></span><br><span class="line">    br_fdb_test_addr_hook = br_fdb_test_addr;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="具体的"><a class="header-anchor" href="#具体的">¶</a>具体的</h2>
-<p>了解了桥初始化大致要做的事情后，我们再来看看这些初始化或者注册的事情到底干了些什么？</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="number">1.</span>注册协议生成树收包函数stp_proto_register</span><br><span class="line">    在桥初始化的时候，注册了一个br_stp_proto参数，此参数的具体模样是这样子的</span><br><span class="line">   <span class="keyword">static</span> <span class="keyword">const</span> <span class="class"><span class="keyword">struct</span> <span class="title">stp_proto</span> <span class="title">br_stp_proto</span> = &#123;</span></span><br><span class="line">         .rcv   = br_stp_rcv,</span><br><span class="line">    &#125;;</span><br><span class="line">    br_stp_rcv函数在/net/bridge/br_stp_bpdu.c中主要针对网桥进行协议交换的帧（BPDU）进行配置操作。</span><br><span class="line"></span><br><span class="line">  <span class="number">2.</span>桥转发数据库初始化br_fdb_init</span><br><span class="line">    此函数就是在内存中建立一块slab cache，以存放net_bridge_fdb_entry</span><br><span class="line">    其中：net_bridge_fdb_entry是一个结构体，用来转发数据库的记录项网桥所学到对的每个MAC地址都有这样一个记录</span><br><span class="line"></span><br><span class="line">  <span class="number">3.</span>在proc目录下生成相关文件的注册函数register_pernet_subsys，初始化的时候给这个函数传递了一个参数br_net_ops，这个参数的模样是这样的</span><br><span class="line">  <span class="keyword">static</span> <span class="class"><span class="keyword">struct</span> <span class="title">pernet_operations</span> <span class="title">br_net_ops</span> = &#123;</span></span><br><span class="line">        .<span class="built_in">exit</span>   = br_net_exit,</span><br><span class="line">  &#125;;</span><br><span class="line">  但是在桥初始化的时候，仅仅注册了br_net_exit，这个函数会将桥下面的所有文件全部清空。</span><br><span class="line"></span><br><span class="line"> <span class="number">4.</span>通知链的相关函数注册register_netdevice_notifier这个注册函数主要针对设备信息的变化，注册参数br_device_notifier，具体如下：</span><br><span class="line"> <span class="keyword">static</span> <span class="class"><span class="keyword">struct</span> <span class="title">notifier_block</span> <span class="title">br_device_notifier</span> = &#123;</span></span><br><span class="line">        .notifier_call = br_device_event</span><br><span class="line">&#125;;</span><br><span class="line">br_device_event函数是用来当桥上的设备状态或者设备信息发生改变时做相应的处理，该函数在/net/bridge/br.c中</span><br><span class="line"></span><br><span class="line"> <span class="number">5.</span>注册通知连，主要针对桥转发表事件的相关信息register_switchdev_notifier，传入的参数br_switchdev_notifier详细信息如下：</span><br><span class="line"><span class="keyword">static</span> <span class="class"><span class="keyword">struct</span> <span class="title">notifier_block</span> <span class="title">br_switchdev_notifier</span> = &#123;</span></span><br><span class="line">    .notifier_call = br_switchdev_event,</span><br><span class="line">&#125;;</span><br><span class="line">br_switchdev_event，主要针对桥转发表的事件做出相应的处理该函数在/net/bridge/br.c中</span><br><span class="line"></span><br><span class="line"><span class="number">6.b</span>rioctl_set用来处理ioctl命令的函数，比如添加和删除网桥，br_ioctl_deviceless_stub给回调函数br_ioctl_hook,而br_ioctl_hook在sock_ioctl中</span><br><span class="line">使用，这样通过在应用层调用socket的ioctl函数，就能够进行网桥的添加与删除了，函数用来处理添加和删除网桥的相关操作，会在下一节详细介绍。</span><br></pre></td></tr></table></figure>
-<p>以上就是网桥初始化的相关操作 <sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup></p>
-<h2 id="参考"><a class="header-anchor" href="#参考">¶</a>参考</h2>
-<hr class="footnotes-sep">
-<section class="footnotes">
-<ol class="footnotes-list">
-<li id="fn1" class="footnote-item"><p><a href="https://blog.csdn.net/NW_NW_NW" target="_blank" rel="noopener">@不留你的名字</a> <a href="https://blog.csdn.net/NW_NW_NW/article/details/75045966" target="_blank" rel="noopener">桥初始化</a> 2010-12-01 <a href="#fnref1" class="footnote-backref">↩︎</a></p>
-</li>
-</ol>
-</section>
-]]></content>
-      <categories>
-        <category>linux</category>
-      </categories>
-      <tags>
-        <tag>linux network</tag>
       </tags>
   </entry>
   <entry>
@@ -2247,22 +2142,6 @@ markdate:2023-02-08 04:38:07.828863</p>
       </tags>
   </entry>
   <entry>
-    <title>「202303月度汇报」obsidian</title>
-    <url>/public/2023/03/26/test/202303_obsidian/</url>
-    <content><![CDATA[<p>统计 ✅ : 0 📅 : 0 🔖 : 0</p>
-<a id="more"></a>
-<h2 id="✅-0"><a class="header-anchor" href="#✅-0">¶</a>✅ : 0</h2>
-<h2 id="📅-0"><a class="header-anchor" href="#📅-0">¶</a>📅 : 0</h2>
-<h2 id="🔖-0"><a class="header-anchor" href="#🔖-0">¶</a>🔖 : 0</h2>
-]]></content>
-      <categories>
-        <category>月度汇报</category>
-      </categories>
-      <tags>
-        <tag>月度汇报</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>「202303月度汇报」ttrss</title>
     <url>/public/2023/03/15/test/202303/</url>
     <content><![CDATA[<p>total: 6</p>
@@ -2291,6 +2170,22 @@ markdate:2023-03-04 03:36:01.350199</p>
 <p>pubdata:2023-03-06 06:38:29
 markdate:2023-03-20 00:53:17.612194</p>
 <p><img src="/public/2023/03/15/test/202303/2023-03-20-005317612194.jpg" alt="img"></p>
+]]></content>
+      <categories>
+        <category>月度汇报</category>
+      </categories>
+      <tags>
+        <tag>月度汇报</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>「202303月度汇报」obsidian</title>
+    <url>/public/2023/03/26/test/202303_obsidian/</url>
+    <content><![CDATA[<p>统计 ✅ : 0 📅 : 0 🔖 : 0</p>
+<a id="more"></a>
+<h2 id="✅-0"><a class="header-anchor" href="#✅-0">¶</a>✅ : 0</h2>
+<h2 id="📅-0"><a class="header-anchor" href="#📅-0">¶</a>📅 : 0</h2>
+<h2 id="🔖-0"><a class="header-anchor" href="#🔖-0">¶</a>🔖 : 0</h2>
 ]]></content>
       <categories>
         <category>月度汇报</category>
@@ -2804,6 +2699,113 @@ markdate:2023-10-19 04:36:51.693584</p>
       <tags>
         <tag>重庆</tag>
         <tag>游记</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>「转」桥初始化（一）</title>
+    <url>/public/2021/12/02/linux_network/br_init/</url>
+    <content><![CDATA[<h2 id="前言"><a class="header-anchor" href="#前言">¶</a>前言</h2>
+<p>注：章节中的源代码，基于 linux 内核 4.7.4</p>
+<p>网桥的背景到处都有，在这里就不浪费的时间说废话了。</p>
+<p>桥接程序的初始化，桥接程序既可以集成在内核中，也可以编译成独立模块。初始化函数br_init和清理函数br_deinit的定义在/net/bridge/br.c中</p>
+<p>在网桥设备初始化的时候，主要是做一些注册和初始化的操作。</p>
+<h2 id="桥初始化"><a class="header-anchor" href="#桥初始化">¶</a>桥初始化</h2>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">int</span> __init <span class="title">br_init</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> err;</span><br><span class="line">    <span class="comment">/*注册协议生成树收包函数*/</span></span><br><span class="line">    err = stp_proto_register(&amp;br_stp_proto);</span><br><span class="line">    <span class="keyword">if</span> (err &lt; <span class="number">0</span>) &#123;</span><br><span class="line">        pr_err(<span class="string">"bridge: can't register sap for STP\n"</span>);</span><br><span class="line">        <span class="keyword">return</span> err;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">/*转发数据库初始化*/</span></span><br><span class="line">    err = br_fdb_init();</span><br><span class="line">    <span class="keyword">if</span> (err)</span><br><span class="line">        <span class="keyword">goto</span> err_out;</span><br><span class="line">   <span class="comment">/*在/proc目录下生成任何与bridge相关的目录，如果我们想在/proc下生成bridge相关的子目录或子文件*/</span></span><br><span class="line">    err = register_pernet_subsys(&amp;br_net_ops);</span><br><span class="line">    <span class="keyword">if</span> (err)</span><br><span class="line">        <span class="keyword">goto</span> err_out1;</span><br><span class="line">    <span class="comment">/*目前好像没有什么实际作用，在内核中所注册的函数为空*/</span></span><br><span class="line">    err = br_nf_core_init();</span><br><span class="line">    <span class="keyword">if</span> (err)</span><br><span class="line">        <span class="keyword">goto</span> err_out2;</span><br><span class="line">    <span class="comment">/*注册相关网络设备的事件通知连*/</span></span><br><span class="line">    err = register_netdevice_notifier(&amp;br_device_notifier);</span><br><span class="line">    <span class="keyword">if</span> (err)</span><br><span class="line">        <span class="keyword">goto</span> err_out3;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/*注册通知连，主要针对桥转发表事件的相关信息*/</span></span><br><span class="line">    err = register_switchdev_notifier(&amp;br_switchdev_notifier);</span><br><span class="line">    <span class="keyword">if</span> (err)</span><br><span class="line">        <span class="keyword">goto</span> err_out4;</span><br><span class="line">    <span class="comment">/*进行netlink的初始化*/</span></span><br><span class="line">    err = br_netlink_init();</span><br><span class="line">    <span class="keyword">if</span> (err)</span><br><span class="line">        <span class="keyword">goto</span> err_out5;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/*用来处理ioctl命令的函数，比如添加和删除网桥*/</span></span><br><span class="line">    brioctl_set(br_ioctl_deviceless_stub);</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">if</span> IS_ENABLED(CONFIG_ATM_LANE)</span></span><br><span class="line">    br_fdb_test_addr_hook = br_fdb_test_addr;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="具体的"><a class="header-anchor" href="#具体的">¶</a>具体的</h2>
+<p>了解了桥初始化大致要做的事情后，我们再来看看这些初始化或者注册的事情到底干了些什么？</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="number">1.</span>注册协议生成树收包函数stp_proto_register</span><br><span class="line">    在桥初始化的时候，注册了一个br_stp_proto参数，此参数的具体模样是这样子的</span><br><span class="line">   <span class="keyword">static</span> <span class="keyword">const</span> <span class="class"><span class="keyword">struct</span> <span class="title">stp_proto</span> <span class="title">br_stp_proto</span> = &#123;</span></span><br><span class="line">         .rcv   = br_stp_rcv,</span><br><span class="line">    &#125;;</span><br><span class="line">    br_stp_rcv函数在/net/bridge/br_stp_bpdu.c中主要针对网桥进行协议交换的帧（BPDU）进行配置操作。</span><br><span class="line"></span><br><span class="line">  <span class="number">2.</span>桥转发数据库初始化br_fdb_init</span><br><span class="line">    此函数就是在内存中建立一块slab cache，以存放net_bridge_fdb_entry</span><br><span class="line">    其中：net_bridge_fdb_entry是一个结构体，用来转发数据库的记录项网桥所学到对的每个MAC地址都有这样一个记录</span><br><span class="line"></span><br><span class="line">  <span class="number">3.</span>在proc目录下生成相关文件的注册函数register_pernet_subsys，初始化的时候给这个函数传递了一个参数br_net_ops，这个参数的模样是这样的</span><br><span class="line">  <span class="keyword">static</span> <span class="class"><span class="keyword">struct</span> <span class="title">pernet_operations</span> <span class="title">br_net_ops</span> = &#123;</span></span><br><span class="line">        .<span class="built_in">exit</span>   = br_net_exit,</span><br><span class="line">  &#125;;</span><br><span class="line">  但是在桥初始化的时候，仅仅注册了br_net_exit，这个函数会将桥下面的所有文件全部清空。</span><br><span class="line"></span><br><span class="line"> <span class="number">4.</span>通知链的相关函数注册register_netdevice_notifier这个注册函数主要针对设备信息的变化，注册参数br_device_notifier，具体如下：</span><br><span class="line"> <span class="keyword">static</span> <span class="class"><span class="keyword">struct</span> <span class="title">notifier_block</span> <span class="title">br_device_notifier</span> = &#123;</span></span><br><span class="line">        .notifier_call = br_device_event</span><br><span class="line">&#125;;</span><br><span class="line">br_device_event函数是用来当桥上的设备状态或者设备信息发生改变时做相应的处理，该函数在/net/bridge/br.c中</span><br><span class="line"></span><br><span class="line"> <span class="number">5.</span>注册通知连，主要针对桥转发表事件的相关信息register_switchdev_notifier，传入的参数br_switchdev_notifier详细信息如下：</span><br><span class="line"><span class="keyword">static</span> <span class="class"><span class="keyword">struct</span> <span class="title">notifier_block</span> <span class="title">br_switchdev_notifier</span> = &#123;</span></span><br><span class="line">    .notifier_call = br_switchdev_event,</span><br><span class="line">&#125;;</span><br><span class="line">br_switchdev_event，主要针对桥转发表的事件做出相应的处理该函数在/net/bridge/br.c中</span><br><span class="line"></span><br><span class="line"><span class="number">6.b</span>rioctl_set用来处理ioctl命令的函数，比如添加和删除网桥，br_ioctl_deviceless_stub给回调函数br_ioctl_hook,而br_ioctl_hook在sock_ioctl中</span><br><span class="line">使用，这样通过在应用层调用socket的ioctl函数，就能够进行网桥的添加与删除了，函数用来处理添加和删除网桥的相关操作，会在下一节详细介绍。</span><br></pre></td></tr></table></figure>
+<p>以上就是网桥初始化的相关操作 <sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup></p>
+<h2 id="参考"><a class="header-anchor" href="#参考">¶</a>参考</h2>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p><a href="https://blog.csdn.net/NW_NW_NW" target="_blank" rel="noopener">@不留你的名字</a> <a href="https://blog.csdn.net/NW_NW_NW/article/details/75045966" target="_blank" rel="noopener">桥初始化</a> 2010-12-01 <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
+]]></content>
+      <categories>
+        <category>linux</category>
+      </categories>
+      <tags>
+        <tag>linux network</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Ubuntu的优化与设置</title>
+    <url>/public/2017/05/22/linux/ubuntu/</url>
+    <content><![CDATA[<h1></h1>
+<h2 id="前言"><a class="header-anchor" href="#前言">¶</a>前言</h2>
+<ul>
+<li>
+<h2 id="窗口颜色设置浅绿色"><a class="header-anchor" href="#窗口颜色设置浅绿色">¶</a>窗口颜色设置浅绿色</h2>
+   <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">cd /usr/share/themes/Ambiance/gtk-3.0</span><br><span class="line">sudo gedit gtk-main.css</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="2-常用环境"><a class="header-anchor" href="#2-常用环境">¶</a>2  常用环境</h2>
+<ul>
+<li>
+<h2 id="安装jdk"><a class="header-anchor" href="#安装jdk">¶</a>安装jdk</h2>
+   <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># add java path</span></span><br><span class="line"><span class="built_in">export</span> JAVA_HOME=/usr/<span class="built_in">local</span>/java/jdk1.7</span><br><span class="line"><span class="built_in">export</span> JRE_HOME=<span class="variable">$&#123;JAVA_HOME&#125;</span>/jre</span><br><span class="line"><span class="built_in">export</span> CLASSPATH=.:<span class="variable">$&#123;JAVA_HOME&#125;</span>/lib:<span class="variable">$&#123;JRE_HOME&#125;</span>/lib</span><br><span class="line"><span class="built_in">export</span> PATH=<span class="variable">$&#123;JAVA_HOME&#125;</span>/bin:<span class="variable">$PATH</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="3-安装软件"><a class="header-anchor" href="#3-安装软件">¶</a>3 安装软件</h2>
+<ul>
+<li>
+<h2 id="在线软件安装"><a class="header-anchor" href="#在线软件安装">¶</a>在线软件安装</h2>
+   <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 备份源列表地址</span></span><br><span class="line">sudo cp /etc/apt/sources.list /etc/apt/sources.list_backup</span><br><span class="line"><span class="comment"># 修改</span></span><br><span class="line">sudo vim /etc/apt/sources.list</span><br></pre></td></tr></table></figure>
+<ul>
+<li>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 更新源</span></span><br><span class="line">apt-get update</span><br><span class="line">apt-get install xxx</span><br><span class="line"></span><br><span class="line"><span class="comment"># 包search</span></span><br><span class="line">apt-cache search xxx</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li>
+<h2 id="deb本地软件安装"><a class="header-anchor" href="#deb本地软件安装">¶</a>deb本地软件安装</h2>
+   <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 安装deb包命令</span></span><br><span class="line">dpkg -i *.deb</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 如果缺少依赖执行</span></span><br><span class="line">apt-get -f install</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="4-常用软件"><a class="header-anchor" href="#4-常用软件">¶</a>4 常用软件</h2>
+<ul>
+<li>
+<p>mpv播放器</p>
+</li>
+<li>
+<p>有道字典</p>
+</li>
+<li>
+<h2 id="atom"><a class="header-anchor" href="#atom">¶</a>atom</h2>
+   <figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-tag">atom-pane</span> &#123;</span><br><span class="line"><span class="attribute">font-size</span>: <span class="number">16px</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.command-palette</span> &#123;</span><br><span class="line"><span class="attribute">font-size</span>: <span class="number">16px</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<h2 id="图标设置"><a class="header-anchor" href="#图标设置">¶</a>图标设置</h2>
+   <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">cd /usr/share/applications</span><br><span class="line">vim eclipse.desktop</span><br></pre></td></tr></table></figure>
+<ul>
+<li>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">!/usr/bin/env xdg-open</span></span><br><span class="line"></span><br><span class="line">[Desktop Entry]</span><br><span class="line">Version=22.0</span><br><span class="line">Name=eclipse</span><br><span class="line">Exec=/home/gtc/Android/adt-bundle-linux/eclipse/eclipse</span><br><span class="line">Terminal=false</span><br><span class="line">Icon=/home/gtc/Android/adt-bundle-linux/eclipse/icon.xpm</span><br><span class="line">Type=Application</span><br><span class="line">Categories=Development</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="设备使用率指示"><a class="header-anchor" href="#设备使用率指示">¶</a>设备使用率指示</h3>
+<p><a href="https://github.com/fossfreedom/indicator-sysmonitor" target="_blank" rel="noopener">https://github.com/fossfreedom/indicator-sysmonitor</a></p>
+<h2 id="5-其他优化"><a class="header-anchor" href="#5-其他优化">¶</a>5 其他优化</h2>
+<ul>
+<li>
+<h2 id="关闭错误报告"><a class="header-anchor" href="#关闭错误报告">¶</a>关闭错误报告</h2>
+   <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 关闭烦人的错误报告</span></span><br><span class="line">sudo gedit /etc/default/apport</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<h2 id="CPU-100-占用"><a class="header-anchor" href="#CPU-100-占用">¶</a>CPU 100%占用</h2>
+   <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">cd /usr/lib/gvfs</span><br><span class="line"><span class="meta">#</span><span class="bash"> 将gvfsd-smb-brows权限改成744，取消普通用户的执行权限，</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 也挺有意思，暂时没引发别的问题</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+]]></content>
+      <categories>
+        <category>Linux</category>
+      </categories>
+      <tags>
+        <tag>技巧</tag>
+        <tag>Ubuntu</tag>
       </tags>
   </entry>
   <entry>
