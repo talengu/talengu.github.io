@@ -6,7 +6,7 @@
   <link href="/public/atom.xml" rel="self"/>
   
   <link href="https://talengu.github.io/public/"/>
-  <updated>2023-11-15T16:00:04.000Z</updated>
+  <updated>2023-12-15T16:00:04.000Z</updated>
   <id>https://talengu.github.io/public/</id>
   
   <author>
@@ -15,6 +15,33 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>「202312月度汇报」auto report</title>
+    <link href="https://talengu.github.io/public/2023/12/15/test/202312/"/>
+    <id>https://talengu.github.io/public/2023/12/15/test/202312/</id>
+    <published>2023-12-15T16:00:04.000Z</published>
+    <updated>2023-12-15T16:00:04.000Z</updated>
+    
+    <content type="html"><![CDATA[<a id="more"></a><h2 id="统计-✅-0-📅-0-🔖-0"><a class="header-anchor" href="#统计-✅-0-📅-0-🔖-0">¶</a>=&gt; 统计 ✅ : 0 📅 : 0 🔖 : 0</h2><h3 id="✅-0"><a class="header-anchor" href="#✅-0">¶</a>✅ : 0</h3><h3 id="📅-0"><a class="header-anchor" href="#📅-0">¶</a>📅 : 0</h3><h3 id="🔖-0"><a class="header-anchor" href="#🔖-0">¶</a>🔖 : 0</h3><h2 id="ttrss标记个数-6"><a class="header-anchor" href="#ttrss标记个数-6">¶</a>=&gt; ttrss标记个数: 6</h2><h3 id="组装一台-22TB-容量的-NAS（家庭存储服务器）"><a class="header-anchor" href="#组装一台-22TB-容量的-NAS（家庭存储服务器）">¶</a><a href="https://icloudnative.io/posts/budget-nas/" target="_blank" rel="noopener">组装一台 22TB 容量的 NAS（家庭存储服务器）</a></h3><p>pubdata:2022-06-10 01:06:37markdate:2023-12-07 07:35:47.022086</p><h3 id="腾讯面试：服务端调用listen之后sleep休眠，请问客户端的connect能不能成功？"><a class="header-anchor" href="#腾讯面试：服务端调用listen之后sleep休眠，请问客户端的connect能不能成功？">¶</a><a href="https://zhuanlan.zhihu.com/p/670719289" target="_blank" rel="noopener">腾讯面试：服务端调用listen之后sleep休眠，请问客户端的connect能不能成功？</a></h3><p>pubdata:2023-12-06 07:27:00markdate:2023-12-08 01:09:37.236953</p><h3 id="NAS-我的自建-NAS"><a class="header-anchor" href="#NAS-我的自建-NAS">¶</a><a href="https://www.v2ex.com/t/999761#reply1" target="_blank" rel="noopener">[NAS] 我的自建 NAS</a></h3><p>pubdata:2023-12-12 09:17:39markdate:2023-12-12 11:57:28.161800</p><h3 id="WeChatMsg-留痕-–-支持语音聊天，微信聊天记录导出工具-Windows"><a class="header-anchor" href="#WeChatMsg-留痕-–-支持语音聊天，微信聊天记录导出工具-Windows">¶</a><a href="https://www.appinn.com/wechatmsg/" target="_blank" rel="noopener">WeChatMsg 留痕 – 支持语音聊天，微信聊天记录导出工具[Windows]</a></h3><p>pubdata:2023-12-15 07:00:22markdate:2023-12-18 09:31:55.841920</p><h3 id="Latest-–-开源、免费，Mac-软件管理器，可检查-Mac-绝大多数软件更新"><a class="header-anchor" href="#Latest-–-开源、免费，Mac-软件管理器，可检查-Mac-绝大多数软件更新">¶</a><a href="https://www.appinn.com/max-codes-latest/" target="_blank" rel="noopener">Latest – 开源、免费，Mac 软件管理器，可检查 Mac 绝大多数软件更新</a></h3><p>pubdata:2023-12-18 04:05:41markdate:2023-12-19 08:42:40.404081</p><h3 id="古有-Infuse，现有-VidHub，要不来试试？"><a class="header-anchor" href="#古有-Infuse，现有-VidHub，要不来试试？">¶</a><a href="https://www.appinn.com/vidhub-video-player/" target="_blank" rel="noopener">古有 Infuse，现有 VidHub，要不来试试？</a></h3><p>pubdata:2023-12-22 03:02:42markdate:2023-12-25 04:16:04.061410</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
+&lt;h2 id=&quot;统计-✅-0-📅-0-🔖-0&quot;&gt;&lt;a class=&quot;header-anchor&quot; href=&quot;#统计-✅-0-📅-0-🔖-0&quot;&gt;¶&lt;/a&gt;=&amp;gt; 统计 ✅ : 0 📅 : 0 🔖 : 0&lt;/h2&gt;
+&lt;h3 id=
+      
+    
+    </summary>
+    
+      <category term="月度汇报" scheme="https://talengu.github.io/public/categories/%E6%9C%88%E5%BA%A6%E6%B1%87%E6%8A%A5/"/>
+    
+    
+      <category term="月度汇报" scheme="https://talengu.github.io/public/tags/%E6%9C%88%E5%BA%A6%E6%B1%87%E6%8A%A5/"/>
+    
+  </entry>
   
   <entry>
     <title>「202311月度汇报」auto report</title>
@@ -472,28 +499,6 @@
     
     
       <category term="月度汇报" scheme="https://talengu.github.io/public/tags/%E6%9C%88%E5%BA%A6%E6%B1%87%E6%8A%A5/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>「202209月度汇报」ttrss</title>
-    <link href="https://talengu.github.io/public/2022/09/15/test/2022/202209/"/>
-    <id>https://talengu.github.io/public/2022/09/15/test/2022/202209/</id>
-    <published>2022-09-15T16:00:04.000Z</published>
-    <updated>2022-09-15T16:00:04.000Z</updated>
-    
-    <content type="html"><![CDATA[<p>total: 3</p><a id="more"></a><h2 id="🔖WireGuard-基础教程：wg-quick-路由策略解读"><a class="header-anchor" href="#🔖WireGuard-基础教程：wg-quick-路由策略解读">¶</a>🔖<a href="https://icloudnative.io/posts/linux-routing-of-wireguard/" target="_blank" rel="noopener">WireGuard 基础教程：wg-quick 路由策略解读</a></h2><p>pubdata:2022-08-31 01:06:37markdate:2022-09-03 06:23:25.656749</p><p><img src="/public/2022/09/15/test/2022/202209/2022-09-03-062325656749.jpg" alt="img"></p><h2 id="🔖微软官方超实用-15-小工具集-PowerToys-v0-62-0-发布，新增文本提取器-OCR-功能"><a class="header-anchor" href="#🔖微软官方超实用-15-小工具集-PowerToys-v0-62-0-发布，新增文本提取器-OCR-功能">¶</a>🔖<a href="https://www.appinn.com/powertoys-v0-62-0/" target="_blank" rel="noopener">微软官方超实用 15+ 小工具集 PowerToys v0.62.0 发布，新增文本提取器 OCR 功能</a></h2><p>pubdata:2022-09-07 04:11:14markdate:2022-09-08 04:19:59.942860</p><p><img src="/public/2022/09/15/test/2022/202209/2022-09-08-041959942860.jpg" alt="img"></p><h2 id="🔖Stream-Deck-太贵了？触屏音箱也能成为你的直播助手"><a class="header-anchor" href="#🔖Stream-Deck-太贵了？触屏音箱也能成为你的直播助手">¶</a>🔖<a href="https://sspai.com/post/75789" target="_blank" rel="noopener">Stream Deck 太贵了？触屏音箱也能成为你的直播助手</a></h2><p>pubdata:2022-09-19 06:31:44markdate:2022-09-21 03:28:05.514939</p><p><img src="/public/2022/09/15/test/2022/202209/2022-09-21-032805514939.jpg" alt="img"></p><h2 id="统计-✅-0-📅-2-🔖-10"><a class="header-anchor" href="#统计-✅-0-📅-2-🔖-10">¶</a>统计 ✅ : 0 📅 : 2 🔖 : 10</h2><h2 id="✅-0"><a class="header-anchor" href="#✅-0">¶</a>✅ : 0</h2><h2 id="📅-2"><a class="header-anchor" href="#📅-2">¶</a>📅 : 2</h2><p>📅升级电脑-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W35.md">C日常/2022-W35.md</a><br>📅 添加rss-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W33.md">C日常/2022-W33.md</a></p><h2 id="🔖-10"><a class="header-anchor" href="#🔖-10">¶</a>🔖 : 10</h2><p>🔖 <a href="https://www.appinn.com/umi-ocr/" target="_blank" rel="noopener">Umi-OCR - 免费的离线 OCR 文字识别软件[Windows] - 小众软件</a>-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W36.md">C日常/2022-W36.md</a><br>🔖 设计模式-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W36.md">C日常/2022-W36.md</a><br>🔖 苏炳添向母校捐赠100万元！-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W36.md">C日常/2022-W36.md</a><br>🔖 <a href="https://github.com/dlvhdr/gh-dash" target="_blank" rel="noopener">gh-dash</a>-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W36.md">C日常/2022-W36.md</a><br>🔖 <a href="https://nginxproxymanager.com/" target="_blank" rel="noopener">Nginx Proxy Manager</a>-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W36.md">C日常/2022-W36.md</a><br>🔖1、<a href="https://knots3d.com/knots/en_us/ALL" target="_blank" rel="noopener">Knots 3D</a>-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W33.md">C日常/2022-W33.md</a><br>🔖 <a href="https://m.runoob.com/typescript/" target="_blank" rel="noopener">TypeScript 教程 | 菜鸟教程</a>-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W33.md">C日常/2022-W33.md</a><br>🔖 <a href="https://m.runoob.com/js/" target="_blank" rel="noopener">Javascript 教程 | 菜鸟教程</a>-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W33.md">C日常/2022-W33.md</a><br>🔖 Makefile-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W33.md">C日常/2022-W33.md</a><br>🔖 <a href="https://www.zhihu.com/question/450738311/answer/2635126508?utm_medium=social&amp;utm_oi=619610399826382848&amp;utm_psn=1545021439438381056&amp;utm_source=ZHShareTargetIDMore" target="_blank" rel="noopener">windows 有什么好用的截图软件？ - 知乎</a>-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W33.md">C日常/2022-W33.md</a></p>]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;total: 3&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="转载" scheme="https://talengu.github.io/public/categories/%E8%BD%AC%E8%BD%BD/"/>
-    
-    
-      <category term="转载" scheme="https://talengu.github.io/public/tags/%E8%BD%AC%E8%BD%BD/"/>
     
   </entry>
   
