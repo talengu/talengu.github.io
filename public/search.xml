@@ -1191,80 +1191,6 @@ t   -=   (unsigned   long)GetCycleCount();</p>
       </tags>
   </entry>
   <entry>
-    <title>「转」九张图一览 Linux 性能工具 全景图</title>
-    <url>/public/2022/12/11/linux/linux_tools/</url>
-    <content><![CDATA[<h2 id="前言"><a class="header-anchor" href="#前言">¶</a>前言</h2>
-<p>当今时代，绝大多数企业的应用都是运行在 Linux 操作系统上，所以对应用进行性能诊断和性能优化时，离不开 Linux 的各种性能观测工具和性能优化工具。</p>
-<p>笔者使用过的常见的 Linux 性能观测和性能优化工具有：</p>
-<ul>
-<li>top/uptime</li>
-<li>ps/pstree</li>
-<li>df/du/free/lsblk</li>
-<li>ip/ifconfig/ping/telnet</li>
-<li>route/dig/nslookup</li>
-<li>lsof/netstat/ss</li>
-<li>tcpdump/tshark/wireshark</li>
-<li>netstat/vmstat/iostat/pidstat/dstat/mpstat</li>
-<li>sar/sysctl/ethtool</li>
-</ul>
-<p>最近在拜读国际著名的 LINUX 性能专家 Brendan Gregg 的个人博客和技术书籍，摘抄了如下九张图，一览 Linux 性能工具全景图，大家共勉！</p>
-<a id="more"></a>
-<h2 id="2-Linux-性能工具全景图"><a class="header-anchor" href="#2-Linux-性能工具全景图">¶</a><strong>2. Linux 性能工具全景图</strong></h2>
-<ul>
-<li>linux performance observability tools</li>
-</ul>
-<p><img src="/public/2022/12/11/linux/linux_tools/v2-2eadd97c53a3f20f255394c3d90ea914_r.jpg" alt></p>
-<ul>
-<li>linux static performance tools</li>
-</ul>
-<p><img src="/public/2022/12/11/linux/linux_tools/v2-20032bac53c856c5733259eece5c2f76_r.jpg" alt></p>
-<ul>
-<li>linux performance benchmark tools</li>
-</ul>
-<p><img src="/public/2022/12/11/linux/linux_tools/v2-de23423f2eb9deb5410b7128c933f9a9_r.jpg" alt></p>
-<ul>
-<li>linux performance tuning tools</li>
-</ul>
-<p><img src="/public/2022/12/11/linux/linux_tools/v2-cdf37de145763b762ba5af1a620f9686_r.jpg" alt></p>
-<ul>
-<li>linux performance observability: sar</li>
-</ul>
-<p><img src="/public/2022/12/11/linux/linux_tools/v2-eee71a6bf3865367741137da03031411_r.jpg" alt></p>
-<ul>
-<li>linux performance observability: perf-tools</li>
-</ul>
-<p><img src="/public/2022/12/11/linux/linux_tools/v2-1c0134fefbb04597db98ae455a40fad5_r.jpg" alt></p>
-<ul>
-<li><a href="https://www.zhihu.com/search?q=linux%20bcc&amp;search_source=Entity&amp;hybrid_search_source=Entity&amp;hybrid_search_extra=%7B%22sourceType%22%3A%22answer%22%2C%22sourceId%22%3A2795830055%7D" target="_blank" rel="noopener">linux bcc</a>/BPF Tracing tools</li>
-</ul>
-<p><img src="/public/2022/12/11/linux/linux_tools/v2-ffe70303f4d64828ca931d987b12a6d8_r.jpg" alt></p>
-<ul>
-<li>bpftrace/eBPF Tools</li>
-</ul>
-<p><img src="/public/2022/12/11/linux/linux_tools/v2-5985d44e43738933c0b54c89cc20ec09_r.jpg" alt></p>
-<ul>
-<li>BPF Performance Tools: Linux System and Application Observability</li>
-</ul>
-<p><img src="/public/2022/12/11/linux/linux_tools/v2-0f53016fa1d993ffbbf6fc520e318784_r.jpg" alt></p>
-<h2 id="后记"><a class="header-anchor" href="#后记">¶</a>后记</h2>
-<p>更多 LINUX 性能资料，大家可以访问大师的个人网站和和技术书籍</p>
-<ul>
-<li><a href="https://www.brendangregg.com/" target="_blank" rel="noopener">https://www.brendangregg.com/</a></li>
-<li>《性能之巅：洞悉系统、企业与云计算》（《Systems Performance: Enterprise and the Cloud, 2nd Edition (2020)》）</li>
-<li>《洞悉 Linux 系统和应用性能》（《BPF Performance Tools》）</li>
-<li>ps: 要说 LINUX 内核近几年 (和今后几年）最引人注目的发展模块，那就是 <a href="https://www.zhihu.com/search?q=bpf&amp;search_source=Entity&amp;hybrid_search_source=Entity&amp;hybrid_search_extra=%7B%22sourceType%22%3A%22answer%22%2C%22sourceId%22%3A2795830055%7D" target="_blank" rel="noopener">bpf</a> 了，完全值得花点精力学习跟进下。</li>
-<li>如何更深入地学习 Linux？ - michaelli的回答 - 知乎
-<a href="https://www.zhihu.com/question/23564190/answer/2795830055" target="_blank" rel="noopener">https://www.zhihu.com/question/23564190/answer/2795830055</a></li>
-</ul>
-]]></content>
-      <categories>
-        <category>linux</category>
-      </categories>
-      <tags>
-        <tag>linux</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>个人主页搭建</title>
     <url>/public/2016/12/22/build_blog/</url>
     <content><![CDATA[<h2 id="前言"><a class="header-anchor" href="#前言">¶</a>前言</h2>
@@ -2059,80 +1985,33 @@ nbextensions的教程<a href="https://jupyter-contrib-nbextensions.readthedocs.i
       </tags>
   </entry>
   <entry>
-    <title>Ubuntu的优化与设置</title>
-    <url>/public/2017/05/22/linux/ubuntu/</url>
-    <content><![CDATA[<h1></h1>
-<h2 id="前言"><a class="header-anchor" href="#前言">¶</a>前言</h2>
-<ul>
-<li>
-<h2 id="窗口颜色设置浅绿色"><a class="header-anchor" href="#窗口颜色设置浅绿色">¶</a>窗口颜色设置浅绿色</h2>
-   <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">cd /usr/share/themes/Ambiance/gtk-3.0</span><br><span class="line">sudo gedit gtk-main.css</span><br></pre></td></tr></table></figure>
+    <title>「转」桥初始化（一）</title>
+    <url>/public/2021/12/02/linux_network/br_init/</url>
+    <content><![CDATA[<h2 id="前言"><a class="header-anchor" href="#前言">¶</a>前言</h2>
+<p>注：章节中的源代码，基于 linux 内核 4.7.4</p>
+<p>网桥的背景到处都有，在这里就不浪费的时间说废话了。</p>
+<p>桥接程序的初始化，桥接程序既可以集成在内核中，也可以编译成独立模块。初始化函数br_init和清理函数br_deinit的定义在/net/bridge/br.c中</p>
+<p>在网桥设备初始化的时候，主要是做一些注册和初始化的操作。</p>
+<h2 id="桥初始化"><a class="header-anchor" href="#桥初始化">¶</a>桥初始化</h2>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">int</span> __init <span class="title">br_init</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> err;</span><br><span class="line">    <span class="comment">/*注册协议生成树收包函数*/</span></span><br><span class="line">    err = stp_proto_register(&amp;br_stp_proto);</span><br><span class="line">    <span class="keyword">if</span> (err &lt; <span class="number">0</span>) &#123;</span><br><span class="line">        pr_err(<span class="string">"bridge: can't register sap for STP\n"</span>);</span><br><span class="line">        <span class="keyword">return</span> err;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">/*转发数据库初始化*/</span></span><br><span class="line">    err = br_fdb_init();</span><br><span class="line">    <span class="keyword">if</span> (err)</span><br><span class="line">        <span class="keyword">goto</span> err_out;</span><br><span class="line">   <span class="comment">/*在/proc目录下生成任何与bridge相关的目录，如果我们想在/proc下生成bridge相关的子目录或子文件*/</span></span><br><span class="line">    err = register_pernet_subsys(&amp;br_net_ops);</span><br><span class="line">    <span class="keyword">if</span> (err)</span><br><span class="line">        <span class="keyword">goto</span> err_out1;</span><br><span class="line">    <span class="comment">/*目前好像没有什么实际作用，在内核中所注册的函数为空*/</span></span><br><span class="line">    err = br_nf_core_init();</span><br><span class="line">    <span class="keyword">if</span> (err)</span><br><span class="line">        <span class="keyword">goto</span> err_out2;</span><br><span class="line">    <span class="comment">/*注册相关网络设备的事件通知连*/</span></span><br><span class="line">    err = register_netdevice_notifier(&amp;br_device_notifier);</span><br><span class="line">    <span class="keyword">if</span> (err)</span><br><span class="line">        <span class="keyword">goto</span> err_out3;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/*注册通知连，主要针对桥转发表事件的相关信息*/</span></span><br><span class="line">    err = register_switchdev_notifier(&amp;br_switchdev_notifier);</span><br><span class="line">    <span class="keyword">if</span> (err)</span><br><span class="line">        <span class="keyword">goto</span> err_out4;</span><br><span class="line">    <span class="comment">/*进行netlink的初始化*/</span></span><br><span class="line">    err = br_netlink_init();</span><br><span class="line">    <span class="keyword">if</span> (err)</span><br><span class="line">        <span class="keyword">goto</span> err_out5;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/*用来处理ioctl命令的函数，比如添加和删除网桥*/</span></span><br><span class="line">    brioctl_set(br_ioctl_deviceless_stub);</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">if</span> IS_ENABLED(CONFIG_ATM_LANE)</span></span><br><span class="line">    br_fdb_test_addr_hook = br_fdb_test_addr;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="具体的"><a class="header-anchor" href="#具体的">¶</a>具体的</h2>
+<p>了解了桥初始化大致要做的事情后，我们再来看看这些初始化或者注册的事情到底干了些什么？</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="number">1.</span>注册协议生成树收包函数stp_proto_register</span><br><span class="line">    在桥初始化的时候，注册了一个br_stp_proto参数，此参数的具体模样是这样子的</span><br><span class="line">   <span class="keyword">static</span> <span class="keyword">const</span> <span class="class"><span class="keyword">struct</span> <span class="title">stp_proto</span> <span class="title">br_stp_proto</span> = &#123;</span></span><br><span class="line">         .rcv   = br_stp_rcv,</span><br><span class="line">    &#125;;</span><br><span class="line">    br_stp_rcv函数在/net/bridge/br_stp_bpdu.c中主要针对网桥进行协议交换的帧（BPDU）进行配置操作。</span><br><span class="line"></span><br><span class="line">  <span class="number">2.</span>桥转发数据库初始化br_fdb_init</span><br><span class="line">    此函数就是在内存中建立一块slab cache，以存放net_bridge_fdb_entry</span><br><span class="line">    其中：net_bridge_fdb_entry是一个结构体，用来转发数据库的记录项网桥所学到对的每个MAC地址都有这样一个记录</span><br><span class="line"></span><br><span class="line">  <span class="number">3.</span>在proc目录下生成相关文件的注册函数register_pernet_subsys，初始化的时候给这个函数传递了一个参数br_net_ops，这个参数的模样是这样的</span><br><span class="line">  <span class="keyword">static</span> <span class="class"><span class="keyword">struct</span> <span class="title">pernet_operations</span> <span class="title">br_net_ops</span> = &#123;</span></span><br><span class="line">        .<span class="built_in">exit</span>   = br_net_exit,</span><br><span class="line">  &#125;;</span><br><span class="line">  但是在桥初始化的时候，仅仅注册了br_net_exit，这个函数会将桥下面的所有文件全部清空。</span><br><span class="line"></span><br><span class="line"> <span class="number">4.</span>通知链的相关函数注册register_netdevice_notifier这个注册函数主要针对设备信息的变化，注册参数br_device_notifier，具体如下：</span><br><span class="line"> <span class="keyword">static</span> <span class="class"><span class="keyword">struct</span> <span class="title">notifier_block</span> <span class="title">br_device_notifier</span> = &#123;</span></span><br><span class="line">        .notifier_call = br_device_event</span><br><span class="line">&#125;;</span><br><span class="line">br_device_event函数是用来当桥上的设备状态或者设备信息发生改变时做相应的处理，该函数在/net/bridge/br.c中</span><br><span class="line"></span><br><span class="line"> <span class="number">5.</span>注册通知连，主要针对桥转发表事件的相关信息register_switchdev_notifier，传入的参数br_switchdev_notifier详细信息如下：</span><br><span class="line"><span class="keyword">static</span> <span class="class"><span class="keyword">struct</span> <span class="title">notifier_block</span> <span class="title">br_switchdev_notifier</span> = &#123;</span></span><br><span class="line">    .notifier_call = br_switchdev_event,</span><br><span class="line">&#125;;</span><br><span class="line">br_switchdev_event，主要针对桥转发表的事件做出相应的处理该函数在/net/bridge/br.c中</span><br><span class="line"></span><br><span class="line"><span class="number">6.b</span>rioctl_set用来处理ioctl命令的函数，比如添加和删除网桥，br_ioctl_deviceless_stub给回调函数br_ioctl_hook,而br_ioctl_hook在sock_ioctl中</span><br><span class="line">使用，这样通过在应用层调用socket的ioctl函数，就能够进行网桥的添加与删除了，函数用来处理添加和删除网桥的相关操作，会在下一节详细介绍。</span><br></pre></td></tr></table></figure>
+<p>以上就是网桥初始化的相关操作 <sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup></p>
+<h2 id="参考"><a class="header-anchor" href="#参考">¶</a>参考</h2>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p><a href="https://blog.csdn.net/NW_NW_NW" target="_blank" rel="noopener">@不留你的名字</a> <a href="https://blog.csdn.net/NW_NW_NW/article/details/75045966" target="_blank" rel="noopener">桥初始化</a> 2010-12-01 <a href="#fnref1" class="footnote-backref">↩︎</a></p>
 </li>
-</ul>
-<h2 id="2-常用环境"><a class="header-anchor" href="#2-常用环境">¶</a>2  常用环境</h2>
-<ul>
-<li>
-<h2 id="安装jdk"><a class="header-anchor" href="#安装jdk">¶</a>安装jdk</h2>
-   <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># add java path</span></span><br><span class="line"><span class="built_in">export</span> JAVA_HOME=/usr/<span class="built_in">local</span>/java/jdk1.7</span><br><span class="line"><span class="built_in">export</span> JRE_HOME=<span class="variable">$&#123;JAVA_HOME&#125;</span>/jre</span><br><span class="line"><span class="built_in">export</span> CLASSPATH=.:<span class="variable">$&#123;JAVA_HOME&#125;</span>/lib:<span class="variable">$&#123;JRE_HOME&#125;</span>/lib</span><br><span class="line"><span class="built_in">export</span> PATH=<span class="variable">$&#123;JAVA_HOME&#125;</span>/bin:<span class="variable">$PATH</span></span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<h2 id="3-安装软件"><a class="header-anchor" href="#3-安装软件">¶</a>3 安装软件</h2>
-<ul>
-<li>
-<h2 id="在线软件安装"><a class="header-anchor" href="#在线软件安装">¶</a>在线软件安装</h2>
-   <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 备份源列表地址</span></span><br><span class="line">sudo cp /etc/apt/sources.list /etc/apt/sources.list_backup</span><br><span class="line"><span class="comment"># 修改</span></span><br><span class="line">sudo vim /etc/apt/sources.list</span><br></pre></td></tr></table></figure>
-<ul>
-<li>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 更新源</span></span><br><span class="line">apt-get update</span><br><span class="line">apt-get install xxx</span><br><span class="line"></span><br><span class="line"><span class="comment"># 包search</span></span><br><span class="line">apt-cache search xxx</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-</li>
-<li>
-<h2 id="deb本地软件安装"><a class="header-anchor" href="#deb本地软件安装">¶</a>deb本地软件安装</h2>
-   <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 安装deb包命令</span></span><br><span class="line">dpkg -i *.deb</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 如果缺少依赖执行</span></span><br><span class="line">apt-get -f install</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<h2 id="4-常用软件"><a class="header-anchor" href="#4-常用软件">¶</a>4 常用软件</h2>
-<ul>
-<li>
-<p>mpv播放器</p>
-</li>
-<li>
-<p>有道字典</p>
-</li>
-<li>
-<h2 id="atom"><a class="header-anchor" href="#atom">¶</a>atom</h2>
-   <figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-tag">atom-pane</span> &#123;</span><br><span class="line"><span class="attribute">font-size</span>: <span class="number">16px</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.command-palette</span> &#123;</span><br><span class="line"><span class="attribute">font-size</span>: <span class="number">16px</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-<li>
-<h2 id="图标设置"><a class="header-anchor" href="#图标设置">¶</a>图标设置</h2>
-   <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">cd /usr/share/applications</span><br><span class="line">vim eclipse.desktop</span><br></pre></td></tr></table></figure>
-<ul>
-<li>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">!/usr/bin/env xdg-open</span></span><br><span class="line"></span><br><span class="line">[Desktop Entry]</span><br><span class="line">Version=22.0</span><br><span class="line">Name=eclipse</span><br><span class="line">Exec=/home/gtc/Android/adt-bundle-linux/eclipse/eclipse</span><br><span class="line">Terminal=false</span><br><span class="line">Icon=/home/gtc/Android/adt-bundle-linux/eclipse/icon.xpm</span><br><span class="line">Type=Application</span><br><span class="line">Categories=Development</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-</li>
-</ul>
-<h3 id="设备使用率指示"><a class="header-anchor" href="#设备使用率指示">¶</a>设备使用率指示</h3>
-<p><a href="https://github.com/fossfreedom/indicator-sysmonitor" target="_blank" rel="noopener">https://github.com/fossfreedom/indicator-sysmonitor</a></p>
-<h2 id="5-其他优化"><a class="header-anchor" href="#5-其他优化">¶</a>5 其他优化</h2>
-<ul>
-<li>
-<h2 id="关闭错误报告"><a class="header-anchor" href="#关闭错误报告">¶</a>关闭错误报告</h2>
-   <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 关闭烦人的错误报告</span></span><br><span class="line">sudo gedit /etc/default/apport</span><br></pre></td></tr></table></figure>
-</li>
-<li>
-<h2 id="CPU-100-占用"><a class="header-anchor" href="#CPU-100-占用">¶</a>CPU 100%占用</h2>
-   <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">cd /usr/lib/gvfs</span><br><span class="line"><span class="meta">#</span><span class="bash"> 将gvfsd-smb-brows权限改成744，取消普通用户的执行权限，</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 也挺有意思，暂时没引发别的问题</span></span><br></pre></td></tr></table></figure></li>
-</ul>
+</ol>
+</section>
 ]]></content>
       <categories>
-        <category>Linux</category>
+        <category>linux</category>
       </categories>
       <tags>
-        <tag>技巧</tag>
-        <tag>Ubuntu</tag>
+        <tag>linux network</tag>
       </tags>
   </entry>
   <entry>
@@ -3121,33 +3000,154 @@ markdate:2023-12-25 04:16:04.061410</p>
       </tags>
   </entry>
   <entry>
-    <title>「转」桥初始化（一）</title>
-    <url>/public/2021/12/02/linux_network/br_init/</url>
-    <content><![CDATA[<h2 id="前言"><a class="header-anchor" href="#前言">¶</a>前言</h2>
-<p>注：章节中的源代码，基于 linux 内核 4.7.4</p>
-<p>网桥的背景到处都有，在这里就不浪费的时间说废话了。</p>
-<p>桥接程序的初始化，桥接程序既可以集成在内核中，也可以编译成独立模块。初始化函数br_init和清理函数br_deinit的定义在/net/bridge/br.c中</p>
-<p>在网桥设备初始化的时候，主要是做一些注册和初始化的操作。</p>
-<h2 id="桥初始化"><a class="header-anchor" href="#桥初始化">¶</a>桥初始化</h2>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">int</span> __init <span class="title">br_init</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> err;</span><br><span class="line">    <span class="comment">/*注册协议生成树收包函数*/</span></span><br><span class="line">    err = stp_proto_register(&amp;br_stp_proto);</span><br><span class="line">    <span class="keyword">if</span> (err &lt; <span class="number">0</span>) &#123;</span><br><span class="line">        pr_err(<span class="string">"bridge: can't register sap for STP\n"</span>);</span><br><span class="line">        <span class="keyword">return</span> err;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">/*转发数据库初始化*/</span></span><br><span class="line">    err = br_fdb_init();</span><br><span class="line">    <span class="keyword">if</span> (err)</span><br><span class="line">        <span class="keyword">goto</span> err_out;</span><br><span class="line">   <span class="comment">/*在/proc目录下生成任何与bridge相关的目录，如果我们想在/proc下生成bridge相关的子目录或子文件*/</span></span><br><span class="line">    err = register_pernet_subsys(&amp;br_net_ops);</span><br><span class="line">    <span class="keyword">if</span> (err)</span><br><span class="line">        <span class="keyword">goto</span> err_out1;</span><br><span class="line">    <span class="comment">/*目前好像没有什么实际作用，在内核中所注册的函数为空*/</span></span><br><span class="line">    err = br_nf_core_init();</span><br><span class="line">    <span class="keyword">if</span> (err)</span><br><span class="line">        <span class="keyword">goto</span> err_out2;</span><br><span class="line">    <span class="comment">/*注册相关网络设备的事件通知连*/</span></span><br><span class="line">    err = register_netdevice_notifier(&amp;br_device_notifier);</span><br><span class="line">    <span class="keyword">if</span> (err)</span><br><span class="line">        <span class="keyword">goto</span> err_out3;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/*注册通知连，主要针对桥转发表事件的相关信息*/</span></span><br><span class="line">    err = register_switchdev_notifier(&amp;br_switchdev_notifier);</span><br><span class="line">    <span class="keyword">if</span> (err)</span><br><span class="line">        <span class="keyword">goto</span> err_out4;</span><br><span class="line">    <span class="comment">/*进行netlink的初始化*/</span></span><br><span class="line">    err = br_netlink_init();</span><br><span class="line">    <span class="keyword">if</span> (err)</span><br><span class="line">        <span class="keyword">goto</span> err_out5;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/*用来处理ioctl命令的函数，比如添加和删除网桥*/</span></span><br><span class="line">    brioctl_set(br_ioctl_deviceless_stub);</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">if</span> IS_ENABLED(CONFIG_ATM_LANE)</span></span><br><span class="line">    br_fdb_test_addr_hook = br_fdb_test_addr;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="具体的"><a class="header-anchor" href="#具体的">¶</a>具体的</h2>
-<p>了解了桥初始化大致要做的事情后，我们再来看看这些初始化或者注册的事情到底干了些什么？</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="number">1.</span>注册协议生成树收包函数stp_proto_register</span><br><span class="line">    在桥初始化的时候，注册了一个br_stp_proto参数，此参数的具体模样是这样子的</span><br><span class="line">   <span class="keyword">static</span> <span class="keyword">const</span> <span class="class"><span class="keyword">struct</span> <span class="title">stp_proto</span> <span class="title">br_stp_proto</span> = &#123;</span></span><br><span class="line">         .rcv   = br_stp_rcv,</span><br><span class="line">    &#125;;</span><br><span class="line">    br_stp_rcv函数在/net/bridge/br_stp_bpdu.c中主要针对网桥进行协议交换的帧（BPDU）进行配置操作。</span><br><span class="line"></span><br><span class="line">  <span class="number">2.</span>桥转发数据库初始化br_fdb_init</span><br><span class="line">    此函数就是在内存中建立一块slab cache，以存放net_bridge_fdb_entry</span><br><span class="line">    其中：net_bridge_fdb_entry是一个结构体，用来转发数据库的记录项网桥所学到对的每个MAC地址都有这样一个记录</span><br><span class="line"></span><br><span class="line">  <span class="number">3.</span>在proc目录下生成相关文件的注册函数register_pernet_subsys，初始化的时候给这个函数传递了一个参数br_net_ops，这个参数的模样是这样的</span><br><span class="line">  <span class="keyword">static</span> <span class="class"><span class="keyword">struct</span> <span class="title">pernet_operations</span> <span class="title">br_net_ops</span> = &#123;</span></span><br><span class="line">        .<span class="built_in">exit</span>   = br_net_exit,</span><br><span class="line">  &#125;;</span><br><span class="line">  但是在桥初始化的时候，仅仅注册了br_net_exit，这个函数会将桥下面的所有文件全部清空。</span><br><span class="line"></span><br><span class="line"> <span class="number">4.</span>通知链的相关函数注册register_netdevice_notifier这个注册函数主要针对设备信息的变化，注册参数br_device_notifier，具体如下：</span><br><span class="line"> <span class="keyword">static</span> <span class="class"><span class="keyword">struct</span> <span class="title">notifier_block</span> <span class="title">br_device_notifier</span> = &#123;</span></span><br><span class="line">        .notifier_call = br_device_event</span><br><span class="line">&#125;;</span><br><span class="line">br_device_event函数是用来当桥上的设备状态或者设备信息发生改变时做相应的处理，该函数在/net/bridge/br.c中</span><br><span class="line"></span><br><span class="line"> <span class="number">5.</span>注册通知连，主要针对桥转发表事件的相关信息register_switchdev_notifier，传入的参数br_switchdev_notifier详细信息如下：</span><br><span class="line"><span class="keyword">static</span> <span class="class"><span class="keyword">struct</span> <span class="title">notifier_block</span> <span class="title">br_switchdev_notifier</span> = &#123;</span></span><br><span class="line">    .notifier_call = br_switchdev_event,</span><br><span class="line">&#125;;</span><br><span class="line">br_switchdev_event，主要针对桥转发表的事件做出相应的处理该函数在/net/bridge/br.c中</span><br><span class="line"></span><br><span class="line"><span class="number">6.b</span>rioctl_set用来处理ioctl命令的函数，比如添加和删除网桥，br_ioctl_deviceless_stub给回调函数br_ioctl_hook,而br_ioctl_hook在sock_ioctl中</span><br><span class="line">使用，这样通过在应用层调用socket的ioctl函数，就能够进行网桥的添加与删除了，函数用来处理添加和删除网桥的相关操作，会在下一节详细介绍。</span><br></pre></td></tr></table></figure>
-<p>以上就是网桥初始化的相关操作 <sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup></p>
-<h2 id="参考"><a class="header-anchor" href="#参考">¶</a>参考</h2>
-<hr class="footnotes-sep">
-<section class="footnotes">
-<ol class="footnotes-list">
-<li id="fn1" class="footnote-item"><p><a href="https://blog.csdn.net/NW_NW_NW" target="_blank" rel="noopener">@不留你的名字</a> <a href="https://blog.csdn.net/NW_NW_NW/article/details/75045966" target="_blank" rel="noopener">桥初始化</a> 2010-12-01 <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+    <title>Ubuntu的优化与设置</title>
+    <url>/public/2017/05/22/linux/ubuntu/</url>
+    <content><![CDATA[<h1></h1>
+<h2 id="前言"><a class="header-anchor" href="#前言">¶</a>前言</h2>
+<ul>
+<li>
+<h2 id="窗口颜色设置浅绿色"><a class="header-anchor" href="#窗口颜色设置浅绿色">¶</a>窗口颜色设置浅绿色</h2>
+   <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">cd /usr/share/themes/Ambiance/gtk-3.0</span><br><span class="line">sudo gedit gtk-main.css</span><br></pre></td></tr></table></figure>
 </li>
-</ol>
-</section>
+</ul>
+<h2 id="2-常用环境"><a class="header-anchor" href="#2-常用环境">¶</a>2  常用环境</h2>
+<ul>
+<li>
+<h2 id="安装jdk"><a class="header-anchor" href="#安装jdk">¶</a>安装jdk</h2>
+   <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># add java path</span></span><br><span class="line"><span class="built_in">export</span> JAVA_HOME=/usr/<span class="built_in">local</span>/java/jdk1.7</span><br><span class="line"><span class="built_in">export</span> JRE_HOME=<span class="variable">$&#123;JAVA_HOME&#125;</span>/jre</span><br><span class="line"><span class="built_in">export</span> CLASSPATH=.:<span class="variable">$&#123;JAVA_HOME&#125;</span>/lib:<span class="variable">$&#123;JRE_HOME&#125;</span>/lib</span><br><span class="line"><span class="built_in">export</span> PATH=<span class="variable">$&#123;JAVA_HOME&#125;</span>/bin:<span class="variable">$PATH</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="3-安装软件"><a class="header-anchor" href="#3-安装软件">¶</a>3 安装软件</h2>
+<ul>
+<li>
+<h2 id="在线软件安装"><a class="header-anchor" href="#在线软件安装">¶</a>在线软件安装</h2>
+   <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 备份源列表地址</span></span><br><span class="line">sudo cp /etc/apt/sources.list /etc/apt/sources.list_backup</span><br><span class="line"><span class="comment"># 修改</span></span><br><span class="line">sudo vim /etc/apt/sources.list</span><br></pre></td></tr></table></figure>
+<ul>
+<li>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 更新源</span></span><br><span class="line">apt-get update</span><br><span class="line">apt-get install xxx</span><br><span class="line"></span><br><span class="line"><span class="comment"># 包search</span></span><br><span class="line">apt-cache search xxx</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li>
+<h2 id="deb本地软件安装"><a class="header-anchor" href="#deb本地软件安装">¶</a>deb本地软件安装</h2>
+   <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 安装deb包命令</span></span><br><span class="line">dpkg -i *.deb</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 如果缺少依赖执行</span></span><br><span class="line">apt-get -f install</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="4-常用软件"><a class="header-anchor" href="#4-常用软件">¶</a>4 常用软件</h2>
+<ul>
+<li>
+<p>mpv播放器</p>
+</li>
+<li>
+<p>有道字典</p>
+</li>
+<li>
+<h2 id="atom"><a class="header-anchor" href="#atom">¶</a>atom</h2>
+   <figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-tag">atom-pane</span> &#123;</span><br><span class="line"><span class="attribute">font-size</span>: <span class="number">16px</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.command-palette</span> &#123;</span><br><span class="line"><span class="attribute">font-size</span>: <span class="number">16px</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<h2 id="图标设置"><a class="header-anchor" href="#图标设置">¶</a>图标设置</h2>
+   <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">cd /usr/share/applications</span><br><span class="line">vim eclipse.desktop</span><br></pre></td></tr></table></figure>
+<ul>
+<li>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">!/usr/bin/env xdg-open</span></span><br><span class="line"></span><br><span class="line">[Desktop Entry]</span><br><span class="line">Version=22.0</span><br><span class="line">Name=eclipse</span><br><span class="line">Exec=/home/gtc/Android/adt-bundle-linux/eclipse/eclipse</span><br><span class="line">Terminal=false</span><br><span class="line">Icon=/home/gtc/Android/adt-bundle-linux/eclipse/icon.xpm</span><br><span class="line">Type=Application</span><br><span class="line">Categories=Development</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="设备使用率指示"><a class="header-anchor" href="#设备使用率指示">¶</a>设备使用率指示</h3>
+<p><a href="https://github.com/fossfreedom/indicator-sysmonitor" target="_blank" rel="noopener">https://github.com/fossfreedom/indicator-sysmonitor</a></p>
+<h2 id="5-其他优化"><a class="header-anchor" href="#5-其他优化">¶</a>5 其他优化</h2>
+<ul>
+<li>
+<h2 id="关闭错误报告"><a class="header-anchor" href="#关闭错误报告">¶</a>关闭错误报告</h2>
+   <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 关闭烦人的错误报告</span></span><br><span class="line">sudo gedit /etc/default/apport</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<h2 id="CPU-100-占用"><a class="header-anchor" href="#CPU-100-占用">¶</a>CPU 100%占用</h2>
+   <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">cd /usr/lib/gvfs</span><br><span class="line"><span class="meta">#</span><span class="bash"> 将gvfsd-smb-brows权限改成744，取消普通用户的执行权限，</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 也挺有意思，暂时没引发别的问题</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+]]></content>
+      <categories>
+        <category>Linux</category>
+      </categories>
+      <tags>
+        <tag>技巧</tag>
+        <tag>Ubuntu</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>「转」九张图一览 Linux 性能工具 全景图</title>
+    <url>/public/2022/12/11/linux/linux_tools/</url>
+    <content><![CDATA[<h2 id="前言"><a class="header-anchor" href="#前言">¶</a>前言</h2>
+<p>当今时代，绝大多数企业的应用都是运行在 Linux 操作系统上，所以对应用进行性能诊断和性能优化时，离不开 Linux 的各种性能观测工具和性能优化工具。</p>
+<p>笔者使用过的常见的 Linux 性能观测和性能优化工具有：</p>
+<ul>
+<li>top/uptime</li>
+<li>ps/pstree</li>
+<li>df/du/free/lsblk</li>
+<li>ip/ifconfig/ping/telnet</li>
+<li>route/dig/nslookup</li>
+<li>lsof/netstat/ss</li>
+<li>tcpdump/tshark/wireshark</li>
+<li>netstat/vmstat/iostat/pidstat/dstat/mpstat</li>
+<li>sar/sysctl/ethtool</li>
+</ul>
+<p>最近在拜读国际著名的 LINUX 性能专家 Brendan Gregg 的个人博客和技术书籍，摘抄了如下九张图，一览 Linux 性能工具全景图，大家共勉！</p>
+<a id="more"></a>
+<h2 id="2-Linux-性能工具全景图"><a class="header-anchor" href="#2-Linux-性能工具全景图">¶</a><strong>2. Linux 性能工具全景图</strong></h2>
+<ul>
+<li>linux performance observability tools</li>
+</ul>
+<p><img src="/public/2022/12/11/linux/linux_tools/v2-2eadd97c53a3f20f255394c3d90ea914_r.jpg" alt></p>
+<ul>
+<li>linux static performance tools</li>
+</ul>
+<p><img src="/public/2022/12/11/linux/linux_tools/v2-20032bac53c856c5733259eece5c2f76_r.jpg" alt></p>
+<ul>
+<li>linux performance benchmark tools</li>
+</ul>
+<p><img src="/public/2022/12/11/linux/linux_tools/v2-de23423f2eb9deb5410b7128c933f9a9_r.jpg" alt></p>
+<ul>
+<li>linux performance tuning tools</li>
+</ul>
+<p><img src="/public/2022/12/11/linux/linux_tools/v2-cdf37de145763b762ba5af1a620f9686_r.jpg" alt></p>
+<ul>
+<li>linux performance observability: sar</li>
+</ul>
+<p><img src="/public/2022/12/11/linux/linux_tools/v2-eee71a6bf3865367741137da03031411_r.jpg" alt></p>
+<ul>
+<li>linux performance observability: perf-tools</li>
+</ul>
+<p><img src="/public/2022/12/11/linux/linux_tools/v2-1c0134fefbb04597db98ae455a40fad5_r.jpg" alt></p>
+<ul>
+<li><a href="https://www.zhihu.com/search?q=linux%20bcc&amp;search_source=Entity&amp;hybrid_search_source=Entity&amp;hybrid_search_extra=%7B%22sourceType%22%3A%22answer%22%2C%22sourceId%22%3A2795830055%7D" target="_blank" rel="noopener">linux bcc</a>/BPF Tracing tools</li>
+</ul>
+<p><img src="/public/2022/12/11/linux/linux_tools/v2-ffe70303f4d64828ca931d987b12a6d8_r.jpg" alt></p>
+<ul>
+<li>bpftrace/eBPF Tools</li>
+</ul>
+<p><img src="/public/2022/12/11/linux/linux_tools/v2-5985d44e43738933c0b54c89cc20ec09_r.jpg" alt></p>
+<ul>
+<li>BPF Performance Tools: Linux System and Application Observability</li>
+</ul>
+<p><img src="/public/2022/12/11/linux/linux_tools/v2-0f53016fa1d993ffbbf6fc520e318784_r.jpg" alt></p>
+<h2 id="后记"><a class="header-anchor" href="#后记">¶</a>后记</h2>
+<p>更多 LINUX 性能资料，大家可以访问大师的个人网站和和技术书籍</p>
+<ul>
+<li><a href="https://www.brendangregg.com/" target="_blank" rel="noopener">https://www.brendangregg.com/</a></li>
+<li>《性能之巅：洞悉系统、企业与云计算》（《Systems Performance: Enterprise and the Cloud, 2nd Edition (2020)》）</li>
+<li>《洞悉 Linux 系统和应用性能》（《BPF Performance Tools》）</li>
+<li>ps: 要说 LINUX 内核近几年 (和今后几年）最引人注目的发展模块，那就是 <a href="https://www.zhihu.com/search?q=bpf&amp;search_source=Entity&amp;hybrid_search_source=Entity&amp;hybrid_search_extra=%7B%22sourceType%22%3A%22answer%22%2C%22sourceId%22%3A2795830055%7D" target="_blank" rel="noopener">bpf</a> 了，完全值得花点精力学习跟进下。</li>
+<li>如何更深入地学习 Linux？ - michaelli的回答 - 知乎
+<a href="https://www.zhihu.com/question/23564190/answer/2795830055" target="_blank" rel="noopener">https://www.zhihu.com/question/23564190/answer/2795830055</a></li>
+</ul>
 ]]></content>
       <categories>
         <category>linux</category>
       </categories>
       <tags>
-        <tag>linux network</tag>
+        <tag>linux</tag>
       </tags>
   </entry>
   <entry>
@@ -4679,6 +4679,28 @@ markdate:2022-09-21 03:28:05.514939</p>
       </tags>
   </entry>
   <entry>
+    <title>「202211月度汇报」ttrss</title>
+    <url>/public/2022/11/15/test/2022/202211/</url>
+    <content><![CDATA[<p>total: 1</p>
+<a id="more"></a>
+<h2 id="🔖微软官方小工具更新，这些新特性你或许也能用得上"><a class="header-anchor" href="#🔖微软官方小工具更新，这些新特性你或许也能用得上">¶</a>🔖<a href="https://sspai.com/post/76649" target="_blank" rel="noopener">微软官方小工具更新，这些新特性你或许也能用得上</a></h2>
+<p>pubdata:2022-11-06 03:40:00
+markdate:2022-11-17 17:18:09.571032</p>
+<p><img src="/public/2022/11/15/test/2022/202211/2022-11-17-171809571032.jpg" alt="img"></p>
+<p>统计 ✅ : 0 📅 : 0 🔖 : 0</p>
+<!-- more -->
+<h2 id="✅-0"><a class="header-anchor" href="#✅-0">¶</a>✅ : 0</h2>
+<h2 id="📅-0"><a class="header-anchor" href="#📅-0">¶</a>📅 : 0</h2>
+<h2 id="🔖-0"><a class="header-anchor" href="#🔖-0">¶</a>🔖 : 0</h2>
+]]></content>
+      <categories>
+        <category>月度汇报</category>
+      </categories>
+      <tags>
+        <tag>月度汇报</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>「202210月度汇报」ttrss</title>
     <url>/public/2022/10/15/test/2022/202210/</url>
     <content><![CDATA[<p>total: 2</p>
@@ -4715,129 +4737,6 @@ markdate:2022-10-09 04:14:05.692239</p>
 -&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W37.md">C日常/2022-W37.md</a><br>
 🔖 机器人计划
 -&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W37.md">C日常/2022-W37.md</a></p>
-]]></content>
-      <categories>
-        <category>月度汇报</category>
-      </categories>
-      <tags>
-        <tag>月度汇报</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>「202211月度汇报」ttrss</title>
-    <url>/public/2022/11/15/test/2022/202211/</url>
-    <content><![CDATA[<p>total: 1</p>
-<a id="more"></a>
-<h2 id="🔖微软官方小工具更新，这些新特性你或许也能用得上"><a class="header-anchor" href="#🔖微软官方小工具更新，这些新特性你或许也能用得上">¶</a>🔖<a href="https://sspai.com/post/76649" target="_blank" rel="noopener">微软官方小工具更新，这些新特性你或许也能用得上</a></h2>
-<p>pubdata:2022-11-06 03:40:00
-markdate:2022-11-17 17:18:09.571032</p>
-<p><img src="/public/2022/11/15/test/2022/202211/2022-11-17-171809571032.jpg" alt="img"></p>
-<p>统计 ✅ : 0 📅 : 0 🔖 : 0</p>
-<!-- more -->
-<h2 id="✅-0"><a class="header-anchor" href="#✅-0">¶</a>✅ : 0</h2>
-<h2 id="📅-0"><a class="header-anchor" href="#📅-0">¶</a>📅 : 0</h2>
-<h2 id="🔖-0"><a class="header-anchor" href="#🔖-0">¶</a>🔖 : 0</h2>
-]]></content>
-      <categories>
-        <category>月度汇报</category>
-      </categories>
-      <tags>
-        <tag>月度汇报</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>「202212月度汇报」ttrss</title>
-    <url>/public/2022/12/15/test/2022/202212/</url>
-    <content><![CDATA[<p>total: 7</p>
-<a id="more"></a>
-<h2 id="🔖TextLocator-–-卖萌的小老头：低-CPU-占用的本地文档全文搜索工具-Win"><a class="header-anchor" href="#🔖TextLocator-–-卖萌的小老头：低-CPU-占用的本地文档全文搜索工具-Win">¶</a>🔖<a href="https://www.appinn.com/textlocator/" target="_blank" rel="noopener">TextLocator – 卖萌的小老头：低 CPU 占用的本地文档全文搜索工具[Win]</a></h2>
-<p>pubdata:2022-11-30 08:25:46
-markdate:2022-12-04 02:42:46.065650</p>
-<p><img src="/public/2022/12/15/test/2022/202212/2022-12-04-024246065650.jpg" alt="img"></p>
-<h2 id="🔖OpenSearcher-–-开源的全文搜索工具：支持-Word、PPT、PDF，以及电子书-ePub、Mobi-等格式-Windows"><a class="header-anchor" href="#🔖OpenSearcher-–-开源的全文搜索工具：支持-Word、PPT、PDF，以及电子书-ePub、Mobi-等格式-Windows">¶</a>🔖<a href="https://www.appinn.com/opensearcher/" target="_blank" rel="noopener">OpenSearcher – 开源的全文搜索工具：支持 Word、PPT、PDF，以及电子书 ePub、Mobi 等格式[Windows]</a></h2>
-<p>pubdata:2022-12-01 07:31:17
-markdate:2022-12-04 02:42:48.883434</p>
-<p><img src="/public/2022/12/15/test/2022/202212/2022-12-04-024248883434.jpg" alt="img"></p>
-<h2 id="🔖App-1-入门-Android-自动化，它比-Tasker-更好上手：MacroDroid"><a class="header-anchor" href="#🔖App-1-入门-Android-自动化，它比-Tasker-更好上手：MacroDroid">¶</a>🔖<a href="https://sspai.com/post/77077" target="_blank" rel="noopener">App+1 | 入门 Android 自动化，它比 Tasker 更好上手：MacroDroid</a></h2>
-<p>pubdata:2022-12-02 06:30:00
-markdate:2022-12-04 04:03:56.824102</p>
-<p><img src="/public/2022/12/15/test/2022/202212/2022-12-04-040356824102.jpg" alt="img"></p>
-<h2 id="🔖为纸质书籍进行数字备份：如何制作一本功能完备的-PDF-电子书"><a class="header-anchor" href="#🔖为纸质书籍进行数字备份：如何制作一本功能完备的-PDF-电子书">¶</a>🔖<a href="https://sspai.com/post/77118" target="_blank" rel="noopener">为纸质书籍进行数字备份：如何制作一本功能完备的 PDF 电子书</a></h2>
-<p>pubdata:2022-12-06 06:34:06
-markdate:2022-12-08 13:52:36.058996</p>
-<p><img src="/public/2022/12/15/test/2022/202212/2022-12-08-135236058996.jpg" alt="img"></p>
-<h2 id="🔖找笔记方便、写作又给力的知识库，我是这么搭建出来的"><a class="header-anchor" href="#🔖找笔记方便、写作又给力的知识库，我是这么搭建出来的">¶</a>🔖<a href="https://sspai.com/post/77144" target="_blank" rel="noopener">找笔记方便、写作又给力的知识库，我是这么搭建出来的</a></h2>
-<p>pubdata:2022-12-09 06:32:24
-markdate:2022-12-12 05:12:48.101671</p>
-<p><img src="/public/2022/12/15/test/2022/202212/2022-12-12-051248101671.jpg" alt="img"></p>
-<h2 id="🔖如何满足小众的录屏需求？自己配置-FFmpeg-解决问题"><a class="header-anchor" href="#🔖如何满足小众的录屏需求？自己配置-FFmpeg-解决问题">¶</a>🔖<a href="https://sspai.com/post/76637" target="_blank" rel="noopener">如何满足小众的录屏需求？自己配置 FFmpeg 解决问题</a></h2>
-<p>pubdata:2022-11-05 03:00:00
-markdate:2022-12-24 03:02:42.639305</p>
-<p><img src="/public/2022/12/15/test/2022/202212/2022-12-24-030242639305.jpg" alt="img"></p>
-<h2 id="🔖家用NAS推荐买什么价位的？"><a class="header-anchor" href="#🔖家用NAS推荐买什么价位的？">¶</a>🔖<a href="http://www.zhihu.com/question/566650643/answer/2809190517?utm_campaign=rss&amp;utm_medium=rss&amp;utm_source=rss&amp;utm_content=title" target="_blank" rel="noopener">家用NAS推荐买什么价位的？</a></h2>
-<p>pubdata:2022-12-21 09:26:21
-markdate:2022-12-25 03:49:49.009390</p>
-<p><img src="/public/2022/12/15/test/2022/202212/2022-12-25-034949009390.jpg" alt="img"></p>
-<p>统计 ✅ : 1 📅 : 6 🔖 : 21</p>
-<!-- more -->
-<h2 id="✅-1"><a class="header-anchor" href="#✅-1">¶</a>✅ : 1</h2>
-<p>✅ 🔖 <a href="https://www.zhihu.com/question/23564190/answer/2795830055?utm_id=0" target="_blank" rel="noopener">如何更深入地学习 Linux？ - michaelli 的回答 - 知乎</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W49.md">C日常/2022-W49.md</a></p>
-<h2 id="📅-6"><a class="header-anchor" href="#📅-6">¶</a>📅 : 6</h2>
-<p>📅 使用draw io和 cflow 生成函数调用图 单文件
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W50.md">C日常/2022-W50.md</a><br>
-📅 ios图像转存到本地
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W47.md">C日常/2022-W47.md</a><br>
-📅 学习智能家庭软件
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W47.md">C日常/2022-W47.md</a><br>
-📅 🔖 <a href="https://zhuanlan.zhihu.com/p/36279445?utm_id=0" target="_blank" rel="noopener">Vim 8 中 C/C++ 符号索引：GTags 篇</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W49.md">C日常/2022-W49.md</a><br>
-📅Vim中使用gtags
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W49.md">C日常/2022-W49.md</a><br>
-📅  <a href="https://blog.csdn.net/tian154731/article/details/113842348" target="_blank" rel="noopener">安卓手机抢茅台程序_JAVA学无止境的博客-CSDN博客</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W42.md">C日常/2022-W42.md</a></p>
-<h2 id="🔖-21"><a class="header-anchor" href="#🔖-21">¶</a>🔖 : 21</h2>
-<p>🔖 <a href="https://www.appinn.com/opensearcher/" target="_blank" rel="noopener">OpenSearcher - 开源的全文搜索工具：支持 Word、PPT、PDF，以及电子书 ePub、Mobi 等格式[Windows] - 小众软件</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W48.md">C日常/2022-W48.md</a><br>
-🔖 <a href="https://m.bilibili.com/video/av848443011" target="_blank" rel="noopener">【英雄联盟手游】装备属性及效果介绍-哔哩哔哩</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W43.md">C日常/2022-W43.md</a><br>
-🔖 电影 《走着瞧》马
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W43.md">C日常/2022-W43.md</a><br>
-🔖冰雪暴  -&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W43.md">C日常/2022-W43.md</a><br>
-🔖 <a href="https://blog.csdn.net/lyndon_li/article/details/122163468" target="_blank" rel="noopener">cflow——C语言函数调用关系生成器_Li-Yongjun的博客-CSDN博客_cflow</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W50.md">C日常/2022-W50.md</a><br>
-🔖 卡尔曼滤波https://www.zhihu.com/question/41823401/answer/2799679942
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W50.md">C日常/2022-W50.md</a><br>
-🔖 tmux vim剪切板
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W50.md">C日常/2022-W50.md</a><br>
-🔖 linux gdb Qemu调试
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W50.md">C日常/2022-W50.md</a><br>
-🔖 <a href="https://blog.csdn.net/jiangjun00000000/article/details/118277732" target="_blank" rel="noopener">如何在Debian10的Gnome桌面系统中安装并使能托盘图标_萌虎下山了的博客-CSDN博客_gnome 托盘</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W50.md">C日常/2022-W50.md</a><br>
-🔖 <a href="https://blog.csdn.net/allway2/article/details/122160151" target="_blank" rel="noopener">如何在 Debian 11 Bullseye Linux 上安装和配置 KVM_allway2的博客-CSDN博客_debian kvm</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W50.md">C日常/2022-W50.md</a><br>
-🔖 <a href="https://blog.csdn.net/u010330109/article/details/121855809" target="_blank" rel="noopener">Debian 11 gnome 桌面设置显示图标_远远看看山的博客-CSDN博客_debian显示桌面图表</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W50.md">C日常/2022-W50.md</a><br>
-🔖 <a href="https://github.com/mli/autocut" target="_blank" rel="noopener">AutoCut</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W47.md">C日常/2022-W47.md</a><br>
-🔖 <a href="https://sspai.com/post/76899" target="_blank" rel="noopener">找不到现成的字幕？Whisper 让不懂外语的你也能看懂日剧 - 少数派</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W47.md">C日常/2022-W47.md</a><br>
-🔖 canva平面设计
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W47.md">C日常/2022-W47.md</a><br>
-🔖 <a href="https://sspai.com/post/76922" target="_blank" rel="noopener">我们为什么需要 Matter：飞利浦 Hue 的跨平台联动探索记录 - 少数派</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W47.md">C日常/2022-W47.md</a><br>
-🔖 <a href="https://sspai.com/post/75567" target="_blank" rel="noopener">选对插件，让简悦也可以重器轻用 - 少数派</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W47.md">C日常/2022-W47.md</a><br>
-🔖 算法可视化
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W49.md">C日常/2022-W49.md</a><br>
-✅ 🔖 <a href="https://www.zhihu.com/question/23564190/answer/2795830055?utm_id=0" target="_blank" rel="noopener">如何更深入地学习 Linux？ - michaelli 的回答 - 知乎</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W49.md">C日常/2022-W49.md</a><br>
-📅 🔖 <a href="https://zhuanlan.zhihu.com/p/36279445?utm_id=0" target="_blank" rel="noopener">Vim 8 中 C/C++ 符号索引：GTags 篇</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W49.md">C日常/2022-W49.md</a><br>
-🔖<a href="https://www.1point3acres.com/bbs/thread-918311-1-1.html" target="_blank" rel="noopener">50岁码农面试记</a>（中文）
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W42.md">C日常/2022-W42.md</a><br>
-🔖 <a href="https://github.com/FavioVazquez/ds-cheatsheets" target="_blank" rel="noopener">https://github.com/FavioVazquez/ds-cheatsheets</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W42.md">C日常/2022-W42.md</a></p>
 ]]></content>
       <categories>
         <category>月度汇报</category>
@@ -6101,6 +6000,107 @@ markdate:2022-07-14 10:28:28.713392</p>
       </categories>
       <tags>
         <tag>转载</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>「202212月度汇报」ttrss</title>
+    <url>/public/2022/12/15/test/2022/202212/</url>
+    <content><![CDATA[<p>total: 7</p>
+<a id="more"></a>
+<h2 id="🔖TextLocator-–-卖萌的小老头：低-CPU-占用的本地文档全文搜索工具-Win"><a class="header-anchor" href="#🔖TextLocator-–-卖萌的小老头：低-CPU-占用的本地文档全文搜索工具-Win">¶</a>🔖<a href="https://www.appinn.com/textlocator/" target="_blank" rel="noopener">TextLocator – 卖萌的小老头：低 CPU 占用的本地文档全文搜索工具[Win]</a></h2>
+<p>pubdata:2022-11-30 08:25:46
+markdate:2022-12-04 02:42:46.065650</p>
+<p><img src="/public/2022/12/15/test/2022/202212/2022-12-04-024246065650.jpg" alt="img"></p>
+<h2 id="🔖OpenSearcher-–-开源的全文搜索工具：支持-Word、PPT、PDF，以及电子书-ePub、Mobi-等格式-Windows"><a class="header-anchor" href="#🔖OpenSearcher-–-开源的全文搜索工具：支持-Word、PPT、PDF，以及电子书-ePub、Mobi-等格式-Windows">¶</a>🔖<a href="https://www.appinn.com/opensearcher/" target="_blank" rel="noopener">OpenSearcher – 开源的全文搜索工具：支持 Word、PPT、PDF，以及电子书 ePub、Mobi 等格式[Windows]</a></h2>
+<p>pubdata:2022-12-01 07:31:17
+markdate:2022-12-04 02:42:48.883434</p>
+<p><img src="/public/2022/12/15/test/2022/202212/2022-12-04-024248883434.jpg" alt="img"></p>
+<h2 id="🔖App-1-入门-Android-自动化，它比-Tasker-更好上手：MacroDroid"><a class="header-anchor" href="#🔖App-1-入门-Android-自动化，它比-Tasker-更好上手：MacroDroid">¶</a>🔖<a href="https://sspai.com/post/77077" target="_blank" rel="noopener">App+1 | 入门 Android 自动化，它比 Tasker 更好上手：MacroDroid</a></h2>
+<p>pubdata:2022-12-02 06:30:00
+markdate:2022-12-04 04:03:56.824102</p>
+<p><img src="/public/2022/12/15/test/2022/202212/2022-12-04-040356824102.jpg" alt="img"></p>
+<h2 id="🔖为纸质书籍进行数字备份：如何制作一本功能完备的-PDF-电子书"><a class="header-anchor" href="#🔖为纸质书籍进行数字备份：如何制作一本功能完备的-PDF-电子书">¶</a>🔖<a href="https://sspai.com/post/77118" target="_blank" rel="noopener">为纸质书籍进行数字备份：如何制作一本功能完备的 PDF 电子书</a></h2>
+<p>pubdata:2022-12-06 06:34:06
+markdate:2022-12-08 13:52:36.058996</p>
+<p><img src="/public/2022/12/15/test/2022/202212/2022-12-08-135236058996.jpg" alt="img"></p>
+<h2 id="🔖找笔记方便、写作又给力的知识库，我是这么搭建出来的"><a class="header-anchor" href="#🔖找笔记方便、写作又给力的知识库，我是这么搭建出来的">¶</a>🔖<a href="https://sspai.com/post/77144" target="_blank" rel="noopener">找笔记方便、写作又给力的知识库，我是这么搭建出来的</a></h2>
+<p>pubdata:2022-12-09 06:32:24
+markdate:2022-12-12 05:12:48.101671</p>
+<p><img src="/public/2022/12/15/test/2022/202212/2022-12-12-051248101671.jpg" alt="img"></p>
+<h2 id="🔖如何满足小众的录屏需求？自己配置-FFmpeg-解决问题"><a class="header-anchor" href="#🔖如何满足小众的录屏需求？自己配置-FFmpeg-解决问题">¶</a>🔖<a href="https://sspai.com/post/76637" target="_blank" rel="noopener">如何满足小众的录屏需求？自己配置 FFmpeg 解决问题</a></h2>
+<p>pubdata:2022-11-05 03:00:00
+markdate:2022-12-24 03:02:42.639305</p>
+<p><img src="/public/2022/12/15/test/2022/202212/2022-12-24-030242639305.jpg" alt="img"></p>
+<h2 id="🔖家用NAS推荐买什么价位的？"><a class="header-anchor" href="#🔖家用NAS推荐买什么价位的？">¶</a>🔖<a href="http://www.zhihu.com/question/566650643/answer/2809190517?utm_campaign=rss&amp;utm_medium=rss&amp;utm_source=rss&amp;utm_content=title" target="_blank" rel="noopener">家用NAS推荐买什么价位的？</a></h2>
+<p>pubdata:2022-12-21 09:26:21
+markdate:2022-12-25 03:49:49.009390</p>
+<p><img src="/public/2022/12/15/test/2022/202212/2022-12-25-034949009390.jpg" alt="img"></p>
+<p>统计 ✅ : 1 📅 : 6 🔖 : 21</p>
+<!-- more -->
+<h2 id="✅-1"><a class="header-anchor" href="#✅-1">¶</a>✅ : 1</h2>
+<p>✅ 🔖 <a href="https://www.zhihu.com/question/23564190/answer/2795830055?utm_id=0" target="_blank" rel="noopener">如何更深入地学习 Linux？ - michaelli 的回答 - 知乎</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W49.md">C日常/2022-W49.md</a></p>
+<h2 id="📅-6"><a class="header-anchor" href="#📅-6">¶</a>📅 : 6</h2>
+<p>📅 使用draw io和 cflow 生成函数调用图 单文件
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W50.md">C日常/2022-W50.md</a><br>
+📅 ios图像转存到本地
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W47.md">C日常/2022-W47.md</a><br>
+📅 学习智能家庭软件
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W47.md">C日常/2022-W47.md</a><br>
+📅 🔖 <a href="https://zhuanlan.zhihu.com/p/36279445?utm_id=0" target="_blank" rel="noopener">Vim 8 中 C/C++ 符号索引：GTags 篇</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W49.md">C日常/2022-W49.md</a><br>
+📅Vim中使用gtags
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W49.md">C日常/2022-W49.md</a><br>
+📅  <a href="https://blog.csdn.net/tian154731/article/details/113842348" target="_blank" rel="noopener">安卓手机抢茅台程序_JAVA学无止境的博客-CSDN博客</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W42.md">C日常/2022-W42.md</a></p>
+<h2 id="🔖-21"><a class="header-anchor" href="#🔖-21">¶</a>🔖 : 21</h2>
+<p>🔖 <a href="https://www.appinn.com/opensearcher/" target="_blank" rel="noopener">OpenSearcher - 开源的全文搜索工具：支持 Word、PPT、PDF，以及电子书 ePub、Mobi 等格式[Windows] - 小众软件</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W48.md">C日常/2022-W48.md</a><br>
+🔖 <a href="https://m.bilibili.com/video/av848443011" target="_blank" rel="noopener">【英雄联盟手游】装备属性及效果介绍-哔哩哔哩</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W43.md">C日常/2022-W43.md</a><br>
+🔖 电影 《走着瞧》马
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W43.md">C日常/2022-W43.md</a><br>
+🔖冰雪暴  -&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W43.md">C日常/2022-W43.md</a><br>
+🔖 <a href="https://blog.csdn.net/lyndon_li/article/details/122163468" target="_blank" rel="noopener">cflow——C语言函数调用关系生成器_Li-Yongjun的博客-CSDN博客_cflow</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W50.md">C日常/2022-W50.md</a><br>
+🔖 卡尔曼滤波https://www.zhihu.com/question/41823401/answer/2799679942
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W50.md">C日常/2022-W50.md</a><br>
+🔖 tmux vim剪切板
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W50.md">C日常/2022-W50.md</a><br>
+🔖 linux gdb Qemu调试
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W50.md">C日常/2022-W50.md</a><br>
+🔖 <a href="https://blog.csdn.net/jiangjun00000000/article/details/118277732" target="_blank" rel="noopener">如何在Debian10的Gnome桌面系统中安装并使能托盘图标_萌虎下山了的博客-CSDN博客_gnome 托盘</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W50.md">C日常/2022-W50.md</a><br>
+🔖 <a href="https://blog.csdn.net/allway2/article/details/122160151" target="_blank" rel="noopener">如何在 Debian 11 Bullseye Linux 上安装和配置 KVM_allway2的博客-CSDN博客_debian kvm</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W50.md">C日常/2022-W50.md</a><br>
+🔖 <a href="https://blog.csdn.net/u010330109/article/details/121855809" target="_blank" rel="noopener">Debian 11 gnome 桌面设置显示图标_远远看看山的博客-CSDN博客_debian显示桌面图表</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W50.md">C日常/2022-W50.md</a><br>
+🔖 <a href="https://github.com/mli/autocut" target="_blank" rel="noopener">AutoCut</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W47.md">C日常/2022-W47.md</a><br>
+🔖 <a href="https://sspai.com/post/76899" target="_blank" rel="noopener">找不到现成的字幕？Whisper 让不懂外语的你也能看懂日剧 - 少数派</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W47.md">C日常/2022-W47.md</a><br>
+🔖 canva平面设计
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W47.md">C日常/2022-W47.md</a><br>
+🔖 <a href="https://sspai.com/post/76922" target="_blank" rel="noopener">我们为什么需要 Matter：飞利浦 Hue 的跨平台联动探索记录 - 少数派</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W47.md">C日常/2022-W47.md</a><br>
+🔖 <a href="https://sspai.com/post/75567" target="_blank" rel="noopener">选对插件，让简悦也可以重器轻用 - 少数派</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W47.md">C日常/2022-W47.md</a><br>
+🔖 算法可视化
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W49.md">C日常/2022-W49.md</a><br>
+✅ 🔖 <a href="https://www.zhihu.com/question/23564190/answer/2795830055?utm_id=0" target="_blank" rel="noopener">如何更深入地学习 Linux？ - michaelli 的回答 - 知乎</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W49.md">C日常/2022-W49.md</a><br>
+📅 🔖 <a href="https://zhuanlan.zhihu.com/p/36279445?utm_id=0" target="_blank" rel="noopener">Vim 8 中 C/C++ 符号索引：GTags 篇</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W49.md">C日常/2022-W49.md</a><br>
+🔖<a href="https://www.1point3acres.com/bbs/thread-918311-1-1.html" target="_blank" rel="noopener">50岁码农面试记</a>（中文）
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W42.md">C日常/2022-W42.md</a><br>
+🔖 <a href="https://github.com/FavioVazquez/ds-cheatsheets" target="_blank" rel="noopener">https://github.com/FavioVazquez/ds-cheatsheets</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W42.md">C日常/2022-W42.md</a></p>
+]]></content>
+      <categories>
+        <category>月度汇报</category>
+      </categories>
+      <tags>
+        <tag>月度汇报</tag>
       </tags>
   </entry>
   <entry>
