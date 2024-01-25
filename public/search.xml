@@ -1639,481 +1639,6 @@ markdate:2023-02-08 04:38:07.828863</p>
       </tags>
   </entry>
   <entry>
-    <title>正则化「一」机器学习中的正则化</title>
-    <url>/public/2019/07/17/AI/regulation_baysian/</url>
-    <content><![CDATA[<p><strong>前言</strong>
-本<strong>正则化系列</strong>文章我们将讨论<strong>正则化技术在机器学习和深度学习的应用</strong>。本文为该系列的第一篇，主要介绍<strong>机器学习正则化的概念，原理和应用实例</strong>。</p>
-<p><a href="https://en.wikipedia.org/wiki/Regularization_(mathematics)" target="_blank" rel="noopener">正则化</a> 技术广泛应用在机器学习和深度学习算法中，本质作用是<strong>防止过拟合、提高模型泛化能力</strong>。其中过拟合的简单理解就是训练的算法模型太过复杂，模型过分考虑了当前样本的结构。</p>
-<p>在早期的机器学习领域一般只是将范数惩罚叫做正则化技术，而在深度学习领域认为，能够显著减少方差，而不过度增加偏差的策略都可以认为是正则化技术。故<strong>推广的正则化技术</strong>还有：扩增样本集、早停止、Dropout、集成学习、多任务学习、对抗训练、参数共享等。(具体见“花书 第七章 <a href="http://www.deeplearningbook.org/contents/regularization.html" target="_blank" rel="noopener">Regularization for Deep Learning</a>”），关于<strong>深度学习正则化</strong>会在下一篇正则化文章中重点分析。</p>
-<p>转载自：<a href="https://blog.csdn.net/BigData_Mining/article/details/81631249" target="_blank" rel="noopener">https://blog.csdn.net/BigData_Mining/article/details/81631249</a></p>
-<a id="more"></a>
-<h2 id="1-多角度看机器学习正则化"><a class="header-anchor" href="#1-多角度看机器学习正则化">¶</a>1. 多角度看机器学习正则化</h2>
-<p><strong>机器学习领域正则化</strong>可以从以下三个角度进行理解：</p>
-<p><strong>(1)</strong> <strong>正则化等价于结构风险最小化，其是通过在经验风险项后加上表示模型复杂度的正则化项或惩罚项，达到选择经验风险和模型复杂度都较小的模型目的</strong>。</p>
-<p>​	<strong>经验风险</strong>：机器学习中的风险是指模型与真实解之间的误差的积累，经验风险是指使用训练出来的模型进行预测或者分类，存在多大的误差，可以简单理解为训练误差，经验风险最小化即为训练误差最小。</p>
-<p>​	<strong>结构风险</strong>：结构风险定义为经验风险与置信风险(置信是指可信程度)的和，置信风险越大，模型推广能力越差。可以简单认为结构风险是经验风险后面多加了一项表示模型复杂度的函数项，从而可以同时控制模型训练误差和测试误差，结构风险最小化即为在保证模型分类精度(经验风险)的同时，降低模型复杂度，提高泛化能力。</p>
-<p>​	<strong>公式表达</strong>
-$$
-R(f)=\frac{1}{n}\sum_{i=1}^{n}L(y_i,f(x_i)) + \lambda \Omega (f)
-\tag{1}
-$$
-​		其中，$R(f)$表示结构风险，$L(y_i,f(x_i))$表示第 $i$ 个样本的经验风险，$\Omega(f)$是表征模型复杂度的正则项，$\lambda$ 是正则化参数。根据奥姆剃刀定律，“如无必要，勿增实体”，即认为相对简单的模型泛化能力更好。而模型泛化能力强、泛化误差小，即表示模型推广能力强，通俗理解就是在训练集中训练得到的优秀模型能够很好的适用于实际测试数据，而不仅仅是减少训练误差或者测试误差。泛化误差定义如下：
-$$
-E={Bias}^2(X) + {Var}(X) +{Noise}
-\tag{2}
-$$
-​		其中，$E$ 表示泛化误差，${Bias}$ 代表偏差，${Var}$ 代表方差， ${Noise}$ 代表噪声。</p>
-<p>​	<strong>关系图</strong></p>
-<p><img src="/public/2019/07/17/AI/regulation_baysian/1563350068097.png" alt="1563350068097"></p>
-<div align="center"> Fig 1. 泛化误差与偏差和方差的关系</div>
-​		从 Fig 1 可以看出，随着训练程度加深，模型复杂度会增加，偏差减少，方差增大，而泛化误差呈现U型变化。对于一个“好的系统”通常要求误差小，正则化的作用即为适当的控制模型复杂度，从而使得**泛化误差曲线**取最小值。
-<p><strong>(2)</strong> <strong>正则化等价于带约束的目标函数中的约束项</strong></p>
-<p>以平方误差损失和L2范数为例，优化问题的数学模型如下：
-$$
-J(\theta)=\sum_{i=1}^{n}(y_i-\theta^Tx_i)^2
-\tag{3}
-$$
-$$
-{s.t.}{|| \theta ||}_2^2 \leq C\<br>
-\tag{4}
-$$</p>
-<p>针对上述约束条件的优化问题，采用拉格朗日乘积算子法可以转化为无约束化问题，即
-$$
-J(\theta)=\sum_{i=1}^{n}(y_i-w^Tx_i)^2 + \lambda({|| \theta ||}_2^2-C)
-\tag{5}
-$$</p>
-<p>由于参数 $C$ 为常数，可以忽略，故上述公式和标准的正则化 公式完全一致。</p>
-<p><strong>(3)</strong> <strong>从贝叶斯角度考虑</strong></p>
-<p>正则项等价于引入参数的模型先验概率，可以简单理解为对最大似然估计引入先验概率，从而转化为最大后验估计，其中的先验概率即对于正则项（这部分内容后面详细讲解）。</p>
-<h2 id="2-基本概念"><a class="header-anchor" href="#2-基本概念">¶</a>2 基本概念</h2>
-<p>正则化也可以成为规则化、权重衰减技术，不同的领域叫法不一样，数学上常用范数实现，例如L1和L2范数，统计学领域叫做惩罚项、罚因子。</p>
-<p>下面给出范数的数学公式，方便以后分析：</p>
-<p>​	(1) $p$ 范数：
-$$
-Lp=(\sum_{i=1}^{n}{|| x_i ||}^p)^{\frac{1}{p}}
-\tag{6}
-$$
-​	(2) $L0$ 范数：0 范数表示向量中非零元素的个数（即为其稀疏度）</p>
-<p>​	(3) $L1$ 范数：即向量元素绝对值之和，$p$ 范数取1，即为1范数
-$$
-{||x||}_1=\sum^n_1 {|| x_i || }
-\tag{7}
-$$</p>
-<p>​	(4) $L2$ 范数：即向量元素绝对值的平方和再开发，也称欧几里得距离，$p$ 范数取2，即为2范数
-$$
-{||x||}_{2}=\sqrt{\sum^{n}_1|| x_i ||^2}
-\tag{8}
-$$</p>
-<p>​	(5) $\infty $ 范数：即所有向量元素的绝对值中的最大值，$p$ 范数取 $\infty $，即为 $\infty $ 范数
-$$
-{||x  ||}_{\infty }=\underset{i}{\max}{\left | x_i \right |}
-\tag{9}
-$$</p>
-<p>​	(6) $-\infty $ 范数：即所有向量元素绝对值中的最小值，$p$ 范数取$-\infty $，即为 $-\infty $ 范数
-$$
-{||x  ||}_{-\infty }=\underset{i}{\min}{\left | x_i \right |}
-\tag{10}
-$$
-<strong>图形描述</strong></p>
-<p>​		从 Fig 2、Fig 3 图可以看出：q(p)越小，曲线越贴近坐标轴，q(p)越大，曲线越远离坐标轴，并且棱角越明显，当q(p)取0时候，是完全和坐标轴贴合，当q(p)取无穷的时候，呈现正方体形状。同时也可以看出，采用不同的范数作为正则项，会得到完全不同的算法模型结果，故而对于不同要求的模型，应该采用不同的范数作为正则项。</p>
-<p><img src="/public/2019/07/17/AI/regulation_baysian/1563354053269.png" alt="1563354053269"></p>
-<div align="center"> Fig 2. 向量长度为2维的范数约束</div>
-![1563354456894](regulation_baysian/1563354456894.png)
-<div align="center"> Fig 3. 向量长度为3维的范数约束</div>
-## 3 深度理解
-<p>​		为了更好的理解正则化技术原理，下面从4个方面进行深度分析，希望对大家理解有帮助。</p>
-<h3 id="3-1-简单数值假设分析法"><a class="header-anchor" href="#3-1-简单数值假设分析法">¶</a>3.1 简单数值假设分析法</h3>
-<p>​		此处以L2范数讲解，下面的各图形来自吴恩达的机器学习课程。</p>
-<p><img src="/public/2019/07/17/AI/regulation_baysian/image-20190619002115576.png" alt="image-20190619002115576"></p>
-<div align="center"> Fig 4. 不同参数下的曲线拟合结果</div>
-​		左边的曲线拟合是欠拟合，中间的曲线拟合是刚好合适，右边的曲线拟合是过拟合。对于右边的拟合曲线，有
-$$
-h_{\theta}(x)={\theta}_0+{\theta}_0 x_1 +{\theta}_2 x_2^2 +{\theta}_3 x_3^3 +{\theta}_4 x_4^4
-\tag{11}
-$$
-​		从上式可以看出，由于$\theta_3$和$\theta_4$对应了高阶，导致拟合曲线是4阶曲线，出现了过拟合。正则化的目的为适当缩减$\theta_3$和$\theta_4$的值，例如都为0.0001，则上述曲线本质上等价与
-$$
-h_{\theta}(x)={\theta}_0 + {\theta}_1 x_1 +{\theta}_2 x_2^2
-\tag{12}
-$$
-​		也就是变成了中间的刚好合适的拟合曲线。对于$\theta_3$ 和$\theta_4$增加 L2 正则项后的代价函数表达式为：
-$$
-J(\theta)= \underset{\theta}{\min}\frac{1}{n}\sum_{i=1}^{n}((h_{\theta}(x_i)-y_i)+1000{\theta}_3^2 + 1000 {\theta}_4^2)
-\tag{13}
-$$
-​		从上式可以看出，$\theta_3^2$ 和 $\theta_4^2$ 均大于 0，其乘上了1000，要 $J(\theta)$ 是最小，则会迫使模型学习到的$\theta_3$ 和 $\theta_4$ 会非常小，因为只有在$\theta_3$ 和 $\theta_4$ 会非常小的情况下整个代价函数值才会取的较小值。在实际开发中，是对所有参数进行正则化，为了使代价函数尽可能的小，所有的参数 $\theta$ 的值（不包括 $\theta_0$）都会在一定程度上减小，但是减小程度会不一样，从而实现了权重衰减、简化模型复杂度的作用。
-<h3 id="3-2-图形分析法"><a class="header-anchor" href="#3-2-图形分析法">¶</a>3.2 图形分析法</h3>
-<p>​		此处采用L1和L2范数讲解：
-<strong>(1) L2 范数正则</strong>
-$$
-J(\beta)=\sum_{i=1}^{n}(y_i-{\beta}^T x_i)^2 + \lambda {|| {\beta} ||}_2^2
-\tag{14}
-$$
-<img src="/public/2019/07/17/AI/regulation_baysian/1563366078400.png" alt="1563366078400"></p>
-<div align="center"> Fig 5. L2 范数与代价函数的寻优图示</div>
-​		在 Fig 5 中，蓝色的圆形空间表示 L2 范数空间，设为 $\beta_1^2 + \beta_2^2 = r^2$，可以看出，当 $r$ 从 0 逐渐增大时候，该圆形也逐渐增大，红色的线表示原始代价函数解空间即 $\sum_{i=1}^{n}(y_i-\beta^T x_i)^2$，此处为了方便绘图，设参数只有2维。红色圆环上的任何一点都表示一个可行解即代表一组$\beta_1$、$\beta_2$，其中任何一个红色圆环上面的$\beta_1$，$\beta_2$对应的代价函数值一样（可以简单理解为等值线），$\hat{\beta}$ 代表最佳解空间。
-<h2 id="4-贝叶斯角度分析"><a class="header-anchor" href="#4-贝叶斯角度分析">¶</a>4. 贝叶斯角度分析</h2>
-<p>​		以L1和L2范数为例，所得结论可以推广到P范数中，首先需要知道：整个最优化问题从贝叶斯观点来看是一种贝叶斯最大后验估计，其中正则化项对应后验估计中的先验信息，损失函数对应后验估计中的似然函数，两者的乘积即对应贝叶斯最大后验估计的形式。针对L1和L2范数还有结论：<strong>L2 范数相当于给模型参数设置一个协方差为1/alpha的零均值高斯先验分布，L1 范数相当于给模型参数 设置一个参数为1/alpha 拉普拉斯先验分布</strong>。</p>
-<p>​		为了讲清楚上述结论，需要具备几点前置知识点：(1) 高斯分布和拉普拉斯分布的定义和形状；(2) 贝叶斯定理；(3) 最大似然估计；(4) 最大后验估计。下面我对这4个知识点进行解释。</p>
-<p><strong>(1)</strong> <strong>高斯分布和拉普拉斯分布</strong></p>
-<p><img src="/public/2019/07/17/AI/regulation_baysian/0.png" alt="0?wx_fmt=png"></p>
-<p><img src="/public/2019/07/17/AI/regulation_baysian/0-20190610163845194.png" alt="0?wx_fmt=png"></p>
-<p><strong>(2)</strong> <strong>最大似然估计</strong></p>
-<p><img src="/public/2019/07/17/AI/regulation_baysian/0-20190610163845276.png" alt="0?wx_fmt=png"></p>
-<p>​		如果上述公式不能理解，请各位读者去复习一下大学课程《概率论与数理统计》中的参数估计章节，为了更方便理解，下面举一个例子：假设我要统计出整个大学内所有同学的身高分布情况，设全校一共20000人，数量庞大，所有人都去问一遍不太靠谱，所以我打算采用抽样方法来估计，假设我已经知道身高分布服从高斯分布，但是我不知道高斯分布中的均值和方差参数，现在我打算采用最大似然估计方法来确定这两个参数。首先需要明确，全校20000即为总体X，我随机从各个班抽取10名同学，假设一共抽了2000个同学，那么2000同学就构成了样本空间，由于每个样本的概率密度函数已知，则很容易写出似然函数，对数求导即可求解参数。</p>
-<p><strong>(3)</strong> <strong>最大后验估计</strong></p>
-<p><img src="/public/2019/07/17/AI/regulation_baysian/0-20190610163845259.png" alt="0?wx_fmt=png"></p>
-<p><img src="/public/2019/07/17/AI/regulation_baysian/0-20190610163845297.png" alt="0?wx_fmt=png"></p>
-<p><img src="/public/2019/07/17/AI/regulation_baysian/0-20190610163845289.png" alt="0?wx_fmt=png"></p>
-<h2 id="5-例子"><a class="header-anchor" href="#5-例子">¶</a>5. 例子</h2>
-<h3 id="5-1-逻辑回归"><a class="header-anchor" href="#5-1-逻辑回归">¶</a>5.1 逻辑回归</h3>
-<p>​		二分类逻辑回归使用Sigmoid作为决策函数进行分类，该函数可以将任意的输入映射到[0,1]区间，当预测结果小于0.5，则表示负类，当预测结果大于0.5.则表示正类，其模型本质是求最大似然估计，具体求解似然函数通常使用梯度下降法，而前面说过：最大似然估计法没有考虑训练集以外的因素，很容易造成过拟合，故而逻辑回归一般采用L2范数进行正则化操作，Sigmoid函数定义和图形如下：</p>
-<p><img src="/public/2019/07/17/AI/regulation_baysian/0.jpeg" alt="0?wx_fmt=png"></p>
-<h3 id="5-2-岭回归-Ridge-Regression"><a class="header-anchor" href="#5-2-岭回归-Ridge-Regression">¶</a>5.2 岭回归(Ridge Regression)</h3>
-<p>​		岭回归本质上是针对线性回归问题引入了L2范数正则，通过缩减回归系数避免过拟合问题，最先用来处理特征数多于样本数的情况(高维小样本问题)，现在也用于在估计中加人偏差，从而得到更好的估计，加了正则化后的代价函数如下：</p>
-<p><img src="/public/2019/07/17/AI/regulation_baysian/0-20190610174921016.png" alt="0?wx_fmt=png"></p>
-<h3 id="5-3-Lasso-回归"><a class="header-anchor" href="#5-3-Lasso-回归">¶</a>5.3 Lasso 回归</h3>
-<p>​		拉索回归(lasso回归)本质上是针对线性回归问题引入了L1范数正则，通过缩减回归系数避免过拟合问题，其不同于L2范数，其可以将某些系数缩减为0即所谓的具备稀疏性(稀疏性的好处是简化计算、容易理解模型、减少存储空间、不容易出现过拟合等等)，加了正则化后的代价函数如下：</p>
-<p><img src="/public/2019/07/17/AI/regulation_baysian/0-20190610174920968.png" alt="0?wx_fmt=png"></p>
-<p>​		其中，参数函数和岭回归中相同。L1范数罚有一个问题：由于|X|函数在0处不可导，故而直接使用最小二乘法、梯度下降法等方法均失效，但是由于其为第一类间断点中的可去间断点，可以通过补充该点的定义解决，通常，对于线性回归中的lasso回归可以采用近似的前向逐步回归替代。</p>
-<h3 id="5-4-SVM"><a class="header-anchor" href="#5-4-SVM">¶</a>5.4 SVM</h3>
-<p>​		支持向量机SVM优化目的为寻找一个超平面，使得正负样本能够以最大间隔分离开，从而得到更好的泛化性能，其通过引入核函数来将低维线性不可分的样本映射到高维空间从而线性可分，通过引入惩罚参数C(类似于正则化参数)来对错分样本进行惩罚，从而减少模型复杂度，提高泛化能力，其优化目标如下：</p>
-<p><img src="/public/2019/07/17/AI/regulation_baysian/0-20190610174921029.png" alt="0?wx_fmt=png"></p>
-<p>​		大家如果不知道上面公式的推导，不用紧张，对于本次内容不是重点，只需要关注后面正则项部分，惩罚参数C作用和正则化参数作用一致，只是反相关而已。需要明白以下结论：</p>
-<p>​		<strong>(1)</strong> C越大，正则化参数越小，表示对分错样本的惩罚程度越大，正则化作用越小，偏差越小，方差越大，越容易出现过拟合(通俗理解，原本将低维空间映射到5维空间正好线性可分，但是由于惩罚过于严重，任何一个样本分错了都不可原谅，结果系统只能不断提高维数来拟合样本，假设为10维，最终导致映射维数过高，出现过拟合样本现象，数学上称为VC维较大)；</p>
-<p>​		<strong>(2)</strong> C越小，正则化参数越大，表示对分错样本的惩罚程度越小，正则化作用越大，偏差越大，方差越小，越容易出现欠拟合(通俗理解，原本将低维空间映射到5维空间正好线性可分，但是由于惩罚过小，分错了好多样本都可以理解，比较随意，结果系统也采用简化版来拟合样本，假设为3维，最终导致映射维数过低，出现欠拟合样本现象，数学上称为VC维较小)。</p>
-<h2 id="6-总结"><a class="header-anchor" href="#6-总结">¶</a>6. 总结</h2>
-<p>根本目的本质：防止过拟合，提高模型泛化能力。</p>
-<p>正则化技术分类：
-<strong>狭义上</strong>（不同地方叫法不同）</p>
-<ul>
-<li>在早期的机器学习领域一般只是将范数惩罚叫做正则化技术</li>
-<li>规则化、权重衰减</li>
-<li>从贝叶斯角度考虑，正则项等价于引入参数的模型先验概率</li>
-</ul>
-<p><strong>广义上</strong>：
-能够显著减少方差，而不过度增加偏差的策略都可以认为是正则化技术，推广的正则化技术还有：扩增样本集、早停止、Dropout、集成学习、多任务学习、对抗训练、参数共享等。</p>
-<h2 id="Reference"><a class="header-anchor" href="#Reference">¶</a>Reference</h2>
-<p><a href="https://blog.csdn.net/BigData_Mining/article/details/81631249" target="_blank" rel="noopener">正则化总结的比较好比较全面的文章</a></p>
-]]></content>
-      <categories>
-        <category>机器学习</category>
-        <category>正则化</category>
-      </categories>
-      <tags>
-        <tag>人工智能</tag>
-        <tag>机器学习</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Jupyter notebook的配置</title>
-    <url>/public/2017/07/03/linux/jupyter_notebook/</url>
-    <content><![CDATA[<p><strong>前言</strong>
-本文介绍jupyter notebook的安装配置过程和实用技巧。
-<a href="https://jupyter.readthedocs.io/en/latest/index.html" target="_blank" rel="noopener">jupyter.readthedocs教程</a></p>
-<a id="more"></a>
-<h2 id="1-安装与配置"><a class="header-anchor" href="#1-安装与配置">¶</a>1 安装与配置</h2>
-<h3 id="1-1-安装-jupyter"><a class="header-anchor" href="#1-1-安装-jupyter">¶</a>1.1 安装 jupyter</h3>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">conda install jupyter</span><br><span class="line"><span class="comment"># pip install -i https://pypi.tuna.tsinghua.edu.cn/simple jupyter</span></span><br><span class="line"><span class="comment"># pip install jupyter -y</span></span><br></pre></td></tr></table></figure>
-<h3 id="1-2-修改配置文件"><a class="header-anchor" href="#1-2-修改配置文件">¶</a>1.2 修改配置文件</h3>
-<ul>
-<li>生成配置文件</li>
-</ul>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">jupyter notebook --generate-config</span><br><span class="line">vim ~/.jupyter/jupyter_notebook_config.py</span><br></pre></td></tr></table></figure>
-<ul>
-<li>修改配置文件内容</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">c.NotebookApp.ip = <span class="string">'0.0.0.0'</span></span><br><span class="line">c.NotebookApp.port = <span class="number">8018</span></span><br><span class="line"><span class="comment"># 设置密码</span></span><br><span class="line">c.NotebookApp.password = <span class="string">u'sha1:bcd259ccf...your hashed password here'</span></span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>Tip: 利用ipython 生成密码</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&gt; In [1]: from IPython.lib import passwd</span><br><span class="line">&gt; In [2]: passwd()</span><br><span class="line">&gt;   Enter password:</span><br><span class="line">&gt;   Verify password:</span><br><span class="line">&gt;   Out[2]: &apos;sha1:67xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&apos;</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
-</blockquote>
-<p>我选用的是password密码登陆jupyter的方案，其他的密码登陆方案见 <a href="https://zhuanlan.zhihu.com/p/23110830" target="_blank" rel="noopener">link</a></p>
-<blockquote>
-<p>新的方法
-from notebook.auth import passwd; passwd()</p>
-</blockquote>
-<h3 id="1-3-安装插件管理"><a class="header-anchor" href="#1-3-安装插件管理">¶</a>1.3 安装插件管理</h3>
-<p>jupyter_contrib_nbextensions 为 jupyter notebook 扩展插件管理器，下面简称nbextensions。</p>
-<p>nbextensions的github <a href="https://github.com/ipython-contrib/jupyter_contrib_nbextensions" target="_blank" rel="noopener">repo</a>
-nbextensions的教程<a href="https://jupyter-contrib-nbextensions.readthedocs.io/en/latest/" target="_blank" rel="noopener">nbextensions_manual_readthedocs</a></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 用conda安装</span></span><br><span class="line">conda install jupyter</span><br><span class="line">conda install -c conda-forge jupyter_contrib_nbextensions</span><br><span class="line"></span><br><span class="line"><span class="comment"># pip安装</span></span><br><span class="line">pip install jupyter_contrib_nbextensions</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使能</span></span><br><span class="line">jupyter contrib nbextension install</span><br></pre></td></tr></table></figure>
-<p>我启用的一些插件</p>
-<table>
-<thead>
-<tr>
-<th>plugins</th>
-<th></th>
-<th></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Table of Contents (2)</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>Freeze</td>
-<td>比较好的一个插件，可以用来冻住cell</td>
-<td></td>
-</tr>
-<tr>
-<td>nbTranslate</td>
-<td>这个插件利用Google翻译cell很好用</td>
-<td><a href="https://github.com/jfbercher/jupyter_nbTranslate/blob/master/languages.js" target="_blank" rel="noopener">support languages</a></td>
-</tr>
-<tr>
-<td>ExecuteTime</td>
-<td>显示执行时间</td>
-<td></td>
-</tr>
-<tr>
-<td>Ruler</td>
-<td>代码标尺</td>
-<td></td>
-</tr>
-<tr>
-<td>Autopep8</td>
-<td>代码美化</td>
-<td></td>
-</tr>
-<tr>
-<td>Scratchpad</td>
-<td>代码测试</td>
-<td></td>
-</tr>
-</tbody>
-</table>
-<p>其他花样的配置</p>
-<p><a href="https://zhuanlan.zhihu.com/p/74950682" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/74950682</a></p>
-<h3 id="1-4-conda环境的设置"><a class="header-anchor" href="#1-4-conda环境的设置">¶</a>1.4 conda环境的设置</h3>
-<p>jupyter使用Anaconda miniconda环境需要安装的组件。
-<a href="https://repo.anaconda.com" target="_blank" rel="noopener">conda repo</a></p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 创建虚拟环境</span></span><br><span class="line">conda create -n env_name python=3.6</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> conda虚拟核组件 切换kernel</span></span><br><span class="line">conda install nb_conda_kernels</span><br></pre></td></tr></table></figure>
-<h3 id="1-5-解决界面中英文混杂"><a class="header-anchor" href="#1-5-解决界面中英文混杂">¶</a>1.5 解决界面中英文混杂</h3>
-<img src="/public/2017/07/03/linux/jupyter_notebook/image-20200413125705473.png" alt="image-20200413125705473" style="zoom:50%;">
-<p>如图，jupyter 界面中中英文混杂，解决方法为将界面文字中文切换成英文。</p>
-<p>原理：让jupyter就找不到他的中文配置文件夹。</p>
-<p>找到notebook的汉化文件夹的路径，比如<code>~/miniconda3/lib/python3.6/site-packages/notebook/i18n/zh_CN</code>。将其重命名如加个下划线作为后缀<code>zh_CN_old</code>，重启jupyter就行了。</p>
-<p>为了方便，我作了个脚本自动找<code>notebook/i18n/zh_CN</code>位置并改名此文件夹，如下。</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> shutil</span><br><span class="line"><span class="keyword">from</span> distutils.sysconfig <span class="keyword">import</span> get_python_lib</span><br><span class="line"><span class="comment"># 获取site-package包的位置</span></span><br><span class="line">path_zh=get_python_lib()+<span class="string">'/notebook/i18n/zh_CN'</span></span><br><span class="line">path_zh_old=get_python_lib()+<span class="string">'/notebook/i18n/zh_CN_old'</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 将 notebook/i18n/zh_CN 改为 notebook/i18n/zh_CN_old</span></span><br><span class="line">shutil.move(path_zh,path_zh_old)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 返回中文</span></span><br><span class="line"><span class="comment"># shutil.move(path_zh_old,path_zh)</span></span><br></pre></td></tr></table></figure>
-<p>重启jupyter就行了, 这样jupyter就找不到这个中文配置，返回中文改回去就行了<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup>。</p>
-<h2 id="2-使用的技巧"><a class="header-anchor" href="#2-使用的技巧">¶</a>2 使用的技巧</h2>
-<h3 id="2-1-快捷键"><a class="header-anchor" href="#2-1-快捷键">¶</a>2.1 快捷键</h3>
-<hr>
-<table>
-<thead>
-<tr>
-<th>在非激活状态即是蓝颜色的边框</th>
-<th>内容</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>A</td>
-<td>insert cell above</td>
-</tr>
-<tr>
-<td>B</td>
-<td>insert cell below</td>
-</tr>
-<tr>
-<td>H</td>
-<td>查看帮助</td>
-</tr>
-<tr>
-<td>⌃↩(ctrl + enter)</td>
-<td>run selected cells</td>
-</tr>
-</tbody>
-</table>
-<h3 id="2-2-显示图片-视频-音频"><a class="header-anchor" href="#2-2-显示图片-视频-音频">¶</a>2.2 显示图片 视频 音频</h3>
-<p>主要是画图、显示视频和音频的方法。</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 图片</span></span><br><span class="line">%%HTML</span><br><span class="line">&lt;img src=<span class="string">"xxx.jpg"</span>  alt=<span class="string">"title"</span> /&gt;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 视频</span></span><br><span class="line">%%HTML</span><br><span class="line">&lt;video width=<span class="string">"330"</span> height=<span class="string">"150"</span> controls&gt;</span><br><span class="line">&lt;source src=<span class="string">"out_all.mp4"</span> type=<span class="string">"video/mp4"</span>&gt;</span><br><span class="line">&lt;/video&gt;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 语音</span></span><br><span class="line">%%HTML</span><br><span class="line">&lt;audio src=<span class="string">"out.wav"</span> controls=<span class="string">"controls"</span>&gt;</span><br><span class="line">Your browser does <span class="keyword">not</span> support the audio element.</span><br><span class="line">&lt;/audio&gt;</span><br><span class="line"></span><br><span class="line"><span class="comment"># html t是html的字符串</span></span><br><span class="line"><span class="keyword">from</span> IPython.core.display <span class="keyword">import</span> HTML</span><br><span class="line">HTML(str(t))</span><br></pre></td></tr></table></figure>
-<h3 id="2-3-其他技巧"><a class="header-anchor" href="#2-3-其他技巧">¶</a>2.3 其他技巧</h3>
-<h4 id="修复视频文件"><a class="header-anchor" href="#修复视频文件">¶</a>修复视频文件</h4>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fix_use_ffmpeg</span><span class="params">(in_name, out_name,message=<span class="string">""</span>)</span>:</span></span><br><span class="line">    <span class="keyword">import</span> os</span><br><span class="line">    <span class="keyword">if</span> os.path.isfile(out_name):</span><br><span class="line">    os.remove(out_name)</span><br><span class="line">    cmd = <span class="string">'ffmpeg -i %s %s'</span> % (in_name, out_name)</span><br><span class="line">    log_lines = os.popen(cmd).readlines()</span><br><span class="line">    print(message,<span class="string">"ok"</span>)</span><br></pre></td></tr></table></figure>
-<h4 id="加载自己的模块文件"><a class="header-anchor" href="#加载自己的模块文件">¶</a>加载自己的模块文件</h4>
-<p>出于性能考虑，每个模块在每个解释器会话中只导入一遍。因此，如果你修改了你的模块，需要重启解释器；或者，如果你就是想交互式的测试这么一个模块，可以用 imp.reload() 重新加载，例如 <code>import imp; imp.reload(modulename)</code></p>
-<h4 id="导出pdf支持中文"><a class="header-anchor" href="#导出pdf支持中文">¶</a>导出pdf支持中文</h4>
-<p>Jupyter Notebook 输出PDF中文支持 <a href="https://www.jianshu.com/p/c3f660188766" target="_blank" rel="noopener">link</a></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> /usr/<span class="built_in">local</span>/lib/python3.6/site-packages/nbconvert/templates/latex</span><br><span class="line"></span><br><span class="line"><span class="comment"># 在里面的模版中添加，前提是安装好了texlive</span></span><br><span class="line">% add</span><br><span class="line">\usepackage&#123;ctex&#125;</span><br></pre></td></tr></table></figure>
-<h4 id="ipynb2pdf"><a class="header-anchor" href="#ipynb2pdf">¶</a>ipynb2pdf</h4>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python3</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string">Current version of Jupyter doesn't support pdf exporting when it comes to</span></span><br><span class="line"><span class="string">russian language in the document. To fix this, current script has born.</span></span><br><span class="line"><span class="string">It requires nbconvert as long as jupyter to be installed.</span></span><br><span class="line"><span class="string">Author:     Sergey Ivanychev</span></span><br><span class="line"><span class="string">Email:      sergeyivanychev@gmail.com</span></span><br><span class="line"><span class="string">Revision:   1</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> subprocess</span><br><span class="line"></span><br><span class="line">FORMAT = <span class="string">".ipynb"</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string">TODO:   What if user has ___o.tex in current folder?</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line">TEMP_TEX = <span class="string">"___o.tex"</span></span><br><span class="line">TEMP_FOLDER = <span class="string">"/tmp"</span></span><br><span class="line">TRASH_EXTENSIONS = [<span class="string">".aux"</span>, <span class="string">".out"</span>, <span class="string">".log"</span>]</span><br><span class="line">OLD1 = <span class="string">r"\usepackage[utf8x]&#123;inputenc&#125;"</span></span><br><span class="line">NEW1 = <span class="string">r"""</span></span><br><span class="line"><span class="string">    \usepackage[utf8x]&#123;inputenc&#125;</span></span><br><span class="line"><span class="string">    \usepackage&#123;ctex&#125;</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line">REPLACE = [(OLD1, NEW1)]</span><br><span class="line">HELP = <span class="string">"""</span></span><br><span class="line"><span class="string">This script is aimed at correctly converting .ipynb to .pdf files.</span></span><br><span class="line"><span class="string">You may use it via</span></span><br><span class="line"><span class="string"># ipynb2pdf Solution.ipynb</span></span><br><span class="line"><span class="string">To get .pdf in the same directory</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">check_args</span><span class="params">(argv)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> (len(argv) &gt; <span class="number">2</span>):</span><br><span class="line">        print(<span class="string">"Please, type .ipynb filename as argument"</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span></span><br><span class="line">    <span class="keyword">if</span> (len(argv) == <span class="number">1</span>):</span><br><span class="line">        print(HELP)</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span></span><br><span class="line">    script, filename = argv</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> is_ipynb(filename):</span><br><span class="line">        print(<span class="string">"Please, type .ipynb filename as argument"</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">remove_extention</span><span class="params">(string, extention)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    Removes argumented extention from the end of the string</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    <span class="keyword">if</span> extention[<span class="number">0</span>] != <span class="string">'.'</span>:</span><br><span class="line">        extention = <span class="string">"."</span> + extention</span><br><span class="line">    <span class="keyword">if</span> string.endswith(extention):</span><br><span class="line">        string = string[<span class="number">0</span>:-len(extention)]</span><br><span class="line">    <span class="keyword">return</span> string</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">is_ipynb</span><span class="params">(filename)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> filename.endswith(<span class="string">".ipynb"</span>):</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">    <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">tex2pdf</span><span class="params">(filename, desired_name)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    Converts filename (which is tex document) to desired_name (which is pdf)</span></span><br><span class="line"><span class="string">    leaving no trash in current folder</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    base = remove_extention(filename, <span class="string">"tex"</span>)</span><br><span class="line">    output = base + <span class="string">".pdf"</span></span><br><span class="line">    ret = subprocess.call(<span class="string">"xelatex %s"</span> % filename , </span><br><span class="line">                                        shell=<span class="literal">True</span>, stdout=subprocess.PIPE)</span><br><span class="line">    <span class="keyword">for</span> ext <span class="keyword">in</span> TRASH_EXTENSIONS:</span><br><span class="line">        os.unlink(base + ext)</span><br><span class="line">    os.rename(output, desired_name)</span><br><span class="line">    <span class="keyword">return</span> ret</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">(argv)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> check_args(argv) == <span class="number">-1</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span></span><br><span class="line">    script, filename = argv</span><br><span class="line">    ret = subprocess.call(<span class="string">"jupyter nbconvert %s --to latex --output %s"</span> %</span><br><span class="line">                                            (filename, TEMP_TEX), shell=<span class="literal">True</span>,</span><br><span class="line">                                            stdout=subprocess.PIPE)</span><br><span class="line">    <span class="keyword">if</span> (ret != <span class="number">0</span>):</span><br><span class="line">        print(<span class="string">"ret = %d"</span> % ret)</span><br><span class="line">        os.unlink(TEMP_TEX)</span><br><span class="line">        print(<span class="string">"Converting to LaTeX failed. Return code: %d"</span> % ret)</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span></span><br><span class="line">    tex_file = open(TEMP_TEX, <span class="string">"r"</span>)</span><br><span class="line">    tex = tex_file.read()</span><br><span class="line">    <span class="keyword">for</span> old, new <span class="keyword">in</span> REPLACE:</span><br><span class="line">        tex = tex.replace(old, new)</span><br><span class="line">    tex_file.close()</span><br><span class="line">    os.unlink(TEMP_TEX)</span><br><span class="line">    tex_file = open(TEMP_TEX, <span class="string">"w+"</span>)</span><br><span class="line">    tex_file.write(tex)</span><br><span class="line">    tex_file.close()</span><br><span class="line">    ret = tex2pdf(TEMP_TEX, remove_extention(filename, <span class="string">".ipynb"</span>) + <span class="string">".pdf"</span>)</span><br><span class="line">    tex_file.close()</span><br><span class="line">    os.unlink(TEMP_TEX)</span><br><span class="line">    print(remove_extention(filename, <span class="string">".ipynb"</span>) + <span class="string">".pdf - DONE"</span>)</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</span><br><span class="line">    exit(main(sys.argv))</span><br></pre></td></tr></table></figure>
-<hr class="footnotes-sep">
-<section class="footnotes">
-<ol class="footnotes-list">
-<li id="fn1" class="footnote-item"><p><a href="https://www.zhihu.com/question/302814218/answer/1029684239" target="_blank" rel="noopener">https://www.zhihu.com/question/302814218/answer/1029684239</a> <a href="#fnref1" class="footnote-backref">↩︎</a></p>
-</li>
-</ol>
-</section>
-]]></content>
-      <categories>
-        <category>jupyter</category>
-      </categories>
-      <tags>
-        <tag>工具</tag>
-        <tag>Python</tag>
-        <tag>笔记应用</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>选择困难者的福音？层次分析法</title>
-    <url>/public/2021/04/02/math/math_AHP/</url>
-    <content><![CDATA[<h2 id="摘要"><a class="header-anchor" href="#摘要">¶</a>摘要</h2>
-<p>日常生活中，我们面临很多的选择，选择工作offer，选择买哪个牌子的手机，选择哪个地方旅行等等。这些选择难以定量的衡量，有很多不确定性。内心小纠结，我选择了这个，万一那个好呢，怎么办？请看层次分析法。</p>
-<p>层次分析法(Analytic Hierarchy Process，简称 AHP)是对一些较为复杂、较为模糊的问题作出决策的简易方法，它特别适用于那些难于完全定量分析的问题。它是美国运筹学家 T. L. Saaty 教授于上世纪 70 年代初期提出的一种简便、灵活而又实用的多准则决策方法。</p>
-<p>运用层次分析法建模，大体上可按下面四个步骤进行</p>
-<ul>
-<li>建立递阶层次结构模型</li>
-<li>构造出各层次中的所有判断矩阵</li>
-<li>层次单排序及一致性检验</li>
-<li>层次总排序及一致性检验。（一般不用）</li>
-</ul>
-<a id="more"></a>
-<p>让我们从offer大佬的例子开始吧！</p>
-<p>举个栗子，今年有位大学生，有三个offer，C1 C2 C3。</p>
-<p>第一步，建立层次模型。</p>
-<ul>
-<li>目标层A：找工作的目标，自己满意程度。
-<ul>
-<li>这个程度怎么计算呢？比如工作1。</li>
-</ul>
-</li>
-<li>准则层B：研究课题、发展前途、待遇、同事情况、地理位置、单位名气等等。
-<ul>
-<li>尽量列全一点，不需要排列重要顺序。</li>
-<li>小于等于9个，后面要两两拍脑袋给出相对的重要层度，给多了不得把脑袋拍疼了。</li>
-<li>也可以有子准则层，比如待遇中的放假、工作环境等等，列出也小于9个。</li>
-</ul>
-</li>
-<li>方案层C：就是我们的offer</li>
-</ul>
-<img src="/public/2021/04/02/math/math_AHP/image-20200406145535585.png" alt="image-20200406145535585" style="zoom:50%;">
-<h2 id="构造-A-B-之间判断矩阵"><a class="header-anchor" href="#构造-A-B-之间判断矩阵">¶</a>构造 A B 之间判断矩阵</h2>
-<p>准则层B与目标A之间的关系。为了求出准则层中(B1-6) 对目标的重要层度的排序。比如对于该生工作满意度第一重要是待遇，然后是地点，其实该生自己也很模糊。就是固定A，然后求B中准则，对A重要性的排序。</p>
-<h3 id="我们怎么对B中的准则们的重要排序呢？"><a class="header-anchor" href="#我们怎么对B中的准则们的重要排序呢？">¶</a>我们怎么对B中的准则们的重要排序呢？</h3>
-<p>直接给每一个准则，0-1的评分，然后排序。经常会想，给完分之后，这个不合理呀要不我再给哪个准则加加分。所以这样的方法常常会因考虑不周全、顾此失彼而使决策者提出与他实际认为的重要性程度不相一致的数据。</p>
-<p>我们可以将这个过程细化，我就比较两个准则对于目标的重要性，然后通过下面的矩阵方法，求出优先顺序。</p>
-<p>还能通过一个一致性检验，来检验在你评分的过程中，有没有自相矛盾的地方，当然这种方法允许一些自相矛盾。反正评分的时候尊从内心拍脑袋就对了。</p>
-<p>所以我们拿出一个B1 与 B2 对于目标的重要，想一想然后给出B2/B1，填入下面的表格中的(2,1)的位置。</p>
-<p>整个矩阵i,j 与j，i 是取倒数的关系，所以只要做一半。</p>
-<p>在找工作的目标下，准则i与j相对的重要性表示，B2/B1 的值。采用9个标度。而相比不重要刻度取倒数就可以了</p>
-<table>
-<thead>
-<tr>
-<th>准则i比j的比较</th>
-<th>1</th>
-<th>2</th>
-<th>3</th>
-<th>4</th>
-<th>5</th>
-<th>6</th>
-<th>7</th>
-<th>8</th>
-<th>9</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-<td>相同重要</td>
-<td></td>
-<td>比较重要</td>
-<td></td>
-<td>明显重要</td>
-<td></td>
-<td>强烈重要</td>
-<td></td>
-<td>极端重要</td>
-</tr>
-</tbody>
-</table>
-<p>最后的两两相对重要表格</p>
-<img src="/public/2021/04/02/math/math_AHP/image-20200406145640316.png" alt="image-20200406145640316" style="zoom:50%;">
-<p>对角线对称的两个数互为倒数，即 $$a_{ji}=\frac{1}{a_{ij}}$$  B1/B2 不就是和 B2/B1互为倒数嘛</p>
-<p>从心理学观点来看，分级太多会超越人们的判断能力，既增加了作判断的难度， 又容易因此而提供虚假数据。Saaty 等人还用实验方法比较了在各种不同标度下人们判断结果的正确性，实验结果也表明，采用 1~9 标度最为合适。</p>
-<p>判断矩阵的一致性指标步骤：</p>
-<ul>
-<li>1）计算一致性指标 CI 。$$CI=\frac{ \lambda_{max}-n}{n-1}$$</li>
-<li>2）查表，平均随机一致性指标 RI。</li>
-</ul>
-<table>
-<thead>
-<tr>
-<th>n</th>
-<th>1</th>
-<th>2</th>
-<th>3</th>
-<th>4</th>
-<th>5</th>
-<th>6</th>
-<th>7</th>
-<th>8</th>
-<th>9</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>RI</td>
-<td>0</td>
-<td>0</td>
-<td>0.58</td>
-<td>0.90</td>
-<td>1.12</td>
-<td>1.24</td>
-<td>1.32</td>
-<td>1.41</td>
-<td>1.45</td>
-</tr>
-</tbody>
-</table>
-<blockquote>
-<p><em>RI</em> 的值是这样得到的，用随机方法构造500个样本矩阵:随机地从1~9及其倒数中抽取数字构造正互反矩阵，求得最大特征根的平均值 $$\bar \lambda_{max}$$ 并定义$$RI=\frac{\bar \lambda_{max}-n}{n-1}$$</p>
-</blockquote>
-<ul>
-<li>3）计算一致性比例CR。 $$CR=\frac{CI}{RI}$$，当$$CR&lt;0.10$$ 时，认为判断矩阵的一致性是可以接受的，否则应对判断矩阵作适当修正。</li>
-</ul>
-<p>如果一个矩阵满足上面的条件，那么它最大特征值对应的特征向量就可以认为是每个维度的重要性权重。</p>
-<h2 id="构造-B-C-之间判断矩阵"><a class="header-anchor" href="#构造-B-C-之间判断矩阵">¶</a>构造 B C 之间判断矩阵</h2>
-<p>相同的方法，在同一B准则下，考虑不同工作的优先顺序。求工作排序的方法，和上面一样。</p>
-<img src="/public/2021/04/02/math/math_AHP/image-20200406162644137.png" alt="image-20200406162644137" style="zoom:50%;">
-<p>python代码<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup></p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">import</span> warnings</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AHP</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, criteria, b)</span>:</span></span><br><span class="line">        self.RI = (<span class="number">0</span>, <span class="number">0</span>, <span class="number">0.58</span>, <span class="number">0.9</span>, <span class="number">1.12</span>, <span class="number">1.24</span>, <span class="number">1.32</span>, <span class="number">1.41</span>, <span class="number">1.45</span>, <span class="number">1.49</span>)</span><br><span class="line">        self.criteria = criteria</span><br><span class="line">        self.b = b</span><br><span class="line">        self.num_criteria = criteria.shape[<span class="number">0</span>]</span><br><span class="line">        self.num_project = b[<span class="number">0</span>].shape[<span class="number">0</span>]</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">cal_weights</span><span class="params">(self, input_matrix)</span>:</span></span><br><span class="line">        input_matrix = np.array(input_matrix)</span><br><span class="line">        n, n1 = input_matrix.shape</span><br><span class="line">        <span class="keyword">assert</span> n == n1, <span class="string">'不是一个方阵'</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(n):</span><br><span class="line">            <span class="keyword">for</span> j <span class="keyword">in</span> range(n):</span><br><span class="line">                <span class="keyword">if</span> np.abs(input_matrix[i, j] * input_matrix[j, i] - <span class="number">1</span>) &gt; <span class="number">1e-7</span>:</span><br><span class="line">                    <span class="keyword">raise</span> ValueError(<span class="string">'不是反互对称矩阵'</span>)</span><br><span class="line"></span><br><span class="line">        eigenvalues, eigenvectors = np.linalg.eig(input_matrix)</span><br><span class="line"></span><br><span class="line">        max_idx = np.argmax(eigenvalues)</span><br><span class="line">        max_eigen = eigenvalues[max_idx].real</span><br><span class="line">        eigen = eigenvectors[:, max_idx].real</span><br><span class="line">        eigen = eigen / eigen.sum()</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> n &gt; <span class="number">9</span>:</span><br><span class="line">            CR = <span class="literal">None</span></span><br><span class="line">            warnings.warn(<span class="string">'无法判断一致性'</span>)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            CI = (max_eigen - n) / (n - <span class="number">1</span>)</span><br><span class="line">            CR = CI / self.RI[n]</span><br><span class="line">        <span class="keyword">return</span> max_eigen, CR, eigen</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">run</span><span class="params">(self)</span>:</span></span><br><span class="line">        max_eigen, CR, criteria_eigen = self.cal_weights(self.criteria)</span><br><span class="line">        print(<span class="string">'准则层：最大特征值&#123;:&lt;5f&#125;,CR=&#123;:&lt;5f&#125;,检验&#123;&#125;通过'</span>.format(max_eigen, CR, <span class="string">''</span> <span class="keyword">if</span> CR &lt; <span class="number">0.1</span> <span class="keyword">else</span> <span class="string">'不'</span>))</span><br><span class="line">        print(<span class="string">'准则层权重=&#123;&#125;\n'</span>.format(criteria_eigen))</span><br><span class="line"></span><br><span class="line">        max_eigen_list, CR_list, eigen_list = [], [], []</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> self.b:</span><br><span class="line">            max_eigen, CR, eigen = self.cal_weights(i)</span><br><span class="line">            max_eigen_list.append(max_eigen)</span><br><span class="line">            CR_list.append(CR)</span><br><span class="line">            eigen_list.append(eigen)</span><br><span class="line"></span><br><span class="line">        pd_print = pd.DataFrame(eigen_list,</span><br><span class="line">                                index=[<span class="string">'准则'</span> + str(i) <span class="keyword">for</span> i <span class="keyword">in</span> range(self.num_criteria)],</span><br><span class="line">                                columns=[<span class="string">'方案'</span> + str(i) <span class="keyword">for</span> i <span class="keyword">in</span> range(self.num_project)],</span><br><span class="line">                                )</span><br><span class="line">        pd_print.loc[:, <span class="string">'最大特征值'</span>] = max_eigen_list</span><br><span class="line">        pd_print.loc[:, <span class="string">'CR'</span>] = CR_list</span><br><span class="line">        pd_print.loc[:, <span class="string">'一致性检验'</span>] = pd_print.loc[:, <span class="string">'CR'</span>] &lt; <span class="number">0.1</span></span><br><span class="line">        print(<span class="string">'方案层'</span>)</span><br><span class="line">        print(pd_print)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 目标层</span></span><br><span class="line">        obj = np.dot(criteria_eigen.reshape(<span class="number">1</span>, <span class="number">-1</span>), np.array(eigen_list))</span><br><span class="line">        print(<span class="string">'\n目标层'</span>, obj)</span><br><span class="line">        print(<span class="string">'最优选择是方案&#123;&#125;'</span>.format(np.argmax(obj)))</span><br><span class="line">        <span class="keyword">return</span> obj</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    <span class="comment"># 准则重要性矩阵</span></span><br><span class="line">    criteria = np.array([[<span class="number">1</span>, <span class="number">2</span>, <span class="number">7</span>, <span class="number">5</span>, <span class="number">5</span>],</span><br><span class="line">                         [<span class="number">1</span> / <span class="number">2</span>, <span class="number">1</span>, <span class="number">4</span>, <span class="number">3</span>, <span class="number">3</span>],</span><br><span class="line">                         [<span class="number">1</span> / <span class="number">7</span>, <span class="number">1</span> / <span class="number">4</span>, <span class="number">1</span>, <span class="number">1</span> / <span class="number">2</span>, <span class="number">1</span> / <span class="number">3</span>],</span><br><span class="line">                         [<span class="number">1</span> / <span class="number">5</span>, <span class="number">1</span> / <span class="number">3</span>, <span class="number">2</span>, <span class="number">1</span>, <span class="number">1</span>],</span><br><span class="line">                         [<span class="number">1</span> / <span class="number">5</span>, <span class="number">1</span> / <span class="number">3</span>, <span class="number">3</span>, <span class="number">1</span>, <span class="number">1</span>]])</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 对每个准则，方案优劣排序</span></span><br><span class="line">    b1 = np.array([[<span class="number">1</span>, <span class="number">1</span> / <span class="number">3</span>, <span class="number">1</span> / <span class="number">8</span>], [<span class="number">3</span>, <span class="number">1</span>, <span class="number">1</span> / <span class="number">3</span>], [<span class="number">8</span>, <span class="number">3</span>, <span class="number">1</span>]])</span><br><span class="line">    b2 = np.array([[<span class="number">1</span>, <span class="number">2</span>, <span class="number">5</span>], [<span class="number">1</span> / <span class="number">2</span>, <span class="number">1</span>, <span class="number">2</span>], [<span class="number">1</span> / <span class="number">5</span>, <span class="number">1</span> / <span class="number">2</span>, <span class="number">1</span>]])</span><br><span class="line">    b3 = np.array([[<span class="number">1</span>, <span class="number">1</span>, <span class="number">3</span>], [<span class="number">1</span>, <span class="number">1</span>, <span class="number">3</span>], [<span class="number">1</span> / <span class="number">3</span>, <span class="number">1</span> / <span class="number">3</span>, <span class="number">1</span>]])</span><br><span class="line">    b4 = np.array([[<span class="number">1</span>, <span class="number">3</span>, <span class="number">4</span>], [<span class="number">1</span> / <span class="number">3</span>, <span class="number">1</span>, <span class="number">1</span>], [<span class="number">1</span> / <span class="number">4</span>, <span class="number">1</span>, <span class="number">1</span>]])</span><br><span class="line">    b5 = np.array([[<span class="number">1</span>, <span class="number">4</span>, <span class="number">1</span> / <span class="number">2</span>], [<span class="number">1</span> / <span class="number">4</span>, <span class="number">1</span>, <span class="number">1</span> / <span class="number">4</span>], [<span class="number">2</span>, <span class="number">4</span>, <span class="number">1</span>]])</span><br><span class="line"></span><br><span class="line">    b = [b1, b2, b3, b4, b5]</span><br><span class="line">    a = AHP(criteria, b).run()</span><br></pre></td></tr></table></figure>
-<h2 id="层次分析法与控制变量法"><a class="header-anchor" href="#层次分析法与控制变量法">¶</a>层次分析法与控制变量法</h2>
-<p>我们的任务是选择工作，最后使得我们满意，直接选择我们当然一头雾水。所以我们设立一些准则，然后对这些准则对于目标的重要性排序。</p>
-<p>这又有点像概率图模型，只是赋权的方法，是相互比较的方法。</p>
-<h2 id="选择困难者的福音？"><a class="header-anchor" href="#选择困难者的福音？">¶</a>选择困难者的福音？</h2>
-<p>层次分析法对人们的思维过程进行了加工整理，提出了一套系统分析问题的方法，为科学管理和决策提供了较有说服力的依据。</p>
-<p>在应用层次分析法研究问题时，遇到的主要困难有两个:<br>
-(1) 如何根据实际情况抽象出较为贴切的层次结构;<br>
-(2) 如何将某些定性的量作比较接近实际定量化处理。</p>
-<p>层次分析法的其局限性<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup>：<br>
-(1) 它在很大程度上依赖于人们的经验，主观因素的影响很大，它至多只能排除思维过程中的严重非一致性，却无法排除决策者个人可能存在的严重片面性。<br>
-(2) 比较、 判断过程较为粗糙，不能用于精度要求较高的决策问题。</p>
-<p>所以，AHP 至多只能算是一种半定量(或定性与定量结合)的方法。
-本文仅供参考，不负法律责任，哈哈。</p>
-<h2 id="参考"><a class="header-anchor" href="#参考">¶</a>参考</h2>
-<hr class="footnotes-sep">
-<section class="footnotes">
-<ol class="footnotes-list">
-<li id="fn1" class="footnote-item"><p>幼鹰me 知乎 <a href="https://zhuanlan.zhihu.com/p/101505929" target="_blank" rel="noopener">层次分析法原理与Python实现</a> <a href="#fnref1" class="footnote-backref">↩︎</a></p>
-</li>
-<li id="fn2" class="footnote-item"><p>司守奎《数学建模算法与程序》第八章 层次分析法 P167 <a href="#fnref2" class="footnote-backref">↩︎</a></p>
-</li>
-</ol>
-</section>
-]]></content>
-      <categories>
-        <category>数学</category>
-      </categories>
-      <tags>
-        <tag>数学</tag>
-        <tag>层次分析法</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>「202303月度汇报」ttrss</title>
     <url>/public/2023/03/15/test/202303/</url>
     <content><![CDATA[<p>total: 6</p>
@@ -2681,6 +2206,80 @@ markdate:2023-12-25 04:16:04.061410</p>
       </tags>
   </entry>
   <entry>
+    <title>「转」九张图一览 Linux 性能工具 全景图</title>
+    <url>/public/2022/12/11/linux/linux_tools/</url>
+    <content><![CDATA[<h2 id="前言"><a class="header-anchor" href="#前言">¶</a>前言</h2>
+<p>当今时代，绝大多数企业的应用都是运行在 Linux 操作系统上，所以对应用进行性能诊断和性能优化时，离不开 Linux 的各种性能观测工具和性能优化工具。</p>
+<p>笔者使用过的常见的 Linux 性能观测和性能优化工具有：</p>
+<ul>
+<li>top/uptime</li>
+<li>ps/pstree</li>
+<li>df/du/free/lsblk</li>
+<li>ip/ifconfig/ping/telnet</li>
+<li>route/dig/nslookup</li>
+<li>lsof/netstat/ss</li>
+<li>tcpdump/tshark/wireshark</li>
+<li>netstat/vmstat/iostat/pidstat/dstat/mpstat</li>
+<li>sar/sysctl/ethtool</li>
+</ul>
+<p>最近在拜读国际著名的 LINUX 性能专家 Brendan Gregg 的个人博客和技术书籍，摘抄了如下九张图，一览 Linux 性能工具全景图，大家共勉！</p>
+<a id="more"></a>
+<h2 id="2-Linux-性能工具全景图"><a class="header-anchor" href="#2-Linux-性能工具全景图">¶</a><strong>2. Linux 性能工具全景图</strong></h2>
+<ul>
+<li>linux performance observability tools</li>
+</ul>
+<p><img src="/public/2022/12/11/linux/linux_tools/v2-2eadd97c53a3f20f255394c3d90ea914_r.jpg" alt></p>
+<ul>
+<li>linux static performance tools</li>
+</ul>
+<p><img src="/public/2022/12/11/linux/linux_tools/v2-20032bac53c856c5733259eece5c2f76_r.jpg" alt></p>
+<ul>
+<li>linux performance benchmark tools</li>
+</ul>
+<p><img src="/public/2022/12/11/linux/linux_tools/v2-de23423f2eb9deb5410b7128c933f9a9_r.jpg" alt></p>
+<ul>
+<li>linux performance tuning tools</li>
+</ul>
+<p><img src="/public/2022/12/11/linux/linux_tools/v2-cdf37de145763b762ba5af1a620f9686_r.jpg" alt></p>
+<ul>
+<li>linux performance observability: sar</li>
+</ul>
+<p><img src="/public/2022/12/11/linux/linux_tools/v2-eee71a6bf3865367741137da03031411_r.jpg" alt></p>
+<ul>
+<li>linux performance observability: perf-tools</li>
+</ul>
+<p><img src="/public/2022/12/11/linux/linux_tools/v2-1c0134fefbb04597db98ae455a40fad5_r.jpg" alt></p>
+<ul>
+<li><a href="https://www.zhihu.com/search?q=linux%20bcc&amp;search_source=Entity&amp;hybrid_search_source=Entity&amp;hybrid_search_extra=%7B%22sourceType%22%3A%22answer%22%2C%22sourceId%22%3A2795830055%7D" target="_blank" rel="noopener">linux bcc</a>/BPF Tracing tools</li>
+</ul>
+<p><img src="/public/2022/12/11/linux/linux_tools/v2-ffe70303f4d64828ca931d987b12a6d8_r.jpg" alt></p>
+<ul>
+<li>bpftrace/eBPF Tools</li>
+</ul>
+<p><img src="/public/2022/12/11/linux/linux_tools/v2-5985d44e43738933c0b54c89cc20ec09_r.jpg" alt></p>
+<ul>
+<li>BPF Performance Tools: Linux System and Application Observability</li>
+</ul>
+<p><img src="/public/2022/12/11/linux/linux_tools/v2-0f53016fa1d993ffbbf6fc520e318784_r.jpg" alt></p>
+<h2 id="后记"><a class="header-anchor" href="#后记">¶</a>后记</h2>
+<p>更多 LINUX 性能资料，大家可以访问大师的个人网站和和技术书籍</p>
+<ul>
+<li><a href="https://www.brendangregg.com/" target="_blank" rel="noopener">https://www.brendangregg.com/</a></li>
+<li>《性能之巅：洞悉系统、企业与云计算》（《Systems Performance: Enterprise and the Cloud, 2nd Edition (2020)》）</li>
+<li>《洞悉 Linux 系统和应用性能》（《BPF Performance Tools》）</li>
+<li>ps: 要说 LINUX 内核近几年 (和今后几年）最引人注目的发展模块，那就是 <a href="https://www.zhihu.com/search?q=bpf&amp;search_source=Entity&amp;hybrid_search_source=Entity&amp;hybrid_search_extra=%7B%22sourceType%22%3A%22answer%22%2C%22sourceId%22%3A2795830055%7D" target="_blank" rel="noopener">bpf</a> 了，完全值得花点精力学习跟进下。</li>
+<li>如何更深入地学习 Linux？ - michaelli的回答 - 知乎
+<a href="https://www.zhihu.com/question/23564190/answer/2795830055" target="_blank" rel="noopener">https://www.zhihu.com/question/23564190/answer/2795830055</a></li>
+</ul>
+]]></content>
+      <categories>
+        <category>linux</category>
+      </categories>
+      <tags>
+        <tag>linux</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Ubuntu的优化与设置</title>
     <url>/public/2017/05/22/linux/ubuntu/</url>
     <content><![CDATA[<h1></h1>
@@ -2758,77 +2357,478 @@ markdate:2023-12-25 04:16:04.061410</p>
       </tags>
   </entry>
   <entry>
-    <title>「转」九张图一览 Linux 性能工具 全景图</title>
-    <url>/public/2022/12/11/linux/linux_tools/</url>
-    <content><![CDATA[<h2 id="前言"><a class="header-anchor" href="#前言">¶</a>前言</h2>
-<p>当今时代，绝大多数企业的应用都是运行在 Linux 操作系统上，所以对应用进行性能诊断和性能优化时，离不开 Linux 的各种性能观测工具和性能优化工具。</p>
-<p>笔者使用过的常见的 Linux 性能观测和性能优化工具有：</p>
-<ul>
-<li>top/uptime</li>
-<li>ps/pstree</li>
-<li>df/du/free/lsblk</li>
-<li>ip/ifconfig/ping/telnet</li>
-<li>route/dig/nslookup</li>
-<li>lsof/netstat/ss</li>
-<li>tcpdump/tshark/wireshark</li>
-<li>netstat/vmstat/iostat/pidstat/dstat/mpstat</li>
-<li>sar/sysctl/ethtool</li>
-</ul>
-<p>最近在拜读国际著名的 LINUX 性能专家 Brendan Gregg 的个人博客和技术书籍，摘抄了如下九张图，一览 Linux 性能工具全景图，大家共勉！</p>
+    <title>正则化「一」机器学习中的正则化</title>
+    <url>/public/2019/07/17/AI/regulation_baysian/</url>
+    <content><![CDATA[<p><strong>前言</strong>
+本<strong>正则化系列</strong>文章我们将讨论<strong>正则化技术在机器学习和深度学习的应用</strong>。本文为该系列的第一篇，主要介绍<strong>机器学习正则化的概念，原理和应用实例</strong>。</p>
+<p><a href="https://en.wikipedia.org/wiki/Regularization_(mathematics)" target="_blank" rel="noopener">正则化</a> 技术广泛应用在机器学习和深度学习算法中，本质作用是<strong>防止过拟合、提高模型泛化能力</strong>。其中过拟合的简单理解就是训练的算法模型太过复杂，模型过分考虑了当前样本的结构。</p>
+<p>在早期的机器学习领域一般只是将范数惩罚叫做正则化技术，而在深度学习领域认为，能够显著减少方差，而不过度增加偏差的策略都可以认为是正则化技术。故<strong>推广的正则化技术</strong>还有：扩增样本集、早停止、Dropout、集成学习、多任务学习、对抗训练、参数共享等。(具体见“花书 第七章 <a href="http://www.deeplearningbook.org/contents/regularization.html" target="_blank" rel="noopener">Regularization for Deep Learning</a>”），关于<strong>深度学习正则化</strong>会在下一篇正则化文章中重点分析。</p>
+<p>转载自：<a href="https://blog.csdn.net/BigData_Mining/article/details/81631249" target="_blank" rel="noopener">https://blog.csdn.net/BigData_Mining/article/details/81631249</a></p>
 <a id="more"></a>
-<h2 id="2-Linux-性能工具全景图"><a class="header-anchor" href="#2-Linux-性能工具全景图">¶</a><strong>2. Linux 性能工具全景图</strong></h2>
+<h2 id="1-多角度看机器学习正则化"><a class="header-anchor" href="#1-多角度看机器学习正则化">¶</a>1. 多角度看机器学习正则化</h2>
+<p><strong>机器学习领域正则化</strong>可以从以下三个角度进行理解：</p>
+<p><strong>(1)</strong> <strong>正则化等价于结构风险最小化，其是通过在经验风险项后加上表示模型复杂度的正则化项或惩罚项，达到选择经验风险和模型复杂度都较小的模型目的</strong>。</p>
+<p>​	<strong>经验风险</strong>：机器学习中的风险是指模型与真实解之间的误差的积累，经验风险是指使用训练出来的模型进行预测或者分类，存在多大的误差，可以简单理解为训练误差，经验风险最小化即为训练误差最小。</p>
+<p>​	<strong>结构风险</strong>：结构风险定义为经验风险与置信风险(置信是指可信程度)的和，置信风险越大，模型推广能力越差。可以简单认为结构风险是经验风险后面多加了一项表示模型复杂度的函数项，从而可以同时控制模型训练误差和测试误差，结构风险最小化即为在保证模型分类精度(经验风险)的同时，降低模型复杂度，提高泛化能力。</p>
+<p>​	<strong>公式表达</strong>
+$$
+R(f)=\frac{1}{n}\sum_{i=1}^{n}L(y_i,f(x_i)) + \lambda \Omega (f)
+\tag{1}
+$$
+​		其中，$R(f)$表示结构风险，$L(y_i,f(x_i))$表示第 $i$ 个样本的经验风险，$\Omega(f)$是表征模型复杂度的正则项，$\lambda$ 是正则化参数。根据奥姆剃刀定律，“如无必要，勿增实体”，即认为相对简单的模型泛化能力更好。而模型泛化能力强、泛化误差小，即表示模型推广能力强，通俗理解就是在训练集中训练得到的优秀模型能够很好的适用于实际测试数据，而不仅仅是减少训练误差或者测试误差。泛化误差定义如下：
+$$
+E={Bias}^2(X) + {Var}(X) +{Noise}
+\tag{2}
+$$
+​		其中，$E$ 表示泛化误差，${Bias}$ 代表偏差，${Var}$ 代表方差， ${Noise}$ 代表噪声。</p>
+<p>​	<strong>关系图</strong></p>
+<p><img src="/public/2019/07/17/AI/regulation_baysian/1563350068097.png" alt="1563350068097"></p>
+<div align="center"> Fig 1. 泛化误差与偏差和方差的关系</div>
+​		从 Fig 1 可以看出，随着训练程度加深，模型复杂度会增加，偏差减少，方差增大，而泛化误差呈现U型变化。对于一个“好的系统”通常要求误差小，正则化的作用即为适当的控制模型复杂度，从而使得**泛化误差曲线**取最小值。
+<p><strong>(2)</strong> <strong>正则化等价于带约束的目标函数中的约束项</strong></p>
+<p>以平方误差损失和L2范数为例，优化问题的数学模型如下：
+$$
+J(\theta)=\sum_{i=1}^{n}(y_i-\theta^Tx_i)^2
+\tag{3}
+$$
+$$
+{s.t.}{|| \theta ||}_2^2 \leq C\<br>
+\tag{4}
+$$</p>
+<p>针对上述约束条件的优化问题，采用拉格朗日乘积算子法可以转化为无约束化问题，即
+$$
+J(\theta)=\sum_{i=1}^{n}(y_i-w^Tx_i)^2 + \lambda({|| \theta ||}_2^2-C)
+\tag{5}
+$$</p>
+<p>由于参数 $C$ 为常数，可以忽略，故上述公式和标准的正则化 公式完全一致。</p>
+<p><strong>(3)</strong> <strong>从贝叶斯角度考虑</strong></p>
+<p>正则项等价于引入参数的模型先验概率，可以简单理解为对最大似然估计引入先验概率，从而转化为最大后验估计，其中的先验概率即对于正则项（这部分内容后面详细讲解）。</p>
+<h2 id="2-基本概念"><a class="header-anchor" href="#2-基本概念">¶</a>2 基本概念</h2>
+<p>正则化也可以成为规则化、权重衰减技术，不同的领域叫法不一样，数学上常用范数实现，例如L1和L2范数，统计学领域叫做惩罚项、罚因子。</p>
+<p>下面给出范数的数学公式，方便以后分析：</p>
+<p>​	(1) $p$ 范数：
+$$
+Lp=(\sum_{i=1}^{n}{|| x_i ||}^p)^{\frac{1}{p}}
+\tag{6}
+$$
+​	(2) $L0$ 范数：0 范数表示向量中非零元素的个数（即为其稀疏度）</p>
+<p>​	(3) $L1$ 范数：即向量元素绝对值之和，$p$ 范数取1，即为1范数
+$$
+{||x||}_1=\sum^n_1 {|| x_i || }
+\tag{7}
+$$</p>
+<p>​	(4) $L2$ 范数：即向量元素绝对值的平方和再开发，也称欧几里得距离，$p$ 范数取2，即为2范数
+$$
+{||x||}_{2}=\sqrt{\sum^{n}_1|| x_i ||^2}
+\tag{8}
+$$</p>
+<p>​	(5) $\infty $ 范数：即所有向量元素的绝对值中的最大值，$p$ 范数取 $\infty $，即为 $\infty $ 范数
+$$
+{||x  ||}_{\infty }=\underset{i}{\max}{\left | x_i \right |}
+\tag{9}
+$$</p>
+<p>​	(6) $-\infty $ 范数：即所有向量元素绝对值中的最小值，$p$ 范数取$-\infty $，即为 $-\infty $ 范数
+$$
+{||x  ||}_{-\infty }=\underset{i}{\min}{\left | x_i \right |}
+\tag{10}
+$$
+<strong>图形描述</strong></p>
+<p>​		从 Fig 2、Fig 3 图可以看出：q(p)越小，曲线越贴近坐标轴，q(p)越大，曲线越远离坐标轴，并且棱角越明显，当q(p)取0时候，是完全和坐标轴贴合，当q(p)取无穷的时候，呈现正方体形状。同时也可以看出，采用不同的范数作为正则项，会得到完全不同的算法模型结果，故而对于不同要求的模型，应该采用不同的范数作为正则项。</p>
+<p><img src="/public/2019/07/17/AI/regulation_baysian/1563354053269.png" alt="1563354053269"></p>
+<div align="center"> Fig 2. 向量长度为2维的范数约束</div>
+![1563354456894](regulation_baysian/1563354456894.png)
+<div align="center"> Fig 3. 向量长度为3维的范数约束</div>
+## 3 深度理解
+<p>​		为了更好的理解正则化技术原理，下面从4个方面进行深度分析，希望对大家理解有帮助。</p>
+<h3 id="3-1-简单数值假设分析法"><a class="header-anchor" href="#3-1-简单数值假设分析法">¶</a>3.1 简单数值假设分析法</h3>
+<p>​		此处以L2范数讲解，下面的各图形来自吴恩达的机器学习课程。</p>
+<p><img src="/public/2019/07/17/AI/regulation_baysian/image-20190619002115576.png" alt="image-20190619002115576"></p>
+<div align="center"> Fig 4. 不同参数下的曲线拟合结果</div>
+​		左边的曲线拟合是欠拟合，中间的曲线拟合是刚好合适，右边的曲线拟合是过拟合。对于右边的拟合曲线，有
+$$
+h_{\theta}(x)={\theta}_0+{\theta}_0 x_1 +{\theta}_2 x_2^2 +{\theta}_3 x_3^3 +{\theta}_4 x_4^4
+\tag{11}
+$$
+​		从上式可以看出，由于$\theta_3$和$\theta_4$对应了高阶，导致拟合曲线是4阶曲线，出现了过拟合。正则化的目的为适当缩减$\theta_3$和$\theta_4$的值，例如都为0.0001，则上述曲线本质上等价与
+$$
+h_{\theta}(x)={\theta}_0 + {\theta}_1 x_1 +{\theta}_2 x_2^2
+\tag{12}
+$$
+​		也就是变成了中间的刚好合适的拟合曲线。对于$\theta_3$ 和$\theta_4$增加 L2 正则项后的代价函数表达式为：
+$$
+J(\theta)= \underset{\theta}{\min}\frac{1}{n}\sum_{i=1}^{n}((h_{\theta}(x_i)-y_i)+1000{\theta}_3^2 + 1000 {\theta}_4^2)
+\tag{13}
+$$
+​		从上式可以看出，$\theta_3^2$ 和 $\theta_4^2$ 均大于 0，其乘上了1000，要 $J(\theta)$ 是最小，则会迫使模型学习到的$\theta_3$ 和 $\theta_4$ 会非常小，因为只有在$\theta_3$ 和 $\theta_4$ 会非常小的情况下整个代价函数值才会取的较小值。在实际开发中，是对所有参数进行正则化，为了使代价函数尽可能的小，所有的参数 $\theta$ 的值（不包括 $\theta_0$）都会在一定程度上减小，但是减小程度会不一样，从而实现了权重衰减、简化模型复杂度的作用。
+<h3 id="3-2-图形分析法"><a class="header-anchor" href="#3-2-图形分析法">¶</a>3.2 图形分析法</h3>
+<p>​		此处采用L1和L2范数讲解：
+<strong>(1) L2 范数正则</strong>
+$$
+J(\beta)=\sum_{i=1}^{n}(y_i-{\beta}^T x_i)^2 + \lambda {|| {\beta} ||}_2^2
+\tag{14}
+$$
+<img src="/public/2019/07/17/AI/regulation_baysian/1563366078400.png" alt="1563366078400"></p>
+<div align="center"> Fig 5. L2 范数与代价函数的寻优图示</div>
+​		在 Fig 5 中，蓝色的圆形空间表示 L2 范数空间，设为 $\beta_1^2 + \beta_2^2 = r^2$，可以看出，当 $r$ 从 0 逐渐增大时候，该圆形也逐渐增大，红色的线表示原始代价函数解空间即 $\sum_{i=1}^{n}(y_i-\beta^T x_i)^2$，此处为了方便绘图，设参数只有2维。红色圆环上的任何一点都表示一个可行解即代表一组$\beta_1$、$\beta_2$，其中任何一个红色圆环上面的$\beta_1$，$\beta_2$对应的代价函数值一样（可以简单理解为等值线），$\hat{\beta}$ 代表最佳解空间。
+<h2 id="4-贝叶斯角度分析"><a class="header-anchor" href="#4-贝叶斯角度分析">¶</a>4. 贝叶斯角度分析</h2>
+<p>​		以L1和L2范数为例，所得结论可以推广到P范数中，首先需要知道：整个最优化问题从贝叶斯观点来看是一种贝叶斯最大后验估计，其中正则化项对应后验估计中的先验信息，损失函数对应后验估计中的似然函数，两者的乘积即对应贝叶斯最大后验估计的形式。针对L1和L2范数还有结论：<strong>L2 范数相当于给模型参数设置一个协方差为1/alpha的零均值高斯先验分布，L1 范数相当于给模型参数 设置一个参数为1/alpha 拉普拉斯先验分布</strong>。</p>
+<p>​		为了讲清楚上述结论，需要具备几点前置知识点：(1) 高斯分布和拉普拉斯分布的定义和形状；(2) 贝叶斯定理；(3) 最大似然估计；(4) 最大后验估计。下面我对这4个知识点进行解释。</p>
+<p><strong>(1)</strong> <strong>高斯分布和拉普拉斯分布</strong></p>
+<p><img src="/public/2019/07/17/AI/regulation_baysian/0.png" alt="0?wx_fmt=png"></p>
+<p><img src="/public/2019/07/17/AI/regulation_baysian/0-20190610163845194.png" alt="0?wx_fmt=png"></p>
+<p><strong>(2)</strong> <strong>最大似然估计</strong></p>
+<p><img src="/public/2019/07/17/AI/regulation_baysian/0-20190610163845276.png" alt="0?wx_fmt=png"></p>
+<p>​		如果上述公式不能理解，请各位读者去复习一下大学课程《概率论与数理统计》中的参数估计章节，为了更方便理解，下面举一个例子：假设我要统计出整个大学内所有同学的身高分布情况，设全校一共20000人，数量庞大，所有人都去问一遍不太靠谱，所以我打算采用抽样方法来估计，假设我已经知道身高分布服从高斯分布，但是我不知道高斯分布中的均值和方差参数，现在我打算采用最大似然估计方法来确定这两个参数。首先需要明确，全校20000即为总体X，我随机从各个班抽取10名同学，假设一共抽了2000个同学，那么2000同学就构成了样本空间，由于每个样本的概率密度函数已知，则很容易写出似然函数，对数求导即可求解参数。</p>
+<p><strong>(3)</strong> <strong>最大后验估计</strong></p>
+<p><img src="/public/2019/07/17/AI/regulation_baysian/0-20190610163845259.png" alt="0?wx_fmt=png"></p>
+<p><img src="/public/2019/07/17/AI/regulation_baysian/0-20190610163845297.png" alt="0?wx_fmt=png"></p>
+<p><img src="/public/2019/07/17/AI/regulation_baysian/0-20190610163845289.png" alt="0?wx_fmt=png"></p>
+<h2 id="5-例子"><a class="header-anchor" href="#5-例子">¶</a>5. 例子</h2>
+<h3 id="5-1-逻辑回归"><a class="header-anchor" href="#5-1-逻辑回归">¶</a>5.1 逻辑回归</h3>
+<p>​		二分类逻辑回归使用Sigmoid作为决策函数进行分类，该函数可以将任意的输入映射到[0,1]区间，当预测结果小于0.5，则表示负类，当预测结果大于0.5.则表示正类，其模型本质是求最大似然估计，具体求解似然函数通常使用梯度下降法，而前面说过：最大似然估计法没有考虑训练集以外的因素，很容易造成过拟合，故而逻辑回归一般采用L2范数进行正则化操作，Sigmoid函数定义和图形如下：</p>
+<p><img src="/public/2019/07/17/AI/regulation_baysian/0.jpeg" alt="0?wx_fmt=png"></p>
+<h3 id="5-2-岭回归-Ridge-Regression"><a class="header-anchor" href="#5-2-岭回归-Ridge-Regression">¶</a>5.2 岭回归(Ridge Regression)</h3>
+<p>​		岭回归本质上是针对线性回归问题引入了L2范数正则，通过缩减回归系数避免过拟合问题，最先用来处理特征数多于样本数的情况(高维小样本问题)，现在也用于在估计中加人偏差，从而得到更好的估计，加了正则化后的代价函数如下：</p>
+<p><img src="/public/2019/07/17/AI/regulation_baysian/0-20190610174921016.png" alt="0?wx_fmt=png"></p>
+<h3 id="5-3-Lasso-回归"><a class="header-anchor" href="#5-3-Lasso-回归">¶</a>5.3 Lasso 回归</h3>
+<p>​		拉索回归(lasso回归)本质上是针对线性回归问题引入了L1范数正则，通过缩减回归系数避免过拟合问题，其不同于L2范数，其可以将某些系数缩减为0即所谓的具备稀疏性(稀疏性的好处是简化计算、容易理解模型、减少存储空间、不容易出现过拟合等等)，加了正则化后的代价函数如下：</p>
+<p><img src="/public/2019/07/17/AI/regulation_baysian/0-20190610174920968.png" alt="0?wx_fmt=png"></p>
+<p>​		其中，参数函数和岭回归中相同。L1范数罚有一个问题：由于|X|函数在0处不可导，故而直接使用最小二乘法、梯度下降法等方法均失效，但是由于其为第一类间断点中的可去间断点，可以通过补充该点的定义解决，通常，对于线性回归中的lasso回归可以采用近似的前向逐步回归替代。</p>
+<h3 id="5-4-SVM"><a class="header-anchor" href="#5-4-SVM">¶</a>5.4 SVM</h3>
+<p>​		支持向量机SVM优化目的为寻找一个超平面，使得正负样本能够以最大间隔分离开，从而得到更好的泛化性能，其通过引入核函数来将低维线性不可分的样本映射到高维空间从而线性可分，通过引入惩罚参数C(类似于正则化参数)来对错分样本进行惩罚，从而减少模型复杂度，提高泛化能力，其优化目标如下：</p>
+<p><img src="/public/2019/07/17/AI/regulation_baysian/0-20190610174921029.png" alt="0?wx_fmt=png"></p>
+<p>​		大家如果不知道上面公式的推导，不用紧张，对于本次内容不是重点，只需要关注后面正则项部分，惩罚参数C作用和正则化参数作用一致，只是反相关而已。需要明白以下结论：</p>
+<p>​		<strong>(1)</strong> C越大，正则化参数越小，表示对分错样本的惩罚程度越大，正则化作用越小，偏差越小，方差越大，越容易出现过拟合(通俗理解，原本将低维空间映射到5维空间正好线性可分，但是由于惩罚过于严重，任何一个样本分错了都不可原谅，结果系统只能不断提高维数来拟合样本，假设为10维，最终导致映射维数过高，出现过拟合样本现象，数学上称为VC维较大)；</p>
+<p>​		<strong>(2)</strong> C越小，正则化参数越大，表示对分错样本的惩罚程度越小，正则化作用越大，偏差越大，方差越小，越容易出现欠拟合(通俗理解，原本将低维空间映射到5维空间正好线性可分，但是由于惩罚过小，分错了好多样本都可以理解，比较随意，结果系统也采用简化版来拟合样本，假设为3维，最终导致映射维数过低，出现欠拟合样本现象，数学上称为VC维较小)。</p>
+<h2 id="6-总结"><a class="header-anchor" href="#6-总结">¶</a>6. 总结</h2>
+<p>根本目的本质：防止过拟合，提高模型泛化能力。</p>
+<p>正则化技术分类：
+<strong>狭义上</strong>（不同地方叫法不同）</p>
 <ul>
-<li>linux performance observability tools</li>
+<li>在早期的机器学习领域一般只是将范数惩罚叫做正则化技术</li>
+<li>规则化、权重衰减</li>
+<li>从贝叶斯角度考虑，正则项等价于引入参数的模型先验概率</li>
 </ul>
-<p><img src="/public/2022/12/11/linux/linux_tools/v2-2eadd97c53a3f20f255394c3d90ea914_r.jpg" alt></p>
-<ul>
-<li>linux static performance tools</li>
-</ul>
-<p><img src="/public/2022/12/11/linux/linux_tools/v2-20032bac53c856c5733259eece5c2f76_r.jpg" alt></p>
-<ul>
-<li>linux performance benchmark tools</li>
-</ul>
-<p><img src="/public/2022/12/11/linux/linux_tools/v2-de23423f2eb9deb5410b7128c933f9a9_r.jpg" alt></p>
-<ul>
-<li>linux performance tuning tools</li>
-</ul>
-<p><img src="/public/2022/12/11/linux/linux_tools/v2-cdf37de145763b762ba5af1a620f9686_r.jpg" alt></p>
-<ul>
-<li>linux performance observability: sar</li>
-</ul>
-<p><img src="/public/2022/12/11/linux/linux_tools/v2-eee71a6bf3865367741137da03031411_r.jpg" alt></p>
-<ul>
-<li>linux performance observability: perf-tools</li>
-</ul>
-<p><img src="/public/2022/12/11/linux/linux_tools/v2-1c0134fefbb04597db98ae455a40fad5_r.jpg" alt></p>
-<ul>
-<li><a href="https://www.zhihu.com/search?q=linux%20bcc&amp;search_source=Entity&amp;hybrid_search_source=Entity&amp;hybrid_search_extra=%7B%22sourceType%22%3A%22answer%22%2C%22sourceId%22%3A2795830055%7D" target="_blank" rel="noopener">linux bcc</a>/BPF Tracing tools</li>
-</ul>
-<p><img src="/public/2022/12/11/linux/linux_tools/v2-ffe70303f4d64828ca931d987b12a6d8_r.jpg" alt></p>
-<ul>
-<li>bpftrace/eBPF Tools</li>
-</ul>
-<p><img src="/public/2022/12/11/linux/linux_tools/v2-5985d44e43738933c0b54c89cc20ec09_r.jpg" alt></p>
-<ul>
-<li>BPF Performance Tools: Linux System and Application Observability</li>
-</ul>
-<p><img src="/public/2022/12/11/linux/linux_tools/v2-0f53016fa1d993ffbbf6fc520e318784_r.jpg" alt></p>
-<h2 id="后记"><a class="header-anchor" href="#后记">¶</a>后记</h2>
-<p>更多 LINUX 性能资料，大家可以访问大师的个人网站和和技术书籍</p>
-<ul>
-<li><a href="https://www.brendangregg.com/" target="_blank" rel="noopener">https://www.brendangregg.com/</a></li>
-<li>《性能之巅：洞悉系统、企业与云计算》（《Systems Performance: Enterprise and the Cloud, 2nd Edition (2020)》）</li>
-<li>《洞悉 Linux 系统和应用性能》（《BPF Performance Tools》）</li>
-<li>ps: 要说 LINUX 内核近几年 (和今后几年）最引人注目的发展模块，那就是 <a href="https://www.zhihu.com/search?q=bpf&amp;search_source=Entity&amp;hybrid_search_source=Entity&amp;hybrid_search_extra=%7B%22sourceType%22%3A%22answer%22%2C%22sourceId%22%3A2795830055%7D" target="_blank" rel="noopener">bpf</a> 了，完全值得花点精力学习跟进下。</li>
-<li>如何更深入地学习 Linux？ - michaelli的回答 - 知乎
-<a href="https://www.zhihu.com/question/23564190/answer/2795830055" target="_blank" rel="noopener">https://www.zhihu.com/question/23564190/answer/2795830055</a></li>
-</ul>
+<p><strong>广义上</strong>：
+能够显著减少方差，而不过度增加偏差的策略都可以认为是正则化技术，推广的正则化技术还有：扩增样本集、早停止、Dropout、集成学习、多任务学习、对抗训练、参数共享等。</p>
+<h2 id="Reference"><a class="header-anchor" href="#Reference">¶</a>Reference</h2>
+<p><a href="https://blog.csdn.net/BigData_Mining/article/details/81631249" target="_blank" rel="noopener">正则化总结的比较好比较全面的文章</a></p>
 ]]></content>
       <categories>
-        <category>linux</category>
+        <category>机器学习</category>
+        <category>正则化</category>
       </categories>
       <tags>
-        <tag>linux</tag>
+        <tag>人工智能</tag>
+        <tag>机器学习</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Jupyter notebook的配置</title>
+    <url>/public/2017/07/03/linux/jupyter_notebook/</url>
+    <content><![CDATA[<p><strong>前言</strong>
+本文介绍jupyter notebook的安装配置过程和实用技巧。
+<a href="https://jupyter.readthedocs.io/en/latest/index.html" target="_blank" rel="noopener">jupyter.readthedocs教程</a></p>
+<a id="more"></a>
+<h2 id="1-安装与配置"><a class="header-anchor" href="#1-安装与配置">¶</a>1 安装与配置</h2>
+<h3 id="1-1-安装-jupyter"><a class="header-anchor" href="#1-1-安装-jupyter">¶</a>1.1 安装 jupyter</h3>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">conda install jupyter</span><br><span class="line"><span class="comment"># pip install -i https://pypi.tuna.tsinghua.edu.cn/simple jupyter</span></span><br><span class="line"><span class="comment"># pip install jupyter -y</span></span><br></pre></td></tr></table></figure>
+<h3 id="1-2-修改配置文件"><a class="header-anchor" href="#1-2-修改配置文件">¶</a>1.2 修改配置文件</h3>
+<ul>
+<li>生成配置文件</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">jupyter notebook --generate-config</span><br><span class="line">vim ~/.jupyter/jupyter_notebook_config.py</span><br></pre></td></tr></table></figure>
+<ul>
+<li>修改配置文件内容</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">c.NotebookApp.ip = <span class="string">'0.0.0.0'</span></span><br><span class="line">c.NotebookApp.port = <span class="number">8018</span></span><br><span class="line"><span class="comment"># 设置密码</span></span><br><span class="line">c.NotebookApp.password = <span class="string">u'sha1:bcd259ccf...your hashed password here'</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>Tip: 利用ipython 生成密码</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&gt; In [1]: from IPython.lib import passwd</span><br><span class="line">&gt; In [2]: passwd()</span><br><span class="line">&gt;   Enter password:</span><br><span class="line">&gt;   Verify password:</span><br><span class="line">&gt;   Out[2]: &apos;sha1:67xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&apos;</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<p>我选用的是password密码登陆jupyter的方案，其他的密码登陆方案见 <a href="https://zhuanlan.zhihu.com/p/23110830" target="_blank" rel="noopener">link</a></p>
+<blockquote>
+<p>新的方法
+from notebook.auth import passwd; passwd()</p>
+</blockquote>
+<h3 id="1-3-安装插件管理"><a class="header-anchor" href="#1-3-安装插件管理">¶</a>1.3 安装插件管理</h3>
+<p>jupyter_contrib_nbextensions 为 jupyter notebook 扩展插件管理器，下面简称nbextensions。</p>
+<p>nbextensions的github <a href="https://github.com/ipython-contrib/jupyter_contrib_nbextensions" target="_blank" rel="noopener">repo</a>
+nbextensions的教程<a href="https://jupyter-contrib-nbextensions.readthedocs.io/en/latest/" target="_blank" rel="noopener">nbextensions_manual_readthedocs</a></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 用conda安装</span></span><br><span class="line">conda install jupyter</span><br><span class="line">conda install -c conda-forge jupyter_contrib_nbextensions</span><br><span class="line"></span><br><span class="line"><span class="comment"># pip安装</span></span><br><span class="line">pip install jupyter_contrib_nbextensions</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使能</span></span><br><span class="line">jupyter contrib nbextension install</span><br></pre></td></tr></table></figure>
+<p>我启用的一些插件</p>
+<table>
+<thead>
+<tr>
+<th>plugins</th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Table of Contents (2)</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Freeze</td>
+<td>比较好的一个插件，可以用来冻住cell</td>
+<td></td>
+</tr>
+<tr>
+<td>nbTranslate</td>
+<td>这个插件利用Google翻译cell很好用</td>
+<td><a href="https://github.com/jfbercher/jupyter_nbTranslate/blob/master/languages.js" target="_blank" rel="noopener">support languages</a></td>
+</tr>
+<tr>
+<td>ExecuteTime</td>
+<td>显示执行时间</td>
+<td></td>
+</tr>
+<tr>
+<td>Ruler</td>
+<td>代码标尺</td>
+<td></td>
+</tr>
+<tr>
+<td>Autopep8</td>
+<td>代码美化</td>
+<td></td>
+</tr>
+<tr>
+<td>Scratchpad</td>
+<td>代码测试</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>其他花样的配置</p>
+<p><a href="https://zhuanlan.zhihu.com/p/74950682" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/74950682</a></p>
+<h3 id="1-4-conda环境的设置"><a class="header-anchor" href="#1-4-conda环境的设置">¶</a>1.4 conda环境的设置</h3>
+<p>jupyter使用Anaconda miniconda环境需要安装的组件。
+<a href="https://repo.anaconda.com" target="_blank" rel="noopener">conda repo</a></p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 创建虚拟环境</span></span><br><span class="line">conda create -n env_name python=3.6</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> conda虚拟核组件 切换kernel</span></span><br><span class="line">conda install nb_conda_kernels</span><br></pre></td></tr></table></figure>
+<h3 id="1-5-解决界面中英文混杂"><a class="header-anchor" href="#1-5-解决界面中英文混杂">¶</a>1.5 解决界面中英文混杂</h3>
+<img src="/public/2017/07/03/linux/jupyter_notebook/image-20200413125705473.png" alt="image-20200413125705473" style="zoom:50%;">
+<p>如图，jupyter 界面中中英文混杂，解决方法为将界面文字中文切换成英文。</p>
+<p>原理：让jupyter就找不到他的中文配置文件夹。</p>
+<p>找到notebook的汉化文件夹的路径，比如<code>~/miniconda3/lib/python3.6/site-packages/notebook/i18n/zh_CN</code>。将其重命名如加个下划线作为后缀<code>zh_CN_old</code>，重启jupyter就行了。</p>
+<p>为了方便，我作了个脚本自动找<code>notebook/i18n/zh_CN</code>位置并改名此文件夹，如下。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> shutil</span><br><span class="line"><span class="keyword">from</span> distutils.sysconfig <span class="keyword">import</span> get_python_lib</span><br><span class="line"><span class="comment"># 获取site-package包的位置</span></span><br><span class="line">path_zh=get_python_lib()+<span class="string">'/notebook/i18n/zh_CN'</span></span><br><span class="line">path_zh_old=get_python_lib()+<span class="string">'/notebook/i18n/zh_CN_old'</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 将 notebook/i18n/zh_CN 改为 notebook/i18n/zh_CN_old</span></span><br><span class="line">shutil.move(path_zh,path_zh_old)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 返回中文</span></span><br><span class="line"><span class="comment"># shutil.move(path_zh_old,path_zh)</span></span><br></pre></td></tr></table></figure>
+<p>重启jupyter就行了, 这样jupyter就找不到这个中文配置，返回中文改回去就行了<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup>。</p>
+<h2 id="2-使用的技巧"><a class="header-anchor" href="#2-使用的技巧">¶</a>2 使用的技巧</h2>
+<h3 id="2-1-快捷键"><a class="header-anchor" href="#2-1-快捷键">¶</a>2.1 快捷键</h3>
+<hr>
+<table>
+<thead>
+<tr>
+<th>在非激活状态即是蓝颜色的边框</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A</td>
+<td>insert cell above</td>
+</tr>
+<tr>
+<td>B</td>
+<td>insert cell below</td>
+</tr>
+<tr>
+<td>H</td>
+<td>查看帮助</td>
+</tr>
+<tr>
+<td>⌃↩(ctrl + enter)</td>
+<td>run selected cells</td>
+</tr>
+</tbody>
+</table>
+<h3 id="2-2-显示图片-视频-音频"><a class="header-anchor" href="#2-2-显示图片-视频-音频">¶</a>2.2 显示图片 视频 音频</h3>
+<p>主要是画图、显示视频和音频的方法。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 图片</span></span><br><span class="line">%%HTML</span><br><span class="line">&lt;img src=<span class="string">"xxx.jpg"</span>  alt=<span class="string">"title"</span> /&gt;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 视频</span></span><br><span class="line">%%HTML</span><br><span class="line">&lt;video width=<span class="string">"330"</span> height=<span class="string">"150"</span> controls&gt;</span><br><span class="line">&lt;source src=<span class="string">"out_all.mp4"</span> type=<span class="string">"video/mp4"</span>&gt;</span><br><span class="line">&lt;/video&gt;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 语音</span></span><br><span class="line">%%HTML</span><br><span class="line">&lt;audio src=<span class="string">"out.wav"</span> controls=<span class="string">"controls"</span>&gt;</span><br><span class="line">Your browser does <span class="keyword">not</span> support the audio element.</span><br><span class="line">&lt;/audio&gt;</span><br><span class="line"></span><br><span class="line"><span class="comment"># html t是html的字符串</span></span><br><span class="line"><span class="keyword">from</span> IPython.core.display <span class="keyword">import</span> HTML</span><br><span class="line">HTML(str(t))</span><br></pre></td></tr></table></figure>
+<h3 id="2-3-其他技巧"><a class="header-anchor" href="#2-3-其他技巧">¶</a>2.3 其他技巧</h3>
+<h4 id="修复视频文件"><a class="header-anchor" href="#修复视频文件">¶</a>修复视频文件</h4>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fix_use_ffmpeg</span><span class="params">(in_name, out_name,message=<span class="string">""</span>)</span>:</span></span><br><span class="line">    <span class="keyword">import</span> os</span><br><span class="line">    <span class="keyword">if</span> os.path.isfile(out_name):</span><br><span class="line">    os.remove(out_name)</span><br><span class="line">    cmd = <span class="string">'ffmpeg -i %s %s'</span> % (in_name, out_name)</span><br><span class="line">    log_lines = os.popen(cmd).readlines()</span><br><span class="line">    print(message,<span class="string">"ok"</span>)</span><br></pre></td></tr></table></figure>
+<h4 id="加载自己的模块文件"><a class="header-anchor" href="#加载自己的模块文件">¶</a>加载自己的模块文件</h4>
+<p>出于性能考虑，每个模块在每个解释器会话中只导入一遍。因此，如果你修改了你的模块，需要重启解释器；或者，如果你就是想交互式的测试这么一个模块，可以用 imp.reload() 重新加载，例如 <code>import imp; imp.reload(modulename)</code></p>
+<h4 id="导出pdf支持中文"><a class="header-anchor" href="#导出pdf支持中文">¶</a>导出pdf支持中文</h4>
+<p>Jupyter Notebook 输出PDF中文支持 <a href="https://www.jianshu.com/p/c3f660188766" target="_blank" rel="noopener">link</a></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> /usr/<span class="built_in">local</span>/lib/python3.6/site-packages/nbconvert/templates/latex</span><br><span class="line"></span><br><span class="line"><span class="comment"># 在里面的模版中添加，前提是安装好了texlive</span></span><br><span class="line">% add</span><br><span class="line">\usepackage&#123;ctex&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="ipynb2pdf"><a class="header-anchor" href="#ipynb2pdf">¶</a>ipynb2pdf</h4>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python3</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string">Current version of Jupyter doesn't support pdf exporting when it comes to</span></span><br><span class="line"><span class="string">russian language in the document. To fix this, current script has born.</span></span><br><span class="line"><span class="string">It requires nbconvert as long as jupyter to be installed.</span></span><br><span class="line"><span class="string">Author:     Sergey Ivanychev</span></span><br><span class="line"><span class="string">Email:      sergeyivanychev@gmail.com</span></span><br><span class="line"><span class="string">Revision:   1</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> subprocess</span><br><span class="line"></span><br><span class="line">FORMAT = <span class="string">".ipynb"</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string">TODO:   What if user has ___o.tex in current folder?</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line">TEMP_TEX = <span class="string">"___o.tex"</span></span><br><span class="line">TEMP_FOLDER = <span class="string">"/tmp"</span></span><br><span class="line">TRASH_EXTENSIONS = [<span class="string">".aux"</span>, <span class="string">".out"</span>, <span class="string">".log"</span>]</span><br><span class="line">OLD1 = <span class="string">r"\usepackage[utf8x]&#123;inputenc&#125;"</span></span><br><span class="line">NEW1 = <span class="string">r"""</span></span><br><span class="line"><span class="string">    \usepackage[utf8x]&#123;inputenc&#125;</span></span><br><span class="line"><span class="string">    \usepackage&#123;ctex&#125;</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line">REPLACE = [(OLD1, NEW1)]</span><br><span class="line">HELP = <span class="string">"""</span></span><br><span class="line"><span class="string">This script is aimed at correctly converting .ipynb to .pdf files.</span></span><br><span class="line"><span class="string">You may use it via</span></span><br><span class="line"><span class="string"># ipynb2pdf Solution.ipynb</span></span><br><span class="line"><span class="string">To get .pdf in the same directory</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">check_args</span><span class="params">(argv)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> (len(argv) &gt; <span class="number">2</span>):</span><br><span class="line">        print(<span class="string">"Please, type .ipynb filename as argument"</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span></span><br><span class="line">    <span class="keyword">if</span> (len(argv) == <span class="number">1</span>):</span><br><span class="line">        print(HELP)</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span></span><br><span class="line">    script, filename = argv</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> is_ipynb(filename):</span><br><span class="line">        print(<span class="string">"Please, type .ipynb filename as argument"</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">remove_extention</span><span class="params">(string, extention)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    Removes argumented extention from the end of the string</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    <span class="keyword">if</span> extention[<span class="number">0</span>] != <span class="string">'.'</span>:</span><br><span class="line">        extention = <span class="string">"."</span> + extention</span><br><span class="line">    <span class="keyword">if</span> string.endswith(extention):</span><br><span class="line">        string = string[<span class="number">0</span>:-len(extention)]</span><br><span class="line">    <span class="keyword">return</span> string</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">is_ipynb</span><span class="params">(filename)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> filename.endswith(<span class="string">".ipynb"</span>):</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">    <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">tex2pdf</span><span class="params">(filename, desired_name)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    Converts filename (which is tex document) to desired_name (which is pdf)</span></span><br><span class="line"><span class="string">    leaving no trash in current folder</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    base = remove_extention(filename, <span class="string">"tex"</span>)</span><br><span class="line">    output = base + <span class="string">".pdf"</span></span><br><span class="line">    ret = subprocess.call(<span class="string">"xelatex %s"</span> % filename , </span><br><span class="line">                                        shell=<span class="literal">True</span>, stdout=subprocess.PIPE)</span><br><span class="line">    <span class="keyword">for</span> ext <span class="keyword">in</span> TRASH_EXTENSIONS:</span><br><span class="line">        os.unlink(base + ext)</span><br><span class="line">    os.rename(output, desired_name)</span><br><span class="line">    <span class="keyword">return</span> ret</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">(argv)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> check_args(argv) == <span class="number">-1</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span></span><br><span class="line">    script, filename = argv</span><br><span class="line">    ret = subprocess.call(<span class="string">"jupyter nbconvert %s --to latex --output %s"</span> %</span><br><span class="line">                                            (filename, TEMP_TEX), shell=<span class="literal">True</span>,</span><br><span class="line">                                            stdout=subprocess.PIPE)</span><br><span class="line">    <span class="keyword">if</span> (ret != <span class="number">0</span>):</span><br><span class="line">        print(<span class="string">"ret = %d"</span> % ret)</span><br><span class="line">        os.unlink(TEMP_TEX)</span><br><span class="line">        print(<span class="string">"Converting to LaTeX failed. Return code: %d"</span> % ret)</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span></span><br><span class="line">    tex_file = open(TEMP_TEX, <span class="string">"r"</span>)</span><br><span class="line">    tex = tex_file.read()</span><br><span class="line">    <span class="keyword">for</span> old, new <span class="keyword">in</span> REPLACE:</span><br><span class="line">        tex = tex.replace(old, new)</span><br><span class="line">    tex_file.close()</span><br><span class="line">    os.unlink(TEMP_TEX)</span><br><span class="line">    tex_file = open(TEMP_TEX, <span class="string">"w+"</span>)</span><br><span class="line">    tex_file.write(tex)</span><br><span class="line">    tex_file.close()</span><br><span class="line">    ret = tex2pdf(TEMP_TEX, remove_extention(filename, <span class="string">".ipynb"</span>) + <span class="string">".pdf"</span>)</span><br><span class="line">    tex_file.close()</span><br><span class="line">    os.unlink(TEMP_TEX)</span><br><span class="line">    print(remove_extention(filename, <span class="string">".ipynb"</span>) + <span class="string">".pdf - DONE"</span>)</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</span><br><span class="line">    exit(main(sys.argv))</span><br></pre></td></tr></table></figure>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p><a href="https://www.zhihu.com/question/302814218/answer/1029684239" target="_blank" rel="noopener">https://www.zhihu.com/question/302814218/answer/1029684239</a> <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
+]]></content>
+      <categories>
+        <category>jupyter</category>
+      </categories>
+      <tags>
+        <tag>工具</tag>
+        <tag>Python</tag>
+        <tag>笔记应用</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>选择困难者的福音？层次分析法</title>
+    <url>/public/2021/04/02/math/math_AHP/</url>
+    <content><![CDATA[<h2 id="摘要"><a class="header-anchor" href="#摘要">¶</a>摘要</h2>
+<p>日常生活中，我们面临很多的选择，选择工作offer，选择买哪个牌子的手机，选择哪个地方旅行等等。这些选择难以定量的衡量，有很多不确定性。内心小纠结，我选择了这个，万一那个好呢，怎么办？请看层次分析法。</p>
+<p>层次分析法(Analytic Hierarchy Process，简称 AHP)是对一些较为复杂、较为模糊的问题作出决策的简易方法，它特别适用于那些难于完全定量分析的问题。它是美国运筹学家 T. L. Saaty 教授于上世纪 70 年代初期提出的一种简便、灵活而又实用的多准则决策方法。</p>
+<p>运用层次分析法建模，大体上可按下面四个步骤进行</p>
+<ul>
+<li>建立递阶层次结构模型</li>
+<li>构造出各层次中的所有判断矩阵</li>
+<li>层次单排序及一致性检验</li>
+<li>层次总排序及一致性检验。（一般不用）</li>
+</ul>
+<a id="more"></a>
+<p>让我们从offer大佬的例子开始吧！</p>
+<p>举个栗子，今年有位大学生，有三个offer，C1 C2 C3。</p>
+<p>第一步，建立层次模型。</p>
+<ul>
+<li>目标层A：找工作的目标，自己满意程度。
+<ul>
+<li>这个程度怎么计算呢？比如工作1。</li>
+</ul>
+</li>
+<li>准则层B：研究课题、发展前途、待遇、同事情况、地理位置、单位名气等等。
+<ul>
+<li>尽量列全一点，不需要排列重要顺序。</li>
+<li>小于等于9个，后面要两两拍脑袋给出相对的重要层度，给多了不得把脑袋拍疼了。</li>
+<li>也可以有子准则层，比如待遇中的放假、工作环境等等，列出也小于9个。</li>
+</ul>
+</li>
+<li>方案层C：就是我们的offer</li>
+</ul>
+<img src="/public/2021/04/02/math/math_AHP/image-20200406145535585.png" alt="image-20200406145535585" style="zoom:50%;">
+<h2 id="构造-A-B-之间判断矩阵"><a class="header-anchor" href="#构造-A-B-之间判断矩阵">¶</a>构造 A B 之间判断矩阵</h2>
+<p>准则层B与目标A之间的关系。为了求出准则层中(B1-6) 对目标的重要层度的排序。比如对于该生工作满意度第一重要是待遇，然后是地点，其实该生自己也很模糊。就是固定A，然后求B中准则，对A重要性的排序。</p>
+<h3 id="我们怎么对B中的准则们的重要排序呢？"><a class="header-anchor" href="#我们怎么对B中的准则们的重要排序呢？">¶</a>我们怎么对B中的准则们的重要排序呢？</h3>
+<p>直接给每一个准则，0-1的评分，然后排序。经常会想，给完分之后，这个不合理呀要不我再给哪个准则加加分。所以这样的方法常常会因考虑不周全、顾此失彼而使决策者提出与他实际认为的重要性程度不相一致的数据。</p>
+<p>我们可以将这个过程细化，我就比较两个准则对于目标的重要性，然后通过下面的矩阵方法，求出优先顺序。</p>
+<p>还能通过一个一致性检验，来检验在你评分的过程中，有没有自相矛盾的地方，当然这种方法允许一些自相矛盾。反正评分的时候尊从内心拍脑袋就对了。</p>
+<p>所以我们拿出一个B1 与 B2 对于目标的重要，想一想然后给出B2/B1，填入下面的表格中的(2,1)的位置。</p>
+<p>整个矩阵i,j 与j，i 是取倒数的关系，所以只要做一半。</p>
+<p>在找工作的目标下，准则i与j相对的重要性表示，B2/B1 的值。采用9个标度。而相比不重要刻度取倒数就可以了</p>
+<table>
+<thead>
+<tr>
+<th>准则i比j的比较</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+<th>5</th>
+<th>6</th>
+<th>7</th>
+<th>8</th>
+<th>9</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td>相同重要</td>
+<td></td>
+<td>比较重要</td>
+<td></td>
+<td>明显重要</td>
+<td></td>
+<td>强烈重要</td>
+<td></td>
+<td>极端重要</td>
+</tr>
+</tbody>
+</table>
+<p>最后的两两相对重要表格</p>
+<img src="/public/2021/04/02/math/math_AHP/image-20200406145640316.png" alt="image-20200406145640316" style="zoom:50%;">
+<p>对角线对称的两个数互为倒数，即 $$a_{ji}=\frac{1}{a_{ij}}$$  B1/B2 不就是和 B2/B1互为倒数嘛</p>
+<p>从心理学观点来看，分级太多会超越人们的判断能力，既增加了作判断的难度， 又容易因此而提供虚假数据。Saaty 等人还用实验方法比较了在各种不同标度下人们判断结果的正确性，实验结果也表明，采用 1~9 标度最为合适。</p>
+<p>判断矩阵的一致性指标步骤：</p>
+<ul>
+<li>1）计算一致性指标 CI 。$$CI=\frac{ \lambda_{max}-n}{n-1}$$</li>
+<li>2）查表，平均随机一致性指标 RI。</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>n</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+<th>5</th>
+<th>6</th>
+<th>7</th>
+<th>8</th>
+<th>9</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>RI</td>
+<td>0</td>
+<td>0</td>
+<td>0.58</td>
+<td>0.90</td>
+<td>1.12</td>
+<td>1.24</td>
+<td>1.32</td>
+<td>1.41</td>
+<td>1.45</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><em>RI</em> 的值是这样得到的，用随机方法构造500个样本矩阵:随机地从1~9及其倒数中抽取数字构造正互反矩阵，求得最大特征根的平均值 $$\bar \lambda_{max}$$ 并定义$$RI=\frac{\bar \lambda_{max}-n}{n-1}$$</p>
+</blockquote>
+<ul>
+<li>3）计算一致性比例CR。 $$CR=\frac{CI}{RI}$$，当$$CR&lt;0.10$$ 时，认为判断矩阵的一致性是可以接受的，否则应对判断矩阵作适当修正。</li>
+</ul>
+<p>如果一个矩阵满足上面的条件，那么它最大特征值对应的特征向量就可以认为是每个维度的重要性权重。</p>
+<h2 id="构造-B-C-之间判断矩阵"><a class="header-anchor" href="#构造-B-C-之间判断矩阵">¶</a>构造 B C 之间判断矩阵</h2>
+<p>相同的方法，在同一B准则下，考虑不同工作的优先顺序。求工作排序的方法，和上面一样。</p>
+<img src="/public/2021/04/02/math/math_AHP/image-20200406162644137.png" alt="image-20200406162644137" style="zoom:50%;">
+<p>python代码<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">import</span> warnings</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AHP</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, criteria, b)</span>:</span></span><br><span class="line">        self.RI = (<span class="number">0</span>, <span class="number">0</span>, <span class="number">0.58</span>, <span class="number">0.9</span>, <span class="number">1.12</span>, <span class="number">1.24</span>, <span class="number">1.32</span>, <span class="number">1.41</span>, <span class="number">1.45</span>, <span class="number">1.49</span>)</span><br><span class="line">        self.criteria = criteria</span><br><span class="line">        self.b = b</span><br><span class="line">        self.num_criteria = criteria.shape[<span class="number">0</span>]</span><br><span class="line">        self.num_project = b[<span class="number">0</span>].shape[<span class="number">0</span>]</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">cal_weights</span><span class="params">(self, input_matrix)</span>:</span></span><br><span class="line">        input_matrix = np.array(input_matrix)</span><br><span class="line">        n, n1 = input_matrix.shape</span><br><span class="line">        <span class="keyword">assert</span> n == n1, <span class="string">'不是一个方阵'</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(n):</span><br><span class="line">            <span class="keyword">for</span> j <span class="keyword">in</span> range(n):</span><br><span class="line">                <span class="keyword">if</span> np.abs(input_matrix[i, j] * input_matrix[j, i] - <span class="number">1</span>) &gt; <span class="number">1e-7</span>:</span><br><span class="line">                    <span class="keyword">raise</span> ValueError(<span class="string">'不是反互对称矩阵'</span>)</span><br><span class="line"></span><br><span class="line">        eigenvalues, eigenvectors = np.linalg.eig(input_matrix)</span><br><span class="line"></span><br><span class="line">        max_idx = np.argmax(eigenvalues)</span><br><span class="line">        max_eigen = eigenvalues[max_idx].real</span><br><span class="line">        eigen = eigenvectors[:, max_idx].real</span><br><span class="line">        eigen = eigen / eigen.sum()</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> n &gt; <span class="number">9</span>:</span><br><span class="line">            CR = <span class="literal">None</span></span><br><span class="line">            warnings.warn(<span class="string">'无法判断一致性'</span>)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            CI = (max_eigen - n) / (n - <span class="number">1</span>)</span><br><span class="line">            CR = CI / self.RI[n]</span><br><span class="line">        <span class="keyword">return</span> max_eigen, CR, eigen</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">run</span><span class="params">(self)</span>:</span></span><br><span class="line">        max_eigen, CR, criteria_eigen = self.cal_weights(self.criteria)</span><br><span class="line">        print(<span class="string">'准则层：最大特征值&#123;:&lt;5f&#125;,CR=&#123;:&lt;5f&#125;,检验&#123;&#125;通过'</span>.format(max_eigen, CR, <span class="string">''</span> <span class="keyword">if</span> CR &lt; <span class="number">0.1</span> <span class="keyword">else</span> <span class="string">'不'</span>))</span><br><span class="line">        print(<span class="string">'准则层权重=&#123;&#125;\n'</span>.format(criteria_eigen))</span><br><span class="line"></span><br><span class="line">        max_eigen_list, CR_list, eigen_list = [], [], []</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> self.b:</span><br><span class="line">            max_eigen, CR, eigen = self.cal_weights(i)</span><br><span class="line">            max_eigen_list.append(max_eigen)</span><br><span class="line">            CR_list.append(CR)</span><br><span class="line">            eigen_list.append(eigen)</span><br><span class="line"></span><br><span class="line">        pd_print = pd.DataFrame(eigen_list,</span><br><span class="line">                                index=[<span class="string">'准则'</span> + str(i) <span class="keyword">for</span> i <span class="keyword">in</span> range(self.num_criteria)],</span><br><span class="line">                                columns=[<span class="string">'方案'</span> + str(i) <span class="keyword">for</span> i <span class="keyword">in</span> range(self.num_project)],</span><br><span class="line">                                )</span><br><span class="line">        pd_print.loc[:, <span class="string">'最大特征值'</span>] = max_eigen_list</span><br><span class="line">        pd_print.loc[:, <span class="string">'CR'</span>] = CR_list</span><br><span class="line">        pd_print.loc[:, <span class="string">'一致性检验'</span>] = pd_print.loc[:, <span class="string">'CR'</span>] &lt; <span class="number">0.1</span></span><br><span class="line">        print(<span class="string">'方案层'</span>)</span><br><span class="line">        print(pd_print)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 目标层</span></span><br><span class="line">        obj = np.dot(criteria_eigen.reshape(<span class="number">1</span>, <span class="number">-1</span>), np.array(eigen_list))</span><br><span class="line">        print(<span class="string">'\n目标层'</span>, obj)</span><br><span class="line">        print(<span class="string">'最优选择是方案&#123;&#125;'</span>.format(np.argmax(obj)))</span><br><span class="line">        <span class="keyword">return</span> obj</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    <span class="comment"># 准则重要性矩阵</span></span><br><span class="line">    criteria = np.array([[<span class="number">1</span>, <span class="number">2</span>, <span class="number">7</span>, <span class="number">5</span>, <span class="number">5</span>],</span><br><span class="line">                         [<span class="number">1</span> / <span class="number">2</span>, <span class="number">1</span>, <span class="number">4</span>, <span class="number">3</span>, <span class="number">3</span>],</span><br><span class="line">                         [<span class="number">1</span> / <span class="number">7</span>, <span class="number">1</span> / <span class="number">4</span>, <span class="number">1</span>, <span class="number">1</span> / <span class="number">2</span>, <span class="number">1</span> / <span class="number">3</span>],</span><br><span class="line">                         [<span class="number">1</span> / <span class="number">5</span>, <span class="number">1</span> / <span class="number">3</span>, <span class="number">2</span>, <span class="number">1</span>, <span class="number">1</span>],</span><br><span class="line">                         [<span class="number">1</span> / <span class="number">5</span>, <span class="number">1</span> / <span class="number">3</span>, <span class="number">3</span>, <span class="number">1</span>, <span class="number">1</span>]])</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 对每个准则，方案优劣排序</span></span><br><span class="line">    b1 = np.array([[<span class="number">1</span>, <span class="number">1</span> / <span class="number">3</span>, <span class="number">1</span> / <span class="number">8</span>], [<span class="number">3</span>, <span class="number">1</span>, <span class="number">1</span> / <span class="number">3</span>], [<span class="number">8</span>, <span class="number">3</span>, <span class="number">1</span>]])</span><br><span class="line">    b2 = np.array([[<span class="number">1</span>, <span class="number">2</span>, <span class="number">5</span>], [<span class="number">1</span> / <span class="number">2</span>, <span class="number">1</span>, <span class="number">2</span>], [<span class="number">1</span> / <span class="number">5</span>, <span class="number">1</span> / <span class="number">2</span>, <span class="number">1</span>]])</span><br><span class="line">    b3 = np.array([[<span class="number">1</span>, <span class="number">1</span>, <span class="number">3</span>], [<span class="number">1</span>, <span class="number">1</span>, <span class="number">3</span>], [<span class="number">1</span> / <span class="number">3</span>, <span class="number">1</span> / <span class="number">3</span>, <span class="number">1</span>]])</span><br><span class="line">    b4 = np.array([[<span class="number">1</span>, <span class="number">3</span>, <span class="number">4</span>], [<span class="number">1</span> / <span class="number">3</span>, <span class="number">1</span>, <span class="number">1</span>], [<span class="number">1</span> / <span class="number">4</span>, <span class="number">1</span>, <span class="number">1</span>]])</span><br><span class="line">    b5 = np.array([[<span class="number">1</span>, <span class="number">4</span>, <span class="number">1</span> / <span class="number">2</span>], [<span class="number">1</span> / <span class="number">4</span>, <span class="number">1</span>, <span class="number">1</span> / <span class="number">4</span>], [<span class="number">2</span>, <span class="number">4</span>, <span class="number">1</span>]])</span><br><span class="line"></span><br><span class="line">    b = [b1, b2, b3, b4, b5]</span><br><span class="line">    a = AHP(criteria, b).run()</span><br></pre></td></tr></table></figure>
+<h2 id="层次分析法与控制变量法"><a class="header-anchor" href="#层次分析法与控制变量法">¶</a>层次分析法与控制变量法</h2>
+<p>我们的任务是选择工作，最后使得我们满意，直接选择我们当然一头雾水。所以我们设立一些准则，然后对这些准则对于目标的重要性排序。</p>
+<p>这又有点像概率图模型，只是赋权的方法，是相互比较的方法。</p>
+<h2 id="选择困难者的福音？"><a class="header-anchor" href="#选择困难者的福音？">¶</a>选择困难者的福音？</h2>
+<p>层次分析法对人们的思维过程进行了加工整理，提出了一套系统分析问题的方法，为科学管理和决策提供了较有说服力的依据。</p>
+<p>在应用层次分析法研究问题时，遇到的主要困难有两个:<br>
+(1) 如何根据实际情况抽象出较为贴切的层次结构;<br>
+(2) 如何将某些定性的量作比较接近实际定量化处理。</p>
+<p>层次分析法的其局限性<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup>：<br>
+(1) 它在很大程度上依赖于人们的经验，主观因素的影响很大，它至多只能排除思维过程中的严重非一致性，却无法排除决策者个人可能存在的严重片面性。<br>
+(2) 比较、 判断过程较为粗糙，不能用于精度要求较高的决策问题。</p>
+<p>所以，AHP 至多只能算是一种半定量(或定性与定量结合)的方法。
+本文仅供参考，不负法律责任，哈哈。</p>
+<h2 id="参考"><a class="header-anchor" href="#参考">¶</a>参考</h2>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p>幼鹰me 知乎 <a href="https://zhuanlan.zhihu.com/p/101505929" target="_blank" rel="noopener">层次分析法原理与Python实现</a> <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn2" class="footnote-item"><p>司守奎《数学建模算法与程序》第八章 层次分析法 P167 <a href="#fnref2" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
+]]></content>
+      <categories>
+        <category>数学</category>
+      </categories>
+      <tags>
+        <tag>数学</tag>
+        <tag>层次分析法</tag>
       </tags>
   </entry>
   <entry>
@@ -4359,6 +4359,73 @@ markdate:2022-08-25 03:51:08.820884</p>
       </tags>
   </entry>
   <entry>
+    <title>「202211月度汇报」ttrss</title>
+    <url>/public/2022/11/15/test/2022/202211/</url>
+    <content><![CDATA[<p>total: 1</p>
+<a id="more"></a>
+<h2 id="🔖微软官方小工具更新，这些新特性你或许也能用得上"><a class="header-anchor" href="#🔖微软官方小工具更新，这些新特性你或许也能用得上">¶</a>🔖<a href="https://sspai.com/post/76649" target="_blank" rel="noopener">微软官方小工具更新，这些新特性你或许也能用得上</a></h2>
+<p>pubdata:2022-11-06 03:40:00
+markdate:2022-11-17 17:18:09.571032</p>
+<p><img src="/public/2022/11/15/test/2022/202211/2022-11-17-171809571032.jpg" alt="img"></p>
+<p>统计 ✅ : 0 📅 : 0 🔖 : 0</p>
+<!-- more -->
+<h2 id="✅-0"><a class="header-anchor" href="#✅-0">¶</a>✅ : 0</h2>
+<h2 id="📅-0"><a class="header-anchor" href="#📅-0">¶</a>📅 : 0</h2>
+<h2 id="🔖-0"><a class="header-anchor" href="#🔖-0">¶</a>🔖 : 0</h2>
+]]></content>
+      <categories>
+        <category>月度汇报</category>
+      </categories>
+      <tags>
+        <tag>月度汇报</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>「202210月度汇报」ttrss</title>
+    <url>/public/2022/10/15/test/2022/202210/</url>
+    <content><![CDATA[<p>total: 2</p>
+<a id="more"></a>
+<h2 id="🔖一日一技｜Obsidian-Command-进阶用法三则"><a class="header-anchor" href="#🔖一日一技｜Obsidian-Command-进阶用法三则">¶</a>🔖<a href="https://sspai.com/post/75847" target="_blank" rel="noopener">一日一技｜Obsidian Command 进阶用法三则</a></h2>
+<p>pubdata:2022-10-01 07:00:00
+markdate:2022-10-08 11:41:38.979766</p>
+<p><img src="/public/2022/10/15/test/2022/202210/2022-10-08-114138979766.jpg" alt="img"></p>
+<h2 id="🔖用代码编辑器进行知识管理：我用-VSCode-构建自己的笔记系统"><a class="header-anchor" href="#🔖用代码编辑器进行知识管理：我用-VSCode-构建自己的笔记系统">¶</a>🔖<a href="https://sspai.com/post/75940" target="_blank" rel="noopener">用代码编辑器进行知识管理：我用 VSCode 构建自己的笔记系统</a></h2>
+<p>pubdata:2022-09-28 03:29:57
+markdate:2022-10-09 04:14:05.692239</p>
+<p><img src="/public/2022/10/15/test/2022/202210/2022-10-09-041405692239.jpg" alt="img"></p>
+<h2 id="统计-✅-0-📅-2-🔖-8"><a class="header-anchor" href="#统计-✅-0-📅-2-🔖-8">¶</a>统计 ✅ : 0 📅 : 2 🔖 : 8</h2>
+<h2 id="✅-0"><a class="header-anchor" href="#✅-0">¶</a>✅ : 0</h2>
+<h2 id="📅-2"><a class="header-anchor" href="#📅-2">¶</a>📅 : 2</h2>
+<p>📅 转载一下
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W36.md">C日常/2022-W36.md</a><br>
+📅 tracker更新
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W36.md">C日常/2022-W36.md</a></p>
+<h2 id="🔖-8"><a class="header-anchor" href="#🔖-8">¶</a>🔖 : 8</h2>
+<p>🔖肝下50万字的《Linux内核精通》笔记，你的底层原理水平将从入门到入魔【建议收藏】
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W36.md">C日常/2022-W36.md</a><br>
+🔖计算机组成原理(万字爆肝整理)
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W36.md">C日常/2022-W36.md</a><br>
+🔖 <a href="https://xiaolincoding.com/network/" target="_blank" rel="noopener">图解网络介绍</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W37.md">C日常/2022-W37.md</a><br>
+🔖 <a href="https://refactoringguru.cn/design-patterns" target="_blank" rel="noopener">常用设计模式有哪些？</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W37.md">C日常/2022-W37.md</a><br>
+🔖 智能家庭网关
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W37.md">C日常/2022-W37.md</a><br>
+🔖 <a href="https://sadh.life/post/builtins/" target="_blank" rel="noopener">Understanding all of Python, through its builtins</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W37.md">C日常/2022-W37.md</a><br>
+🔖 操作系统自学
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W37.md">C日常/2022-W37.md</a><br>
+🔖 机器人计划
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W37.md">C日常/2022-W37.md</a></p>
+]]></content>
+      <categories>
+        <category>月度汇报</category>
+      </categories>
+      <tags>
+        <tag>月度汇报</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>「202209月度汇报」ttrss</title>
     <url>/public/2022/09/15/test/2022/202209/</url>
     <content><![CDATA[<p>total: 3</p>
@@ -4409,174 +4476,6 @@ markdate:2022-09-21 03:28:05.514939</p>
       </categories>
       <tags>
         <tag>转载</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>「202210月度汇报」ttrss</title>
-    <url>/public/2022/10/15/test/2022/202210/</url>
-    <content><![CDATA[<p>total: 2</p>
-<a id="more"></a>
-<h2 id="🔖一日一技｜Obsidian-Command-进阶用法三则"><a class="header-anchor" href="#🔖一日一技｜Obsidian-Command-进阶用法三则">¶</a>🔖<a href="https://sspai.com/post/75847" target="_blank" rel="noopener">一日一技｜Obsidian Command 进阶用法三则</a></h2>
-<p>pubdata:2022-10-01 07:00:00
-markdate:2022-10-08 11:41:38.979766</p>
-<p><img src="/public/2022/10/15/test/2022/202210/2022-10-08-114138979766.jpg" alt="img"></p>
-<h2 id="🔖用代码编辑器进行知识管理：我用-VSCode-构建自己的笔记系统"><a class="header-anchor" href="#🔖用代码编辑器进行知识管理：我用-VSCode-构建自己的笔记系统">¶</a>🔖<a href="https://sspai.com/post/75940" target="_blank" rel="noopener">用代码编辑器进行知识管理：我用 VSCode 构建自己的笔记系统</a></h2>
-<p>pubdata:2022-09-28 03:29:57
-markdate:2022-10-09 04:14:05.692239</p>
-<p><img src="/public/2022/10/15/test/2022/202210/2022-10-09-041405692239.jpg" alt="img"></p>
-<h2 id="统计-✅-0-📅-2-🔖-8"><a class="header-anchor" href="#统计-✅-0-📅-2-🔖-8">¶</a>统计 ✅ : 0 📅 : 2 🔖 : 8</h2>
-<h2 id="✅-0"><a class="header-anchor" href="#✅-0">¶</a>✅ : 0</h2>
-<h2 id="📅-2"><a class="header-anchor" href="#📅-2">¶</a>📅 : 2</h2>
-<p>📅 转载一下
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W36.md">C日常/2022-W36.md</a><br>
-📅 tracker更新
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W36.md">C日常/2022-W36.md</a></p>
-<h2 id="🔖-8"><a class="header-anchor" href="#🔖-8">¶</a>🔖 : 8</h2>
-<p>🔖肝下50万字的《Linux内核精通》笔记，你的底层原理水平将从入门到入魔【建议收藏】
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W36.md">C日常/2022-W36.md</a><br>
-🔖计算机组成原理(万字爆肝整理)
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W36.md">C日常/2022-W36.md</a><br>
-🔖 <a href="https://xiaolincoding.com/network/" target="_blank" rel="noopener">图解网络介绍</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W37.md">C日常/2022-W37.md</a><br>
-🔖 <a href="https://refactoringguru.cn/design-patterns" target="_blank" rel="noopener">常用设计模式有哪些？</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W37.md">C日常/2022-W37.md</a><br>
-🔖 智能家庭网关
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W37.md">C日常/2022-W37.md</a><br>
-🔖 <a href="https://sadh.life/post/builtins/" target="_blank" rel="noopener">Understanding all of Python, through its builtins</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W37.md">C日常/2022-W37.md</a><br>
-🔖 操作系统自学
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W37.md">C日常/2022-W37.md</a><br>
-🔖 机器人计划
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W37.md">C日常/2022-W37.md</a></p>
-]]></content>
-      <categories>
-        <category>月度汇报</category>
-      </categories>
-      <tags>
-        <tag>月度汇报</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>「202211月度汇报」ttrss</title>
-    <url>/public/2022/11/15/test/2022/202211/</url>
-    <content><![CDATA[<p>total: 1</p>
-<a id="more"></a>
-<h2 id="🔖微软官方小工具更新，这些新特性你或许也能用得上"><a class="header-anchor" href="#🔖微软官方小工具更新，这些新特性你或许也能用得上">¶</a>🔖<a href="https://sspai.com/post/76649" target="_blank" rel="noopener">微软官方小工具更新，这些新特性你或许也能用得上</a></h2>
-<p>pubdata:2022-11-06 03:40:00
-markdate:2022-11-17 17:18:09.571032</p>
-<p><img src="/public/2022/11/15/test/2022/202211/2022-11-17-171809571032.jpg" alt="img"></p>
-<p>统计 ✅ : 0 📅 : 0 🔖 : 0</p>
-<!-- more -->
-<h2 id="✅-0"><a class="header-anchor" href="#✅-0">¶</a>✅ : 0</h2>
-<h2 id="📅-0"><a class="header-anchor" href="#📅-0">¶</a>📅 : 0</h2>
-<h2 id="🔖-0"><a class="header-anchor" href="#🔖-0">¶</a>🔖 : 0</h2>
-]]></content>
-      <categories>
-        <category>月度汇报</category>
-      </categories>
-      <tags>
-        <tag>月度汇报</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>「202212月度汇报」ttrss</title>
-    <url>/public/2022/12/15/test/2022/202212/</url>
-    <content><![CDATA[<p>total: 7</p>
-<a id="more"></a>
-<h2 id="🔖TextLocator-–-卖萌的小老头：低-CPU-占用的本地文档全文搜索工具-Win"><a class="header-anchor" href="#🔖TextLocator-–-卖萌的小老头：低-CPU-占用的本地文档全文搜索工具-Win">¶</a>🔖<a href="https://www.appinn.com/textlocator/" target="_blank" rel="noopener">TextLocator – 卖萌的小老头：低 CPU 占用的本地文档全文搜索工具[Win]</a></h2>
-<p>pubdata:2022-11-30 08:25:46
-markdate:2022-12-04 02:42:46.065650</p>
-<p><img src="/public/2022/12/15/test/2022/202212/2022-12-04-024246065650.jpg" alt="img"></p>
-<h2 id="🔖OpenSearcher-–-开源的全文搜索工具：支持-Word、PPT、PDF，以及电子书-ePub、Mobi-等格式-Windows"><a class="header-anchor" href="#🔖OpenSearcher-–-开源的全文搜索工具：支持-Word、PPT、PDF，以及电子书-ePub、Mobi-等格式-Windows">¶</a>🔖<a href="https://www.appinn.com/opensearcher/" target="_blank" rel="noopener">OpenSearcher – 开源的全文搜索工具：支持 Word、PPT、PDF，以及电子书 ePub、Mobi 等格式[Windows]</a></h2>
-<p>pubdata:2022-12-01 07:31:17
-markdate:2022-12-04 02:42:48.883434</p>
-<p><img src="/public/2022/12/15/test/2022/202212/2022-12-04-024248883434.jpg" alt="img"></p>
-<h2 id="🔖App-1-入门-Android-自动化，它比-Tasker-更好上手：MacroDroid"><a class="header-anchor" href="#🔖App-1-入门-Android-自动化，它比-Tasker-更好上手：MacroDroid">¶</a>🔖<a href="https://sspai.com/post/77077" target="_blank" rel="noopener">App+1 | 入门 Android 自动化，它比 Tasker 更好上手：MacroDroid</a></h2>
-<p>pubdata:2022-12-02 06:30:00
-markdate:2022-12-04 04:03:56.824102</p>
-<p><img src="/public/2022/12/15/test/2022/202212/2022-12-04-040356824102.jpg" alt="img"></p>
-<h2 id="🔖为纸质书籍进行数字备份：如何制作一本功能完备的-PDF-电子书"><a class="header-anchor" href="#🔖为纸质书籍进行数字备份：如何制作一本功能完备的-PDF-电子书">¶</a>🔖<a href="https://sspai.com/post/77118" target="_blank" rel="noopener">为纸质书籍进行数字备份：如何制作一本功能完备的 PDF 电子书</a></h2>
-<p>pubdata:2022-12-06 06:34:06
-markdate:2022-12-08 13:52:36.058996</p>
-<p><img src="/public/2022/12/15/test/2022/202212/2022-12-08-135236058996.jpg" alt="img"></p>
-<h2 id="🔖找笔记方便、写作又给力的知识库，我是这么搭建出来的"><a class="header-anchor" href="#🔖找笔记方便、写作又给力的知识库，我是这么搭建出来的">¶</a>🔖<a href="https://sspai.com/post/77144" target="_blank" rel="noopener">找笔记方便、写作又给力的知识库，我是这么搭建出来的</a></h2>
-<p>pubdata:2022-12-09 06:32:24
-markdate:2022-12-12 05:12:48.101671</p>
-<p><img src="/public/2022/12/15/test/2022/202212/2022-12-12-051248101671.jpg" alt="img"></p>
-<h2 id="🔖如何满足小众的录屏需求？自己配置-FFmpeg-解决问题"><a class="header-anchor" href="#🔖如何满足小众的录屏需求？自己配置-FFmpeg-解决问题">¶</a>🔖<a href="https://sspai.com/post/76637" target="_blank" rel="noopener">如何满足小众的录屏需求？自己配置 FFmpeg 解决问题</a></h2>
-<p>pubdata:2022-11-05 03:00:00
-markdate:2022-12-24 03:02:42.639305</p>
-<p><img src="/public/2022/12/15/test/2022/202212/2022-12-24-030242639305.jpg" alt="img"></p>
-<h2 id="🔖家用NAS推荐买什么价位的？"><a class="header-anchor" href="#🔖家用NAS推荐买什么价位的？">¶</a>🔖<a href="http://www.zhihu.com/question/566650643/answer/2809190517?utm_campaign=rss&amp;utm_medium=rss&amp;utm_source=rss&amp;utm_content=title" target="_blank" rel="noopener">家用NAS推荐买什么价位的？</a></h2>
-<p>pubdata:2022-12-21 09:26:21
-markdate:2022-12-25 03:49:49.009390</p>
-<p><img src="/public/2022/12/15/test/2022/202212/2022-12-25-034949009390.jpg" alt="img"></p>
-<p>统计 ✅ : 1 📅 : 6 🔖 : 21</p>
-<!-- more -->
-<h2 id="✅-1"><a class="header-anchor" href="#✅-1">¶</a>✅ : 1</h2>
-<p>✅ 🔖 <a href="https://www.zhihu.com/question/23564190/answer/2795830055?utm_id=0" target="_blank" rel="noopener">如何更深入地学习 Linux？ - michaelli 的回答 - 知乎</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W49.md">C日常/2022-W49.md</a></p>
-<h2 id="📅-6"><a class="header-anchor" href="#📅-6">¶</a>📅 : 6</h2>
-<p>📅 使用draw io和 cflow 生成函数调用图 单文件
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W50.md">C日常/2022-W50.md</a><br>
-📅 ios图像转存到本地
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W47.md">C日常/2022-W47.md</a><br>
-📅 学习智能家庭软件
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W47.md">C日常/2022-W47.md</a><br>
-📅 🔖 <a href="https://zhuanlan.zhihu.com/p/36279445?utm_id=0" target="_blank" rel="noopener">Vim 8 中 C/C++ 符号索引：GTags 篇</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W49.md">C日常/2022-W49.md</a><br>
-📅Vim中使用gtags
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W49.md">C日常/2022-W49.md</a><br>
-📅  <a href="https://blog.csdn.net/tian154731/article/details/113842348" target="_blank" rel="noopener">安卓手机抢茅台程序_JAVA学无止境的博客-CSDN博客</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W42.md">C日常/2022-W42.md</a></p>
-<h2 id="🔖-21"><a class="header-anchor" href="#🔖-21">¶</a>🔖 : 21</h2>
-<p>🔖 <a href="https://www.appinn.com/opensearcher/" target="_blank" rel="noopener">OpenSearcher - 开源的全文搜索工具：支持 Word、PPT、PDF，以及电子书 ePub、Mobi 等格式[Windows] - 小众软件</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W48.md">C日常/2022-W48.md</a><br>
-🔖 <a href="https://m.bilibili.com/video/av848443011" target="_blank" rel="noopener">【英雄联盟手游】装备属性及效果介绍-哔哩哔哩</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W43.md">C日常/2022-W43.md</a><br>
-🔖 电影 《走着瞧》马
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W43.md">C日常/2022-W43.md</a><br>
-🔖冰雪暴  -&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W43.md">C日常/2022-W43.md</a><br>
-🔖 <a href="https://blog.csdn.net/lyndon_li/article/details/122163468" target="_blank" rel="noopener">cflow——C语言函数调用关系生成器_Li-Yongjun的博客-CSDN博客_cflow</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W50.md">C日常/2022-W50.md</a><br>
-🔖 卡尔曼滤波https://www.zhihu.com/question/41823401/answer/2799679942
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W50.md">C日常/2022-W50.md</a><br>
-🔖 tmux vim剪切板
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W50.md">C日常/2022-W50.md</a><br>
-🔖 linux gdb Qemu调试
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W50.md">C日常/2022-W50.md</a><br>
-🔖 <a href="https://blog.csdn.net/jiangjun00000000/article/details/118277732" target="_blank" rel="noopener">如何在Debian10的Gnome桌面系统中安装并使能托盘图标_萌虎下山了的博客-CSDN博客_gnome 托盘</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W50.md">C日常/2022-W50.md</a><br>
-🔖 <a href="https://blog.csdn.net/allway2/article/details/122160151" target="_blank" rel="noopener">如何在 Debian 11 Bullseye Linux 上安装和配置 KVM_allway2的博客-CSDN博客_debian kvm</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W50.md">C日常/2022-W50.md</a><br>
-🔖 <a href="https://blog.csdn.net/u010330109/article/details/121855809" target="_blank" rel="noopener">Debian 11 gnome 桌面设置显示图标_远远看看山的博客-CSDN博客_debian显示桌面图表</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W50.md">C日常/2022-W50.md</a><br>
-🔖 <a href="https://github.com/mli/autocut" target="_blank" rel="noopener">AutoCut</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W47.md">C日常/2022-W47.md</a><br>
-🔖 <a href="https://sspai.com/post/76899" target="_blank" rel="noopener">找不到现成的字幕？Whisper 让不懂外语的你也能看懂日剧 - 少数派</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W47.md">C日常/2022-W47.md</a><br>
-🔖 canva平面设计
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W47.md">C日常/2022-W47.md</a><br>
-🔖 <a href="https://sspai.com/post/76922" target="_blank" rel="noopener">我们为什么需要 Matter：飞利浦 Hue 的跨平台联动探索记录 - 少数派</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W47.md">C日常/2022-W47.md</a><br>
-🔖 <a href="https://sspai.com/post/75567" target="_blank" rel="noopener">选对插件，让简悦也可以重器轻用 - 少数派</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W47.md">C日常/2022-W47.md</a><br>
-🔖 算法可视化
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W49.md">C日常/2022-W49.md</a><br>
-✅ 🔖 <a href="https://www.zhihu.com/question/23564190/answer/2795830055?utm_id=0" target="_blank" rel="noopener">如何更深入地学习 Linux？ - michaelli 的回答 - 知乎</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W49.md">C日常/2022-W49.md</a><br>
-📅 🔖 <a href="https://zhuanlan.zhihu.com/p/36279445?utm_id=0" target="_blank" rel="noopener">Vim 8 中 C/C++ 符号索引：GTags 篇</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W49.md">C日常/2022-W49.md</a><br>
-🔖<a href="https://www.1point3acres.com/bbs/thread-918311-1-1.html" target="_blank" rel="noopener">50岁码农面试记</a>（中文）
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W42.md">C日常/2022-W42.md</a><br>
-🔖 <a href="https://github.com/FavioVazquez/ds-cheatsheets" target="_blank" rel="noopener">https://github.com/FavioVazquez/ds-cheatsheets</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W42.md">C日常/2022-W42.md</a></p>
-]]></content>
-      <categories>
-        <category>月度汇报</category>
-      </categories>
-      <tags>
-        <tag>月度汇报</tag>
       </tags>
   </entry>
   <entry>
@@ -5689,868 +5588,6 @@ K-means聚类、高斯混合、EM算法</p>
       </tags>
   </entry>
   <entry>
-    <title>「202207月度汇报」ttrss</title>
-    <url>/public/2022/07/15/test/2022/202207/</url>
-    <content><![CDATA[<p>total: 13</p>
-<a id="more"></a>
-<h2 id="🔖BGmi-–-自动追番的工具：同步最新番剧数据、追番日历、自动下载，适合所有追番懒人"><a class="header-anchor" href="#🔖BGmi-–-自动追番的工具：同步最新番剧数据、追番日历、自动下载，适合所有追番懒人">¶</a>🔖<a href="https://www.appinn.com/bgmi/" target="_blank" rel="noopener">BGmi – 自动追番的工具：同步最新番剧数据、追番日历、自动下载，适合所有追番懒人</a></h2>
-<p>pubdata:2022-06-30 02:48:00
-markdate:2022-07-01 06:32:58.020141</p>
-<p><img src="/public/2022/07/15/test/2022/202207/2022-07-01-063258020141.jpg" alt="img"></p>
-<h2 id="🔖老牌截图工具-PicPick-更新，新增录屏功能，支持-MP4-GIF-格式"><a class="header-anchor" href="#🔖老牌截图工具-PicPick-更新，新增录屏功能，支持-MP4-GIF-格式">¶</a>🔖<a href="https://www.appinn.com/picpick-6-2/" target="_blank" rel="noopener">老牌截图工具 PicPick 更新，新增录屏功能，支持 MP4/GIF 格式</a></h2>
-<p>pubdata:2022-06-29 07:19:19
-markdate:2022-07-02 04:11:20.453414</p>
-<p><img src="/public/2022/07/15/test/2022/202207/2022-07-02-041120453414.jpg" alt="img"></p>
-<h2 id="🔖白板与笔记融合：我的四个氢图使用场景"><a class="header-anchor" href="#🔖白板与笔记融合：我的四个氢图使用场景">¶</a>🔖<a href="https://sspai.com/post/73246" target="_blank" rel="noopener">白板与笔记融合：我的四个氢图使用场景</a></h2>
-<p>pubdata:2022-06-30 03:30:02
-markdate:2022-07-03 01:08:35.583781</p>
-<p><img src="/public/2022/07/15/test/2022/202207/2022-07-03-010835583781.jpg" alt="img"></p>
-<h2 id="🔖跨时空圆桌：伟大创作者们如何安排日常生活"><a class="header-anchor" href="#🔖跨时空圆桌：伟大创作者们如何安排日常生活">¶</a>🔖<a href="https://sspai.com/post/73779" target="_blank" rel="noopener">跨时空圆桌：伟大创作者们如何安排日常生活</a></h2>
-<p>pubdata:2022-06-15 09:30:00
-markdate:2022-07-03 01:50:35.971655</p>
-<p><img src="/public/2022/07/15/test/2022/202207/2022-07-03-015035971655.jpg" alt="img"></p>
-<h2 id="🔖Typing-Learner-–-硬核单词记忆：从电影台词筛选生词，边追美剧边学英语，用户直喊「好家伙！」-Windows-macOS"><a class="header-anchor" href="#🔖Typing-Learner-–-硬核单词记忆：从电影台词筛选生词，边追美剧边学英语，用户直喊「好家伙！」-Windows-macOS">¶</a>🔖<a href="https://www.appinn.com/typing-learner/" target="_blank" rel="noopener">Typing Learner – 硬核单词记忆：从电影台词筛选生词，边追美剧边学英语，用户直喊「好家伙！」[Windows/macOS]</a></h2>
-<p>pubdata:2022-07-03 04:07:39
-markdate:2022-07-04 05:06:58.902152</p>
-<p><img src="/public/2022/07/15/test/2022/202207/2022-07-04-050658902152.jpg" alt="img"></p>
-<h2 id="🔖创建自己的第一个-Power-Automate-工作流，从此繁琐操作是路人"><a class="header-anchor" href="#🔖创建自己的第一个-Power-Automate-工作流，从此繁琐操作是路人">¶</a>🔖<a href="https://sspai.com/post/73710" target="_blank" rel="noopener">创建自己的第一个 Power Automate 工作流，从此繁琐操作是路人</a></h2>
-<p>pubdata:2022-07-05 10:44:47
-markdate:2022-07-06 11:29:55.648077</p>
-<p><img src="/public/2022/07/15/test/2022/202207/2022-07-06-112955648077.jpg" alt="img"></p>
-<h2 id="🔖为-WSL-配置这些新功能，不用虚拟机也能体验完整-Linux"><a class="header-anchor" href="#🔖为-WSL-配置这些新功能，不用虚拟机也能体验完整-Linux">¶</a>🔖<a href="https://sspai.com/post/74167" target="_blank" rel="noopener">为 WSL 配置这些新功能，不用虚拟机也能体验完整 Linux</a></h2>
-<p>pubdata:2022-07-08 03:30:00
-markdate:2022-07-09 03:08:43.747852</p>
-<p><img src="/public/2022/07/15/test/2022/202207/2022-07-09-030843747852.jpg" alt="img"></p>
-<h2 id="🔖当飞盘成为人类的玩具，我们该如何参与这场游戏"><a class="header-anchor" href="#🔖当飞盘成为人类的玩具，我们该如何参与这场游戏">¶</a>🔖<a href="https://sspai.com/post/73505" target="_blank" rel="noopener">当飞盘成为人类的玩具，我们该如何参与这场游戏</a></h2>
-<p>pubdata:2022-06-06 08:00:00
-markdate:2022-07-10 01:36:40.114938</p>
-<p><img src="/public/2022/07/15/test/2022/202207/2022-07-10-013640114938.jpg" alt="img"></p>
-<h2 id="🔖走进小众但不冷门的房车世界"><a class="header-anchor" href="#🔖走进小众但不冷门的房车世界">¶</a>🔖<a href="https://sspai.com/post/74043" target="_blank" rel="noopener">走进小众但不冷门的房车世界</a></h2>
-<p>pubdata:2022-07-01 08:04:43
-markdate:2022-07-10 02:09:34.733003</p>
-<p><img src="/public/2022/07/15/test/2022/202207/2022-07-10-020934733003.jpg" alt="img"></p>
-<h2 id="🔖从盲目崇拜到理性使用，谈谈我眼中的「双向链接」"><a class="header-anchor" href="#🔖从盲目崇拜到理性使用，谈谈我眼中的「双向链接」">¶</a>🔖<a href="https://sspai.com/post/73407" target="_blank" rel="noopener">从盲目崇拜到理性使用，谈谈我眼中的「双向链接」</a></h2>
-<p>pubdata:2022-05-27 06:31:27
-markdate:2022-07-11 14:31:37.724795</p>
-<p><img src="/public/2022/07/15/test/2022/202207/2022-07-11-143137724795.jpg" alt="img"></p>
-<h2 id="🔖打开终端总有好心情：我的美化方案及配置分享"><a class="header-anchor" href="#🔖打开终端总有好心情：我的美化方案及配置分享">¶</a>🔖<a href="https://sspai.com/post/74216" target="_blank" rel="noopener">打开终端总有好心情：我的美化方案及配置分享</a></h2>
-<p>pubdata:2022-07-11 08:00:51
-markdate:2022-07-12 04:52:00.122103</p>
-<p><img src="/public/2022/07/15/test/2022/202207/2022-07-12-045200122103.jpg" alt="img"></p>
-<h2 id="🔖咖啡美酒冷泡茶，这些消暑饮品在家就能动手做"><a class="header-anchor" href="#🔖咖啡美酒冷泡茶，这些消暑饮品在家就能动手做">¶</a>🔖<a href="https://sspai.com/post/74196" target="_blank" rel="noopener">咖啡美酒冷泡茶，这些消暑饮品在家就能动手做</a></h2>
-<p>pubdata:2022-07-10 07:17:11
-markdate:2022-07-12 05:03:55.504330</p>
-<p><img src="/public/2022/07/15/test/2022/202207/2022-07-12-050355504330.jpg" alt="img"></p>
-<h2 id="🔖语雀，即将开源！"><a class="header-anchor" href="#🔖语雀，即将开源！">¶</a>🔖<a href="https://zhuanlan.zhihu.com/p/540713275" target="_blank" rel="noopener">语雀，即将开源！</a></h2>
-<p>pubdata:2022-07-12 08:19:47
-markdate:2022-07-14 10:28:28.713392</p>
-<p><img src="/public/2022/07/15/test/2022/202207/2022-07-14-102828713392.jpg" alt="img"></p>
-<p>统计 ✅ : 6 📅 : 3 🔖 : 47</p>
-<!-- more -->
-<h2 id="✅-6"><a class="header-anchor" href="#✅-6">¶</a>✅ : 6</h2>
-<p>✅目标图标系统
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
-✅ <a href="https://blog.csdn.net/hhhhhyyyyy8/article/details/102133863" target="_blank" rel="noopener">Linux内核数据包bridge上转发流程_hhhhhyyyyy8的博客-CSDN博客_br_multicast_flood</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W27.md">C日常/2022-W27.md</a><br>
-✅ 邮箱转rss
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W23.md">C日常/2022-W23.md</a><br>
-✅  hacker news rss添加
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W23.md">C日常/2022-W23.md</a><br>
-✅ 经济学人转载leader文章
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W23.md">C日常/2022-W23.md</a><br>
-✅ github博客评论系统是否换成【不换】
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W23.md">C日常/2022-W23.md</a></p>
-<h2 id="📅-3"><a class="header-anchor" href="#📅-3">¶</a>📅 : 3</h2>
-<p>📅 端口触发 端口转发
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
-📅 全屋智能
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W26.md">C日常/2022-W26.md</a><br>
-📅 改进
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W26.md">C日常/2022-W26.md</a></p>
-<h2 id="🔖-47"><a class="header-anchor" href="#🔖-47">¶</a>🔖 : 47</h2>
-<p>🔖 ish保持后台运行
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W19.md">C日常/2022-W19.md</a><br>
-🔖 <a href="https://www.jianshu.com/p/f29ca723db4f" target="_blank" rel="noopener">Git 运行配置（git config、gitk、git gui） - michael_jia - 简书</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W19.md">C日常/2022-W19.md</a><br>
-🔖<a href="https://www.cnblogs.com/xuanbjut/p/12624702.html" target="_blank" rel="noopener">wmctrl像xmonad那样方便地用快捷键来控制任务窗口的显示 - pycod - 博客园</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W19.md">C日常/2022-W19.md</a><br>
-🔖 <a href="https://blog.csdn.net/anlian523/article/details/113627568" target="_blank" rel="noopener">VSCode复制代码时去掉样式/语法高亮/代码高亮/黑色背景_anlian523的博客-CSDN博客_idea复制代码不带黑色背景</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W19.md">C日常/2022-W19.md</a><br>
-🔖 <a href="https://blog.csdn.net/dog250/article/details/121400218" target="_blank" rel="noopener">为什么除法，开方，求对数比乘法，乘方，求指数更难_dog250的博客-CSDN博客</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
-🔖学习小林博客的写法
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
-🔖一万字统计学梳理
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
-🔖腾讯 彻底搞清楚tcp
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
-🔖0x5f3759df这个快速开方中的常数的数学依据是什么？
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
-🔖https流程
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
-🔖使用 Clion + QEMU/GDB 远程调试Linux内核（分享自知乎网）<a href="https://zhuanlan.zhihu.com/p/412604505?utm_source=md.obsidian&amp;utm_medium=social&amp;utm_oi=619610399826382848" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/412604505?utm_source=md.obsidian&amp;utm_medium=social&amp;utm_oi=619610399826382848</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
-🔖TCP/IP协议到底在讲什么？ <a href="http://www.zhihu.com/question/51074319?utm_source=md.obsidian&amp;utm_medium=social&amp;utm_oi=619610399826382848" target="_blank" rel="noopener">http://www.zhihu.com/question/51074319?utm_source=md.obsidian&amp;utm_medium=social&amp;utm_oi=619610399826382848</a> （分享自知乎网）
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
-🔖【什么是动态规划（Dynamic Programming）？动态规划的意义是什么？】阮行止：… <a href="https://www.zhihu.com/question/23995189/answer/613096905?utm_source=md.obsidian&amp;utm_medium=social&amp;utm_oi=619610399826382848" target="_blank" rel="noopener">https://www.zhihu.com/question/23995189/answer/613096905?utm_source=md.obsidian&amp;utm_medium=social&amp;utm_oi=619610399826382848</a> （分享自知乎网）
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
-🔖【为什么有人说弄懂了《算法导论》的 90%，就超越了 90%的程序员？】启舰：… <a href="https://www.zhihu.com/question/315201616/answer/1960517601?utm_source=md.obsidian&amp;utm_medium=social&amp;utm_oi=619610399826382848" target="_blank" rel="noopener">https://www.zhihu.com/question/315201616/answer/1960517601?utm_source=md.obsidian&amp;utm_medium=social&amp;utm_oi=619610399826382848</a> （分享自知乎网）
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
-🔖【vs code】【keil】优雅地使用vs code代替keil。by 童话与云 👉 <a href="https://www.zhihu.com/zvideo/1422934459457253376?utm_source=md.obsidian&amp;utm_medium=social&amp;utm_oi=619610399826382848" target="_blank" rel="noopener">https://www.zhihu.com/zvideo/1422934459457253376?utm_source=md.obsidian&amp;utm_medium=social&amp;utm_oi=619610399826382848</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
-🔖图解网络 - 75张图带你了解网络设备、网络地址规划、静态路由、实战演练（分享自知乎网）
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
-🔖vscode-journal：vscode中写日记/便签/提醒，配合nutstore与安卓、ios同步_TeQuL的博客-CSDN博客
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
-🔖结构体（结构体嵌套、结构体指针、结构体参数传递） - 蓝海人 - 博客园
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
-🔖Feedme - 8大 RSS 阅读器第三方客户端[Android] - 小众软件
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
-🔖聪明人必学的停车小技巧！。by Felicidades 👉 <a href="https://www.zhihu.com/zvideo/1414008107094093824?utm_source=md.obsidian&amp;utm_medium=social&amp;utm_oi=619610399826382848" target="_blank" rel="noopener">https://www.zhihu.com/zvideo/1414008107094093824?utm_source=md.obsidian&amp;utm_medium=social&amp;utm_oi=619610399826382848</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
-🔖在线 DOS 游戏 - 近 2000 款怀旧游戏，仙剑、红警、三国志、大富翁、明星志愿、大航海、主题医院等 - 小众软件
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
-🔖Feeddd · 重新掌控你的订阅源
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
-🔖【如何长时间高效学习？】硬核学长2077：… <a href="https://www.zhihu.com/question/28358499/answer/1762418904?utm_source=md.obsidian&amp;utm_medium=social&amp;utm_oi=619610399826382848" target="_blank" rel="noopener">https://www.zhihu.com/question/28358499/answer/1762418904?utm_source=md.obsidian&amp;utm_medium=social&amp;utm_oi=619610399826382848</a> （分享自知乎网）
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
-🔖【你身边的学霸都有怎样的学习方法或习惯？】硬核学长2077：… <a href="https://www.zhihu.com/question/54265751/answer/1995587976?utm_source=md.obsidian&amp;utm_medium=social&amp;utm_oi=619610399826382848" target="_blank" rel="noopener">https://www.zhihu.com/question/54265751/answer/1995587976?utm_source=md.obsidian&amp;utm_medium=social&amp;utm_oi=619610399826382848</a> （分享自知乎网）
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
-🔖【如何不痛苦地早起？】铁木君：… <a href="https://www.zhihu.com/question/22120300/answer/1887544838?utm_source=md.obsidian&amp;utm_medium=social&amp;utm_oi=619610399826382848" target="_blank" rel="noopener">https://www.zhihu.com/question/22120300/answer/1887544838?utm_source=md.obsidian&amp;utm_medium=social&amp;utm_oi=619610399826382848</a> （分享自知乎网）
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
-🔖[[obsidian_tips]]
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
-🔖<a href="https://sspai.com/post/72757" target="_blank" rel="noopener">随时可用的 PC 体验是这样「炼」成的，Windows 新版睡眠机制详解 - 少数派</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
-🔖<a href="https://blog.csdn.net/who538592/article/details/79483323" target="_blank" rel="noopener">TC流量控制_who538592的博客-CSDN博客_tc流量控制</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
-🔖 <a href="https://sspai.com/post/74090" target="_blank" rel="noopener">大家都说好的蛋白粉，我们应该如何取舍 - 少数派</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W28.md">C日常/2022-W28.md</a><br>
-🔖 <a href="https://zhuanlan.zhihu.com/p/508345279" target="_blank" rel="noopener">我的obsidian插件开发的学习过程</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W28.md">C日常/2022-W28.md</a><br>
-🔖 <a href="https://blog.csdn.net/Haywardwang/article/details/108626491" target="_blank" rel="noopener">python 词云构建_Haywardwang的博客-CSDN博客</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W28.md">C日常/2022-W28.md</a><br>
-🔖 <a href="https://blog.csdn.net/weixin_56842628/article/details/117921526?utm_medium=distribute.wap_relevant.none-task-blog-2~default~baidujs_title~default-9-117921526-blog-108626491.wap_blog_relevant_default&amp;spm=1001.2101.3001.4242.6&amp;utm_relevant_index=10" target="_blank" rel="noopener">如何用Python制作简单又好看的词云？来瞅瞅吧~_小熊爱Python的博客-CSDN博客_python词云代码简单</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W28.md">C日常/2022-W28.md</a><br>
-🔖 <a href="https://sspai.com/post/73779" target="_blank" rel="noopener">跨时空圆桌：伟大创作者们如何安排日常生活 - 少数派</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W27.md">C日常/2022-W27.md</a><br>
-🔖 <a href="https://www.appinn.com/typing-learner/" target="_blank" rel="noopener">Typing Learner - 硬核单词记忆：从电影台词筛选生词，边追美剧边学英语，用户直喊「好家伙！」[Windows/macOS] - 小众软件</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W27.md">C日常/2022-W27.md</a><br>
-🔖 <a href="https://www.zhihu.com/question/391756708/answer/2556173863" target="_blank" rel="noopener">SpaceX的可回收火箭有什么神奇之处，为何其他航天大国还不能仿造？ - YY硕 的回答 - 知乎</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W27.md">C日常/2022-W27.md</a><br>
-🔖 <a href="https://mp.weixin.qq.com/s/KBKO4C1d4CkyHAPEkh8D4Q" target="_blank" rel="noopener">这几个通信协议的动图不错</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W27.md">C日常/2022-W27.md</a><br>
-🔖 <a href="https://oorkan.medium.com/emojifying-your-linux-terminal-9a5c1e8f6b3c" target="_blank" rel="noopener">Emojifying your Linux terminal  🚀</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W27.md">C日常/2022-W27.md</a><br>
-🔖 <a href="https://sspai.com/post/74167" target="_blank" rel="noopener">为 WSL 配置这些新功能，不用虚拟机也能体验完整 Linux - 少数派</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W27.md">C日常/2022-W27.md</a><br>
-🔖<a href="https://sspai.com/post/72274" target="_blank" rel="noopener">意识先行，工具辅助：谈谈我们该怎样分辨虚假信息</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W27.md">C日常/2022-W27.md</a><br>
-🔖<a href="https://zhuanlan.zhihu.com/p/495262462" target="_blank" rel="noopener">网站低代码开发</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W27.md">C日常/2022-W27.md</a><br>
-🔖 学习体系化，效率提升
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W27.md">C日常/2022-W27.md</a><br>
-🔖 <a href="https://sspai.com/post/73958" target="_blank" rel="noopener">玩转 Obsidian 08：利用 Dataview 打造自动化 HomePage - 少数派</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W26.md">C日常/2022-W26.md</a><br>
-🔖 <a href="https://post.m.smzdm.com/p/adwgg2rd/" target="_blank" rel="noopener">小爱同学，打开我的三菱空调——米家空调伴侣2使用分享_智能家居_什么值得买</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W26.md">C日常/2022-W26.md</a><br>
-🔖 <a href="https://sspai.com/post/73829" target="_blank" rel="noopener">用 59 分钟，找到工具的效率之源 - 少数派</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W26.md">C日常/2022-W26.md</a><br>
-🔖 <a href="https://cloud.tencent.com/developer/article/1879646" target="_blank" rel="noopener">tcpdump是在哪儿抓到的包？ - 腾讯云开发者社区-腾讯云</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W26.md">C日常/2022-W26.md</a><br>
-🔖 <a href="https://www.jianshu.com/p/79bcf09aed25" target="_blank" rel="noopener">IPTables五----ebtables - marshalzxy - 简书</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W26.md">C日常/2022-W26.md</a><br>
-🔖 <a href="https://david-waiting.medium.com/a-beginners-guide-to-generic-routing-encapsulation-fb2b4fb63abb" target="_blank" rel="noopener">A Beginner’s Guide to Generic Routing Encapsulation</a>
--&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W26.md">C日常/2022-W26.md</a></p>
-]]></content>
-      <categories>
-        <category>转载</category>
-      </categories>
-      <tags>
-        <tag>转载</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>裁员增笑「转」</title>
-    <url>/public/2024/01/23/readings/caiyuanzengxiao/</url>
-    <content><![CDATA[<p>我被公司裁了。
-我一手搭建起核心项目的底层框架，总算熬出头时，公司把我裁了。
-CEO 当着全公司的面落井下石，羞辱我是滥竽充数。
-他不知道，核心代码的故障只有我能修。
-公司求我的日子比想象中来得更快。</p>
-<a id="more"></a>
-<p>1
-「很遗憾地通知您，公司有人员调整，将结束与您的聘用关系。」
-「您的门禁卡已经失效，请您立刻搬走全部个人物品。」
-我一头雾水。
-本以为被人事叫走只是开个小会，没想到是裁员通知。
-三年前，公司只是不足20人的小企业。
-我抓住虚拟交互的风口，一手搭建起核心项目的底层框架。
-我无数个夜晚加班加点，做出第一款产品一Ribo，以眼镜或车窗为载体，实现所有外界环境与人的虚拟交互。
-再也不用佩戴笨重的VR 设备，用户仿佛生活在科幻大片中。
-Ribo 一经上市，就引爆市场。
-无数代理商和开发商找我们合作。
-Ribo 生态仿佛摩天大楼一般建设起来。
-我们公司的规模也迅速从 20人扩张到5000人。
-Ribo 如火如荼地发展，我们也抓紧更新迭代。我流连在技术网站中，把Ribo的系统升级成最前沿的高可用架构。
-这个架构搭建时非常困难，因为掌握核心技术的人不多。
-我全身心投入到工作中，无暇处理其他事。
-陈炳就是那个时期被招进来的。
-最开始他跟着我做些琐事。他这个人很圆滑，最擅长向上社交。
-他的朋友圈都是跟大老板打高尔夫、跟产品经理喝下午茶。
-Ribo 新产品要开发布会，通知我准备稿子。
-我嫌麻烦。陈炳自告奋勇，主动写好稿子上直播。
-他的口才好，又积极，让我专心处理技术，以后的发布会都让他去。
-我乐得清静。我一心只想让Ribo 更好。
-他宣称自己是 Ribo 的总工程师。久而久之，外界也默认了。
-他靠着人脉一路高升，做到首席 CEO.
-与此同时，我完成了Ribo的升级，工作总算轻松了一点。
-2
-有人问过我，陈炳的技术怎么样?
-我说:「一般，他更擅长社交。」
-这话传到了陈炳耳朵里。
-说者无意，听者有心。
-陈炳在发布会上以「总工程师」自居，不能容忍有人拆他的老底。
-经济下行时期，很多科技公司都受到波及。
-Ribo 的股票也有下降，公司传出裁员风波。
-我做梦也想不到，第一个被裁掉的竟然是我。
-我回到工位收拾东西，内心一片茫然。
-门口传来「陈总好!」的声音，我抬头看，陈炳大腹便便地走过来。
-可能是应酬太多，这三年，他迅速发福，成了一个油腻的中年胖子。
-他笑眯眯地打招呼:「早，各位早啊!」
-他晃到我面前，满脸惊讶:「咦，黎工怎么在收拾东西?」
-有几人向我看过来。
-陈炳仿佛突然想到什么，大声说:「黎工不会是被裁了吧!」
-他一咋呼，整个办公室的同事都停下工作来看我。
-我回答他:「对。我还得收拾东西，先失陪了。」
-陈炳的话根本就不是对我说的。
-他转过身，痛心疾首一般围着我转:
-「可惜啊，黎工也是公司的老员工了!」
-「公司有人员调整，竟然把黎工给裁了。我就不明白，这么多技术人员不裁，怎么偏偏要裁你呢?」
-「难道公司考察了所有人的KPI吗?」
-我不喜欢搞形式主义，平时的汇报总结能省则省，专心干活。
-陈炳说的 KPI 就是那些形式主义的报告之一。
-「我也算是跟黎工共事过，实在痛心。」
-「但是公司不养闲人!」
-「要是黎工走了，公司业务照常运转，大家就能发现是谁只拿工资不干活了!」
-他越说声音越大，幸灾乐祸地斜眼瞟我。
-3
-迟钝如我，也能猜到是谁想让我滚了。
-裁员名单本来就是上面下达的。
-我一肚子暗火，给大学室友打电话:
-「Pocky，你之前说的项目，还缺人吗?」
-电话那头欣喜若狂:
-「哎呀，黎神，你终于腾出手来关心我啦!」
-「你尽管开口，你想做什么项目我投资什么。」
-我不禁莞尔:「行，你现在有空吗，见面详聊。」
-「有空。那我开车去你公司楼下接你。」
-4
-我抱着一个纸箱，在公司楼下等车。
-三年不舍昼夜，到头来属于我的也仅有这一箱杂物。
-陈炳刚开完会，满脸堆笑地送几个合作商出来。
-陈炳看到我，啧啧称奇:
-「干活不行，收拾得倒挺快。」
-我已经不是 Ribo 的员工了，他也不是我上司。
-但陈炳显然还没从上司的角色转换过来。
-「介绍一下，王总，徐总，这位是我们技术部的员工。」
-「前几年公司扩招，招聘门槛低。我们系统升级后极大降低了人员成本，平时摸鱼的员工就被优化掉了。」
-「两位对新系统有兴趣，我们继续谈合作?」
-两位老总是跟陈炳差不多的身材，他们站一块儿像三个汽油桶。
-陈炳凑近我，从鼻子里出声:
-「喂，黎泉，听说你刚在市区买了房子，贷款压力不小吧。」
-「我是个念旧情的人。要不，你帮二位老板背包，原地做五百个俯卧撑。」
-「要是你能做完，我就跟人事说，继续聘用你，怎么样?」
-我伸手过去，啪啪作响地拍了拍陈炳的大肚腩。
-「我看该做俯卧撑的是你。」
-二位老板哈哈大笑。
-陈炳胖脸涨红，正欲发作。一辆劳斯莱斯疾驰过来，停在我们面前。
-车头升起小金人，车门打开，驾驶座坐着一个身穿白西装的帅哥。
-三年不见，这小子更帅了。
-Pocky 探出头，把墨镜往头顶一撩，殷勤地给我开后车门:
-「黎神，快请上车!」
-我抱着纸箱坐进去。
-Pockv
-估计
-他阴阳怪气地说
-「老板们继续工作吧。我们闲人已经到下班时间了!」
-他说完关门，劳斯莱斯扬长而去。
-5
-芮文是我的大学室友，一个眼光毒辣的富二代。
-他超爱同名饼干，在宿舍必叼着一根，被我们笑称「Pocky」。
-毕业之后，他继承家族企业，到处搞投资。
-该说他运气不错还是实力过硬呢，他一投一个准，竟把家里资产又翻了几番。
-从前年开始，他就不断劝我合伙开公司。
-我那时专心升级Ribo，一口回绝了他。
-我坐在劳斯莱斯舒适的座椅里，内心暗暗惆怅。
-车窗外，挂着彩虹商标的 Ribo 大厦渐行渐远。
-Pocky 从后视镜看我，通过我的纸箱和表情，他就懂了。
-「Ribo 高层猪油蒙心了吗，竟然把总工程师给裁了。」Pocky 开口说。
-我在后视镜中与他对视:「你怎么知道我是总工程师?」
-Ribo 开发涉及公司机密，我从不对外透露。
-外界只能通过陈炳在发布会上的陈词，得知 Ribo 的发展计划。
-Pocky乐了:
-「你忘了我们大学时参加的竞赛了?」
-「你说，你一直想给车窗装上虚拟交互软件，这样就不用分心看车载导航了。」
-「你以这个想法写出了 Ribo的雏形，我们获得了金奖。」
-「可惜当年没有配套的硬件系统，那个雏形只停留在概念阶段。」
-确实有这回事。
-我沉迷工作太久，大学时代就好像上辈子一样久远。
-Pocky 心潮澎湃地说:
-「当时我觉得你就是天神下凡!这个大腿我抱定了!」
-我勉强笑了笑。
-虚拟交互一直是我的梦想。
-现实中美好的事物太少了，我想让幻想进入现实，把彩虹握在手中。
-Rainbow,Ribo.
-Ribo 迅速崛起的三年，说不自豪是假的。
-可惜，我的彩虹终究是一场幻觉。
-6
-Pocky 问我:
-「你下一步有什么打算?」
-我: 「不知道。你最近在做什么项目?」
-Pocky: 「当然是 AI 啊，现在大家都拼命卷AI呢! 」
-我点点头，叹了一口气。
-Pocky 心中了然，安慰我说:「先别忙工作，你休假一段时间吧。」
-这么一说，我很久没休过长假了，确实该放松一下身心。
-我:「我想乘最近的航班去马尔代夫。」
-Pocky:「海钓是吧，我懂!不用乘航班，坐我的直升飞机去。」
-我: 「行。你把AI 相关的立项方案发给我，我在飞机上看。」
-Pocky: 「? 」
-Pocky:「你们 INTJ 都这么恐怖吗?」
-我简单收拾行李。等飞机时，我看到Pocky 在抛售股票。
-「怎么了，这么急着出手?」
-Pocky 目露精光，预言说:
-「我跟你打赌，Ribo 最近必出事。你也赶紧把 Ribo 的股票抛了吧，还不知道跌多少。」
-我不乐意了:「你就这么不信任我写的系统?」
-Pocky:「不是。你小子只会自己做事不教人，也不爱留文档记录。」
-「Ribo马上要发布新功能，会出大乱子的。」
-我回想起来，新架构升级后隐患很多，我准备写总结分享给同事看。
-那份总结现在还只写了一半。
-陈炳只看到升级后维护成本低，那是在正常运转的情况下。
-一旦出故障，除了我，没人能修。
-我料到会出事，但也没想到是那么惨重的事故。
-而且比我预想得还要快。
-7
-我当晚就入住了马尔代夫高档度假酒店。
-Pocky 是真心想拉拢我，酒店和交通都安排好了。
-套房面对大海，三面落地窗。
-我把衣服和日用品摆出来，整理好。
-刚收拾完，手机收到同事信息。
-不对，已经是前同事了。
-【黎哥，快看同事圈!]
-同事圈是某职场 APP 的认证领域。
-Ribo 的同事通过认证后都可以进入，通讯录经常会推荐一些熟人。
-公司的大部分八卦，都能在同事圈第一时间得知。
-我倒了一杯马提尼，在落地窗前打开同事圈。
-[黎姓员工巧立名目中饱私囊，被抓后不服管理碰瓷CEO!]
-匿名发帖人。
-配图是我在公司楼前拍陈炳肚腩，面露讥讽。
-我放大图片看，灾难级的表情管理。
-我平时的脸色都这么冷吗?
-难怪大家不敢跟我说话。
-发帖人痛斥我的「罪状」有三条:
-其一，推行毫无必要的技术创新，资金都进了自己口袋。
-其二，不按时签到，迟到早退、KPI 不达标。
-其三，不尊重公司领导，散播谣言。
-评论炸开了锅:
-【所以公司要裁员也是谣言，就只开了一粒老鼠屎?]
-[支持!把占着茅坑不拉屎的都开掉，公司才能越来越好!]
-[这人是技术部门负责人吗，看着眼熟。]
-[总工程师是陈总啊，技术部哪有什么负责人?]
-我看了一圈，起哄的都是其他部门的人。
-前同事愤愤不平地发消息:
-[黎哥，你离职得太突然，我们都觉得对你不公平。)
-【你走后，人事把技术部的组长挨个叫去开会。]
-【谁敢在网上发言，就无赔偿解除劳动合同!]
-8
-我能理解他们的苦衷。
-现在经济形势不好，工资高不加班的公司越来越少了。
-像Ribo 一样飞速发展的更是凤毛麟角。
-老员工搭上青春和健康，好不容易换来高新高职位。
-一旦被开，经济压力大，在业内风评也不好。
-毕竟人脉圈子很小，一做背调，就什么都清楚了。
-给我发消息的前同事叫丽丽，技术部为数不多的女员工。
-丽丽狂暴输入中.....
-【什么叫毫无必要的技术创新!新架构节省了多少人力!]
-【以前做部署要一整天，现在一小时就搞定!]
-【他懂什么技术啊?凭什么这样说黎哥!]
-升级新系统确实烧了不少钱，但是条目透明，都是层层审批通过的。
-紧急用钱的时候还是我自己掏的腰包。
-至于后面两条，懂的都懂。
-我看丽丽情绪失控，回了一句安慰她:
-【别激动，跟我抱怨下就行了，在网上说话小心点，会被追踪到的。]
-丽丽对陈炳意见大是有原因的。
-当初她刚入职，同事们奔走相告:我们有女同事了!
-丽丽是校招来的，年轻好学，端庄得体，很有人缘。
-我让她先看看基建，学习标准流程。
-陈炳经常来技术部视察，见到她，兴致勃勃地叫她过去:
-「新人吗，来我考考你。」
-陈炳拿一个刚出炉的新需求考她。
-我觉得这完全超出对校招生的能力要求。
-丽丽回答得磕磕巴巴:「就，先，先找同类项目的文档，分析容量、问 PM 要实现的效果......」
-陈炳嗤笑一声，打断她:
-「不会就说不会，不要不懂装懂!」
-「女孩子嘛，本来就技术经验不足，多向同事请教，确定了再回答!」
-丽丽突然被训，不敢出声，眼中闪烁。
-我走过去。
-「新人回答得很好啊。」
-「有新需求，先回顾经验、确认需求、分析数据，条理清晰，非常可行!」
-我挠了挠头皮:「而且技术经验跟性别无关。男孩女孩都一样!」
-丽丽的表情由惊恐转为惊喜。
-陈炳一张肥脸耷拉下来，满眼嫌恶。
-我:「技术部正好也在为这个新需求发愁呢。正好陈总提到，我想请教一下现在有进展吗?」
-我当时真以为他有两把刷子。
-没想到他纯粹是想在女同事面前显摆。
-陈炳开始顾左右而言他。
-他一会儿说 PM 催得急，一会儿说经费不足，最后借口要开会逃走了。
-从那以后，丽丽就对陈炳的能力很鄙夷。
-9
-不过丽丽有一点说错了。
-陈炳很清楚升级新系统非常必要。
-他就算对我有再多不满，也忍到我完成升级后才赶我走。
-我翻阅这条「举报」帖子，评论越来越多。
-有挖苦的，有嘲笑的，有恶意揣测的。
-就是没有一个知道真相的。
-几分钟过去，「举报」帖热度上升到同事圈榜首。
-我的个人信息、缺勤记录、敷衍的 KPI报告都贴上去了。
-没落实到报告上的业绩被抹得干干净净。
-按理说，暴露私人信息的帖子会被管理员删除。
-但它光明正大地摆在那里，是谁授意的不需多言。
-丽丽在语音里急哭了。
-这个帖子只要还在，我就别想入职好公司。
-陈炳不想让我在Ribo 待着，更不想让我去别家待着。
-回想起来，陈炳曾多次暗示我夹起尾巴做人。
-「黎工，你没当过管理层不懂，这个工作不是普通员工能干的!」
-「我对外要公关，对内担风险，你根本想不到有多难!」
-可惜我没听懂他的「提点」:
-「但你的年新也不是普通员工能比的啊!」
-他的「工作」是有成果的:
-「总工程师」是他，「Ribo」是他一手搭建，管理层上上下下都跟他有交情。
-终于，他找准时机，把我像垃圾一样扫地出门。
-10
-【黎哥，那你要怎么办啊!]
-我能怎么办?
-我只能坐专机来海边度假、住高档酒店看日出、吃好喝好回家自己当老板咯!
-我从无到有拉起 Ribo用了三年。
-再用三年超越它便是。
-不过，知道还有人为我抱不平，在Ribo 的三年终归没有白费。
-这是今天唯一值得高兴的事情。
-11
-酒店有 VIP 健身房，我健完身，回房间洗澡。
-工作不忙之后，我又拾起健身的习惯，调整回健康作息。
-浴室的镜子水汽氤氲，我捋起湿发，看到自己的胸腹恢复了肌肉轮廓。
-工作虽说劳累，但充满价值感。我的头发依旧茂密，双目有神，身材也没走形。
-幸好应酬的活儿都被陈炳承包了。
-早上 6点，我神清气爽地起床，背着钓具出发。
-我们包了游艇去海钓。
-游艇马达声轰隆作响，我戴上墨镜，躺在甲板的躺椅上。
-碧海蓝天，温度宜人，清新的海风拂过，我好像刚刚从地狱来到人间。
-人生如逆旅，我亦是行人。
-咔嚓--咔嚓--
-我睁眼，Pocky 正用手机偷拍我。
-「我心想哪来的帅哥钓鱼佬，竟是我黎神!」
-「这照片留着当招聘宣传图，哪个小姑娘看了不迷糊?」
-我蹦起来抢他手机。
-「删了，马上!」
-Pocky 化身卖艺的吗喽，一溜烟跑到船尾。
-他对着手机啧啧称奇:
-「你放松下来明明很帅，平时的脸色就又冷又臭，难怪有人看不顺眼。」
-我想反驳，但想起「举报」帖上我的表情。
-我闭嘴了。
-12
-今天是 Ribo 新功能发布的日子。
-往常我都是紧张兮兮地守着发布会直播间。
-现在我和 Pocky 并排坐在甲板上，守着钓竿。
-「有了!有了!快收竿!」
-水下的力道巨大，我按捺住激动的心情，费了九牛二虎之力拉起钓竿。
-是条体长一米二的旗鱼!
-我和 Pocky 还有游艇船长，三个大男人吱哇乱叫。
-最后我抱着旗鱼，船长拿着米尺，Pocky为我拍下这张纪念照。
-照片中我昂首挺胸，五官打架。
-回去我少说能吹一年。
-这时，Pocky 手机响个不停。
-他接起来，听了几句，爆发出一声:「啊!」
-他火速冲到我面前:「快看头条新闻，快!」
-我看他的手机网页。
-网页被「Ribo 全线瘫痪，用户数据丢失」新闻刷屏。
-[Ribo 新功能发布异常，产品全线瘫痪.]
-[CEO 匆忙结束发布会，回应正在抢修，修复时间未知。]
-【有用户反馈，偶尔登录Ribo 后发现自己账户一片空白。]
-[Ribo产品已应用到实际生活的方方面面，日常使用需要高额的会员费、内购插件费。如果本次异常影响到用户数据，无疑会给Ribo 公司带来重创!]
-我知道事态严重，洗完手认真看。
-我看了发布会录像、用户社区大量的报障信息。
-结合升级过后留下的隐患，我倒推代码逻辑，大致明白了问题出在哪里。
-Pocky 提醒我看手机，我才发现自己的手机没电关机了。
-我给手机充上电，开机。
-未接来电爆发!
-无数的消息涌进来。
-我已经能想象出办公室里鬼哭狼嚎的场景了。
-我根本接不过来，干脆让它一直响。
-过了一会儿，终于消停了。我接起一个产品部打来的电话。
-我没耐心听官话，直接说:
-「我只跟 CEO 陈炳通话。」
-13
-我又拒接了几通电话。
-我看到来电是陈炳的号码，接起来。
-陈炳语速极快，急得像热锅上的蚂蚁。
-陈炳:「你知道了吧?」
-我: 「你也知道了?」
-陈炳:「什么我也知道，我早就知道了!」
-我吃惊:「你怎么知道我钓到旗鱼?」
-我直接把我抱着旗鱼的照片高清原图发过去。
-陈炳蒙了。
-陈炳:「不是，谁知道你钓到旗鱼啊!」
-14
-「那你现在知道我钓到旗鱼了!」
-电话那头，陈炳气急败坏。
-「黎泉，没人跟你开玩笑!」
-「你应该看到新闻了，Ribo 这三年都没出过这么大的故障!」
-「这可是你搞出来的系统，可用性太差了!」
-他吵得太大声，在游艇甲板上回荡。
-这兴师问罪的态度震撼到我。
-什么时候了，他的第一反应竟然是甩锅。
-我原本是想帮忙的，现在担忧的心情消失无踪。
-只剩下尊重祝福。
-我:「不关我的事，我只是一个拿工资不干活的闲人。毕竟那么多技术人员不裁，偏偏裁了我呢!」
-我挂了电话，冷笑一声，继续钓鱼。
-电话又响起来。
-我拿远一点，开免提。
-陈炳:「你身边有电脑吗，开个远程会议。」
-我:「帮我拿饵来，咱再钓一条大鱼!」
-陈炳提高声音:
-「喂? 喂? 听不到吗，快加入会议!」
-我:「船长，再往前开几海里吧。」
-马达声轰鸣，盖过了陈炳的叫声。
-15
-我们欢声笑语地钓了一会儿鱼。
-陈炳隔着电话应该也听出来我在度假。
-业务故障固然令人难过，别人在度假尤其使他揪心。
-不出十分钟，陈炳态度软化。
-陈炳: 「黎工啊，你也不想看 Ribo 垮掉吧，帮帮忙吧!」
-我是真不懂。领导当惯了，看谁都想指挥指挥?
-我提醒他:
-「陈总，我现在不拿Ribo 的工资，没必要给Ribo 干活，是不是?」
-陈炳果断回答:「我马上给你恢复原职。那个帖子我也删掉。」
-我:「哦…...原来那个帖子是你写的啊。」
-陈炳不作声。
-估计汗流浃背了。
-但他不愧在名利场里摸爬滚打许多年，懂得直击痛点。
-「黎工，你对我个人有意见，没关系，等业务恢复怎么清算都可以。」
-「但你想想技术部的同事，他们现在加班抢修，都要急疯了。业务不恢复，他们一刻也不能休息!」
-我沉默了。
-他是对的。Ribo 垮掉，对所有人都没好处。
-我叹了一口气。
-「陈总，说实话，这个故障我能修。」
-不等他兴奋，我补充:
-「但我现在在海上，信号很差，登录权限也没有。」
-陈炳: 「好说!你需要叫谁搭把手，要什么权限，我马上办!」
-16
-陈炳紧锣密鼓地帮我准备。
-我们的游艇也打道回府，在码头找了一家信号好的咖啡馆。
-先前我被除名，账号直接都删干净了。
-我需要开的权限太多，一时也开不全。
-我把几个资深组长拉进会议，统筹进度。
-陈炳旁听，一边不停地接电话汇报。
-此时天色渐暗，国内时间已经是晚上十点。
-故障发生五小时，仍未修复。
-嘶嘶!
-Pocky冲我使眼色，打开股市大盘给我看
-Ribo 的股价断崖式下跌，一点回暖的趋势都没有。
-「幸亏抛了，我至少省出一辆车来!」Pocky 得意地说。
-现在压力给到陈炳这边。
-陈炳长吁短叹，连连擦汗。
-「各位，麻烦快点，这个有预计修复时间吗?」
-我甩他一句:「你行你上!」
-陈炳不吱声了，安静如鸡。
-又过了一个小时，我们总算有了进展。但陈炳坐不住了:
-「现在要开董事会，一小时内能恢复业务吗?不然我不好汇报。」
-加班到深夜的同事们怨气冲天，没空理他。
-我直截了当:「没有!直接当着董事会的面修吧，省得跟他们汇报!」
-陈炳没有办法，挂着远程会议去开董事会。
-17
-董事会开口就质问陈炳，什么时候能恢复业务。
-陈炳这时突然展现出十二分自信，侃侃而谈，把耽误的时间都推到监控和运营部门身上。
-董事会听他说，不出二十分钟必恢复，都放下心，开始讨论危机公关方案。
-他们打算发公告说成人为误操作，推出几个替罪羊，然后补偿用户损失。
-这是最能维护公司形象的补救办法。
-我没想到，我们基层员工累死累活，养着这么一群搅屎棍。
-连开诚布公都做不到。
-幸好我溜了。
-终于，我们修好了系统，可以进入测试阶段。
-陈炳跳起来说修好了。
-其他董事纷纷赞叹陈炳办事效率高。
-陈炳恭维说是董事们指导有方，群策群力，践行公司核心价值观。
-我没有那么乐观。我知道用户数据丢失的问题还没解决。
-果然，一登录 Ribo，账户一片空白。
-陈炳开始慌了。
-董事会一片嘈杂。
-「都安静!」越乱越烦，我让陈炳开外放，怒喝一声，会场总算安静下来。
-我:「各位董事不用着急。数据库我们做了严格备份，只要回滚就好。」
-我:「我没有数据库权限，辛苦陈总操作一下。」
-陈炳手忙脚乱地打开电脑:「呃…….怎么操作?」
-我说出操作方法。
-陈炳做完回滚，声音发颤:「发布会之前的数据.……丢失索引了。」
-丢失索引，意味着原本分门别类的数据乱成一锅粥。
-我又大声叫「安静」。
-我:「小问题。我们还有异地备份，是独立服务器，不受主集群影响的。」
-我又告诉陈炳异地服务器的操作方法。
-陈炳却没有马上操作。
-他沉默了一会儿，轻声说:「异地服务器…...上个月为了节省成本，取消了。」
-会场鸦雀无声。
-我压抑住怒火:「取消了?怎么没人来问问我的意见!」
-18
-陈炳颓然坐在桌前。
-董事会奇怪地问陈炳，我是什么人，为什么总工程师要向我请教?
-我哼了一声:「除了真正的总工程师，他还能向谁请教!」
-陈炳没有反驳，默认了。
-一位董事问我:「这位..….同志怎么称呼?」
-我:「黎泉。」
-董事:「黎泉同志，你下一步准备怎么办，数据库多久能恢复?」
-我: 「我不知道。我在贵司任职的三年，从未出过事故。贵司这周一把我裁了，按理说，我不该过问贵司的事务，各自安好。我帮到这里已经牺牲了很多个人时间。就这样吧，
-晚安。」
-董事会听说我撂挑子了，齐声挽留。
-董事:「谁把黎泉同志裁了?我要起诉他，全额赔偿公司损失!」
-没有人承认。
-无奈之下，我只能说出一个不是办法的办法。
-现在没有数据备份，索引全丢，但万幸数据还在。
-只能用笨办法，手写筛选条件，人工捞出数据。
-这个工作量巨大而且枯燥。我交给同事之后，退出会议。
-19
-这次发布会事故，前前后后，用了12小时才修好。
-Ribo 蒙受巨大损失，口碑滑铁卢，千万市值一夜蒸发。
-而我的假期才过了一半。
-董事会多次要求我恢复原职，我都拒绝了。
-我已经对他们失望透顶。
-同样失望的还有我的前同事们。
-他们纷纷离职。失去劳动合同的制约，有人在网上爆出了这次事故的内幕。
-Pocky 转发给我一些大V的评论:
-[听说裁员裁到大动脉，这次才修了这么久?]
-【降本增笑了属于是。]
-【对 Ribo 祛魅了，新出的功能一个比一个恶心!]
-看到这些评论，我笑不出来。
-Ribo 的管理层垃圾，但Ribo本身就像是我亲手带大的孩子。
-做父母的，见不得别人说自家孩子不好。
-我只能眼不见为净，全心投入与Pocky 合作的 AI项目中。
-20
-Pocky 投资新项目的眼光确实毒辣。
-短短一年，我们用独特的训练方法，训练出一个电竞主播AI。
-它讲话幽默，操作犀利，在年轻人中很有人气。
-年末有一个举世瞩目的电竞节，AI 加入了中国参赛队伍，勇夺冠军。
-这个成绩吸引了一大波投资。
-我抓住机会，训练出更多领域的主播AI。
-主播 AI 出圈成功，成为大众知名的KOL，给公司创造巨额财富。AI本身的管理也非常简单，它们不耍大牌、不需要休息，也永远不会塌房。
-年底财报出来，Pocky 激动万分:
-「黎神!我们公司年度净利润翻了三十倍!」
-「还被评为年度新星!调查显示，10-25岁的人群，每5人就有1人知道我们!」
-我和 Pocky，还有董事会的各位分享了这一喜悦。
-是的，有了 Ribo 的前车之鉴，我加入公司管理层，参与公司决策。
-Pocky 努力纠正我不爱教人的坏习惯，让我把工作分配给业务部门，我自己重新学习经营管理。
-我持有公司股份。财报一出，不仅Pocky 是富二代，我也成了富一代。
-不过我欲求比较低，财富自由了，我也没什么实感。
-「我们公司现在的市值，相当于几个Ribo?」我问 Pocky。
-「二十个吧。」
-Pocky 突然想起了什么:
-「说到 Ribo 啊，他们已经连续低迷一年了。」
-「他们最近在到处拉合作。我明天下午跟 Ribo 那边有洽谈会，你要来吗?」
-21
-洽谈会当天，我们提前来到夏利五星级酒店。
-我嫌贵宾包厢闷，自己带着电脑坐到楼下大厅。
-等得无聊，我打开电脑，写新功能的脚本。
-一行人进入酒店大门。我觉得中间一人有些眼熟，但没有在意。
-还是他先认出了我:
-「这不是黎泉吗!别来无恙?」
-我抬起头，见到一张满脸堆笑的胖脸。
-我也笑了:「陈总，别来无恙啊!」
-来人正是陈炳。
-上次事故后，我拉黑了他所有的联系方式，从此再无联络。
-他发际线后退，脸冒油光，长相越发着急。
-我看他走在队伍中间，派头不复从前，也许是被降职了吧。
-陈炳看到我在敲代码。
-他流露出可惜的表情:
-「黎工入职新公司以后这么忙啊。」
-「其实以黎工的能力，做到管理层完全不是难事。」
-他递出名片，硬塞到我手里。
-「黎工要是累了，随时可以回Ribo。直接提我名字就行了。」
-我拿着名片哭笑不得。
-等到他们上楼谈了一会儿，我也写完收工，
-贵宾包厢有一面玻璃墙正对楼梯，我远远看到，Ribo高层言辞激烈地给Pocky 介绍什么。
-Pocky 不知是没兴趣，还是真饿了，弱小无助但能吃。
-22
-「我们的新产品订购率创历史新高!」
-「如果有贵司授权，加入AI主播互动，绝对是双赢!」
-我推门而入，径直坐到Pocky右手边。Ribo 高层止住话头。
-Pocky 精神一振，介绍我:
-「刘总，陈总，这位是我们公司首席执行CEO，黎总。」
-刘总是生面孔，赶紧起立跟我握手。
-陈炳筷子没拿稳，掉到地上发出清脆的一声响。
-我还是不喜欢社交，但场面话还是要说的。
-「两位客气了。其实我曾经就职Ribo，对贵司的印象很深。」
-刘总: 「就职 Ribo? 哈哈，世界真小。请问黎总以前就职什么岗位啊?」
-我笑着说:「基层员工。」
-陈炳清了清喉咙，试图转移话题。
-Pocky 看热闹不嫌事儿大，积极拱火:
-「哎呀，要不怎么说贵司人才济济呢!我从贵司挖走一个基层员工来做CEO，草台班子唱戏，现在也混得风生水起!」
-刘总一下子没接住话茬，满脸尴尬。
-承认吧，说明自己这边识人不清，不重用人才。
-不承认吧，是看不起对方水平，不给对方面子。
-该说富二代从不为生活所迫，话中带刺，笑里藏刀，让人防不胜防。
-我摆摆手，问他们刚才谈了什么。陈炳硬着头皮把给Pocky 讲过的又给我讲了一遍。
-谈完后，Ribo 高层希望我们表态:「请问二位，有什么考虑吗?」
-我用指节敲桌子，默默思考。
-Ribo 的用户存量渐渐流失，只能通过不断拉联名合作，靠用户增量来维持。
-这个合作对我们没有帮助。
-Pocky 也示意我:算了。
-可能不久的将来，Ribo 就会退出历史舞台了吧。
-刘总和陈炳焦急地等待结果。
-23
-我:「我们可以合作，但有一个条件。」
-刘总:「什么条件?」
-我决定把决定权交给陈炳。我走到他身边，拍了拍他的肚腩。
-「我跟陈总私交很深，我总是劝他锻炼身体。不然年纪上来，脂肪肝、三高都来了。」
-「我是个念旧情的人。这样吧，陈总原地做五百个俯卧撑，我们就同意合作。」
-说完，我到饭桌前的空地蹲下来，等着给陈炳计数。
-要是有点底气的合作方这就会被气走了。
-可惜 Ribo 已经岌岌可危了。
-陈炳一向圆滑，不肯错失这个机会，又不想让自己太难堪。
-他热情洋溢地站起来。
-「没错，没错!黎总以前天天叫我一起健身。黎总离职后，我也没闲着，正好让黎总看看我的锻炼成果!」
-他撸起袖子，趴下，小心地不弄皱高档西装裤。
-「陈总准备好了吗?开始!」
-「一! 二! 三! 四! 」
-我认真给陈炳计数。他每次都是肚子先着地。
-陈炳真的很想争取这次合作。他双臂发抖，满头大汗，还是憋着一口气做俯卧撑。
-「二十!加油，很接近了!」
-陈炳很久没有过这么大运动量。他咬牙坚持到三十个，体力不支倒在地上。
-汗湿的白衬衫粘在他胸前。
-陈炳顾不上维持体面，坐在地板上喘着粗气擦汗。
-Pocky 和刘总也站起来，开着玩笑:
-「哈哈哈，陈总要加强锻炼了!」
-离开时，谁都没有再提合作的事。
-24
-「跟 Ribo 的合作，你怎么看?」
-回去的路上，我问Pocky.
-Pocky 边开车边说:「拒绝了吧，没什么价值，耽误时间。」
-我没搭腔，看向窗外。
-光怪陆离的公司大楼匆匆掠过。Ribo 初创时只有一间办公室，为了节省物业水电费，大家都是把工作带回家加班。Ribo 终于成为这霓虹森林中的一员，随即又将泯然众人。
-飞速前进的时代中，有谁会记得它呢。
-「你还放不下啊。」
-我从后视镜与 Pocky 目光交会:「放不下什么?」
-Pocky 爽朗一笑:「你说自己念旧情，还真是没说错。」
-我沉思片刻，开口说:「我想收购Ribo。现在为了生存，Ribo加了太多冗余功能。只要资金到位，我可以救活它。」
-「好。」
-Pocky 同意得很干脆。
-我: 「你不怕烧钱?」
-Pocky:「哪个大公司没有几个烧钱部门呢?而且创始人发话，我根本没在怕的。」
-第二天，我和公司高层拜访了Ribo，商量收购事宜。
-25
-我们最终以超过市值30%的价格收购了Ribo。
-我公司的董事会都不看好这次收购。
-对于 Ribo 的员工来说倒是一件好事，所有人保留原职，待遇从优。
-我浑身干劲，采集用户需求重新设计Ribo.
-Ribo 易主在市场上引起不小的震动。经济博主分析本次收购的意图，结合之前发布会事故的爆料，有人猜测，这是Ribo前总工程师的情怀向收购。
-外面的猜测众说纷纭。我两耳不闻窗外事，很快通过了第一个方案。
-收购后第一次发布会直播定在下个月。
-董事会一致决定让我上直播。
-「放心，稿子我会找人写好，你照着念就行了。」Pocky 安慰我。
-我担心自己面瘫脸没有观众缘，推脱找个活跃的人去。
-「没有人比你更合适。你也不想重蹈陈炳的覆辙吧!」
-没办法，直到发布会当天，我还在紧张地练稿子。
-26
-今天就是发布会，我穿上一套定制西服，整理发型。
-Pocky 在后台见到我，赞叹说:「果然是人靠衣装，你小子平时邋里邋遢，打扮起来也人模狗样的!」
-谁平时邋里邋遢了!
-但是有他这句话，我自信了不少，脚下生风地出门。
-「哎，黎总小心!」
-啪，滚烫的液体洒下来，我反射性地后撤。
-面前，陈炳诚惶诚恐地端着咖啡:「我，我想给黎总送杯咖啡提提神，真对不起!」
-他端着的咖啡洒了，演讲稿湿透看不清了。
-我的眼神要喷出火来。
-一杯美式咖啡洒了，两个人的衣服都没弄脏，都洒在演讲稿上。
-简直蠢到我都不知道他是不是故意的。
-此时距离发布会开始只有十分钟了。
-我赶紧给 Pocky 发消息，让他把电子版传给我。
-消息已送达，未读。
-我给他打电话，他好像又静音随缘了。
-也怪我疏忽。一份纸质演讲稿快翻烂了，唯独忘了要电子版。
-时间到了。
-助理喊我上台。
-我定了定神，稿子可以没有，但绝对不能迟到。
-我练了这么久，已经形成肌肉记忆了，问题不大。
-27
-上台后，台下黑压压的一片。灯光打在我脸上，晃得我阵阵发晕。
-我看向二楼 VIP 席位。Pocky开了一杯香槟，向我招手。
-不要提前开香槟啊，没看到我稿子都没了吗!
-直播间鸦雀无声，所有人都等着我开口。
-稿子上第一句话是什么?
-「尊敬的各位领导」，还是「尊敬的各位观众」?
-我想融化在台上，然后分批流淌出会场。
-但是箭在弦上，不能不发。
-我凑近麦克风:
-「咳咳，喂，喂?能听清吗?」
-「最近，有传言说，我才是Ribo 的总工程师。对此，我想澄清一下。」
-「传言是对的!」
-台下一片哗然。
-我继续重拳出击:「好，好的。既然知道我是谁了，那就废话少说，直接看新功能!」
-[......这是旧版，完全是一坨屎,所以全撤了!」
-「......这是新增的,特别特别好,你们看这......」
-「......天呐，不会真有人不爱这功能吧,我反正爱惨了!」
-讲到兴奋处，我左脚绊右脚,在台上摔了个底朝天!
-台下哄笑。我不管他们,爬起来拍了拍屁股，继续讲。
-Pocky 的香槟杯子掉地上碎了，助理面无血色。但我完全沉浸在自己的世界里，越说越起劲。
-我不知道的是，从我开始放飞后，直播间人数爆炸式上涨。
-[精英人士都是这么接地气的吗，爱了爱了~1
-【但是他提到Ribo的时候,眼睛在发光耶!]
-[哈哈哈，不讲话是男神,讲话是男神经。]
-发布会时间结束，我还坐在台阶上，给前排观众讲辛酸的 Ribo 发家史。
-助理叫了好几个壮汉才把我拖走。
-28
-我劳累过度，美美睡到第二天，
-一进公司，我看到Pocky对着笔记本电脑咯咯笑。
-电脑正在播放我的发布会鬼畜视频。
-我怒从心头起:「谁发的,是不是陈炳!」我就要出门找他算账。
-「不是他，你想多了。」Pocky拉住我，「是我发的。」
-我:「?」
-Pocky:「抱歉,没问过你的意见,但是……实在太魔性了，哈哈哈!」
-Pocky 说着抱歉，实际眼泪都笑出来了。
-「时代变了，大家都喜欢看乐子。我昨晚发的,今天已经到首页推荐了。」
-我还是很生气，怨毒地盯着他不说话。
-鬼畜视频在首页推荐榜上嘎嘎乱杀。
-不多时，评论区出现我的全套表情包。
-Pocky 摩拳擦掌:「想不到黎神这么有喜剧天赋,闷在公司当管理真是屈才了!」
-他不放过任何一个出圈机会，立刻拿出一个立项:
-「投放一个 Ribo 独占版黎总AI! 」
-「外形、声音、语料库完美复刻黎总本人。黎神，辛苦你去做一下动捕。」
-Pocky 用他的个人账号发布了这一创意,被疯狂转发。
-下午我就被助理团抓走,包装成AI。
-29
-我忙得脚不沾地。
-做完这个旗鱼特别版造型,还有一个发布会周年庆皮肤。
-我的粉丝都劝我:不想当 KOL 的架构师不是好 CEO!
-对，我还有粉丝团。这是我成为Ribo 独占版 AI 原型后才知道的。
-粉丝团的管理也是公司运营的一部分,避免出现不良引导,扰乱舆论秩序。
-其中战斗力最强的是「黎泉女友粉」的组织。
-没想到，我连女友都没有，已经有女友粉了。
-「黎泉女友粉」的粉头是 ID 为「沪圈你丽姐」的大V，也是现任的运营部门员工。
-刚入职时唯唯诺诺的小姑娘,现在雷厉风行。
-至于陈炳，他现在被降职成基层员工了。
-他拿以前一半的工资，干两倍的活儿。
-希望他现在能体会到普通员工的工作也不容易。
-Pocky 还是到处招商投资。对于他来说，挣钱不是目的，做伯乐才是最大的乐趣。
-Ribo 用了两年,终于不是公司里赔钱的部门了。
-每年的发布会我都会上台。鬼畜视频常看常新。
-Pocky 开会归来，双眼放光:
-「韩方邀请我们的女团AI 去演出!趁此机会，做一个黎总女团限定版皮肤宣传吧!」
-我做出步惊云惊恐状:「你不要过来啊!」
-(已完结)
-备案号:YXY1OBG0XrzFzxj0eRTyvrX</p>
-]]></content>
-      <categories>
-        <category>转载</category>
-      </categories>
-      <tags>
-        <tag>故事</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>「转」Linux 内核精通</title>
     <url>/public/2022/12/15/%E7%AE%80%E6%82%A6%E5%90%8C%E6%AD%A5md/%E8%82%9D%E4%B8%8B%2050%20%E4%B8%87%E5%AD%97%E7%9A%84%E3%80%8ALinux%20%E5%86%85%E6%A0%B8%E7%B2%BE%E9%80%9A%E3%80%8B%E7%AC%94%E8%AE%B0%EF%BC%8C%E4%BD%A0%E7%9A%84%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86%E6%B0%B4%E5%B9%B3%E5%B0%86%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E5%85%A5%E9%AD%94%E3%80%90%E5%BB%BA%E8%AE%AE%E6%94%B6%E8%97%8F%E3%80%91/</url>
     <content><![CDATA[<blockquote>
@@ -6781,6 +5818,968 @@ Pocky 开会归来，双眼放光:
       </categories>
       <tags>
         <tag>linux</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>「202207月度汇报」ttrss</title>
+    <url>/public/2022/07/15/test/2022/202207/</url>
+    <content><![CDATA[<p>total: 13</p>
+<a id="more"></a>
+<h2 id="🔖BGmi-–-自动追番的工具：同步最新番剧数据、追番日历、自动下载，适合所有追番懒人"><a class="header-anchor" href="#🔖BGmi-–-自动追番的工具：同步最新番剧数据、追番日历、自动下载，适合所有追番懒人">¶</a>🔖<a href="https://www.appinn.com/bgmi/" target="_blank" rel="noopener">BGmi – 自动追番的工具：同步最新番剧数据、追番日历、自动下载，适合所有追番懒人</a></h2>
+<p>pubdata:2022-06-30 02:48:00
+markdate:2022-07-01 06:32:58.020141</p>
+<p><img src="/public/2022/07/15/test/2022/202207/2022-07-01-063258020141.jpg" alt="img"></p>
+<h2 id="🔖老牌截图工具-PicPick-更新，新增录屏功能，支持-MP4-GIF-格式"><a class="header-anchor" href="#🔖老牌截图工具-PicPick-更新，新增录屏功能，支持-MP4-GIF-格式">¶</a>🔖<a href="https://www.appinn.com/picpick-6-2/" target="_blank" rel="noopener">老牌截图工具 PicPick 更新，新增录屏功能，支持 MP4/GIF 格式</a></h2>
+<p>pubdata:2022-06-29 07:19:19
+markdate:2022-07-02 04:11:20.453414</p>
+<p><img src="/public/2022/07/15/test/2022/202207/2022-07-02-041120453414.jpg" alt="img"></p>
+<h2 id="🔖白板与笔记融合：我的四个氢图使用场景"><a class="header-anchor" href="#🔖白板与笔记融合：我的四个氢图使用场景">¶</a>🔖<a href="https://sspai.com/post/73246" target="_blank" rel="noopener">白板与笔记融合：我的四个氢图使用场景</a></h2>
+<p>pubdata:2022-06-30 03:30:02
+markdate:2022-07-03 01:08:35.583781</p>
+<p><img src="/public/2022/07/15/test/2022/202207/2022-07-03-010835583781.jpg" alt="img"></p>
+<h2 id="🔖跨时空圆桌：伟大创作者们如何安排日常生活"><a class="header-anchor" href="#🔖跨时空圆桌：伟大创作者们如何安排日常生活">¶</a>🔖<a href="https://sspai.com/post/73779" target="_blank" rel="noopener">跨时空圆桌：伟大创作者们如何安排日常生活</a></h2>
+<p>pubdata:2022-06-15 09:30:00
+markdate:2022-07-03 01:50:35.971655</p>
+<p><img src="/public/2022/07/15/test/2022/202207/2022-07-03-015035971655.jpg" alt="img"></p>
+<h2 id="🔖Typing-Learner-–-硬核单词记忆：从电影台词筛选生词，边追美剧边学英语，用户直喊「好家伙！」-Windows-macOS"><a class="header-anchor" href="#🔖Typing-Learner-–-硬核单词记忆：从电影台词筛选生词，边追美剧边学英语，用户直喊「好家伙！」-Windows-macOS">¶</a>🔖<a href="https://www.appinn.com/typing-learner/" target="_blank" rel="noopener">Typing Learner – 硬核单词记忆：从电影台词筛选生词，边追美剧边学英语，用户直喊「好家伙！」[Windows/macOS]</a></h2>
+<p>pubdata:2022-07-03 04:07:39
+markdate:2022-07-04 05:06:58.902152</p>
+<p><img src="/public/2022/07/15/test/2022/202207/2022-07-04-050658902152.jpg" alt="img"></p>
+<h2 id="🔖创建自己的第一个-Power-Automate-工作流，从此繁琐操作是路人"><a class="header-anchor" href="#🔖创建自己的第一个-Power-Automate-工作流，从此繁琐操作是路人">¶</a>🔖<a href="https://sspai.com/post/73710" target="_blank" rel="noopener">创建自己的第一个 Power Automate 工作流，从此繁琐操作是路人</a></h2>
+<p>pubdata:2022-07-05 10:44:47
+markdate:2022-07-06 11:29:55.648077</p>
+<p><img src="/public/2022/07/15/test/2022/202207/2022-07-06-112955648077.jpg" alt="img"></p>
+<h2 id="🔖为-WSL-配置这些新功能，不用虚拟机也能体验完整-Linux"><a class="header-anchor" href="#🔖为-WSL-配置这些新功能，不用虚拟机也能体验完整-Linux">¶</a>🔖<a href="https://sspai.com/post/74167" target="_blank" rel="noopener">为 WSL 配置这些新功能，不用虚拟机也能体验完整 Linux</a></h2>
+<p>pubdata:2022-07-08 03:30:00
+markdate:2022-07-09 03:08:43.747852</p>
+<p><img src="/public/2022/07/15/test/2022/202207/2022-07-09-030843747852.jpg" alt="img"></p>
+<h2 id="🔖当飞盘成为人类的玩具，我们该如何参与这场游戏"><a class="header-anchor" href="#🔖当飞盘成为人类的玩具，我们该如何参与这场游戏">¶</a>🔖<a href="https://sspai.com/post/73505" target="_blank" rel="noopener">当飞盘成为人类的玩具，我们该如何参与这场游戏</a></h2>
+<p>pubdata:2022-06-06 08:00:00
+markdate:2022-07-10 01:36:40.114938</p>
+<p><img src="/public/2022/07/15/test/2022/202207/2022-07-10-013640114938.jpg" alt="img"></p>
+<h2 id="🔖走进小众但不冷门的房车世界"><a class="header-anchor" href="#🔖走进小众但不冷门的房车世界">¶</a>🔖<a href="https://sspai.com/post/74043" target="_blank" rel="noopener">走进小众但不冷门的房车世界</a></h2>
+<p>pubdata:2022-07-01 08:04:43
+markdate:2022-07-10 02:09:34.733003</p>
+<p><img src="/public/2022/07/15/test/2022/202207/2022-07-10-020934733003.jpg" alt="img"></p>
+<h2 id="🔖从盲目崇拜到理性使用，谈谈我眼中的「双向链接」"><a class="header-anchor" href="#🔖从盲目崇拜到理性使用，谈谈我眼中的「双向链接」">¶</a>🔖<a href="https://sspai.com/post/73407" target="_blank" rel="noopener">从盲目崇拜到理性使用，谈谈我眼中的「双向链接」</a></h2>
+<p>pubdata:2022-05-27 06:31:27
+markdate:2022-07-11 14:31:37.724795</p>
+<p><img src="/public/2022/07/15/test/2022/202207/2022-07-11-143137724795.jpg" alt="img"></p>
+<h2 id="🔖打开终端总有好心情：我的美化方案及配置分享"><a class="header-anchor" href="#🔖打开终端总有好心情：我的美化方案及配置分享">¶</a>🔖<a href="https://sspai.com/post/74216" target="_blank" rel="noopener">打开终端总有好心情：我的美化方案及配置分享</a></h2>
+<p>pubdata:2022-07-11 08:00:51
+markdate:2022-07-12 04:52:00.122103</p>
+<p><img src="/public/2022/07/15/test/2022/202207/2022-07-12-045200122103.jpg" alt="img"></p>
+<h2 id="🔖咖啡美酒冷泡茶，这些消暑饮品在家就能动手做"><a class="header-anchor" href="#🔖咖啡美酒冷泡茶，这些消暑饮品在家就能动手做">¶</a>🔖<a href="https://sspai.com/post/74196" target="_blank" rel="noopener">咖啡美酒冷泡茶，这些消暑饮品在家就能动手做</a></h2>
+<p>pubdata:2022-07-10 07:17:11
+markdate:2022-07-12 05:03:55.504330</p>
+<p><img src="/public/2022/07/15/test/2022/202207/2022-07-12-050355504330.jpg" alt="img"></p>
+<h2 id="🔖语雀，即将开源！"><a class="header-anchor" href="#🔖语雀，即将开源！">¶</a>🔖<a href="https://zhuanlan.zhihu.com/p/540713275" target="_blank" rel="noopener">语雀，即将开源！</a></h2>
+<p>pubdata:2022-07-12 08:19:47
+markdate:2022-07-14 10:28:28.713392</p>
+<p><img src="/public/2022/07/15/test/2022/202207/2022-07-14-102828713392.jpg" alt="img"></p>
+<p>统计 ✅ : 6 📅 : 3 🔖 : 47</p>
+<!-- more -->
+<h2 id="✅-6"><a class="header-anchor" href="#✅-6">¶</a>✅ : 6</h2>
+<p>✅目标图标系统
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
+✅ <a href="https://blog.csdn.net/hhhhhyyyyy8/article/details/102133863" target="_blank" rel="noopener">Linux内核数据包bridge上转发流程_hhhhhyyyyy8的博客-CSDN博客_br_multicast_flood</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W27.md">C日常/2022-W27.md</a><br>
+✅ 邮箱转rss
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W23.md">C日常/2022-W23.md</a><br>
+✅  hacker news rss添加
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W23.md">C日常/2022-W23.md</a><br>
+✅ 经济学人转载leader文章
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W23.md">C日常/2022-W23.md</a><br>
+✅ github博客评论系统是否换成【不换】
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W23.md">C日常/2022-W23.md</a></p>
+<h2 id="📅-3"><a class="header-anchor" href="#📅-3">¶</a>📅 : 3</h2>
+<p>📅 端口触发 端口转发
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
+📅 全屋智能
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W26.md">C日常/2022-W26.md</a><br>
+📅 改进
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W26.md">C日常/2022-W26.md</a></p>
+<h2 id="🔖-47"><a class="header-anchor" href="#🔖-47">¶</a>🔖 : 47</h2>
+<p>🔖 ish保持后台运行
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W19.md">C日常/2022-W19.md</a><br>
+🔖 <a href="https://www.jianshu.com/p/f29ca723db4f" target="_blank" rel="noopener">Git 运行配置（git config、gitk、git gui） - michael_jia - 简书</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W19.md">C日常/2022-W19.md</a><br>
+🔖<a href="https://www.cnblogs.com/xuanbjut/p/12624702.html" target="_blank" rel="noopener">wmctrl像xmonad那样方便地用快捷键来控制任务窗口的显示 - pycod - 博客园</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W19.md">C日常/2022-W19.md</a><br>
+🔖 <a href="https://blog.csdn.net/anlian523/article/details/113627568" target="_blank" rel="noopener">VSCode复制代码时去掉样式/语法高亮/代码高亮/黑色背景_anlian523的博客-CSDN博客_idea复制代码不带黑色背景</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W19.md">C日常/2022-W19.md</a><br>
+🔖 <a href="https://blog.csdn.net/dog250/article/details/121400218" target="_blank" rel="noopener">为什么除法，开方，求对数比乘法，乘方，求指数更难_dog250的博客-CSDN博客</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
+🔖学习小林博客的写法
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
+🔖一万字统计学梳理
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
+🔖腾讯 彻底搞清楚tcp
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
+🔖0x5f3759df这个快速开方中的常数的数学依据是什么？
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
+🔖https流程
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
+🔖使用 Clion + QEMU/GDB 远程调试Linux内核（分享自知乎网）<a href="https://zhuanlan.zhihu.com/p/412604505?utm_source=md.obsidian&amp;utm_medium=social&amp;utm_oi=619610399826382848" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/412604505?utm_source=md.obsidian&amp;utm_medium=social&amp;utm_oi=619610399826382848</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
+🔖TCP/IP协议到底在讲什么？ <a href="http://www.zhihu.com/question/51074319?utm_source=md.obsidian&amp;utm_medium=social&amp;utm_oi=619610399826382848" target="_blank" rel="noopener">http://www.zhihu.com/question/51074319?utm_source=md.obsidian&amp;utm_medium=social&amp;utm_oi=619610399826382848</a> （分享自知乎网）
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
+🔖【什么是动态规划（Dynamic Programming）？动态规划的意义是什么？】阮行止：… <a href="https://www.zhihu.com/question/23995189/answer/613096905?utm_source=md.obsidian&amp;utm_medium=social&amp;utm_oi=619610399826382848" target="_blank" rel="noopener">https://www.zhihu.com/question/23995189/answer/613096905?utm_source=md.obsidian&amp;utm_medium=social&amp;utm_oi=619610399826382848</a> （分享自知乎网）
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
+🔖【为什么有人说弄懂了《算法导论》的 90%，就超越了 90%的程序员？】启舰：… <a href="https://www.zhihu.com/question/315201616/answer/1960517601?utm_source=md.obsidian&amp;utm_medium=social&amp;utm_oi=619610399826382848" target="_blank" rel="noopener">https://www.zhihu.com/question/315201616/answer/1960517601?utm_source=md.obsidian&amp;utm_medium=social&amp;utm_oi=619610399826382848</a> （分享自知乎网）
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
+🔖【vs code】【keil】优雅地使用vs code代替keil。by 童话与云 👉 <a href="https://www.zhihu.com/zvideo/1422934459457253376?utm_source=md.obsidian&amp;utm_medium=social&amp;utm_oi=619610399826382848" target="_blank" rel="noopener">https://www.zhihu.com/zvideo/1422934459457253376?utm_source=md.obsidian&amp;utm_medium=social&amp;utm_oi=619610399826382848</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
+🔖图解网络 - 75张图带你了解网络设备、网络地址规划、静态路由、实战演练（分享自知乎网）
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
+🔖vscode-journal：vscode中写日记/便签/提醒，配合nutstore与安卓、ios同步_TeQuL的博客-CSDN博客
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
+🔖结构体（结构体嵌套、结构体指针、结构体参数传递） - 蓝海人 - 博客园
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
+🔖Feedme - 8大 RSS 阅读器第三方客户端[Android] - 小众软件
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
+🔖聪明人必学的停车小技巧！。by Felicidades 👉 <a href="https://www.zhihu.com/zvideo/1414008107094093824?utm_source=md.obsidian&amp;utm_medium=social&amp;utm_oi=619610399826382848" target="_blank" rel="noopener">https://www.zhihu.com/zvideo/1414008107094093824?utm_source=md.obsidian&amp;utm_medium=social&amp;utm_oi=619610399826382848</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
+🔖在线 DOS 游戏 - 近 2000 款怀旧游戏，仙剑、红警、三国志、大富翁、明星志愿、大航海、主题医院等 - 小众软件
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
+🔖Feeddd · 重新掌控你的订阅源
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
+🔖【如何长时间高效学习？】硬核学长2077：… <a href="https://www.zhihu.com/question/28358499/answer/1762418904?utm_source=md.obsidian&amp;utm_medium=social&amp;utm_oi=619610399826382848" target="_blank" rel="noopener">https://www.zhihu.com/question/28358499/answer/1762418904?utm_source=md.obsidian&amp;utm_medium=social&amp;utm_oi=619610399826382848</a> （分享自知乎网）
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
+🔖【你身边的学霸都有怎样的学习方法或习惯？】硬核学长2077：… <a href="https://www.zhihu.com/question/54265751/answer/1995587976?utm_source=md.obsidian&amp;utm_medium=social&amp;utm_oi=619610399826382848" target="_blank" rel="noopener">https://www.zhihu.com/question/54265751/answer/1995587976?utm_source=md.obsidian&amp;utm_medium=social&amp;utm_oi=619610399826382848</a> （分享自知乎网）
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
+🔖【如何不痛苦地早起？】铁木君：… <a href="https://www.zhihu.com/question/22120300/answer/1887544838?utm_source=md.obsidian&amp;utm_medium=social&amp;utm_oi=619610399826382848" target="_blank" rel="noopener">https://www.zhihu.com/question/22120300/answer/1887544838?utm_source=md.obsidian&amp;utm_medium=social&amp;utm_oi=619610399826382848</a> （分享自知乎网）
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
+🔖[[obsidian_tips]]
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
+🔖<a href="https://sspai.com/post/72757" target="_blank" rel="noopener">随时可用的 PC 体验是这样「炼」成的，Windows 新版睡眠机制详解 - 少数派</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
+🔖<a href="https://blog.csdn.net/who538592/article/details/79483323" target="_blank" rel="noopener">TC流量控制_who538592的博客-CSDN博客_tc流量控制</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W16.md">C日常/2022-W16.md</a><br>
+🔖 <a href="https://sspai.com/post/74090" target="_blank" rel="noopener">大家都说好的蛋白粉，我们应该如何取舍 - 少数派</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W28.md">C日常/2022-W28.md</a><br>
+🔖 <a href="https://zhuanlan.zhihu.com/p/508345279" target="_blank" rel="noopener">我的obsidian插件开发的学习过程</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W28.md">C日常/2022-W28.md</a><br>
+🔖 <a href="https://blog.csdn.net/Haywardwang/article/details/108626491" target="_blank" rel="noopener">python 词云构建_Haywardwang的博客-CSDN博客</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W28.md">C日常/2022-W28.md</a><br>
+🔖 <a href="https://blog.csdn.net/weixin_56842628/article/details/117921526?utm_medium=distribute.wap_relevant.none-task-blog-2~default~baidujs_title~default-9-117921526-blog-108626491.wap_blog_relevant_default&amp;spm=1001.2101.3001.4242.6&amp;utm_relevant_index=10" target="_blank" rel="noopener">如何用Python制作简单又好看的词云？来瞅瞅吧~_小熊爱Python的博客-CSDN博客_python词云代码简单</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W28.md">C日常/2022-W28.md</a><br>
+🔖 <a href="https://sspai.com/post/73779" target="_blank" rel="noopener">跨时空圆桌：伟大创作者们如何安排日常生活 - 少数派</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W27.md">C日常/2022-W27.md</a><br>
+🔖 <a href="https://www.appinn.com/typing-learner/" target="_blank" rel="noopener">Typing Learner - 硬核单词记忆：从电影台词筛选生词，边追美剧边学英语，用户直喊「好家伙！」[Windows/macOS] - 小众软件</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W27.md">C日常/2022-W27.md</a><br>
+🔖 <a href="https://www.zhihu.com/question/391756708/answer/2556173863" target="_blank" rel="noopener">SpaceX的可回收火箭有什么神奇之处，为何其他航天大国还不能仿造？ - YY硕 的回答 - 知乎</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W27.md">C日常/2022-W27.md</a><br>
+🔖 <a href="https://mp.weixin.qq.com/s/KBKO4C1d4CkyHAPEkh8D4Q" target="_blank" rel="noopener">这几个通信协议的动图不错</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W27.md">C日常/2022-W27.md</a><br>
+🔖 <a href="https://oorkan.medium.com/emojifying-your-linux-terminal-9a5c1e8f6b3c" target="_blank" rel="noopener">Emojifying your Linux terminal  🚀</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W27.md">C日常/2022-W27.md</a><br>
+🔖 <a href="https://sspai.com/post/74167" target="_blank" rel="noopener">为 WSL 配置这些新功能，不用虚拟机也能体验完整 Linux - 少数派</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W27.md">C日常/2022-W27.md</a><br>
+🔖<a href="https://sspai.com/post/72274" target="_blank" rel="noopener">意识先行，工具辅助：谈谈我们该怎样分辨虚假信息</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W27.md">C日常/2022-W27.md</a><br>
+🔖<a href="https://zhuanlan.zhihu.com/p/495262462" target="_blank" rel="noopener">网站低代码开发</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W27.md">C日常/2022-W27.md</a><br>
+🔖 学习体系化，效率提升
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W27.md">C日常/2022-W27.md</a><br>
+🔖 <a href="https://sspai.com/post/73958" target="_blank" rel="noopener">玩转 Obsidian 08：利用 Dataview 打造自动化 HomePage - 少数派</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W26.md">C日常/2022-W26.md</a><br>
+🔖 <a href="https://post.m.smzdm.com/p/adwgg2rd/" target="_blank" rel="noopener">小爱同学，打开我的三菱空调——米家空调伴侣2使用分享_智能家居_什么值得买</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W26.md">C日常/2022-W26.md</a><br>
+🔖 <a href="https://sspai.com/post/73829" target="_blank" rel="noopener">用 59 分钟，找到工具的效率之源 - 少数派</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W26.md">C日常/2022-W26.md</a><br>
+🔖 <a href="https://cloud.tencent.com/developer/article/1879646" target="_blank" rel="noopener">tcpdump是在哪儿抓到的包？ - 腾讯云开发者社区-腾讯云</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W26.md">C日常/2022-W26.md</a><br>
+🔖 <a href="https://www.jianshu.com/p/79bcf09aed25" target="_blank" rel="noopener">IPTables五----ebtables - marshalzxy - 简书</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W26.md">C日常/2022-W26.md</a><br>
+🔖 <a href="https://david-waiting.medium.com/a-beginners-guide-to-generic-routing-encapsulation-fb2b4fb63abb" target="_blank" rel="noopener">A Beginner’s Guide to Generic Routing Encapsulation</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W26.md">C日常/2022-W26.md</a></p>
+]]></content>
+      <categories>
+        <category>转载</category>
+      </categories>
+      <tags>
+        <tag>转载</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>「202212月度汇报」ttrss</title>
+    <url>/public/2022/12/15/test/2022/202212/</url>
+    <content><![CDATA[<p>total: 7</p>
+<a id="more"></a>
+<h2 id="🔖TextLocator-–-卖萌的小老头：低-CPU-占用的本地文档全文搜索工具-Win"><a class="header-anchor" href="#🔖TextLocator-–-卖萌的小老头：低-CPU-占用的本地文档全文搜索工具-Win">¶</a>🔖<a href="https://www.appinn.com/textlocator/" target="_blank" rel="noopener">TextLocator – 卖萌的小老头：低 CPU 占用的本地文档全文搜索工具[Win]</a></h2>
+<p>pubdata:2022-11-30 08:25:46
+markdate:2022-12-04 02:42:46.065650</p>
+<p><img src="/public/2022/12/15/test/2022/202212/2022-12-04-024246065650.jpg" alt="img"></p>
+<h2 id="🔖OpenSearcher-–-开源的全文搜索工具：支持-Word、PPT、PDF，以及电子书-ePub、Mobi-等格式-Windows"><a class="header-anchor" href="#🔖OpenSearcher-–-开源的全文搜索工具：支持-Word、PPT、PDF，以及电子书-ePub、Mobi-等格式-Windows">¶</a>🔖<a href="https://www.appinn.com/opensearcher/" target="_blank" rel="noopener">OpenSearcher – 开源的全文搜索工具：支持 Word、PPT、PDF，以及电子书 ePub、Mobi 等格式[Windows]</a></h2>
+<p>pubdata:2022-12-01 07:31:17
+markdate:2022-12-04 02:42:48.883434</p>
+<p><img src="/public/2022/12/15/test/2022/202212/2022-12-04-024248883434.jpg" alt="img"></p>
+<h2 id="🔖App-1-入门-Android-自动化，它比-Tasker-更好上手：MacroDroid"><a class="header-anchor" href="#🔖App-1-入门-Android-自动化，它比-Tasker-更好上手：MacroDroid">¶</a>🔖<a href="https://sspai.com/post/77077" target="_blank" rel="noopener">App+1 | 入门 Android 自动化，它比 Tasker 更好上手：MacroDroid</a></h2>
+<p>pubdata:2022-12-02 06:30:00
+markdate:2022-12-04 04:03:56.824102</p>
+<p><img src="/public/2022/12/15/test/2022/202212/2022-12-04-040356824102.jpg" alt="img"></p>
+<h2 id="🔖为纸质书籍进行数字备份：如何制作一本功能完备的-PDF-电子书"><a class="header-anchor" href="#🔖为纸质书籍进行数字备份：如何制作一本功能完备的-PDF-电子书">¶</a>🔖<a href="https://sspai.com/post/77118" target="_blank" rel="noopener">为纸质书籍进行数字备份：如何制作一本功能完备的 PDF 电子书</a></h2>
+<p>pubdata:2022-12-06 06:34:06
+markdate:2022-12-08 13:52:36.058996</p>
+<p><img src="/public/2022/12/15/test/2022/202212/2022-12-08-135236058996.jpg" alt="img"></p>
+<h2 id="🔖找笔记方便、写作又给力的知识库，我是这么搭建出来的"><a class="header-anchor" href="#🔖找笔记方便、写作又给力的知识库，我是这么搭建出来的">¶</a>🔖<a href="https://sspai.com/post/77144" target="_blank" rel="noopener">找笔记方便、写作又给力的知识库，我是这么搭建出来的</a></h2>
+<p>pubdata:2022-12-09 06:32:24
+markdate:2022-12-12 05:12:48.101671</p>
+<p><img src="/public/2022/12/15/test/2022/202212/2022-12-12-051248101671.jpg" alt="img"></p>
+<h2 id="🔖如何满足小众的录屏需求？自己配置-FFmpeg-解决问题"><a class="header-anchor" href="#🔖如何满足小众的录屏需求？自己配置-FFmpeg-解决问题">¶</a>🔖<a href="https://sspai.com/post/76637" target="_blank" rel="noopener">如何满足小众的录屏需求？自己配置 FFmpeg 解决问题</a></h2>
+<p>pubdata:2022-11-05 03:00:00
+markdate:2022-12-24 03:02:42.639305</p>
+<p><img src="/public/2022/12/15/test/2022/202212/2022-12-24-030242639305.jpg" alt="img"></p>
+<h2 id="🔖家用NAS推荐买什么价位的？"><a class="header-anchor" href="#🔖家用NAS推荐买什么价位的？">¶</a>🔖<a href="http://www.zhihu.com/question/566650643/answer/2809190517?utm_campaign=rss&amp;utm_medium=rss&amp;utm_source=rss&amp;utm_content=title" target="_blank" rel="noopener">家用NAS推荐买什么价位的？</a></h2>
+<p>pubdata:2022-12-21 09:26:21
+markdate:2022-12-25 03:49:49.009390</p>
+<p><img src="/public/2022/12/15/test/2022/202212/2022-12-25-034949009390.jpg" alt="img"></p>
+<p>统计 ✅ : 1 📅 : 6 🔖 : 21</p>
+<!-- more -->
+<h2 id="✅-1"><a class="header-anchor" href="#✅-1">¶</a>✅ : 1</h2>
+<p>✅ 🔖 <a href="https://www.zhihu.com/question/23564190/answer/2795830055?utm_id=0" target="_blank" rel="noopener">如何更深入地学习 Linux？ - michaelli 的回答 - 知乎</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W49.md">C日常/2022-W49.md</a></p>
+<h2 id="📅-6"><a class="header-anchor" href="#📅-6">¶</a>📅 : 6</h2>
+<p>📅 使用draw io和 cflow 生成函数调用图 单文件
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W50.md">C日常/2022-W50.md</a><br>
+📅 ios图像转存到本地
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W47.md">C日常/2022-W47.md</a><br>
+📅 学习智能家庭软件
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W47.md">C日常/2022-W47.md</a><br>
+📅 🔖 <a href="https://zhuanlan.zhihu.com/p/36279445?utm_id=0" target="_blank" rel="noopener">Vim 8 中 C/C++ 符号索引：GTags 篇</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W49.md">C日常/2022-W49.md</a><br>
+📅Vim中使用gtags
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W49.md">C日常/2022-W49.md</a><br>
+📅  <a href="https://blog.csdn.net/tian154731/article/details/113842348" target="_blank" rel="noopener">安卓手机抢茅台程序_JAVA学无止境的博客-CSDN博客</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W42.md">C日常/2022-W42.md</a></p>
+<h2 id="🔖-21"><a class="header-anchor" href="#🔖-21">¶</a>🔖 : 21</h2>
+<p>🔖 <a href="https://www.appinn.com/opensearcher/" target="_blank" rel="noopener">OpenSearcher - 开源的全文搜索工具：支持 Word、PPT、PDF，以及电子书 ePub、Mobi 等格式[Windows] - 小众软件</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W48.md">C日常/2022-W48.md</a><br>
+🔖 <a href="https://m.bilibili.com/video/av848443011" target="_blank" rel="noopener">【英雄联盟手游】装备属性及效果介绍-哔哩哔哩</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W43.md">C日常/2022-W43.md</a><br>
+🔖 电影 《走着瞧》马
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W43.md">C日常/2022-W43.md</a><br>
+🔖冰雪暴  -&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W43.md">C日常/2022-W43.md</a><br>
+🔖 <a href="https://blog.csdn.net/lyndon_li/article/details/122163468" target="_blank" rel="noopener">cflow——C语言函数调用关系生成器_Li-Yongjun的博客-CSDN博客_cflow</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W50.md">C日常/2022-W50.md</a><br>
+🔖 卡尔曼滤波https://www.zhihu.com/question/41823401/answer/2799679942
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W50.md">C日常/2022-W50.md</a><br>
+🔖 tmux vim剪切板
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W50.md">C日常/2022-W50.md</a><br>
+🔖 linux gdb Qemu调试
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W50.md">C日常/2022-W50.md</a><br>
+🔖 <a href="https://blog.csdn.net/jiangjun00000000/article/details/118277732" target="_blank" rel="noopener">如何在Debian10的Gnome桌面系统中安装并使能托盘图标_萌虎下山了的博客-CSDN博客_gnome 托盘</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W50.md">C日常/2022-W50.md</a><br>
+🔖 <a href="https://blog.csdn.net/allway2/article/details/122160151" target="_blank" rel="noopener">如何在 Debian 11 Bullseye Linux 上安装和配置 KVM_allway2的博客-CSDN博客_debian kvm</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W50.md">C日常/2022-W50.md</a><br>
+🔖 <a href="https://blog.csdn.net/u010330109/article/details/121855809" target="_blank" rel="noopener">Debian 11 gnome 桌面设置显示图标_远远看看山的博客-CSDN博客_debian显示桌面图表</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W50.md">C日常/2022-W50.md</a><br>
+🔖 <a href="https://github.com/mli/autocut" target="_blank" rel="noopener">AutoCut</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W47.md">C日常/2022-W47.md</a><br>
+🔖 <a href="https://sspai.com/post/76899" target="_blank" rel="noopener">找不到现成的字幕？Whisper 让不懂外语的你也能看懂日剧 - 少数派</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W47.md">C日常/2022-W47.md</a><br>
+🔖 canva平面设计
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W47.md">C日常/2022-W47.md</a><br>
+🔖 <a href="https://sspai.com/post/76922" target="_blank" rel="noopener">我们为什么需要 Matter：飞利浦 Hue 的跨平台联动探索记录 - 少数派</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W47.md">C日常/2022-W47.md</a><br>
+🔖 <a href="https://sspai.com/post/75567" target="_blank" rel="noopener">选对插件，让简悦也可以重器轻用 - 少数派</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W47.md">C日常/2022-W47.md</a><br>
+🔖 算法可视化
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W49.md">C日常/2022-W49.md</a><br>
+✅ 🔖 <a href="https://www.zhihu.com/question/23564190/answer/2795830055?utm_id=0" target="_blank" rel="noopener">如何更深入地学习 Linux？ - michaelli 的回答 - 知乎</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W49.md">C日常/2022-W49.md</a><br>
+📅 🔖 <a href="https://zhuanlan.zhihu.com/p/36279445?utm_id=0" target="_blank" rel="noopener">Vim 8 中 C/C++ 符号索引：GTags 篇</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W49.md">C日常/2022-W49.md</a><br>
+🔖<a href="https://www.1point3acres.com/bbs/thread-918311-1-1.html" target="_blank" rel="noopener">50岁码农面试记</a>（中文）
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W42.md">C日常/2022-W42.md</a><br>
+🔖 <a href="https://github.com/FavioVazquez/ds-cheatsheets" target="_blank" rel="noopener">https://github.com/FavioVazquez/ds-cheatsheets</a>
+-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W42.md">C日常/2022-W42.md</a></p>
+]]></content>
+      <categories>
+        <category>月度汇报</category>
+      </categories>
+      <tags>
+        <tag>月度汇报</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>裁员增笑「转」</title>
+    <url>/public/2024/01/23/readings/caiyuanzengxiao/</url>
+    <content><![CDATA[<p>我被公司裁了。
+我一手搭建起核心项目的底层框架，总算熬出头时，公司把我裁了。
+CEO 当着全公司的面落井下石，羞辱我是滥竽充数。
+他不知道，核心代码的故障只有我能修。
+公司求我的日子比想象中来得更快。</p>
+<a id="more"></a>
+<p>1</p>
+<p>「很遗憾地通知您，公司有人员调整，将结束与您的聘用关系。」
+「您的门禁卡已经失效，请您立刻搬走全部个人物品。」
+我一头雾水。
+本以为被人事叫走只是开个小会，没想到是裁员通知。
+三年前，公司只是不足20人的小企业。
+我抓住虚拟交互的风口，一手搭建起核心项目的底层框架。
+我无数个夜晚加班加点，做出第一款产品一Ribo，以眼镜或车窗为载体，实现所有外界环境与人的虚拟交互。
+再也不用佩戴笨重的VR 设备，用户仿佛生活在科幻大片中。
+Ribo 一经上市，就引爆市场。
+无数代理商和开发商找我们合作。
+Ribo 生态仿佛摩天大楼一般建设起来。
+我们公司的规模也迅速从 20人扩张到5000人。
+Ribo 如火如荼地发展，我们也抓紧更新迭代。我流连在技术网站中，把Ribo的系统升级成最前沿的高可用架构。
+这个架构搭建时非常困难，因为掌握核心技术的人不多。
+我全身心投入到工作中，无暇处理其他事。
+陈炳就是那个时期被招进来的。
+最开始他跟着我做些琐事。他这个人很圆滑，最擅长向上社交。
+他的朋友圈都是跟大老板打高尔夫、跟产品经理喝下午茶。
+Ribo 新产品要开发布会，通知我准备稿子。
+我嫌麻烦。陈炳自告奋勇，主动写好稿子上直播。
+他的口才好，又积极，让我专心处理技术，以后的发布会都让他去。
+我乐得清静。我一心只想让Ribo 更好。
+他宣称自己是 Ribo 的总工程师。久而久之，外界也默认了。
+他靠着人脉一路高升，做到首席 CEO.
+与此同时，我完成了Ribo的升级，工作总算轻松了一点。</p>
+<p>2</p>
+<p>有人问过我，陈炳的技术怎么样?
+我说:「一般，他更擅长社交。」
+这话传到了陈炳耳朵里。
+说者无意，听者有心。
+陈炳在发布会上以「总工程师」自居，不能容忍有人拆他的老底。
+经济下行时期，很多科技公司都受到波及。
+Ribo 的股票也有下降，公司传出裁员风波。
+我做梦也想不到，第一个被裁掉的竟然是我。
+我回到工位收拾东西，内心一片茫然。
+门口传来「陈总好!」的声音，我抬头看，陈炳大腹便便地走过来。
+可能是应酬太多，这三年，他迅速发福，成了一个油腻的中年胖子。
+他笑眯眯地打招呼:「早，各位早啊!」
+他晃到我面前，满脸惊讶:「咦，黎工怎么在收拾东西?」
+有几人向我看过来。
+陈炳仿佛突然想到什么，大声说:「黎工不会是被裁了吧!」
+他一咋呼，整个办公室的同事都停下工作来看我。
+我回答他:「对。我还得收拾东西，先失陪了。」
+陈炳的话根本就不是对我说的。
+他转过身，痛心疾首一般围着我转:
+「可惜啊，黎工也是公司的老员工了!」
+「公司有人员调整，竟然把黎工给裁了。我就不明白，这么多技术人员不裁，怎么偏偏要裁你呢?」
+「难道公司考察了所有人的KPI吗?」
+我不喜欢搞形式主义，平时的汇报总结能省则省，专心干活。
+陈炳说的 KPI 就是那些形式主义的报告之一。
+「我也算是跟黎工共事过，实在痛心。」
+「但是公司不养闲人!」
+「要是黎工走了，公司业务照常运转，大家就能发现是谁只拿工资不干活了!」
+他越说声音越大，幸灾乐祸地斜眼瞟我。</p>
+<p>3</p>
+<p>迟钝如我，也能猜到是谁想让我滚了。
+裁员名单本来就是上面下达的。
+我一肚子暗火，给大学室友打电话:
+「Pocky，你之前说的项目，还缺人吗?」
+电话那头欣喜若狂:
+「哎呀，黎神，你终于腾出手来关心我啦!」
+「你尽管开口，你想做什么项目我投资什么。」
+我不禁莞尔:「行，你现在有空吗，见面详聊。」
+「有空。那我开车去你公司楼下接你。」</p>
+<p>4</p>
+<p>我抱着一个纸箱，在公司楼下等车。
+三年不舍昼夜，到头来属于我的也仅有这一箱杂物。
+陈炳刚开完会，满脸堆笑地送几个合作商出来。
+陈炳看到我，啧啧称奇:
+「干活不行，收拾得倒挺快。」
+我已经不是 Ribo 的员工了，他也不是我上司。
+但陈炳显然还没从上司的角色转换过来。
+「介绍一下，王总，徐总，这位是我们技术部的员工。」
+「前几年公司扩招，招聘门槛低。我们系统升级后极大降低了人员成本，平时摸鱼的员工就被优化掉了。」
+「两位对新系统有兴趣，我们继续谈合作?」
+两位老总是跟陈炳差不多的身材，他们站一块儿像三个汽油桶。
+陈炳凑近我，从鼻子里出声:
+「喂，黎泉，听说你刚在市区买了房子，贷款压力不小吧。」
+「我是个念旧情的人。要不，你帮二位老板背包，原地做五百个俯卧撑。」
+「要是你能做完，我就跟人事说，继续聘用你，怎么样?」
+我伸手过去，啪啪作响地拍了拍陈炳的大肚腩。
+「我看该做俯卧撑的是你。」
+二位老板哈哈大笑。
+陈炳胖脸涨红，正欲发作。一辆劳斯莱斯疾驰过来，停在我们面前。
+车头升起小金人，车门打开，驾驶座坐着一个身穿白西装的帅哥。
+三年不见，这小子更帅了。
+Pocky 探出头，把墨镜往头顶一撩，殷勤地给我开后车门:
+「黎神，快请上车!」
+我抱着纸箱坐进去。
+Pockv
+估计
+他阴阳怪气地说
+「老板们继续工作吧。我们闲人已经到下班时间了!」
+他说完关门，劳斯莱斯扬长而去。</p>
+<p>5</p>
+<p>芮文是我的大学室友，一个眼光毒辣的富二代。
+他超爱同名饼干，在宿舍必叼着一根，被我们笑称「Pocky」。
+毕业之后，他继承家族企业，到处搞投资。
+该说他运气不错还是实力过硬呢，他一投一个准，竟把家里资产又翻了几番。
+从前年开始，他就不断劝我合伙开公司。
+我那时专心升级Ribo，一口回绝了他。
+我坐在劳斯莱斯舒适的座椅里，内心暗暗惆怅。
+车窗外，挂着彩虹商标的 Ribo 大厦渐行渐远。
+Pocky 从后视镜看我，通过我的纸箱和表情，他就懂了。
+「Ribo 高层猪油蒙心了吗，竟然把总工程师给裁了。」Pocky 开口说。
+我在后视镜中与他对视:「你怎么知道我是总工程师?」
+Ribo 开发涉及公司机密，我从不对外透露。
+外界只能通过陈炳在发布会上的陈词，得知 Ribo 的发展计划。
+Pocky乐了:
+「你忘了我们大学时参加的竞赛了?」
+「你说，你一直想给车窗装上虚拟交互软件，这样就不用分心看车载导航了。」
+「你以这个想法写出了 Ribo的雏形，我们获得了金奖。」
+「可惜当年没有配套的硬件系统，那个雏形只停留在概念阶段。」
+确实有这回事。
+我沉迷工作太久，大学时代就好像上辈子一样久远。
+Pocky 心潮澎湃地说:
+「当时我觉得你就是天神下凡!这个大腿我抱定了!」
+我勉强笑了笑。
+虚拟交互一直是我的梦想。
+现实中美好的事物太少了，我想让幻想进入现实，把彩虹握在手中。
+Rainbow,Ribo.
+Ribo 迅速崛起的三年，说不自豪是假的。
+可惜，我的彩虹终究是一场幻觉。</p>
+<p>6</p>
+<p>Pocky 问我:
+「你下一步有什么打算?」
+我: 「不知道。你最近在做什么项目?」
+Pocky: 「当然是 AI 啊，现在大家都拼命卷AI呢! 」
+我点点头，叹了一口气。
+Pocky 心中了然，安慰我说:「先别忙工作，你休假一段时间吧。」
+这么一说，我很久没休过长假了，确实该放松一下身心。
+我:「我想乘最近的航班去马尔代夫。」
+Pocky:「海钓是吧，我懂!不用乘航班，坐我的直升飞机去。」
+我: 「行。你把AI 相关的立项方案发给我，我在飞机上看。」
+Pocky: 「? 」
+Pocky:「你们 INTJ 都这么恐怖吗?」
+我简单收拾行李。等飞机时，我看到Pocky 在抛售股票。
+「怎么了，这么急着出手?」
+Pocky 目露精光，预言说:
+「我跟你打赌，Ribo 最近必出事。你也赶紧把 Ribo 的股票抛了吧，还不知道跌多少。」
+我不乐意了:「你就这么不信任我写的系统?」
+Pocky:「不是。你小子只会自己做事不教人，也不爱留文档记录。」
+「Ribo马上要发布新功能，会出大乱子的。」
+我回想起来，新架构升级后隐患很多，我准备写总结分享给同事看。
+那份总结现在还只写了一半。
+陈炳只看到升级后维护成本低，那是在正常运转的情况下。
+一旦出故障，除了我，没人能修。
+我料到会出事，但也没想到是那么惨重的事故。
+而且比我预想得还要快。</p>
+<p>7</p>
+<p>我当晚就入住了马尔代夫高档度假酒店。
+Pocky 是真心想拉拢我，酒店和交通都安排好了。
+套房面对大海，三面落地窗。
+我把衣服和日用品摆出来，整理好。
+刚收拾完，手机收到同事信息。
+不对，已经是前同事了。
+【黎哥，快看同事圈!]
+同事圈是某职场 APP 的认证领域。
+Ribo 的同事通过认证后都可以进入，通讯录经常会推荐一些熟人。
+公司的大部分八卦，都能在同事圈第一时间得知。
+我倒了一杯马提尼，在落地窗前打开同事圈。
+[黎姓员工巧立名目中饱私囊，被抓后不服管理碰瓷CEO!]
+匿名发帖人。
+配图是我在公司楼前拍陈炳肚腩，面露讥讽。
+我放大图片看，灾难级的表情管理。
+我平时的脸色都这么冷吗?
+难怪大家不敢跟我说话。
+发帖人痛斥我的「罪状」有三条:
+其一，推行毫无必要的技术创新，资金都进了自己口袋。
+其二，不按时签到，迟到早退、KPI 不达标。
+其三，不尊重公司领导，散播谣言。
+评论炸开了锅:
+【所以公司要裁员也是谣言，就只开了一粒老鼠屎?]
+[支持!把占着茅坑不拉屎的都开掉，公司才能越来越好!]
+[这人是技术部门负责人吗，看着眼熟。]
+[总工程师是陈总啊，技术部哪有什么负责人?]
+我看了一圈，起哄的都是其他部门的人。
+前同事愤愤不平地发消息:
+[黎哥，你离职得太突然，我们都觉得对你不公平。)
+【你走后，人事把技术部的组长挨个叫去开会。]
+【谁敢在网上发言，就无赔偿解除劳动合同!]</p>
+<p>8</p>
+<p>我能理解他们的苦衷。
+现在经济形势不好，工资高不加班的公司越来越少了。
+像Ribo 一样飞速发展的更是凤毛麟角。
+老员工搭上青春和健康，好不容易换来高新高职位。
+一旦被开，经济压力大，在业内风评也不好。
+毕竟人脉圈子很小，一做背调，就什么都清楚了。
+给我发消息的前同事叫丽丽，技术部为数不多的女员工。
+丽丽狂暴输入中.....
+【什么叫毫无必要的技术创新!新架构节省了多少人力!]
+【以前做部署要一整天，现在一小时就搞定!]
+【他懂什么技术啊?凭什么这样说黎哥!]
+升级新系统确实烧了不少钱，但是条目透明，都是层层审批通过的。
+紧急用钱的时候还是我自己掏的腰包。
+至于后面两条，懂的都懂。
+我看丽丽情绪失控，回了一句安慰她:
+【别激动，跟我抱怨下就行了，在网上说话小心点，会被追踪到的。]
+丽丽对陈炳意见大是有原因的。
+当初她刚入职，同事们奔走相告:我们有女同事了!
+丽丽是校招来的，年轻好学，端庄得体，很有人缘。
+我让她先看看基建，学习标准流程。
+陈炳经常来技术部视察，见到她，兴致勃勃地叫她过去:
+「新人吗，来我考考你。」
+陈炳拿一个刚出炉的新需求考她。
+我觉得这完全超出对校招生的能力要求。
+丽丽回答得磕磕巴巴:「就，先，先找同类项目的文档，分析容量、问 PM 要实现的效果......」
+陈炳嗤笑一声，打断她:
+「不会就说不会，不要不懂装懂!」
+「女孩子嘛，本来就技术经验不足，多向同事请教，确定了再回答!」
+丽丽突然被训，不敢出声，眼中闪烁。
+我走过去。
+「新人回答得很好啊。」
+「有新需求，先回顾经验、确认需求、分析数据，条理清晰，非常可行!」
+我挠了挠头皮:「而且技术经验跟性别无关。男孩女孩都一样!」
+丽丽的表情由惊恐转为惊喜。
+陈炳一张肥脸耷拉下来，满眼嫌恶。
+我:「技术部正好也在为这个新需求发愁呢。正好陈总提到，我想请教一下现在有进展吗?」
+我当时真以为他有两把刷子。
+没想到他纯粹是想在女同事面前显摆。
+陈炳开始顾左右而言他。
+他一会儿说 PM 催得急，一会儿说经费不足，最后借口要开会逃走了。
+从那以后，丽丽就对陈炳的能力很鄙夷。</p>
+<p>9</p>
+<p>不过丽丽有一点说错了。
+陈炳很清楚升级新系统非常必要。
+他就算对我有再多不满，也忍到我完成升级后才赶我走。
+我翻阅这条「举报」帖子，评论越来越多。
+有挖苦的，有嘲笑的，有恶意揣测的。
+就是没有一个知道真相的。
+几分钟过去，「举报」帖热度上升到同事圈榜首。
+我的个人信息、缺勤记录、敷衍的 KPI报告都贴上去了。
+没落实到报告上的业绩被抹得干干净净。
+按理说，暴露私人信息的帖子会被管理员删除。
+但它光明正大地摆在那里，是谁授意的不需多言。
+丽丽在语音里急哭了。
+这个帖子只要还在，我就别想入职好公司。
+陈炳不想让我在Ribo 待着，更不想让我去别家待着。
+回想起来，陈炳曾多次暗示我夹起尾巴做人。
+「黎工，你没当过管理层不懂，这个工作不是普通员工能干的!」
+「我对外要公关，对内担风险，你根本想不到有多难!」
+可惜我没听懂他的「提点」:
+「但你的年新也不是普通员工能比的啊!」
+他的「工作」是有成果的:
+「总工程师」是他，「Ribo」是他一手搭建，管理层上上下下都跟他有交情。
+终于，他找准时机，把我像垃圾一样扫地出门。</p>
+<p>10</p>
+<p>【黎哥，那你要怎么办啊!]
+我能怎么办?
+我只能坐专机来海边度假、住高档酒店看日出、吃好喝好回家自己当老板咯!
+我从无到有拉起 Ribo用了三年。
+再用三年超越它便是。
+不过，知道还有人为我抱不平，在Ribo 的三年终归没有白费。
+这是今天唯一值得高兴的事情。</p>
+<p>11</p>
+<p>酒店有 VIP 健身房，我健完身，回房间洗澡。
+工作不忙之后，我又拾起健身的习惯，调整回健康作息。
+浴室的镜子水汽氤氲，我捋起湿发，看到自己的胸腹恢复了肌肉轮廓。
+工作虽说劳累，但充满价值感。我的头发依旧茂密，双目有神，身材也没走形。
+幸好应酬的活儿都被陈炳承包了。
+早上 6点，我神清气爽地起床，背着钓具出发。
+我们包了游艇去海钓。
+游艇马达声轰隆作响，我戴上墨镜，躺在甲板的躺椅上。
+碧海蓝天，温度宜人，清新的海风拂过，我好像刚刚从地狱来到人间。
+人生如逆旅，我亦是行人。
+咔嚓--咔嚓--
+我睁眼，Pocky 正用手机偷拍我。
+「我心想哪来的帅哥钓鱼佬，竟是我黎神!」
+「这照片留着当招聘宣传图，哪个小姑娘看了不迷糊?」
+我蹦起来抢他手机。
+「删了，马上!」
+Pocky 化身卖艺的吗喽，一溜烟跑到船尾。
+他对着手机啧啧称奇:
+「你放松下来明明很帅，平时的脸色就又冷又臭，难怪有人看不顺眼。」
+我想反驳，但想起「举报」帖上我的表情。
+我闭嘴了。</p>
+<p>12</p>
+<p>今天是 Ribo 新功能发布的日子。
+往常我都是紧张兮兮地守着发布会直播间。
+现在我和 Pocky 并排坐在甲板上，守着钓竿。
+「有了!有了!快收竿!」
+水下的力道巨大，我按捺住激动的心情，费了九牛二虎之力拉起钓竿。
+是条体长一米二的旗鱼!
+我和 Pocky 还有游艇船长，三个大男人吱哇乱叫。
+最后我抱着旗鱼，船长拿着米尺，Pocky为我拍下这张纪念照。
+照片中我昂首挺胸，五官打架。
+回去我少说能吹一年。
+这时，Pocky 手机响个不停。
+他接起来，听了几句，爆发出一声:「啊!」
+他火速冲到我面前:「快看头条新闻，快!」
+我看他的手机网页。
+网页被「Ribo 全线瘫痪，用户数据丢失」新闻刷屏。
+[Ribo 新功能发布异常，产品全线瘫痪.]
+[CEO 匆忙结束发布会，回应正在抢修，修复时间未知。]
+【有用户反馈，偶尔登录Ribo 后发现自己账户一片空白。]
+[Ribo产品已应用到实际生活的方方面面，日常使用需要高额的会员费、内购插件费。如果本次异常影响到用户数据，无疑会给Ribo 公司带来重创!]
+我知道事态严重，洗完手认真看。
+我看了发布会录像、用户社区大量的报障信息。
+结合升级过后留下的隐患，我倒推代码逻辑，大致明白了问题出在哪里。
+Pocky 提醒我看手机，我才发现自己的手机没电关机了。
+我给手机充上电，开机。
+未接来电爆发!
+无数的消息涌进来。
+我已经能想象出办公室里鬼哭狼嚎的场景了。
+我根本接不过来，干脆让它一直响。
+过了一会儿，终于消停了。我接起一个产品部打来的电话。
+我没耐心听官话，直接说:
+「我只跟 CEO 陈炳通话。」</p>
+<p>13</p>
+<p>我又拒接了几通电话。
+我看到来电是陈炳的号码，接起来。
+陈炳语速极快，急得像热锅上的蚂蚁。
+陈炳:「你知道了吧?」
+我: 「你也知道了?」
+陈炳:「什么我也知道，我早就知道了!」
+我吃惊:「你怎么知道我钓到旗鱼?」
+我直接把我抱着旗鱼的照片高清原图发过去。
+陈炳蒙了。
+陈炳:「不是，谁知道你钓到旗鱼啊!」</p>
+<p>14</p>
+<p>「那你现在知道我钓到旗鱼了!」
+电话那头，陈炳气急败坏。
+「黎泉，没人跟你开玩笑!」
+「你应该看到新闻了，Ribo 这三年都没出过这么大的故障!」
+「这可是你搞出来的系统，可用性太差了!」
+他吵得太大声，在游艇甲板上回荡。
+这兴师问罪的态度震撼到我。
+什么时候了，他的第一反应竟然是甩锅。
+我原本是想帮忙的，现在担忧的心情消失无踪。
+只剩下尊重祝福。
+我:「不关我的事，我只是一个拿工资不干活的闲人。毕竟那么多技术人员不裁，偏偏裁了我呢!」
+我挂了电话，冷笑一声，继续钓鱼。
+电话又响起来。
+我拿远一点，开免提。
+陈炳:「你身边有电脑吗，开个远程会议。」
+我:「帮我拿饵来，咱再钓一条大鱼!」
+陈炳提高声音:
+「喂? 喂? 听不到吗，快加入会议!」
+我:「船长，再往前开几海里吧。」
+马达声轰鸣，盖过了陈炳的叫声。</p>
+<p>15</p>
+<p>我们欢声笑语地钓了一会儿鱼。
+陈炳隔着电话应该也听出来我在度假。
+业务故障固然令人难过，别人在度假尤其使他揪心。
+不出十分钟，陈炳态度软化。
+陈炳: 「黎工啊，你也不想看 Ribo 垮掉吧，帮帮忙吧!」
+我是真不懂。领导当惯了，看谁都想指挥指挥?
+我提醒他:
+「陈总，我现在不拿Ribo 的工资，没必要给Ribo 干活，是不是?」
+陈炳果断回答:「我马上给你恢复原职。那个帖子我也删掉。」
+我:「哦…...原来那个帖子是你写的啊。」
+陈炳不作声。
+估计汗流浃背了。
+但他不愧在名利场里摸爬滚打许多年，懂得直击痛点。
+「黎工，你对我个人有意见，没关系，等业务恢复怎么清算都可以。」
+「但你想想技术部的同事，他们现在加班抢修，都要急疯了。业务不恢复，他们一刻也不能休息!」
+我沉默了。
+他是对的。Ribo 垮掉，对所有人都没好处。
+我叹了一口气。
+「陈总，说实话，这个故障我能修。」
+不等他兴奋，我补充:
+「但我现在在海上，信号很差，登录权限也没有。」
+陈炳: 「好说!你需要叫谁搭把手，要什么权限，我马上办!」</p>
+<p>16</p>
+<p>陈炳紧锣密鼓地帮我准备。
+我们的游艇也打道回府，在码头找了一家信号好的咖啡馆。
+先前我被除名，账号直接都删干净了。
+我需要开的权限太多，一时也开不全。
+我把几个资深组长拉进会议，统筹进度。
+陈炳旁听，一边不停地接电话汇报。
+此时天色渐暗，国内时间已经是晚上十点。
+故障发生五小时，仍未修复。
+嘶嘶!
+Pocky冲我使眼色，打开股市大盘给我看
+Ribo 的股价断崖式下跌，一点回暖的趋势都没有。
+「幸亏抛了，我至少省出一辆车来!」Pocky 得意地说。
+现在压力给到陈炳这边。
+陈炳长吁短叹，连连擦汗。
+「各位，麻烦快点，这个有预计修复时间吗?」
+我甩他一句:「你行你上!」
+陈炳不吱声了，安静如鸡。
+又过了一个小时，我们总算有了进展。但陈炳坐不住了:
+「现在要开董事会，一小时内能恢复业务吗?不然我不好汇报。」
+加班到深夜的同事们怨气冲天，没空理他。
+我直截了当:「没有!直接当着董事会的面修吧，省得跟他们汇报!」
+陈炳没有办法，挂着远程会议去开董事会。</p>
+<p>17</p>
+<p>董事会开口就质问陈炳，什么时候能恢复业务。
+陈炳这时突然展现出十二分自信，侃侃而谈，把耽误的时间都推到监控和运营部门身上。
+董事会听他说，不出二十分钟必恢复，都放下心，开始讨论危机公关方案。
+他们打算发公告说成人为误操作，推出几个替罪羊，然后补偿用户损失。
+这是最能维护公司形象的补救办法。
+我没想到，我们基层员工累死累活，养着这么一群搅屎棍。
+连开诚布公都做不到。
+幸好我溜了。
+终于，我们修好了系统，可以进入测试阶段。
+陈炳跳起来说修好了。
+其他董事纷纷赞叹陈炳办事效率高。
+陈炳恭维说是董事们指导有方，群策群力，践行公司核心价值观。
+我没有那么乐观。我知道用户数据丢失的问题还没解决。
+果然，一登录 Ribo，账户一片空白。
+陈炳开始慌了。
+董事会一片嘈杂。
+「都安静!」越乱越烦，我让陈炳开外放，怒喝一声，会场总算安静下来。
+我:「各位董事不用着急。数据库我们做了严格备份，只要回滚就好。」
+我:「我没有数据库权限，辛苦陈总操作一下。」
+陈炳手忙脚乱地打开电脑:「呃…….怎么操作?」
+我说出操作方法。
+陈炳做完回滚，声音发颤:「发布会之前的数据.……丢失索引了。」
+丢失索引，意味着原本分门别类的数据乱成一锅粥。
+我又大声叫「安静」。
+我:「小问题。我们还有异地备份，是独立服务器，不受主集群影响的。」
+我又告诉陈炳异地服务器的操作方法。
+陈炳却没有马上操作。
+他沉默了一会儿，轻声说:「异地服务器…...上个月为了节省成本，取消了。」
+会场鸦雀无声。
+我压抑住怒火:「取消了?怎么没人来问问我的意见!」</p>
+<p>18</p>
+<p>陈炳颓然坐在桌前。
+董事会奇怪地问陈炳，我是什么人，为什么总工程师要向我请教?
+我哼了一声:「除了真正的总工程师，他还能向谁请教!」
+陈炳没有反驳，默认了。
+一位董事问我:「这位..….同志怎么称呼?」
+我:「黎泉。」
+董事:「黎泉同志，你下一步准备怎么办，数据库多久能恢复?」
+我: 「我不知道。我在贵司任职的三年，从未出过事故。贵司这周一把我裁了，按理说，我不该过问贵司的事务，各自安好。我帮到这里已经牺牲了很多个人时间。就这样吧，
+晚安。」
+董事会听说我撂挑子了，齐声挽留。
+董事:「谁把黎泉同志裁了?我要起诉他，全额赔偿公司损失!」
+没有人承认。
+无奈之下，我只能说出一个不是办法的办法。
+现在没有数据备份，索引全丢，但万幸数据还在。
+只能用笨办法，手写筛选条件，人工捞出数据。
+这个工作量巨大而且枯燥。我交给同事之后，退出会议。</p>
+<p>19</p>
+<p>这次发布会事故，前前后后，用了12小时才修好。
+Ribo 蒙受巨大损失，口碑滑铁卢，千万市值一夜蒸发。
+而我的假期才过了一半。
+董事会多次要求我恢复原职，我都拒绝了。
+我已经对他们失望透顶。
+同样失望的还有我的前同事们。
+他们纷纷离职。失去劳动合同的制约，有人在网上爆出了这次事故的内幕。
+Pocky 转发给我一些大V的评论:
+[听说裁员裁到大动脉，这次才修了这么久?]
+【降本增笑了属于是。]
+【对 Ribo 祛魅了，新出的功能一个比一个恶心!]
+看到这些评论，我笑不出来。
+Ribo 的管理层垃圾，但Ribo本身就像是我亲手带大的孩子。
+做父母的，见不得别人说自家孩子不好。
+我只能眼不见为净，全心投入与Pocky 合作的 AI项目中。</p>
+<p>20</p>
+<p>Pocky 投资新项目的眼光确实毒辣。
+短短一年，我们用独特的训练方法，训练出一个电竞主播AI。
+它讲话幽默，操作犀利，在年轻人中很有人气。
+年末有一个举世瞩目的电竞节，AI 加入了中国参赛队伍，勇夺冠军。
+这个成绩吸引了一大波投资。
+我抓住机会，训练出更多领域的主播AI。
+主播 AI 出圈成功，成为大众知名的KOL，给公司创造巨额财富。AI本身的管理也非常简单，它们不耍大牌、不需要休息，也永远不会塌房。
+年底财报出来，Pocky 激动万分:
+「黎神!我们公司年度净利润翻了三十倍!」
+「还被评为年度新星!调查显示，10-25岁的人群，每5人就有1人知道我们!」
+我和 Pocky，还有董事会的各位分享了这一喜悦。
+是的，有了 Ribo 的前车之鉴，我加入公司管理层，参与公司决策。
+Pocky 努力纠正我不爱教人的坏习惯，让我把工作分配给业务部门，我自己重新学习经营管理。
+我持有公司股份。财报一出，不仅Pocky 是富二代，我也成了富一代。
+不过我欲求比较低，财富自由了，我也没什么实感。
+「我们公司现在的市值，相当于几个Ribo?」我问 Pocky。
+「二十个吧。」
+Pocky 突然想起了什么:
+「说到 Ribo 啊，他们已经连续低迷一年了。」
+「他们最近在到处拉合作。我明天下午跟 Ribo 那边有洽谈会，你要来吗?」
+21
+洽谈会当天，我们提前来到夏利五星级酒店。
+我嫌贵宾包厢闷，自己带着电脑坐到楼下大厅。
+等得无聊，我打开电脑，写新功能的脚本。
+一行人进入酒店大门。我觉得中间一人有些眼熟，但没有在意。
+还是他先认出了我:
+「这不是黎泉吗!别来无恙?」
+我抬起头，见到一张满脸堆笑的胖脸。
+我也笑了:「陈总，别来无恙啊!」
+来人正是陈炳。
+上次事故后，我拉黑了他所有的联系方式，从此再无联络。
+他发际线后退，脸冒油光，长相越发着急。
+我看他走在队伍中间，派头不复从前，也许是被降职了吧。
+陈炳看到我在敲代码。
+他流露出可惜的表情:
+「黎工入职新公司以后这么忙啊。」
+「其实以黎工的能力，做到管理层完全不是难事。」
+他递出名片，硬塞到我手里。
+「黎工要是累了，随时可以回Ribo。直接提我名字就行了。」
+我拿着名片哭笑不得。
+等到他们上楼谈了一会儿，我也写完收工，
+贵宾包厢有一面玻璃墙正对楼梯，我远远看到，Ribo高层言辞激烈地给Pocky 介绍什么。
+Pocky 不知是没兴趣，还是真饿了，弱小无助但能吃。</p>
+<p>22</p>
+<p>「我们的新产品订购率创历史新高!」
+「如果有贵司授权，加入AI主播互动，绝对是双赢!」
+我推门而入，径直坐到Pocky右手边。Ribo 高层止住话头。
+Pocky 精神一振，介绍我:
+「刘总，陈总，这位是我们公司首席执行CEO，黎总。」
+刘总是生面孔，赶紧起立跟我握手。
+陈炳筷子没拿稳，掉到地上发出清脆的一声响。
+我还是不喜欢社交，但场面话还是要说的。
+「两位客气了。其实我曾经就职Ribo，对贵司的印象很深。」
+刘总: 「就职 Ribo? 哈哈，世界真小。请问黎总以前就职什么岗位啊?」
+我笑着说:「基层员工。」
+陈炳清了清喉咙，试图转移话题。
+Pocky 看热闹不嫌事儿大，积极拱火:
+「哎呀，要不怎么说贵司人才济济呢!我从贵司挖走一个基层员工来做CEO，草台班子唱戏，现在也混得风生水起!」
+刘总一下子没接住话茬，满脸尴尬。
+承认吧，说明自己这边识人不清，不重用人才。
+不承认吧，是看不起对方水平，不给对方面子。
+该说富二代从不为生活所迫，话中带刺，笑里藏刀，让人防不胜防。
+我摆摆手，问他们刚才谈了什么。陈炳硬着头皮把给Pocky 讲过的又给我讲了一遍。
+谈完后，Ribo 高层希望我们表态:「请问二位，有什么考虑吗?」
+我用指节敲桌子，默默思考。
+Ribo 的用户存量渐渐流失，只能通过不断拉联名合作，靠用户增量来维持。
+这个合作对我们没有帮助。
+Pocky 也示意我:算了。
+可能不久的将来，Ribo 就会退出历史舞台了吧。
+刘总和陈炳焦急地等待结果。</p>
+<p>23</p>
+<p>我:「我们可以合作，但有一个条件。」
+刘总:「什么条件?」
+我决定把决定权交给陈炳。我走到他身边，拍了拍他的肚腩。
+「我跟陈总私交很深，我总是劝他锻炼身体。不然年纪上来，脂肪肝、三高都来了。」
+「我是个念旧情的人。这样吧，陈总原地做五百个俯卧撑，我们就同意合作。」
+说完，我到饭桌前的空地蹲下来，等着给陈炳计数。
+要是有点底气的合作方这就会被气走了。
+可惜 Ribo 已经岌岌可危了。
+陈炳一向圆滑，不肯错失这个机会，又不想让自己太难堪。
+他热情洋溢地站起来。
+「没错，没错!黎总以前天天叫我一起健身。黎总离职后，我也没闲着，正好让黎总看看我的锻炼成果!」
+他撸起袖子，趴下，小心地不弄皱高档西装裤。
+「陈总准备好了吗?开始!」
+「一! 二! 三! 四! 」
+我认真给陈炳计数。他每次都是肚子先着地。
+陈炳真的很想争取这次合作。他双臂发抖，满头大汗，还是憋着一口气做俯卧撑。
+「二十!加油，很接近了!」
+陈炳很久没有过这么大运动量。他咬牙坚持到三十个，体力不支倒在地上。
+汗湿的白衬衫粘在他胸前。
+陈炳顾不上维持体面，坐在地板上喘着粗气擦汗。
+Pocky 和刘总也站起来，开着玩笑:
+「哈哈哈，陈总要加强锻炼了!」
+离开时，谁都没有再提合作的事。</p>
+<p>24</p>
+<p>「跟 Ribo 的合作，你怎么看?」
+回去的路上，我问Pocky.
+Pocky 边开车边说:「拒绝了吧，没什么价值，耽误时间。」
+我没搭腔，看向窗外。
+光怪陆离的公司大楼匆匆掠过。Ribo 初创时只有一间办公室，为了节省物业水电费，大家都是把工作带回家加班。Ribo 终于成为这霓虹森林中的一员，随即又将泯然众人。
+飞速前进的时代中，有谁会记得它呢。
+「你还放不下啊。」
+我从后视镜与 Pocky 目光交会:「放不下什么?」
+Pocky 爽朗一笑:「你说自己念旧情，还真是没说错。」
+我沉思片刻，开口说:「我想收购Ribo。现在为了生存，Ribo加了太多冗余功能。只要资金到位，我可以救活它。」
+「好。」
+Pocky 同意得很干脆。
+我: 「你不怕烧钱?」
+Pocky:「哪个大公司没有几个烧钱部门呢?而且创始人发话，我根本没在怕的。」
+第二天，我和公司高层拜访了Ribo，商量收购事宜。</p>
+<p>25</p>
+<p>我们最终以超过市值30%的价格收购了Ribo。
+我公司的董事会都不看好这次收购。
+对于 Ribo 的员工来说倒是一件好事，所有人保留原职，待遇从优。
+我浑身干劲，采集用户需求重新设计Ribo.
+Ribo 易主在市场上引起不小的震动。经济博主分析本次收购的意图，结合之前发布会事故的爆料，有人猜测，这是Ribo前总工程师的情怀向收购。
+外面的猜测众说纷纭。我两耳不闻窗外事，很快通过了第一个方案。
+收购后第一次发布会直播定在下个月。
+董事会一致决定让我上直播。
+「放心，稿子我会找人写好，你照着念就行了。」Pocky 安慰我。
+我担心自己面瘫脸没有观众缘，推脱找个活跃的人去。
+「没有人比你更合适。你也不想重蹈陈炳的覆辙吧!」
+没办法，直到发布会当天，我还在紧张地练稿子。</p>
+<p>26</p>
+<p>今天就是发布会，我穿上一套定制西服，整理发型。
+Pocky 在后台见到我，赞叹说:「果然是人靠衣装，你小子平时邋里邋遢，打扮起来也人模狗样的!」
+谁平时邋里邋遢了!
+但是有他这句话，我自信了不少，脚下生风地出门。
+「哎，黎总小心!」
+啪，滚烫的液体洒下来，我反射性地后撤。
+面前，陈炳诚惶诚恐地端着咖啡:「我，我想给黎总送杯咖啡提提神，真对不起!」
+他端着的咖啡洒了，演讲稿湿透看不清了。
+我的眼神要喷出火来。
+一杯美式咖啡洒了，两个人的衣服都没弄脏，都洒在演讲稿上。
+简直蠢到我都不知道他是不是故意的。
+此时距离发布会开始只有十分钟了。
+我赶紧给 Pocky 发消息，让他把电子版传给我。
+消息已送达，未读。
+我给他打电话，他好像又静音随缘了。
+也怪我疏忽。一份纸质演讲稿快翻烂了，唯独忘了要电子版。
+时间到了。
+助理喊我上台。
+我定了定神，稿子可以没有，但绝对不能迟到。
+我练了这么久，已经形成肌肉记忆了，问题不大。</p>
+<p>27</p>
+<p>上台后，台下黑压压的一片。灯光打在我脸上，晃得我阵阵发晕。
+我看向二楼 VIP 席位。Pocky开了一杯香槟，向我招手。
+不要提前开香槟啊，没看到我稿子都没了吗!
+直播间鸦雀无声，所有人都等着我开口。
+稿子上第一句话是什么?
+「尊敬的各位领导」，还是「尊敬的各位观众」?
+我想融化在台上，然后分批流淌出会场。
+但是箭在弦上，不能不发。
+我凑近麦克风:
+「咳咳，喂，喂?能听清吗?」
+「最近，有传言说，我才是Ribo 的总工程师。对此，我想澄清一下。」
+「传言是对的!」
+台下一片哗然。
+我继续重拳出击:「好，好的。既然知道我是谁了，那就废话少说，直接看新功能!」
+[......这是旧版，完全是一坨屎,所以全撤了!」
+「......这是新增的,特别特别好,你们看这......」
+「......天呐，不会真有人不爱这功能吧,我反正爱惨了!」
+讲到兴奋处，我左脚绊右脚,在台上摔了个底朝天!
+台下哄笑。我不管他们,爬起来拍了拍屁股，继续讲。
+Pocky 的香槟杯子掉地上碎了，助理面无血色。但我完全沉浸在自己的世界里，越说越起劲。
+我不知道的是，从我开始放飞后，直播间人数爆炸式上涨。
+[精英人士都是这么接地气的吗，爱了爱了~1
+【但是他提到Ribo的时候,眼睛在发光耶!]
+[哈哈哈，不讲话是男神,讲话是男神经。]
+发布会时间结束，我还坐在台阶上，给前排观众讲辛酸的 Ribo 发家史。
+助理叫了好几个壮汉才把我拖走。</p>
+<p>28</p>
+<p>我劳累过度，美美睡到第二天，
+一进公司，我看到Pocky对着笔记本电脑咯咯笑。
+电脑正在播放我的发布会鬼畜视频。
+我怒从心头起:「谁发的,是不是陈炳!」我就要出门找他算账。
+「不是他，你想多了。」Pocky拉住我，「是我发的。」
+我:「?」
+Pocky:「抱歉,没问过你的意见,但是……实在太魔性了，哈哈哈!」
+Pocky 说着抱歉，实际眼泪都笑出来了。
+「时代变了，大家都喜欢看乐子。我昨晚发的,今天已经到首页推荐了。」
+我还是很生气，怨毒地盯着他不说话。
+鬼畜视频在首页推荐榜上嘎嘎乱杀。
+不多时，评论区出现我的全套表情包。
+Pocky 摩拳擦掌:「想不到黎神这么有喜剧天赋,闷在公司当管理真是屈才了!」
+他不放过任何一个出圈机会，立刻拿出一个立项:
+「投放一个 Ribo 独占版黎总AI! 」
+「外形、声音、语料库完美复刻黎总本人。黎神，辛苦你去做一下动捕。」
+Pocky 用他的个人账号发布了这一创意,被疯狂转发。
+下午我就被助理团抓走,包装成AI。</p>
+<p>29</p>
+<p>我忙得脚不沾地。
+做完这个旗鱼特别版造型,还有一个发布会周年庆皮肤。
+我的粉丝都劝我:不想当 KOL 的架构师不是好 CEO!
+对，我还有粉丝团。这是我成为Ribo 独占版 AI 原型后才知道的。
+粉丝团的管理也是公司运营的一部分,避免出现不良引导,扰乱舆论秩序。
+其中战斗力最强的是「黎泉女友粉」的组织。
+没想到，我连女友都没有，已经有女友粉了。
+「黎泉女友粉」的粉头是 ID 为「沪圈你丽姐」的大V，也是现任的运营部门员工。
+刚入职时唯唯诺诺的小姑娘,现在雷厉风行。
+至于陈炳，他现在被降职成基层员工了。
+他拿以前一半的工资，干两倍的活儿。
+希望他现在能体会到普通员工的工作也不容易。
+Pocky 还是到处招商投资。对于他来说，挣钱不是目的，做伯乐才是最大的乐趣。
+Ribo 用了两年,终于不是公司里赔钱的部门了。
+每年的发布会我都会上台。鬼畜视频常看常新。
+Pocky 开会归来，双眼放光:
+「韩方邀请我们的女团AI 去演出!趁此机会，做一个黎总女团限定版皮肤宣传吧!」
+我做出步惊云惊恐状:「你不要过来啊!」</p>
+<p>(已完结)</p>
+]]></content>
+      <categories>
+        <category>转载</category>
+      </categories>
+      <tags>
+        <tag>故事</tag>
       </tags>
   </entry>
   <entry>
