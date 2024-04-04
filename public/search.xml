@@ -1859,6 +1859,8 @@ $$
 <p>新的方法
 from notebook.auth import passwd; passwd()</p>
 </blockquote>
+<h3 id="安装-jupyter-lab"><a class="header-anchor" href="#安装-jupyter-lab">¶</a>安装 jupyter-lab</h3>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">jupyter-lab --generate-config</span><br><span class="line"></span><br><span class="line">vim ~/.jupyter/jupyter_lab_config.py</span><br><span class="line"></span><br><span class="line"># 允许局域网访问</span><br><span class="line">c.ServerApp.ip = &apos;*&apos;</span><br><span class="line"></span><br><span class="line"># 使用 生成密码from jupyter_server.auth import passwd; passwd()</span><br><span class="line">c.ServerApp.password = &apos;&apos;</span><br></pre></td></tr></table></figure>
 <h3 id="1-3-安装插件管理"><a class="header-anchor" href="#1-3-安装插件管理">¶</a>1.3 安装插件管理</h3>
 <p>jupyter_contrib_nbextensions 为 jupyter notebook 扩展插件管理器，下面简称nbextensions。</p>
 <p>nbextensions的github <a href="https://github.com/ipython-contrib/jupyter_contrib_nbextensions" target="_blank" rel="noopener">repo</a>
@@ -2839,41 +2841,6 @@ markdate:2023-09-22 05:29:59.547928</p>
       </tags>
   </entry>
   <entry>
-    <title>「202310月度汇报」auto report</title>
-    <url>/public/2023/10/15/test/202310/</url>
-    <content><![CDATA[<a id="more"></a>
-<h2 id="统计-✅-0-📅-0-🔖-0"><a class="header-anchor" href="#统计-✅-0-📅-0-🔖-0">¶</a>=&gt; 统计 ✅ : 0 📅 : 0 🔖 : 0</h2>
-<h3 id="✅-0"><a class="header-anchor" href="#✅-0">¶</a>✅ : 0</h3>
-<h3 id="📅-0"><a class="header-anchor" href="#📅-0">¶</a>📅 : 0</h3>
-<h3 id="🔖-0"><a class="header-anchor" href="#🔖-0">¶</a>🔖 : 0</h3>
-<h2 id="ttrss标记个数-6"><a class="header-anchor" href="#ttrss标记个数-6">¶</a>=&gt; ttrss标记个数: 6</h2>
-<h3 id="四个-All-in-One-工具，帮我优化工作与生活流程"><a class="header-anchor" href="#四个-All-in-One-工具，帮我优化工作与生活流程">¶</a><a href="https://sspai.com/post/83315" target="_blank" rel="noopener">四个 All-in-One 工具，帮我优化工作与生活流程</a></h3>
-<p>pubdata:2023-10-10 03:47:30
-markdate:2023-10-12 06:16:53.456318</p>
-<h3 id="云计算-双-11-活动提前来了，冲"><a class="header-anchor" href="#云计算-双-11-活动提前来了，冲">¶</a><a href="https://www.v2ex.com/t/981377#reply4" target="_blank" rel="noopener">[云计算] 双 11 活动提前来了，冲</a></h3>
-<p>pubdata:2023-10-12 08:27:03
-markdate:2023-10-13 02:22:25.055100</p>
-<h3 id="分享创造-小爱音箱播放自定义音乐"><a class="header-anchor" href="#分享创造-小爱音箱播放自定义音乐">¶</a><a href="https://www.v2ex.com/t/982027#reply4" target="_blank" rel="noopener">[分享创造] 小爱音箱播放自定义音乐</a></h3>
-<p>pubdata:2023-10-14 14:03:33
-markdate:2023-10-15 04:41:33.976215</p>
-<h3 id="3-个工具，将网页转换为-Markdown：安卓、Edge、Chrome、Firefox、Obsidian、Safari"><a class="header-anchor" href="#3-个工具，将网页转换为-Markdown：安卓、Edge、Chrome、Firefox、Obsidian、Safari">¶</a><a href="https://www.appinn.com/webpage-to-markdown/" target="_blank" rel="noopener">3 个工具，将网页转换为 Markdown：安卓、Edge、Chrome、Firefox、Obsidian、Safari</a></h3>
-<p>pubdata:2023-10-14 07:25:00
-markdate:2023-10-15 04:45:43.200312</p>
-<h3 id="3-年、4-个库目录、100-万字：也谈我的-Obsidian-笔记工作流"><a class="header-anchor" href="#3-年、4-个库目录、100-万字：也谈我的-Obsidian-笔记工作流">¶</a><a href="https://sspai.com/post/83042" target="_blank" rel="noopener">3 年、4 个库目录、100 万字：也谈我的 Obsidian 笔记工作流</a></h3>
-<p>pubdata:2023-10-13 03:39:51
-markdate:2023-10-17 11:32:49.709021</p>
-<h3 id="zTasker-–-万能计划任务工具：用-16种触发方式执行-Windows-上的-50-多种任务、程序"><a class="header-anchor" href="#zTasker-–-万能计划任务工具：用-16种触发方式执行-Windows-上的-50-多种任务、程序">¶</a><a href="https://www.appinn.com/ztasker/" target="_blank" rel="noopener">zTasker – 万能计划任务工具：用 16种触发方式执行 Windows 上的 50 多种任务、程序</a></h3>
-<p>pubdata:2023-10-18 06:30:04
-markdate:2023-10-19 04:36:51.693584</p>
-]]></content>
-      <categories>
-        <category>月度汇报</category>
-      </categories>
-      <tags>
-        <tag>月度汇报</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>「202311月度汇报」auto report</title>
     <url>/public/2023/11/15/test/202311/</url>
     <content><![CDATA[<a id="more"></a>
@@ -2921,6 +2888,41 @@ markdate:2023-11-21 02:31:03.869373</p>
 <h3 id="App-1-给你不受语言限制、无需繁琐操作的冲浪体验：沉浸式翻译"><a class="header-anchor" href="#App-1-给你不受语言限制、无需繁琐操作的冲浪体验：沉浸式翻译">¶</a><a href="https://sspai.com/post/83943" target="_blank" rel="noopener">App+1 | 给你不受语言限制、无需繁琐操作的冲浪体验：沉浸式翻译</a></h3>
 <p>pubdata:2023-11-02 07:00:00
 markdate:2023-11-21 02:31:43.259976</p>
+]]></content>
+      <categories>
+        <category>月度汇报</category>
+      </categories>
+      <tags>
+        <tag>月度汇报</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>「202310月度汇报」auto report</title>
+    <url>/public/2023/10/15/test/202310/</url>
+    <content><![CDATA[<a id="more"></a>
+<h2 id="统计-✅-0-📅-0-🔖-0"><a class="header-anchor" href="#统计-✅-0-📅-0-🔖-0">¶</a>=&gt; 统计 ✅ : 0 📅 : 0 🔖 : 0</h2>
+<h3 id="✅-0"><a class="header-anchor" href="#✅-0">¶</a>✅ : 0</h3>
+<h3 id="📅-0"><a class="header-anchor" href="#📅-0">¶</a>📅 : 0</h3>
+<h3 id="🔖-0"><a class="header-anchor" href="#🔖-0">¶</a>🔖 : 0</h3>
+<h2 id="ttrss标记个数-6"><a class="header-anchor" href="#ttrss标记个数-6">¶</a>=&gt; ttrss标记个数: 6</h2>
+<h3 id="四个-All-in-One-工具，帮我优化工作与生活流程"><a class="header-anchor" href="#四个-All-in-One-工具，帮我优化工作与生活流程">¶</a><a href="https://sspai.com/post/83315" target="_blank" rel="noopener">四个 All-in-One 工具，帮我优化工作与生活流程</a></h3>
+<p>pubdata:2023-10-10 03:47:30
+markdate:2023-10-12 06:16:53.456318</p>
+<h3 id="云计算-双-11-活动提前来了，冲"><a class="header-anchor" href="#云计算-双-11-活动提前来了，冲">¶</a><a href="https://www.v2ex.com/t/981377#reply4" target="_blank" rel="noopener">[云计算] 双 11 活动提前来了，冲</a></h3>
+<p>pubdata:2023-10-12 08:27:03
+markdate:2023-10-13 02:22:25.055100</p>
+<h3 id="分享创造-小爱音箱播放自定义音乐"><a class="header-anchor" href="#分享创造-小爱音箱播放自定义音乐">¶</a><a href="https://www.v2ex.com/t/982027#reply4" target="_blank" rel="noopener">[分享创造] 小爱音箱播放自定义音乐</a></h3>
+<p>pubdata:2023-10-14 14:03:33
+markdate:2023-10-15 04:41:33.976215</p>
+<h3 id="3-个工具，将网页转换为-Markdown：安卓、Edge、Chrome、Firefox、Obsidian、Safari"><a class="header-anchor" href="#3-个工具，将网页转换为-Markdown：安卓、Edge、Chrome、Firefox、Obsidian、Safari">¶</a><a href="https://www.appinn.com/webpage-to-markdown/" target="_blank" rel="noopener">3 个工具，将网页转换为 Markdown：安卓、Edge、Chrome、Firefox、Obsidian、Safari</a></h3>
+<p>pubdata:2023-10-14 07:25:00
+markdate:2023-10-15 04:45:43.200312</p>
+<h3 id="3-年、4-个库目录、100-万字：也谈我的-Obsidian-笔记工作流"><a class="header-anchor" href="#3-年、4-个库目录、100-万字：也谈我的-Obsidian-笔记工作流">¶</a><a href="https://sspai.com/post/83042" target="_blank" rel="noopener">3 年、4 个库目录、100 万字：也谈我的 Obsidian 笔记工作流</a></h3>
+<p>pubdata:2023-10-13 03:39:51
+markdate:2023-10-17 11:32:49.709021</p>
+<h3 id="zTasker-–-万能计划任务工具：用-16种触发方式执行-Windows-上的-50-多种任务、程序"><a class="header-anchor" href="#zTasker-–-万能计划任务工具：用-16种触发方式执行-Windows-上的-50-多种任务、程序">¶</a><a href="https://www.appinn.com/ztasker/" target="_blank" rel="noopener">zTasker – 万能计划任务工具：用 16种触发方式执行 Windows 上的 50 多种任务、程序</a></h3>
+<p>pubdata:2023-10-18 06:30:04
+markdate:2023-10-19 04:36:51.693584</p>
 ]]></content>
       <categories>
         <category>月度汇报</category>
