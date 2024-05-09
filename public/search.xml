@@ -1543,483 +1543,6 @@ markdate:2023-01-04 10:20:53.166720</p>
       </tags>
   </entry>
   <entry>
-    <title>正则化「一」机器学习中的正则化</title>
-    <url>/public/2019/07/17/AI/regulation_baysian/</url>
-    <content><![CDATA[<p><strong>前言</strong>
-本<strong>正则化系列</strong>文章我们将讨论<strong>正则化技术在机器学习和深度学习的应用</strong>。本文为该系列的第一篇，主要介绍<strong>机器学习正则化的概念，原理和应用实例</strong>。</p>
-<p><a href="https://en.wikipedia.org/wiki/Regularization_(mathematics)" target="_blank" rel="noopener">正则化</a> 技术广泛应用在机器学习和深度学习算法中，本质作用是<strong>防止过拟合、提高模型泛化能力</strong>。其中过拟合的简单理解就是训练的算法模型太过复杂，模型过分考虑了当前样本的结构。</p>
-<p>在早期的机器学习领域一般只是将范数惩罚叫做正则化技术，而在深度学习领域认为，能够显著减少方差，而不过度增加偏差的策略都可以认为是正则化技术。故<strong>推广的正则化技术</strong>还有：扩增样本集、早停止、Dropout、集成学习、多任务学习、对抗训练、参数共享等。(具体见“花书 第七章 <a href="http://www.deeplearningbook.org/contents/regularization.html" target="_blank" rel="noopener">Regularization for Deep Learning</a>”），关于<strong>深度学习正则化</strong>会在下一篇正则化文章中重点分析。</p>
-<p>转载自：<a href="https://blog.csdn.net/BigData_Mining/article/details/81631249" target="_blank" rel="noopener">https://blog.csdn.net/BigData_Mining/article/details/81631249</a></p>
-<a id="more"></a>
-<h2 id="1-多角度看机器学习正则化"><a class="header-anchor" href="#1-多角度看机器学习正则化">¶</a>1. 多角度看机器学习正则化</h2>
-<p><strong>机器学习领域正则化</strong>可以从以下三个角度进行理解：</p>
-<p><strong>(1)</strong> <strong>正则化等价于结构风险最小化，其是通过在经验风险项后加上表示模型复杂度的正则化项或惩罚项，达到选择经验风险和模型复杂度都较小的模型目的</strong>。</p>
-<p>​	<strong>经验风险</strong>：机器学习中的风险是指模型与真实解之间的误差的积累，经验风险是指使用训练出来的模型进行预测或者分类，存在多大的误差，可以简单理解为训练误差，经验风险最小化即为训练误差最小。</p>
-<p>​	<strong>结构风险</strong>：结构风险定义为经验风险与置信风险(置信是指可信程度)的和，置信风险越大，模型推广能力越差。可以简单认为结构风险是经验风险后面多加了一项表示模型复杂度的函数项，从而可以同时控制模型训练误差和测试误差，结构风险最小化即为在保证模型分类精度(经验风险)的同时，降低模型复杂度，提高泛化能力。</p>
-<p>​	<strong>公式表达</strong>
-$$
-R(f)=\frac{1}{n}\sum_{i=1}^{n}L(y_i,f(x_i)) + \lambda \Omega (f)
-\tag{1}
-$$
-​		其中，$R(f)$表示结构风险，$L(y_i,f(x_i))$表示第 $i$ 个样本的经验风险，$\Omega(f)$是表征模型复杂度的正则项，$\lambda$ 是正则化参数。根据奥姆剃刀定律，“如无必要，勿增实体”，即认为相对简单的模型泛化能力更好。而模型泛化能力强、泛化误差小，即表示模型推广能力强，通俗理解就是在训练集中训练得到的优秀模型能够很好的适用于实际测试数据，而不仅仅是减少训练误差或者测试误差。泛化误差定义如下：
-$$
-E={Bias}^2(X) + {Var}(X) +{Noise}
-\tag{2}
-$$
-​		其中，$E$ 表示泛化误差，${Bias}$ 代表偏差，${Var}$ 代表方差， ${Noise}$ 代表噪声。</p>
-<p>​	<strong>关系图</strong></p>
-<p><img src="/public/2019/07/17/AI/regulation_baysian/1563350068097.png" alt="1563350068097"></p>
-<div align="center"> Fig 1. 泛化误差与偏差和方差的关系</div>
-​		从 Fig 1 可以看出，随着训练程度加深，模型复杂度会增加，偏差减少，方差增大，而泛化误差呈现U型变化。对于一个“好的系统”通常要求误差小，正则化的作用即为适当的控制模型复杂度，从而使得**泛化误差曲线**取最小值。
-<p><strong>(2)</strong> <strong>正则化等价于带约束的目标函数中的约束项</strong></p>
-<p>以平方误差损失和L2范数为例，优化问题的数学模型如下：
-$$
-J(\theta)=\sum_{i=1}^{n}(y_i-\theta^Tx_i)^2
-\tag{3}
-$$
-$$
-{s.t.}{|| \theta ||}_2^2 \leq C\<br>
-\tag{4}
-$$</p>
-<p>针对上述约束条件的优化问题，采用拉格朗日乘积算子法可以转化为无约束化问题，即
-$$
-J(\theta)=\sum_{i=1}^{n}(y_i-w^Tx_i)^2 + \lambda({|| \theta ||}_2^2-C)
-\tag{5}
-$$</p>
-<p>由于参数 $C$ 为常数，可以忽略，故上述公式和标准的正则化 公式完全一致。</p>
-<p><strong>(3)</strong> <strong>从贝叶斯角度考虑</strong></p>
-<p>正则项等价于引入参数的模型先验概率，可以简单理解为对最大似然估计引入先验概率，从而转化为最大后验估计，其中的先验概率即对于正则项（这部分内容后面详细讲解）。</p>
-<h2 id="2-基本概念"><a class="header-anchor" href="#2-基本概念">¶</a>2 基本概念</h2>
-<p>正则化也可以成为规则化、权重衰减技术，不同的领域叫法不一样，数学上常用范数实现，例如L1和L2范数，统计学领域叫做惩罚项、罚因子。</p>
-<p>下面给出范数的数学公式，方便以后分析：</p>
-<p>​	(1) $p$ 范数：
-$$
-Lp=(\sum_{i=1}^{n}{|| x_i ||}^p)^{\frac{1}{p}}
-\tag{6}
-$$
-​	(2) $L0$ 范数：0 范数表示向量中非零元素的个数（即为其稀疏度）</p>
-<p>​	(3) $L1$ 范数：即向量元素绝对值之和，$p$ 范数取1，即为1范数
-$$
-{||x||}_1=\sum^n_1 {|| x_i || }
-\tag{7}
-$$</p>
-<p>​	(4) $L2$ 范数：即向量元素绝对值的平方和再开发，也称欧几里得距离，$p$ 范数取2，即为2范数
-$$
-{||x||}_{2}=\sqrt{\sum^{n}_1|| x_i ||^2}
-\tag{8}
-$$</p>
-<p>​	(5) $\infty $ 范数：即所有向量元素的绝对值中的最大值，$p$ 范数取 $\infty $，即为 $\infty $ 范数
-$$
-{||x  ||}_{\infty }=\underset{i}{\max}{\left | x_i \right |}
-\tag{9}
-$$</p>
-<p>​	(6) $-\infty $ 范数：即所有向量元素绝对值中的最小值，$p$ 范数取$-\infty $，即为 $-\infty $ 范数
-$$
-{||x  ||}_{-\infty }=\underset{i}{\min}{\left | x_i \right |}
-\tag{10}
-$$
-<strong>图形描述</strong></p>
-<p>​		从 Fig 2、Fig 3 图可以看出：q(p)越小，曲线越贴近坐标轴，q(p)越大，曲线越远离坐标轴，并且棱角越明显，当q(p)取0时候，是完全和坐标轴贴合，当q(p)取无穷的时候，呈现正方体形状。同时也可以看出，采用不同的范数作为正则项，会得到完全不同的算法模型结果，故而对于不同要求的模型，应该采用不同的范数作为正则项。</p>
-<p><img src="/public/2019/07/17/AI/regulation_baysian/1563354053269.png" alt="1563354053269"></p>
-<div align="center"> Fig 2. 向量长度为2维的范数约束</div>
-![1563354456894](regulation_baysian/1563354456894.png)
-<div align="center"> Fig 3. 向量长度为3维的范数约束</div>
-## 3 深度理解
-<p>​		为了更好的理解正则化技术原理，下面从4个方面进行深度分析，希望对大家理解有帮助。</p>
-<h3 id="3-1-简单数值假设分析法"><a class="header-anchor" href="#3-1-简单数值假设分析法">¶</a>3.1 简单数值假设分析法</h3>
-<p>​		此处以L2范数讲解，下面的各图形来自吴恩达的机器学习课程。</p>
-<p><img src="/public/2019/07/17/AI/regulation_baysian/image-20190619002115576.png" alt="image-20190619002115576"></p>
-<div align="center"> Fig 4. 不同参数下的曲线拟合结果</div>
-​		左边的曲线拟合是欠拟合，中间的曲线拟合是刚好合适，右边的曲线拟合是过拟合。对于右边的拟合曲线，有
-$$
-h_{\theta}(x)={\theta}_0+{\theta}_0 x_1 +{\theta}_2 x_2^2 +{\theta}_3 x_3^3 +{\theta}_4 x_4^4
-\tag{11}
-$$
-​		从上式可以看出，由于$\theta_3$和$\theta_4$对应了高阶，导致拟合曲线是4阶曲线，出现了过拟合。正则化的目的为适当缩减$\theta_3$和$\theta_4$的值，例如都为0.0001，则上述曲线本质上等价与
-$$
-h_{\theta}(x)={\theta}_0 + {\theta}_1 x_1 +{\theta}_2 x_2^2
-\tag{12}
-$$
-​		也就是变成了中间的刚好合适的拟合曲线。对于$\theta_3$ 和$\theta_4$增加 L2 正则项后的代价函数表达式为：
-$$
-J(\theta)= \underset{\theta}{\min}\frac{1}{n}\sum_{i=1}^{n}((h_{\theta}(x_i)-y_i)+1000{\theta}_3^2 + 1000 {\theta}_4^2)
-\tag{13}
-$$
-​		从上式可以看出，$\theta_3^2$ 和 $\theta_4^2$ 均大于 0，其乘上了1000，要 $J(\theta)$ 是最小，则会迫使模型学习到的$\theta_3$ 和 $\theta_4$ 会非常小，因为只有在$\theta_3$ 和 $\theta_4$ 会非常小的情况下整个代价函数值才会取的较小值。在实际开发中，是对所有参数进行正则化，为了使代价函数尽可能的小，所有的参数 $\theta$ 的值（不包括 $\theta_0$）都会在一定程度上减小，但是减小程度会不一样，从而实现了权重衰减、简化模型复杂度的作用。
-<h3 id="3-2-图形分析法"><a class="header-anchor" href="#3-2-图形分析法">¶</a>3.2 图形分析法</h3>
-<p>​		此处采用L1和L2范数讲解：
-<strong>(1) L2 范数正则</strong>
-$$
-J(\beta)=\sum_{i=1}^{n}(y_i-{\beta}^T x_i)^2 + \lambda {|| {\beta} ||}_2^2
-\tag{14}
-$$
-<img src="/public/2019/07/17/AI/regulation_baysian/1563366078400.png" alt="1563366078400"></p>
-<div align="center"> Fig 5. L2 范数与代价函数的寻优图示</div>
-​		在 Fig 5 中，蓝色的圆形空间表示 L2 范数空间，设为 $\beta_1^2 + \beta_2^2 = r^2$，可以看出，当 $r$ 从 0 逐渐增大时候，该圆形也逐渐增大，红色的线表示原始代价函数解空间即 $\sum_{i=1}^{n}(y_i-\beta^T x_i)^2$，此处为了方便绘图，设参数只有2维。红色圆环上的任何一点都表示一个可行解即代表一组$\beta_1$、$\beta_2$，其中任何一个红色圆环上面的$\beta_1$，$\beta_2$对应的代价函数值一样（可以简单理解为等值线），$\hat{\beta}$ 代表最佳解空间。
-<h2 id="4-贝叶斯角度分析"><a class="header-anchor" href="#4-贝叶斯角度分析">¶</a>4. 贝叶斯角度分析</h2>
-<p>​		以L1和L2范数为例，所得结论可以推广到P范数中，首先需要知道：整个最优化问题从贝叶斯观点来看是一种贝叶斯最大后验估计，其中正则化项对应后验估计中的先验信息，损失函数对应后验估计中的似然函数，两者的乘积即对应贝叶斯最大后验估计的形式。针对L1和L2范数还有结论：<strong>L2 范数相当于给模型参数设置一个协方差为1/alpha的零均值高斯先验分布，L1 范数相当于给模型参数 设置一个参数为1/alpha 拉普拉斯先验分布</strong>。</p>
-<p>​		为了讲清楚上述结论，需要具备几点前置知识点：(1) 高斯分布和拉普拉斯分布的定义和形状；(2) 贝叶斯定理；(3) 最大似然估计；(4) 最大后验估计。下面我对这4个知识点进行解释。</p>
-<p><strong>(1)</strong> <strong>高斯分布和拉普拉斯分布</strong></p>
-<p><img src="/public/2019/07/17/AI/regulation_baysian/0.png" alt="0?wx_fmt=png"></p>
-<p><img src="/public/2019/07/17/AI/regulation_baysian/0-20190610163845194.png" alt="0?wx_fmt=png"></p>
-<p><strong>(2)</strong> <strong>最大似然估计</strong></p>
-<p><img src="/public/2019/07/17/AI/regulation_baysian/0-20190610163845276.png" alt="0?wx_fmt=png"></p>
-<p>​		如果上述公式不能理解，请各位读者去复习一下大学课程《概率论与数理统计》中的参数估计章节，为了更方便理解，下面举一个例子：假设我要统计出整个大学内所有同学的身高分布情况，设全校一共20000人，数量庞大，所有人都去问一遍不太靠谱，所以我打算采用抽样方法来估计，假设我已经知道身高分布服从高斯分布，但是我不知道高斯分布中的均值和方差参数，现在我打算采用最大似然估计方法来确定这两个参数。首先需要明确，全校20000即为总体X，我随机从各个班抽取10名同学，假设一共抽了2000个同学，那么2000同学就构成了样本空间，由于每个样本的概率密度函数已知，则很容易写出似然函数，对数求导即可求解参数。</p>
-<p><strong>(3)</strong> <strong>最大后验估计</strong></p>
-<p><img src="/public/2019/07/17/AI/regulation_baysian/0-20190610163845259.png" alt="0?wx_fmt=png"></p>
-<p><img src="/public/2019/07/17/AI/regulation_baysian/0-20190610163845297.png" alt="0?wx_fmt=png"></p>
-<p><img src="/public/2019/07/17/AI/regulation_baysian/0-20190610163845289.png" alt="0?wx_fmt=png"></p>
-<h2 id="5-例子"><a class="header-anchor" href="#5-例子">¶</a>5. 例子</h2>
-<h3 id="5-1-逻辑回归"><a class="header-anchor" href="#5-1-逻辑回归">¶</a>5.1 逻辑回归</h3>
-<p>​		二分类逻辑回归使用Sigmoid作为决策函数进行分类，该函数可以将任意的输入映射到[0,1]区间，当预测结果小于0.5，则表示负类，当预测结果大于0.5.则表示正类，其模型本质是求最大似然估计，具体求解似然函数通常使用梯度下降法，而前面说过：最大似然估计法没有考虑训练集以外的因素，很容易造成过拟合，故而逻辑回归一般采用L2范数进行正则化操作，Sigmoid函数定义和图形如下：</p>
-<p><img src="/public/2019/07/17/AI/regulation_baysian/0.jpeg" alt="0?wx_fmt=png"></p>
-<h3 id="5-2-岭回归-Ridge-Regression"><a class="header-anchor" href="#5-2-岭回归-Ridge-Regression">¶</a>5.2 岭回归(Ridge Regression)</h3>
-<p>​		岭回归本质上是针对线性回归问题引入了L2范数正则，通过缩减回归系数避免过拟合问题，最先用来处理特征数多于样本数的情况(高维小样本问题)，现在也用于在估计中加人偏差，从而得到更好的估计，加了正则化后的代价函数如下：</p>
-<p><img src="/public/2019/07/17/AI/regulation_baysian/0-20190610174921016.png" alt="0?wx_fmt=png"></p>
-<h3 id="5-3-Lasso-回归"><a class="header-anchor" href="#5-3-Lasso-回归">¶</a>5.3 Lasso 回归</h3>
-<p>​		拉索回归(lasso回归)本质上是针对线性回归问题引入了L1范数正则，通过缩减回归系数避免过拟合问题，其不同于L2范数，其可以将某些系数缩减为0即所谓的具备稀疏性(稀疏性的好处是简化计算、容易理解模型、减少存储空间、不容易出现过拟合等等)，加了正则化后的代价函数如下：</p>
-<p><img src="/public/2019/07/17/AI/regulation_baysian/0-20190610174920968.png" alt="0?wx_fmt=png"></p>
-<p>​		其中，参数函数和岭回归中相同。L1范数罚有一个问题：由于|X|函数在0处不可导，故而直接使用最小二乘法、梯度下降法等方法均失效，但是由于其为第一类间断点中的可去间断点，可以通过补充该点的定义解决，通常，对于线性回归中的lasso回归可以采用近似的前向逐步回归替代。</p>
-<h3 id="5-4-SVM"><a class="header-anchor" href="#5-4-SVM">¶</a>5.4 SVM</h3>
-<p>​		支持向量机SVM优化目的为寻找一个超平面，使得正负样本能够以最大间隔分离开，从而得到更好的泛化性能，其通过引入核函数来将低维线性不可分的样本映射到高维空间从而线性可分，通过引入惩罚参数C(类似于正则化参数)来对错分样本进行惩罚，从而减少模型复杂度，提高泛化能力，其优化目标如下：</p>
-<p><img src="/public/2019/07/17/AI/regulation_baysian/0-20190610174921029.png" alt="0?wx_fmt=png"></p>
-<p>​		大家如果不知道上面公式的推导，不用紧张，对于本次内容不是重点，只需要关注后面正则项部分，惩罚参数C作用和正则化参数作用一致，只是反相关而已。需要明白以下结论：</p>
-<p>​		<strong>(1)</strong> C越大，正则化参数越小，表示对分错样本的惩罚程度越大，正则化作用越小，偏差越小，方差越大，越容易出现过拟合(通俗理解，原本将低维空间映射到5维空间正好线性可分，但是由于惩罚过于严重，任何一个样本分错了都不可原谅，结果系统只能不断提高维数来拟合样本，假设为10维，最终导致映射维数过高，出现过拟合样本现象，数学上称为VC维较大)；</p>
-<p>​		<strong>(2)</strong> C越小，正则化参数越大，表示对分错样本的惩罚程度越小，正则化作用越大，偏差越大，方差越小，越容易出现欠拟合(通俗理解，原本将低维空间映射到5维空间正好线性可分，但是由于惩罚过小，分错了好多样本都可以理解，比较随意，结果系统也采用简化版来拟合样本，假设为3维，最终导致映射维数过低，出现欠拟合样本现象，数学上称为VC维较小)。</p>
-<h2 id="6-总结"><a class="header-anchor" href="#6-总结">¶</a>6. 总结</h2>
-<p>根本目的本质：防止过拟合，提高模型泛化能力。</p>
-<p>正则化技术分类：
-<strong>狭义上</strong>（不同地方叫法不同）</p>
-<ul>
-<li>在早期的机器学习领域一般只是将范数惩罚叫做正则化技术</li>
-<li>规则化、权重衰减</li>
-<li>从贝叶斯角度考虑，正则项等价于引入参数的模型先验概率</li>
-</ul>
-<p><strong>广义上</strong>：
-能够显著减少方差，而不过度增加偏差的策略都可以认为是正则化技术，推广的正则化技术还有：扩增样本集、早停止、Dropout、集成学习、多任务学习、对抗训练、参数共享等。</p>
-<h2 id="Reference"><a class="header-anchor" href="#Reference">¶</a>Reference</h2>
-<p><a href="https://blog.csdn.net/BigData_Mining/article/details/81631249" target="_blank" rel="noopener">正则化总结的比较好比较全面的文章</a></p>
-]]></content>
-      <categories>
-        <category>机器学习</category>
-        <category>正则化</category>
-      </categories>
-      <tags>
-        <tag>人工智能</tag>
-        <tag>机器学习</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Jupyter notebook的配置</title>
-    <url>/public/2017/07/03/linux/jupyter_notebook/</url>
-    <content><![CDATA[<p><strong>前言</strong>
-本文介绍jupyter notebook的安装配置过程和实用技巧。
-<a href="https://jupyter.readthedocs.io/en/latest/index.html" target="_blank" rel="noopener">jupyter.readthedocs教程</a></p>
-<a id="more"></a>
-<h2 id="1-安装与配置"><a class="header-anchor" href="#1-安装与配置">¶</a>1 安装与配置</h2>
-<h3 id="1-1-安装-jupyter"><a class="header-anchor" href="#1-1-安装-jupyter">¶</a>1.1 安装 jupyter</h3>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">conda install jupyter</span><br><span class="line"><span class="comment"># pip install -i https://pypi.tuna.tsinghua.edu.cn/simple jupyter</span></span><br><span class="line"><span class="comment"># pip install jupyter -y</span></span><br></pre></td></tr></table></figure>
-<h3 id="1-2-修改配置文件"><a class="header-anchor" href="#1-2-修改配置文件">¶</a>1.2 修改配置文件</h3>
-<ul>
-<li>生成配置文件</li>
-</ul>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">jupyter notebook --generate-config</span><br><span class="line">vim ~/.jupyter/jupyter_notebook_config.py</span><br></pre></td></tr></table></figure>
-<ul>
-<li>修改配置文件内容</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">c.NotebookApp.ip = <span class="string">'0.0.0.0'</span></span><br><span class="line">c.NotebookApp.port = <span class="number">8018</span></span><br><span class="line"><span class="comment"># 设置密码</span></span><br><span class="line">c.NotebookApp.password = <span class="string">u'sha1:bcd259ccf...your hashed password here'</span></span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>Tip: 利用ipython 生成密码</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&gt; In [1]: from IPython.lib import passwd</span><br><span class="line">&gt; In [2]: passwd()</span><br><span class="line">&gt;   Enter password:</span><br><span class="line">&gt;   Verify password:</span><br><span class="line">&gt;   Out[2]: &apos;sha1:67xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&apos;</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
-</blockquote>
-<p>我选用的是password密码登陆jupyter的方案，其他的密码登陆方案见 <a href="https://zhuanlan.zhihu.com/p/23110830" target="_blank" rel="noopener">link</a></p>
-<blockquote>
-<p>新的方法
-from notebook.auth import passwd; passwd()</p>
-</blockquote>
-<h3 id="安装-jupyter-lab"><a class="header-anchor" href="#安装-jupyter-lab">¶</a>安装 jupyter-lab</h3>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">jupyter-lab --generate-config</span><br><span class="line"></span><br><span class="line">vim ~/.jupyter/jupyter_lab_config.py</span><br><span class="line"></span><br><span class="line"># 允许局域网访问</span><br><span class="line">c.ServerApp.ip = &apos;*&apos;</span><br><span class="line"></span><br><span class="line"># 使用 生成密码from jupyter_server.auth import passwd; passwd()</span><br><span class="line">c.ServerApp.password = &apos;&apos;</span><br></pre></td></tr></table></figure>
-<h3 id="1-3-安装插件管理"><a class="header-anchor" href="#1-3-安装插件管理">¶</a>1.3 安装插件管理</h3>
-<p>jupyter_contrib_nbextensions 为 jupyter notebook 扩展插件管理器，下面简称nbextensions。</p>
-<p>nbextensions的github <a href="https://github.com/ipython-contrib/jupyter_contrib_nbextensions" target="_blank" rel="noopener">repo</a>
-nbextensions的教程<a href="https://jupyter-contrib-nbextensions.readthedocs.io/en/latest/" target="_blank" rel="noopener">nbextensions_manual_readthedocs</a></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 用conda安装</span></span><br><span class="line">conda install jupyter</span><br><span class="line">conda install -c conda-forge jupyter_contrib_nbextensions</span><br><span class="line"></span><br><span class="line"><span class="comment"># pip安装</span></span><br><span class="line">pip install jupyter_contrib_nbextensions</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使能</span></span><br><span class="line">jupyter contrib nbextension install</span><br></pre></td></tr></table></figure>
-<p>我启用的一些插件</p>
-<table>
-<thead>
-<tr>
-<th>plugins</th>
-<th></th>
-<th></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Table of Contents (2)</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>Freeze</td>
-<td>比较好的一个插件，可以用来冻住cell</td>
-<td></td>
-</tr>
-<tr>
-<td>nbTranslate</td>
-<td>这个插件利用Google翻译cell很好用</td>
-<td><a href="https://github.com/jfbercher/jupyter_nbTranslate/blob/master/languages.js" target="_blank" rel="noopener">support languages</a></td>
-</tr>
-<tr>
-<td>ExecuteTime</td>
-<td>显示执行时间</td>
-<td></td>
-</tr>
-<tr>
-<td>Ruler</td>
-<td>代码标尺</td>
-<td></td>
-</tr>
-<tr>
-<td>Autopep8</td>
-<td>代码美化</td>
-<td></td>
-</tr>
-<tr>
-<td>Scratchpad</td>
-<td>代码测试</td>
-<td></td>
-</tr>
-</tbody>
-</table>
-<p>其他花样的配置</p>
-<p><a href="https://zhuanlan.zhihu.com/p/74950682" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/74950682</a></p>
-<h3 id="1-4-conda环境的设置"><a class="header-anchor" href="#1-4-conda环境的设置">¶</a>1.4 conda环境的设置</h3>
-<p>jupyter使用Anaconda miniconda环境需要安装的组件。
-<a href="https://repo.anaconda.com" target="_blank" rel="noopener">conda repo</a></p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 创建虚拟环境</span></span><br><span class="line">conda create -n env_name python=3.6</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> conda虚拟核组件 切换kernel</span></span><br><span class="line">conda install nb_conda_kernels</span><br></pre></td></tr></table></figure>
-<h3 id="1-5-解决界面中英文混杂"><a class="header-anchor" href="#1-5-解决界面中英文混杂">¶</a>1.5 解决界面中英文混杂</h3>
-<img src="/public/2017/07/03/linux/jupyter_notebook/image-20200413125705473.png" alt="image-20200413125705473" style="zoom:50%;">
-<p>如图，jupyter 界面中中英文混杂，解决方法为将界面文字中文切换成英文。</p>
-<p>原理：让jupyter就找不到他的中文配置文件夹。</p>
-<p>找到notebook的汉化文件夹的路径，比如<code>~/miniconda3/lib/python3.6/site-packages/notebook/i18n/zh_CN</code>。将其重命名如加个下划线作为后缀<code>zh_CN_old</code>，重启jupyter就行了。</p>
-<p>为了方便，我作了个脚本自动找<code>notebook/i18n/zh_CN</code>位置并改名此文件夹，如下。</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> shutil</span><br><span class="line"><span class="keyword">from</span> distutils.sysconfig <span class="keyword">import</span> get_python_lib</span><br><span class="line"><span class="comment"># 获取site-package包的位置</span></span><br><span class="line">path_zh=get_python_lib()+<span class="string">'/notebook/i18n/zh_CN'</span></span><br><span class="line">path_zh_old=get_python_lib()+<span class="string">'/notebook/i18n/zh_CN_old'</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 将 notebook/i18n/zh_CN 改为 notebook/i18n/zh_CN_old</span></span><br><span class="line">shutil.move(path_zh,path_zh_old)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 返回中文</span></span><br><span class="line"><span class="comment"># shutil.move(path_zh_old,path_zh)</span></span><br></pre></td></tr></table></figure>
-<p>重启jupyter就行了, 这样jupyter就找不到这个中文配置，返回中文改回去就行了<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup>。</p>
-<h2 id="2-使用的技巧"><a class="header-anchor" href="#2-使用的技巧">¶</a>2 使用的技巧</h2>
-<h3 id="2-1-快捷键"><a class="header-anchor" href="#2-1-快捷键">¶</a>2.1 快捷键</h3>
-<hr>
-<table>
-<thead>
-<tr>
-<th>在非激活状态即是蓝颜色的边框</th>
-<th>内容</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>A</td>
-<td>insert cell above</td>
-</tr>
-<tr>
-<td>B</td>
-<td>insert cell below</td>
-</tr>
-<tr>
-<td>H</td>
-<td>查看帮助</td>
-</tr>
-<tr>
-<td>⌃↩(ctrl + enter)</td>
-<td>run selected cells</td>
-</tr>
-</tbody>
-</table>
-<h3 id="2-2-显示图片-视频-音频"><a class="header-anchor" href="#2-2-显示图片-视频-音频">¶</a>2.2 显示图片 视频 音频</h3>
-<p>主要是画图、显示视频和音频的方法。</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 图片</span></span><br><span class="line">%%HTML</span><br><span class="line">&lt;img src=<span class="string">"xxx.jpg"</span>  alt=<span class="string">"title"</span> /&gt;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 视频</span></span><br><span class="line">%%HTML</span><br><span class="line">&lt;video width=<span class="string">"330"</span> height=<span class="string">"150"</span> controls&gt;</span><br><span class="line">&lt;source src=<span class="string">"out_all.mp4"</span> type=<span class="string">"video/mp4"</span>&gt;</span><br><span class="line">&lt;/video&gt;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 语音</span></span><br><span class="line">%%HTML</span><br><span class="line">&lt;audio src=<span class="string">"out.wav"</span> controls=<span class="string">"controls"</span>&gt;</span><br><span class="line">Your browser does <span class="keyword">not</span> support the audio element.</span><br><span class="line">&lt;/audio&gt;</span><br><span class="line"></span><br><span class="line"><span class="comment"># html t是html的字符串</span></span><br><span class="line"><span class="keyword">from</span> IPython.core.display <span class="keyword">import</span> HTML</span><br><span class="line">HTML(str(t))</span><br></pre></td></tr></table></figure>
-<h3 id="2-3-其他技巧"><a class="header-anchor" href="#2-3-其他技巧">¶</a>2.3 其他技巧</h3>
-<h4 id="修复视频文件"><a class="header-anchor" href="#修复视频文件">¶</a>修复视频文件</h4>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fix_use_ffmpeg</span><span class="params">(in_name, out_name,message=<span class="string">""</span>)</span>:</span></span><br><span class="line">    <span class="keyword">import</span> os</span><br><span class="line">    <span class="keyword">if</span> os.path.isfile(out_name):</span><br><span class="line">    os.remove(out_name)</span><br><span class="line">    cmd = <span class="string">'ffmpeg -i %s %s'</span> % (in_name, out_name)</span><br><span class="line">    log_lines = os.popen(cmd).readlines()</span><br><span class="line">    print(message,<span class="string">"ok"</span>)</span><br></pre></td></tr></table></figure>
-<h4 id="加载自己的模块文件"><a class="header-anchor" href="#加载自己的模块文件">¶</a>加载自己的模块文件</h4>
-<p>出于性能考虑，每个模块在每个解释器会话中只导入一遍。因此，如果你修改了你的模块，需要重启解释器；或者，如果你就是想交互式的测试这么一个模块，可以用 imp.reload() 重新加载，例如 <code>import imp; imp.reload(modulename)</code></p>
-<h4 id="导出pdf支持中文"><a class="header-anchor" href="#导出pdf支持中文">¶</a>导出pdf支持中文</h4>
-<p>Jupyter Notebook 输出PDF中文支持 <a href="https://www.jianshu.com/p/c3f660188766" target="_blank" rel="noopener">link</a></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> /usr/<span class="built_in">local</span>/lib/python3.6/site-packages/nbconvert/templates/latex</span><br><span class="line"></span><br><span class="line"><span class="comment"># 在里面的模版中添加，前提是安装好了texlive</span></span><br><span class="line">% add</span><br><span class="line">\usepackage&#123;ctex&#125;</span><br></pre></td></tr></table></figure>
-<h4 id="ipynb2pdf"><a class="header-anchor" href="#ipynb2pdf">¶</a>ipynb2pdf</h4>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python3</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string">Current version of Jupyter doesn't support pdf exporting when it comes to</span></span><br><span class="line"><span class="string">russian language in the document. To fix this, current script has born.</span></span><br><span class="line"><span class="string">It requires nbconvert as long as jupyter to be installed.</span></span><br><span class="line"><span class="string">Author:     Sergey Ivanychev</span></span><br><span class="line"><span class="string">Email:      sergeyivanychev@gmail.com</span></span><br><span class="line"><span class="string">Revision:   1</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> subprocess</span><br><span class="line"></span><br><span class="line">FORMAT = <span class="string">".ipynb"</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string">TODO:   What if user has ___o.tex in current folder?</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line">TEMP_TEX = <span class="string">"___o.tex"</span></span><br><span class="line">TEMP_FOLDER = <span class="string">"/tmp"</span></span><br><span class="line">TRASH_EXTENSIONS = [<span class="string">".aux"</span>, <span class="string">".out"</span>, <span class="string">".log"</span>]</span><br><span class="line">OLD1 = <span class="string">r"\usepackage[utf8x]&#123;inputenc&#125;"</span></span><br><span class="line">NEW1 = <span class="string">r"""</span></span><br><span class="line"><span class="string">    \usepackage[utf8x]&#123;inputenc&#125;</span></span><br><span class="line"><span class="string">    \usepackage&#123;ctex&#125;</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line">REPLACE = [(OLD1, NEW1)]</span><br><span class="line">HELP = <span class="string">"""</span></span><br><span class="line"><span class="string">This script is aimed at correctly converting .ipynb to .pdf files.</span></span><br><span class="line"><span class="string">You may use it via</span></span><br><span class="line"><span class="string"># ipynb2pdf Solution.ipynb</span></span><br><span class="line"><span class="string">To get .pdf in the same directory</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">check_args</span><span class="params">(argv)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> (len(argv) &gt; <span class="number">2</span>):</span><br><span class="line">        print(<span class="string">"Please, type .ipynb filename as argument"</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span></span><br><span class="line">    <span class="keyword">if</span> (len(argv) == <span class="number">1</span>):</span><br><span class="line">        print(HELP)</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span></span><br><span class="line">    script, filename = argv</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> is_ipynb(filename):</span><br><span class="line">        print(<span class="string">"Please, type .ipynb filename as argument"</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">remove_extention</span><span class="params">(string, extention)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    Removes argumented extention from the end of the string</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    <span class="keyword">if</span> extention[<span class="number">0</span>] != <span class="string">'.'</span>:</span><br><span class="line">        extention = <span class="string">"."</span> + extention</span><br><span class="line">    <span class="keyword">if</span> string.endswith(extention):</span><br><span class="line">        string = string[<span class="number">0</span>:-len(extention)]</span><br><span class="line">    <span class="keyword">return</span> string</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">is_ipynb</span><span class="params">(filename)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> filename.endswith(<span class="string">".ipynb"</span>):</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">    <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">tex2pdf</span><span class="params">(filename, desired_name)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    Converts filename (which is tex document) to desired_name (which is pdf)</span></span><br><span class="line"><span class="string">    leaving no trash in current folder</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    base = remove_extention(filename, <span class="string">"tex"</span>)</span><br><span class="line">    output = base + <span class="string">".pdf"</span></span><br><span class="line">    ret = subprocess.call(<span class="string">"xelatex %s"</span> % filename , </span><br><span class="line">                                        shell=<span class="literal">True</span>, stdout=subprocess.PIPE)</span><br><span class="line">    <span class="keyword">for</span> ext <span class="keyword">in</span> TRASH_EXTENSIONS:</span><br><span class="line">        os.unlink(base + ext)</span><br><span class="line">    os.rename(output, desired_name)</span><br><span class="line">    <span class="keyword">return</span> ret</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">(argv)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> check_args(argv) == <span class="number">-1</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span></span><br><span class="line">    script, filename = argv</span><br><span class="line">    ret = subprocess.call(<span class="string">"jupyter nbconvert %s --to latex --output %s"</span> %</span><br><span class="line">                                            (filename, TEMP_TEX), shell=<span class="literal">True</span>,</span><br><span class="line">                                            stdout=subprocess.PIPE)</span><br><span class="line">    <span class="keyword">if</span> (ret != <span class="number">0</span>):</span><br><span class="line">        print(<span class="string">"ret = %d"</span> % ret)</span><br><span class="line">        os.unlink(TEMP_TEX)</span><br><span class="line">        print(<span class="string">"Converting to LaTeX failed. Return code: %d"</span> % ret)</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span></span><br><span class="line">    tex_file = open(TEMP_TEX, <span class="string">"r"</span>)</span><br><span class="line">    tex = tex_file.read()</span><br><span class="line">    <span class="keyword">for</span> old, new <span class="keyword">in</span> REPLACE:</span><br><span class="line">        tex = tex.replace(old, new)</span><br><span class="line">    tex_file.close()</span><br><span class="line">    os.unlink(TEMP_TEX)</span><br><span class="line">    tex_file = open(TEMP_TEX, <span class="string">"w+"</span>)</span><br><span class="line">    tex_file.write(tex)</span><br><span class="line">    tex_file.close()</span><br><span class="line">    ret = tex2pdf(TEMP_TEX, remove_extention(filename, <span class="string">".ipynb"</span>) + <span class="string">".pdf"</span>)</span><br><span class="line">    tex_file.close()</span><br><span class="line">    os.unlink(TEMP_TEX)</span><br><span class="line">    print(remove_extention(filename, <span class="string">".ipynb"</span>) + <span class="string">".pdf - DONE"</span>)</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</span><br><span class="line">    exit(main(sys.argv))</span><br></pre></td></tr></table></figure>
-<hr class="footnotes-sep">
-<section class="footnotes">
-<ol class="footnotes-list">
-<li id="fn1" class="footnote-item"><p><a href="https://www.zhihu.com/question/302814218/answer/1029684239" target="_blank" rel="noopener">https://www.zhihu.com/question/302814218/answer/1029684239</a> <a href="#fnref1" class="footnote-backref">↩︎</a></p>
-</li>
-</ol>
-</section>
-]]></content>
-      <categories>
-        <category>jupyter</category>
-      </categories>
-      <tags>
-        <tag>工具</tag>
-        <tag>Python</tag>
-        <tag>笔记应用</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>选择困难者的福音？层次分析法</title>
-    <url>/public/2021/04/02/math/math_AHP/</url>
-    <content><![CDATA[<h2 id="摘要"><a class="header-anchor" href="#摘要">¶</a>摘要</h2>
-<p>日常生活中，我们面临很多的选择，选择自己最工作offer，选择买哪个牌子的手机，选择哪个地方旅行等等。这些选择难以定量的衡量，有很多不确定性。内心小纠结，我选择了这个，万一那个好呢，怎么办？请看层次分析法。</p>
-<p>层次分析法(Analytic Hierarchy Process，简称 AHP)是对一些较为复杂、较为模糊的问题作出决策的简易方法，它特别适用于那些难于完全定量分析的问题。它是美国运筹学家 T. L. Saaty 教授于上世纪 70 年代初期提出的一种简便、灵活而又实用的多准则决策方法。</p>
-<p>运用层次分析法建模，大体上可按下面四个步骤进行</p>
-<ul>
-<li>建立递阶层次结构模型</li>
-<li>构造出各层次中的所有判断矩阵</li>
-<li>层次单排序及一致性检验</li>
-<li>层次总排序及一致性检验。（一般不用）</li>
-</ul>
-<a id="more"></a>
-<p>让我们从offer大佬的例子开始吧！</p>
-<p>举个栗子，今年有位大学生，有三个offer，C1 C2 C3。</p>
-<p>第一步，建立层次模型。</p>
-<ul>
-<li>目标层A：找工作的目标，自己满意程度。
-<ul>
-<li>这个程度怎么计算呢？比如工作1。</li>
-</ul>
-</li>
-<li>准则层B：研究课题、发展前途、待遇、同事情况、地理位置、单位名气等等。
-<ul>
-<li>尽量列全一点，不需要排列重要顺序。</li>
-<li>小于等于9个，后面要两两拍脑袋给出相对的重要层度，给多了不得把脑袋拍疼了。</li>
-<li>也可以有子准则层，比如待遇中的放假、工作环境等等，列出也小于9个。</li>
-</ul>
-</li>
-<li>方案层C：就是我们的offer</li>
-</ul>
-<img src="/public/2021/04/02/math/math_AHP/image-20200406145535585.png" alt="image-20200406145535585" style="zoom:50%;">
-<h2 id="构造-A-B-之间判断矩阵"><a class="header-anchor" href="#构造-A-B-之间判断矩阵">¶</a>构造 A B 之间判断矩阵</h2>
-<p>准则层B与目标A之间的关系。为了求出准则层中(B1-6) 对目标的重要层度的排序。比如对于该生工作满意度第一重要是待遇，然后是地点，其实该生自己也很模糊。就是固定A，然后求B中准则，对A重要性的排序。</p>
-<h3 id="我们怎么对B中的准则们的重要排序呢？"><a class="header-anchor" href="#我们怎么对B中的准则们的重要排序呢？">¶</a>我们怎么对B中的准则们的重要排序呢？</h3>
-<p>直接给每一个准则，0-1的评分，然后排序。经常会想，给完分之后，这个不合理呀要不我再给哪个准则加加分。所以这样的方法常常会因考虑不周全、顾此失彼而使决策者提出与他实际认为的重要性程度不相一致的数据。</p>
-<p>我们可以将这个过程细化，我就比较两个准则对于目标的重要性，然后通过下面的矩阵方法，求出优先顺序。</p>
-<p>还能通过一个一致性检验，来检验在你评分的过程中，有没有自相矛盾的地方，当然这种方法允许一些自相矛盾。反正评分的时候尊从内心拍脑袋就对了。</p>
-<p>所以我们拿出一个B1 与 B2 对于目标的重要，想一想然后给出B2/B1，填入下面的表格中的(2,1)的位置。</p>
-<p>整个矩阵i,j 与j，i 是取倒数的关系，所以只要做一半。</p>
-<p>在找工作的目标下，准则i与j相对的重要性表示，B2/B1 的值。采用9个标度。而相比不重要刻度取倒数就可以了</p>
-<table>
-<thead>
-<tr>
-<th>准则i比j的比较</th>
-<th>1</th>
-<th>2</th>
-<th>3</th>
-<th>4</th>
-<th>5</th>
-<th>6</th>
-<th>7</th>
-<th>8</th>
-<th>9</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-<td>相同重要</td>
-<td></td>
-<td>比较重要</td>
-<td></td>
-<td>明显重要</td>
-<td></td>
-<td>强烈重要</td>
-<td></td>
-<td>极端重要</td>
-</tr>
-</tbody>
-</table>
-<p>最后的两两相对重要表格</p>
-<img src="/public/2021/04/02/math/math_AHP/image-20200406145640316.png" alt="image-20200406145640316" style="zoom:50%;">
-<p>对角线对称的两个数互为倒数，即 $$a_{ji}=\frac{1}{a_{ij}}$$  B1/B2 不就是和 B2/B1互为倒数嘛</p>
-<p>从心理学观点来看，分级太多会超越人们的判断能力，既增加了作判断的难度， 又容易因此而提供虚假数据。Saaty 等人还用实验方法比较了在各种不同标度下人们判断结果的正确性，实验结果也表明，采用 1~9 标度最为合适。</p>
-<p>判断矩阵的一致性指标步骤：</p>
-<ul>
-<li>1）计算一致性指标 CI 。$$CI=\frac{ \lambda_{max}-n}{n-1}$$</li>
-<li>2）查表，平均随机一致性指标 RI。</li>
-</ul>
-<table>
-<thead>
-<tr>
-<th>n</th>
-<th>1</th>
-<th>2</th>
-<th>3</th>
-<th>4</th>
-<th>5</th>
-<th>6</th>
-<th>7</th>
-<th>8</th>
-<th>9</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>RI</td>
-<td>0</td>
-<td>0</td>
-<td>0.58</td>
-<td>0.90</td>
-<td>1.12</td>
-<td>1.24</td>
-<td>1.32</td>
-<td>1.41</td>
-<td>1.45</td>
-</tr>
-</tbody>
-</table>
-<blockquote>
-<p><em>RI</em> 的值是这样得到的，用随机方法构造500个样本矩阵:随机地从1~9及其倒数中抽取数字构造正互反矩阵，求得最大特征根的平均值 $$\bar \lambda_{max}$$ 并定义$$RI=\frac{\bar \lambda_{max}-n}{n-1}$$</p>
-</blockquote>
-<ul>
-<li>3）计算一致性比例CR。 $$CR=\frac{CI}{RI}$$，当$$CR&lt;0.10$$ 时，认为判断矩阵的一致性是可以接受的，否则应对判断矩阵作适当修正。</li>
-</ul>
-<p>如果一个矩阵满足上面的条件，那么它最大特征值对应的特征向量就可以认为是每个维度的重要性权重。</p>
-<h2 id="构造-B-C-之间判断矩阵"><a class="header-anchor" href="#构造-B-C-之间判断矩阵">¶</a>构造 B C 之间判断矩阵</h2>
-<p>相同的方法，在同一B准则下，考虑不同工作的优先顺序。求工作排序的方法，和上面一样。</p>
-<img src="/public/2021/04/02/math/math_AHP/image-20200406162644137.png" alt="image-20200406162644137" style="zoom:50%;">
-<p>python代码<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup></p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">import</span> warnings</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AHP</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, criteria, b)</span>:</span></span><br><span class="line">        self.RI = (<span class="number">0</span>, <span class="number">0</span>, <span class="number">0.58</span>, <span class="number">0.9</span>, <span class="number">1.12</span>, <span class="number">1.24</span>, <span class="number">1.32</span>, <span class="number">1.41</span>, <span class="number">1.45</span>, <span class="number">1.49</span>)</span><br><span class="line">        self.criteria = criteria</span><br><span class="line">        self.b = b</span><br><span class="line">        self.num_criteria = criteria.shape[<span class="number">0</span>]</span><br><span class="line">        self.num_project = b[<span class="number">0</span>].shape[<span class="number">0</span>]</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">cal_weights</span><span class="params">(self, input_matrix)</span>:</span></span><br><span class="line">        input_matrix = np.array(input_matrix)</span><br><span class="line">        n, n1 = input_matrix.shape</span><br><span class="line">        <span class="keyword">assert</span> n == n1, <span class="string">'不是一个方阵'</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(n):</span><br><span class="line">            <span class="keyword">for</span> j <span class="keyword">in</span> range(n):</span><br><span class="line">                <span class="keyword">if</span> np.abs(input_matrix[i, j] * input_matrix[j, i] - <span class="number">1</span>) &gt; <span class="number">1e-7</span>:</span><br><span class="line">                    <span class="keyword">raise</span> ValueError(<span class="string">'不是反互对称矩阵'</span>)</span><br><span class="line"></span><br><span class="line">        eigenvalues, eigenvectors = np.linalg.eig(input_matrix)</span><br><span class="line"></span><br><span class="line">        max_idx = np.argmax(eigenvalues)</span><br><span class="line">        max_eigen = eigenvalues[max_idx].real</span><br><span class="line">        eigen = eigenvectors[:, max_idx].real</span><br><span class="line">        eigen = eigen / eigen.sum()</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> n &gt; <span class="number">9</span>:</span><br><span class="line">            CR = <span class="literal">None</span></span><br><span class="line">            warnings.warn(<span class="string">'无法判断一致性'</span>)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            CI = (max_eigen - n) / (n - <span class="number">1</span>)</span><br><span class="line">            CR = CI / self.RI[n]</span><br><span class="line">        <span class="keyword">return</span> max_eigen, CR, eigen</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">run</span><span class="params">(self)</span>:</span></span><br><span class="line">        max_eigen, CR, criteria_eigen = self.cal_weights(self.criteria)</span><br><span class="line">        print(<span class="string">'准则层：最大特征值&#123;:&lt;5f&#125;,CR=&#123;:&lt;5f&#125;,检验&#123;&#125;通过'</span>.format(max_eigen, CR, <span class="string">''</span> <span class="keyword">if</span> CR &lt; <span class="number">0.1</span> <span class="keyword">else</span> <span class="string">'不'</span>))</span><br><span class="line">        print(<span class="string">'准则层权重=&#123;&#125;\n'</span>.format(criteria_eigen))</span><br><span class="line"></span><br><span class="line">        max_eigen_list, CR_list, eigen_list = [], [], []</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> self.b:</span><br><span class="line">            max_eigen, CR, eigen = self.cal_weights(i)</span><br><span class="line">            max_eigen_list.append(max_eigen)</span><br><span class="line">            CR_list.append(CR)</span><br><span class="line">            eigen_list.append(eigen)</span><br><span class="line"></span><br><span class="line">        pd_print = pd.DataFrame(eigen_list,</span><br><span class="line">                                index=[<span class="string">'准则'</span> + str(i) <span class="keyword">for</span> i <span class="keyword">in</span> range(self.num_criteria)],</span><br><span class="line">                                columns=[<span class="string">'方案'</span> + str(i) <span class="keyword">for</span> i <span class="keyword">in</span> range(self.num_project)],</span><br><span class="line">                                )</span><br><span class="line">        pd_print.loc[:, <span class="string">'最大特征值'</span>] = max_eigen_list</span><br><span class="line">        pd_print.loc[:, <span class="string">'CR'</span>] = CR_list</span><br><span class="line">        pd_print.loc[:, <span class="string">'一致性检验'</span>] = pd_print.loc[:, <span class="string">'CR'</span>] &lt; <span class="number">0.1</span></span><br><span class="line">        print(<span class="string">'方案层'</span>)</span><br><span class="line">        print(pd_print)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 目标层</span></span><br><span class="line">        obj = np.dot(criteria_eigen.reshape(<span class="number">1</span>, <span class="number">-1</span>), np.array(eigen_list))</span><br><span class="line">        print(<span class="string">'\n目标层'</span>, obj)</span><br><span class="line">        print(<span class="string">'最优选择是方案&#123;&#125;'</span>.format(np.argmax(obj)))</span><br><span class="line">        <span class="keyword">return</span> obj</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    <span class="comment"># 准则重要性矩阵</span></span><br><span class="line">    criteria = np.array([[<span class="number">1</span>, <span class="number">2</span>, <span class="number">7</span>, <span class="number">5</span>, <span class="number">5</span>],</span><br><span class="line">                         [<span class="number">1</span> / <span class="number">2</span>, <span class="number">1</span>, <span class="number">4</span>, <span class="number">3</span>, <span class="number">3</span>],</span><br><span class="line">                         [<span class="number">1</span> / <span class="number">7</span>, <span class="number">1</span> / <span class="number">4</span>, <span class="number">1</span>, <span class="number">1</span> / <span class="number">2</span>, <span class="number">1</span> / <span class="number">3</span>],</span><br><span class="line">                         [<span class="number">1</span> / <span class="number">5</span>, <span class="number">1</span> / <span class="number">3</span>, <span class="number">2</span>, <span class="number">1</span>, <span class="number">1</span>],</span><br><span class="line">                         [<span class="number">1</span> / <span class="number">5</span>, <span class="number">1</span> / <span class="number">3</span>, <span class="number">3</span>, <span class="number">1</span>, <span class="number">1</span>]])</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 对每个准则，方案优劣排序</span></span><br><span class="line">    b1 = np.array([[<span class="number">1</span>, <span class="number">1</span> / <span class="number">3</span>, <span class="number">1</span> / <span class="number">8</span>], [<span class="number">3</span>, <span class="number">1</span>, <span class="number">1</span> / <span class="number">3</span>], [<span class="number">8</span>, <span class="number">3</span>, <span class="number">1</span>]])</span><br><span class="line">    b2 = np.array([[<span class="number">1</span>, <span class="number">2</span>, <span class="number">5</span>], [<span class="number">1</span> / <span class="number">2</span>, <span class="number">1</span>, <span class="number">2</span>], [<span class="number">1</span> / <span class="number">5</span>, <span class="number">1</span> / <span class="number">2</span>, <span class="number">1</span>]])</span><br><span class="line">    b3 = np.array([[<span class="number">1</span>, <span class="number">1</span>, <span class="number">3</span>], [<span class="number">1</span>, <span class="number">1</span>, <span class="number">3</span>], [<span class="number">1</span> / <span class="number">3</span>, <span class="number">1</span> / <span class="number">3</span>, <span class="number">1</span>]])</span><br><span class="line">    b4 = np.array([[<span class="number">1</span>, <span class="number">3</span>, <span class="number">4</span>], [<span class="number">1</span> / <span class="number">3</span>, <span class="number">1</span>, <span class="number">1</span>], [<span class="number">1</span> / <span class="number">4</span>, <span class="number">1</span>, <span class="number">1</span>]])</span><br><span class="line">    b5 = np.array([[<span class="number">1</span>, <span class="number">4</span>, <span class="number">1</span> / <span class="number">2</span>], [<span class="number">1</span> / <span class="number">4</span>, <span class="number">1</span>, <span class="number">1</span> / <span class="number">4</span>], [<span class="number">2</span>, <span class="number">4</span>, <span class="number">1</span>]])</span><br><span class="line"></span><br><span class="line">    b = [b1, b2, b3, b4, b5]</span><br><span class="line">    a = AHP(criteria, b).run()</span><br></pre></td></tr></table></figure>
-<h2 id="层次分析法与控制变量法"><a class="header-anchor" href="#层次分析法与控制变量法">¶</a>层次分析法与控制变量法</h2>
-<p>我们的任务是选择工作，最后使得我们满意，直接选择我们当然一头雾水。所以我们设立一些准则，然后对这些准则对于目标的重要性排序。</p>
-<p>这又有点像概率图模型，只是赋权的方法，是相互比较的方法。</p>
-<h2 id="选择困难者的福音？"><a class="header-anchor" href="#选择困难者的福音？">¶</a>选择困难者的福音？</h2>
-<p>层次分析法对人们的思维过程进行了加工整理，提出了一套系统分析问题的方法，为科学管理和决策提供了较有说服力的依据。</p>
-<p>在应用层次分析法研究问题时，遇到的主要困难有两个:<br>
-(1) 如何根据实际情况抽象出较为贴切的层次结构;<br>
-(2) 如何将某些定性的量作比较接近实际定量化处理。</p>
-<p>层次分析法的其局限性<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup>：<br>
-(1) 它在很大程度上依赖于人们的经验，主观因素的影响很大，它至多只能排除思维过程中的严重非一致性，却无法排除决策者个人可能存在的严重片面性。<br>
-(2) 比较、 判断过程较为粗糙，不能用于精度要求较高的决策问题。</p>
-<p>所以，AHP 至多只能算是一种半定量(或定性与定量结合)的方法。
-本文仅供参考，不负法律责任，哈哈。</p>
-<h2 id="参考"><a class="header-anchor" href="#参考">¶</a>参考</h2>
-<hr class="footnotes-sep">
-<section class="footnotes">
-<ol class="footnotes-list">
-<li id="fn1" class="footnote-item"><p>幼鹰me 知乎 <a href="https://zhuanlan.zhihu.com/p/101505929" target="_blank" rel="noopener">层次分析法原理与Python实现</a> <a href="#fnref1" class="footnote-backref">↩︎</a></p>
-</li>
-<li id="fn2" class="footnote-item"><p>司守奎《数学建模算法与程序》第八章 层次分析法 P167 <a href="#fnref2" class="footnote-backref">↩︎</a></p>
-</li>
-</ol>
-</section>
-]]></content>
-      <categories>
-        <category>数学</category>
-      </categories>
-      <tags>
-        <tag>数学</tag>
-        <tag>层次分析法</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>「202302月度汇报」ttrss</title>
     <url>/public/2023/02/15/test/202302/</url>
     <content><![CDATA[<p>total: 1</p>
@@ -2498,41 +2021,6 @@ markdate:2023-09-22 05:29:59.547928</p>
       </tags>
   </entry>
   <entry>
-    <title>「202310月度汇报」auto report</title>
-    <url>/public/2023/10/15/test/202310/</url>
-    <content><![CDATA[<a id="more"></a>
-<h2 id="统计-✅-0-📅-0-🔖-0"><a class="header-anchor" href="#统计-✅-0-📅-0-🔖-0">¶</a>=&gt; 统计 ✅ : 0 📅 : 0 🔖 : 0</h2>
-<h3 id="✅-0"><a class="header-anchor" href="#✅-0">¶</a>✅ : 0</h3>
-<h3 id="📅-0"><a class="header-anchor" href="#📅-0">¶</a>📅 : 0</h3>
-<h3 id="🔖-0"><a class="header-anchor" href="#🔖-0">¶</a>🔖 : 0</h3>
-<h2 id="ttrss标记个数-6"><a class="header-anchor" href="#ttrss标记个数-6">¶</a>=&gt; ttrss标记个数: 6</h2>
-<h3 id="四个-All-in-One-工具，帮我优化工作与生活流程"><a class="header-anchor" href="#四个-All-in-One-工具，帮我优化工作与生活流程">¶</a><a href="https://sspai.com/post/83315" target="_blank" rel="noopener">四个 All-in-One 工具，帮我优化工作与生活流程</a></h3>
-<p>pubdata:2023-10-10 03:47:30
-markdate:2023-10-12 06:16:53.456318</p>
-<h3 id="云计算-双-11-活动提前来了，冲"><a class="header-anchor" href="#云计算-双-11-活动提前来了，冲">¶</a><a href="https://www.v2ex.com/t/981377#reply4" target="_blank" rel="noopener">[云计算] 双 11 活动提前来了，冲</a></h3>
-<p>pubdata:2023-10-12 08:27:03
-markdate:2023-10-13 02:22:25.055100</p>
-<h3 id="分享创造-小爱音箱播放自定义音乐"><a class="header-anchor" href="#分享创造-小爱音箱播放自定义音乐">¶</a><a href="https://www.v2ex.com/t/982027#reply4" target="_blank" rel="noopener">[分享创造] 小爱音箱播放自定义音乐</a></h3>
-<p>pubdata:2023-10-14 14:03:33
-markdate:2023-10-15 04:41:33.976215</p>
-<h3 id="3-个工具，将网页转换为-Markdown：安卓、Edge、Chrome、Firefox、Obsidian、Safari"><a class="header-anchor" href="#3-个工具，将网页转换为-Markdown：安卓、Edge、Chrome、Firefox、Obsidian、Safari">¶</a><a href="https://www.appinn.com/webpage-to-markdown/" target="_blank" rel="noopener">3 个工具，将网页转换为 Markdown：安卓、Edge、Chrome、Firefox、Obsidian、Safari</a></h3>
-<p>pubdata:2023-10-14 07:25:00
-markdate:2023-10-15 04:45:43.200312</p>
-<h3 id="3-年、4-个库目录、100-万字：也谈我的-Obsidian-笔记工作流"><a class="header-anchor" href="#3-年、4-个库目录、100-万字：也谈我的-Obsidian-笔记工作流">¶</a><a href="https://sspai.com/post/83042" target="_blank" rel="noopener">3 年、4 个库目录、100 万字：也谈我的 Obsidian 笔记工作流</a></h3>
-<p>pubdata:2023-10-13 03:39:51
-markdate:2023-10-17 11:32:49.709021</p>
-<h3 id="zTasker-–-万能计划任务工具：用-16种触发方式执行-Windows-上的-50-多种任务、程序"><a class="header-anchor" href="#zTasker-–-万能计划任务工具：用-16种触发方式执行-Windows-上的-50-多种任务、程序">¶</a><a href="https://www.appinn.com/ztasker/" target="_blank" rel="noopener">zTasker – 万能计划任务工具：用 16种触发方式执行 Windows 上的 50 多种任务、程序</a></h3>
-<p>pubdata:2023-10-18 06:30:04
-markdate:2023-10-19 04:36:51.693584</p>
-]]></content>
-      <categories>
-        <category>月度汇报</category>
-      </categories>
-      <tags>
-        <tag>月度汇报</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>「202311月度汇报」auto report</title>
     <url>/public/2023/11/15/test/202311/</url>
     <content><![CDATA[<a id="more"></a>
@@ -2580,6 +2068,41 @@ markdate:2023-11-21 02:31:03.869373</p>
 <h3 id="App-1-给你不受语言限制、无需繁琐操作的冲浪体验：沉浸式翻译"><a class="header-anchor" href="#App-1-给你不受语言限制、无需繁琐操作的冲浪体验：沉浸式翻译">¶</a><a href="https://sspai.com/post/83943" target="_blank" rel="noopener">App+1 | 给你不受语言限制、无需繁琐操作的冲浪体验：沉浸式翻译</a></h3>
 <p>pubdata:2023-11-02 07:00:00
 markdate:2023-11-21 02:31:43.259976</p>
+]]></content>
+      <categories>
+        <category>月度汇报</category>
+      </categories>
+      <tags>
+        <tag>月度汇报</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>「202310月度汇报」auto report</title>
+    <url>/public/2023/10/15/test/202310/</url>
+    <content><![CDATA[<a id="more"></a>
+<h2 id="统计-✅-0-📅-0-🔖-0"><a class="header-anchor" href="#统计-✅-0-📅-0-🔖-0">¶</a>=&gt; 统计 ✅ : 0 📅 : 0 🔖 : 0</h2>
+<h3 id="✅-0"><a class="header-anchor" href="#✅-0">¶</a>✅ : 0</h3>
+<h3 id="📅-0"><a class="header-anchor" href="#📅-0">¶</a>📅 : 0</h3>
+<h3 id="🔖-0"><a class="header-anchor" href="#🔖-0">¶</a>🔖 : 0</h3>
+<h2 id="ttrss标记个数-6"><a class="header-anchor" href="#ttrss标记个数-6">¶</a>=&gt; ttrss标记个数: 6</h2>
+<h3 id="四个-All-in-One-工具，帮我优化工作与生活流程"><a class="header-anchor" href="#四个-All-in-One-工具，帮我优化工作与生活流程">¶</a><a href="https://sspai.com/post/83315" target="_blank" rel="noopener">四个 All-in-One 工具，帮我优化工作与生活流程</a></h3>
+<p>pubdata:2023-10-10 03:47:30
+markdate:2023-10-12 06:16:53.456318</p>
+<h3 id="云计算-双-11-活动提前来了，冲"><a class="header-anchor" href="#云计算-双-11-活动提前来了，冲">¶</a><a href="https://www.v2ex.com/t/981377#reply4" target="_blank" rel="noopener">[云计算] 双 11 活动提前来了，冲</a></h3>
+<p>pubdata:2023-10-12 08:27:03
+markdate:2023-10-13 02:22:25.055100</p>
+<h3 id="分享创造-小爱音箱播放自定义音乐"><a class="header-anchor" href="#分享创造-小爱音箱播放自定义音乐">¶</a><a href="https://www.v2ex.com/t/982027#reply4" target="_blank" rel="noopener">[分享创造] 小爱音箱播放自定义音乐</a></h3>
+<p>pubdata:2023-10-14 14:03:33
+markdate:2023-10-15 04:41:33.976215</p>
+<h3 id="3-个工具，将网页转换为-Markdown：安卓、Edge、Chrome、Firefox、Obsidian、Safari"><a class="header-anchor" href="#3-个工具，将网页转换为-Markdown：安卓、Edge、Chrome、Firefox、Obsidian、Safari">¶</a><a href="https://www.appinn.com/webpage-to-markdown/" target="_blank" rel="noopener">3 个工具，将网页转换为 Markdown：安卓、Edge、Chrome、Firefox、Obsidian、Safari</a></h3>
+<p>pubdata:2023-10-14 07:25:00
+markdate:2023-10-15 04:45:43.200312</p>
+<h3 id="3-年、4-个库目录、100-万字：也谈我的-Obsidian-笔记工作流"><a class="header-anchor" href="#3-年、4-个库目录、100-万字：也谈我的-Obsidian-笔记工作流">¶</a><a href="https://sspai.com/post/83042" target="_blank" rel="noopener">3 年、4 个库目录、100 万字：也谈我的 Obsidian 笔记工作流</a></h3>
+<p>pubdata:2023-10-13 03:39:51
+markdate:2023-10-17 11:32:49.709021</p>
+<h3 id="zTasker-–-万能计划任务工具：用-16种触发方式执行-Windows-上的-50-多种任务、程序"><a class="header-anchor" href="#zTasker-–-万能计划任务工具：用-16种触发方式执行-Windows-上的-50-多种任务、程序">¶</a><a href="https://www.appinn.com/ztasker/" target="_blank" rel="noopener">zTasker – 万能计划任务工具：用 16种触发方式执行 Windows 上的 50 多种任务、程序</a></h3>
+<p>pubdata:2023-10-18 06:30:04
+markdate:2023-10-19 04:36:51.693584</p>
 ]]></content>
       <categories>
         <category>月度汇报</category>
@@ -3486,6 +3009,483 @@ NexT Github  <a href="https://github.com/iissnan/hexo-theme-next" target="_blank
       <tags>
         <tag>通信</tag>
         <tag>历史</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>正则化「一」机器学习中的正则化</title>
+    <url>/public/2019/07/17/AI/regulation_baysian/</url>
+    <content><![CDATA[<p><strong>前言</strong>
+本<strong>正则化系列</strong>文章我们将讨论<strong>正则化技术在机器学习和深度学习的应用</strong>。本文为该系列的第一篇，主要介绍<strong>机器学习正则化的概念，原理和应用实例</strong>。</p>
+<p><a href="https://en.wikipedia.org/wiki/Regularization_(mathematics)" target="_blank" rel="noopener">正则化</a> 技术广泛应用在机器学习和深度学习算法中，本质作用是<strong>防止过拟合、提高模型泛化能力</strong>。其中过拟合的简单理解就是训练的算法模型太过复杂，模型过分考虑了当前样本的结构。</p>
+<p>在早期的机器学习领域一般只是将范数惩罚叫做正则化技术，而在深度学习领域认为，能够显著减少方差，而不过度增加偏差的策略都可以认为是正则化技术。故<strong>推广的正则化技术</strong>还有：扩增样本集、早停止、Dropout、集成学习、多任务学习、对抗训练、参数共享等。(具体见“花书 第七章 <a href="http://www.deeplearningbook.org/contents/regularization.html" target="_blank" rel="noopener">Regularization for Deep Learning</a>”），关于<strong>深度学习正则化</strong>会在下一篇正则化文章中重点分析。</p>
+<p>转载自：<a href="https://blog.csdn.net/BigData_Mining/article/details/81631249" target="_blank" rel="noopener">https://blog.csdn.net/BigData_Mining/article/details/81631249</a></p>
+<a id="more"></a>
+<h2 id="1-多角度看机器学习正则化"><a class="header-anchor" href="#1-多角度看机器学习正则化">¶</a>1. 多角度看机器学习正则化</h2>
+<p><strong>机器学习领域正则化</strong>可以从以下三个角度进行理解：</p>
+<p><strong>(1)</strong> <strong>正则化等价于结构风险最小化，其是通过在经验风险项后加上表示模型复杂度的正则化项或惩罚项，达到选择经验风险和模型复杂度都较小的模型目的</strong>。</p>
+<p>​	<strong>经验风险</strong>：机器学习中的风险是指模型与真实解之间的误差的积累，经验风险是指使用训练出来的模型进行预测或者分类，存在多大的误差，可以简单理解为训练误差，经验风险最小化即为训练误差最小。</p>
+<p>​	<strong>结构风险</strong>：结构风险定义为经验风险与置信风险(置信是指可信程度)的和，置信风险越大，模型推广能力越差。可以简单认为结构风险是经验风险后面多加了一项表示模型复杂度的函数项，从而可以同时控制模型训练误差和测试误差，结构风险最小化即为在保证模型分类精度(经验风险)的同时，降低模型复杂度，提高泛化能力。</p>
+<p>​	<strong>公式表达</strong>
+$$
+R(f)=\frac{1}{n}\sum_{i=1}^{n}L(y_i,f(x_i)) + \lambda \Omega (f)
+\tag{1}
+$$
+​		其中，$R(f)$表示结构风险，$L(y_i,f(x_i))$表示第 $i$ 个样本的经验风险，$\Omega(f)$是表征模型复杂度的正则项，$\lambda$ 是正则化参数。根据奥姆剃刀定律，“如无必要，勿增实体”，即认为相对简单的模型泛化能力更好。而模型泛化能力强、泛化误差小，即表示模型推广能力强，通俗理解就是在训练集中训练得到的优秀模型能够很好的适用于实际测试数据，而不仅仅是减少训练误差或者测试误差。泛化误差定义如下：
+$$
+E={Bias}^2(X) + {Var}(X) +{Noise}
+\tag{2}
+$$
+​		其中，$E$ 表示泛化误差，${Bias}$ 代表偏差，${Var}$ 代表方差， ${Noise}$ 代表噪声。</p>
+<p>​	<strong>关系图</strong></p>
+<p><img src="/public/2019/07/17/AI/regulation_baysian/1563350068097.png" alt="1563350068097"></p>
+<div align="center"> Fig 1. 泛化误差与偏差和方差的关系</div>
+​		从 Fig 1 可以看出，随着训练程度加深，模型复杂度会增加，偏差减少，方差增大，而泛化误差呈现U型变化。对于一个“好的系统”通常要求误差小，正则化的作用即为适当的控制模型复杂度，从而使得**泛化误差曲线**取最小值。
+<p><strong>(2)</strong> <strong>正则化等价于带约束的目标函数中的约束项</strong></p>
+<p>以平方误差损失和L2范数为例，优化问题的数学模型如下：
+$$
+J(\theta)=\sum_{i=1}^{n}(y_i-\theta^Tx_i)^2
+\tag{3}
+$$
+$$
+{s.t.}{|| \theta ||}_2^2 \leq C\<br>
+\tag{4}
+$$</p>
+<p>针对上述约束条件的优化问题，采用拉格朗日乘积算子法可以转化为无约束化问题，即
+$$
+J(\theta)=\sum_{i=1}^{n}(y_i-w^Tx_i)^2 + \lambda({|| \theta ||}_2^2-C)
+\tag{5}
+$$</p>
+<p>由于参数 $C$ 为常数，可以忽略，故上述公式和标准的正则化 公式完全一致。</p>
+<p><strong>(3)</strong> <strong>从贝叶斯角度考虑</strong></p>
+<p>正则项等价于引入参数的模型先验概率，可以简单理解为对最大似然估计引入先验概率，从而转化为最大后验估计，其中的先验概率即对于正则项（这部分内容后面详细讲解）。</p>
+<h2 id="2-基本概念"><a class="header-anchor" href="#2-基本概念">¶</a>2 基本概念</h2>
+<p>正则化也可以成为规则化、权重衰减技术，不同的领域叫法不一样，数学上常用范数实现，例如L1和L2范数，统计学领域叫做惩罚项、罚因子。</p>
+<p>下面给出范数的数学公式，方便以后分析：</p>
+<p>​	(1) $p$ 范数：
+$$
+Lp=(\sum_{i=1}^{n}{|| x_i ||}^p)^{\frac{1}{p}}
+\tag{6}
+$$
+​	(2) $L0$ 范数：0 范数表示向量中非零元素的个数（即为其稀疏度）</p>
+<p>​	(3) $L1$ 范数：即向量元素绝对值之和，$p$ 范数取1，即为1范数
+$$
+{||x||}_1=\sum^n_1 {|| x_i || }
+\tag{7}
+$$</p>
+<p>​	(4) $L2$ 范数：即向量元素绝对值的平方和再开发，也称欧几里得距离，$p$ 范数取2，即为2范数
+$$
+{||x||}_{2}=\sqrt{\sum^{n}_1|| x_i ||^2}
+\tag{8}
+$$</p>
+<p>​	(5) $\infty $ 范数：即所有向量元素的绝对值中的最大值，$p$ 范数取 $\infty $，即为 $\infty $ 范数
+$$
+{||x  ||}_{\infty }=\underset{i}{\max}{\left | x_i \right |}
+\tag{9}
+$$</p>
+<p>​	(6) $-\infty $ 范数：即所有向量元素绝对值中的最小值，$p$ 范数取$-\infty $，即为 $-\infty $ 范数
+$$
+{||x  ||}_{-\infty }=\underset{i}{\min}{\left | x_i \right |}
+\tag{10}
+$$
+<strong>图形描述</strong></p>
+<p>​		从 Fig 2、Fig 3 图可以看出：q(p)越小，曲线越贴近坐标轴，q(p)越大，曲线越远离坐标轴，并且棱角越明显，当q(p)取0时候，是完全和坐标轴贴合，当q(p)取无穷的时候，呈现正方体形状。同时也可以看出，采用不同的范数作为正则项，会得到完全不同的算法模型结果，故而对于不同要求的模型，应该采用不同的范数作为正则项。</p>
+<p><img src="/public/2019/07/17/AI/regulation_baysian/1563354053269.png" alt="1563354053269"></p>
+<div align="center"> Fig 2. 向量长度为2维的范数约束</div>
+![1563354456894](regulation_baysian/1563354456894.png)
+<div align="center"> Fig 3. 向量长度为3维的范数约束</div>
+## 3 深度理解
+<p>​		为了更好的理解正则化技术原理，下面从4个方面进行深度分析，希望对大家理解有帮助。</p>
+<h3 id="3-1-简单数值假设分析法"><a class="header-anchor" href="#3-1-简单数值假设分析法">¶</a>3.1 简单数值假设分析法</h3>
+<p>​		此处以L2范数讲解，下面的各图形来自吴恩达的机器学习课程。</p>
+<p><img src="/public/2019/07/17/AI/regulation_baysian/image-20190619002115576.png" alt="image-20190619002115576"></p>
+<div align="center"> Fig 4. 不同参数下的曲线拟合结果</div>
+​		左边的曲线拟合是欠拟合，中间的曲线拟合是刚好合适，右边的曲线拟合是过拟合。对于右边的拟合曲线，有
+$$
+h_{\theta}(x)={\theta}_0+{\theta}_0 x_1 +{\theta}_2 x_2^2 +{\theta}_3 x_3^3 +{\theta}_4 x_4^4
+\tag{11}
+$$
+​		从上式可以看出，由于$\theta_3$和$\theta_4$对应了高阶，导致拟合曲线是4阶曲线，出现了过拟合。正则化的目的为适当缩减$\theta_3$和$\theta_4$的值，例如都为0.0001，则上述曲线本质上等价与
+$$
+h_{\theta}(x)={\theta}_0 + {\theta}_1 x_1 +{\theta}_2 x_2^2
+\tag{12}
+$$
+​		也就是变成了中间的刚好合适的拟合曲线。对于$\theta_3$ 和$\theta_4$增加 L2 正则项后的代价函数表达式为：
+$$
+J(\theta)= \underset{\theta}{\min}\frac{1}{n}\sum_{i=1}^{n}((h_{\theta}(x_i)-y_i)+1000{\theta}_3^2 + 1000 {\theta}_4^2)
+\tag{13}
+$$
+​		从上式可以看出，$\theta_3^2$ 和 $\theta_4^2$ 均大于 0，其乘上了1000，要 $J(\theta)$ 是最小，则会迫使模型学习到的$\theta_3$ 和 $\theta_4$ 会非常小，因为只有在$\theta_3$ 和 $\theta_4$ 会非常小的情况下整个代价函数值才会取的较小值。在实际开发中，是对所有参数进行正则化，为了使代价函数尽可能的小，所有的参数 $\theta$ 的值（不包括 $\theta_0$）都会在一定程度上减小，但是减小程度会不一样，从而实现了权重衰减、简化模型复杂度的作用。
+<h3 id="3-2-图形分析法"><a class="header-anchor" href="#3-2-图形分析法">¶</a>3.2 图形分析法</h3>
+<p>​		此处采用L1和L2范数讲解：
+<strong>(1) L2 范数正则</strong>
+$$
+J(\beta)=\sum_{i=1}^{n}(y_i-{\beta}^T x_i)^2 + \lambda {|| {\beta} ||}_2^2
+\tag{14}
+$$
+<img src="/public/2019/07/17/AI/regulation_baysian/1563366078400.png" alt="1563366078400"></p>
+<div align="center"> Fig 5. L2 范数与代价函数的寻优图示</div>
+​		在 Fig 5 中，蓝色的圆形空间表示 L2 范数空间，设为 $\beta_1^2 + \beta_2^2 = r^2$，可以看出，当 $r$ 从 0 逐渐增大时候，该圆形也逐渐增大，红色的线表示原始代价函数解空间即 $\sum_{i=1}^{n}(y_i-\beta^T x_i)^2$，此处为了方便绘图，设参数只有2维。红色圆环上的任何一点都表示一个可行解即代表一组$\beta_1$、$\beta_2$，其中任何一个红色圆环上面的$\beta_1$，$\beta_2$对应的代价函数值一样（可以简单理解为等值线），$\hat{\beta}$ 代表最佳解空间。
+<h2 id="4-贝叶斯角度分析"><a class="header-anchor" href="#4-贝叶斯角度分析">¶</a>4. 贝叶斯角度分析</h2>
+<p>​		以L1和L2范数为例，所得结论可以推广到P范数中，首先需要知道：整个最优化问题从贝叶斯观点来看是一种贝叶斯最大后验估计，其中正则化项对应后验估计中的先验信息，损失函数对应后验估计中的似然函数，两者的乘积即对应贝叶斯最大后验估计的形式。针对L1和L2范数还有结论：<strong>L2 范数相当于给模型参数设置一个协方差为1/alpha的零均值高斯先验分布，L1 范数相当于给模型参数 设置一个参数为1/alpha 拉普拉斯先验分布</strong>。</p>
+<p>​		为了讲清楚上述结论，需要具备几点前置知识点：(1) 高斯分布和拉普拉斯分布的定义和形状；(2) 贝叶斯定理；(3) 最大似然估计；(4) 最大后验估计。下面我对这4个知识点进行解释。</p>
+<p><strong>(1)</strong> <strong>高斯分布和拉普拉斯分布</strong></p>
+<p><img src="/public/2019/07/17/AI/regulation_baysian/0.png" alt="0?wx_fmt=png"></p>
+<p><img src="/public/2019/07/17/AI/regulation_baysian/0-20190610163845194.png" alt="0?wx_fmt=png"></p>
+<p><strong>(2)</strong> <strong>最大似然估计</strong></p>
+<p><img src="/public/2019/07/17/AI/regulation_baysian/0-20190610163845276.png" alt="0?wx_fmt=png"></p>
+<p>​		如果上述公式不能理解，请各位读者去复习一下大学课程《概率论与数理统计》中的参数估计章节，为了更方便理解，下面举一个例子：假设我要统计出整个大学内所有同学的身高分布情况，设全校一共20000人，数量庞大，所有人都去问一遍不太靠谱，所以我打算采用抽样方法来估计，假设我已经知道身高分布服从高斯分布，但是我不知道高斯分布中的均值和方差参数，现在我打算采用最大似然估计方法来确定这两个参数。首先需要明确，全校20000即为总体X，我随机从各个班抽取10名同学，假设一共抽了2000个同学，那么2000同学就构成了样本空间，由于每个样本的概率密度函数已知，则很容易写出似然函数，对数求导即可求解参数。</p>
+<p><strong>(3)</strong> <strong>最大后验估计</strong></p>
+<p><img src="/public/2019/07/17/AI/regulation_baysian/0-20190610163845259.png" alt="0?wx_fmt=png"></p>
+<p><img src="/public/2019/07/17/AI/regulation_baysian/0-20190610163845297.png" alt="0?wx_fmt=png"></p>
+<p><img src="/public/2019/07/17/AI/regulation_baysian/0-20190610163845289.png" alt="0?wx_fmt=png"></p>
+<h2 id="5-例子"><a class="header-anchor" href="#5-例子">¶</a>5. 例子</h2>
+<h3 id="5-1-逻辑回归"><a class="header-anchor" href="#5-1-逻辑回归">¶</a>5.1 逻辑回归</h3>
+<p>​		二分类逻辑回归使用Sigmoid作为决策函数进行分类，该函数可以将任意的输入映射到[0,1]区间，当预测结果小于0.5，则表示负类，当预测结果大于0.5.则表示正类，其模型本质是求最大似然估计，具体求解似然函数通常使用梯度下降法，而前面说过：最大似然估计法没有考虑训练集以外的因素，很容易造成过拟合，故而逻辑回归一般采用L2范数进行正则化操作，Sigmoid函数定义和图形如下：</p>
+<p><img src="/public/2019/07/17/AI/regulation_baysian/0.jpeg" alt="0?wx_fmt=png"></p>
+<h3 id="5-2-岭回归-Ridge-Regression"><a class="header-anchor" href="#5-2-岭回归-Ridge-Regression">¶</a>5.2 岭回归(Ridge Regression)</h3>
+<p>​		岭回归本质上是针对线性回归问题引入了L2范数正则，通过缩减回归系数避免过拟合问题，最先用来处理特征数多于样本数的情况(高维小样本问题)，现在也用于在估计中加人偏差，从而得到更好的估计，加了正则化后的代价函数如下：</p>
+<p><img src="/public/2019/07/17/AI/regulation_baysian/0-20190610174921016.png" alt="0?wx_fmt=png"></p>
+<h3 id="5-3-Lasso-回归"><a class="header-anchor" href="#5-3-Lasso-回归">¶</a>5.3 Lasso 回归</h3>
+<p>​		拉索回归(lasso回归)本质上是针对线性回归问题引入了L1范数正则，通过缩减回归系数避免过拟合问题，其不同于L2范数，其可以将某些系数缩减为0即所谓的具备稀疏性(稀疏性的好处是简化计算、容易理解模型、减少存储空间、不容易出现过拟合等等)，加了正则化后的代价函数如下：</p>
+<p><img src="/public/2019/07/17/AI/regulation_baysian/0-20190610174920968.png" alt="0?wx_fmt=png"></p>
+<p>​		其中，参数函数和岭回归中相同。L1范数罚有一个问题：由于|X|函数在0处不可导，故而直接使用最小二乘法、梯度下降法等方法均失效，但是由于其为第一类间断点中的可去间断点，可以通过补充该点的定义解决，通常，对于线性回归中的lasso回归可以采用近似的前向逐步回归替代。</p>
+<h3 id="5-4-SVM"><a class="header-anchor" href="#5-4-SVM">¶</a>5.4 SVM</h3>
+<p>​		支持向量机SVM优化目的为寻找一个超平面，使得正负样本能够以最大间隔分离开，从而得到更好的泛化性能，其通过引入核函数来将低维线性不可分的样本映射到高维空间从而线性可分，通过引入惩罚参数C(类似于正则化参数)来对错分样本进行惩罚，从而减少模型复杂度，提高泛化能力，其优化目标如下：</p>
+<p><img src="/public/2019/07/17/AI/regulation_baysian/0-20190610174921029.png" alt="0?wx_fmt=png"></p>
+<p>​		大家如果不知道上面公式的推导，不用紧张，对于本次内容不是重点，只需要关注后面正则项部分，惩罚参数C作用和正则化参数作用一致，只是反相关而已。需要明白以下结论：</p>
+<p>​		<strong>(1)</strong> C越大，正则化参数越小，表示对分错样本的惩罚程度越大，正则化作用越小，偏差越小，方差越大，越容易出现过拟合(通俗理解，原本将低维空间映射到5维空间正好线性可分，但是由于惩罚过于严重，任何一个样本分错了都不可原谅，结果系统只能不断提高维数来拟合样本，假设为10维，最终导致映射维数过高，出现过拟合样本现象，数学上称为VC维较大)；</p>
+<p>​		<strong>(2)</strong> C越小，正则化参数越大，表示对分错样本的惩罚程度越小，正则化作用越大，偏差越大，方差越小，越容易出现欠拟合(通俗理解，原本将低维空间映射到5维空间正好线性可分，但是由于惩罚过小，分错了好多样本都可以理解，比较随意，结果系统也采用简化版来拟合样本，假设为3维，最终导致映射维数过低，出现欠拟合样本现象，数学上称为VC维较小)。</p>
+<h2 id="6-总结"><a class="header-anchor" href="#6-总结">¶</a>6. 总结</h2>
+<p>根本目的本质：防止过拟合，提高模型泛化能力。</p>
+<p>正则化技术分类：
+<strong>狭义上</strong>（不同地方叫法不同）</p>
+<ul>
+<li>在早期的机器学习领域一般只是将范数惩罚叫做正则化技术</li>
+<li>规则化、权重衰减</li>
+<li>从贝叶斯角度考虑，正则项等价于引入参数的模型先验概率</li>
+</ul>
+<p><strong>广义上</strong>：
+能够显著减少方差，而不过度增加偏差的策略都可以认为是正则化技术，推广的正则化技术还有：扩增样本集、早停止、Dropout、集成学习、多任务学习、对抗训练、参数共享等。</p>
+<h2 id="Reference"><a class="header-anchor" href="#Reference">¶</a>Reference</h2>
+<p><a href="https://blog.csdn.net/BigData_Mining/article/details/81631249" target="_blank" rel="noopener">正则化总结的比较好比较全面的文章</a></p>
+]]></content>
+      <categories>
+        <category>机器学习</category>
+        <category>正则化</category>
+      </categories>
+      <tags>
+        <tag>人工智能</tag>
+        <tag>机器学习</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Jupyter notebook的配置</title>
+    <url>/public/2017/07/03/linux/jupyter_notebook/</url>
+    <content><![CDATA[<p><strong>前言</strong>
+本文介绍jupyter notebook的安装配置过程和实用技巧。
+<a href="https://jupyter.readthedocs.io/en/latest/index.html" target="_blank" rel="noopener">jupyter.readthedocs教程</a></p>
+<a id="more"></a>
+<h2 id="1-安装与配置"><a class="header-anchor" href="#1-安装与配置">¶</a>1 安装与配置</h2>
+<h3 id="1-1-安装-jupyter"><a class="header-anchor" href="#1-1-安装-jupyter">¶</a>1.1 安装 jupyter</h3>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">conda install jupyter</span><br><span class="line"><span class="comment"># pip install -i https://pypi.tuna.tsinghua.edu.cn/simple jupyter</span></span><br><span class="line"><span class="comment"># pip install jupyter -y</span></span><br></pre></td></tr></table></figure>
+<h3 id="1-2-修改配置文件"><a class="header-anchor" href="#1-2-修改配置文件">¶</a>1.2 修改配置文件</h3>
+<ul>
+<li>生成配置文件</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">jupyter notebook --generate-config</span><br><span class="line">vim ~/.jupyter/jupyter_notebook_config.py</span><br></pre></td></tr></table></figure>
+<ul>
+<li>修改配置文件内容</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">c.NotebookApp.ip = <span class="string">'0.0.0.0'</span></span><br><span class="line">c.NotebookApp.port = <span class="number">8018</span></span><br><span class="line"><span class="comment"># 设置密码</span></span><br><span class="line">c.NotebookApp.password = <span class="string">u'sha1:bcd259ccf...your hashed password here'</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>Tip: 利用ipython 生成密码</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&gt; In [1]: from IPython.lib import passwd</span><br><span class="line">&gt; In [2]: passwd()</span><br><span class="line">&gt;   Enter password:</span><br><span class="line">&gt;   Verify password:</span><br><span class="line">&gt;   Out[2]: &apos;sha1:67xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&apos;</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<p>我选用的是password密码登陆jupyter的方案，其他的密码登陆方案见 <a href="https://zhuanlan.zhihu.com/p/23110830" target="_blank" rel="noopener">link</a></p>
+<blockquote>
+<p>新的方法
+from notebook.auth import passwd; passwd()</p>
+</blockquote>
+<h3 id="安装-jupyter-lab"><a class="header-anchor" href="#安装-jupyter-lab">¶</a>安装 jupyter-lab</h3>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">jupyter-lab --generate-config</span><br><span class="line"></span><br><span class="line">vim ~/.jupyter/jupyter_lab_config.py</span><br><span class="line"></span><br><span class="line"># 允许局域网访问</span><br><span class="line">c.ServerApp.ip = &apos;*&apos;</span><br><span class="line"></span><br><span class="line"># 使用 生成密码from jupyter_server.auth import passwd; passwd()</span><br><span class="line">c.ServerApp.password = &apos;&apos;</span><br></pre></td></tr></table></figure>
+<h3 id="1-3-安装插件管理"><a class="header-anchor" href="#1-3-安装插件管理">¶</a>1.3 安装插件管理</h3>
+<p>jupyter_contrib_nbextensions 为 jupyter notebook 扩展插件管理器，下面简称nbextensions。</p>
+<p>nbextensions的github <a href="https://github.com/ipython-contrib/jupyter_contrib_nbextensions" target="_blank" rel="noopener">repo</a>
+nbextensions的教程<a href="https://jupyter-contrib-nbextensions.readthedocs.io/en/latest/" target="_blank" rel="noopener">nbextensions_manual_readthedocs</a></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 用conda安装</span></span><br><span class="line">conda install jupyter</span><br><span class="line">conda install -c conda-forge jupyter_contrib_nbextensions</span><br><span class="line"></span><br><span class="line"><span class="comment"># pip安装</span></span><br><span class="line">pip install jupyter_contrib_nbextensions</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使能</span></span><br><span class="line">jupyter contrib nbextension install</span><br></pre></td></tr></table></figure>
+<p>我启用的一些插件</p>
+<table>
+<thead>
+<tr>
+<th>plugins</th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Table of Contents (2)</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Freeze</td>
+<td>比较好的一个插件，可以用来冻住cell</td>
+<td></td>
+</tr>
+<tr>
+<td>nbTranslate</td>
+<td>这个插件利用Google翻译cell很好用</td>
+<td><a href="https://github.com/jfbercher/jupyter_nbTranslate/blob/master/languages.js" target="_blank" rel="noopener">support languages</a></td>
+</tr>
+<tr>
+<td>ExecuteTime</td>
+<td>显示执行时间</td>
+<td></td>
+</tr>
+<tr>
+<td>Ruler</td>
+<td>代码标尺</td>
+<td></td>
+</tr>
+<tr>
+<td>Autopep8</td>
+<td>代码美化</td>
+<td></td>
+</tr>
+<tr>
+<td>Scratchpad</td>
+<td>代码测试</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>其他花样的配置</p>
+<p><a href="https://zhuanlan.zhihu.com/p/74950682" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/74950682</a></p>
+<h3 id="1-4-conda环境的设置"><a class="header-anchor" href="#1-4-conda环境的设置">¶</a>1.4 conda环境的设置</h3>
+<p>jupyter使用Anaconda miniconda环境需要安装的组件。
+<a href="https://repo.anaconda.com" target="_blank" rel="noopener">conda repo</a></p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 创建虚拟环境</span></span><br><span class="line">conda create -n env_name python=3.6</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> conda虚拟核组件 切换kernel</span></span><br><span class="line">conda install nb_conda_kernels</span><br></pre></td></tr></table></figure>
+<h3 id="1-5-解决界面中英文混杂"><a class="header-anchor" href="#1-5-解决界面中英文混杂">¶</a>1.5 解决界面中英文混杂</h3>
+<img src="/public/2017/07/03/linux/jupyter_notebook/image-20200413125705473.png" alt="image-20200413125705473" style="zoom:50%;">
+<p>如图，jupyter 界面中中英文混杂，解决方法为将界面文字中文切换成英文。</p>
+<p>原理：让jupyter就找不到他的中文配置文件夹。</p>
+<p>找到notebook的汉化文件夹的路径，比如<code>~/miniconda3/lib/python3.6/site-packages/notebook/i18n/zh_CN</code>。将其重命名如加个下划线作为后缀<code>zh_CN_old</code>，重启jupyter就行了。</p>
+<p>为了方便，我作了个脚本自动找<code>notebook/i18n/zh_CN</code>位置并改名此文件夹，如下。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> shutil</span><br><span class="line"><span class="keyword">from</span> distutils.sysconfig <span class="keyword">import</span> get_python_lib</span><br><span class="line"><span class="comment"># 获取site-package包的位置</span></span><br><span class="line">path_zh=get_python_lib()+<span class="string">'/notebook/i18n/zh_CN'</span></span><br><span class="line">path_zh_old=get_python_lib()+<span class="string">'/notebook/i18n/zh_CN_old'</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 将 notebook/i18n/zh_CN 改为 notebook/i18n/zh_CN_old</span></span><br><span class="line">shutil.move(path_zh,path_zh_old)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 返回中文</span></span><br><span class="line"><span class="comment"># shutil.move(path_zh_old,path_zh)</span></span><br></pre></td></tr></table></figure>
+<p>重启jupyter就行了, 这样jupyter就找不到这个中文配置，返回中文改回去就行了<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup>。</p>
+<h2 id="2-使用的技巧"><a class="header-anchor" href="#2-使用的技巧">¶</a>2 使用的技巧</h2>
+<h3 id="2-1-快捷键"><a class="header-anchor" href="#2-1-快捷键">¶</a>2.1 快捷键</h3>
+<hr>
+<table>
+<thead>
+<tr>
+<th>在非激活状态即是蓝颜色的边框</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A</td>
+<td>insert cell above</td>
+</tr>
+<tr>
+<td>B</td>
+<td>insert cell below</td>
+</tr>
+<tr>
+<td>H</td>
+<td>查看帮助</td>
+</tr>
+<tr>
+<td>⌃↩(ctrl + enter)</td>
+<td>run selected cells</td>
+</tr>
+</tbody>
+</table>
+<h3 id="2-2-显示图片-视频-音频"><a class="header-anchor" href="#2-2-显示图片-视频-音频">¶</a>2.2 显示图片 视频 音频</h3>
+<p>主要是画图、显示视频和音频的方法。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 图片</span></span><br><span class="line">%%HTML</span><br><span class="line">&lt;img src=<span class="string">"xxx.jpg"</span>  alt=<span class="string">"title"</span> /&gt;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 视频</span></span><br><span class="line">%%HTML</span><br><span class="line">&lt;video width=<span class="string">"330"</span> height=<span class="string">"150"</span> controls&gt;</span><br><span class="line">&lt;source src=<span class="string">"out_all.mp4"</span> type=<span class="string">"video/mp4"</span>&gt;</span><br><span class="line">&lt;/video&gt;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 语音</span></span><br><span class="line">%%HTML</span><br><span class="line">&lt;audio src=<span class="string">"out.wav"</span> controls=<span class="string">"controls"</span>&gt;</span><br><span class="line">Your browser does <span class="keyword">not</span> support the audio element.</span><br><span class="line">&lt;/audio&gt;</span><br><span class="line"></span><br><span class="line"><span class="comment"># html t是html的字符串</span></span><br><span class="line"><span class="keyword">from</span> IPython.core.display <span class="keyword">import</span> HTML</span><br><span class="line">HTML(str(t))</span><br></pre></td></tr></table></figure>
+<h3 id="2-3-其他技巧"><a class="header-anchor" href="#2-3-其他技巧">¶</a>2.3 其他技巧</h3>
+<h4 id="修复视频文件"><a class="header-anchor" href="#修复视频文件">¶</a>修复视频文件</h4>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fix_use_ffmpeg</span><span class="params">(in_name, out_name,message=<span class="string">""</span>)</span>:</span></span><br><span class="line">    <span class="keyword">import</span> os</span><br><span class="line">    <span class="keyword">if</span> os.path.isfile(out_name):</span><br><span class="line">    os.remove(out_name)</span><br><span class="line">    cmd = <span class="string">'ffmpeg -i %s %s'</span> % (in_name, out_name)</span><br><span class="line">    log_lines = os.popen(cmd).readlines()</span><br><span class="line">    print(message,<span class="string">"ok"</span>)</span><br></pre></td></tr></table></figure>
+<h4 id="加载自己的模块文件"><a class="header-anchor" href="#加载自己的模块文件">¶</a>加载自己的模块文件</h4>
+<p>出于性能考虑，每个模块在每个解释器会话中只导入一遍。因此，如果你修改了你的模块，需要重启解释器；或者，如果你就是想交互式的测试这么一个模块，可以用 imp.reload() 重新加载，例如 <code>import imp; imp.reload(modulename)</code></p>
+<h4 id="导出pdf支持中文"><a class="header-anchor" href="#导出pdf支持中文">¶</a>导出pdf支持中文</h4>
+<p>Jupyter Notebook 输出PDF中文支持 <a href="https://www.jianshu.com/p/c3f660188766" target="_blank" rel="noopener">link</a></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> /usr/<span class="built_in">local</span>/lib/python3.6/site-packages/nbconvert/templates/latex</span><br><span class="line"></span><br><span class="line"><span class="comment"># 在里面的模版中添加，前提是安装好了texlive</span></span><br><span class="line">% add</span><br><span class="line">\usepackage&#123;ctex&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="ipynb2pdf"><a class="header-anchor" href="#ipynb2pdf">¶</a>ipynb2pdf</h4>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python3</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string">Current version of Jupyter doesn't support pdf exporting when it comes to</span></span><br><span class="line"><span class="string">russian language in the document. To fix this, current script has born.</span></span><br><span class="line"><span class="string">It requires nbconvert as long as jupyter to be installed.</span></span><br><span class="line"><span class="string">Author:     Sergey Ivanychev</span></span><br><span class="line"><span class="string">Email:      sergeyivanychev@gmail.com</span></span><br><span class="line"><span class="string">Revision:   1</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> subprocess</span><br><span class="line"></span><br><span class="line">FORMAT = <span class="string">".ipynb"</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string">TODO:   What if user has ___o.tex in current folder?</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line">TEMP_TEX = <span class="string">"___o.tex"</span></span><br><span class="line">TEMP_FOLDER = <span class="string">"/tmp"</span></span><br><span class="line">TRASH_EXTENSIONS = [<span class="string">".aux"</span>, <span class="string">".out"</span>, <span class="string">".log"</span>]</span><br><span class="line">OLD1 = <span class="string">r"\usepackage[utf8x]&#123;inputenc&#125;"</span></span><br><span class="line">NEW1 = <span class="string">r"""</span></span><br><span class="line"><span class="string">    \usepackage[utf8x]&#123;inputenc&#125;</span></span><br><span class="line"><span class="string">    \usepackage&#123;ctex&#125;</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line">REPLACE = [(OLD1, NEW1)]</span><br><span class="line">HELP = <span class="string">"""</span></span><br><span class="line"><span class="string">This script is aimed at correctly converting .ipynb to .pdf files.</span></span><br><span class="line"><span class="string">You may use it via</span></span><br><span class="line"><span class="string"># ipynb2pdf Solution.ipynb</span></span><br><span class="line"><span class="string">To get .pdf in the same directory</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">check_args</span><span class="params">(argv)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> (len(argv) &gt; <span class="number">2</span>):</span><br><span class="line">        print(<span class="string">"Please, type .ipynb filename as argument"</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span></span><br><span class="line">    <span class="keyword">if</span> (len(argv) == <span class="number">1</span>):</span><br><span class="line">        print(HELP)</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span></span><br><span class="line">    script, filename = argv</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> is_ipynb(filename):</span><br><span class="line">        print(<span class="string">"Please, type .ipynb filename as argument"</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">remove_extention</span><span class="params">(string, extention)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    Removes argumented extention from the end of the string</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    <span class="keyword">if</span> extention[<span class="number">0</span>] != <span class="string">'.'</span>:</span><br><span class="line">        extention = <span class="string">"."</span> + extention</span><br><span class="line">    <span class="keyword">if</span> string.endswith(extention):</span><br><span class="line">        string = string[<span class="number">0</span>:-len(extention)]</span><br><span class="line">    <span class="keyword">return</span> string</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">is_ipynb</span><span class="params">(filename)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> filename.endswith(<span class="string">".ipynb"</span>):</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">    <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">tex2pdf</span><span class="params">(filename, desired_name)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    Converts filename (which is tex document) to desired_name (which is pdf)</span></span><br><span class="line"><span class="string">    leaving no trash in current folder</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    base = remove_extention(filename, <span class="string">"tex"</span>)</span><br><span class="line">    output = base + <span class="string">".pdf"</span></span><br><span class="line">    ret = subprocess.call(<span class="string">"xelatex %s"</span> % filename , </span><br><span class="line">                                        shell=<span class="literal">True</span>, stdout=subprocess.PIPE)</span><br><span class="line">    <span class="keyword">for</span> ext <span class="keyword">in</span> TRASH_EXTENSIONS:</span><br><span class="line">        os.unlink(base + ext)</span><br><span class="line">    os.rename(output, desired_name)</span><br><span class="line">    <span class="keyword">return</span> ret</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">(argv)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> check_args(argv) == <span class="number">-1</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span></span><br><span class="line">    script, filename = argv</span><br><span class="line">    ret = subprocess.call(<span class="string">"jupyter nbconvert %s --to latex --output %s"</span> %</span><br><span class="line">                                            (filename, TEMP_TEX), shell=<span class="literal">True</span>,</span><br><span class="line">                                            stdout=subprocess.PIPE)</span><br><span class="line">    <span class="keyword">if</span> (ret != <span class="number">0</span>):</span><br><span class="line">        print(<span class="string">"ret = %d"</span> % ret)</span><br><span class="line">        os.unlink(TEMP_TEX)</span><br><span class="line">        print(<span class="string">"Converting to LaTeX failed. Return code: %d"</span> % ret)</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span></span><br><span class="line">    tex_file = open(TEMP_TEX, <span class="string">"r"</span>)</span><br><span class="line">    tex = tex_file.read()</span><br><span class="line">    <span class="keyword">for</span> old, new <span class="keyword">in</span> REPLACE:</span><br><span class="line">        tex = tex.replace(old, new)</span><br><span class="line">    tex_file.close()</span><br><span class="line">    os.unlink(TEMP_TEX)</span><br><span class="line">    tex_file = open(TEMP_TEX, <span class="string">"w+"</span>)</span><br><span class="line">    tex_file.write(tex)</span><br><span class="line">    tex_file.close()</span><br><span class="line">    ret = tex2pdf(TEMP_TEX, remove_extention(filename, <span class="string">".ipynb"</span>) + <span class="string">".pdf"</span>)</span><br><span class="line">    tex_file.close()</span><br><span class="line">    os.unlink(TEMP_TEX)</span><br><span class="line">    print(remove_extention(filename, <span class="string">".ipynb"</span>) + <span class="string">".pdf - DONE"</span>)</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</span><br><span class="line">    exit(main(sys.argv))</span><br></pre></td></tr></table></figure>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p><a href="https://www.zhihu.com/question/302814218/answer/1029684239" target="_blank" rel="noopener">https://www.zhihu.com/question/302814218/answer/1029684239</a> <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
+]]></content>
+      <categories>
+        <category>jupyter</category>
+      </categories>
+      <tags>
+        <tag>工具</tag>
+        <tag>Python</tag>
+        <tag>笔记应用</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>选择困难者的福音？层次分析法</title>
+    <url>/public/2021/04/02/math/math_AHP/</url>
+    <content><![CDATA[<h2 id="摘要"><a class="header-anchor" href="#摘要">¶</a>摘要</h2>
+<p>日常生活中，我们面临很多的选择，选择自己最工作offer，选择买哪个牌子的手机，选择哪个地方旅行等等。这些选择难以定量的衡量，有很多不确定性。内心小纠结，我选择了这个，万一那个好呢，怎么办？请看层次分析法。</p>
+<p>层次分析法(Analytic Hierarchy Process，简称 AHP)是对一些较为复杂、较为模糊的问题作出决策的简易方法，它特别适用于那些难于完全定量分析的问题。它是美国运筹学家 T. L. Saaty 教授于上世纪 70 年代初期提出的一种简便、灵活而又实用的多准则决策方法。</p>
+<p>运用层次分析法建模，大体上可按下面四个步骤进行</p>
+<ul>
+<li>建立递阶层次结构模型</li>
+<li>构造出各层次中的所有判断矩阵</li>
+<li>层次单排序及一致性检验</li>
+<li>层次总排序及一致性检验。（一般不用）</li>
+</ul>
+<a id="more"></a>
+<p>让我们从offer大佬的例子开始吧！</p>
+<p>举个栗子，今年有位大学生，有三个offer，C1 C2 C3。</p>
+<p>第一步，建立层次模型。</p>
+<ul>
+<li>目标层A：找工作的目标，自己满意程度。
+<ul>
+<li>这个程度怎么计算呢？比如工作1。</li>
+</ul>
+</li>
+<li>准则层B：研究课题、发展前途、待遇、同事情况、地理位置、单位名气等等。
+<ul>
+<li>尽量列全一点，不需要排列重要顺序。</li>
+<li>小于等于9个，后面要两两拍脑袋给出相对的重要层度，给多了不得把脑袋拍疼了。</li>
+<li>也可以有子准则层，比如待遇中的放假、工作环境等等，列出也小于9个。</li>
+</ul>
+</li>
+<li>方案层C：就是我们的offer</li>
+</ul>
+<img src="/public/2021/04/02/math/math_AHP/image-20200406145535585.png" alt="image-20200406145535585" style="zoom:50%;">
+<h2 id="构造-A-B-之间判断矩阵"><a class="header-anchor" href="#构造-A-B-之间判断矩阵">¶</a>构造 A B 之间判断矩阵</h2>
+<p>准则层B与目标A之间的关系。为了求出准则层中(B1-6) 对目标的重要层度的排序。比如对于该生工作满意度第一重要是待遇，然后是地点，其实该生自己也很模糊。就是固定A，然后求B中准则，对A重要性的排序。</p>
+<h3 id="我们怎么对B中的准则们的重要排序呢？"><a class="header-anchor" href="#我们怎么对B中的准则们的重要排序呢？">¶</a>我们怎么对B中的准则们的重要排序呢？</h3>
+<p>直接给每一个准则，0-1的评分，然后排序。经常会想，给完分之后，这个不合理呀要不我再给哪个准则加加分。所以这样的方法常常会因考虑不周全、顾此失彼而使决策者提出与他实际认为的重要性程度不相一致的数据。</p>
+<p>我们可以将这个过程细化，我就比较两个准则对于目标的重要性，然后通过下面的矩阵方法，求出优先顺序。</p>
+<p>还能通过一个一致性检验，来检验在你评分的过程中，有没有自相矛盾的地方，当然这种方法允许一些自相矛盾。反正评分的时候尊从内心拍脑袋就对了。</p>
+<p>所以我们拿出一个B1 与 B2 对于目标的重要，想一想然后给出B2/B1，填入下面的表格中的(2,1)的位置。</p>
+<p>整个矩阵i,j 与j，i 是取倒数的关系，所以只要做一半。</p>
+<p>在找工作的目标下，准则i与j相对的重要性表示，B2/B1 的值。采用9个标度。而相比不重要刻度取倒数就可以了</p>
+<table>
+<thead>
+<tr>
+<th>准则i比j的比较</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+<th>5</th>
+<th>6</th>
+<th>7</th>
+<th>8</th>
+<th>9</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td>相同重要</td>
+<td></td>
+<td>比较重要</td>
+<td></td>
+<td>明显重要</td>
+<td></td>
+<td>强烈重要</td>
+<td></td>
+<td>极端重要</td>
+</tr>
+</tbody>
+</table>
+<p>最后的两两相对重要表格</p>
+<img src="/public/2021/04/02/math/math_AHP/image-20200406145640316.png" alt="image-20200406145640316" style="zoom:50%;">
+<p>对角线对称的两个数互为倒数，即 $$a_{ji}=\frac{1}{a_{ij}}$$  B1/B2 不就是和 B2/B1互为倒数嘛</p>
+<p>从心理学观点来看，分级太多会超越人们的判断能力，既增加了作判断的难度， 又容易因此而提供虚假数据。Saaty 等人还用实验方法比较了在各种不同标度下人们判断结果的正确性，实验结果也表明，采用 1~9 标度最为合适。</p>
+<p>判断矩阵的一致性指标步骤：</p>
+<ul>
+<li>1）计算一致性指标 CI 。$$CI=\frac{ \lambda_{max}-n}{n-1}$$</li>
+<li>2）查表，平均随机一致性指标 RI。</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>n</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+<th>5</th>
+<th>6</th>
+<th>7</th>
+<th>8</th>
+<th>9</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>RI</td>
+<td>0</td>
+<td>0</td>
+<td>0.58</td>
+<td>0.90</td>
+<td>1.12</td>
+<td>1.24</td>
+<td>1.32</td>
+<td>1.41</td>
+<td>1.45</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><em>RI</em> 的值是这样得到的，用随机方法构造500个样本矩阵:随机地从1~9及其倒数中抽取数字构造正互反矩阵，求得最大特征根的平均值 $$\bar \lambda_{max}$$ 并定义$$RI=\frac{\bar \lambda_{max}-n}{n-1}$$</p>
+</blockquote>
+<ul>
+<li>3）计算一致性比例CR。 $$CR=\frac{CI}{RI}$$，当$$CR&lt;0.10$$ 时，认为判断矩阵的一致性是可以接受的，否则应对判断矩阵作适当修正。</li>
+</ul>
+<p>如果一个矩阵满足上面的条件，那么它最大特征值对应的特征向量就可以认为是每个维度的重要性权重。</p>
+<h2 id="构造-B-C-之间判断矩阵"><a class="header-anchor" href="#构造-B-C-之间判断矩阵">¶</a>构造 B C 之间判断矩阵</h2>
+<p>相同的方法，在同一B准则下，考虑不同工作的优先顺序。求工作排序的方法，和上面一样。</p>
+<img src="/public/2021/04/02/math/math_AHP/image-20200406162644137.png" alt="image-20200406162644137" style="zoom:50%;">
+<p>python代码<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">import</span> warnings</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AHP</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, criteria, b)</span>:</span></span><br><span class="line">        self.RI = (<span class="number">0</span>, <span class="number">0</span>, <span class="number">0.58</span>, <span class="number">0.9</span>, <span class="number">1.12</span>, <span class="number">1.24</span>, <span class="number">1.32</span>, <span class="number">1.41</span>, <span class="number">1.45</span>, <span class="number">1.49</span>)</span><br><span class="line">        self.criteria = criteria</span><br><span class="line">        self.b = b</span><br><span class="line">        self.num_criteria = criteria.shape[<span class="number">0</span>]</span><br><span class="line">        self.num_project = b[<span class="number">0</span>].shape[<span class="number">0</span>]</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">cal_weights</span><span class="params">(self, input_matrix)</span>:</span></span><br><span class="line">        input_matrix = np.array(input_matrix)</span><br><span class="line">        n, n1 = input_matrix.shape</span><br><span class="line">        <span class="keyword">assert</span> n == n1, <span class="string">'不是一个方阵'</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(n):</span><br><span class="line">            <span class="keyword">for</span> j <span class="keyword">in</span> range(n):</span><br><span class="line">                <span class="keyword">if</span> np.abs(input_matrix[i, j] * input_matrix[j, i] - <span class="number">1</span>) &gt; <span class="number">1e-7</span>:</span><br><span class="line">                    <span class="keyword">raise</span> ValueError(<span class="string">'不是反互对称矩阵'</span>)</span><br><span class="line"></span><br><span class="line">        eigenvalues, eigenvectors = np.linalg.eig(input_matrix)</span><br><span class="line"></span><br><span class="line">        max_idx = np.argmax(eigenvalues)</span><br><span class="line">        max_eigen = eigenvalues[max_idx].real</span><br><span class="line">        eigen = eigenvectors[:, max_idx].real</span><br><span class="line">        eigen = eigen / eigen.sum()</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> n &gt; <span class="number">9</span>:</span><br><span class="line">            CR = <span class="literal">None</span></span><br><span class="line">            warnings.warn(<span class="string">'无法判断一致性'</span>)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            CI = (max_eigen - n) / (n - <span class="number">1</span>)</span><br><span class="line">            CR = CI / self.RI[n]</span><br><span class="line">        <span class="keyword">return</span> max_eigen, CR, eigen</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">run</span><span class="params">(self)</span>:</span></span><br><span class="line">        max_eigen, CR, criteria_eigen = self.cal_weights(self.criteria)</span><br><span class="line">        print(<span class="string">'准则层：最大特征值&#123;:&lt;5f&#125;,CR=&#123;:&lt;5f&#125;,检验&#123;&#125;通过'</span>.format(max_eigen, CR, <span class="string">''</span> <span class="keyword">if</span> CR &lt; <span class="number">0.1</span> <span class="keyword">else</span> <span class="string">'不'</span>))</span><br><span class="line">        print(<span class="string">'准则层权重=&#123;&#125;\n'</span>.format(criteria_eigen))</span><br><span class="line"></span><br><span class="line">        max_eigen_list, CR_list, eigen_list = [], [], []</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> self.b:</span><br><span class="line">            max_eigen, CR, eigen = self.cal_weights(i)</span><br><span class="line">            max_eigen_list.append(max_eigen)</span><br><span class="line">            CR_list.append(CR)</span><br><span class="line">            eigen_list.append(eigen)</span><br><span class="line"></span><br><span class="line">        pd_print = pd.DataFrame(eigen_list,</span><br><span class="line">                                index=[<span class="string">'准则'</span> + str(i) <span class="keyword">for</span> i <span class="keyword">in</span> range(self.num_criteria)],</span><br><span class="line">                                columns=[<span class="string">'方案'</span> + str(i) <span class="keyword">for</span> i <span class="keyword">in</span> range(self.num_project)],</span><br><span class="line">                                )</span><br><span class="line">        pd_print.loc[:, <span class="string">'最大特征值'</span>] = max_eigen_list</span><br><span class="line">        pd_print.loc[:, <span class="string">'CR'</span>] = CR_list</span><br><span class="line">        pd_print.loc[:, <span class="string">'一致性检验'</span>] = pd_print.loc[:, <span class="string">'CR'</span>] &lt; <span class="number">0.1</span></span><br><span class="line">        print(<span class="string">'方案层'</span>)</span><br><span class="line">        print(pd_print)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 目标层</span></span><br><span class="line">        obj = np.dot(criteria_eigen.reshape(<span class="number">1</span>, <span class="number">-1</span>), np.array(eigen_list))</span><br><span class="line">        print(<span class="string">'\n目标层'</span>, obj)</span><br><span class="line">        print(<span class="string">'最优选择是方案&#123;&#125;'</span>.format(np.argmax(obj)))</span><br><span class="line">        <span class="keyword">return</span> obj</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    <span class="comment"># 准则重要性矩阵</span></span><br><span class="line">    criteria = np.array([[<span class="number">1</span>, <span class="number">2</span>, <span class="number">7</span>, <span class="number">5</span>, <span class="number">5</span>],</span><br><span class="line">                         [<span class="number">1</span> / <span class="number">2</span>, <span class="number">1</span>, <span class="number">4</span>, <span class="number">3</span>, <span class="number">3</span>],</span><br><span class="line">                         [<span class="number">1</span> / <span class="number">7</span>, <span class="number">1</span> / <span class="number">4</span>, <span class="number">1</span>, <span class="number">1</span> / <span class="number">2</span>, <span class="number">1</span> / <span class="number">3</span>],</span><br><span class="line">                         [<span class="number">1</span> / <span class="number">5</span>, <span class="number">1</span> / <span class="number">3</span>, <span class="number">2</span>, <span class="number">1</span>, <span class="number">1</span>],</span><br><span class="line">                         [<span class="number">1</span> / <span class="number">5</span>, <span class="number">1</span> / <span class="number">3</span>, <span class="number">3</span>, <span class="number">1</span>, <span class="number">1</span>]])</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 对每个准则，方案优劣排序</span></span><br><span class="line">    b1 = np.array([[<span class="number">1</span>, <span class="number">1</span> / <span class="number">3</span>, <span class="number">1</span> / <span class="number">8</span>], [<span class="number">3</span>, <span class="number">1</span>, <span class="number">1</span> / <span class="number">3</span>], [<span class="number">8</span>, <span class="number">3</span>, <span class="number">1</span>]])</span><br><span class="line">    b2 = np.array([[<span class="number">1</span>, <span class="number">2</span>, <span class="number">5</span>], [<span class="number">1</span> / <span class="number">2</span>, <span class="number">1</span>, <span class="number">2</span>], [<span class="number">1</span> / <span class="number">5</span>, <span class="number">1</span> / <span class="number">2</span>, <span class="number">1</span>]])</span><br><span class="line">    b3 = np.array([[<span class="number">1</span>, <span class="number">1</span>, <span class="number">3</span>], [<span class="number">1</span>, <span class="number">1</span>, <span class="number">3</span>], [<span class="number">1</span> / <span class="number">3</span>, <span class="number">1</span> / <span class="number">3</span>, <span class="number">1</span>]])</span><br><span class="line">    b4 = np.array([[<span class="number">1</span>, <span class="number">3</span>, <span class="number">4</span>], [<span class="number">1</span> / <span class="number">3</span>, <span class="number">1</span>, <span class="number">1</span>], [<span class="number">1</span> / <span class="number">4</span>, <span class="number">1</span>, <span class="number">1</span>]])</span><br><span class="line">    b5 = np.array([[<span class="number">1</span>, <span class="number">4</span>, <span class="number">1</span> / <span class="number">2</span>], [<span class="number">1</span> / <span class="number">4</span>, <span class="number">1</span>, <span class="number">1</span> / <span class="number">4</span>], [<span class="number">2</span>, <span class="number">4</span>, <span class="number">1</span>]])</span><br><span class="line"></span><br><span class="line">    b = [b1, b2, b3, b4, b5]</span><br><span class="line">    a = AHP(criteria, b).run()</span><br></pre></td></tr></table></figure>
+<h2 id="层次分析法与控制变量法"><a class="header-anchor" href="#层次分析法与控制变量法">¶</a>层次分析法与控制变量法</h2>
+<p>我们的任务是选择工作，最后使得我们满意，直接选择我们当然一头雾水。所以我们设立一些准则，然后对这些准则对于目标的重要性排序。</p>
+<p>这又有点像概率图模型，只是赋权的方法，是相互比较的方法。</p>
+<h2 id="选择困难者的福音？"><a class="header-anchor" href="#选择困难者的福音？">¶</a>选择困难者的福音？</h2>
+<p>层次分析法对人们的思维过程进行了加工整理，提出了一套系统分析问题的方法，为科学管理和决策提供了较有说服力的依据。</p>
+<p>在应用层次分析法研究问题时，遇到的主要困难有两个:<br>
+(1) 如何根据实际情况抽象出较为贴切的层次结构;<br>
+(2) 如何将某些定性的量作比较接近实际定量化处理。</p>
+<p>层次分析法的其局限性<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup>：<br>
+(1) 它在很大程度上依赖于人们的经验，主观因素的影响很大，它至多只能排除思维过程中的严重非一致性，却无法排除决策者个人可能存在的严重片面性。<br>
+(2) 比较、 判断过程较为粗糙，不能用于精度要求较高的决策问题。</p>
+<p>所以，AHP 至多只能算是一种半定量(或定性与定量结合)的方法。
+本文仅供参考，不负法律责任，哈哈。</p>
+<h2 id="参考"><a class="header-anchor" href="#参考">¶</a>参考</h2>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p>幼鹰me 知乎 <a href="https://zhuanlan.zhihu.com/p/101505929" target="_blank" rel="noopener">层次分析法原理与Python实现</a> <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn2" class="footnote-item"><p>司守奎《数学建模算法与程序》第八章 层次分析法 P167 <a href="#fnref2" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
+]]></content>
+      <categories>
+        <category>数学</category>
+      </categories>
+      <tags>
+        <tag>数学</tag>
+        <tag>层次分析法</tag>
       </tags>
   </entry>
   <entry>
@@ -6017,6 +6017,239 @@ Robin：挺好的，很棒（向小度竖起大拇指），把这些日程同步
       </tags>
   </entry>
   <entry>
+    <title>「转」Linux 内核精通</title>
+    <url>/public/2022/12/15/%E7%AE%80%E6%82%A6%E5%90%8C%E6%AD%A5md/%E8%82%9D%E4%B8%8B%2050%20%E4%B8%87%E5%AD%97%E7%9A%84%E3%80%8ALinux%20%E5%86%85%E6%A0%B8%E7%B2%BE%E9%80%9A%E3%80%8B%E7%AC%94%E8%AE%B0%EF%BC%8C%E4%BD%A0%E7%9A%84%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86%E6%B0%B4%E5%B9%B3%E5%B0%86%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E5%85%A5%E9%AD%94%E3%80%90%E5%BB%BA%E8%AE%AE%E6%94%B6%E8%97%8F%E3%80%91/</url>
+    <content><![CDATA[<blockquote>
+<p>本文由 <a href="http://ksria.com/simpread/" target="_blank" rel="noopener">简悦 SimpRead</a> 转码， 原文地址 <a href="https://zhuanlan.zhihu.com/p/572266986" target="_blank" rel="noopener">zhuanlan.zhihu.com</a></p>
+</blockquote>
+<h2 id="一、为什么要学习-Linux-内核"><a class="header-anchor" href="#一、为什么要学习-Linux-内核">¶</a>一、为什么要学习 Linux 内核</h2>
+<a id="more"></a>
+<p>大部分程序员可能永远没有机会开发 Linux 内核或者驱动 Linux，那么我们为什么还需要学习 Linux 内核呢？Linux 的源代码和架构都是开放的，我们可以学到很多操作系统的概念和实现原理。Linux 的设计哲学体系继承了 UNIX，现在整个设计体系相当稳定和简化，这是大部分服务器使用 Linux 的重要原因。</p>
+<p><strong>那学习 Linux 内核的原因就在于此。</strong></p>
+<p>进一步了解内核的原理，有助于你更好地使用命令和程序设计，让你的面试和开发更上一层楼。但是不建议直接看源代码，因为 Linux 代码太大，容易丢失。</p>
+<p>而最好的办法是，先了解一下 Linux 内核机制，知道基本的原理与流程。</p>
+<p>不过，Linux 内核机制也非常复杂，而且其中互相关联。</p>
+<p><img src="https://pic1.zhimg.com/v2-f34e4013f744ab349c160d1b3564f68c_r.jpg" alt></p>
+<p>比如说，进程运行要分配内存，内存映射涉及文件的关联，文件的读写需要经过块设备，从文件中加载代码才能运行起来进程。这些知识点要反复对照，才能理清。</p>
+<p><strong>但是一旦攻克！你会发现 Linux 这个复杂的系统开始透明起来。</strong></p>
+<h2 id="二、如何学习-Linux-内核？"><a class="header-anchor" href="#二、如何学习-Linux-内核？">¶</a>二、如何学习 Linux 内核？</h2>
+<p>内核的知识就像下面的绳结一样，一环扣一环，我们要解开它们，就必须要先找到线头也就是内核中的函数接口。初学阶段，我们一般不深入的研究内核代码，会使用内核的接口函数就不错了。</p>
+<p>下面提供了如何学习这些内核函数的方法，就像解绳子一样</p>
+<p><strong>在我们学习 Linux 内核之前，我们首先需要掌握以下几点：</strong></p>
+<p><a href="https://zhuanlan.zhihu.com/p/440423464" target="_blank" rel="noopener">(1) 如何学习内核，先了解 Linux 内核由哪些组成？</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/440423464" target="_blank" rel="noopener">(2) 须知 Linux 内核源码（下载的链接 ）组织结构？</a></p>
+<p>(3) <a href="https://zhuanlan.zhihu.com/p/440423464" target="_blank" rel="noopener">重点需要学习地知识点有哪些？</a></p>
+<p>(4) <a href="https://link.zhihu.com/?target=https%3A//docs.qq.com/doc/DTXFKZlZ4YmFYQWZS" target="_blank" rel="noopener">最后依据我为大家提供的的学习资料，开启我们的 Linux 内核学习之旅。</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/437667448" target="_blank" rel="noopener">(5) 全网最牛 Linux 内核 Makefile 系统文件详解 (纯文字代码)</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/436340295" target="_blank" rel="noopener">(6) 全网最详细的 Intel CPU 体系结构分析 (内核源码)</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/438248184" target="_blank" rel="noopener">(7) 深入理解 Linux Kernel 内核整体架构 (图文详解)</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/499637419" target="_blank" rel="noopener">(8)QEMU 调试 Linux 内核环境搭建</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/469270699" target="_blank" rel="noopener">(9) 网友说 Linux 驱动讲不彻底，原来这才是 Linux 驱动</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/419643250" target="_blank" rel="noopener">(10) 一文让你深度了解 Linux 内核架构和工作原理</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/477292559" target="_blank" rel="noopener">(11) 从 Linux 内核看 socket 底层的本质 (IO)</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/458996875" target="_blank" rel="noopener">(12)Linux 用户空间与内核空间通信 (Netlink 通信机制)</a></p>
+<h2 id="二，学习资料"><a class="header-anchor" href="#二，学习资料">¶</a>二，学习资料</h2>
+<h3 id="2-1-操作系统原理"><a class="header-anchor" href="#2-1-操作系统原理">¶</a><strong>2.1 操作系统原理</strong></h3>
+<p>【 强烈推荐阅读】<a href="https://zhuanlan.zhihu.com/p/442771856" target="_blank" rel="noopener">一文带你彻底了解，零拷贝 Zero-Copy 技术 (图解)</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/440820446" target="_blank" rel="noopener">Linux 操作系统学习——启动</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/440825051" target="_blank" rel="noopener">Linux 操作系统学习——内核运行</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/440829030" target="_blank" rel="noopener">Linux 操作系统学习——内核初始化</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/446635858" target="_blank" rel="noopener">操作系统原理 (一)：操作系统原理与概述 (流程图)</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/434528439" target="_blank" rel="noopener">操作系统原理 (二)：Linux 操作系统基础的常用命令</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/434511399" target="_blank" rel="noopener">操作系统原理 (三)：Linux 操作系统 I/O 机制原理 (流程图详解)</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/448266123" target="_blank" rel="noopener">操作系统原理 (四)：内存管理 RAID 磁盘阵列与配置</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/448258669" target="_blank" rel="noopener">操作系统原理 (五)：内存管理之磁盘高速缓存机制原理</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/448147542" target="_blank" rel="noopener">操作系统原理 (六)：存储管理之页式、段式、段页式存储</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/447668827" target="_blank" rel="noopener">系统操作原理 (七)：进程的状态和转换 (五态模型)</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/447720544" target="_blank" rel="noopener">操作系统原理 (八)：进程同步的几种方式及基本原理</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/447737355" target="_blank" rel="noopener">操作系统原理 (九)：处理器调度基本准则和实现原理</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/448105261" target="_blank" rel="noopener">系统操作原理 (十)：多进程，多线程，并发执行中的死锁问题</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/447720544" target="_blank" rel="noopener">系统操作原理 (十一)：操作系统原理：进程同步的几种方式及基本原理</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/448147542" target="_blank" rel="noopener">系统操作原理 (十二)：趣谈操作系统原理，存储管理之页式、段式、段页式存储</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/452839400" target="_blank" rel="noopener">系统操作原理 (十三)：操作系统：通过实战理解 CPU 上下文切换</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/449157752" target="_blank" rel="noopener">汇编语言基础 (十一)：汇编语言基础知识 (图文代码)</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/449787476" target="_blank" rel="noopener">汇编语言入门 (十二)：汇编指令入门级整理，这些你必须要知道</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/449565154" target="_blank" rel="noopener">汇编语言指令 (十三)：汇编语言的所有指令总结，一篇就够了</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/449582466" target="_blank" rel="noopener">汇编语言进阶 (十四)：ARM 体系结构处理器机制原理与实现</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/449816076" target="_blank" rel="noopener">汇编语言进阶 (十五)： ARM 指令集与汇编语言程序设计</a></p>
+<h3 id="2-2-内存管理专题"><a class="header-anchor" href="#2-2-内存管理专题">¶</a><strong>2.2 内存管理专题</strong></h3>
+<p>【 强烈推荐阅读】<a href="https://zhuanlan.zhihu.com/p/442268413" target="_blank" rel="noopener">尽情阅读，技术进阶，详解 mmap 原理</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/429118261" target="_blank" rel="noopener">内存是什么？一文让你了解内存是怎么实现的</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/449071725" target="_blank" rel="noopener">嵌入式开发必备技能，Linux 内核源码组织结构</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/442258814" target="_blank" rel="noopener">一文了解 Linux 内存管理，malloc、free 实现原理</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/456064945" target="_blank" rel="noopener">内存管理系列 (一)：Linux 操作系统内存管理 (思维导图详解)</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/454577271" target="_blank" rel="noopener">内存管理系列 (二)：Linux 内存管理原理知识大总结</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/454779105" target="_blank" rel="noopener">内存管理系列 (三)：学完操作系统内存管理，能回答这 8 个问题吗？</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/454564295" target="_blank" rel="noopener">内存管理系列 (四)：理解 Memory barrier（内存屏障）</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/453390459" target="_blank" rel="noopener">内存管理系列 (五)：内存回收之 LRU 链表机制原理</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/453385879" target="_blank" rel="noopener">内存管理系列 (六)：虚拟内存和物理内存机制原理</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/452713026" target="_blank" rel="noopener">内存管理系列 (七)：Malloc 缺页中断不同情况处理总结及反向映射 RMAP</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/452686042" target="_blank" rel="noopener">内存管理系列 (八)：C/C++ 开发中的 Malloc 函数的实现原理</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/452423278" target="_blank" rel="noopener">内存管理系列 (九)：深入理解 glibc malloc：内存分配器实现原理</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/452415871" target="_blank" rel="noopener">内存管理系列 (十)：操作系统是如何对内存进行管理的，内存与 CPU 之间的关系</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/451886800" target="_blank" rel="noopener">内存管理系列 (十一)：为什么 Linux 需要虚拟内存，虚拟内存对操作系统有哪些作用</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/451881734" target="_blank" rel="noopener">内存管理系列 (十二)：用户态内存内存映射函数 Mmap 的好处</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/451469447" target="_blank" rel="noopener">内存管理系列 (十三)：内存管理：详解虚拟地址空间 - MMU</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/451468637" target="_blank" rel="noopener">内存管理系列 (十四)：C 语言中的 Malloc/free 是如何分配内存的</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/451467641" target="_blank" rel="noopener">内存管理系列 (十五)：从虚拟寻址到开源项目，Linux 下的内存管理详解</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/451405962" target="_blank" rel="noopener">内存管理系列 (十六)：一文带你了解，虚拟内存、内存分页、分段、段页式内存管理</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/441938447" target="_blank" rel="noopener">内存管理系列 (十七)：Linux 应用程序究竟消耗了多少内存</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/441918912" target="_blank" rel="noopener">内存管理系列 (十八)：虚拟地址到物理地址，是什么时候开始映射</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/431277793" target="_blank" rel="noopener">内存管理系列 (十九)：浅析 Linux 内存管理中 SLAB 分配器 (源码分析)</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/430233534" target="_blank" rel="noopener">内存管理系列 (二十)：基于 Linux 内存管理的内存分配 (伙伴算法和 slab 算法)</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/429987335" target="_blank" rel="noopener">内存管理系列 (二十一)：探索内存原理的内存映射文件 (图文详解)</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/483332995" target="_blank" rel="noopener">内存管理系列 (二十二)：吊打字节面试官，CPU 缓存一致性协议 MESI</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/458935522" target="_blank" rel="noopener">内存管理系列 (二十三)：深入理解 Linux 内核页表映射分页机制原理</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/474795662" target="_blank" rel="noopener">内存管理系列 (二十四)：谈谈物理内存与虚拟内存之间的映射 (超详细~)</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/452686042" target="_blank" rel="noopener">内存管理系列 (二十五)：内存管理：C/C++ 开发中的 malloc 函数的实现原理</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/482776355" target="_blank" rel="noopener">内存管理系列 (二十六)：熬夜肝翻 Linux 内存管理所有知识点 (图解)</a></p>
+<h3 id="2-3-进程管理专题"><a class="header-anchor" href="#2-3-进程管理专题">¶</a>2.3 进程管理专题</h3>
+<p><a href="https://zhuanlan.zhihu.com/p/425886322" target="_blank" rel="noopener">进程管理系列 (一)：Linux 进程管理原理详解 (代码演示)</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/425931602" target="_blank" rel="noopener">进程管理系列 (二)：十分钟让你像大佬一样快速了解进程状态 (二种模型)</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/425939661" target="_blank" rel="noopener">进程管理系列 (三)：作为互联网程序员，应该了解 Linux 进程六种状态吗？</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/426836494" target="_blank" rel="noopener">进程管理系列 (四)：五分钟让你快速了解 Linux 进程管理实时调度与 SMP</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/426399519" target="_blank" rel="noopener">进程管理系列 (六)：浅析 Linux 的进程优先级 (代码演示)</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/441558619" target="_blank" rel="noopener">进程管理系列 (七)：进程管理 | 浅析 C 语言中并发同步与原子操作，锁三者是什么关系</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/441346358" target="_blank" rel="noopener">进程管理系列 (八)：进程管理 | 深入理解 Linux 进程述符和进程状态</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/442921692" target="_blank" rel="noopener">进程管理系列 (九)：一文读懂 Linux 内核中的任务间调度策略</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/442916346" target="_blank" rel="noopener">进程管理系列 (十)：Linux 内核之进程和线程的创建和派生</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/442905446" target="_blank" rel="noopener">进程管理系列 (十一)：基于 Linux 有几种进程状态</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/455680633" target="_blank" rel="noopener">进程管理系列 (十二)：操作系统的几种 CPU 调度策略</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/462066025" target="_blank" rel="noopener">进程管理系列 (十二)：Linux 进程管理之调度和进程切换</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/465574868" target="_blank" rel="noopener">进程管理系列 (十三)：一文搞懂六大进程通信机制原理 (全网最详细)</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/456631465" target="_blank" rel="noopener">进程管理系列 (十四)：超详细的 Socket 通信原理和实例讲解 (白嫖走起~)</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/473639031" target="_blank" rel="noopener">进程管理系列 (十五)：这是一份很全很全的 IO 基础知识与概念</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/472955572" target="_blank" rel="noopener">进程管理系列 (十六)：深入理解 Linux 内核进程的管理与调度 (全知乎最详细)</a></p>
+<h3 id="2-4-网络协议栈专题"><a class="header-anchor" href="#2-4-网络协议栈专题">¶</a><strong>2.4 网络协议栈专题</strong></h3>
+<p>【 强烈推荐阅读】<a href="https://zhuanlan.zhihu.com/p/449869444" target="_blank" rel="noopener">嵌入式必备：如何学习 Linux 内核网络协议栈</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/460693504" target="_blank" rel="noopener">趣谈网络协议栈 (一)：套接字缓冲区原理</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/458188649" target="_blank" rel="noopener">趣谈网络协议栈 (二)：数据包是如何处理的过程</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/453813447" target="_blank" rel="noopener">趣谈网络协议栈 (三)：七层模型下三层数据通信</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/453814298" target="_blank" rel="noopener">趣谈网络协议栈 (四)：传输的 Arp 报文结构</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/453814919" target="_blank" rel="noopener">趣谈网络协议栈 (五)：Socket 编程常用函数的原理及代码实现</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/453815877" target="_blank" rel="noopener">趣谈网络协议栈 (六)：学习 select 和 poll 函数的内核实现</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/453816689" target="_blank" rel="noopener">趣谈网络协议栈 (七)：Epoll 从用户态到内核态过程分析</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/444071187" target="_blank" rel="noopener">趣谈网络协议栈 (八)：套接字发送网络数据的过程</a></p>
+<h3 id="2-5-设备驱动专题"><a class="header-anchor" href="#2-5-设备驱动专题">¶</a>2.5 设备驱动专题</h3>
+<p><a href="https://zhuanlan.zhihu.com/p/448718574" target="_blank" rel="noopener">浅谈设备驱动 (一)：操作系统 I/O 流程详解</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/445188798" target="_blank" rel="noopener">浅谈设备驱动 (二)：Linux 操作系统学习之字符设备</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/445185233" target="_blank" rel="noopener">浅谈设备驱动 (三)：结合设备信息集合，探究设备和驱动是如何绑定的</a></p>
+<h3 id="2-6-文件系统"><a class="header-anchor" href="#2-6-文件系统">¶</a>2.6 文件系统</h3>
+<p><a href="https://zhuanlan.zhihu.com/p/460393575" target="_blank" rel="noopener">详谈文件系统 (一)：一文让你彻底了解 Linux 内核文件系统 (大总结)</a></p>
+<h3 id="2-7-面试题-经验"><a class="header-anchor" href="#2-7-面试题-经验">¶</a>2.7 面试题 / 经验</h3>
+<p>【 强烈推荐阅读】<a href="https://zhuanlan.zhihu.com/p/458546929" target="_blank" rel="noopener">从事十年嵌入式转内核开发 (23K 到 45K), 给兄弟们的一些建议</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/456073398" target="_blank" rel="noopener">谈谈 Linux 内核的学习路线，具体要怎么学？</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/453576978" target="_blank" rel="noopener">2022 年嵌入式开发想进互联网大厂，你技术过硬吗？</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/452972023" target="_blank" rel="noopener">嵌入式 Linux 内核学习经验总结，一篇让你掌握方法</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/445363696" target="_blank" rel="noopener">盘点 Linux 内核 (驱动开发，嵌入式，内核人群) 必问的面试题</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/470952847" target="_blank" rel="noopener">2022 春招大厂 - 嵌入式开发经典笔试面试题目大整理</a></p>
+<h3 id="2-8-内核书籍"><a class="header-anchor" href="#2-8-内核书籍">¶</a>2.8 内核书籍</h3>
+<ul>
+<li>《深入了解 Linux 内核》</li>
+<li>《Linux 就该这么学》</li>
+<li>《Linux 内核完全注释 V3.0 书签版》</li>
+<li>《Linux 命令行大全 - 绍茨 (william E.shotts)》</li>
+<li>《Linux 命令速查手册》</li>
+<li>《Linux 性能优化大师》</li>
+<li>《Linux 环境编程：从应用到内核》</li>
+<li>《Linux 集群和自动化运维 余洪春》</li>
+<li>《Linux 驱动程序开发实例 (第 2 版)》</li>
+<li>《Linux 高级程序设计 (第 3 版)》</li>
+<li>《构建高可用 Linux 服务器 (第 4 版)》</li>
+</ul>
+<p><strong>书籍免费领取地址：</strong><a href="https://link.zhihu.com/?target=https%3A//docs.qq.com/doc/DTkZRWXRFcWx1bWVx" target="_blank" rel="noopener">https://docs.qq.com/doc/DTkZRWXRFcWx1bWVx</a></p>
+<h2 id="三，内核学习路线"><a class="header-anchor" href="#三，内核学习路线">¶</a>三，内核学习路线</h2>
+<p>很多同学对 Linux 接触很少，对 Linux 平台的开发一无所知。现在，趋势越来越表明，作为一个优秀的软件开发者或者计算机 IT 从业者，掌握 Linux 是一个非常重要的谋生资源和手段。接下来我将结合我个人几年的开发经验，谈谈 Linux 的学习方法和学习中应该注意的一些事情，特别是关于 Linux，类 UNIX 系统和开源软件文化。</p>
+<p>就像我刚才说的，很多同学之前可能连 Linux 是什么都不知道，更别说 UNIX 了。所以我们从最基础的一点开始，Linux 和 UNIX 的历史我们就不多说了，直接进入入门学习。</p>
+<p>Linux 入门非常简单。问题是你有没有耐心，有没有爱折腾，有没有不排除重装之类的大修。可以说不折腾是学不好 Linux 的。鸟哥说你要真正了解 Linux 的分区机制，并且对 LVM 的使用相当熟练。不超过 20 次是无法积累 Linux 安装经验的，所以不要怕折腾。</p>
+<p>既然之前大家都用 Windows，我也尽量照顾这些 “菜鸟”。我的推荐，如果你是第一次接触 Linux，那就先在虚拟机里试试。我推荐虚拟机用的 Virtual Box。我不提倡使用 VM，因为 VM 是开源的，是收费的。我不想推广盗版。当然，如果你有足够的钱，你可以试试 VM，但我想说的是，即使是 VM 也不一定好。付费软件不一定好。首先，虚拟盒子很小。Windows 平台下安装包 80MB 左右，而 VM 每转 600MB。虽然很强大，但是消耗了很多资源。更何况虚拟盒子完全可以满足你的需求。所以，还是自己选比较好。如何使用虚拟机是你的事。这个就不教你了，因为很简单。如果不能，可以用谷歌或者百度。如果你英语好，可以直接看官方文件。</p>
+<p>现在介绍 Linux 发行版的知识。正如你所见，Linux 发行版并非 Linux，Linux 仅是指操作系统的内核，作为科班出生的你不要让我解释，我也没时间。</p>
+<p><strong>我推荐的发行版如下：</strong></p>
+<ol>
+<li>UBUNTU 适合纯新手，追求稳定的官方支持，对系统稳定性要求弱，喜欢最新的应用，相对不喜欢折腾开发者。</li>
+<li>比 UBUNTU 难很多的发行版 Debian，特点是稳定易用的包管理系统，缺点是缺乏企业支持，以社区开发为驱动。</li>
+<li>Arch，追逐时尚的开发者首选，优点是包更新相当快，升级无缝。基本上一次安装就可以一直工作，没有 UBUNTU 那样的版本概念。专业点叫滚动升级，让你的系统保持最新。缺点很明显，不稳定。同时安装配置也比 Debian 麻烦。</li>
+<li>比 Arch 更难的 Gentoo，考验用户的综合水平。从系统安装到微调，内核编译都是手把手。是高手和黑客展示自己技术手段，按需配置符合自己要求的系统的首选。</li>
+</ol>
+<p><strong>Slackware 与 Gentoo 类似：</strong></p>
+<p>社区维护的 RedHat 的副本 CentOS，完全是用 RedHat 的源代码重新编译的，理论上和 RedHat 的兼容性是最好的。如果你专注于 Linux 服务器，比如网络管理和网站建设，那么 CentOS 就是你的选择。</p>
+<p>LFS，终极黑客炫耀工具，完全从源代码安装编译系统。在安装之前，您只能获得一个文档。您所要做的就是按照文档中的说明，一步一步，一个订单一个订单地，一个一个地构建您的 Linux 包。完全在你的掌控之中，你想要什么就有什么。如果你制作了 LFS，那就证明你的 Linux 技术相当不错。如果你能借鉴 LFS 文档，把 Linux 从源代码移植到嵌入式系统，我敢说你能在中国企业做得很好。</p>
+<p>你得挑一个适合自己的系统，然后装在虚拟机里开始用。如果你想快速学习 Linux，我有一个建议，你应该忘记图形界面。不要去想图形界面能不能为你的问题提供答案，而是去世界各地寻找，询问如何用命令行解决你的问题。在这个过程中，你最好掌握好 Linux 的命令，至少要知道常用的命令，同时要建立自己的知识库，里面包含了你积累的知识。</p>
+<p>下一阶段需要学习 Linux 平台的 C++/C++ 开发，以及 Bash 脚本编程，如果对 Java 有很深的兴趣，还需要学习 Java。同样，我建议你抛弃图形界面的 IDE，从 VIM 开始。为什么是 VIM 而不是 Emacs？我无意挑起编辑器大战，但我认为 VIM 适合新手和手笨脑慢的开发者。Emacs 的按键太多，太复杂，我很害怕。然后是 GCC，Make，Eclipse(Java，C++ 或者)。虽然 Eclipse 中列出了 C++，但是我不建议用 IDE 开发 C++，因为这不是 Linux 的文化，你很容易忽略一些应该注意的问题。IDE 让你懒的跟猪一样懒。如果你对程序调试和测试感兴趣，你必须学好 GDB。如果不是 GDB，这也是一门必修课。这是发展的第一步。注意，我没有提到任何关于 Linux API 的东西，现阶段也不关心这个。你要做的就是积累经验，Linux 平台开发的经验。我推荐的书如下:《C 语言编程》，或者谭浩强的。c，白皮书当然更好。++C++ Primer Plus 是 C 推荐的，我不喜欢 Java，所以不推荐。工具推荐 VIM 的官方手册，GCC 中文文档，GDB 中文文档，GNU 开源软件开发指南 (电子书)，汇编语言编程 (让你对库，链接，嵌入式汇编，编译器优化选项有个初步的了解，不深入)。</p>
+<p>如果过不了这个阶段，就不用做了。这是底线，也是最基本的基础。否则，离开，不要开发 Linux。不专业的 Linux 开发者做出来的程序与 Linux 文化或者 UNIX 文化相悖，程序走不了多远，也不可能像 Bash、VIM 这样神奇的产品。所以做不好就走人。</p>
+<p>接下来进入 Linux 系统编程，唯一的选择，APUE，UNIX 环境下的高级编程。反复读，10 遍太少。如果你在大学能把这本书砸了，里面的内容都练过了，有作品，口语表达能力足够强，面试的时候就能说服所有考官。(可能有点夸张，但 APUE 绝对是圣经读物，连 Windows 程序员都从中汲取养分。谷歌创始人的案头书，扎伯克的床头读物。)</p>
+<p>看完这本书，你会对 Linux 系统编程有很好的了解。Linux 和 Windows 平台有什么区别？它们的优缺点是什么？我的总结如下: Windows 平台开发难。微软的系统 API 一直在扩展。如果你想使用最新最高效的功能，你必须时刻学习最适合当前流行系统的功能。不，Linux 有大约 100 个核心 API，所以你可以用很好的记忆力记住它们。而且会长期不变。为什么不呢？因为它兼容 UNIX，符合 POSIX 标准。因此，Linux 平台的开发大多集中在底层或服务器编程上。这是它的优势。当然图形是 Linux 的软肋，但从一个开发者的角度来说，我不在乎，因为我也能适应命令行。如果有更好的图形界面，我会把它作为礼物。另外，Windows 是关闭的，你甚至不知道系统做了什么。你将永远被微软牵着鼻子走。想想吧。如果微软说 Win8 不支持 QQ，腾讯也不会哭死。而且 Linux 是完全开源的。如果不喜欢，可以自己改，只要足够熟练。另外，虽然 Windows 使用的人很多，但是使用的场合比较单一，以桌面为主。Linux 各方面都有发展，尤其是云计算、服务器软件、嵌入式领域、企业应用，兼容性一流。由于 POSIX 可以在 UNIX 系统上无缝运行，因此 Apple Mac 和 IBM AS400 系列都完全支持它。另外，Linux 的开发环境支持绝对一流，无论是 C/C++，Java，Bash，Python，PHP，Javascript，。。。。。。连 C# 都支持。而且微软除了 Visual Stdio 套件都不太友好吧？</p>
+<p>如果你看了 APUE 后有很多感触，想验证你的一些想法或经验，推荐 UNIX 编程艺术，世界顶尖黑客将与你分享他们的观点。现在是时候转移注意力了。总的来说，我分为四个方向: 网络、图形、嵌入式、设备驱动。</p>
+<p>如果选择网络，细分的话，其他的不太熟悉，只说服务器软件编写和高性能并发程序编写。相对来说，这是网络编程中技术含量最高的，也是最底层的。需要很多经验，看很多书，做很多项目。</p>
+<p><strong>我的看法是以下面的顺序来看书：</strong></p>
+<ol>
+<li>APUE 的深度阅读——尤其是进程、线程、IPC、套接字</li>
+<li>多核编程——Pthread 一定要吃透，你是 NB</li>
+<li>UNIX 网络编程–第 1 卷，第 2 卷</li>
+<li>TCP/IP 网络详解——是时候再看一遍以上两本书了。</li>
+<li>TCP/IP 网络的详细说明–第 2 卷。我觉得看第二卷就差不多了。当然，最好还是看第三卷。尽力去看吧。</li>
+<li>Lighttpd 源代码——这个服务器也很有名。</li>
+<li>NGX 源代码——与 Apache 相比，Nginx 的源代码更少。如果能大致看一下，就是 NB 了。看源码主要是学习里面的 socket 编程和并发控制，想想就激动。如果你有这些技能，你可以试试给暴雪发简历，给他们写服务器后台，以为全世界的魔兽都运行在你的服务器软件上。</li>
+<li>Linux 内核 TCP/IP 协议栈——深入了解 TCP/IP 实现</li>
+<li>如果还是喜欢驱动设计，可以看看底层协议，比如链路层。给路由器，网卡，网络设备，嵌入式系统软件写驱动应该不是问题。当然，一般的网络公司，哪怕是百度级别的，都应该毫不犹豫的录用你。看后面的书只需要时间和经验，所以 35 岁之前就做吧！跳槽到给你未来的地方！</li>
+</ol>
+<p><strong>图形方向，我觉得图形方向也是很有前途的，以下几个方面：</strong></p>
+<p>Opengl 的工业和游戏开发在国外已经比较成熟。</p>
+<p>动画特效，比如皮克斯，在国外也比较成熟。</p>
+<p>GPU 计算技术可以应用于浏览器网页渲染和 GPU 计算资源利用。因为开源，所以有很多文档程序可以参考。如果能进入火狐开发，或者谷歌做浏览器开发，应该很不错。</p>
+<p><strong>嵌入式方向：嵌入式方向没说的，Linux 很重要</strong></p>
+<p>掌握多种架构，不仅仅是 X86，ARM，MCU 等。必须理解。如果你不懂硬件，我预见你会死在路上，我也想往嵌入式方向走，但是我觉得就算是学电子的学生也比不过学校教嵌入式的方式。我劝你，做之前一定要了解硬件。如果你去做嵌入式应用开发，只能祝你好运了。不要碰上诺基亚、惠普这样的公司，否则你会很惨。</p>
+<p>驱动设计: 软件开发周期很长，硬件不一样，很快。每个月都有这么多新硬件诞生，如何让它们在 Linux 上工作是你的工作。因为 Linux 兼容性好，如果不是太低级的驱动，基本的 C 语言就可以了，系统架构影响不大。由于系统支持，您可能可以在 ARM 上使用 PC 硬件，但需要做一些更改。所以硬件驱动开发不像嵌入式，对硬件知识要求很高。可能的方向很多，比如家电，特别是像索尼、日立、希捷、富士康这样的工厂，比较稀缺。</p>
+<h2 id="四，学习-Linux-内核"><a class="header-anchor" href="#四，学习-Linux-内核">¶</a><strong>四，学习 Linux 内核</strong></h2>
+<p>学习 linux 内核不像学习语言。一个月或者三月就能掌握 C 或者 java。学习 linux 内核需要循序渐进，掌握正确的 linux 内核学习路线非常重要。本文将分享一些学习 linux 内核的建议。</p>
+<ol>
+<li>
+<p>了解操作系统的基本概念。如果没有，可以学习《操作系统: 设计与实现》，Andrew S.Tanenbaum 写的那本，以 MINIX 为例解释操作系统的概念。非常推荐。</p>
+</li>
+<li>
+<p>有了操作系统的基本概念，你就可以理解 Linux 的机制了。推荐罗伯特 · 拉芙写的 Linux 内核设计与实现。这本书从概念上解释了 Linux 有什么以及它是如何工作的。这本书应该反复仔细阅读。</p>
+</li>
+<li>
+<p>有了 Linux 内核的知识，我们还需要具体学习 Linux 内核源代码。经典的是丹尼尔 ·p· 博韦特写的《深入理解 Linux 内核》。学习这本书的时候，要看看内核代码。这本书学起来挺费劲的，所以有很多代码要研究。但是，如果这本书很好理解，那么恭喜你，你已经对 Linux 内核很熟悉了。</p>
+</li>
+<li>
+<p>如果你想开发设备驱动，可以向 O 'Reilly Press 学习 Linux 设备驱动。这本书是驾驶入门的好材料。还有一本很好的教材，精通 Linux 驱动开发，可以参考一下。开车，难免要学习一些硬件协议和资料。如果你研究的是哪一种，可以找相应的硬件文档，了解硬件的工作原理。这些我就不细说了。</p>
+</li>
+<li>
+<p>网络部分，学习一些 Linux 网络部分学习《深入了解 LINUX 网络技术内幕》。这本书把 Linux 的网络部分讲得非常清楚透彻。不过我们一般不做这方面的研究，也不需要做那么多研究。毕竟现在相关岗位很少。</p>
+</li>
+<li>
+<p>现在 Linux 相关的工作大多集中在一些嵌入式开发领域，如 arm、mips 等。你要学习以下关于架构的信息，了解 CPU 的设计和工作模式。看看 ARM 对应的芯片手册就知道了，很详细的。mips 随便看看 MIPS 运行，有一两个版本。两个版本有些区别，建议全看。</p>
+</li>
+<li>
+<p>补充一点经验。不要以为 Linux 庞大复杂，就很难学。认真学习，什么都可以学。就看你的毅力和恒心了。另外，不要走弯路，不要看市面上那些讲 Linux0.11 的书，学你想学的就好。就像学 C 语言看谭浩强一样，走弯路，费力气，严重影响学习效果。</p>
+</li>
+</ol>
+<p><strong>关于 linux 内核学习路线，再多说几句应用编程，有时候经常会需要的：</strong></p>
+<ol>
+<li>
+<p>学习 Linux 应用编程，建议看《unix 环境高级编程》，把里面的例子都做一遍，会对整个 Linux 编程有系统都认识。</p>
+</li>
+<li>
+<p>针对 Linux，有本 《Linux 系统编程》，学完上一本，这本很快看一遍就懂了。主要是针对 Linux 具体懂一些内容，讲的挺全了，很实用。</p>
+</li>
+<li>
+<p>Linux 网络编程，系统的学习一下《unix 网络编程。卷 1，套接字联网 api》，基本上网络应用相关的程序就都没问题了。</p>
+</li>
+</ol>
+<p>这些内容，分几年时间，分步计划学习，就会成为 Linux 高手了。个人建议参加零声教育的培训，学习效率会高很多，有目的性的参加培训，缩短周期，快速成型才是时代所需。</p>
+<p><strong>官方地址：</strong><a href="https://link.zhihu.com/?target=https%3A//ke.qq.com/course/4032547%3FflowToken%3D1040236" target="_blank" rel="noopener">Linux 内核源码 / 内存调优 / 文件系统 / 进程管理 / 设备驱动 / 网络协议栈 - 学习视频教程 - 腾讯课堂</a></p>
+<p><strong>以上就是 Linux 内核学习路线，关于学习 Linux 内核的建议，希望对小伙伴们有帮助。</strong></p>
+<p><img src="https://pic3.zhimg.com/v2-937a1ab104f7526be077ec69d7c41c42_b.gif" alt></p>
+]]></content>
+      <categories>
+        <category>linux</category>
+      </categories>
+      <tags>
+        <tag>linux</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>「202207月度汇报」ttrss</title>
     <url>/public/2022/07/15/test/2022/202207/</url>
     <content><![CDATA[<p>total: 13</p>
@@ -6875,239 +7108,6 @@ Pocky 开会归来，双眼放光:
       </categories>
       <tags>
         <tag>故事</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>「转」Linux 内核精通</title>
-    <url>/public/2022/12/15/%E7%AE%80%E6%82%A6%E5%90%8C%E6%AD%A5md/%E8%82%9D%E4%B8%8B%2050%20%E4%B8%87%E5%AD%97%E7%9A%84%E3%80%8ALinux%20%E5%86%85%E6%A0%B8%E7%B2%BE%E9%80%9A%E3%80%8B%E7%AC%94%E8%AE%B0%EF%BC%8C%E4%BD%A0%E7%9A%84%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86%E6%B0%B4%E5%B9%B3%E5%B0%86%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E5%85%A5%E9%AD%94%E3%80%90%E5%BB%BA%E8%AE%AE%E6%94%B6%E8%97%8F%E3%80%91/</url>
-    <content><![CDATA[<blockquote>
-<p>本文由 <a href="http://ksria.com/simpread/" target="_blank" rel="noopener">简悦 SimpRead</a> 转码， 原文地址 <a href="https://zhuanlan.zhihu.com/p/572266986" target="_blank" rel="noopener">zhuanlan.zhihu.com</a></p>
-</blockquote>
-<h2 id="一、为什么要学习-Linux-内核"><a class="header-anchor" href="#一、为什么要学习-Linux-内核">¶</a>一、为什么要学习 Linux 内核</h2>
-<a id="more"></a>
-<p>大部分程序员可能永远没有机会开发 Linux 内核或者驱动 Linux，那么我们为什么还需要学习 Linux 内核呢？Linux 的源代码和架构都是开放的，我们可以学到很多操作系统的概念和实现原理。Linux 的设计哲学体系继承了 UNIX，现在整个设计体系相当稳定和简化，这是大部分服务器使用 Linux 的重要原因。</p>
-<p><strong>那学习 Linux 内核的原因就在于此。</strong></p>
-<p>进一步了解内核的原理，有助于你更好地使用命令和程序设计，让你的面试和开发更上一层楼。但是不建议直接看源代码，因为 Linux 代码太大，容易丢失。</p>
-<p>而最好的办法是，先了解一下 Linux 内核机制，知道基本的原理与流程。</p>
-<p>不过，Linux 内核机制也非常复杂，而且其中互相关联。</p>
-<p><img src="https://pic1.zhimg.com/v2-f34e4013f744ab349c160d1b3564f68c_r.jpg" alt></p>
-<p>比如说，进程运行要分配内存，内存映射涉及文件的关联，文件的读写需要经过块设备，从文件中加载代码才能运行起来进程。这些知识点要反复对照，才能理清。</p>
-<p><strong>但是一旦攻克！你会发现 Linux 这个复杂的系统开始透明起来。</strong></p>
-<h2 id="二、如何学习-Linux-内核？"><a class="header-anchor" href="#二、如何学习-Linux-内核？">¶</a>二、如何学习 Linux 内核？</h2>
-<p>内核的知识就像下面的绳结一样，一环扣一环，我们要解开它们，就必须要先找到线头也就是内核中的函数接口。初学阶段，我们一般不深入的研究内核代码，会使用内核的接口函数就不错了。</p>
-<p>下面提供了如何学习这些内核函数的方法，就像解绳子一样</p>
-<p><strong>在我们学习 Linux 内核之前，我们首先需要掌握以下几点：</strong></p>
-<p><a href="https://zhuanlan.zhihu.com/p/440423464" target="_blank" rel="noopener">(1) 如何学习内核，先了解 Linux 内核由哪些组成？</a></p>
-<p><a href="https://zhuanlan.zhihu.com/p/440423464" target="_blank" rel="noopener">(2) 须知 Linux 内核源码（下载的链接 ）组织结构？</a></p>
-<p>(3) <a href="https://zhuanlan.zhihu.com/p/440423464" target="_blank" rel="noopener">重点需要学习地知识点有哪些？</a></p>
-<p>(4) <a href="https://link.zhihu.com/?target=https%3A//docs.qq.com/doc/DTXFKZlZ4YmFYQWZS" target="_blank" rel="noopener">最后依据我为大家提供的的学习资料，开启我们的 Linux 内核学习之旅。</a></p>
-<p><a href="https://zhuanlan.zhihu.com/p/437667448" target="_blank" rel="noopener">(5) 全网最牛 Linux 内核 Makefile 系统文件详解 (纯文字代码)</a></p>
-<p><a href="https://zhuanlan.zhihu.com/p/436340295" target="_blank" rel="noopener">(6) 全网最详细的 Intel CPU 体系结构分析 (内核源码)</a></p>
-<p><a href="https://zhuanlan.zhihu.com/p/438248184" target="_blank" rel="noopener">(7) 深入理解 Linux Kernel 内核整体架构 (图文详解)</a></p>
-<p><a href="https://zhuanlan.zhihu.com/p/499637419" target="_blank" rel="noopener">(8)QEMU 调试 Linux 内核环境搭建</a></p>
-<p><a href="https://zhuanlan.zhihu.com/p/469270699" target="_blank" rel="noopener">(9) 网友说 Linux 驱动讲不彻底，原来这才是 Linux 驱动</a></p>
-<p><a href="https://zhuanlan.zhihu.com/p/419643250" target="_blank" rel="noopener">(10) 一文让你深度了解 Linux 内核架构和工作原理</a></p>
-<p><a href="https://zhuanlan.zhihu.com/p/477292559" target="_blank" rel="noopener">(11) 从 Linux 内核看 socket 底层的本质 (IO)</a></p>
-<p><a href="https://zhuanlan.zhihu.com/p/458996875" target="_blank" rel="noopener">(12)Linux 用户空间与内核空间通信 (Netlink 通信机制)</a></p>
-<h2 id="二，学习资料"><a class="header-anchor" href="#二，学习资料">¶</a>二，学习资料</h2>
-<h3 id="2-1-操作系统原理"><a class="header-anchor" href="#2-1-操作系统原理">¶</a><strong>2.1 操作系统原理</strong></h3>
-<p>【 强烈推荐阅读】<a href="https://zhuanlan.zhihu.com/p/442771856" target="_blank" rel="noopener">一文带你彻底了解，零拷贝 Zero-Copy 技术 (图解)</a></p>
-<p><a href="https://zhuanlan.zhihu.com/p/440820446" target="_blank" rel="noopener">Linux 操作系统学习——启动</a></p>
-<p><a href="https://zhuanlan.zhihu.com/p/440825051" target="_blank" rel="noopener">Linux 操作系统学习——内核运行</a></p>
-<p><a href="https://zhuanlan.zhihu.com/p/440829030" target="_blank" rel="noopener">Linux 操作系统学习——内核初始化</a></p>
-<p><a href="https://zhuanlan.zhihu.com/p/446635858" target="_blank" rel="noopener">操作系统原理 (一)：操作系统原理与概述 (流程图)</a></p>
-<p><a href="https://zhuanlan.zhihu.com/p/434528439" target="_blank" rel="noopener">操作系统原理 (二)：Linux 操作系统基础的常用命令</a></p>
-<p><a href="https://zhuanlan.zhihu.com/p/434511399" target="_blank" rel="noopener">操作系统原理 (三)：Linux 操作系统 I/O 机制原理 (流程图详解)</a></p>
-<p><a href="https://zhuanlan.zhihu.com/p/448266123" target="_blank" rel="noopener">操作系统原理 (四)：内存管理 RAID 磁盘阵列与配置</a></p>
-<p><a href="https://zhuanlan.zhihu.com/p/448258669" target="_blank" rel="noopener">操作系统原理 (五)：内存管理之磁盘高速缓存机制原理</a></p>
-<p><a href="https://zhuanlan.zhihu.com/p/448147542" target="_blank" rel="noopener">操作系统原理 (六)：存储管理之页式、段式、段页式存储</a></p>
-<p><a href="https://zhuanlan.zhihu.com/p/447668827" target="_blank" rel="noopener">系统操作原理 (七)：进程的状态和转换 (五态模型)</a></p>
-<p><a href="https://zhuanlan.zhihu.com/p/447720544" target="_blank" rel="noopener">操作系统原理 (八)：进程同步的几种方式及基本原理</a></p>
-<p><a href="https://zhuanlan.zhihu.com/p/447737355" target="_blank" rel="noopener">操作系统原理 (九)：处理器调度基本准则和实现原理</a></p>
-<p><a href="https://zhuanlan.zhihu.com/p/448105261" target="_blank" rel="noopener">系统操作原理 (十)：多进程，多线程，并发执行中的死锁问题</a></p>
-<p><a href="https://zhuanlan.zhihu.com/p/447720544" target="_blank" rel="noopener">系统操作原理 (十一)：操作系统原理：进程同步的几种方式及基本原理</a></p>
-<p><a href="https://zhuanlan.zhihu.com/p/448147542" target="_blank" rel="noopener">系统操作原理 (十二)：趣谈操作系统原理，存储管理之页式、段式、段页式存储</a></p>
-<p><a href="https://zhuanlan.zhihu.com/p/452839400" target="_blank" rel="noopener">系统操作原理 (十三)：操作系统：通过实战理解 CPU 上下文切换</a></p>
-<p><a href="https://zhuanlan.zhihu.com/p/449157752" target="_blank" rel="noopener">汇编语言基础 (十一)：汇编语言基础知识 (图文代码)</a></p>
-<p><a href="https://zhuanlan.zhihu.com/p/449787476" target="_blank" rel="noopener">汇编语言入门 (十二)：汇编指令入门级整理，这些你必须要知道</a></p>
-<p><a href="https://zhuanlan.zhihu.com/p/449565154" target="_blank" rel="noopener">汇编语言指令 (十三)：汇编语言的所有指令总结，一篇就够了</a></p>
-<p><a href="https://zhuanlan.zhihu.com/p/449582466" target="_blank" rel="noopener">汇编语言进阶 (十四)：ARM 体系结构处理器机制原理与实现</a></p>
-<p><a href="https://zhuanlan.zhihu.com/p/449816076" target="_blank" rel="noopener">汇编语言进阶 (十五)： ARM 指令集与汇编语言程序设计</a></p>
-<h3 id="2-2-内存管理专题"><a class="header-anchor" href="#2-2-内存管理专题">¶</a><strong>2.2 内存管理专题</strong></h3>
-<p>【 强烈推荐阅读】<a href="https://zhuanlan.zhihu.com/p/442268413" target="_blank" rel="noopener">尽情阅读，技术进阶，详解 mmap 原理</a></p>
-<p><a href="https://zhuanlan.zhihu.com/p/429118261" target="_blank" rel="noopener">内存是什么？一文让你了解内存是怎么实现的</a></p>
-<p><a href="https://zhuanlan.zhihu.com/p/449071725" target="_blank" rel="noopener">嵌入式开发必备技能，Linux 内核源码组织结构</a></p>
-<p><a href="https://zhuanlan.zhihu.com/p/442258814" target="_blank" rel="noopener">一文了解 Linux 内存管理，malloc、free 实现原理</a></p>
-<p><a href="https://zhuanlan.zhihu.com/p/456064945" target="_blank" rel="noopener">内存管理系列 (一)：Linux 操作系统内存管理 (思维导图详解)</a></p>
-<p><a href="https://zhuanlan.zhihu.com/p/454577271" target="_blank" rel="noopener">内存管理系列 (二)：Linux 内存管理原理知识大总结</a></p>
-<p><a href="https://zhuanlan.zhihu.com/p/454779105" target="_blank" rel="noopener">内存管理系列 (三)：学完操作系统内存管理，能回答这 8 个问题吗？</a></p>
-<p><a href="https://zhuanlan.zhihu.com/p/454564295" target="_blank" rel="noopener">内存管理系列 (四)：理解 Memory barrier（内存屏障）</a></p>
-<p><a href="https://zhuanlan.zhihu.com/p/453390459" target="_blank" rel="noopener">内存管理系列 (五)：内存回收之 LRU 链表机制原理</a></p>
-<p><a href="https://zhuanlan.zhihu.com/p/453385879" target="_blank" rel="noopener">内存管理系列 (六)：虚拟内存和物理内存机制原理</a></p>
-<p><a href="https://zhuanlan.zhihu.com/p/452713026" target="_blank" rel="noopener">内存管理系列 (七)：Malloc 缺页中断不同情况处理总结及反向映射 RMAP</a></p>
-<p><a href="https://zhuanlan.zhihu.com/p/452686042" target="_blank" rel="noopener">内存管理系列 (八)：C/C++ 开发中的 Malloc 函数的实现原理</a></p>
-<p><a href="https://zhuanlan.zhihu.com/p/452423278" target="_blank" rel="noopener">内存管理系列 (九)：深入理解 glibc malloc：内存分配器实现原理</a></p>
-<p><a href="https://zhuanlan.zhihu.com/p/452415871" target="_blank" rel="noopener">内存管理系列 (十)：操作系统是如何对内存进行管理的，内存与 CPU 之间的关系</a></p>
-<p><a href="https://zhuanlan.zhihu.com/p/451886800" target="_blank" rel="noopener">内存管理系列 (十一)：为什么 Linux 需要虚拟内存，虚拟内存对操作系统有哪些作用</a></p>
-<p><a href="https://zhuanlan.zhihu.com/p/451881734" target="_blank" rel="noopener">内存管理系列 (十二)：用户态内存内存映射函数 Mmap 的好处</a></p>
-<p><a href="https://zhuanlan.zhihu.com/p/451469447" target="_blank" rel="noopener">内存管理系列 (十三)：内存管理：详解虚拟地址空间 - MMU</a></p>
-<p><a href="https://zhuanlan.zhihu.com/p/451468637" target="_blank" rel="noopener">内存管理系列 (十四)：C 语言中的 Malloc/free 是如何分配内存的</a></p>
-<p><a href="https://zhuanlan.zhihu.com/p/451467641" target="_blank" rel="noopener">内存管理系列 (十五)：从虚拟寻址到开源项目，Linux 下的内存管理详解</a></p>
-<p><a href="https://zhuanlan.zhihu.com/p/451405962" target="_blank" rel="noopener">内存管理系列 (十六)：一文带你了解，虚拟内存、内存分页、分段、段页式内存管理</a></p>
-<p><a href="https://zhuanlan.zhihu.com/p/441938447" target="_blank" rel="noopener">内存管理系列 (十七)：Linux 应用程序究竟消耗了多少内存</a></p>
-<p><a href="https://zhuanlan.zhihu.com/p/441918912" target="_blank" rel="noopener">内存管理系列 (十八)：虚拟地址到物理地址，是什么时候开始映射</a></p>
-<p><a href="https://zhuanlan.zhihu.com/p/431277793" target="_blank" rel="noopener">内存管理系列 (十九)：浅析 Linux 内存管理中 SLAB 分配器 (源码分析)</a></p>
-<p><a href="https://zhuanlan.zhihu.com/p/430233534" target="_blank" rel="noopener">内存管理系列 (二十)：基于 Linux 内存管理的内存分配 (伙伴算法和 slab 算法)</a></p>
-<p><a href="https://zhuanlan.zhihu.com/p/429987335" target="_blank" rel="noopener">内存管理系列 (二十一)：探索内存原理的内存映射文件 (图文详解)</a></p>
-<p><a href="https://zhuanlan.zhihu.com/p/483332995" target="_blank" rel="noopener">内存管理系列 (二十二)：吊打字节面试官，CPU 缓存一致性协议 MESI</a></p>
-<p><a href="https://zhuanlan.zhihu.com/p/458935522" target="_blank" rel="noopener">内存管理系列 (二十三)：深入理解 Linux 内核页表映射分页机制原理</a></p>
-<p><a href="https://zhuanlan.zhihu.com/p/474795662" target="_blank" rel="noopener">内存管理系列 (二十四)：谈谈物理内存与虚拟内存之间的映射 (超详细~)</a></p>
-<p><a href="https://zhuanlan.zhihu.com/p/452686042" target="_blank" rel="noopener">内存管理系列 (二十五)：内存管理：C/C++ 开发中的 malloc 函数的实现原理</a></p>
-<p><a href="https://zhuanlan.zhihu.com/p/482776355" target="_blank" rel="noopener">内存管理系列 (二十六)：熬夜肝翻 Linux 内存管理所有知识点 (图解)</a></p>
-<h3 id="2-3-进程管理专题"><a class="header-anchor" href="#2-3-进程管理专题">¶</a>2.3 进程管理专题</h3>
-<p><a href="https://zhuanlan.zhihu.com/p/425886322" target="_blank" rel="noopener">进程管理系列 (一)：Linux 进程管理原理详解 (代码演示)</a></p>
-<p><a href="https://zhuanlan.zhihu.com/p/425931602" target="_blank" rel="noopener">进程管理系列 (二)：十分钟让你像大佬一样快速了解进程状态 (二种模型)</a></p>
-<p><a href="https://zhuanlan.zhihu.com/p/425939661" target="_blank" rel="noopener">进程管理系列 (三)：作为互联网程序员，应该了解 Linux 进程六种状态吗？</a></p>
-<p><a href="https://zhuanlan.zhihu.com/p/426836494" target="_blank" rel="noopener">进程管理系列 (四)：五分钟让你快速了解 Linux 进程管理实时调度与 SMP</a></p>
-<p><a href="https://zhuanlan.zhihu.com/p/426399519" target="_blank" rel="noopener">进程管理系列 (六)：浅析 Linux 的进程优先级 (代码演示)</a></p>
-<p><a href="https://zhuanlan.zhihu.com/p/441558619" target="_blank" rel="noopener">进程管理系列 (七)：进程管理 | 浅析 C 语言中并发同步与原子操作，锁三者是什么关系</a></p>
-<p><a href="https://zhuanlan.zhihu.com/p/441346358" target="_blank" rel="noopener">进程管理系列 (八)：进程管理 | 深入理解 Linux 进程述符和进程状态</a></p>
-<p><a href="https://zhuanlan.zhihu.com/p/442921692" target="_blank" rel="noopener">进程管理系列 (九)：一文读懂 Linux 内核中的任务间调度策略</a></p>
-<p><a href="https://zhuanlan.zhihu.com/p/442916346" target="_blank" rel="noopener">进程管理系列 (十)：Linux 内核之进程和线程的创建和派生</a></p>
-<p><a href="https://zhuanlan.zhihu.com/p/442905446" target="_blank" rel="noopener">进程管理系列 (十一)：基于 Linux 有几种进程状态</a></p>
-<p><a href="https://zhuanlan.zhihu.com/p/455680633" target="_blank" rel="noopener">进程管理系列 (十二)：操作系统的几种 CPU 调度策略</a></p>
-<p><a href="https://zhuanlan.zhihu.com/p/462066025" target="_blank" rel="noopener">进程管理系列 (十二)：Linux 进程管理之调度和进程切换</a></p>
-<p><a href="https://zhuanlan.zhihu.com/p/465574868" target="_blank" rel="noopener">进程管理系列 (十三)：一文搞懂六大进程通信机制原理 (全网最详细)</a></p>
-<p><a href="https://zhuanlan.zhihu.com/p/456631465" target="_blank" rel="noopener">进程管理系列 (十四)：超详细的 Socket 通信原理和实例讲解 (白嫖走起~)</a></p>
-<p><a href="https://zhuanlan.zhihu.com/p/473639031" target="_blank" rel="noopener">进程管理系列 (十五)：这是一份很全很全的 IO 基础知识与概念</a></p>
-<p><a href="https://zhuanlan.zhihu.com/p/472955572" target="_blank" rel="noopener">进程管理系列 (十六)：深入理解 Linux 内核进程的管理与调度 (全知乎最详细)</a></p>
-<h3 id="2-4-网络协议栈专题"><a class="header-anchor" href="#2-4-网络协议栈专题">¶</a><strong>2.4 网络协议栈专题</strong></h3>
-<p>【 强烈推荐阅读】<a href="https://zhuanlan.zhihu.com/p/449869444" target="_blank" rel="noopener">嵌入式必备：如何学习 Linux 内核网络协议栈</a></p>
-<p><a href="https://zhuanlan.zhihu.com/p/460693504" target="_blank" rel="noopener">趣谈网络协议栈 (一)：套接字缓冲区原理</a></p>
-<p><a href="https://zhuanlan.zhihu.com/p/458188649" target="_blank" rel="noopener">趣谈网络协议栈 (二)：数据包是如何处理的过程</a></p>
-<p><a href="https://zhuanlan.zhihu.com/p/453813447" target="_blank" rel="noopener">趣谈网络协议栈 (三)：七层模型下三层数据通信</a></p>
-<p><a href="https://zhuanlan.zhihu.com/p/453814298" target="_blank" rel="noopener">趣谈网络协议栈 (四)：传输的 Arp 报文结构</a></p>
-<p><a href="https://zhuanlan.zhihu.com/p/453814919" target="_blank" rel="noopener">趣谈网络协议栈 (五)：Socket 编程常用函数的原理及代码实现</a></p>
-<p><a href="https://zhuanlan.zhihu.com/p/453815877" target="_blank" rel="noopener">趣谈网络协议栈 (六)：学习 select 和 poll 函数的内核实现</a></p>
-<p><a href="https://zhuanlan.zhihu.com/p/453816689" target="_blank" rel="noopener">趣谈网络协议栈 (七)：Epoll 从用户态到内核态过程分析</a></p>
-<p><a href="https://zhuanlan.zhihu.com/p/444071187" target="_blank" rel="noopener">趣谈网络协议栈 (八)：套接字发送网络数据的过程</a></p>
-<h3 id="2-5-设备驱动专题"><a class="header-anchor" href="#2-5-设备驱动专题">¶</a>2.5 设备驱动专题</h3>
-<p><a href="https://zhuanlan.zhihu.com/p/448718574" target="_blank" rel="noopener">浅谈设备驱动 (一)：操作系统 I/O 流程详解</a></p>
-<p><a href="https://zhuanlan.zhihu.com/p/445188798" target="_blank" rel="noopener">浅谈设备驱动 (二)：Linux 操作系统学习之字符设备</a></p>
-<p><a href="https://zhuanlan.zhihu.com/p/445185233" target="_blank" rel="noopener">浅谈设备驱动 (三)：结合设备信息集合，探究设备和驱动是如何绑定的</a></p>
-<h3 id="2-6-文件系统"><a class="header-anchor" href="#2-6-文件系统">¶</a>2.6 文件系统</h3>
-<p><a href="https://zhuanlan.zhihu.com/p/460393575" target="_blank" rel="noopener">详谈文件系统 (一)：一文让你彻底了解 Linux 内核文件系统 (大总结)</a></p>
-<h3 id="2-7-面试题-经验"><a class="header-anchor" href="#2-7-面试题-经验">¶</a>2.7 面试题 / 经验</h3>
-<p>【 强烈推荐阅读】<a href="https://zhuanlan.zhihu.com/p/458546929" target="_blank" rel="noopener">从事十年嵌入式转内核开发 (23K 到 45K), 给兄弟们的一些建议</a></p>
-<p><a href="https://zhuanlan.zhihu.com/p/456073398" target="_blank" rel="noopener">谈谈 Linux 内核的学习路线，具体要怎么学？</a></p>
-<p><a href="https://zhuanlan.zhihu.com/p/453576978" target="_blank" rel="noopener">2022 年嵌入式开发想进互联网大厂，你技术过硬吗？</a></p>
-<p><a href="https://zhuanlan.zhihu.com/p/452972023" target="_blank" rel="noopener">嵌入式 Linux 内核学习经验总结，一篇让你掌握方法</a></p>
-<p><a href="https://zhuanlan.zhihu.com/p/445363696" target="_blank" rel="noopener">盘点 Linux 内核 (驱动开发，嵌入式，内核人群) 必问的面试题</a></p>
-<p><a href="https://zhuanlan.zhihu.com/p/470952847" target="_blank" rel="noopener">2022 春招大厂 - 嵌入式开发经典笔试面试题目大整理</a></p>
-<h3 id="2-8-内核书籍"><a class="header-anchor" href="#2-8-内核书籍">¶</a>2.8 内核书籍</h3>
-<ul>
-<li>《深入了解 Linux 内核》</li>
-<li>《Linux 就该这么学》</li>
-<li>《Linux 内核完全注释 V3.0 书签版》</li>
-<li>《Linux 命令行大全 - 绍茨 (william E.shotts)》</li>
-<li>《Linux 命令速查手册》</li>
-<li>《Linux 性能优化大师》</li>
-<li>《Linux 环境编程：从应用到内核》</li>
-<li>《Linux 集群和自动化运维 余洪春》</li>
-<li>《Linux 驱动程序开发实例 (第 2 版)》</li>
-<li>《Linux 高级程序设计 (第 3 版)》</li>
-<li>《构建高可用 Linux 服务器 (第 4 版)》</li>
-</ul>
-<p><strong>书籍免费领取地址：</strong><a href="https://link.zhihu.com/?target=https%3A//docs.qq.com/doc/DTkZRWXRFcWx1bWVx" target="_blank" rel="noopener">https://docs.qq.com/doc/DTkZRWXRFcWx1bWVx</a></p>
-<h2 id="三，内核学习路线"><a class="header-anchor" href="#三，内核学习路线">¶</a>三，内核学习路线</h2>
-<p>很多同学对 Linux 接触很少，对 Linux 平台的开发一无所知。现在，趋势越来越表明，作为一个优秀的软件开发者或者计算机 IT 从业者，掌握 Linux 是一个非常重要的谋生资源和手段。接下来我将结合我个人几年的开发经验，谈谈 Linux 的学习方法和学习中应该注意的一些事情，特别是关于 Linux，类 UNIX 系统和开源软件文化。</p>
-<p>就像我刚才说的，很多同学之前可能连 Linux 是什么都不知道，更别说 UNIX 了。所以我们从最基础的一点开始，Linux 和 UNIX 的历史我们就不多说了，直接进入入门学习。</p>
-<p>Linux 入门非常简单。问题是你有没有耐心，有没有爱折腾，有没有不排除重装之类的大修。可以说不折腾是学不好 Linux 的。鸟哥说你要真正了解 Linux 的分区机制，并且对 LVM 的使用相当熟练。不超过 20 次是无法积累 Linux 安装经验的，所以不要怕折腾。</p>
-<p>既然之前大家都用 Windows，我也尽量照顾这些 “菜鸟”。我的推荐，如果你是第一次接触 Linux，那就先在虚拟机里试试。我推荐虚拟机用的 Virtual Box。我不提倡使用 VM，因为 VM 是开源的，是收费的。我不想推广盗版。当然，如果你有足够的钱，你可以试试 VM，但我想说的是，即使是 VM 也不一定好。付费软件不一定好。首先，虚拟盒子很小。Windows 平台下安装包 80MB 左右，而 VM 每转 600MB。虽然很强大，但是消耗了很多资源。更何况虚拟盒子完全可以满足你的需求。所以，还是自己选比较好。如何使用虚拟机是你的事。这个就不教你了，因为很简单。如果不能，可以用谷歌或者百度。如果你英语好，可以直接看官方文件。</p>
-<p>现在介绍 Linux 发行版的知识。正如你所见，Linux 发行版并非 Linux，Linux 仅是指操作系统的内核，作为科班出生的你不要让我解释，我也没时间。</p>
-<p><strong>我推荐的发行版如下：</strong></p>
-<ol>
-<li>UBUNTU 适合纯新手，追求稳定的官方支持，对系统稳定性要求弱，喜欢最新的应用，相对不喜欢折腾开发者。</li>
-<li>比 UBUNTU 难很多的发行版 Debian，特点是稳定易用的包管理系统，缺点是缺乏企业支持，以社区开发为驱动。</li>
-<li>Arch，追逐时尚的开发者首选，优点是包更新相当快，升级无缝。基本上一次安装就可以一直工作，没有 UBUNTU 那样的版本概念。专业点叫滚动升级，让你的系统保持最新。缺点很明显，不稳定。同时安装配置也比 Debian 麻烦。</li>
-<li>比 Arch 更难的 Gentoo，考验用户的综合水平。从系统安装到微调，内核编译都是手把手。是高手和黑客展示自己技术手段，按需配置符合自己要求的系统的首选。</li>
-</ol>
-<p><strong>Slackware 与 Gentoo 类似：</strong></p>
-<p>社区维护的 RedHat 的副本 CentOS，完全是用 RedHat 的源代码重新编译的，理论上和 RedHat 的兼容性是最好的。如果你专注于 Linux 服务器，比如网络管理和网站建设，那么 CentOS 就是你的选择。</p>
-<p>LFS，终极黑客炫耀工具，完全从源代码安装编译系统。在安装之前，您只能获得一个文档。您所要做的就是按照文档中的说明，一步一步，一个订单一个订单地，一个一个地构建您的 Linux 包。完全在你的掌控之中，你想要什么就有什么。如果你制作了 LFS，那就证明你的 Linux 技术相当不错。如果你能借鉴 LFS 文档，把 Linux 从源代码移植到嵌入式系统，我敢说你能在中国企业做得很好。</p>
-<p>你得挑一个适合自己的系统，然后装在虚拟机里开始用。如果你想快速学习 Linux，我有一个建议，你应该忘记图形界面。不要去想图形界面能不能为你的问题提供答案，而是去世界各地寻找，询问如何用命令行解决你的问题。在这个过程中，你最好掌握好 Linux 的命令，至少要知道常用的命令，同时要建立自己的知识库，里面包含了你积累的知识。</p>
-<p>下一阶段需要学习 Linux 平台的 C++/C++ 开发，以及 Bash 脚本编程，如果对 Java 有很深的兴趣，还需要学习 Java。同样，我建议你抛弃图形界面的 IDE，从 VIM 开始。为什么是 VIM 而不是 Emacs？我无意挑起编辑器大战，但我认为 VIM 适合新手和手笨脑慢的开发者。Emacs 的按键太多，太复杂，我很害怕。然后是 GCC，Make，Eclipse(Java，C++ 或者)。虽然 Eclipse 中列出了 C++，但是我不建议用 IDE 开发 C++，因为这不是 Linux 的文化，你很容易忽略一些应该注意的问题。IDE 让你懒的跟猪一样懒。如果你对程序调试和测试感兴趣，你必须学好 GDB。如果不是 GDB，这也是一门必修课。这是发展的第一步。注意，我没有提到任何关于 Linux API 的东西，现阶段也不关心这个。你要做的就是积累经验，Linux 平台开发的经验。我推荐的书如下:《C 语言编程》，或者谭浩强的。c，白皮书当然更好。++C++ Primer Plus 是 C 推荐的，我不喜欢 Java，所以不推荐。工具推荐 VIM 的官方手册，GCC 中文文档，GDB 中文文档，GNU 开源软件开发指南 (电子书)，汇编语言编程 (让你对库，链接，嵌入式汇编，编译器优化选项有个初步的了解，不深入)。</p>
-<p>如果过不了这个阶段，就不用做了。这是底线，也是最基本的基础。否则，离开，不要开发 Linux。不专业的 Linux 开发者做出来的程序与 Linux 文化或者 UNIX 文化相悖，程序走不了多远，也不可能像 Bash、VIM 这样神奇的产品。所以做不好就走人。</p>
-<p>接下来进入 Linux 系统编程，唯一的选择，APUE，UNIX 环境下的高级编程。反复读，10 遍太少。如果你在大学能把这本书砸了，里面的内容都练过了，有作品，口语表达能力足够强，面试的时候就能说服所有考官。(可能有点夸张，但 APUE 绝对是圣经读物，连 Windows 程序员都从中汲取养分。谷歌创始人的案头书，扎伯克的床头读物。)</p>
-<p>看完这本书，你会对 Linux 系统编程有很好的了解。Linux 和 Windows 平台有什么区别？它们的优缺点是什么？我的总结如下: Windows 平台开发难。微软的系统 API 一直在扩展。如果你想使用最新最高效的功能，你必须时刻学习最适合当前流行系统的功能。不，Linux 有大约 100 个核心 API，所以你可以用很好的记忆力记住它们。而且会长期不变。为什么不呢？因为它兼容 UNIX，符合 POSIX 标准。因此，Linux 平台的开发大多集中在底层或服务器编程上。这是它的优势。当然图形是 Linux 的软肋，但从一个开发者的角度来说，我不在乎，因为我也能适应命令行。如果有更好的图形界面，我会把它作为礼物。另外，Windows 是关闭的，你甚至不知道系统做了什么。你将永远被微软牵着鼻子走。想想吧。如果微软说 Win8 不支持 QQ，腾讯也不会哭死。而且 Linux 是完全开源的。如果不喜欢，可以自己改，只要足够熟练。另外，虽然 Windows 使用的人很多，但是使用的场合比较单一，以桌面为主。Linux 各方面都有发展，尤其是云计算、服务器软件、嵌入式领域、企业应用，兼容性一流。由于 POSIX 可以在 UNIX 系统上无缝运行，因此 Apple Mac 和 IBM AS400 系列都完全支持它。另外，Linux 的开发环境支持绝对一流，无论是 C/C++，Java，Bash，Python，PHP，Javascript，。。。。。。连 C# 都支持。而且微软除了 Visual Stdio 套件都不太友好吧？</p>
-<p>如果你看了 APUE 后有很多感触，想验证你的一些想法或经验，推荐 UNIX 编程艺术，世界顶尖黑客将与你分享他们的观点。现在是时候转移注意力了。总的来说，我分为四个方向: 网络、图形、嵌入式、设备驱动。</p>
-<p>如果选择网络，细分的话，其他的不太熟悉，只说服务器软件编写和高性能并发程序编写。相对来说，这是网络编程中技术含量最高的，也是最底层的。需要很多经验，看很多书，做很多项目。</p>
-<p><strong>我的看法是以下面的顺序来看书：</strong></p>
-<ol>
-<li>APUE 的深度阅读——尤其是进程、线程、IPC、套接字</li>
-<li>多核编程——Pthread 一定要吃透，你是 NB</li>
-<li>UNIX 网络编程–第 1 卷，第 2 卷</li>
-<li>TCP/IP 网络详解——是时候再看一遍以上两本书了。</li>
-<li>TCP/IP 网络的详细说明–第 2 卷。我觉得看第二卷就差不多了。当然，最好还是看第三卷。尽力去看吧。</li>
-<li>Lighttpd 源代码——这个服务器也很有名。</li>
-<li>NGX 源代码——与 Apache 相比，Nginx 的源代码更少。如果能大致看一下，就是 NB 了。看源码主要是学习里面的 socket 编程和并发控制，想想就激动。如果你有这些技能，你可以试试给暴雪发简历，给他们写服务器后台，以为全世界的魔兽都运行在你的服务器软件上。</li>
-<li>Linux 内核 TCP/IP 协议栈——深入了解 TCP/IP 实现</li>
-<li>如果还是喜欢驱动设计，可以看看底层协议，比如链路层。给路由器，网卡，网络设备，嵌入式系统软件写驱动应该不是问题。当然，一般的网络公司，哪怕是百度级别的，都应该毫不犹豫的录用你。看后面的书只需要时间和经验，所以 35 岁之前就做吧！跳槽到给你未来的地方！</li>
-</ol>
-<p><strong>图形方向，我觉得图形方向也是很有前途的，以下几个方面：</strong></p>
-<p>Opengl 的工业和游戏开发在国外已经比较成熟。</p>
-<p>动画特效，比如皮克斯，在国外也比较成熟。</p>
-<p>GPU 计算技术可以应用于浏览器网页渲染和 GPU 计算资源利用。因为开源，所以有很多文档程序可以参考。如果能进入火狐开发，或者谷歌做浏览器开发，应该很不错。</p>
-<p><strong>嵌入式方向：嵌入式方向没说的，Linux 很重要</strong></p>
-<p>掌握多种架构，不仅仅是 X86，ARM，MCU 等。必须理解。如果你不懂硬件，我预见你会死在路上，我也想往嵌入式方向走，但是我觉得就算是学电子的学生也比不过学校教嵌入式的方式。我劝你，做之前一定要了解硬件。如果你去做嵌入式应用开发，只能祝你好运了。不要碰上诺基亚、惠普这样的公司，否则你会很惨。</p>
-<p>驱动设计: 软件开发周期很长，硬件不一样，很快。每个月都有这么多新硬件诞生，如何让它们在 Linux 上工作是你的工作。因为 Linux 兼容性好，如果不是太低级的驱动，基本的 C 语言就可以了，系统架构影响不大。由于系统支持，您可能可以在 ARM 上使用 PC 硬件，但需要做一些更改。所以硬件驱动开发不像嵌入式，对硬件知识要求很高。可能的方向很多，比如家电，特别是像索尼、日立、希捷、富士康这样的工厂，比较稀缺。</p>
-<h2 id="四，学习-Linux-内核"><a class="header-anchor" href="#四，学习-Linux-内核">¶</a><strong>四，学习 Linux 内核</strong></h2>
-<p>学习 linux 内核不像学习语言。一个月或者三月就能掌握 C 或者 java。学习 linux 内核需要循序渐进，掌握正确的 linux 内核学习路线非常重要。本文将分享一些学习 linux 内核的建议。</p>
-<ol>
-<li>
-<p>了解操作系统的基本概念。如果没有，可以学习《操作系统: 设计与实现》，Andrew S.Tanenbaum 写的那本，以 MINIX 为例解释操作系统的概念。非常推荐。</p>
-</li>
-<li>
-<p>有了操作系统的基本概念，你就可以理解 Linux 的机制了。推荐罗伯特 · 拉芙写的 Linux 内核设计与实现。这本书从概念上解释了 Linux 有什么以及它是如何工作的。这本书应该反复仔细阅读。</p>
-</li>
-<li>
-<p>有了 Linux 内核的知识，我们还需要具体学习 Linux 内核源代码。经典的是丹尼尔 ·p· 博韦特写的《深入理解 Linux 内核》。学习这本书的时候，要看看内核代码。这本书学起来挺费劲的，所以有很多代码要研究。但是，如果这本书很好理解，那么恭喜你，你已经对 Linux 内核很熟悉了。</p>
-</li>
-<li>
-<p>如果你想开发设备驱动，可以向 O 'Reilly Press 学习 Linux 设备驱动。这本书是驾驶入门的好材料。还有一本很好的教材，精通 Linux 驱动开发，可以参考一下。开车，难免要学习一些硬件协议和资料。如果你研究的是哪一种，可以找相应的硬件文档，了解硬件的工作原理。这些我就不细说了。</p>
-</li>
-<li>
-<p>网络部分，学习一些 Linux 网络部分学习《深入了解 LINUX 网络技术内幕》。这本书把 Linux 的网络部分讲得非常清楚透彻。不过我们一般不做这方面的研究，也不需要做那么多研究。毕竟现在相关岗位很少。</p>
-</li>
-<li>
-<p>现在 Linux 相关的工作大多集中在一些嵌入式开发领域，如 arm、mips 等。你要学习以下关于架构的信息，了解 CPU 的设计和工作模式。看看 ARM 对应的芯片手册就知道了，很详细的。mips 随便看看 MIPS 运行，有一两个版本。两个版本有些区别，建议全看。</p>
-</li>
-<li>
-<p>补充一点经验。不要以为 Linux 庞大复杂，就很难学。认真学习，什么都可以学。就看你的毅力和恒心了。另外，不要走弯路，不要看市面上那些讲 Linux0.11 的书，学你想学的就好。就像学 C 语言看谭浩强一样，走弯路，费力气，严重影响学习效果。</p>
-</li>
-</ol>
-<p><strong>关于 linux 内核学习路线，再多说几句应用编程，有时候经常会需要的：</strong></p>
-<ol>
-<li>
-<p>学习 Linux 应用编程，建议看《unix 环境高级编程》，把里面的例子都做一遍，会对整个 Linux 编程有系统都认识。</p>
-</li>
-<li>
-<p>针对 Linux，有本 《Linux 系统编程》，学完上一本，这本很快看一遍就懂了。主要是针对 Linux 具体懂一些内容，讲的挺全了，很实用。</p>
-</li>
-<li>
-<p>Linux 网络编程，系统的学习一下《unix 网络编程。卷 1，套接字联网 api》，基本上网络应用相关的程序就都没问题了。</p>
-</li>
-</ol>
-<p>这些内容，分几年时间，分步计划学习，就会成为 Linux 高手了。个人建议参加零声教育的培训，学习效率会高很多，有目的性的参加培训，缩短周期，快速成型才是时代所需。</p>
-<p><strong>官方地址：</strong><a href="https://link.zhihu.com/?target=https%3A//ke.qq.com/course/4032547%3FflowToken%3D1040236" target="_blank" rel="noopener">Linux 内核源码 / 内存调优 / 文件系统 / 进程管理 / 设备驱动 / 网络协议栈 - 学习视频教程 - 腾讯课堂</a></p>
-<p><strong>以上就是 Linux 内核学习路线，关于学习 Linux 内核的建议，希望对小伙伴们有帮助。</strong></p>
-<p><img src="https://pic3.zhimg.com/v2-937a1ab104f7526be077ec69d7c41c42_b.gif" alt></p>
-]]></content>
-      <categories>
-        <category>linux</category>
-      </categories>
-      <tags>
-        <tag>linux</tag>
       </tags>
   </entry>
   <entry>
