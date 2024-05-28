@@ -1090,107 +1090,6 @@ t   -=   (unsigned   long)GetCycleCount();</p>
       </tags>
   </entry>
   <entry>
-    <title>linux代理的使用</title>
-    <url>/public/2018/07/24/linux/linux_proxy/</url>
-    <content><![CDATA[<h2 id="前言"><a class="header-anchor" href="#前言">¶</a>前言</h2>
-<p>最近要下载一个在youtube上的数据库，用来训练神经网络。走国内通道下载比较慢。于是，我使用了vps代理方式下载，速度取决于你的机器连接vps的网速。本文的主要内容有，实现shadowsocks 代理 ，tsocks 代理工具使用，可组合使用的一些下载工具如wget 和axel等。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 举个栗子</span></span><br><span class="line">$ tsocks wget -c https://www.dropbox.com/s/minpyv59crdifk9/datasets.zip</span><br></pre></td></tr></table></figure>
-<p>嗯嗯，这个速度还不错！</p>
-<center><img src="/public/2018/07/24/linux/linux_proxy/1565246896718.png" width="60%">
-</center>
-<p><strong>声明</strong>：本文以科学研究为目的，请勿滥用。</p>
-<a id="more"></a>
-<h2 id="1-Shadowsocks"><a class="header-anchor" href="#1-Shadowsocks">¶</a>1 Shadowsocks</h2>
-<p><strong>Shadowsocks</strong>是一个轻量级socks5代理工具。在linux平台，我们可使用 python 提供的包管理工具 pip <strong>安装 Shadowsocks</strong> ，如下。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># pip 安装 Shadowsocks</span></span><br><span class="line">$ pip install shadowsocks</span><br><span class="line"></span><br><span class="line"><span class="comment"># 或者</span></span><br><span class="line">$ pip install git+https://github.com/shadowsocks/shadowsocks.git@master</span><br></pre></td></tr></table></figure>
-<p>pip安装完之后，可能要重启终端，我们就有ssserver和sslocal小工具了。下面配置server或者client。一般，server配置在国外的vps上，client配置在本地国内机器上。</p>
-<p>PS：其他平台安装 参考 shadowsocks官方 <a href="https://github.com/shadowsocks/shadowsocks/tree/master#install" target="_blank" rel="noopener">install</a></p>
-<h3 id="1-1-配置-Shadowsocks-server"><a class="header-anchor" href="#1-1-配置-Shadowsocks-server">¶</a>1.1 配置 Shadowsocks server</h3>
-<p>按下面的三步走，即可。</p>
-<ul>
-<li>
-<p>通过ssh连接到（Virtual Private Server）vps上，或者本地打开终端。</p>
-</li>
-<li>
-<p>新建一个<strong>server_shadowsocks.json</strong>文件，内容如下：</p>
-</li>
-</ul>
-<figure class="highlight json"><table><tr><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"server"</span>:<span class="string">"0.0.0.0"</span>,</span><br><span class="line">    <span class="attr">"server_port"</span>:<span class="number">443</span>,</span><br><span class="line">    <span class="attr">"local_address"</span>: <span class="string">"127.0.0.1"</span>,</span><br><span class="line">    <span class="attr">"local_port"</span>:<span class="number">1080</span>,</span><br><span class="line">    <span class="attr">"password"</span>:<span class="string">"密码"</span>,</span><br><span class="line">    <span class="attr">"timeout"</span>:<span class="number">300</span>,</span><br><span class="line">    <span class="attr">"method"</span>:<span class="string">"aes-256-cfb"</span>,</span><br><span class="line">    <span class="attr">"fast_open"</span>: <span class="literal">false</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>执行<code>ssserver -c server_shadowsocks.json</code></li>
-</ul>
-<p>说一点: 由于我们的下载任务是临时的，开个screen（终端复用工具）放在后台。当然你也可以设置为开机自启动，这里不再赘述。</p>
-<h3 id="1-2-配置-Shadowsocks-client"><a class="header-anchor" href="#1-2-配置-Shadowsocks-client">¶</a>1.2 配置 Shadowsocks client</h3>
-<ul>
-<li>
-<p>通过ssh连接到机器上，或者本地打开终端。</p>
-</li>
-<li>
-<p>新建文件 <strong>client_shadowsocks.json</strong></p>
-</li>
-</ul>
-<figure class="highlight json"><table><tr><td class="code"><pre><span class="line">&#123;</span><br><span class="line">        <span class="attr">"server"</span>:<span class="string">"服务器ip或域名"</span>,</span><br><span class="line">        <span class="attr">"server_port"</span>:<span class="number">443</span>,</span><br><span class="line">        <span class="attr">"local_address"</span>:<span class="string">"127.0.0.1"</span>,</span><br><span class="line">        <span class="attr">"local_port"</span>:<span class="number">1280</span>,</span><br><span class="line">        <span class="attr">"password"</span>:<span class="string">"密码"</span>,</span><br><span class="line">        <span class="attr">"timeout"</span>:<span class="number">300</span>,</span><br><span class="line">        <span class="attr">"method"</span>:<span class="string">"aes-256-cfb"</span>,</span><br><span class="line">        <span class="attr">"fast_open"</span>:<span class="literal">false</span>,</span><br><span class="line">        <span class="attr">"workers"</span>:<span class="number">1</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>执行<code>sslocal -c client_shadowsocks.json</code>。</li>
-</ul>
-<p>说一点：推荐使用screen方式放在后台。当然也可以使用-d 参数放在后台运行。
-<code>sslocal -c client_shadowsocks.json -d start</code></p>
-<h2 id="2-tsocks"><a class="header-anchor" href="#2-tsocks">¶</a>2 tsocks</h2>
-<p>有些linux工具可能没有proxy的代理功能，或者不支持sock5代理，而用tsocks可以很好的解决这些问题。<strong>tsocks</strong> 是个终端代理工具，可以直接连接shadowsocks提供socks 5代理端口，有点类似于proxychains。</p>
-<p>下面简单介绍下安装与使用：</p>
-<ul>
-<li>安装<strong>tsocks</strong>
-<ul>
-<li>linux安装tsocks 命令：<code>apt install tsocks</code></li>
-<li>mac 安装参考 <a href="https://github.com/Anakros/homebrew-tsocks" target="_blank" rel="noopener">homebrew-tsocks</a></li>
-</ul>
-</li>
-<li>开启上面Shadowsocks的client放在后台。</li>
-<li>修改tsocks 配置文件，在 <code>/etc/tsocks.conf</code>  文件的最后添加：</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">local = 192.168.1.0/255.255.255.0</span><br><span class="line">server = 127.0.0.1</span><br><span class="line">server_type = 5</span><br><span class="line">server_port = 1080</span><br></pre></td></tr></table></figure>
-<h2 id="3-Demo：代理使用"><a class="header-anchor" href="#3-Demo：代理使用">¶</a>3 Demo：代理使用</h2>
-<h3 id="3-1-使用-tsocks"><a class="header-anchor" href="#3-1-使用-tsocks">¶</a>3.1 使用 tsocks</h3>
-<p>在所需代理的命令前加个tsocks就行，如：
-<code>tsocks wget -c xxxx</code>,<code>tsocks axel -n 10 -av xxxx</code>,<code>tsocks curl xxx</code></p>
-<h3 id="3-2-使用-youtube-dl"><a class="header-anchor" href="#3-2-使用-youtube-dl">¶</a>3.2 使用 youtube-dl</h3>
-<p>youtube-dl是批量下载youtube视频的好工具。youtube-dl 可以指定 proxy，<strong>可以不使用tsocks</strong>。</p>
-<ul>
-<li>安装youtube-dl</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">pip install --upgrade youtube-dl</span><br></pre></td></tr></table></figure>
-<ul>
-<li>
-<p>使用举个例子</p>
-<ul>
-<li>下载youtube视频</li>
-</ul>
-  <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">URL=https://www.youtube.com/playlist?list=PLLbeS1kM6teJqdFzw1ICHfa4a1y0hg8Ax</span><br><span class="line">./youtube-dl --proxy socks5://127.0.0.1:1280 $&#123;URL&#125;</span><br><span class="line"># 在 client_shadowsocks.json 的 local_port 设置为1280，这儿也为1280</span><br></pre></td></tr></table></figure>
-<ul>
-<li>下载里面的mp3</li>
-</ul>
-  <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">youtube-dl -x --audio-format mp3 https://www.youtube.com/watch?v=xpVfcZ0ZcFM</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<p><strong>youtube-dl 中待解决的问题？</strong>
-想只下载一个视频中的一部分，不用下载整个视频，太费vps流量了。暂未找到解决办法，我找到的一个跟问题很相似的issue，有朋友会整的，望告诉一下。<a href="https://github.com/rg3/youtube-dl/issues/4821" target="_blank" rel="noopener">is it possible to download only desired time interval?</a></p>
-<h3 id="3-3-使用-axel"><a class="header-anchor" href="#3-3-使用-axel">¶</a>3.3 使用 axel</h3>
-<p>axel多线程下载。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">tsocks axel -n 3 -a https://www.dropbox.com/s/minpyv59crdifk9/datasets.zip</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">-n 3 : 3个线程下载</span><br><span class="line">-a   : 有个进度条</span><br></pre></td></tr></table></figure>
-<p>其他方式：下载脚本 <a href="http://axel-bash.sh" target="_blank" rel="noopener">axel-bash.sh</a></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#!/bin/sh -e  </span></span><br><span class="line"><span class="comment"># usage:  ./axel-batch.sh the-download-url.list  </span></span><br><span class="line">cat <span class="variable">$1</span> | <span class="keyword">while</span> <span class="built_in">read</span> LINE  </span><br><span class="line"><span class="keyword">do</span>  </span><br><span class="line">	<span class="keyword">if</span> [ -n <span class="string">"<span class="variable">$LINE</span>"</span> ]; <span class="keyword">then</span>  </span><br><span class="line">	axel -n 3 -a `<span class="built_in">echo</span> <span class="variable">$LINE</span>`  </span><br><span class="line">	<span class="keyword">fi</span>  </span><br><span class="line"><span class="keyword">done</span></span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>Linux</category>
-      </categories>
-      <tags>
-        <tag>工具</tag>
-        <tag>linux</tag>
-        <tag>proxy</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>个人主页搭建</title>
     <url>/public/2016/12/22/build_blog/</url>
     <content><![CDATA[<h2 id="前言"><a class="header-anchor" href="#前言">¶</a>前言</h2>
@@ -1984,6 +1883,91 @@ nbextensions的教程<a href="https://jupyter-contrib-nbextensions.readthedocs.i
         <tag>工具</tag>
         <tag>Python</tag>
         <tag>笔记应用</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Ubuntu的优化与设置</title>
+    <url>/public/2017/05/22/linux/ubuntu/</url>
+    <content><![CDATA[<h1></h1>
+<h2 id="前言"><a class="header-anchor" href="#前言">¶</a>前言</h2>
+<ul>
+<li>
+<h2 id="窗口颜色设置浅绿色"><a class="header-anchor" href="#窗口颜色设置浅绿色">¶</a>窗口颜色设置浅绿色</h2>
+   <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">cd /usr/share/themes/Ambiance/gtk-3.0</span><br><span class="line">sudo gedit gtk-main.css</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="2-常用环境"><a class="header-anchor" href="#2-常用环境">¶</a>2  常用环境</h2>
+<ul>
+<li>
+<h2 id="安装jdk"><a class="header-anchor" href="#安装jdk">¶</a>安装jdk</h2>
+   <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># add java path</span></span><br><span class="line"><span class="built_in">export</span> JAVA_HOME=/usr/<span class="built_in">local</span>/java/jdk1.7</span><br><span class="line"><span class="built_in">export</span> JRE_HOME=<span class="variable">$&#123;JAVA_HOME&#125;</span>/jre</span><br><span class="line"><span class="built_in">export</span> CLASSPATH=.:<span class="variable">$&#123;JAVA_HOME&#125;</span>/lib:<span class="variable">$&#123;JRE_HOME&#125;</span>/lib</span><br><span class="line"><span class="built_in">export</span> PATH=<span class="variable">$&#123;JAVA_HOME&#125;</span>/bin:<span class="variable">$PATH</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="3-安装软件"><a class="header-anchor" href="#3-安装软件">¶</a>3 安装软件</h2>
+<ul>
+<li>
+<h2 id="在线软件安装"><a class="header-anchor" href="#在线软件安装">¶</a>在线软件安装</h2>
+   <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 备份源列表地址</span></span><br><span class="line">sudo cp /etc/apt/sources.list /etc/apt/sources.list_backup</span><br><span class="line"><span class="comment"># 修改</span></span><br><span class="line">sudo vim /etc/apt/sources.list</span><br></pre></td></tr></table></figure>
+<ul>
+<li>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 更新源</span></span><br><span class="line">apt-get update</span><br><span class="line">apt-get install xxx</span><br><span class="line"></span><br><span class="line"><span class="comment"># 包search</span></span><br><span class="line">apt-cache search xxx</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li>
+<h2 id="deb本地软件安装"><a class="header-anchor" href="#deb本地软件安装">¶</a>deb本地软件安装</h2>
+   <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 安装deb包命令</span></span><br><span class="line">dpkg -i *.deb</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 如果缺少依赖执行</span></span><br><span class="line">apt-get -f install</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="4-常用软件"><a class="header-anchor" href="#4-常用软件">¶</a>4 常用软件</h2>
+<ul>
+<li>
+<p>mpv播放器</p>
+</li>
+<li>
+<p>有道字典</p>
+</li>
+<li>
+<h2 id="atom"><a class="header-anchor" href="#atom">¶</a>atom</h2>
+   <figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-tag">atom-pane</span> &#123;</span><br><span class="line"><span class="attribute">font-size</span>: <span class="number">16px</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.command-palette</span> &#123;</span><br><span class="line"><span class="attribute">font-size</span>: <span class="number">16px</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<h2 id="图标设置"><a class="header-anchor" href="#图标设置">¶</a>图标设置</h2>
+   <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">cd /usr/share/applications</span><br><span class="line">vim eclipse.desktop</span><br></pre></td></tr></table></figure>
+<ul>
+<li>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">!/usr/bin/env xdg-open</span></span><br><span class="line"></span><br><span class="line">[Desktop Entry]</span><br><span class="line">Version=22.0</span><br><span class="line">Name=eclipse</span><br><span class="line">Exec=/home/gtc/Android/adt-bundle-linux/eclipse/eclipse</span><br><span class="line">Terminal=false</span><br><span class="line">Icon=/home/gtc/Android/adt-bundle-linux/eclipse/icon.xpm</span><br><span class="line">Type=Application</span><br><span class="line">Categories=Development</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="设备使用率指示"><a class="header-anchor" href="#设备使用率指示">¶</a>设备使用率指示</h3>
+<p><a href="https://github.com/fossfreedom/indicator-sysmonitor" target="_blank" rel="noopener">https://github.com/fossfreedom/indicator-sysmonitor</a></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> gi</span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    gi.require_version(<span class="string">'AyatanaAppIndicator3'</span>, <span class="string">'0.1'</span>)</span><br><span class="line">    <span class="keyword">from</span> gi.repository <span class="keyword">import</span> AyatanaAppIndicator3 <span class="keyword">as</span> appindicator</span><br><span class="line"><span class="keyword">except</span> ValueError:</span><br><span class="line">    gi.require_version(<span class="string">'AppIndicator3'</span>, <span class="string">'0.1'</span>)</span><br><span class="line">    <span class="keyword">from</span> gi.repository <span class="keyword">import</span> AppIndicator3 <span class="keyword">as</span> appindicator</span><br></pre></td></tr></table></figure>
+<p>apt install gir1.2-ayatanaappindicator3-0.1</p>
+<h2 id="5-其他优化"><a class="header-anchor" href="#5-其他优化">¶</a>5 其他优化</h2>
+<ul>
+<li>
+<h2 id="关闭错误报告"><a class="header-anchor" href="#关闭错误报告">¶</a>关闭错误报告</h2>
+   <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 关闭烦人的错误报告</span></span><br><span class="line">sudo gedit /etc/default/apport</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<h2 id="CPU-100-占用"><a class="header-anchor" href="#CPU-100-占用">¶</a>CPU 100%占用</h2>
+   <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">cd /usr/lib/gvfs</span><br><span class="line"><span class="meta">#</span><span class="bash"> 将gvfsd-smb-brows权限改成744，取消普通用户的执行权限，</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 也挺有意思，暂时没引发别的问题</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="smb"><a class="header-anchor" href="#smb">¶</a>smb</h2>
+<p>apt-get install samba
+vim /etc/samba/smb.conf
+service smbd restart
+smbpasswd -a xxx</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">vfs objects = catia fruit streams_xattr</span><br><span class="line">fruit:nfs_aces = no</span><br><span class="line"></span><br><span class="line">[share]</span><br><span class="line">path = /home/talen/share</span><br><span class="line">valid users = talen</span><br><span class="line">available = yes</span><br><span class="line">browseable = yes</span><br><span class="line">writable = yes</span><br><span class="line">public = no</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>Linux</category>
+      </categories>
+      <tags>
+        <tag>技巧</tag>
+        <tag>Ubuntu</tag>
       </tags>
   </entry>
   <entry>
@@ -2843,11 +2827,11 @@ markdate:2023-09-22 05:29:59.547928</p>
   <entry>
     <title>「202310月度汇报」auto report</title>
     <url>/public/2023/10/15/test/202310/</url>
-    <content><![CDATA[<a id="more"></a>
-<h2 id="统计-✅-0-📅-0-🔖-0"><a class="header-anchor" href="#统计-✅-0-📅-0-🔖-0">¶</a>=&gt; 统计 ✅ : 0 📅 : 0 🔖 : 0</h2>
+    <content><![CDATA[<h2 id="统计-✅-0-📅-0-🔖-0"><a class="header-anchor" href="#统计-✅-0-📅-0-🔖-0">¶</a>=&gt; 统计 ✅ : 0 📅 : 0 🔖 : 0</h2>
 <h3 id="✅-0"><a class="header-anchor" href="#✅-0">¶</a>✅ : 0</h3>
 <h3 id="📅-0"><a class="header-anchor" href="#📅-0">¶</a>📅 : 0</h3>
 <h3 id="🔖-0"><a class="header-anchor" href="#🔖-0">¶</a>🔖 : 0</h3>
+<a id="more"></a>
 <h2 id="ttrss标记个数-6"><a class="header-anchor" href="#ttrss标记个数-6">¶</a>=&gt; ttrss标记个数: 6</h2>
 <h3 id="四个-All-in-One-工具，帮我优化工作与生活流程"><a class="header-anchor" href="#四个-All-in-One-工具，帮我优化工作与生活流程">¶</a><a href="https://sspai.com/post/83315" target="_blank" rel="noopener">四个 All-in-One 工具，帮我优化工作与生活流程</a></h3>
 <p>pubdata:2023-10-10 03:47:30
@@ -2878,11 +2862,11 @@ markdate:2023-10-19 04:36:51.693584</p>
   <entry>
     <title>「202311月度汇报」auto report</title>
     <url>/public/2023/11/15/test/202311/</url>
-    <content><![CDATA[<a id="more"></a>
-<h2 id="统计-✅-0-📅-0-🔖-0"><a class="header-anchor" href="#统计-✅-0-📅-0-🔖-0">¶</a>=&gt; 统计 ✅ : 0 📅 : 0 🔖 : 0</h2>
+    <content><![CDATA[<h2 id="统计-✅-0-📅-0-🔖-0"><a class="header-anchor" href="#统计-✅-0-📅-0-🔖-0">¶</a>=&gt; 统计 ✅ : 0 📅 : 0 🔖 : 0</h2>
 <h3 id="✅-0"><a class="header-anchor" href="#✅-0">¶</a>✅ : 0</h3>
 <h3 id="📅-0"><a class="header-anchor" href="#📅-0">¶</a>📅 : 0</h3>
 <h3 id="🔖-0"><a class="header-anchor" href="#🔖-0">¶</a>🔖 : 0</h3>
+<a id="more"></a>
 <h2 id="ttrss标记个数-13"><a class="header-anchor" href="#ttrss标记个数-13">¶</a>=&gt; ttrss标记个数: 13</h2>
 <h3 id="活久见，跨平台快速启动工具-Wox-v2-0-0-更新｜“Alfred-和-Launchy-替代品”"><a class="header-anchor" href="#活久见，跨平台快速启动工具-Wox-v2-0-0-更新｜“Alfred-和-Launchy-替代品”">¶</a><a href="https://www.appinn.com/wox-v2-0-0-alpha-1/" target="_blank" rel="noopener">活久见，跨平台快速启动工具 Wox v2.0.0 更新｜“Alfred 和 Launchy 替代品”</a></h3>
 <p>pubdata:2023-10-31 04:34:27
@@ -2969,11 +2953,11 @@ markdate:2023-12-25 04:16:04.061410</p>
   <entry>
     <title>「202401月度汇报」auto report</title>
     <url>/public/2024/01/15/test/202401/</url>
-    <content><![CDATA[<a id="more"></a>
-<h2 id="统计-✅-0-📅-0-🔖-0"><a class="header-anchor" href="#统计-✅-0-📅-0-🔖-0">¶</a>=&gt; 统计 ✅ : 0 📅 : 0 🔖 : 0</h2>
+    <content><![CDATA[<h2 id="统计-✅-0-📅-0-🔖-0"><a class="header-anchor" href="#统计-✅-0-📅-0-🔖-0">¶</a>=&gt; 统计 ✅ : 0 📅 : 0 🔖 : 0</h2>
 <h3 id="✅-0"><a class="header-anchor" href="#✅-0">¶</a>✅ : 0</h3>
 <h3 id="📅-0"><a class="header-anchor" href="#📅-0">¶</a>📅 : 0</h3>
 <h3 id="🔖-0"><a class="header-anchor" href="#🔖-0">¶</a>🔖 : 0</h3>
+<a id="more"></a>
 <h2 id="ttrss标记个数-8"><a class="header-anchor" href="#ttrss标记个数-8">¶</a>=&gt; ttrss标记个数: 8</h2>
 <h3 id="Qwerty-Learner-–-目的不纯的在线打字练习工具：英语、日语、德语，Phthon、C-、AI、Go、Java"><a class="header-anchor" href="#Qwerty-Learner-–-目的不纯的在线打字练习工具：英语、日语、德语，Phthon、C-、AI、Go、Java">¶</a><a href="https://www.appinn.com/qwerty-learner/" target="_blank" rel="noopener">Qwerty Learner – 目的不纯的在线打字练习工具：英语、日语、德语，Phthon、C++、AI、Go、Java</a></h3>
 <p>pubdata:2024-01-01 09:14:41
@@ -3010,11 +2994,11 @@ markdate:2024-01-23 01:13:09.112519</p>
   <entry>
     <title>「202402月度汇报」auto report</title>
     <url>/public/2024/02/15/test/202402/</url>
-    <content><![CDATA[<a id="more"></a>
-<h2 id="统计-✅-0-📅-0-🔖-0"><a class="header-anchor" href="#统计-✅-0-📅-0-🔖-0">¶</a>=&gt; 统计 ✅ : 0 📅 : 0 🔖 : 0</h2>
+    <content><![CDATA[<h2 id="统计-✅-0-📅-0-🔖-0"><a class="header-anchor" href="#统计-✅-0-📅-0-🔖-0">¶</a>=&gt; 统计 ✅ : 0 📅 : 0 🔖 : 0</h2>
 <h3 id="✅-0"><a class="header-anchor" href="#✅-0">¶</a>✅ : 0</h3>
 <h3 id="📅-0"><a class="header-anchor" href="#📅-0">¶</a>📅 : 0</h3>
 <h3 id="🔖-0"><a class="header-anchor" href="#🔖-0">¶</a>🔖 : 0</h3>
+<a id="more"></a>
 <h2 id="ttrss标记个数-7"><a class="header-anchor" href="#ttrss标记个数-7">¶</a>=&gt; ttrss标记个数: 7</h2>
 <h3 id="如何为-Apple-ID-和-iCloud-资料「搬家」：我的迁移经历以及经验分享"><a class="header-anchor" href="#如何为-Apple-ID-和-iCloud-资料「搬家」：我的迁移经历以及经验分享">¶</a><a href="https://sspai.com/post/85912" target="_blank" rel="noopener">如何为 Apple ID 和 iCloud 资料「搬家」：我的迁移经历以及经验分享</a></h3>
 <p>pubdata:2024-01-25 07:20:39
@@ -3048,11 +3032,11 @@ markdate:2024-02-16 01:32:26.123169</p>
   <entry>
     <title>「202403月度汇报」auto report</title>
     <url>/public/2024/03/15/test/202403/</url>
-    <content><![CDATA[<a id="more"></a>
-<h2 id="统计-✅-0-📅-0-🔖-0"><a class="header-anchor" href="#统计-✅-0-📅-0-🔖-0">¶</a>=&gt; 统计 ✅ : 0 📅 : 0 🔖 : 0</h2>
+    <content><![CDATA[<h2 id="统计-✅-0-📅-0-🔖-0"><a class="header-anchor" href="#统计-✅-0-📅-0-🔖-0">¶</a>=&gt; 统计 ✅ : 0 📅 : 0 🔖 : 0</h2>
 <h3 id="✅-0"><a class="header-anchor" href="#✅-0">¶</a>✅ : 0</h3>
 <h3 id="📅-0"><a class="header-anchor" href="#📅-0">¶</a>📅 : 0</h3>
 <h3 id="🔖-0"><a class="header-anchor" href="#🔖-0">¶</a>🔖 : 0</h3>
+<a id="more"></a>
 <h2 id="ttrss标记个数-8"><a class="header-anchor" href="#ttrss标记个数-8">¶</a>=&gt; ttrss标记个数: 8</h2>
 <h3 id="feeshy-的-10-款自用-Obsidian-第三方插件分享"><a class="header-anchor" href="#feeshy-的-10-款自用-Obsidian-第三方插件分享">¶</a><a href="https://www.appinn.com/feeshy-obsidian-community-plugins/" target="_blank" rel="noopener">@feeshy 的 10+ 款自用 Obsidian 第三方插件分享 </a></h3>
 <p>pubdata:2024-03-04 07:42:05
@@ -3139,6 +3123,82 @@ markdate:2024-04-23 01:16:46.838696</p>
 <h3 id="20-年老牌工具-NetSetMan-更新适配-Windows-11，免费的网卡切换（IP-自动切换）工具"><a class="header-anchor" href="#20-年老牌工具-NetSetMan-更新适配-Windows-11，免费的网卡切换（IP-自动切换）工具">¶</a><a href="https://www.appinn.com/netsetman-5-2-0/" target="_blank" rel="noopener">20 年老牌工具 NetSetMan 更新适配 Windows 11，免费的网卡切换（IP 自动切换）工具</a></h3>
 <p>pubdata:2024-04-22 07:06:28
 markdate:2024-04-23 02:21:54.675191</p>
+]]></content>
+      <categories>
+        <category>月度汇报</category>
+      </categories>
+      <tags>
+        <tag>月度汇报</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>「202405月度汇报」auto report</title>
+    <url>/public/2024/05/15/test/202405/</url>
+    <content><![CDATA[<p>✅ : 0 📅 : 0 🔖 : 0
+ttrss标记个数: 19</p>
+<a id="more"></a>
+<h2 id="统计-✅-0-📅-0-🔖-0"><a class="header-anchor" href="#统计-✅-0-📅-0-🔖-0">¶</a>=&gt; 统计 ✅ : 0 📅 : 0 🔖 : 0</h2>
+<h3 id="✅-0"><a class="header-anchor" href="#✅-0">¶</a>✅ : 0</h3>
+<h3 id="📅-0"><a class="header-anchor" href="#📅-0">¶</a>📅 : 0</h3>
+<h3 id="🔖-0"><a class="header-anchor" href="#🔖-0">¶</a>🔖 : 0</h3>
+<h2 id="ttrss标记个数-19"><a class="header-anchor" href="#ttrss标记个数-19">¶</a>=&gt; ttrss标记个数: 19</h2>
+<h3 id="ServerBox-–-开源免费的全平台服务器监控及SSH客户端"><a class="header-anchor" href="#ServerBox-–-开源免费的全平台服务器监控及SSH客户端">¶</a><a href="https://www.appinn.com/serverbox/" target="_blank" rel="noopener">ServerBox – 开源免费的全平台服务器监控及SSH客户端</a></h3>
+<p>pubdata:2024-05-01 04:32:45
+markdate:2024-05-02 15:27:13.421401</p>
+<h3 id="用-Proxmox-敲开家庭服务器的大门"><a class="header-anchor" href="#用-Proxmox-敲开家庭服务器的大门">¶</a><a href="https://sspai.com/prime/story/proxmox-homelab-guide-1" target="_blank" rel="noopener">用 Proxmox 敲开家庭服务器的大门</a></h3>
+<p>pubdata:2024-05-04 10:05:02
+markdate:2024-05-06 00:19:40.425553</p>
+<h3 id="掌握-Windows-终端命令的基本语法及风格"><a class="header-anchor" href="#掌握-Windows-终端命令的基本语法及风格">¶</a><a href="https://sspai.com/post/78248" target="_blank" rel="noopener">掌握 Windows 终端命令的基本语法及风格</a></h3>
+<p>pubdata:2024-05-05 04:48:38
+markdate:2024-05-06 04:14:51.507385</p>
+<h3 id="Wiki-Journey-–-可视化-Wikipedia-访问记录，转换为思维导图树-Chrome-Firefox"><a class="header-anchor" href="#Wiki-Journey-–-可视化-Wikipedia-访问记录，转换为思维导图树-Chrome-Firefox">¶</a><a href="https://www.appinn.com/wiki-journey/" target="_blank" rel="noopener">Wiki Journey – 可视化 Wikipedia 访问记录，转换为思维导图树[Chrome/Firefox]</a></h3>
+<p>pubdata:2024-05-06 09:03:43
+markdate:2024-05-07 04:14:03.433305</p>
+<h3 id="把宝贵的时间留给佳作，追剧观影少不了这些辅助"><a class="header-anchor" href="#把宝贵的时间留给佳作，追剧观影少不了这些辅助">¶</a><a href="https://sspai.com/post/79491" target="_blank" rel="noopener">把宝贵的时间留给佳作，追剧观影少不了这些辅助</a></h3>
+<p>pubdata:2024-05-02 03:00:15
+markdate:2024-05-07 09:31:48.816102</p>
+<h3 id="什么是笔记的理想形态？个人笔记系统折腾手记"><a class="header-anchor" href="#什么是笔记的理想形态？个人笔记系统折腾手记">¶</a><a href="https://sspai.com/post/87490" target="_blank" rel="noopener">什么是笔记的理想形态？个人笔记系统折腾手记</a></h3>
+<p>pubdata:2024-04-26 03:30:00
+markdate:2024-05-08 02:45:45.863688</p>
+<h3 id="App-1-功能强大的录屏与编辑工具，而且免费：Screenity"><a class="header-anchor" href="#App-1-功能强大的录屏与编辑工具，而且免费：Screenity">¶</a><a href="https://sspai.com/post/87950" target="_blank" rel="noopener">App+1 | 功能强大的录屏与编辑工具，而且免费：Screenity</a></h3>
+<p>pubdata:2024-04-15 03:17:01
+markdate:2024-05-08 03:13:48.218924</p>
+<h3 id="用笔记建立生活的秩序感：我的记录体系搭建方案"><a class="header-anchor" href="#用笔记建立生活的秩序感：我的记录体系搭建方案">¶</a><a href="https://sspai.com/post/85785" target="_blank" rel="noopener">用笔记建立生活的秩序感：我的记录体系搭建方案</a></h3>
+<p>pubdata:2024-03-07 03:31:54
+markdate:2024-05-08 06:23:20.499437</p>
+<h3 id="来一场有准备的国内自驾：线路规划篇"><a class="header-anchor" href="#来一场有准备的国内自驾：线路规划篇">¶</a><a href="https://sspai.com/post/88227" target="_blank" rel="noopener">来一场有准备的国内自驾：线路规划篇</a></h3>
+<p>pubdata:2024-05-09 07:00:05
+markdate:2024-05-10 08:31:20.410806</p>
+<h3 id="群晖配置acme自动更新群晖和服务器证书"><a class="header-anchor" href="#群晖配置acme自动更新群晖和服务器证书">¶</a><a href="https://renyili.org/post/use_acme_update_ssl_certificates/" target="_blank" rel="noopener">群晖配置acme自动更新群晖和服务器证书</a></h3>
+<p>pubdata:2024-05-10 16:01:01
+markdate:2024-05-11 04:24:36.630514</p>
+<h3 id="RustDesk-自建服务器部署和使用教程"><a class="header-anchor" href="#RustDesk-自建服务器部署和使用教程">¶</a><a href="https://icloudnative.io/posts/how-to-set-up-rustdesk-server/" target="_blank" rel="noopener">RustDesk 自建服务器部署和使用教程</a></h3>
+<p>pubdata:2024-05-11 05:04:19
+markdate:2024-05-12 03:02:40.571276</p>
+<h3 id="你管这破玩意叫指针？"><a class="header-anchor" href="#你管这破玩意叫指针？">¶</a><a href="http://zhuanlan.zhihu.com/p/673888668?utm_campaign=rss&amp;utm_medium=rss&amp;utm_source=rss&amp;utm_content=title" target="_blank" rel="noopener">你管这破玩意叫指针？</a></h3>
+<p>pubdata:2024-05-11 03:57:41
+markdate:2024-05-14 01:30:02.203601</p>
+<h3 id="Scrcpy-mask-–-通过’按键映射’，实现模拟器式流畅手游体验：跨平台的电脑控制安卓工具"><a class="header-anchor" href="#Scrcpy-mask-–-通过’按键映射’，实现模拟器式流畅手游体验：跨平台的电脑控制安卓工具">¶</a><a href="https://www.appinn.com/scrcpy-mask/" target="_blank" rel="noopener">Scrcpy-mask – 通过’按键映射’，实现模拟器式流畅手游体验：跨平台的电脑控制安卓工具</a></h3>
+<p>pubdata:2024-05-13 07:26:14
+markdate:2024-05-14 07:09:53.119375</p>
+<h3 id="混阅-–-中英混合阅读：就不能好好阅读吗：利用-LLM-将中文内容转换为中英混合，扩展词汇量"><a class="header-anchor" href="#混阅-–-中英混合阅读：就不能好好阅读吗：利用-LLM-将中文内容转换为中英混合，扩展词汇量">¶</a><a href="https://www.appinn.com/mixread/" target="_blank" rel="noopener">混阅 – 中英混合阅读：就不能好好阅读吗：利用 LLM 将中文内容转换为中英混合，扩展词汇量</a></h3>
+<p>pubdata:2024-05-18 02:31:00
+markdate:2024-05-19 02:25:37.321317</p>
+<h3 id="RetroArch-–-可在-Apple-TV-上使用的开源游戏模拟器"><a class="header-anchor" href="#RetroArch-–-可在-Apple-TV-上使用的开源游戏模拟器">¶</a><a href="https://www.appinn.com/retroarch/" target="_blank" rel="noopener">RetroArch – 可在 Apple TV 上使用的开源游戏模拟器</a></h3>
+<p>pubdata:2024-05-16 03:59:52
+markdate:2024-05-19 02:26:56.541358</p>
+<h3 id="PotPlayer-新增杜比视界-HDR-播放功能"><a class="header-anchor" href="#PotPlayer-新增杜比视界-HDR-播放功能">¶</a><a href="https://www.appinn.com/potplayer-dolby-vision/" target="_blank" rel="noopener">PotPlayer 新增杜比视界 HDR 播放功能</a></h3>
+<p>pubdata:2024-05-16 09:01:45
+markdate:2024-05-19 02:28:27.420468</p>
+<h3 id="整活啦：为-Windows-桌面右下角添加激活水印，就像未激活的-Windows-桌面那样显示「激活-Windows」"><a class="header-anchor" href="#整活啦：为-Windows-桌面右下角添加激活水印，就像未激活的-Windows-桌面那样显示「激活-Windows」">¶</a><a href="https://www.appinn.com/activate-linux/" target="_blank" rel="noopener">整活啦：为 Windows 桌面右下角添加激活水印，就像未激活的 Windows 桌面那样显示「激活 Windows」</a></h3>
+<p>pubdata:2024-05-20 07:19:46
+markdate:2024-05-21 03:44:48.231014</p>
+<h3 id="从文件读取到-getshell-的一次细节满满的渗透"><a class="header-anchor" href="#从文件读取到-getshell-的一次细节满满的渗透">¶</a><a href="https://www.sqlsec.com/2024/05/attack.html" target="_blank" rel="noopener">从文件读取到 getshell 的一次细节满满的渗透</a></h3>
+<p>pubdata:2024-05-23 01:48:45
+markdate:2024-05-23 04:33:32.962143</p>
+<h3 id="软荐意外成互荐，一下子来了10多款重复文件检测工具"><a class="header-anchor" href="#软荐意外成互荐，一下子来了10多款重复文件检测工具">¶</a><a href="https://www.appinn.com/duplicate-files-tools/" target="_blank" rel="noopener">软荐意外成互荐，一下子来了10多款重复文件检测工具</a></h3>
+<p>pubdata:2024-05-21 08:07:47
+markdate:2024-05-23 04:34:20.428377</p>
 ]]></content>
       <categories>
         <category>月度汇报</category>
@@ -3257,88 +3317,104 @@ markdate:2024-04-23 02:21:54.675191</p>
       </tags>
   </entry>
   <entry>
-    <title>Ubuntu的优化与设置</title>
-    <url>/public/2017/05/22/linux/ubuntu/</url>
-    <content><![CDATA[<h1></h1>
-<h2 id="前言"><a class="header-anchor" href="#前言">¶</a>前言</h2>
+    <title>linux代理的使用</title>
+    <url>/public/2018/07/24/linux/linux_proxy/</url>
+    <content><![CDATA[<h2 id="前言"><a class="header-anchor" href="#前言">¶</a>前言</h2>
+<p>最近要下载一个在youtube上的数据库，用来训练神经网络。走国内通道下载比较慢。于是，我使用了vps代理方式下载，速度取决于你的机器连接vps的网速。本文的主要内容有，实现shadowsocks 代理 ，tsocks 代理工具使用，可组合使用的一些下载工具如wget 和axel等。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 举个栗子</span></span><br><span class="line">$ tsocks wget -c https://www.dropbox.com/s/minpyv59crdifk9/datasets.zip</span><br></pre></td></tr></table></figure>
+<p>嗯嗯，这个速度还不错！</p>
+<center><img src="/public/2018/07/24/linux/linux_proxy/1565246896718.png" width="60%">
+</center>
+<p><strong>声明</strong>：本文以科学研究为目的，请勿滥用。</p>
+<a id="more"></a>
+<h2 id="1-Shadowsocks"><a class="header-anchor" href="#1-Shadowsocks">¶</a>1 Shadowsocks</h2>
+<p><strong>Shadowsocks</strong>是一个轻量级socks5代理工具。在linux平台，我们可使用 python 提供的包管理工具 pip <strong>安装 Shadowsocks</strong> ，如下。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># pip 安装 Shadowsocks</span></span><br><span class="line">$ pip install shadowsocks</span><br><span class="line"></span><br><span class="line"><span class="comment"># 或者</span></span><br><span class="line">$ pip install git+https://github.com/shadowsocks/shadowsocks.git@master</span><br></pre></td></tr></table></figure>
+<p>pip安装完之后，可能要重启终端，我们就有ssserver和sslocal小工具了。下面配置server或者client。一般，server配置在国外的vps上，client配置在本地国内机器上。</p>
+<p>PS：其他平台安装 参考 shadowsocks官方 <a href="https://github.com/shadowsocks/shadowsocks/tree/master#install" target="_blank" rel="noopener">install</a></p>
+<h3 id="1-1-配置-Shadowsocks-server"><a class="header-anchor" href="#1-1-配置-Shadowsocks-server">¶</a>1.1 配置 Shadowsocks server</h3>
+<p>按下面的三步走，即可。</p>
 <ul>
 <li>
-<h2 id="窗口颜色设置浅绿色"><a class="header-anchor" href="#窗口颜色设置浅绿色">¶</a>窗口颜色设置浅绿色</h2>
-   <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">cd /usr/share/themes/Ambiance/gtk-3.0</span><br><span class="line">sudo gedit gtk-main.css</span><br></pre></td></tr></table></figure>
+<p>通过ssh连接到（Virtual Private Server）vps上，或者本地打开终端。</p>
+</li>
+<li>
+<p>新建一个<strong>server_shadowsocks.json</strong>文件，内容如下：</p>
 </li>
 </ul>
-<h2 id="2-常用环境"><a class="header-anchor" href="#2-常用环境">¶</a>2  常用环境</h2>
+<figure class="highlight json"><table><tr><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"server"</span>:<span class="string">"0.0.0.0"</span>,</span><br><span class="line">    <span class="attr">"server_port"</span>:<span class="number">443</span>,</span><br><span class="line">    <span class="attr">"local_address"</span>: <span class="string">"127.0.0.1"</span>,</span><br><span class="line">    <span class="attr">"local_port"</span>:<span class="number">1080</span>,</span><br><span class="line">    <span class="attr">"password"</span>:<span class="string">"密码"</span>,</span><br><span class="line">    <span class="attr">"timeout"</span>:<span class="number">300</span>,</span><br><span class="line">    <span class="attr">"method"</span>:<span class="string">"aes-256-cfb"</span>,</span><br><span class="line">    <span class="attr">"fast_open"</span>: <span class="literal">false</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>执行<code>ssserver -c server_shadowsocks.json</code></li>
+</ul>
+<p>说一点: 由于我们的下载任务是临时的，开个screen（终端复用工具）放在后台。当然你也可以设置为开机自启动，这里不再赘述。</p>
+<h3 id="1-2-配置-Shadowsocks-client"><a class="header-anchor" href="#1-2-配置-Shadowsocks-client">¶</a>1.2 配置 Shadowsocks client</h3>
 <ul>
 <li>
-<h2 id="安装jdk"><a class="header-anchor" href="#安装jdk">¶</a>安装jdk</h2>
-   <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># add java path</span></span><br><span class="line"><span class="built_in">export</span> JAVA_HOME=/usr/<span class="built_in">local</span>/java/jdk1.7</span><br><span class="line"><span class="built_in">export</span> JRE_HOME=<span class="variable">$&#123;JAVA_HOME&#125;</span>/jre</span><br><span class="line"><span class="built_in">export</span> CLASSPATH=.:<span class="variable">$&#123;JAVA_HOME&#125;</span>/lib:<span class="variable">$&#123;JRE_HOME&#125;</span>/lib</span><br><span class="line"><span class="built_in">export</span> PATH=<span class="variable">$&#123;JAVA_HOME&#125;</span>/bin:<span class="variable">$PATH</span></span><br></pre></td></tr></table></figure>
+<p>通过ssh连接到机器上，或者本地打开终端。</p>
+</li>
+<li>
+<p>新建文件 <strong>client_shadowsocks.json</strong></p>
 </li>
 </ul>
-<h2 id="3-安装软件"><a class="header-anchor" href="#3-安装软件">¶</a>3 安装软件</h2>
+<figure class="highlight json"><table><tr><td class="code"><pre><span class="line">&#123;</span><br><span class="line">        <span class="attr">"server"</span>:<span class="string">"服务器ip或域名"</span>,</span><br><span class="line">        <span class="attr">"server_port"</span>:<span class="number">443</span>,</span><br><span class="line">        <span class="attr">"local_address"</span>:<span class="string">"127.0.0.1"</span>,</span><br><span class="line">        <span class="attr">"local_port"</span>:<span class="number">1280</span>,</span><br><span class="line">        <span class="attr">"password"</span>:<span class="string">"密码"</span>,</span><br><span class="line">        <span class="attr">"timeout"</span>:<span class="number">300</span>,</span><br><span class="line">        <span class="attr">"method"</span>:<span class="string">"aes-256-cfb"</span>,</span><br><span class="line">        <span class="attr">"fast_open"</span>:<span class="literal">false</span>,</span><br><span class="line">        <span class="attr">"workers"</span>:<span class="number">1</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>执行<code>sslocal -c client_shadowsocks.json</code>。</li>
+</ul>
+<p>说一点：推荐使用screen方式放在后台。当然也可以使用-d 参数放在后台运行。
+<code>sslocal -c client_shadowsocks.json -d start</code></p>
+<h2 id="2-tsocks"><a class="header-anchor" href="#2-tsocks">¶</a>2 tsocks</h2>
+<p>有些linux工具可能没有proxy的代理功能，或者不支持sock5代理，而用tsocks可以很好的解决这些问题。<strong>tsocks</strong> 是个终端代理工具，可以直接连接shadowsocks提供socks 5代理端口，有点类似于proxychains。</p>
+<p>下面简单介绍下安装与使用：</p>
+<ul>
+<li>安装<strong>tsocks</strong>
+<ul>
+<li>linux安装tsocks 命令：<code>apt install tsocks</code></li>
+<li>mac 安装参考 <a href="https://github.com/Anakros/homebrew-tsocks" target="_blank" rel="noopener">homebrew-tsocks</a></li>
+</ul>
+</li>
+<li>开启上面Shadowsocks的client放在后台。</li>
+<li>修改tsocks 配置文件，在 <code>/etc/tsocks.conf</code>  文件的最后添加：</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">local = 192.168.1.0/255.255.255.0</span><br><span class="line">server = 127.0.0.1</span><br><span class="line">server_type = 5</span><br><span class="line">server_port = 1080</span><br></pre></td></tr></table></figure>
+<h2 id="3-Demo：代理使用"><a class="header-anchor" href="#3-Demo：代理使用">¶</a>3 Demo：代理使用</h2>
+<h3 id="3-1-使用-tsocks"><a class="header-anchor" href="#3-1-使用-tsocks">¶</a>3.1 使用 tsocks</h3>
+<p>在所需代理的命令前加个tsocks就行，如：
+<code>tsocks wget -c xxxx</code>,<code>tsocks axel -n 10 -av xxxx</code>,<code>tsocks curl xxx</code></p>
+<h3 id="3-2-使用-youtube-dl"><a class="header-anchor" href="#3-2-使用-youtube-dl">¶</a>3.2 使用 youtube-dl</h3>
+<p>youtube-dl是批量下载youtube视频的好工具。youtube-dl 可以指定 proxy，<strong>可以不使用tsocks</strong>。</p>
+<ul>
+<li>安装youtube-dl</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">pip install --upgrade youtube-dl</span><br></pre></td></tr></table></figure>
 <ul>
 <li>
-<h2 id="在线软件安装"><a class="header-anchor" href="#在线软件安装">¶</a>在线软件安装</h2>
-   <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 备份源列表地址</span></span><br><span class="line">sudo cp /etc/apt/sources.list /etc/apt/sources.list_backup</span><br><span class="line"><span class="comment"># 修改</span></span><br><span class="line">sudo vim /etc/apt/sources.list</span><br></pre></td></tr></table></figure>
+<p>使用举个例子</p>
 <ul>
-<li>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 更新源</span></span><br><span class="line">apt-get update</span><br><span class="line">apt-get install xxx</span><br><span class="line"></span><br><span class="line"><span class="comment"># 包search</span></span><br><span class="line">apt-cache search xxx</span><br></pre></td></tr></table></figure>
-</li>
+<li>下载youtube视频</li>
 </ul>
-</li>
-<li>
-<h2 id="deb本地软件安装"><a class="header-anchor" href="#deb本地软件安装">¶</a>deb本地软件安装</h2>
-   <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 安装deb包命令</span></span><br><span class="line">dpkg -i *.deb</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 如果缺少依赖执行</span></span><br><span class="line">apt-get -f install</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<h2 id="4-常用软件"><a class="header-anchor" href="#4-常用软件">¶</a>4 常用软件</h2>
+  <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">URL=https://www.youtube.com/playlist?list=PLLbeS1kM6teJqdFzw1ICHfa4a1y0hg8Ax</span><br><span class="line">./youtube-dl --proxy socks5://127.0.0.1:1280 $&#123;URL&#125;</span><br><span class="line"># 在 client_shadowsocks.json 的 local_port 设置为1280，这儿也为1280</span><br></pre></td></tr></table></figure>
 <ul>
-<li>
-<p>mpv播放器</p>
-</li>
-<li>
-<p>有道字典</p>
-</li>
-<li>
-<h2 id="atom"><a class="header-anchor" href="#atom">¶</a>atom</h2>
-   <figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-tag">atom-pane</span> &#123;</span><br><span class="line"><span class="attribute">font-size</span>: <span class="number">16px</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.command-palette</span> &#123;</span><br><span class="line"><span class="attribute">font-size</span>: <span class="number">16px</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-<li>
-<h2 id="图标设置"><a class="header-anchor" href="#图标设置">¶</a>图标设置</h2>
-   <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">cd /usr/share/applications</span><br><span class="line">vim eclipse.desktop</span><br></pre></td></tr></table></figure>
-<ul>
-<li>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">!/usr/bin/env xdg-open</span></span><br><span class="line"></span><br><span class="line">[Desktop Entry]</span><br><span class="line">Version=22.0</span><br><span class="line">Name=eclipse</span><br><span class="line">Exec=/home/gtc/Android/adt-bundle-linux/eclipse/eclipse</span><br><span class="line">Terminal=false</span><br><span class="line">Icon=/home/gtc/Android/adt-bundle-linux/eclipse/icon.xpm</span><br><span class="line">Type=Application</span><br><span class="line">Categories=Development</span><br></pre></td></tr></table></figure>
+<li>下载里面的mp3</li>
+</ul>
+  <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">youtube-dl -x --audio-format mp3 https://www.youtube.com/watch?v=xpVfcZ0ZcFM</span><br></pre></td></tr></table></figure>
 </li>
 </ul>
-</li>
-</ul>
-<h3 id="设备使用率指示"><a class="header-anchor" href="#设备使用率指示">¶</a>设备使用率指示</h3>
-<p><a href="https://github.com/fossfreedom/indicator-sysmonitor" target="_blank" rel="noopener">https://github.com/fossfreedom/indicator-sysmonitor</a></p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> gi</span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    gi.require_version(<span class="string">'AyatanaAppIndicator3'</span>, <span class="string">'0.1'</span>)</span><br><span class="line">    <span class="keyword">from</span> gi.repository <span class="keyword">import</span> AyatanaAppIndicator3 <span class="keyword">as</span> appindicator</span><br><span class="line"><span class="keyword">except</span> ValueError:</span><br><span class="line">    gi.require_version(<span class="string">'AppIndicator3'</span>, <span class="string">'0.1'</span>)</span><br><span class="line">    <span class="keyword">from</span> gi.repository <span class="keyword">import</span> AppIndicator3 <span class="keyword">as</span> appindicator</span><br></pre></td></tr></table></figure>
-<p>apt install gir1.2-ayatanaappindicator3-0.1</p>
-<h2 id="5-其他优化"><a class="header-anchor" href="#5-其他优化">¶</a>5 其他优化</h2>
-<ul>
-<li>
-<h2 id="关闭错误报告"><a class="header-anchor" href="#关闭错误报告">¶</a>关闭错误报告</h2>
-   <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 关闭烦人的错误报告</span></span><br><span class="line">sudo gedit /etc/default/apport</span><br></pre></td></tr></table></figure>
-</li>
-<li>
-<h2 id="CPU-100-占用"><a class="header-anchor" href="#CPU-100-占用">¶</a>CPU 100%占用</h2>
-   <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">cd /usr/lib/gvfs</span><br><span class="line"><span class="meta">#</span><span class="bash"> 将gvfsd-smb-brows权限改成744，取消普通用户的执行权限，</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 也挺有意思，暂时没引发别的问题</span></span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<h2 id="smb"><a class="header-anchor" href="#smb">¶</a>smb</h2>
-<p>apt-get install samba
-vim /etc/samba/smb.conf
-service smbd restart
-smbpasswd -a xxx</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">vfs objects = catia fruit streams_xattr</span><br><span class="line">fruit:nfs_aces = no</span><br><span class="line"></span><br><span class="line">[share]</span><br><span class="line">path = /home/talen/share</span><br><span class="line">valid users = talen</span><br><span class="line">available = yes</span><br><span class="line">browseable = yes</span><br><span class="line">writable = yes</span><br><span class="line">public = no</span><br></pre></td></tr></table></figure>]]></content>
+<p><strong>youtube-dl 中待解决的问题？</strong>
+想只下载一个视频中的一部分，不用下载整个视频，太费vps流量了。暂未找到解决办法，我找到的一个跟问题很相似的issue，有朋友会整的，望告诉一下。<a href="https://github.com/rg3/youtube-dl/issues/4821" target="_blank" rel="noopener">is it possible to download only desired time interval?</a></p>
+<h3 id="3-3-使用-axel"><a class="header-anchor" href="#3-3-使用-axel">¶</a>3.3 使用 axel</h3>
+<p>axel多线程下载。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">tsocks axel -n 3 -a https://www.dropbox.com/s/minpyv59crdifk9/datasets.zip</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">-n 3 : 3个线程下载</span><br><span class="line">-a   : 有个进度条</span><br></pre></td></tr></table></figure>
+<p>其他方式：下载脚本 <a href="http://axel-bash.sh" target="_blank" rel="noopener">axel-bash.sh</a></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#!/bin/sh -e  </span></span><br><span class="line"><span class="comment"># usage:  ./axel-batch.sh the-download-url.list  </span></span><br><span class="line">cat <span class="variable">$1</span> | <span class="keyword">while</span> <span class="built_in">read</span> LINE  </span><br><span class="line"><span class="keyword">do</span>  </span><br><span class="line">	<span class="keyword">if</span> [ -n <span class="string">"<span class="variable">$LINE</span>"</span> ]; <span class="keyword">then</span>  </span><br><span class="line">	axel -n 3 -a `<span class="built_in">echo</span> <span class="variable">$LINE</span>`  </span><br><span class="line">	<span class="keyword">fi</span>  </span><br><span class="line"><span class="keyword">done</span></span><br></pre></td></tr></table></figure>
+]]></content>
       <categories>
         <category>Linux</category>
       </categories>
       <tags>
-        <tag>技巧</tag>
-        <tag>Ubuntu</tag>
+        <tag>工具</tag>
+        <tag>linux</tag>
+        <tag>proxy</tag>
       </tags>
   </entry>
   <entry>
