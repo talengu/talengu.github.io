@@ -6,7 +6,7 @@
   <link href="/public/atom.xml" rel="self"/>
   
   <link href="https://talengu.github.io/public/"/>
-  <updated>2024-07-15T16:00:04.000Z</updated>
+  <updated>2024-08-15T16:00:04.000Z</updated>
   <id>https://talengu.github.io/public/</id>
   
   <author>
@@ -15,6 +15,29 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>「202408月度汇报」auto report</title>
+    <link href="https://talengu.github.io/public/2024/08/15/test/202408/"/>
+    <id>https://talengu.github.io/public/2024/08/15/test/202408/</id>
+    <published>2024-08-15T16:00:04.000Z</published>
+    <updated>2024-08-15T16:00:04.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>✅ : 0 📅 : 0 🔖 : 0ttrss标记个数: 0</p><a id="more"></a><h2 id="统计-✅-0-📅-0-🔖-0"><a class="header-anchor" href="#统计-✅-0-📅-0-🔖-0">¶</a>=&gt; 统计 ✅ : 0 📅 : 0 🔖 : 0</h2><h3 id="✅-0"><a class="header-anchor" href="#✅-0">¶</a>✅ : 0</h3><h3 id="📅-0"><a class="header-anchor" href="#📅-0">¶</a>📅 : 0</h3><h3 id="🔖-0"><a class="header-anchor" href="#🔖-0">¶</a>🔖 : 0</h3><h2 id="ttrss标记个数-0"><a class="header-anchor" href="#ttrss标记个数-0">¶</a>=&gt; ttrss标记个数: 0</h2>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;✅ : 0 📅 : 0 🔖 : 0
+ttrss标记个数: 0&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="月度汇报" scheme="https://talengu.github.io/public/categories/%E6%9C%88%E5%BA%A6%E6%B1%87%E6%8A%A5/"/>
+    
+    
+      <category term="月度汇报" scheme="https://talengu.github.io/public/tags/%E6%9C%88%E5%BA%A6%E6%B1%87%E6%8A%A5/"/>
+    
+  </entry>
   
   <entry>
     <title>「202407月度汇报」auto report</title>
@@ -457,28 +480,6 @@ CEO 当着全公司的面落井下石，羞辱我是滥竽充数。
     <summary type="html">
     
       &lt;p&gt;total: 6&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="月度汇报" scheme="https://talengu.github.io/public/categories/%E6%9C%88%E5%BA%A6%E6%B1%87%E6%8A%A5/"/>
-    
-    
-      <category term="月度汇报" scheme="https://talengu.github.io/public/tags/%E6%9C%88%E5%BA%A6%E6%B1%87%E6%8A%A5/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>「202302月度汇报」ttrss</title>
-    <link href="https://talengu.github.io/public/2023/02/15/test/202302/"/>
-    <id>https://talengu.github.io/public/2023/02/15/test/202302/</id>
-    <published>2023-02-15T16:00:04.000Z</published>
-    <updated>2023-02-15T16:00:04.000Z</updated>
-    
-    <content type="html"><![CDATA[<p>total: 1</p><a id="more"></a><h2 id="🔖沉浸式翻译-–-支持-PDF、EPUB、网页，可同时显示原文与译文的双语翻译工具-Chrome-Firefox-油猴脚本"><a class="header-anchor" href="#🔖沉浸式翻译-–-支持-PDF、EPUB、网页，可同时显示原文与译文的双语翻译工具-Chrome-Firefox-油猴脚本">¶</a>🔖<a href="https://www.appinn.com/immersive-translate/" target="_blank" rel="noopener">沉浸式翻译 – 支持 PDF、EPUB、网页，可同时显示原文与译文的双语翻译工具[Chrome/Firefox/油猴脚本]</a></h2><p>pubdata:2023-02-06 09:28:53markdate:2023-02-08 04:38:07.828863</p><p><img src="/public/2023/02/15/test/202302/2023-02-08-043807828863.jpg" alt="img"></p><p>统计 ✅ : 0 📅 : 0 🔖 : 25</p><!-- more --><h2 id="✅-0"><a class="header-anchor" href="#✅-0">¶</a>✅ : 0</h2><h2 id="📅-0"><a class="header-anchor" href="#📅-0">¶</a>📅 : 0</h2><h2 id="🔖-25"><a class="header-anchor" href="#🔖-25">¶</a>🔖 : 25</h2><p>🔖latex 工具-&gt;<a href="C%E6%97%A5%E5%B8%B8/2023-02.md">C日常/2023-02.md</a><br>🔖 tcp-&gt;<a href="C%E6%97%A5%E5%B8%B8/2023-02.md">C日常/2023-02.md</a><br>🔖 操作系统-&gt;<a href="C%E6%97%A5%E5%B8%B8/2023-02.md">C日常/2023-02.md</a><br>🔖 python 通道符支持-&gt;<a href="C%E6%97%A5%E5%B8%B8/2023-02.md">C日常/2023-02.md</a><br>🔖 互联网行业知识地图-&gt;<a href="C%E6%97%A5%E5%B8%B8/2023-02.md">C日常/2023-02.md</a><br>🔖 <a href="https://zhuanlan.zhihu.com/p/607142856?utm_id=0" target="_blank" rel="noopener">万字讲解你写的代码是如何跑起来的？</a>-&gt;<a href="C%E6%97%A5%E5%B8%B8/2023-02.md">C日常/2023-02.md</a><br>🔖 linux内核-&gt;<a href="C%E6%97%A5%E5%B8%B8/2023-02.md">C日常/2023-02.md</a><br>🔖web 历史工具-&gt;<a href="C%E6%97%A5%E5%B8%B8/2023-02.md">C日常/2023-02.md</a><br>🔖windows git 大小写-&gt;<a href="C%E6%97%A5%E5%B8%B8/2023-02.md">C日常/2023-02.md</a><br>🔖 <a href="https://sspai.com/post/77513" target="_blank" rel="noopener">在 Markdown 中使用引用式链接和脚注 - 少数派</a>-&gt;<a href="C%E6%97%A5%E5%B8%B8/2023-02.md">C日常/2023-02.md</a><br>🔖 <a href="https://view.inews.qq.com/k/20211230A04GGY00?web_channel=wap&amp;openApp=false&amp;f=newdc" target="_blank" rel="noopener">不写一行代码，轻松将米家智能家居接入 Apple HomeKit</a>-&gt;<a href="C%E6%97%A5%E5%B8%B8/2023-02.md">C日常/2023-02.md</a><br>🔖 <a href="https://post.m.smzdm.com/p/amm5dn84/" target="_blank" rel="noopener">小白从零开始：一台安卓手机安装homeassistant将米家设备接入苹果homekit_软件应用_什么值得买</a>-&gt;<a href="C%E6%97%A5%E5%B8%B8/2023-02.md">C日常/2023-02.md</a><br>🔖 <a href="https://zhuanlan.zhihu.com/p/596895232" target="_blank" rel="noopener">build a simple dateset</a>-&gt;<a href="C%E6%97%A5%E5%B8%B8/2023-02.md">C日常/2023-02.md</a><br>🔖冰雪暴-&gt;<a href="C%E6%97%A5%E5%B8%B8/2022-W43.md">C日常/2022-W43.md</a><br>🔖 <a href="https://sspai.com/post/77513" target="_blank" rel="noopener">在 Markdown 中使用引用式链接和脚注 - 少数派</a>-&gt;<a href="C%E6%97%A5%E5%B8%B8/2023-01.md">C日常/2023-01.md</a><br>🔖 <a href="https://view.inews.qq.com/k/20211230A04GGY00?web_channel=wap&amp;openApp=false&amp;f=newdc" target="_blank" rel="noopener">不写一行代码，轻松将米家智能家居接入 Apple HomeKit</a>-&gt;<a href="C%E6%97%A5%E5%B8%B8/2023-01.md">C日常/2023-01.md</a><br>🔖 <a href="https://post.m.smzdm.com/p/amm5dn84/" target="_blank" rel="noopener">小白从零开始：一台安卓手机安装homeassistant将米家设备接入苹果homekit_软件应用_什么值得买</a>-&gt;<a href="C%E6%97%A5%E5%B8%B8/2023-01.md">C日常/2023-01.md</a><br>🔖 <a href="https://zhuanlan.zhihu.com/p/596895232" target="_blank" rel="noopener">build a simple dateset</a>-&gt;<a href="C%E6%97%A5%E5%B8%B8/2023-01.md">C日常/2023-01.md</a><br>🔖 http与https的区别-&gt;<a href="C%E6%97%A5%E5%B8%B8/2023-01.md">C日常/2023-01.md</a><br>🔖 http 3-&gt;<a href="C%E6%97%A5%E5%B8%B8/2023-01.md">C日常/2023-01.md</a><br>🔖 <a href="https://ffmpeg.guide/" target="_blank" rel="noopener">FFmpeg.guide</a>-&gt;<a href="C%E6%97%A5%E5%B8%B8/2023-01.md">C日常/2023-01.md</a><br>🔖<a href="https://mlu-explain.github.io/" target="_blank" rel="noopener">机器学习概念的可视化解释</a>-&gt;<a href="C%E6%97%A5%E5%B8%B8/2023-01.md">C日常/2023-01.md</a><br>🔖 <a href="https://ppwwyyxx.com/blog/2023/Terminal-Escape-Sequences/" target="_blank" rel="noopener">Some Useful Terminal Escape Sequences</a>-&gt;<a href="C%E6%97%A5%E5%B8%B8/2023-01.md">C日常/2023-01.md</a><br>🔖 <a href="https://sspai.com/post/77815" target="_blank" rel="noopener">换种方式刷朋友圈——微信朋友圈数据分析 - 少数派</a>-&gt;<a href="C%E6%97%A5%E5%B8%B8/2023-01.md">C日常/2023-01.md</a><br>🔖操作系统学习-&gt;<a href="C%E6%97%A5%E5%B8%B8/2023-01.md">C日常/2023-01.md</a></p>]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;total: 1&lt;/p&gt;
     
     </summary>
     
