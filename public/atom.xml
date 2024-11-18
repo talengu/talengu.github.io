@@ -6,7 +6,7 @@
   <link href="/public/atom.xml" rel="self"/>
   
   <link href="https://talengu.github.io/public/"/>
-  <updated>2024-08-15T16:00:04.000Z</updated>
+  <updated>2024-10-15T16:00:04.000Z</updated>
   <id>https://talengu.github.io/public/</id>
   
   <author>
@@ -15,6 +15,29 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>「202410月度汇报」auto report</title>
+    <link href="https://talengu.github.io/public/2024/10/15/test/202410/"/>
+    <id>https://talengu.github.io/public/2024/10/15/test/202410/</id>
+    <published>2024-10-15T16:00:04.000Z</published>
+    <updated>2024-10-15T16:00:04.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>✅ : 0 📅 : 0 🔖 : 0ttrss标记个数: 3</p><a id="more"></a><h2 id="统计-✅-0-📅-0-🔖-0"><a class="header-anchor" href="#统计-✅-0-📅-0-🔖-0">¶</a>=&gt; 统计 ✅ : 0 📅 : 0 🔖 : 0</h2><h3 id="✅-0"><a class="header-anchor" href="#✅-0">¶</a>✅ : 0</h3><h3 id="📅-0"><a class="header-anchor" href="#📅-0">¶</a>📅 : 0</h3><h3 id="🔖-0"><a class="header-anchor" href="#🔖-0">¶</a>🔖 : 0</h3><h2 id="ttrss标记个数-3"><a class="header-anchor" href="#ttrss标记个数-3">¶</a>=&gt; ttrss标记个数: 3</h2><h3 id="Haystack-Editor-–-将-VS-Code-画布化，同时打开多个文件，自动创建关联-跨平台"><a class="header-anchor" href="#Haystack-Editor-–-将-VS-Code-画布化，同时打开多个文件，自动创建关联-跨平台">¶</a><a href="https://www.appinn.com/haystack-editor/" target="_blank" rel="noopener">Haystack Editor – 将 VS Code 画布化，同时打开多个文件，自动创建关联[跨平台]</a></h3><p>pubdata:2024-09-29 08:26:12markdate:2024-10-04 00:32:15.571495</p><h3 id="Infinite-Mac-–-从1984-到-2001，在线体验-63-个版本的-Mac-苹果系统"><a class="header-anchor" href="#Infinite-Mac-–-从1984-到-2001，在线体验-63-个版本的-Mac-苹果系统">¶</a><a href="https://www.appinn.com/infinite-mac/" target="_blank" rel="noopener">Infinite Mac – 从1984 到 2001，在线体验 63 个版本的 Mac 苹果系统</a></h3><p>pubdata:2024-10-05 08:48:12markdate:2024-10-10 03:55:05.467056</p><h3 id="一个比-tmux-更友好的终端复用工具：Zellij-简介及使用技巧"><a class="header-anchor" href="#一个比-tmux-更友好的终端复用工具：Zellij-简介及使用技巧">¶</a><a href="https://sspai.com/prime/story/get-started-with-zellij" target="_blank" rel="noopener">一个比 tmux 更友好的终端复用工具：Zellij 简介及使用技巧</a></h3><p>pubdata:2024-10-23 09:54:09markdate:2024-10-25 00:43:23.549673</p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;✅ : 0 📅 : 0 🔖 : 0
+ttrss标记个数: 3&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="月度汇报" scheme="https://talengu.github.io/public/categories/%E6%9C%88%E5%BA%A6%E6%B1%87%E6%8A%A5/"/>
+    
+    
+      <category term="月度汇报" scheme="https://talengu.github.io/public/tags/%E6%9C%88%E5%BA%A6%E6%B1%87%E6%8A%A5/"/>
+    
+  </entry>
   
   <entry>
     <title>「202408月度汇报」auto report</title>
@@ -458,28 +481,6 @@ CEO 当着全公司的面落井下石，羞辱我是滥竽充数。
     <summary type="html">
     
       &lt;p&gt;total: 4&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="月度汇报" scheme="https://talengu.github.io/public/categories/%E6%9C%88%E5%BA%A6%E6%B1%87%E6%8A%A5/"/>
-    
-    
-      <category term="月度汇报" scheme="https://talengu.github.io/public/tags/%E6%9C%88%E5%BA%A6%E6%B1%87%E6%8A%A5/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>「202303月度汇报」ttrss</title>
-    <link href="https://talengu.github.io/public/2023/03/15/test/202303/"/>
-    <id>https://talengu.github.io/public/2023/03/15/test/202303/</id>
-    <published>2023-03-15T16:00:04.000Z</published>
-    <updated>2023-03-15T16:00:04.000Z</updated>
-    
-    <content type="html"><![CDATA[<p>total: 6</p><a id="more"></a><h2 id="🔖Homebrew-升级-4-0-0，麦金塔上的啤酒会更香吗？"><a class="header-anchor" href="#🔖Homebrew-升级-4-0-0，麦金塔上的啤酒会更香吗？">¶</a>🔖<a href="https://sspai.com/post/78587" target="_blank" rel="noopener">Homebrew 升级 4.0.0，麦金塔上的啤酒会更香吗？</a></h2><p>pubdata:2023-03-01 08:41:08markdate:2023-03-02 14:33:02.461156</p><p><img src="/public/2023/03/15/test/202303/2023-03-02-143302461156.jpg" alt="img"></p><h2 id="🔖从推送、书影音到笔记、自动化：让这些自部署服务，给你应有的数据掌控权"><a class="header-anchor" href="#🔖从推送、书影音到笔记、自动化：让这些自部署服务，给你应有的数据掌控权">¶</a>🔖<a href="https://sspai.com/post/78424" target="_blank" rel="noopener">从推送、书影音到笔记、自动化：让这些自部署服务，给你应有的数据掌控权</a></h2><p>pubdata:2023-02-24 03:03:58markdate:2023-03-03 01:16:23.043436</p><p><img src="/public/2023/03/15/test/202303/2023-03-03-011623043436.jpg" alt="img"></p><h2 id="🔖iPadOS-指针交互深度解析"><a class="header-anchor" href="#🔖iPadOS-指针交互深度解析">¶</a>🔖<a href="https://sspai.com/post/78446" target="_blank" rel="noopener">iPadOS 指针交互深度解析</a></h2><p>pubdata:2023-02-22 06:21:07markdate:2023-03-03 01:41:54.266322</p><p><img src="/public/2023/03/15/test/202303/2023-03-03-014154266322.jpg" alt="img"></p><h2 id="🔖用-GPT-3-5-翻译整本英文书，输出中英双语电子书"><a class="header-anchor" href="#🔖用-GPT-3-5-翻译整本英文书，输出中英双语电子书">¶</a>🔖<a href="https://www.appinn.com/bilingual-book-maker/" target="_blank" rel="noopener">用 GPT-3.5 翻译整本英文书，输出中英双语电子书</a></h2><p>pubdata:2023-03-03 09:06:02markdate:2023-03-04 03:00:56.000323</p><p><img src="/public/2023/03/15/test/202303/2023-03-04-030056000323.jpg" alt="img"></p><h2 id="🔖BiliGPT-–-用-GPT-3-5-把-3-分钟视频缩减到-100-个文字，10-秒看完｜一键总结视频内容"><a class="header-anchor" href="#🔖BiliGPT-–-用-GPT-3-5-把-3-分钟视频缩减到-100-个文字，10-秒看完｜一键总结视频内容">¶</a>🔖<a href="https://www.appinn.com/biligpt/" target="_blank" rel="noopener">BiliGPT – 用 GPT-3.5 把 3 分钟视频缩减到 100 个文字，10 秒看完｜一键总结视频内容</a></h2><p>pubdata:2023-03-03 04:31:09markdate:2023-03-04 03:36:01.350199</p><p><img src="/public/2023/03/15/test/202303/2023-03-04-033601350199.jpg" alt="img"></p><h2 id="🔖想要高效获取信息？这是我用的工具与方法"><a class="header-anchor" href="#🔖想要高效获取信息？这是我用的工具与方法">¶</a>🔖<a href="https://sspai.com/post/77731" target="_blank" rel="noopener">想要高效获取信息？这是我用的工具与方法</a></h2><p>pubdata:2023-03-06 06:38:29markdate:2023-03-20 00:53:17.612194</p><p><img src="/public/2023/03/15/test/202303/2023-03-20-005317612194.jpg" alt="img"></p><p>统计 ✅ : 0 📅 : 0 🔖 : 0</p><!-- more --><h2 id="✅-0"><a class="header-anchor" href="#✅-0">¶</a>✅ : 0</h2><h2 id="📅-0"><a class="header-anchor" href="#📅-0">¶</a>📅 : 0</h2><h2 id="🔖-0"><a class="header-anchor" href="#🔖-0">¶</a>🔖 : 0</h2>]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;total: 6&lt;/p&gt;
     
     </summary>
     
