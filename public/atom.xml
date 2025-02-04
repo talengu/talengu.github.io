@@ -6,7 +6,7 @@
   <link href="/public/atom.xml" rel="self"/>
   
   <link href="https://talengu.github.io/public/"/>
-  <updated>2024-12-15T16:00:04.000Z</updated>
+  <updated>2025-01-15T16:00:04.000Z</updated>
   <id>https://talengu.github.io/public/</id>
   
   <author>
@@ -15,6 +15,29 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>「202501月度汇报」auto report</title>
+    <link href="https://talengu.github.io/public/2025/01/15/test/202501/"/>
+    <id>https://talengu.github.io/public/2025/01/15/test/202501/</id>
+    <published>2025-01-15T16:00:04.000Z</published>
+    <updated>2025-01-15T16:00:04.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>✅ : 0 📅 : 0 🔖 : 0ttrss标记个数: 4</p><a id="more"></a><h2 id="统计-✅-0-📅-0-🔖-0"><a class="header-anchor" href="#统计-✅-0-📅-0-🔖-0">¶</a>=&gt; 统计 ✅ : 0 📅 : 0 🔖 : 0</h2><h3 id="✅-0"><a class="header-anchor" href="#✅-0">¶</a>✅ : 0</h3><h3 id="📅-0"><a class="header-anchor" href="#📅-0">¶</a>📅 : 0</h3><h3 id="🔖-0"><a class="header-anchor" href="#🔖-0">¶</a>🔖 : 0</h3><h2 id="ttrss标记个数-4"><a class="header-anchor" href="#ttrss标记个数-4">¶</a>=&gt; ttrss标记个数: 4</h2><h3 id="被雪覆盖的长城，中国-©-View-Stock-Alamy-Stock-Photo"><a class="header-anchor" href="#被雪覆盖的长城，中国-©-View-Stock-Alamy-Stock-Photo">¶</a><a href="https://www.bing.com/search?q=%E4%B8%AD%E5%9B%BD%E9%95%BF%E5%9F%8E&amp;form=hpcapt&amp;mkt=zh-cn" target="_blank" rel="noopener">被雪覆盖的长城，中国 (© View Stock/Alamy Stock Photo)</a></h3><p>pubdata:2025-01-07 16:02:38markdate:2025-01-08 00:19:53.208160</p><h3 id="Mashups-–-复活-Yahoo-Pipes，过滤、组合、转换-RSS、CSV"><a class="header-anchor" href="#Mashups-–-复活-Yahoo-Pipes，过滤、组合、转换-RSS、CSV">¶</a><a href="https://www.appinn.com/mashups-alternative-yahoo-pipes/" target="_blank" rel="noopener">Mashups – 复活 Yahoo! Pipes，过滤、组合、转换 RSS、CSV</a></h3><p>pubdata:2025-01-08 13:15:41markdate:2025-01-11 04:07:48.727884</p><h3 id="PrivTracker-–-开源的私人-BT-Tracker-服务器地址：超大文件分享的又一个选择"><a class="header-anchor" href="#PrivTracker-–-开源的私人-BT-Tracker-服务器地址：超大文件分享的又一个选择">¶</a><a href="https://www.appinn.com/privtracker/" target="_blank" rel="noopener">PrivTracker – 开源的私人 BT Tracker 服务器地址：超大文件分享的又一个选择</a></h3><p>pubdata:2025-01-12 08:05:23markdate:2025-01-14 06:34:05.331254</p><h3 id="Wine-10-0-发布，在-macOS、Linux、Android-上运行-Windows-程序、游戏"><a class="header-anchor" href="#Wine-10-0-发布，在-macOS、Linux、Android-上运行-Windows-程序、游戏">¶</a><a href="https://www.appinn.com/wine-10-0/" target="_blank" rel="noopener">Wine 10.0 发布，在 macOS、Linux、Android 上运行 Windows 程序、游戏</a></h3><p>pubdata:2025-01-23 09:13:05markdate:2025-01-24 07:41:33.722685</p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;✅ : 0 📅 : 0 🔖 : 0
+ttrss标记个数: 4&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="月度汇报" scheme="https://talengu.github.io/public/categories/%E6%9C%88%E5%BA%A6%E6%B1%87%E6%8A%A5/"/>
+    
+    
+      <category term="月度汇报" scheme="https://talengu.github.io/public/tags/%E6%9C%88%E5%BA%A6%E6%B1%87%E6%8A%A5/"/>
+    
+  </entry>
   
   <entry>
     <title>「202412月度汇报」auto report</title>
@@ -461,28 +484,6 @@ CEO 当着全公司的面落井下石，羞辱我是滥竽充数。
     <summary type="html">
     
       &lt;p&gt;total: 23&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="月度汇报" scheme="https://talengu.github.io/public/categories/%E6%9C%88%E5%BA%A6%E6%B1%87%E6%8A%A5/"/>
-    
-    
-      <category term="月度汇报" scheme="https://talengu.github.io/public/tags/%E6%9C%88%E5%BA%A6%E6%B1%87%E6%8A%A5/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>「202307月度汇报」ttrss</title>
-    <link href="https://talengu.github.io/public/2023/07/15/test/202307/"/>
-    <id>https://talengu.github.io/public/2023/07/15/test/202307/</id>
-    <published>2023-07-15T16:00:04.000Z</published>
-    <updated>2023-07-15T16:00:04.000Z</updated>
-    
-    <content type="html"><![CDATA[<p>total: 7</p><a id="more"></a><h2 id="🔖Gopeed-–-一款支持全平台的开源、轻量、原生下载器"><a class="header-anchor" href="#🔖Gopeed-–-一款支持全平台的开源、轻量、原生下载器">¶</a>🔖<a href="https://www.appinn.com/gopeed/" target="_blank" rel="noopener">Gopeed – 一款支持全平台的开源、轻量、原生下载器 </a></h2><p>pubdata:2023-06-29 07:46:51markdate:2023-07-02 02:35:27.835475</p><p><img src="/public/2023/07/15/test/202307/2023-07-02-023527835475.jpg" alt="img"></p><h2 id="🔖3D绳结-Knots-3D-限免，360-度动画演示-177-种绳结打法｜一根绳子，玩得开心"><a class="header-anchor" href="#🔖3D绳结-Knots-3D-限免，360-度动画演示-177-种绳结打法｜一根绳子，玩得开心">¶</a>🔖<a href="https://www.appinn.com/knots-3d-2023/" target="_blank" rel="noopener">3D绳结 (Knots 3D) 限免，360 度动画演示 177 种绳结打法｜一根绳子，玩得开心</a></h2><p>pubdata:2023-06-29 12:30:07markdate:2023-07-02 02:35:51.674684</p><p><img src="/public/2023/07/15/test/202307/2023-07-02-023551674684.jpg" alt="img"></p><h2 id="🔖Image-Manga-Translator-–-图片翻译器、漫画翻译器-自托管"><a class="header-anchor" href="#🔖Image-Manga-Translator-–-图片翻译器、漫画翻译器-自托管">¶</a>🔖<a href="https://www.appinn.com/manga-image-translator/" target="_blank" rel="noopener">Image/Manga Translator – 图片翻译器、漫画翻译器[自托管]</a></h2><p>pubdata:2023-07-04 09:18:19markdate:2023-07-10 01:57:26.753606</p><p><img src="/public/2023/07/15/test/202307/2023-07-10-015726753606.jpg" alt="img"></p><h2 id="🔖3-个独特的简历生成器，在-GitHub-开源了！"><a class="header-anchor" href="#🔖3-个独特的简历生成器，在-GitHub-开源了！">¶</a>🔖<a href="https://zhuanlan.zhihu.com/p/640856810" target="_blank" rel="noopener">3 个独特的简历生成器，在 GitHub 开源了！</a></h2><p>pubdata:2023-07-01 08:51:58markdate:2023-07-11 01:41:55.301129</p><p><img src="/public/2023/07/15/test/202307/2023-07-11-014155301129.jpg" alt="img"></p><h2 id="🔖想写就写，灵思无疆：用自动化部署让写作更得心应手"><a class="header-anchor" href="#🔖想写就写，灵思无疆：用自动化部署让写作更得心应手">¶</a>🔖<a href="https://sspai.com/post/80741" target="_blank" rel="noopener">想写就写，灵思无疆：用自动化部署让写作更得心应手</a></h2><p>pubdata:2023-07-07 03:25:18markdate:2023-07-14 02:03:26.774993</p><p><img src="/public/2023/07/15/test/202307/2023-07-14-020326774993.jpg" alt="img"></p><h2 id="🔖Handraw：支持中文手写效果的白板绘图工具"><a class="header-anchor" href="#🔖Handraw：支持中文手写效果的白板绘图工具">¶</a>🔖<a href="https://sspai.com/post/80459" target="_blank" rel="noopener">Handraw：支持中文手写效果的白板绘图工具</a></h2><p>pubdata:2023-07-11 03:13:40markdate:2023-07-20 04:55:35.064296</p><p><img src="/public/2023/07/15/test/202307/2023-07-20-045535064296.jpg" alt="img"></p><h2 id="🔖高难度开局的求职之路如何步步拆解：我的回顾与复盘"><a class="header-anchor" href="#🔖高难度开局的求职之路如何步步拆解：我的回顾与复盘">¶</a>🔖<a href="https://sspai.com/post/81429" target="_blank" rel="noopener">高难度开局的求职之路如何步步拆解：我的回顾与复盘</a></h2><p>pubdata:2023-07-24 06:29:53markdate:2023-07-25 04:04:21.666967</p><p><img src="/public/2023/07/15/test/202307/2023-07-25-040421666967.jpg" alt="img"></p><p>统计 ✅ : 0 📅 : 0 🔖 : 4</p><!-- more --><h2 id="✅-0"><a class="header-anchor" href="#✅-0">¶</a>✅ : 0</h2><h2 id="📅-0"><a class="header-anchor" href="#📅-0">¶</a>📅 : 0</h2><h2 id="🔖-4"><a class="header-anchor" href="#🔖-4">¶</a>🔖 : 4</h2><p>🔖 <a href="https://github.com/kenjihiranabe/The-Art-of-Linear-Algebra/tree/main" target="_blank" rel="noopener">GitHub - kenjihiranabe/The-Art-of-Linear-Algebra: Graphic notes on Gilbert Strang's &quot;Linear Algebra for Everyone&quot;</a>-&gt;<a href="C%E6%97%A5%E5%B8%B8/2023-07.md">C日常/2023-07.md</a><br>🔖 小游戏 rom下载-&gt;<a href="C%E6%97%A5%E5%B8%B8/2023-07.md">C日常/2023-07.md</a><br>🔖 塞尔达王国之泪-&gt;<a href="C%E6%97%A5%E5%B8%B8/2023-07.md">C日常/2023-07.md</a><br>🔖  奥德赛-&gt;<a href="C%E6%97%A5%E5%B8%B8/2023-07.md">C日常/2023-07.md</a></p>]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;total: 7&lt;/p&gt;
     
     </summary>
     
