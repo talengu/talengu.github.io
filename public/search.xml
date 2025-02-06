@@ -890,10 +890,10 @@ t   -=   (unsigned   long)GetCycleCount();</p>
         <category>技术阅读</category>
       </categories>
       <tags>
+        <tag>os</tag>
         <tag>开源</tag>
         <tag>gnu</tag>
         <tag>linux</tag>
-        <tag>os</tag>
       </tags>
   </entry>
   <entry>
@@ -1158,6 +1158,42 @@ t   -=   (unsigned   long)GetCycleCount();</p>
       <tags>
         <tag>Ubuntu</tag>
         <tag>BootRecovery</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>「转」tcpdump是在哪儿抓到的包？</title>
+    <url>/public/2022/07/01/linux/how_tcpdump/</url>
+    <content><![CDATA[<blockquote>
+<p>原文地址 <a href="https://cloud.tencent.com/developer/article/1879646" target="_blank" rel="noopener">cloud.tencent.com</a></p>
+</blockquote>
+<blockquote>
+<p>最近使用 tcpdump 的时候突然想到这个问题。因为我之前只存在一些一知半解的认识：比如直接镜像了网卡的包、在数据包进入内核前就获取了。但这些认识真的正确么？针对...</p>
+</blockquote>
+<p>最近使用 tcpdump 的时候突然想到这个问题。因为我之前只存在一些一知半解的认识：比如直接镜像了网卡的包、在数据包进入内核前就获取了。但这些认识真的正确么？针对这个问题，我进行了一番学习探究。</p>
+<p>先说结论：通过 PF_PACKET 这个特殊的套接字协议，直接接收来自链路层的帧。数据包<strong>并非没有</strong>进入内核，而是在进入内核后直接跳过了内核中三层 / 四层的协议栈，直达套接字接口，被应用层的 tcpdump 所使用。实际上，在网卡驱动程序通知内核接受到数据帧的时候，数据包就已经进入了内核处理流程。具体的区别，可以见下图。</p>
+<p><img src="/public/2022/07/01/linux/how_tcpdump/1620.png" alt></p>
+<p>内核网络协议栈示意图</p>
+<a id="more"></a>
+<p>先来看看，普通的套接字的收包路径在内核中是怎么样。</p>
+<p>以最常见的以太网网卡，当网卡接口接收到了一个帧，那么接受者知道它一定包含了一个 Ethernet 报头。封包在协议栈向上传递过程中，一定会在报头中包含一个字段，指出下一阶段的处理应该使用哪一个协议。 以太网卡拥有特定的 MAC 地址，在监听数据帧的时候，当看到帧的目的 MAC 地址与自己的地址或者链路层广播地址（FF:FF:FF:FF:FF:FF）相匹配，就会通过 DMA 把该帧读取到内存中的 ring buffer。</p>
+<p>当一个数据帧被写入到内存后，将产生一个硬件中断请求，以通知 CPU 收到了数据包。操作系统为了减少硬中断产生的次数，会采用一个软中断 (softirq) 唤醒 NAPI 子系统。这样会产生一个单独的线程，调用网卡驱动注册的 poll 方法收包，同时禁止网卡产生新的硬中断，这样的效果便是一次中断可以接收多个包。一旦软终端代码判断有 softirq 处于 pending 状态，便会调用软终端处理函数 net_rx_action。</p>
+<p>中断处理函数会在处理循环中调用 NAPI poll 来接收数据包。poll 方法会分配一个 sk_buff 数据结构（include/linux/skbuff.h），表示该数据包的内核视图。然后将数据从缓冲区提取到新建的 sk_buff 中，并对其中的 protocol 字段做初始化，该字段用以识别特定的协议。之后这个字段会被 netif_receive_skb 内核函数查询，用来确定该执行哪个函数来处理三层的封包。字段涉及协议的值都列在了 include/uapi/linux/if_ether.h 中，名字形如 ETH_P_XXX，比如 ip 协议为 ETH_P_IP。而有一种特殊情况，单一封包可以传递给多个处理函数，这就是 tcpdump 等网络嗅探应用会用到的 ETH_P_ALL。</p>
+<p>软终端处理循环的最后是通过 netif_receive_skb 函数将将数据交给 TCP/IP 协议栈的。它会从数据包包头中取出协议信息，然后遍历注册在这个协议上的回调函数列表。这里的列表值得一提，分别是 ptype_all 和 ptype_base。他们是 hash table 数据结构，分别对应通用数据包（ETH_P_ALL 类型）和特定协议的数据包（ETH_P_XXX 类型），其中存放着指向对应协议处理函数的指针，当收到该类型的数据包时便调用对应的处理函数。</p>
+<p>因此，以 IP 数据包为例，当 ETH_P_IP 类型数据包出队后，软中断处理程序 net_rx_action 最终会在 ptype_base 列表中找到 IP 协议的处理函数 ip_rcv() 并调用它，完成数据包向上提交到协议栈。这里略过 IP 协议栈的处理过程，简而言之，在经过 IP 数据包完整性校验、Netfilter 子系统（iptables 的底层实现）、路由子系统等等一些列流程之后，开始准备送往高层协议。这里的处理和 net_rx_action 很相似，从 IP 数据包头部提取出协议类型后，通过名为 inet_protos 的哈希来寻找高层协议的处理函数，每个高层协议都对应一个处理函数，型如 tcp_v4_rcv(), udp_rcv() 等。</p>
+<p>四层协议以较为简单的 UDP 为例，udp_rcv 会对 udp 包进行合法性校验，然后查找是否有愿意接收此数据包的套接字，如果找到，__udp_queue_rcv_skb 会将包放到 socket 的接收队列。最后，所有在这个 socket 上等待数据的进程都会收到通过 sk_data_ready 函数处理的通知。</p>
+<p>以上是一个数据包穿越协议栈到达 socket 的简要过程，实际的内核处理过程会复杂的多，这里只是做简要的描述。以引入本文的主角：PF_PACKET 协议数据包在内核中的处理路径。</p>
+<p>当创建 PF_PACKET 套接字时，与协议相关的数据包类型将被同时注册进 ptype_all 和 ptype_base，接受函数为 packet_rcb()。此时，net_rx_action 函数会拦截所有进入机器的包，并同样通过 netif_receive_skb 函数遍历 ptype_all 后，传递给 PF_PACKET 接受函数。值得一提的是，tcpdump 依赖的 libpcap 库并非使用原始套接字 + recvfrom 的方式收包，而是在内核空间分配一块内核缓冲区，然后用户空间调用 mmap 系统调用映射到用户空间。</p>
+<h2 id="参考资料"><a class="header-anchor" href="#参考资料">¶</a>参考资料</h2>
+<p><a href="https://blog.packagecloud.io/eng/2016/06/22/monitoring-tuning-linux-networking-stack-receiving-data/" target="_blank" rel="noopener">Monitoring and Tuning the Linux Networking Stack: Receiving Data</a></p>
+<p><a href="https://www.linuxjournal.com/article/4852" target="_blank" rel="noopener">Inside the Linux Packet Filter</a></p>
+<p><a href="https://km.woa.com/group/17746/articles/show/%E5%9B%BE%E8%A7%A3linux%20tcpdump" target="_blank" rel="noopener">图解 linux tcpdump</a></p>
+<p>《深入理解 Linux 网络技术内幕》</p>
+]]></content>
+      <categories>
+        <category>Linux</category>
+      </categories>
+      <tags>
+        <tag>tcpdump</tag>
       </tags>
   </entry>
   <entry>
@@ -1563,42 +1599,6 @@ $$
       </tags>
   </entry>
   <entry>
-    <title>「转」tcpdump是在哪儿抓到的包？</title>
-    <url>/public/2022/07/01/linux/how_tcpdump/</url>
-    <content><![CDATA[<blockquote>
-<p>原文地址 <a href="https://cloud.tencent.com/developer/article/1879646" target="_blank" rel="noopener">cloud.tencent.com</a></p>
-</blockquote>
-<blockquote>
-<p>最近使用 tcpdump 的时候突然想到这个问题。因为我之前只存在一些一知半解的认识：比如直接镜像了网卡的包、在数据包进入内核前就获取了。但这些认识真的正确么？针对...</p>
-</blockquote>
-<p>最近使用 tcpdump 的时候突然想到这个问题。因为我之前只存在一些一知半解的认识：比如直接镜像了网卡的包、在数据包进入内核前就获取了。但这些认识真的正确么？针对这个问题，我进行了一番学习探究。</p>
-<p>先说结论：通过 PF_PACKET 这个特殊的套接字协议，直接接收来自链路层的帧。数据包<strong>并非没有</strong>进入内核，而是在进入内核后直接跳过了内核中三层 / 四层的协议栈，直达套接字接口，被应用层的 tcpdump 所使用。实际上，在网卡驱动程序通知内核接受到数据帧的时候，数据包就已经进入了内核处理流程。具体的区别，可以见下图。</p>
-<p><img src="/public/2022/07/01/linux/how_tcpdump/1620.png" alt></p>
-<p>内核网络协议栈示意图</p>
-<a id="more"></a>
-<p>先来看看，普通的套接字的收包路径在内核中是怎么样。</p>
-<p>以最常见的以太网网卡，当网卡接口接收到了一个帧，那么接受者知道它一定包含了一个 Ethernet 报头。封包在协议栈向上传递过程中，一定会在报头中包含一个字段，指出下一阶段的处理应该使用哪一个协议。 以太网卡拥有特定的 MAC 地址，在监听数据帧的时候，当看到帧的目的 MAC 地址与自己的地址或者链路层广播地址（FF:FF:FF:FF:FF:FF）相匹配，就会通过 DMA 把该帧读取到内存中的 ring buffer。</p>
-<p>当一个数据帧被写入到内存后，将产生一个硬件中断请求，以通知 CPU 收到了数据包。操作系统为了减少硬中断产生的次数，会采用一个软中断 (softirq) 唤醒 NAPI 子系统。这样会产生一个单独的线程，调用网卡驱动注册的 poll 方法收包，同时禁止网卡产生新的硬中断，这样的效果便是一次中断可以接收多个包。一旦软终端代码判断有 softirq 处于 pending 状态，便会调用软终端处理函数 net_rx_action。</p>
-<p>中断处理函数会在处理循环中调用 NAPI poll 来接收数据包。poll 方法会分配一个 sk_buff 数据结构（include/linux/skbuff.h），表示该数据包的内核视图。然后将数据从缓冲区提取到新建的 sk_buff 中，并对其中的 protocol 字段做初始化，该字段用以识别特定的协议。之后这个字段会被 netif_receive_skb 内核函数查询，用来确定该执行哪个函数来处理三层的封包。字段涉及协议的值都列在了 include/uapi/linux/if_ether.h 中，名字形如 ETH_P_XXX，比如 ip 协议为 ETH_P_IP。而有一种特殊情况，单一封包可以传递给多个处理函数，这就是 tcpdump 等网络嗅探应用会用到的 ETH_P_ALL。</p>
-<p>软终端处理循环的最后是通过 netif_receive_skb 函数将将数据交给 TCP/IP 协议栈的。它会从数据包包头中取出协议信息，然后遍历注册在这个协议上的回调函数列表。这里的列表值得一提，分别是 ptype_all 和 ptype_base。他们是 hash table 数据结构，分别对应通用数据包（ETH_P_ALL 类型）和特定协议的数据包（ETH_P_XXX 类型），其中存放着指向对应协议处理函数的指针，当收到该类型的数据包时便调用对应的处理函数。</p>
-<p>因此，以 IP 数据包为例，当 ETH_P_IP 类型数据包出队后，软中断处理程序 net_rx_action 最终会在 ptype_base 列表中找到 IP 协议的处理函数 ip_rcv() 并调用它，完成数据包向上提交到协议栈。这里略过 IP 协议栈的处理过程，简而言之，在经过 IP 数据包完整性校验、Netfilter 子系统（iptables 的底层实现）、路由子系统等等一些列流程之后，开始准备送往高层协议。这里的处理和 net_rx_action 很相似，从 IP 数据包头部提取出协议类型后，通过名为 inet_protos 的哈希来寻找高层协议的处理函数，每个高层协议都对应一个处理函数，型如 tcp_v4_rcv(), udp_rcv() 等。</p>
-<p>四层协议以较为简单的 UDP 为例，udp_rcv 会对 udp 包进行合法性校验，然后查找是否有愿意接收此数据包的套接字，如果找到，__udp_queue_rcv_skb 会将包放到 socket 的接收队列。最后，所有在这个 socket 上等待数据的进程都会收到通过 sk_data_ready 函数处理的通知。</p>
-<p>以上是一个数据包穿越协议栈到达 socket 的简要过程，实际的内核处理过程会复杂的多，这里只是做简要的描述。以引入本文的主角：PF_PACKET 协议数据包在内核中的处理路径。</p>
-<p>当创建 PF_PACKET 套接字时，与协议相关的数据包类型将被同时注册进 ptype_all 和 ptype_base，接受函数为 packet_rcb()。此时，net_rx_action 函数会拦截所有进入机器的包，并同样通过 netif_receive_skb 函数遍历 ptype_all 后，传递给 PF_PACKET 接受函数。值得一提的是，tcpdump 依赖的 libpcap 库并非使用原始套接字 + recvfrom 的方式收包，而是在内核空间分配一块内核缓冲区，然后用户空间调用 mmap 系统调用映射到用户空间。</p>
-<h2 id="参考资料"><a class="header-anchor" href="#参考资料">¶</a>参考资料</h2>
-<p><a href="https://blog.packagecloud.io/eng/2016/06/22/monitoring-tuning-linux-networking-stack-receiving-data/" target="_blank" rel="noopener">Monitoring and Tuning the Linux Networking Stack: Receiving Data</a></p>
-<p><a href="https://www.linuxjournal.com/article/4852" target="_blank" rel="noopener">Inside the Linux Packet Filter</a></p>
-<p><a href="https://km.woa.com/group/17746/articles/show/%E5%9B%BE%E8%A7%A3linux%20tcpdump" target="_blank" rel="noopener">图解 linux tcpdump</a></p>
-<p>《深入理解 Linux 网络技术内幕》</p>
-]]></content>
-      <categories>
-        <category>Linux</category>
-      </categories>
-      <tags>
-        <tag>tcpdump</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>希腊罗马神话</title>
     <url>/public/2018/11/05/readings/Gods_stories/</url>
     <content><![CDATA[<p><strong>前言</strong></p>
@@ -1800,6 +1800,36 @@ $$
         <tag>Python</tag>
         <tag>YouTube字幕合并</tag>
         <tag>SRT(文本格式字幕)</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>「202301月度汇报」ttrss</title>
+    <url>/public/2023/01/15/test/202301/</url>
+    <content><![CDATA[<p>total: 3</p>
+<a id="more"></a>
+<h2 id="🔖跳进框框，你的-Markdown-链接可以更整洁"><a class="header-anchor" href="#🔖跳进框框，你的-Markdown-链接可以更整洁">¶</a>🔖<a href="https://sspai.com/post/77513" target="_blank" rel="noopener">跳进框框，你的 Markdown 链接可以更整洁</a></h2>
+<p>pubdata:2022-12-29 03:30:14
+markdate:2023-01-03 01:17:10.436779</p>
+<p><img src="/public/2023/01/15/test/202301/2023-01-03-011710436779.jpg" alt="img"></p>
+<h2 id="🔖关于流感和疫苗，你需要知道哪些信息？"><a class="header-anchor" href="#🔖关于流感和疫苗，你需要知道哪些信息？">¶</a>🔖<a href="https://sspai.com/post/76945" target="_blank" rel="noopener">关于流感和疫苗，你需要知道哪些信息？</a></h2>
+<p>pubdata:2022-11-23 06:38:28
+markdate:2023-01-03 13:52:56.586627</p>
+<p><img src="/public/2023/01/15/test/202301/2023-01-03-135256586627.jpg" alt="img"></p>
+<h2 id="🔖一日一技-两种方法让-Windows-10-也能运行-Android-应用"><a class="header-anchor" href="#🔖一日一技-两种方法让-Windows-10-也能运行-Android-应用">¶</a>🔖<a href="https://sspai.com/post/77582" target="_blank" rel="noopener">一日一技 | 两种方法让 Windows 10 也能运行 Android 应用</a></h2>
+<p>pubdata:2023-01-03 06:30:00
+markdate:2023-01-04 10:20:53.166720</p>
+<p><img src="/public/2023/01/15/test/202301/2023-01-04-102053166720.jpg" alt="img"></p>
+<p>统计 ✅ : 0 📅 : 0 🔖 : 0</p>
+<!-- more -->
+<h2 id="✅-0"><a class="header-anchor" href="#✅-0">¶</a>✅ : 0</h2>
+<h2 id="📅-0"><a class="header-anchor" href="#📅-0">¶</a>📅 : 0</h2>
+<h2 id="🔖-0"><a class="header-anchor" href="#🔖-0">¶</a>🔖 : 0</h2>
+]]></content>
+      <categories>
+        <category>月度汇报</category>
+      </categories>
+      <tags>
+        <tag>月度汇报</tag>
       </tags>
   </entry>
   <entry>
@@ -2091,36 +2121,6 @@ markdate:2023-07-25 04:04:21.666967</p>
       </tags>
   </entry>
   <entry>
-    <title>「202301月度汇报」ttrss</title>
-    <url>/public/2023/01/15/test/202301/</url>
-    <content><![CDATA[<p>total: 3</p>
-<a id="more"></a>
-<h2 id="🔖跳进框框，你的-Markdown-链接可以更整洁"><a class="header-anchor" href="#🔖跳进框框，你的-Markdown-链接可以更整洁">¶</a>🔖<a href="https://sspai.com/post/77513" target="_blank" rel="noopener">跳进框框，你的 Markdown 链接可以更整洁</a></h2>
-<p>pubdata:2022-12-29 03:30:14
-markdate:2023-01-03 01:17:10.436779</p>
-<p><img src="/public/2023/01/15/test/202301/2023-01-03-011710436779.jpg" alt="img"></p>
-<h2 id="🔖关于流感和疫苗，你需要知道哪些信息？"><a class="header-anchor" href="#🔖关于流感和疫苗，你需要知道哪些信息？">¶</a>🔖<a href="https://sspai.com/post/76945" target="_blank" rel="noopener">关于流感和疫苗，你需要知道哪些信息？</a></h2>
-<p>pubdata:2022-11-23 06:38:28
-markdate:2023-01-03 13:52:56.586627</p>
-<p><img src="/public/2023/01/15/test/202301/2023-01-03-135256586627.jpg" alt="img"></p>
-<h2 id="🔖一日一技-两种方法让-Windows-10-也能运行-Android-应用"><a class="header-anchor" href="#🔖一日一技-两种方法让-Windows-10-也能运行-Android-应用">¶</a>🔖<a href="https://sspai.com/post/77582" target="_blank" rel="noopener">一日一技 | 两种方法让 Windows 10 也能运行 Android 应用</a></h2>
-<p>pubdata:2023-01-03 06:30:00
-markdate:2023-01-04 10:20:53.166720</p>
-<p><img src="/public/2023/01/15/test/202301/2023-01-04-102053166720.jpg" alt="img"></p>
-<p>统计 ✅ : 0 📅 : 0 🔖 : 0</p>
-<!-- more -->
-<h2 id="✅-0"><a class="header-anchor" href="#✅-0">¶</a>✅ : 0</h2>
-<h2 id="📅-0"><a class="header-anchor" href="#📅-0">¶</a>📅 : 0</h2>
-<h2 id="🔖-0"><a class="header-anchor" href="#🔖-0">¶</a>🔖 : 0</h2>
-]]></content>
-      <categories>
-        <category>月度汇报</category>
-      </categories>
-      <tags>
-        <tag>月度汇报</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>「202308月度汇报」ttrss</title>
     <url>/public/2023/08/15/test/202308/</url>
     <content><![CDATA[<p>total: 23</p>
@@ -2240,6 +2240,68 @@ markdate:2023-08-22 05:12:19.184840</p>
 -&gt;<a href="C%E6%97%A5%E5%B8%B8/2023-08.md">C日常/2023-08.md</a><br>
 🔖 iperf支持dscp
 -&gt;<a href="C%E6%97%A5%E5%B8%B8/2023-08.md">C日常/2023-08.md</a></p>
+]]></content>
+      <categories>
+        <category>月度汇报</category>
+      </categories>
+      <tags>
+        <tag>月度汇报</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>「202309月度汇报」ttrss</title>
+    <url>/public/2023/09/15/test/202309/</url>
+    <content><![CDATA[<p>total: 11</p>
+<a id="more"></a>
+<h2 id="🔖OneNote-Md-Exporter-–-一键导出-OneNote-笔记为-Joplin、MarkDown-格式-Windows"><a class="header-anchor" href="#🔖OneNote-Md-Exporter-–-一键导出-OneNote-笔记为-Joplin、MarkDown-格式-Windows">¶</a>🔖<a href="https://www.appinn.com/onenote-md-exporter/" target="_blank" rel="noopener">OneNote Md Exporter – 一键导出 OneNote 笔记为 Joplin、MarkDown 格式[Windows]</a></h2>
+<p>pubdata:2023-09-01 08:48:28
+markdate:2023-09-03 00:28:09.701339</p>
+<p><img src="/public/2023/09/15/test/202309/2023-09-03-002809701339.jpg" alt="img"></p>
+<h2 id="🔖AirPodsDesktop-–-开源-AirPods-增强：在-Windows-上动画显示电池信息、入耳检测、低音频延迟"><a class="header-anchor" href="#🔖AirPodsDesktop-–-开源-AirPods-增强：在-Windows-上动画显示电池信息、入耳检测、低音频延迟">¶</a>🔖<a href="https://www.appinn.com/airpodsdesktop/" target="_blank" rel="noopener">AirPodsDesktop – 开源 AirPods 增强：在 Windows 上动画显示电池信息、入耳检测、低音频延迟</a></h2>
+<p>pubdata:2023-09-02 04:05:18
+markdate:2023-09-03 08:24:54.291660</p>
+<p><img src="/public/2023/09/15/test/202309/2023-09-03-082454291660.jpg" alt="img"></p>
+<h2 id="🔖你或许总不满意，但它不全是秘密：聊聊-Twitter-开源的时间线算法"><a class="header-anchor" href="#🔖你或许总不满意，但它不全是秘密：聊聊-Twitter-开源的时间线算法">¶</a>🔖<a href="https://sspai.com/post/82586" target="_blank" rel="noopener">你或许总不满意，但它不全是秘密：聊聊 Twitter 开源的时间线算法</a></h2>
+<p>pubdata:2023-09-05 07:30:00
+markdate:2023-09-06 07:48:40.277952</p>
+<p><img src="/public/2023/09/15/test/202309/2023-09-06-074840277952.jpg" alt="img"></p>
+<h2 id="🔖导出多年微信聊天记录，我用可视化分析了出自己的口头禅"><a class="header-anchor" href="#🔖导出多年微信聊天记录，我用可视化分析了出自己的口头禅">¶</a>🔖<a href="https://sspai.com/post/82577" target="_blank" rel="noopener">导出多年微信聊天记录，我用可视化分析了出自己的口头禅</a></h2>
+<p>pubdata:2023-08-31 03:37:31
+markdate:2023-09-06 07:53:47.336536</p>
+<p><img src="/public/2023/09/15/test/202309/2023-09-06-075347336536.jpg" alt="img"></p>
+<h2 id="🔖-Linux-distrobox-真是一个实用的工具"><a class="header-anchor" href="#🔖-Linux-distrobox-真是一个实用的工具">¶</a>🔖<a href="https://www.v2ex.com/t/971864#reply0" target="_blank" rel="noopener">[Linux] distrobox 真是一个实用的工具</a></h2>
+<p>pubdata:2023-09-07 14:17:37
+markdate:2023-09-08 03:19:35.185065</p>
+<p><img src="/public/2023/09/15/test/202309/2023-09-08-031935185065.jpg" alt="img"></p>
+<h2 id="🔖tldraw-–-一个人人都会用，开源在线白板"><a class="header-anchor" href="#🔖tldraw-–-一个人人都会用，开源在线白板">¶</a>🔖<a href="https://www.appinn.com/tldraw/" target="_blank" rel="noopener">tldraw – 一个人人都会用，开源在线白板</a></h2>
+<p>pubdata:2023-09-10 08:17:39
+markdate:2023-09-11 15:44:53.433367</p>
+<p><img src="/public/2023/09/15/test/202309/2023-09-11-154453433367.jpg" alt="img"></p>
+<h2 id="🔖居然有这种网站？涮火锅啦"><a class="header-anchor" href="#🔖居然有这种网站？涮火锅啦">¶</a>🔖<a href="https://www.appinn.com/shuanhuoguo/" target="_blank" rel="noopener">居然有这种网站？涮火锅啦</a></h2>
+<p>pubdata:2023-09-13 13:10:17
+markdate:2023-09-14 08:06:51.509429</p>
+<p><img src="/public/2023/09/15/test/202309/2023-09-14-080651509429.jpg" alt="img"></p>
+<h2 id="🔖我在数字时代做了一个电子日历，让油画和照片可以被装进去"><a class="header-anchor" href="#🔖我在数字时代做了一个电子日历，让油画和照片可以被装进去">¶</a>🔖<a href="https://sspai.com/post/82704" target="_blank" rel="noopener">我在数字时代做了一个电子日历，让油画和照片可以被装进去</a></h2>
+<p>pubdata:2023-09-07 09:12:48
+markdate:2023-09-14 11:21:50.001074</p>
+<p><img src="/public/2023/09/15/test/202309/2023-09-14-112150001074.jpg" alt="img"></p>
+<h2 id="🔖百元级售价、小程序操作的门禁卡复制器-，小白也能轻松上手啦～"><a class="header-anchor" href="#🔖百元级售价、小程序操作的门禁卡复制器-，小白也能轻松上手啦～">¶</a>🔖<a href="https://sg.talenss.xyz/rss4/Bp5P1ub8yaA.mp4" target="_blank" rel="noopener">百元级售价、小程序操作的门禁卡复制器 ，小白也能轻松上手啦～</a></h2>
+<p>pubdata:2023-09-16 06:00:00
+markdate:2023-09-20 01:39:33.785373</p>
+<p><img src="/public/2023/09/15/test/202309/2023-09-20-013933785373.jpg" alt="img"></p>
+<h2 id="🔖双轨歌词、动态封面：我是如何用-mpv-听歌的"><a class="header-anchor" href="#🔖双轨歌词、动态封面：我是如何用-mpv-听歌的">¶</a>🔖<a href="https://sspai.com/post/82744" target="_blank" rel="noopener">双轨歌词、动态封面：我是如何用 mpv 听歌的</a></h2>
+<p>pubdata:2023-09-20 09:30:00
+markdate:2023-09-22 01:13:47.865803</p>
+<p><img src="/public/2023/09/15/test/202309/2023-09-22-011347865803.jpg" alt="img"></p>
+<h2 id="🔖Obsidian-Excalidraw：我的个人知识管理可视化方法论"><a class="header-anchor" href="#🔖Obsidian-Excalidraw：我的个人知识管理可视化方法论">¶</a>🔖<a href="https://sspai.com/post/82130" target="_blank" rel="noopener">Obsidian + Excalidraw：我的个人知识管理可视化方法论</a></h2>
+<p>pubdata:2023-09-18 03:01:49
+markdate:2023-09-22 05:29:59.547928</p>
+<p><img src="/public/2023/09/15/test/202309/2023-09-22-052959547928.jpg" alt="img"></p>
+<p>统计 ✅ : 0 📅 : 0 🔖 : 0</p>
+<!-- more -->
+<h2 id="✅-0"><a class="header-anchor" href="#✅-0">¶</a>✅ : 0</h2>
+<h2 id="📅-0"><a class="header-anchor" href="#📅-0">¶</a>📅 : 0</h2>
+<h2 id="🔖-0"><a class="header-anchor" href="#🔖-0">¶</a>🔖 : 0</h2>
 ]]></content>
       <categories>
         <category>月度汇报</category>
@@ -2454,68 +2516,6 @@ markdate:2024-02-16 01:32:26.123169</p>
       </tags>
   </entry>
   <entry>
-    <title>「202309月度汇报」ttrss</title>
-    <url>/public/2023/09/15/test/202309/</url>
-    <content><![CDATA[<p>total: 11</p>
-<a id="more"></a>
-<h2 id="🔖OneNote-Md-Exporter-–-一键导出-OneNote-笔记为-Joplin、MarkDown-格式-Windows"><a class="header-anchor" href="#🔖OneNote-Md-Exporter-–-一键导出-OneNote-笔记为-Joplin、MarkDown-格式-Windows">¶</a>🔖<a href="https://www.appinn.com/onenote-md-exporter/" target="_blank" rel="noopener">OneNote Md Exporter – 一键导出 OneNote 笔记为 Joplin、MarkDown 格式[Windows]</a></h2>
-<p>pubdata:2023-09-01 08:48:28
-markdate:2023-09-03 00:28:09.701339</p>
-<p><img src="/public/2023/09/15/test/202309/2023-09-03-002809701339.jpg" alt="img"></p>
-<h2 id="🔖AirPodsDesktop-–-开源-AirPods-增强：在-Windows-上动画显示电池信息、入耳检测、低音频延迟"><a class="header-anchor" href="#🔖AirPodsDesktop-–-开源-AirPods-增强：在-Windows-上动画显示电池信息、入耳检测、低音频延迟">¶</a>🔖<a href="https://www.appinn.com/airpodsdesktop/" target="_blank" rel="noopener">AirPodsDesktop – 开源 AirPods 增强：在 Windows 上动画显示电池信息、入耳检测、低音频延迟</a></h2>
-<p>pubdata:2023-09-02 04:05:18
-markdate:2023-09-03 08:24:54.291660</p>
-<p><img src="/public/2023/09/15/test/202309/2023-09-03-082454291660.jpg" alt="img"></p>
-<h2 id="🔖你或许总不满意，但它不全是秘密：聊聊-Twitter-开源的时间线算法"><a class="header-anchor" href="#🔖你或许总不满意，但它不全是秘密：聊聊-Twitter-开源的时间线算法">¶</a>🔖<a href="https://sspai.com/post/82586" target="_blank" rel="noopener">你或许总不满意，但它不全是秘密：聊聊 Twitter 开源的时间线算法</a></h2>
-<p>pubdata:2023-09-05 07:30:00
-markdate:2023-09-06 07:48:40.277952</p>
-<p><img src="/public/2023/09/15/test/202309/2023-09-06-074840277952.jpg" alt="img"></p>
-<h2 id="🔖导出多年微信聊天记录，我用可视化分析了出自己的口头禅"><a class="header-anchor" href="#🔖导出多年微信聊天记录，我用可视化分析了出自己的口头禅">¶</a>🔖<a href="https://sspai.com/post/82577" target="_blank" rel="noopener">导出多年微信聊天记录，我用可视化分析了出自己的口头禅</a></h2>
-<p>pubdata:2023-08-31 03:37:31
-markdate:2023-09-06 07:53:47.336536</p>
-<p><img src="/public/2023/09/15/test/202309/2023-09-06-075347336536.jpg" alt="img"></p>
-<h2 id="🔖-Linux-distrobox-真是一个实用的工具"><a class="header-anchor" href="#🔖-Linux-distrobox-真是一个实用的工具">¶</a>🔖<a href="https://www.v2ex.com/t/971864#reply0" target="_blank" rel="noopener">[Linux] distrobox 真是一个实用的工具</a></h2>
-<p>pubdata:2023-09-07 14:17:37
-markdate:2023-09-08 03:19:35.185065</p>
-<p><img src="/public/2023/09/15/test/202309/2023-09-08-031935185065.jpg" alt="img"></p>
-<h2 id="🔖tldraw-–-一个人人都会用，开源在线白板"><a class="header-anchor" href="#🔖tldraw-–-一个人人都会用，开源在线白板">¶</a>🔖<a href="https://www.appinn.com/tldraw/" target="_blank" rel="noopener">tldraw – 一个人人都会用，开源在线白板</a></h2>
-<p>pubdata:2023-09-10 08:17:39
-markdate:2023-09-11 15:44:53.433367</p>
-<p><img src="/public/2023/09/15/test/202309/2023-09-11-154453433367.jpg" alt="img"></p>
-<h2 id="🔖居然有这种网站？涮火锅啦"><a class="header-anchor" href="#🔖居然有这种网站？涮火锅啦">¶</a>🔖<a href="https://www.appinn.com/shuanhuoguo/" target="_blank" rel="noopener">居然有这种网站？涮火锅啦</a></h2>
-<p>pubdata:2023-09-13 13:10:17
-markdate:2023-09-14 08:06:51.509429</p>
-<p><img src="/public/2023/09/15/test/202309/2023-09-14-080651509429.jpg" alt="img"></p>
-<h2 id="🔖我在数字时代做了一个电子日历，让油画和照片可以被装进去"><a class="header-anchor" href="#🔖我在数字时代做了一个电子日历，让油画和照片可以被装进去">¶</a>🔖<a href="https://sspai.com/post/82704" target="_blank" rel="noopener">我在数字时代做了一个电子日历，让油画和照片可以被装进去</a></h2>
-<p>pubdata:2023-09-07 09:12:48
-markdate:2023-09-14 11:21:50.001074</p>
-<p><img src="/public/2023/09/15/test/202309/2023-09-14-112150001074.jpg" alt="img"></p>
-<h2 id="🔖百元级售价、小程序操作的门禁卡复制器-，小白也能轻松上手啦～"><a class="header-anchor" href="#🔖百元级售价、小程序操作的门禁卡复制器-，小白也能轻松上手啦～">¶</a>🔖<a href="https://sg.talenss.xyz/rss4/Bp5P1ub8yaA.mp4" target="_blank" rel="noopener">百元级售价、小程序操作的门禁卡复制器 ，小白也能轻松上手啦～</a></h2>
-<p>pubdata:2023-09-16 06:00:00
-markdate:2023-09-20 01:39:33.785373</p>
-<p><img src="/public/2023/09/15/test/202309/2023-09-20-013933785373.jpg" alt="img"></p>
-<h2 id="🔖双轨歌词、动态封面：我是如何用-mpv-听歌的"><a class="header-anchor" href="#🔖双轨歌词、动态封面：我是如何用-mpv-听歌的">¶</a>🔖<a href="https://sspai.com/post/82744" target="_blank" rel="noopener">双轨歌词、动态封面：我是如何用 mpv 听歌的</a></h2>
-<p>pubdata:2023-09-20 09:30:00
-markdate:2023-09-22 01:13:47.865803</p>
-<p><img src="/public/2023/09/15/test/202309/2023-09-22-011347865803.jpg" alt="img"></p>
-<h2 id="🔖Obsidian-Excalidraw：我的个人知识管理可视化方法论"><a class="header-anchor" href="#🔖Obsidian-Excalidraw：我的个人知识管理可视化方法论">¶</a>🔖<a href="https://sspai.com/post/82130" target="_blank" rel="noopener">Obsidian + Excalidraw：我的个人知识管理可视化方法论</a></h2>
-<p>pubdata:2023-09-18 03:01:49
-markdate:2023-09-22 05:29:59.547928</p>
-<p><img src="/public/2023/09/15/test/202309/2023-09-22-052959547928.jpg" alt="img"></p>
-<p>统计 ✅ : 0 📅 : 0 🔖 : 0</p>
-<!-- more -->
-<h2 id="✅-0"><a class="header-anchor" href="#✅-0">¶</a>✅ : 0</h2>
-<h2 id="📅-0"><a class="header-anchor" href="#📅-0">¶</a>📅 : 0</h2>
-<h2 id="🔖-0"><a class="header-anchor" href="#🔖-0">¶</a>🔖 : 0</h2>
-]]></content>
-      <categories>
-        <category>月度汇报</category>
-      </categories>
-      <tags>
-        <tag>月度汇报</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>「202403月度汇报」auto report</title>
     <url>/public/2024/03/15/test/202403/</url>
     <content><![CDATA[<h2 id="统计-✅-0-📅-0-🔖-0"><a class="header-anchor" href="#统计-✅-0-📅-0-🔖-0">¶</a>=&gt; 统计 ✅ : 0 📅 : 0 🔖 : 0</h2>
@@ -2694,40 +2694,6 @@ markdate:2024-05-23 04:34:20.428377</p>
       </tags>
   </entry>
   <entry>
-    <title>「202407月度汇报」auto report</title>
-    <url>/public/2024/07/15/test/202407/</url>
-    <content><![CDATA[<p>✅ : 0 📅 : 0 🔖 : 0
-ttrss标记个数: 5</p>
-<a id="more"></a>
-<h2 id="统计-✅-0-📅-0-🔖-0"><a class="header-anchor" href="#统计-✅-0-📅-0-🔖-0">¶</a>=&gt; 统计 ✅ : 0 📅 : 0 🔖 : 0</h2>
-<h3 id="✅-0"><a class="header-anchor" href="#✅-0">¶</a>✅ : 0</h3>
-<h3 id="📅-0"><a class="header-anchor" href="#📅-0">¶</a>📅 : 0</h3>
-<h3 id="🔖-0"><a class="header-anchor" href="#🔖-0">¶</a>🔖 : 0</h3>
-<h2 id="ttrss标记个数-5"><a class="header-anchor" href="#ttrss标记个数-5">¶</a>=&gt; ttrss标记个数: 5</h2>
-<h3 id="EverythingToolbar-–-将秒级文件搜索工具-Everything-无缝集成到-Windows-10-11-开始菜单"><a class="header-anchor" href="#EverythingToolbar-–-将秒级文件搜索工具-Everything-无缝集成到-Windows-10-11-开始菜单">¶</a><a href="https://www.appinn.com/everything-toolbar-2/" target="_blank" rel="noopener">EverythingToolbar – 将秒级文件搜索工具 Everything 无缝集成到 Windows 10/11 开始菜单</a></h3>
-<p>pubdata:2024-07-01 08:11:44
-markdate:2024-07-02 07:43:26.187850</p>
-<h3 id="Monkeytype-–-多语言在线打字练习、打字测试"><a class="header-anchor" href="#Monkeytype-–-多语言在线打字练习、打字测试">¶</a><a href="https://www.appinn.com/monkeytype/" target="_blank" rel="noopener">Monkeytype – 多语言在线打字练习、打字测试</a></h3>
-<p>pubdata:2024-07-07 03:44:52
-markdate:2024-07-09 23:32:40.501203</p>
-<h3 id="窗口洞洞波-–-让鼠标穿透当前窗口，到桌面操作文件-Windows"><a class="header-anchor" href="#窗口洞洞波-–-让鼠标穿透当前窗口，到桌面操作文件-Windows">¶</a><a href="https://www.appinn.com/winhole/" target="_blank" rel="noopener">窗口洞洞波 – 让鼠标穿透当前窗口，到桌面操作文件[Windows]</a></h3>
-<p>pubdata:2024-07-09 10:54:07
-markdate:2024-07-11 04:21:36.327554</p>
-<h3 id="LocalSend-v1-15-0-更新：局域网文件传输工具"><a class="header-anchor" href="#LocalSend-v1-15-0-更新：局域网文件传输工具">¶</a><a href="https://www.appinn.com/localsend-v-1-15-0/" target="_blank" rel="noopener">LocalSend v1.15.0 更新：局域网文件传输工具</a></h3>
-<p>pubdata:2024-07-15 08:53:46
-markdate:2024-07-17 00:54:51.374138</p>
-<h3 id="抖音上爆火的「自动挡吉他」，揭示了智能硬件的未来"><a class="header-anchor" href="#抖音上爆火的「自动挡吉他」，揭示了智能硬件的未来">¶</a><a href="https://www.geekpark.net/news/337542" target="_blank" rel="noopener">抖音上爆火的「自动挡吉他」，揭示了智能硬件的未来</a></h3>
-<p>pubdata:2024-07-04 07:35:12
-markdate:2024-07-24 03:48:22.976326</p>
-]]></content>
-      <categories>
-        <category>月度汇报</category>
-      </categories>
-      <tags>
-        <tag>月度汇报</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>「202406月度汇报」auto report</title>
     <url>/public/2024/06/15/test/202406/</url>
     <content><![CDATA[<p>✅ : 0 📅 : 0 🔖 : 0
@@ -2777,6 +2743,40 @@ markdate:2024-06-21 05:02:19.036845</p>
 <h3 id="2024-美洲杯：会自动更新比分的赛程日历，中文版"><a class="header-anchor" href="#2024-美洲杯：会自动更新比分的赛程日历，中文版">¶</a><a href="https://www.appinn.com/2024-copa-america-calendar/" target="_blank" rel="noopener">2024 美洲杯：会自动更新比分的赛程日历，中文版</a></h3>
 <p>pubdata:2024-06-21 10:13:36
 markdate:2024-06-22 17:49:02.499112</p>
+]]></content>
+      <categories>
+        <category>月度汇报</category>
+      </categories>
+      <tags>
+        <tag>月度汇报</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>「202407月度汇报」auto report</title>
+    <url>/public/2024/07/15/test/202407/</url>
+    <content><![CDATA[<p>✅ : 0 📅 : 0 🔖 : 0
+ttrss标记个数: 5</p>
+<a id="more"></a>
+<h2 id="统计-✅-0-📅-0-🔖-0"><a class="header-anchor" href="#统计-✅-0-📅-0-🔖-0">¶</a>=&gt; 统计 ✅ : 0 📅 : 0 🔖 : 0</h2>
+<h3 id="✅-0"><a class="header-anchor" href="#✅-0">¶</a>✅ : 0</h3>
+<h3 id="📅-0"><a class="header-anchor" href="#📅-0">¶</a>📅 : 0</h3>
+<h3 id="🔖-0"><a class="header-anchor" href="#🔖-0">¶</a>🔖 : 0</h3>
+<h2 id="ttrss标记个数-5"><a class="header-anchor" href="#ttrss标记个数-5">¶</a>=&gt; ttrss标记个数: 5</h2>
+<h3 id="EverythingToolbar-–-将秒级文件搜索工具-Everything-无缝集成到-Windows-10-11-开始菜单"><a class="header-anchor" href="#EverythingToolbar-–-将秒级文件搜索工具-Everything-无缝集成到-Windows-10-11-开始菜单">¶</a><a href="https://www.appinn.com/everything-toolbar-2/" target="_blank" rel="noopener">EverythingToolbar – 将秒级文件搜索工具 Everything 无缝集成到 Windows 10/11 开始菜单</a></h3>
+<p>pubdata:2024-07-01 08:11:44
+markdate:2024-07-02 07:43:26.187850</p>
+<h3 id="Monkeytype-–-多语言在线打字练习、打字测试"><a class="header-anchor" href="#Monkeytype-–-多语言在线打字练习、打字测试">¶</a><a href="https://www.appinn.com/monkeytype/" target="_blank" rel="noopener">Monkeytype – 多语言在线打字练习、打字测试</a></h3>
+<p>pubdata:2024-07-07 03:44:52
+markdate:2024-07-09 23:32:40.501203</p>
+<h3 id="窗口洞洞波-–-让鼠标穿透当前窗口，到桌面操作文件-Windows"><a class="header-anchor" href="#窗口洞洞波-–-让鼠标穿透当前窗口，到桌面操作文件-Windows">¶</a><a href="https://www.appinn.com/winhole/" target="_blank" rel="noopener">窗口洞洞波 – 让鼠标穿透当前窗口，到桌面操作文件[Windows]</a></h3>
+<p>pubdata:2024-07-09 10:54:07
+markdate:2024-07-11 04:21:36.327554</p>
+<h3 id="LocalSend-v1-15-0-更新：局域网文件传输工具"><a class="header-anchor" href="#LocalSend-v1-15-0-更新：局域网文件传输工具">¶</a><a href="https://www.appinn.com/localsend-v-1-15-0/" target="_blank" rel="noopener">LocalSend v1.15.0 更新：局域网文件传输工具</a></h3>
+<p>pubdata:2024-07-15 08:53:46
+markdate:2024-07-17 00:54:51.374138</p>
+<h3 id="抖音上爆火的「自动挡吉他」，揭示了智能硬件的未来"><a class="header-anchor" href="#抖音上爆火的「自动挡吉他」，揭示了智能硬件的未来">¶</a><a href="https://www.geekpark.net/news/337542" target="_blank" rel="noopener">抖音上爆火的「自动挡吉他」，揭示了智能硬件的未来</a></h3>
+<p>pubdata:2024-07-04 07:35:12
+markdate:2024-07-24 03:48:22.976326</p>
 ]]></content>
       <categories>
         <category>月度汇报</category>
@@ -3442,8 +3442,8 @@ NexT Github  <a href="https://github.com/iissnan/hexo-theme-next" target="_blank
         <category>通信</category>
       </categories>
       <tags>
-        <tag>通信</tag>
         <tag>历史</tag>
+        <tag>通信</tag>
       </tags>
   </entry>
   <entry>
@@ -3614,161 +3614,6 @@ $$
       </tags>
   </entry>
   <entry>
-    <title>选择困难者的福音？层次分析法</title>
-    <url>/public/2021/04/02/math/math_AHP/</url>
-    <content><![CDATA[<h2 id="摘要"><a class="header-anchor" href="#摘要">¶</a>摘要</h2>
-<p>日常生活中，我们面临很多的选择，选择自己最工作offer，选择买哪个牌子的手机，选择哪个地方旅行等等。这些选择难以定量的衡量，有很多不确定性。内心小纠结，我选择了这个，万一那个好呢，怎么办？请看层次分析法。</p>
-<p>层次分析法(Analytic Hierarchy Process，简称 AHP)是对一些较为复杂、较为模糊的问题作出决策的简易方法，它特别适用于那些难于完全定量分析的问题。它是美国运筹学家 T. L. Saaty 教授于上世纪 70 年代初期提出的一种简便、灵活而又实用的多准则决策方法。</p>
-<p>运用层次分析法建模，大体上可按下面四个步骤进行</p>
-<ul>
-<li>建立递阶层次结构模型</li>
-<li>构造出各层次中的所有判断矩阵</li>
-<li>层次单排序及一致性检验</li>
-<li>层次总排序及一致性检验。（一般不用）</li>
-</ul>
-<a id="more"></a>
-<p>让我们从offer大佬的例子开始吧！</p>
-<p>举个栗子，今年有位大学生，有三个offer，C1 C2 C3。</p>
-<p>第一步，建立层次模型。</p>
-<ul>
-<li>目标层A：找工作的目标，自己满意程度。
-<ul>
-<li>这个程度怎么计算呢？比如工作1。</li>
-</ul>
-</li>
-<li>准则层B：研究课题、发展前途、待遇、同事情况、地理位置、单位名气等等。
-<ul>
-<li>尽量列全一点，不需要排列重要顺序。</li>
-<li>小于等于9个，后面要两两拍脑袋给出相对的重要层度，给多了不得把脑袋拍疼了。</li>
-<li>也可以有子准则层，比如待遇中的放假、工作环境等等，列出也小于9个。</li>
-</ul>
-</li>
-<li>方案层C：就是我们的offer</li>
-</ul>
-<img src="/public/2021/04/02/math/math_AHP/image-20200406145535585.png" alt="image-20200406145535585" style="zoom:50%;">
-<h2 id="构造-A-B-之间判断矩阵"><a class="header-anchor" href="#构造-A-B-之间判断矩阵">¶</a>构造 A B 之间判断矩阵</h2>
-<p>准则层B与目标A之间的关系。为了求出准则层中(B1-6) 对目标的重要层度的排序。比如对于该生工作满意度第一重要是待遇，然后是地点，其实该生自己也很模糊。就是固定A，然后求B中准则，对A重要性的排序。</p>
-<h3 id="我们怎么对B中的准则们的重要排序呢？"><a class="header-anchor" href="#我们怎么对B中的准则们的重要排序呢？">¶</a>我们怎么对B中的准则们的重要排序呢？</h3>
-<p>直接给每一个准则，0-1的评分，然后排序。经常会想，给完分之后，这个不合理呀要不我再给哪个准则加加分。所以这样的方法常常会因考虑不周全、顾此失彼而使决策者提出与他实际认为的重要性程度不相一致的数据。</p>
-<p>我们可以将这个过程细化，我就比较两个准则对于目标的重要性，然后通过下面的矩阵方法，求出优先顺序。</p>
-<p>还能通过一个一致性检验，来检验在你评分的过程中，有没有自相矛盾的地方，当然这种方法允许一些自相矛盾。反正评分的时候尊从内心拍脑袋就对了。</p>
-<p>所以我们拿出一个B1 与 B2 对于目标的重要，想一想然后给出B2/B1，填入下面的表格中的(2,1)的位置。</p>
-<p>整个矩阵i,j 与j，i 是取倒数的关系，所以只要做一半。</p>
-<p>在找工作的目标下，准则i与j相对的重要性表示，B2/B1 的值。采用9个标度。而相比不重要刻度取倒数就可以了</p>
-<table>
-<thead>
-<tr>
-<th>准则i比j的比较</th>
-<th>1</th>
-<th>2</th>
-<th>3</th>
-<th>4</th>
-<th>5</th>
-<th>6</th>
-<th>7</th>
-<th>8</th>
-<th>9</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-<td>相同重要</td>
-<td></td>
-<td>比较重要</td>
-<td></td>
-<td>明显重要</td>
-<td></td>
-<td>强烈重要</td>
-<td></td>
-<td>极端重要</td>
-</tr>
-</tbody>
-</table>
-<p>最后的两两相对重要表格</p>
-<img src="/public/2021/04/02/math/math_AHP/image-20200406145640316.png" alt="image-20200406145640316" style="zoom:50%;">
-<p>对角线对称的两个数互为倒数，即 $$a_{ji}=\frac{1}{a_{ij}}$$  B1/B2 不就是和 B2/B1互为倒数嘛</p>
-<p>从心理学观点来看，分级太多会超越人们的判断能力，既增加了作判断的难度， 又容易因此而提供虚假数据。Saaty 等人还用实验方法比较了在各种不同标度下人们判断结果的正确性，实验结果也表明，采用 1~9 标度最为合适。</p>
-<p>判断矩阵的一致性指标步骤：</p>
-<ul>
-<li>1）计算一致性指标 CI 。$$CI=\frac{ \lambda_{max}-n}{n-1}$$</li>
-<li>2）查表，平均随机一致性指标 RI。</li>
-</ul>
-<table>
-<thead>
-<tr>
-<th>n</th>
-<th>1</th>
-<th>2</th>
-<th>3</th>
-<th>4</th>
-<th>5</th>
-<th>6</th>
-<th>7</th>
-<th>8</th>
-<th>9</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>RI</td>
-<td>0</td>
-<td>0</td>
-<td>0.58</td>
-<td>0.90</td>
-<td>1.12</td>
-<td>1.24</td>
-<td>1.32</td>
-<td>1.41</td>
-<td>1.45</td>
-</tr>
-</tbody>
-</table>
-<blockquote>
-<p><em>RI</em> 的值是这样得到的，用随机方法构造500个样本矩阵:随机地从1~9及其倒数中抽取数字构造正互反矩阵，求得最大特征根的平均值 $$\bar \lambda_{max}$$ 并定义$$RI=\frac{\bar \lambda_{max}-n}{n-1}$$</p>
-</blockquote>
-<ul>
-<li>3）计算一致性比例CR。 $$CR=\frac{CI}{RI}$$，当$$CR&lt;0.10$$ 时，认为判断矩阵的一致性是可以接受的，否则应对判断矩阵作适当修正。</li>
-</ul>
-<p>如果一个矩阵满足上面的条件，那么它最大特征值对应的特征向量就可以认为是每个维度的重要性权重。</p>
-<h2 id="构造-B-C-之间判断矩阵"><a class="header-anchor" href="#构造-B-C-之间判断矩阵">¶</a>构造 B C 之间判断矩阵</h2>
-<p>相同的方法，在同一B准则下，考虑不同工作的优先顺序。求工作排序的方法，和上面一样。</p>
-<img src="/public/2021/04/02/math/math_AHP/image-20200406162644137.png" alt="image-20200406162644137" style="zoom:50%;">
-<p>python代码<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup></p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">import</span> warnings</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AHP</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, criteria, b)</span>:</span></span><br><span class="line">        self.RI = (<span class="number">0</span>, <span class="number">0</span>, <span class="number">0.58</span>, <span class="number">0.9</span>, <span class="number">1.12</span>, <span class="number">1.24</span>, <span class="number">1.32</span>, <span class="number">1.41</span>, <span class="number">1.45</span>, <span class="number">1.49</span>)</span><br><span class="line">        self.criteria = criteria</span><br><span class="line">        self.b = b</span><br><span class="line">        self.num_criteria = criteria.shape[<span class="number">0</span>]</span><br><span class="line">        self.num_project = b[<span class="number">0</span>].shape[<span class="number">0</span>]</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">cal_weights</span><span class="params">(self, input_matrix)</span>:</span></span><br><span class="line">        input_matrix = np.array(input_matrix)</span><br><span class="line">        n, n1 = input_matrix.shape</span><br><span class="line">        <span class="keyword">assert</span> n == n1, <span class="string">'不是一个方阵'</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(n):</span><br><span class="line">            <span class="keyword">for</span> j <span class="keyword">in</span> range(n):</span><br><span class="line">                <span class="keyword">if</span> np.abs(input_matrix[i, j] * input_matrix[j, i] - <span class="number">1</span>) &gt; <span class="number">1e-7</span>:</span><br><span class="line">                    <span class="keyword">raise</span> ValueError(<span class="string">'不是反互对称矩阵'</span>)</span><br><span class="line"></span><br><span class="line">        eigenvalues, eigenvectors = np.linalg.eig(input_matrix)</span><br><span class="line"></span><br><span class="line">        max_idx = np.argmax(eigenvalues)</span><br><span class="line">        max_eigen = eigenvalues[max_idx].real</span><br><span class="line">        eigen = eigenvectors[:, max_idx].real</span><br><span class="line">        eigen = eigen / eigen.sum()</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> n &gt; <span class="number">9</span>:</span><br><span class="line">            CR = <span class="literal">None</span></span><br><span class="line">            warnings.warn(<span class="string">'无法判断一致性'</span>)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            CI = (max_eigen - n) / (n - <span class="number">1</span>)</span><br><span class="line">            CR = CI / self.RI[n]</span><br><span class="line">        <span class="keyword">return</span> max_eigen, CR, eigen</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">run</span><span class="params">(self)</span>:</span></span><br><span class="line">        max_eigen, CR, criteria_eigen = self.cal_weights(self.criteria)</span><br><span class="line">        print(<span class="string">'准则层：最大特征值&#123;:&lt;5f&#125;,CR=&#123;:&lt;5f&#125;,检验&#123;&#125;通过'</span>.format(max_eigen, CR, <span class="string">''</span> <span class="keyword">if</span> CR &lt; <span class="number">0.1</span> <span class="keyword">else</span> <span class="string">'不'</span>))</span><br><span class="line">        print(<span class="string">'准则层权重=&#123;&#125;\n'</span>.format(criteria_eigen))</span><br><span class="line"></span><br><span class="line">        max_eigen_list, CR_list, eigen_list = [], [], []</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> self.b:</span><br><span class="line">            max_eigen, CR, eigen = self.cal_weights(i)</span><br><span class="line">            max_eigen_list.append(max_eigen)</span><br><span class="line">            CR_list.append(CR)</span><br><span class="line">            eigen_list.append(eigen)</span><br><span class="line"></span><br><span class="line">        pd_print = pd.DataFrame(eigen_list,</span><br><span class="line">                                index=[<span class="string">'准则'</span> + str(i) <span class="keyword">for</span> i <span class="keyword">in</span> range(self.num_criteria)],</span><br><span class="line">                                columns=[<span class="string">'方案'</span> + str(i) <span class="keyword">for</span> i <span class="keyword">in</span> range(self.num_project)],</span><br><span class="line">                                )</span><br><span class="line">        pd_print.loc[:, <span class="string">'最大特征值'</span>] = max_eigen_list</span><br><span class="line">        pd_print.loc[:, <span class="string">'CR'</span>] = CR_list</span><br><span class="line">        pd_print.loc[:, <span class="string">'一致性检验'</span>] = pd_print.loc[:, <span class="string">'CR'</span>] &lt; <span class="number">0.1</span></span><br><span class="line">        print(<span class="string">'方案层'</span>)</span><br><span class="line">        print(pd_print)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 目标层</span></span><br><span class="line">        obj = np.dot(criteria_eigen.reshape(<span class="number">1</span>, <span class="number">-1</span>), np.array(eigen_list))</span><br><span class="line">        print(<span class="string">'\n目标层'</span>, obj)</span><br><span class="line">        print(<span class="string">'最优选择是方案&#123;&#125;'</span>.format(np.argmax(obj)))</span><br><span class="line">        <span class="keyword">return</span> obj</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    <span class="comment"># 准则重要性矩阵</span></span><br><span class="line">    criteria = np.array([[<span class="number">1</span>, <span class="number">2</span>, <span class="number">7</span>, <span class="number">5</span>, <span class="number">5</span>],</span><br><span class="line">                         [<span class="number">1</span> / <span class="number">2</span>, <span class="number">1</span>, <span class="number">4</span>, <span class="number">3</span>, <span class="number">3</span>],</span><br><span class="line">                         [<span class="number">1</span> / <span class="number">7</span>, <span class="number">1</span> / <span class="number">4</span>, <span class="number">1</span>, <span class="number">1</span> / <span class="number">2</span>, <span class="number">1</span> / <span class="number">3</span>],</span><br><span class="line">                         [<span class="number">1</span> / <span class="number">5</span>, <span class="number">1</span> / <span class="number">3</span>, <span class="number">2</span>, <span class="number">1</span>, <span class="number">1</span>],</span><br><span class="line">                         [<span class="number">1</span> / <span class="number">5</span>, <span class="number">1</span> / <span class="number">3</span>, <span class="number">3</span>, <span class="number">1</span>, <span class="number">1</span>]])</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 对每个准则，方案优劣排序</span></span><br><span class="line">    b1 = np.array([[<span class="number">1</span>, <span class="number">1</span> / <span class="number">3</span>, <span class="number">1</span> / <span class="number">8</span>], [<span class="number">3</span>, <span class="number">1</span>, <span class="number">1</span> / <span class="number">3</span>], [<span class="number">8</span>, <span class="number">3</span>, <span class="number">1</span>]])</span><br><span class="line">    b2 = np.array([[<span class="number">1</span>, <span class="number">2</span>, <span class="number">5</span>], [<span class="number">1</span> / <span class="number">2</span>, <span class="number">1</span>, <span class="number">2</span>], [<span class="number">1</span> / <span class="number">5</span>, <span class="number">1</span> / <span class="number">2</span>, <span class="number">1</span>]])</span><br><span class="line">    b3 = np.array([[<span class="number">1</span>, <span class="number">1</span>, <span class="number">3</span>], [<span class="number">1</span>, <span class="number">1</span>, <span class="number">3</span>], [<span class="number">1</span> / <span class="number">3</span>, <span class="number">1</span> / <span class="number">3</span>, <span class="number">1</span>]])</span><br><span class="line">    b4 = np.array([[<span class="number">1</span>, <span class="number">3</span>, <span class="number">4</span>], [<span class="number">1</span> / <span class="number">3</span>, <span class="number">1</span>, <span class="number">1</span>], [<span class="number">1</span> / <span class="number">4</span>, <span class="number">1</span>, <span class="number">1</span>]])</span><br><span class="line">    b5 = np.array([[<span class="number">1</span>, <span class="number">4</span>, <span class="number">1</span> / <span class="number">2</span>], [<span class="number">1</span> / <span class="number">4</span>, <span class="number">1</span>, <span class="number">1</span> / <span class="number">4</span>], [<span class="number">2</span>, <span class="number">4</span>, <span class="number">1</span>]])</span><br><span class="line"></span><br><span class="line">    b = [b1, b2, b3, b4, b5]</span><br><span class="line">    a = AHP(criteria, b).run()</span><br></pre></td></tr></table></figure>
-<h2 id="层次分析法与控制变量法"><a class="header-anchor" href="#层次分析法与控制变量法">¶</a>层次分析法与控制变量法</h2>
-<p>我们的任务是选择工作，最后使得我们满意，直接选择我们当然一头雾水。所以我们设立一些准则，然后对这些准则对于目标的重要性排序。</p>
-<p>这又有点像概率图模型，只是赋权的方法，是相互比较的方法。</p>
-<h2 id="选择困难者的福音？"><a class="header-anchor" href="#选择困难者的福音？">¶</a>选择困难者的福音？</h2>
-<p>层次分析法对人们的思维过程进行了加工整理，提出了一套系统分析问题的方法，为科学管理和决策提供了较有说服力的依据。</p>
-<p>在应用层次分析法研究问题时，遇到的主要困难有两个:<br>
-(1) 如何根据实际情况抽象出较为贴切的层次结构;<br>
-(2) 如何将某些定性的量作比较接近实际定量化处理。</p>
-<p>层次分析法的其局限性<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup>：<br>
-(1) 它在很大程度上依赖于人们的经验，主观因素的影响很大，它至多只能排除思维过程中的严重非一致性，却无法排除决策者个人可能存在的严重片面性。<br>
-(2) 比较、 判断过程较为粗糙，不能用于精度要求较高的决策问题。</p>
-<p>所以，AHP 至多只能算是一种半定量(或定性与定量结合)的方法。
-本文仅供参考，不负法律责任，哈哈。</p>
-<h2 id="参考"><a class="header-anchor" href="#参考">¶</a>参考</h2>
-<hr class="footnotes-sep">
-<section class="footnotes">
-<ol class="footnotes-list">
-<li id="fn1" class="footnote-item"><p>幼鹰me 知乎 <a href="https://zhuanlan.zhihu.com/p/101505929" target="_blank" rel="noopener">层次分析法原理与Python实现</a> <a href="#fnref1" class="footnote-backref">↩︎</a></p>
-</li>
-<li id="fn2" class="footnote-item"><p>司守奎《数学建模算法与程序》第八章 层次分析法 P167 <a href="#fnref2" class="footnote-backref">↩︎</a></p>
-</li>
-</ol>
-</section>
-]]></content>
-      <categories>
-        <category>数学</category>
-      </categories>
-      <tags>
-        <tag>数学</tag>
-        <tag>层次分析法</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Jupyter notebook的配置</title>
     <url>/public/2017/07/03/linux/jupyter_notebook/</url>
     <content><![CDATA[<p><strong>前言</strong>
@@ -3921,6 +3766,161 @@ nbextensions的教程<a href="https://jupyter-contrib-nbextensions.readthedocs.i
         <tag>工具</tag>
         <tag>Python</tag>
         <tag>笔记应用</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>选择困难者的福音？层次分析法</title>
+    <url>/public/2021/04/02/math/math_AHP/</url>
+    <content><![CDATA[<h2 id="摘要"><a class="header-anchor" href="#摘要">¶</a>摘要</h2>
+<p>日常生活中，我们面临很多的选择，选择自己最工作offer，选择买哪个牌子的手机，选择哪个地方旅行等等。这些选择难以定量的衡量，有很多不确定性。内心小纠结，我选择了这个，万一那个好呢，怎么办？请看层次分析法。</p>
+<p>层次分析法(Analytic Hierarchy Process，简称 AHP)是对一些较为复杂、较为模糊的问题作出决策的简易方法，它特别适用于那些难于完全定量分析的问题。它是美国运筹学家 T. L. Saaty 教授于上世纪 70 年代初期提出的一种简便、灵活而又实用的多准则决策方法。</p>
+<p>运用层次分析法建模，大体上可按下面四个步骤进行</p>
+<ul>
+<li>建立递阶层次结构模型</li>
+<li>构造出各层次中的所有判断矩阵</li>
+<li>层次单排序及一致性检验</li>
+<li>层次总排序及一致性检验。（一般不用）</li>
+</ul>
+<a id="more"></a>
+<p>让我们从offer大佬的例子开始吧！</p>
+<p>举个栗子，今年有位大学生，有三个offer，C1 C2 C3。</p>
+<p>第一步，建立层次模型。</p>
+<ul>
+<li>目标层A：找工作的目标，自己满意程度。
+<ul>
+<li>这个程度怎么计算呢？比如工作1。</li>
+</ul>
+</li>
+<li>准则层B：研究课题、发展前途、待遇、同事情况、地理位置、单位名气等等。
+<ul>
+<li>尽量列全一点，不需要排列重要顺序。</li>
+<li>小于等于9个，后面要两两拍脑袋给出相对的重要层度，给多了不得把脑袋拍疼了。</li>
+<li>也可以有子准则层，比如待遇中的放假、工作环境等等，列出也小于9个。</li>
+</ul>
+</li>
+<li>方案层C：就是我们的offer</li>
+</ul>
+<img src="/public/2021/04/02/math/math_AHP/image-20200406145535585.png" alt="image-20200406145535585" style="zoom:50%;">
+<h2 id="构造-A-B-之间判断矩阵"><a class="header-anchor" href="#构造-A-B-之间判断矩阵">¶</a>构造 A B 之间判断矩阵</h2>
+<p>准则层B与目标A之间的关系。为了求出准则层中(B1-6) 对目标的重要层度的排序。比如对于该生工作满意度第一重要是待遇，然后是地点，其实该生自己也很模糊。就是固定A，然后求B中准则，对A重要性的排序。</p>
+<h3 id="我们怎么对B中的准则们的重要排序呢？"><a class="header-anchor" href="#我们怎么对B中的准则们的重要排序呢？">¶</a>我们怎么对B中的准则们的重要排序呢？</h3>
+<p>直接给每一个准则，0-1的评分，然后排序。经常会想，给完分之后，这个不合理呀要不我再给哪个准则加加分。所以这样的方法常常会因考虑不周全、顾此失彼而使决策者提出与他实际认为的重要性程度不相一致的数据。</p>
+<p>我们可以将这个过程细化，我就比较两个准则对于目标的重要性，然后通过下面的矩阵方法，求出优先顺序。</p>
+<p>还能通过一个一致性检验，来检验在你评分的过程中，有没有自相矛盾的地方，当然这种方法允许一些自相矛盾。反正评分的时候尊从内心拍脑袋就对了。</p>
+<p>所以我们拿出一个B1 与 B2 对于目标的重要，想一想然后给出B2/B1，填入下面的表格中的(2,1)的位置。</p>
+<p>整个矩阵i,j 与j，i 是取倒数的关系，所以只要做一半。</p>
+<p>在找工作的目标下，准则i与j相对的重要性表示，B2/B1 的值。采用9个标度。而相比不重要刻度取倒数就可以了</p>
+<table>
+<thead>
+<tr>
+<th>准则i比j的比较</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+<th>5</th>
+<th>6</th>
+<th>7</th>
+<th>8</th>
+<th>9</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td>相同重要</td>
+<td></td>
+<td>比较重要</td>
+<td></td>
+<td>明显重要</td>
+<td></td>
+<td>强烈重要</td>
+<td></td>
+<td>极端重要</td>
+</tr>
+</tbody>
+</table>
+<p>最后的两两相对重要表格</p>
+<img src="/public/2021/04/02/math/math_AHP/image-20200406145640316.png" alt="image-20200406145640316" style="zoom:50%;">
+<p>对角线对称的两个数互为倒数，即 $$a_{ji}=\frac{1}{a_{ij}}$$  B1/B2 不就是和 B2/B1互为倒数嘛</p>
+<p>从心理学观点来看，分级太多会超越人们的判断能力，既增加了作判断的难度， 又容易因此而提供虚假数据。Saaty 等人还用实验方法比较了在各种不同标度下人们判断结果的正确性，实验结果也表明，采用 1~9 标度最为合适。</p>
+<p>判断矩阵的一致性指标步骤：</p>
+<ul>
+<li>1）计算一致性指标 CI 。$$CI=\frac{ \lambda_{max}-n}{n-1}$$</li>
+<li>2）查表，平均随机一致性指标 RI。</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>n</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+<th>5</th>
+<th>6</th>
+<th>7</th>
+<th>8</th>
+<th>9</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>RI</td>
+<td>0</td>
+<td>0</td>
+<td>0.58</td>
+<td>0.90</td>
+<td>1.12</td>
+<td>1.24</td>
+<td>1.32</td>
+<td>1.41</td>
+<td>1.45</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><em>RI</em> 的值是这样得到的，用随机方法构造500个样本矩阵:随机地从1~9及其倒数中抽取数字构造正互反矩阵，求得最大特征根的平均值 $$\bar \lambda_{max}$$ 并定义$$RI=\frac{\bar \lambda_{max}-n}{n-1}$$</p>
+</blockquote>
+<ul>
+<li>3）计算一致性比例CR。 $$CR=\frac{CI}{RI}$$，当$$CR&lt;0.10$$ 时，认为判断矩阵的一致性是可以接受的，否则应对判断矩阵作适当修正。</li>
+</ul>
+<p>如果一个矩阵满足上面的条件，那么它最大特征值对应的特征向量就可以认为是每个维度的重要性权重。</p>
+<h2 id="构造-B-C-之间判断矩阵"><a class="header-anchor" href="#构造-B-C-之间判断矩阵">¶</a>构造 B C 之间判断矩阵</h2>
+<p>相同的方法，在同一B准则下，考虑不同工作的优先顺序。求工作排序的方法，和上面一样。</p>
+<img src="/public/2021/04/02/math/math_AHP/image-20200406162644137.png" alt="image-20200406162644137" style="zoom:50%;">
+<p>python代码<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">import</span> warnings</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AHP</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, criteria, b)</span>:</span></span><br><span class="line">        self.RI = (<span class="number">0</span>, <span class="number">0</span>, <span class="number">0.58</span>, <span class="number">0.9</span>, <span class="number">1.12</span>, <span class="number">1.24</span>, <span class="number">1.32</span>, <span class="number">1.41</span>, <span class="number">1.45</span>, <span class="number">1.49</span>)</span><br><span class="line">        self.criteria = criteria</span><br><span class="line">        self.b = b</span><br><span class="line">        self.num_criteria = criteria.shape[<span class="number">0</span>]</span><br><span class="line">        self.num_project = b[<span class="number">0</span>].shape[<span class="number">0</span>]</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">cal_weights</span><span class="params">(self, input_matrix)</span>:</span></span><br><span class="line">        input_matrix = np.array(input_matrix)</span><br><span class="line">        n, n1 = input_matrix.shape</span><br><span class="line">        <span class="keyword">assert</span> n == n1, <span class="string">'不是一个方阵'</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(n):</span><br><span class="line">            <span class="keyword">for</span> j <span class="keyword">in</span> range(n):</span><br><span class="line">                <span class="keyword">if</span> np.abs(input_matrix[i, j] * input_matrix[j, i] - <span class="number">1</span>) &gt; <span class="number">1e-7</span>:</span><br><span class="line">                    <span class="keyword">raise</span> ValueError(<span class="string">'不是反互对称矩阵'</span>)</span><br><span class="line"></span><br><span class="line">        eigenvalues, eigenvectors = np.linalg.eig(input_matrix)</span><br><span class="line"></span><br><span class="line">        max_idx = np.argmax(eigenvalues)</span><br><span class="line">        max_eigen = eigenvalues[max_idx].real</span><br><span class="line">        eigen = eigenvectors[:, max_idx].real</span><br><span class="line">        eigen = eigen / eigen.sum()</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> n &gt; <span class="number">9</span>:</span><br><span class="line">            CR = <span class="literal">None</span></span><br><span class="line">            warnings.warn(<span class="string">'无法判断一致性'</span>)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            CI = (max_eigen - n) / (n - <span class="number">1</span>)</span><br><span class="line">            CR = CI / self.RI[n]</span><br><span class="line">        <span class="keyword">return</span> max_eigen, CR, eigen</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">run</span><span class="params">(self)</span>:</span></span><br><span class="line">        max_eigen, CR, criteria_eigen = self.cal_weights(self.criteria)</span><br><span class="line">        print(<span class="string">'准则层：最大特征值&#123;:&lt;5f&#125;,CR=&#123;:&lt;5f&#125;,检验&#123;&#125;通过'</span>.format(max_eigen, CR, <span class="string">''</span> <span class="keyword">if</span> CR &lt; <span class="number">0.1</span> <span class="keyword">else</span> <span class="string">'不'</span>))</span><br><span class="line">        print(<span class="string">'准则层权重=&#123;&#125;\n'</span>.format(criteria_eigen))</span><br><span class="line"></span><br><span class="line">        max_eigen_list, CR_list, eigen_list = [], [], []</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> self.b:</span><br><span class="line">            max_eigen, CR, eigen = self.cal_weights(i)</span><br><span class="line">            max_eigen_list.append(max_eigen)</span><br><span class="line">            CR_list.append(CR)</span><br><span class="line">            eigen_list.append(eigen)</span><br><span class="line"></span><br><span class="line">        pd_print = pd.DataFrame(eigen_list,</span><br><span class="line">                                index=[<span class="string">'准则'</span> + str(i) <span class="keyword">for</span> i <span class="keyword">in</span> range(self.num_criteria)],</span><br><span class="line">                                columns=[<span class="string">'方案'</span> + str(i) <span class="keyword">for</span> i <span class="keyword">in</span> range(self.num_project)],</span><br><span class="line">                                )</span><br><span class="line">        pd_print.loc[:, <span class="string">'最大特征值'</span>] = max_eigen_list</span><br><span class="line">        pd_print.loc[:, <span class="string">'CR'</span>] = CR_list</span><br><span class="line">        pd_print.loc[:, <span class="string">'一致性检验'</span>] = pd_print.loc[:, <span class="string">'CR'</span>] &lt; <span class="number">0.1</span></span><br><span class="line">        print(<span class="string">'方案层'</span>)</span><br><span class="line">        print(pd_print)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 目标层</span></span><br><span class="line">        obj = np.dot(criteria_eigen.reshape(<span class="number">1</span>, <span class="number">-1</span>), np.array(eigen_list))</span><br><span class="line">        print(<span class="string">'\n目标层'</span>, obj)</span><br><span class="line">        print(<span class="string">'最优选择是方案&#123;&#125;'</span>.format(np.argmax(obj)))</span><br><span class="line">        <span class="keyword">return</span> obj</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    <span class="comment"># 准则重要性矩阵</span></span><br><span class="line">    criteria = np.array([[<span class="number">1</span>, <span class="number">2</span>, <span class="number">7</span>, <span class="number">5</span>, <span class="number">5</span>],</span><br><span class="line">                         [<span class="number">1</span> / <span class="number">2</span>, <span class="number">1</span>, <span class="number">4</span>, <span class="number">3</span>, <span class="number">3</span>],</span><br><span class="line">                         [<span class="number">1</span> / <span class="number">7</span>, <span class="number">1</span> / <span class="number">4</span>, <span class="number">1</span>, <span class="number">1</span> / <span class="number">2</span>, <span class="number">1</span> / <span class="number">3</span>],</span><br><span class="line">                         [<span class="number">1</span> / <span class="number">5</span>, <span class="number">1</span> / <span class="number">3</span>, <span class="number">2</span>, <span class="number">1</span>, <span class="number">1</span>],</span><br><span class="line">                         [<span class="number">1</span> / <span class="number">5</span>, <span class="number">1</span> / <span class="number">3</span>, <span class="number">3</span>, <span class="number">1</span>, <span class="number">1</span>]])</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 对每个准则，方案优劣排序</span></span><br><span class="line">    b1 = np.array([[<span class="number">1</span>, <span class="number">1</span> / <span class="number">3</span>, <span class="number">1</span> / <span class="number">8</span>], [<span class="number">3</span>, <span class="number">1</span>, <span class="number">1</span> / <span class="number">3</span>], [<span class="number">8</span>, <span class="number">3</span>, <span class="number">1</span>]])</span><br><span class="line">    b2 = np.array([[<span class="number">1</span>, <span class="number">2</span>, <span class="number">5</span>], [<span class="number">1</span> / <span class="number">2</span>, <span class="number">1</span>, <span class="number">2</span>], [<span class="number">1</span> / <span class="number">5</span>, <span class="number">1</span> / <span class="number">2</span>, <span class="number">1</span>]])</span><br><span class="line">    b3 = np.array([[<span class="number">1</span>, <span class="number">1</span>, <span class="number">3</span>], [<span class="number">1</span>, <span class="number">1</span>, <span class="number">3</span>], [<span class="number">1</span> / <span class="number">3</span>, <span class="number">1</span> / <span class="number">3</span>, <span class="number">1</span>]])</span><br><span class="line">    b4 = np.array([[<span class="number">1</span>, <span class="number">3</span>, <span class="number">4</span>], [<span class="number">1</span> / <span class="number">3</span>, <span class="number">1</span>, <span class="number">1</span>], [<span class="number">1</span> / <span class="number">4</span>, <span class="number">1</span>, <span class="number">1</span>]])</span><br><span class="line">    b5 = np.array([[<span class="number">1</span>, <span class="number">4</span>, <span class="number">1</span> / <span class="number">2</span>], [<span class="number">1</span> / <span class="number">4</span>, <span class="number">1</span>, <span class="number">1</span> / <span class="number">4</span>], [<span class="number">2</span>, <span class="number">4</span>, <span class="number">1</span>]])</span><br><span class="line"></span><br><span class="line">    b = [b1, b2, b3, b4, b5]</span><br><span class="line">    a = AHP(criteria, b).run()</span><br></pre></td></tr></table></figure>
+<h2 id="层次分析法与控制变量法"><a class="header-anchor" href="#层次分析法与控制变量法">¶</a>层次分析法与控制变量法</h2>
+<p>我们的任务是选择工作，最后使得我们满意，直接选择我们当然一头雾水。所以我们设立一些准则，然后对这些准则对于目标的重要性排序。</p>
+<p>这又有点像概率图模型，只是赋权的方法，是相互比较的方法。</p>
+<h2 id="选择困难者的福音？"><a class="header-anchor" href="#选择困难者的福音？">¶</a>选择困难者的福音？</h2>
+<p>层次分析法对人们的思维过程进行了加工整理，提出了一套系统分析问题的方法，为科学管理和决策提供了较有说服力的依据。</p>
+<p>在应用层次分析法研究问题时，遇到的主要困难有两个:<br>
+(1) 如何根据实际情况抽象出较为贴切的层次结构;<br>
+(2) 如何将某些定性的量作比较接近实际定量化处理。</p>
+<p>层次分析法的其局限性<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup>：<br>
+(1) 它在很大程度上依赖于人们的经验，主观因素的影响很大，它至多只能排除思维过程中的严重非一致性，却无法排除决策者个人可能存在的严重片面性。<br>
+(2) 比较、 判断过程较为粗糙，不能用于精度要求较高的决策问题。</p>
+<p>所以，AHP 至多只能算是一种半定量(或定性与定量结合)的方法。
+本文仅供参考，不负法律责任，哈哈。</p>
+<h2 id="参考"><a class="header-anchor" href="#参考">¶</a>参考</h2>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p>幼鹰me 知乎 <a href="https://zhuanlan.zhihu.com/p/101505929" target="_blank" rel="noopener">层次分析法原理与Python实现</a> <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn2" class="footnote-item"><p>司守奎《数学建模算法与程序》第八章 层次分析法 P167 <a href="#fnref2" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
+]]></content>
+      <categories>
+        <category>数学</category>
+      </categories>
+      <tags>
+        <tag>数学</tag>
+        <tag>层次分析法</tag>
       </tags>
   </entry>
   <entry>
@@ -7546,6 +7546,66 @@ Pocky 开会归来，双眼放光:
       </tags>
   </entry>
   <entry>
+    <title>「转」琉璃易碎，人言易坠——关于《莺莺传》的叙事</title>
+    <url>/public/2017/04/14/readings/yingyingzhuan/</url>
+    <content><![CDATA[<blockquote>
+<p>《西厢记》的书评:『琉璃易碎，人言易坠——关于《莺莺传》的叙事』转载
+…全文:<a href="https://www.douban.com/doubanapp/dispatch?uri=/review/1200691/" target="_blank" rel="noopener">(豆瓣link)</a></p>
+</blockquote>
+<p>“半欲天明半未明，醉闻花气睡闻莺。 狌儿撼起钟声动，二十年来晓寺情。 ”男人四十的元微之写着酸酸的诗，回忆年少风流。假如我是元微之，我一定会这般写道：天空尚未亮透，微微透着点光，远处传来钟声，让我的思绪一下子回忆到二十年前，也是这样的一个早晨，在那所古寺的西厢，那个散发着鲜花一样香气的女子，用鸟儿般宛转的声音在我耳边低语：“钟声响了，想来我也该回去了。”那声音一直萦绕在耳边，十年、二十年、也许一辈子在我在记忆深处响起……。</p>
+<a id="more"></a>
+<p>夜宿古刹，偶遇佳人，相伴遥夜，缠绵缱绻，天明而别。这样的际遇，是最最典型的古代书生的爱情幻想。在一个陌生的地方，遇到一个陌生人，发生一段有始无终的感情。书生注定要做个过客，一生漂泊在对那个女子的思念中，却没有勇气长相守。</p>
+<p>当我还是一个初中生的时候，我买来人民文学出版社的《西厢记》，上面盖本教科书，堂而皇之的上课看。但是很快，除了王实甫那华丽的辞藻，整个大团圆的故事构架让我兴趣索然，而前言里现代人给它冠上的什么“礼教叛逆者反抗封建卫道士”的宏大内涵更让我倒尽胃口。</p>
+<p>在书后还附着元稹的《莺莺传》。《莺莺传》所描写的其实只是两个人的故事，两个恋爱的人后来分开的故事，没有太宏大的叙事，没有那些官腔的说教和露骨的批判。这样的故事是我所喜的；这样的故事，也是中国文人所津津乐道的。关于类似内容的作品也就汗牛充栋，数不胜数。或许从《诗经》的“氓之蚩蚩，抱布贸丝”开始，就没有谁打算给自己的爱情故事赋予太宏大的命题，只是后来的人突然犯失心疯，发现了字里行间的微言大义。所以我很景仰孔夫子他老人家，他的《论语》里每一个字都可以养活一大批的圣贤大师。</p>
+<p>元稹的这篇传奇被人考据出是以自己为原型的故事，是一篇忏悔录。忏悔的味道我闻不出来，但是众前辈大师言之凿凿说张生便是元大才子，那我也就相信了罢。</p>
+<p>《莺莺传》的开头，交代道“在贞元年间，有位张生，他性格温和而富有感情，风度潇洒，容貌漂亮，意志坚强，脾气孤僻”。古人向来有画脸谱的习惯，只要不是丑的太离谱，一般的名士贤臣都被描写成“性温茂，美风容”之类。但是据说元稹的家族是著名的鲜卑拓跋，鲜卑人的美貌是相当出名的，就好象现在说日本人长的猥亵一样出名，所以我有理由相信，元稹在这点上也许没有吹牛。</p>
+<p>文章写道“以是年二十三，未尝近女色”，后面他自己解释道“登徒子非好色者，是有凶行；余真好色者，而适不我值。何以言之？大凡物之尤者，未尝不留连于心，是知其非忘情者也”，就仿佛现在的大学男生在卧谈会上被迫承认自己二十三岁高龄还是个处男，被人取笑之下只好解释“其实我哪里是没能力啊，我只是没遇到真正让我心动的；一般的庸脂俗粉我看不上眼，要是真有出类拔萃的，我也会追的。我是谈感情的，和你们玩肉体的垃圾是不一样的”诸如此类。但是考察元稹的家庭情况，他八岁丧父，在家族里又被同父异母的兄弟欺凌，从小随着母亲投奔舅氏，生活贫困，母亲教她念书。我们可以想象，一个幼年便寄人篱下，遭受贫困欺凌的味道，他只比林黛玉多了一个母亲而已，但是林黛玉在物质生活上绝对比他适意。我们的脑海里可以浮现这样一个人物性格：幼年丧父的人，对于男人所称道的齐家治国平天下之类的宏伟功名有着不同于常人的热情和执著，范仲淹就是很好的例子，所以元稹在事业上一直很上进努力，为达目的不惜代价不择手段，由于尝尽人情冷暖世态炎凉，他很敏感，这样的人物让我想到了《红与黑》里的主人公于连；他自幼由一个母亲抚养成人，一般这样的人具有恋母情结，对于女性有异于常人的喜好，所以他的性格里又有滥情懦弱的一面。多情和薄幸，坚毅和懦弱，正义和无耻都矛盾地体现在他身上，这也就能让我们更好的理解他后来为了追求功名而抛弃莺莺的举动了。由于家境贫寒，极端律己，自卑和敏感的元微之“内秉坚孤，非礼不可入”，就算偶尔参加朋友一起的游宴——古人的游宴和现在去歌舞厅唱歌跳舞一样，一般都安排了色情服务——“扰杂其间，他人皆汹汹拳拳，若将不及”，而他“容顺而已，终不能乱”。我不清楚他是不是冬天还要帮别人洗衣服赚钱，但是可以肯定他不会参与打牌这样不合礼仪的活动，所以也就不会有谁去污蔑他打牌作弊，不会有“樗蒲不胜，槌杀四生”的惨剧了。</p>
+<p>在这里他第一次提到“物之尤者”，后面他还有段很著名的话也提到“尤物”，为自己抛弃莺莺的行为做解释“大凡天之所命尤物也，不妖其身，必妖于人”。如此看来，仿佛我们的元大才子是个叶公好龙式的人物，这边在说假如能遇到尤物一定会动真情，那边厢却在说尤物不害她自身，必定祸害他人。没有得到的时候千方百计的追求，到手以后又不迭地甩掉去追求新的目标。人总是这样矛盾的动物，永远不明白自己所追求的到底是什么。我们知道最后元稹娶了豪门韦家的女儿为妻，使得他在仕途平步青云。于此，我们不妨看成是理智和情欲的对立，一边是代表事业投机的豪门韦家联姻的机会，而一边只是爱过的漂亮的女子，理智告诉他应该离开那个女子，但是情欲却欲罢不能，但是最后我们知道理智战胜了情欲，感情只好盘踞在文字里去凭吊，所以元微之为我们贡献了很多首脍炙人口的情诗。</p>
+<p>后来，张生，也就是元稹路过蒲州，搭救了寄住在普救寺的崔家寡妇一家。“是岁，浑瑊薨于蒲，有中人丁文雅，不善于军，军人因丧而扰，大掠蒲人。……先是张与蒲将之党有善，请吏护之，遂不及于难。十余日，廉使杜确将天子命以总戎节，令于军，军由是戢。”据《旧唐书·德宗纪》，贞元十五年十二月，河中绛州节度使浑瑊卒，以同州刺史杜确为河中尹、河中绛州观察使。元稹在贞元九年举明经科，并于贞元十五年在河中府任卑职，所以他和蒲将之党有交情，打个招呼关照一下也在情理之中；但据唐代举士制度，士之及第者还需要经过吏部考试才能正式任命官职，所以我们可以推测出在贞元十五年年底的时候，元稹便上路去长安应考，于是在蒲州遇上了莺莺一家。</p>
+<p>我们知道这篇传奇是有虚构的成分，就如元稹在里边成了张君瑞，但是有一点细节仍然需要注意的，就是莺莺家族的姓氏。在唐朝时候，年轻人普遍的梦想有两个，金榜题名，娶七姓女；就如同现在的大学生的梦想，考上公务员，讨个有钱人做老婆。娶个有钱人做老婆可以少奋斗十年，这是基于现实利益的考量，而娶七姓女等于瞬间提升了自身家族的社会层次，也是基于现实利益的考量。在中国人的现实生活里，找不到“爱情”这两个字--有时候看历史真的会看到掩卷叹息，中国人过了几千年，还是一点长进都没有啊。唐代的士族世家已经逐渐没落，但是依然地位显赫，其中以陇西李氏、太原王氏、荥阳郑氏、范阳卢氏、清河崔氏、博陵崔氏、赵郡李氏等七姓十族最为著名，一般这些世家大族互为婚姻，自惜羽毛。唐高宗时宰相李义府为子向山东士族求婚不遂，而向朝廷建议禁止七姓十族自为婚姻。可见娶个望族女子为妻，是多么的艰难啊。莺莺是姓崔的，而且“财产甚厚，多奴仆”，很自然的就联想到了清河崔氏、博陵崔氏这些世家大族；但是很奇怪的是元稹描写的张生居然抛弃了莺莺，一个出身寒族的士子抛弃了一个那么美貌温柔的世家女子，仅仅只为了他自己所谓的“予之德不足以胜妖孽，是用忍情”么？考察元某人在政治上趋炎附势的态度，我是不相信他冠冕堂皇的话的。姑且让我用自己邪恶的想法去揣测他：那个被唤作莺莺的女子必定不是什么世家望族，所以元稹为了前途而抛弃了她，之所以故意写成崔氏，只是制造了一种假象，让读者有个印象那个莺莺是世家女子，我元微之离开她只是因为好男儿不该沉溺于爱情，你看为了理想我连世家女都放弃了啊。这便是文人的下作！</p>
+<p>为了答谢这位刚认的远亲的救命之恩，于是请吃饭，贞元十五年十二月很快就在危机中渡过，这顿饭的时间也应该在贞元十六年的春天。当贞元十五年的大门“咣当”一声关掉，命运就载着我们的主人公来到了贞元十六年。饭局中张生曾问莺莺的年纪，“郑曰：‘今天子甲子岁之七月，终今贞元庚辰，生年十七矣。’”贞元庚辰，正是贞元十六年，那年元稹二十二岁，莺莺十七岁。</p>
+<p>拿破仑指示说“请客的菜一定要好”，这个世间有好多的阴谋和决策在餐桌上议定，有好多缠绵或者惨烈的故事由餐桌上发端。郑国的子宋因为吃饭的时候分不到王八汤，结果一怒就干掉了郑灵公；而我们的张生，也就是元微之同学因为吃饭认识了莺莺姑娘。这表明吃饭是一次冒险，运气好的可以吃出一段情缘，运气不好的就要丢了性命，所以列位正要去吃饭相亲的同学们，你们要小心啊。</p>
+<p>吃饭的时候，郑氏让儿子、女儿出来拜会救命恩人。那时侯未出阁的女子特别是大户人家的女子仿佛家之重宝，秘不见人；而郑氏却突然在一个年轻的刚认识不久的远房亲戚面前把女儿拉出来亮相，还要陪吃饭，哪怕这个年轻是救命恩人，这样的行为也是很突兀的，所以莺莺才会推三阻四的不想出来见面。郑氏这般的举动连一千多年后的我也想入非非，无疑也给了元稹兄弟很多假设的可能。不论当初的郑氏出于什么样的考虑做了这个决定，反正莺莺姑娘就此登场了。第一次召唤推说有疾，郑氏看起来很生气的说“张兄保尔之命，不然，尔且掳矣，能复远嫌乎”，这其中的话外之音，只能读者自己体会了。又过了很久，莺莺终于出场了。</p>
+<p>“常服睟容，不加新饰，垂鬟接黛，双脸销红而已。颜色艳异，光辉动人”，简直惊为天人啊。我们很可以理解元稹的心情，在记忆里，那个已经离开的初恋情人总是最美丽的，而那第一次的见面总是浪漫得无法言说，第一眼里情人的样貌也是美艳不可方物。但是假如当时有照相的话，看到莺莺的照片也许你会失望，那个时代普遍流行的美女的体态是肥胖丰满的，那个时代美女的画像普遍有双下巴（有些是三下巴或者更多），面颊鼓鼓外凸，因为胖所以嘴巴也被挤的小小的嘟起来，实乃人间惨剧，竟无语凝噎！幸好莺莺不加新饰，保持了一点自然状态，否则那个惨白的面容、用红颜料描出的樱桃小嘴、脸上贴的花状的金钿和浓晕蛾翅眉足足可以把你吓死。</p>
+<p>后面一句话很有意思：“张惊，为之礼。”张生看到莺莺那么漂亮，忙起来对她行礼。这个描写很传神，一般男子看到普通的女子，都保持一点点的风度，淡淡的仿佛视若不见；惟独见到美女，眼睛一亮，慌忙起身行礼，态度谦恭。足见莺莺之美。后来她坐到郑氏旁边，因为是郑氏强迫她出见的，所以她“凝睇怨绝，若不胜其体者”，那个样子就是《喜剧之王》里张柏芝所谓的“鹌鹑状”。如此楚楚动人的姿势，叫张生魂不守舍。问了年纪，只有十七岁，正是花季过后，果季之前，鲜脆欲滴，天真纯情的年纪啊！张生想和她找话题说话，但是莺莺就是不理睬他，一直到吃完饭也没有什么好说的。记得以前去参加一个朋友生日活动，饭桌遇上了朋友的表妹，也是一样的年轻明艳，也是一样的不理睬人，和她搭讪也装做没听见，搞得我们很没有面子，所以说，古往今来的好女孩一般都是很矜持的。由于没有机会接触，张生的思念就象潮水一样把他包围，所以他捉摸着要找个机会表白一下。</p>
+<p>于是他从莺莺的小伙伴，侍女红娘那边入手。这个策略在以后的无数次实践当中被证明是极端正确的。大学里你要追求某个女生，先要从她寝室的室友下手，打通所有关节，请他们吃喝玩乐，最后那个女孩子身边所有的朋友都在说你好话，那你就成功一大半了。红娘被张生吓了一跳，问了个问题：“你既然那么喜欢，何不凭借你对我们家的恩情向夫人正式提亲呢（何不因其德而求娶焉）？”张生回答的话简直有点无耻了：“我从孩童时候起，性情就不随便附合。有时和妇女们在一起，也不曾看过谁。当年不肯做的事，如今到底还是在习惯上做不来。昨天在宴会上，我几乎不能控制自己。这几天来，走路忘了到什么地方去，吃饭也感觉不出饱还是没饱。恐怕过不了早晚，我就会因相思而死了。如果通过媒人去娶亲，又要‘纳采’，又要‘问名’，手续多得很，少说也得三四个月，那时恐我也就不会在人世了。你说我该怎么办呢？（余始自孩提，性不苟合。或时纨绮闲居，曾莫流盼。不为当年，终有所蔽。昨日一席间，几不自持。数日来，行忘止，食忘饱，恐不能逾旦暮。若因媒氏而娶，纳采问名，则三数月间，索我于枯鱼之肆矣。尔其谓我何？）”先吹捧自己性格不随便，然后表明见到莺莺姑娘连这样的性情也抛掉了，再不快点接近自己，就挂掉了，哪有时间挺到纳采问名啊。我从来不知道爱一个人，居然连三四个月都无法等待，这是赤裸裸的情欲，而非爱情；张生的第一目标是得到莺莺，而非和她相爱。情欲是正常的，但是不正常的是张生光明正大的以自己的情欲作为接近的借口，在一套绚丽机巧的辞藻下，其实裹挟着的不过是阿Q对吴妈的那句“我要跟你困觉”！</p>
+<p>但是也许张生妇女工作做的好，红娘还真的帮他出主意，让他摇动笔杆。想来那时躲在深闺的大家闺秀并不知道外边文青的名声有多臭，结果一场悲剧上演了。</p>
+<p>亚里士多德《诗学》言道：“性格为悲剧六大要素之一。”毫无疑问，莺莺的性格决定了她的悲剧结局。在她的身上我们看到矜持和热情，顺从和叛逆，坚定和认命矛盾的结合在了一起。前面我们已经注意到莺莺出场时的矜持，和在她母亲召唤下不肯出来见面的叛逆，但是当她看了张生的情诗之后却用那首暧昧的《明月三五夜》作为回应，把张生招来相见。“待月西厢下，迎风户半开。拂墙花影动，疑是玉人来。”这诗不论莺莺怎么强调“犹惧兄之见难,是用鄙靡之词，以求其必至”,都无法掩盖字里行间的情意和期盼。</p>
+<p>二月十五的晚上，月亮大的吓人,文学青年元稹踏着美丽的月色，攀着墙边的杏花树翻过墙头投奔他的初恋去了。他来到西厢房,却只看到红娘躺在床上，双方都很奇怪。在红娘通报后，莺莺姑娘这才出现了。可能原本元大才子准备着类似“长夜漫漫，无心睡眠，没想到莺莺姑娘你也睡不着”之类的桥段，可是如此以来完全用不上了，而且莺莺姑娘一身包裹严实，表情严肃，狠狠地训斥了他一顿，然后扬长而去。元大才子只好承认都是月亮惹的祸，那样的月色太美太温柔，于是绝望了。元稹没有写他失恋后寻死觅活，更不像他自己说的“索之于枯鱼之肆”。但是很吊诡的是三天后莺莺就自荐枕席了。鉴于这段情节的突兀，《董解元西厢记诸宫调》里就设计了张生患相思病，莺莺探病的情节，王实甫也继承发扬了这段情节。这段情节看似让整个的故事情节更加合理，也让人物性格和心理有一定的起承转合，但其实是画蛇添足的一笔。</p>
+<p>莺莺是一个性格矛盾的人，她对待未知的将来既期待又恐惧，她知道自己所做的是不容于世的，但是她对于爱情满怀憧憬而渴望冒险。在爱情的冲动下，她一步步滑向张生的怀抱。也许从第一次出来见这个救命恩人的时候，她便已经心存好感，起码我们知道张生的相貌世让人赏心悦目，这是爱情的基础；当看到张生的两首诗，更加倾慕于他。唐代的女孩子也和现在的女孩子一样，有自己心目中的白马王子。也许那个时代比较流行的梦中情人形象，就是元稹这样的才子。于是她情不自禁回了一首诗，也许只是想见他一面，但是理智告诉她这样做法的危险性。也许在红娘去通报的时候，她还在那里犹豫到底要不要去见。最后她决定去看一眼那个自己衷情的男子，她穿戴齐整。当爱上一个男人的女子，在那个男人面前总是很低很低,低到尘埃里,尘埃里便开出花来，于是她潜意识的想保持自己的尊严，她不想被他看成是轻薄的女子。她终于见到了他，在月色下，俊朗的男子期盼地看着自己，眼神顾盼之间，让人心旌摇荡；那淡淡的笑容，刚毅的嘴角，也许随着那夜的月色一起留在莺莺地记忆深处。她发觉自己陷入一种前所未有的危机，一种爱上别人为了那男子可以不顾一切的冲动，于是她板下脸来，义正词严地拒绝了那个男子。“非礼之动，能不愧心？特愿以礼自持，毋及于乱！”这些话在我看来倒有一大半是在对自己萌动的心说的，莺莺在警告自己不要逾越了礼，否则将万劫不复。男子一脸地失望，仿佛满地月光都成了严霜。她还是转身离去。但是正如元稹在《会真诗》里所写的“戏调初微拒，柔情已暗通”。我不知道莺莺在这三天里是如何地心情，我也不知道其中红娘起了多大地作用，但是我知道到了十八日的晚上，莺莺终于做了自己一生中最重要的决定。</p>
+<p>“数夕，张生临轩独寝，忽有人觉之。惊骇而起，则红娘敛衾携枕而至，抚张曰：‘至矣！至矣！睡何为哉！’并枕重衾而去。张生拭目危坐久之，犹疑梦寐；然而修谨以俟。俄而红娘捧崔氏而至。至，则娇羞融冶，力不能运支体，曩时端庄，不复同矣。是夕，旬有八日也。斜月晶莹，幽辉半床。”唐贞元十六年二月十八日的夜晚，那一夜的经历对于元稹来说是如此的深刻，以至于很久以后依然清楚的记得那天的日期，那夜的月色。元稹在《会真诗》里清楚地描写了缠绵的经过，在千年之后的人们看来，那诗依然写得香艳露骨，荡人心旌：“微月透帘栊，萤光度碧空；遥天初缥缈，低树渐葱茏……低鬟蝉影动，回步玉尘蒙；转面流花雪，登床抱绮丛；鸳鸯交颈舞，翡翠合欢笼；眉黛羞频聚，朱唇暖更融；气清兰蕊馥，肤润玉肌丰；无力慵移腕，多娇爱敛躬；汗光珠点点，发乱绿松松……”。在晶莹的斜月下，天真善良的莺莺投奔了爱情，为了自己心爱的男子，为了梦想中的爱情，抛弃了一切，奉献了一切。也许古往今来有很多的人有这般的经历，曾经真心单纯地去爱一个人，为他（她）付出了一切。不管结果如何，起码在那一刻，付出的人是幸福的，虽然这样的幸福可能是要遭到报应的。</p>
+<p>在现代人的眼光来看，莺莺这床也上的太快了些。其实这还不算彻底的，汉代的司马相如不过弹了次琴，卓文君便跟着他私奔了，连富翁老爹也不认了。那个时代，女子应允了一份爱情就等于一生一世，不会再有给你重来改过的机会。那是个严肃的时代，女子地位低下，虽然相对于其他朝代，唐朝的风气算是比较开明宽松，但是逾越礼制的爱情依然不容于世，和一个男子相恋，要么嫁给他，要么就是再也得不到幸福和爱情。如那位被元稹好友白居易赞为“醉娇胜不得，风嫋牡丹花”的徐州名妓关盼盼，在其丈夫徐州守帅张愔死后却被白居易讽刺她不肯殉情，逼得她不得不绝食自尽；又如步非烟，因为父母之命而嫁于功曹参军武公业，毫无爱情可言，于是她红杏出墙，爱上了攻读课业的书生赵象，被丈夫发现后，只是淡淡说了句“生既相爱，死亦何恨”，于是从容淡定，任凭丈夫拷打，不肯开口求饶一句，最后终于被活活打死，以暴疾而亡的名义埋了。那个时代的女子，很少可以拥有幸福的爱情，所以这充分体现了新社会的优越性，起码你谈几场恋爱没有关系，女孩子只要不失身还是会有幸福的。</p>
+<p>红娘把枕头也带来了,在古时候,共同倚靠的枕头是充满暗示意味的情物，是在一起温柔缠绵的明证。本朝初年高阳公主嫁于房玄龄之子房遗爱为妻，却不爱房遗爱，在新婚之夜就把新郎拒于洞房之外。高贵的公主爱上了玄奘的高徒、最年轻却最聪慧的高僧辩机和尚，那时高阳公主十六岁，辩机和尚二十一岁。高阳公主送给辩机一个“金玉宝枕”，却被小偷偷出。结果事情因此泄露，高贵的辩机被腰斩于市，而高阳公主也一辈子恨上了自己的家族，“帝崩无哀容”。或许唐代的女子血液里奔流着冒险的因子，所以为了爱情不顾一切，哪怕被抛弃被鄙夷被万夫所指天地不容也再所不惜。于是整个唐朝给我们后人留下了一大堆让人向往的爱情故事。莺莺对待爱情的勇气，无疑是秉承了大唐女子一贯的风气，虽然她的命运因此让人心痛，但是她的形象也因此让人爱怜，在千百年后的今天依然让我爱慕钦佩。</p>
+<p>“有顷，寺钟鸣，天将晓。红娘促去。崔氏娇啼宛转，红娘又捧之而去，终夕无一言。”如此“金风玉露一相逢”的时光过的总是很快，古寺的朝钟响起，天快亮了，莺莺也要离去了。对于类似的幽会后的早晨，《诗经》里便有很细致的描述：《郑风·女曰鸡鸣》里写道“女曰鸡鸣，士曰昧旦；子兴视夜，明星有烂”，女子在催促说“鸡已经在打啼了”，男子眷恋枕衾，“天还没全亮；你起身看夜空，启明星还闪闪发光”，然后慢慢谈到工作，谈到两个人的未来，谈到恩爱到白头，“宜言饮酒，与子偕老。琴瑟在御，莫不静好”；《齐风．鸡鸣》里写道“鸡既鸣矣，朝既盈矣。匪鸡则鸣，苍蝇之声。东方明矣，朝既昌矣。匪东方则明，月出之光”，女子催促男子快起身，男子淹留不肯，“那不是鸡叫，是苍蝇嗡嗡声，东边也没亮，那是月亮光而已”，回答言语可爱缠绵。钱钟书说：“莎士比亚剧中写情人欢会，女曰：‘天尚未明，此夜莺啼，非云雀鸣也。’男曰：‘云雀报曙，东方云开透日矣。’女曰：‘此非晨光，乃流星耳。’用以比勘。”但是我们注意到，莺莺和张生一夜缠绵，居然不交一词，只是在天明将别的时候，呜咽哭泣。这个写法相当传神，我们可以从那“山盟海誓”的缺失和离别时的哭泣，感受到莺莺内心的矛盾：她明知道她正在做一件可能万劫不复的错事，但是却无法控制内心对于张生的情意，爱情的那种使双方合二为一的强烈愿望战胜了对命运的恐惧，她不敢说话，因为说话就代表了清醒，她宁愿在一种迷醉的状态下委身于自己的爱人，抛却一切利益的得失、道德的禁梏；当天明将别，她仿佛恍然从梦中惊醒，好象做错了事的孩子一样，为自己的选择和命运哭泣，为自己所失去的哭泣。当然在这眼泪之中，对于离别的伤感，也占了一定的比重，所以在未来的十多天里，她再也没有和张生联系。</p>
+<p>直到张生“赋《会真诗》三十韵，未毕，而红娘适至，因授之，以贻崔氏”，才又来与张生相会。想来未完的《会真诗》是个很好的说服自己的借口，只是来探讨文学罢了，但是总免不了“向谁行宿,不如休去”的挽留。于是这样相处了将近一个月。</p>
+<p>“张生常诘郑氏之情，则曰：‘我不可奈何矣。’因欲就成之。”这是最常见的断句，莺莺说：“我没有办法告诉她。”于是张生便想亲自和郑氏谈谈，促成这件事。但是见家长的事突然没有下文，很快张生也去了长安，这样的情节安排无论如何都是不通的。幸好还有另外一个版本：“张生常诘郑氏之情，则曰：‘知不可奈何矣，因欲就成之。’”莺莺说她妈知道也没其他办法了，所以想促成我们的婚事。他们相处同居了一个月，而寺院内有崔家那么多的仆役，就算郑氏再昏懵，也应该了解到女儿的事情了。事已既此，无可奈何，女儿大了，心向外人，现在也只能期盼那男人能负责任把她娶去了。这样的心情很可以理解，我的一个朋友，和她女朋友两地分居，而且女孩子在当地做了教师，不错的职业，眼看因为家里反对要分手了，但是有天女孩子的父母偷听他们的电话，知道了女儿已经失身于我的朋友，于是第二天就让女儿把我的朋友叫去见面，很快便结了婚。所以很多时候，我都分不清自己到底是生活在古代还是生活在现代，一千多年下来，对待某些问题的做法还是一点都没变化。</p>
+<p>但是张生可能很害怕被一桩寒门的婚姻套牢，一听这话赶快跑路；于是借口“为了梦想中金碧辉煌的长安,都市里充满了神奇的历险,满足一个男儿宏伟的心愿”，西下长安去了。去之前还先告诉了莺莺，“崔氏宛无难词，然而愁怨之容动人矣”。有一种哀伤，是哭不出来的，它会慢慢渗透进你的骨子，日日夜夜一点一滴地侵蚀你的情绪。或许她害怕自己会控制不住自己面对离别的悲伤，所以在张生将要走的第二天晚上，莺莺没有来。我总是不能理解女子的心思，明明想念你的，却不肯见面；明明想把你留下的，却早早地说出一路顺风的祝福；明明在说没有留下更多的甜蜜回忆，却连分手了也不肯来见最后一面，谁都无法想见女子的心里到底在想些什么，或许正是这样的复杂，才成就了莺莺形象的丰满。</p>
+<p>但是很快，张生又回到了蒲州，又与莺莺相处了好几个月，也许是他无法放下这段感情，也许是长安尚未有“实现一个男儿宏伟志向”的机会，更可能是长安还没那么早开考，想最后的缠绵一下。莺莺的字和文章写的都很好，却从不给张生看；她写文章的水平很好，但是却好象什么都不懂的样子；她言辞敏捷，但是在外人面前却很少说话。或许这样的女孩子最是让人怜爱。“待张之意甚厚，然未尝以词继之。时愁艳幽邃，恒若不识，喜愠之容，亦罕形见”，莺莺是个内向的女孩子，有了情绪却不轻易流露，她不会口口声声地和你说“我爱你”，但是连她注视你的目光都能让你感到无限柔情，你无法知晓她的想法，但是却沉溺于她时时流露的情意。她喜欢弹琴来抒发情感，可能是心情忧郁，所以弹奏的曲子异常伤感。</p>
+<p>不久张生便要去长安应试了，或许是下了决心终要割断前缘，一心功名，所以这个男人连说分手的勇气都没有，只能对着莺莺忧愁哀叹，自然他也是不肯去承诺些什么的。莺莺自然明白他的心思，面对爱人的负心薄情，做为一个弱女子又能说什么呢。莺莺是个坚强而又自尊的女子，她不会低声哀求张生留下，她态度恭敬，声音柔和，慢慢地对张生说：“始乱之，终弃之，固其宜矣，愚不敢恨。必也君乱之，君终之，君之惠也。则没身之誓，其有终矣，又何必深感于此行？然而君既不怿，无以奉宁。君常谓我善鼓琴，向时羞颜，所不能及。今且往矣，既君此诚。” 莺莺平静的面容下说出“始乱之，终弃之，固其宜矣，愚不敢恨”那是怎样的一种心痛呢，假如仅仅是个人爱情的失败也就罢了，但是其中还昭显出整个家族的衰败和老母最后一丝期望的落空。人很多时候并非为自己而活，所以人最不能承受的并非自身的失败，而是自身的失败给自己亲爱之人所带来的伤害。张生挥一挥衣袖，固然不带走一片云彩，还可以得到时人“善补过者”的赞誉，但是对于莺莺来说，不但她这一生的命运已经凄惨无疑，而且也给了她衰颓式微的家族一次重重的羞辱和打击。</p>
+<p>她终于明白了“则没身之誓，其有终矣”，古往今来男女说着“山无陵，江水为竭，冬雷阵阵，夏雨雪，天地合，乃敢与君绝”的誓言，可大多数的人言语远比自身华丽，现实远没有恶化到世界末日，便已经支持不住，爱情一如华美的琉璃，碰触现实难免粉碎。</p>
+<p>于是她为自己心爱的男子弹了最后一首曲子《霓裳羽衣曲序》，琴声因为心情悲伤而纷乱错杂，旁边的人都听着流泪，她终于弹不下去，扔下琴哭着跑到母亲的房里，再也没出来。在这部作品里，郑氏出场只有一次，侧面描写也并不多，但是我们却依然能想象一千多年前那位母亲的悲痛，为自己的命运，为家族的命运，更为自己女儿的命运感到悲伤。</p>
+<p>第二天我们的元大才子便神清气爽地踏上西去长安的路途，但是那年他没有考中。于是他留在了长安，从莺莺的信中我们了解到，这个鄙薄的文青曾托人给莺莺寄去一封信，让她看开些，“以广其意”，顺便送去“花胜一合、口脂五寸”做为分手礼物。唐代女子喜欢用绢纸、金银等材料做出一朵朵花形的小物件，贴在脸上，唐代就称之为“花胜”或者“花钿”。元稹很潇洒地给分手后的情人送去长安最时尚的化妆品和首饰，想以此来弥补内心的愧疚。但凡女子都爱最新潮时尚的化妆品，犹以情人所赠为甚；但是我不知道淹留蒲州普救寺的母女，在这个穷乡僻壤突然看到负心的男人送来长安的时尚货色，会是怎样的心情，或许如后世李清照所言“泪融残粉花钿重”。</p>
+<p>孤独无望地留在普救寺的莺莺回了一封信，那信却被张生炫耀于长安的朋友之间。就好象胡兰成把曾与他恩爱缠绵的女子都写进《今生今世》，古今文人下作起来都是一样。</p>
+<p>对于自己的负心，元稹还借用了《左传》那句“夫有尤物,足以移人,苟非道德,则必有祸”，义正词严地发表了一通高论：“大凡天之所命尤物也，不妖其身，必妖于人。使崔氏子遇合富贵，乘宠娇，不为云为雨，则为蛟为螭，吾不知其变化矣。昔殷之辛，周之幽，据百万之国，其势甚厚。然而一女子败之，溃其众，屠其身，至今为天下戮笑。予之德不足以胜妖孽，是用忍情。”最可怕的是听众的反应，“于时坐者皆为深叹”，大家叹口气，居然没人指责张生的负心薄幸，或者有一点小小的同情给予莺莺。</p>
+<p>对于美貌女子的恐惧，其实不过只是自身懦弱的借口罢了，男子严于律女子，宽于律己，实在是很无耻。《世说新语》里记载着石崇宴客让美人劝酒，如客人不饮，便杀掉劝酒的美人。有一次丞相王导和大将军王敦去赴宴，王导不善饮酒，也只好勉强自己喝，以至于喝醉了；而王敦死活不肯给面子，就是不喝，“已斩三人，颜色如故，尚不肯饮”。而此事，却被刘义庆归为“汰侈”，意思是奢侈浪费。在这里我们看到的是人正常情感的缺位，对于爱情和女性的残忍，却成了男子气度的象征。记得唐代曾有一个很出名的事件：军官冯燕，和同事张婴的漂亮老婆私通，张婴酗酒而归，冯燕逃避不及，只好藏到床底，却发觉自己的头巾还留在枕边，幸好张婴喝醉了并没发觉。于是冯燕指指头巾示意张妻把头巾取来免得事情败露，可是张妻会错了意，竟把枕边张婴的佩刀递给了他。冯燕看了张妻几眼，觉得这个女人太狠毒，就一刀砍下了张妻的头，然后戴上头巾走了。张婴于是就被认为杀害自己的妻子，被判死刑；结果在刑场上，冯燕出现了，他宣称张婴是无辜的，张妻是自己杀的。军政长官贾耽将此案据实上奏，并表示，宁愿免去自己的官职，也要为冯燕赎罪。最后皇帝的敕令是，将滑地的全部死刑犯同时赦免。这件案子影响很大，以至于那个时代的流行小说家沈下贤专门为之创作了传奇《冯燕传》；著名诗人司空图则写了长篇叙事诗《冯燕歌》，其中有一句诗写道“已为不平能割爱”，也就是说为了所谓的道德规范，能割舍爱情的才是大英雄。于是世情普遍鄙薄男欢女爱，积极培养冷血寡情的人，于是婚姻便成利益的交换，所谓的爱情只能沦落到勾栏瓦舍里去了。对比西方，希罗多德《历史》曾讲过吕底亚王坎道列斯的故事。坎道列斯认为自己的妻子是世上最美丽的女子，于是他想拿来炫耀了，他强迫他的亲信巨吉斯看王后的身体，以便确认这一点；不得已，巨吉斯只好藏在卧室，看了王后的身体。王后知道此事后，认为是奇耻大辱，就将巨吉斯召来，给他两个选择：要么他杀掉国王，“变成我的丈夫并取得吕底亚的王位”；要么被处死。结果巨吉斯选择了前者，他杀死了国王，并娶了王后，登上了吕底亚的王位。我们从中可以看到东西方文明对待情欲的差别。遗风留至如今，家里关心你的结婚对象，不是双方有多么相爱，感情有多深厚，而是这个人家里怎样，是不是老实，有没有本事赚钱升官；假如你斗胆和他们说起你们的爱情，于是大家都开始哄堂大笑或者不屑一顾，仿佛看你就是一个不成熟的孩子、精神错乱的病人。对于爱情的信仰，或许只存在于看戏的那段辰光。</p>
+<p>有了这样一种社会心理氛围，再加上有太子少保韦夏卿的赏识，那么元稹抛弃寒门女子莺莺而迎娶豪门韦家的千金韦丛，也就顺理成章了。但吊诡的是在蒋防写的《霍小玉传》里，元稹的老丈人韦夏卿却对负心薄行的朋友李益这般说：“风光甚丽，草木荣华。伤哉郑卿，衔冤空室！足下终能弃置，实是忍人。丈夫之心，不宜如此。足下宜为思之！”蒋防此人在仕途上得到过元稹的推荐，所以他写及元稹的岳父时总要润色拔高一下，只是他的恩公看到这番话时是否会心头一颤？</p>
+<p>或许是虬髯客已没，不会再有人“衔之十年”也要去取“天下负心者”的头颅心肝下酒，所以男人也就越发理直气壮地负心薄幸。负心人元稹没有得到什么报应，又过了一年多后，也就是贞元十九年他登拔萃科，署秘书省校书郎，娶了韦夏卿之女韦丛为妻，并在那一年与同中书判拔萃科的白居易相识订交，从此元白之名满天下。元稹在《梦游春七十韵》中写道：“当年二纪初，嘉节三星度……韦门正全盛，出入多欢裕。”在元稹志得意满，欢娱畅快之时，莺莺也匆匆嫁于他人了。后来元稹偶然路过莺莺居住的地方，以莺莺表兄的身份求见，终不得一见。莺莺的不复相见，是对情人的深深失望，或许她会深深的认同鱼玄机说的“易求无价宝，难得有情郎”；她没有霍小玉那般刚烈，她也许也会哀怜自己“我为女子，薄命如斯，是丈夫负心若此”，但她却说不出“我死之後，必为厉鬼，使君妻妾，终日不安”的话。莺莺只写了首诗给元稹，硬着骨头咬着牙说“弃置今何道，当时且自亲”，既然都已经分开了不爱我了又有什么好说的呢，当时恩爱缠绵也就足够了，让他“还将旧时意，怜取眼前人”，因为懂得，所以慈悲。当爱情归于寂寥，繁华消于落寞，一切都只存在与记忆里，曾经的美好，只能活在心底。“惆怅旧欢如梦，觉来无处追寻”。或许她也明白，往事只能追忆，不可重温。曾经年少单纯的莺莺已经死了，只留下一具逐渐衰老的躯壳和悲伤的灵魂继续苟活。现实那样丑恶，我们却不得不活下去。</p>
+<p>我真的怀疑元稹所谓的“曾经沧海难为水，除却巫山不是云”到底指哪一位，是莺莺，还是韦丛，抑或是薛涛？元和四年，韦丛去世，元稹写了三十三篇诗来悼念她，其中最有名的一句：“惟将终夜长开眼，报答平生未展眉。”根据陈寅恪先生的考证，这个“长开眼”不仅仅是睡不着的意思，“所谓‘常开眼’者，自比鳏鱼（有“鳏鱼眼长开”这一说法），即自誓终鳏之义”（陈寅恪《元白诗笺证稿》），元稹信誓旦旦的要为韦丛终生不娶，鳏孤到死了。但事实证明，元稹是个文过饰非的人，在韦丛凑趣去世的那年，他邂逅薛涛，两人相恋了一年后将之抛弃，可怜薛涛为之终身不嫁，“只欲栏边安枕席，夜深闲共说相思”；两年后纳妾安氏，又过数年续弦裴淑。简直是“取次花丛频回顾”啊！所以观陈寅恪先生对其评价“自私自利。综其一生行迹，巧宦固不待言，而巧婚尤为可恶也。岂其多情哉？实多诈而已矣”并不为过。</p>
+<p>读《元长庆集》，常免不了痛恨为什么如此深情优美的诗句却出自一个那么薄情负心的伧夫之手。雪莱在《致云雀》中说：“我们最甜美的歌，就是那些倾吐最哀伤的思想的。”不知道元稹所哀伤的到底是什么。贝克尔在《抗拒死亡》中说的：“所有动人心弦的事中，对死的恐惧是首当其冲的。”他的悼亡诗写的那么情深意切，大概是出于对死亡本身的恐惧和悲哀吧。</p>
+<p>或许不该过分指责元稹，他也不过是为了功名奔波的庸人，这个世界原本就是为庸人所设的。太过恩爱的情侣总是不容于世：苏东坡与王弗已是“十年生死两茫茫”了；陆游和唐婉儿只能“一怀愁绪，几年离索”；刘克庄在哀叹“旧日风烟草树，而今总断人肠”；冒辟疆和董小宛“一生清福,九年占尽,九年折尽矣”；还有纳兰性德，感慨着“被酒莫惊春睡重，睹书消得泼茶香，当时只道是寻常”。但是起码他们是能真心相爱的，就算不能“执子之手，与子偕老”，起码也是“骨化形销而丹诚不泯”，却可怜了单纯的莺莺，一个人用余生去背负全部的思念、悔恨和指摘。</p>
+<p>史籍上再没有关于莺莺以后生活的记载，或许她一生坎坷，慢慢地消磨了纯真善良，成了世间常见的庸俗势利的妇人。但哪怕是这样，我依然相信在她心底的最幽深隐蔽的角落、最柔嫩脆弱的地方，记忆会像一把锯齿慢慢地来回剧着那根最纤细的神经，午夜梦回的时候，依然会为贞元十六年的那个男子泪流满面。</p>
+<p>我怕我鄙薄的文字无法完美地译出那女子悲伤的文字，且让我们再细细读一读那信的原文,体会一下她的心情吧：</p>
+<p>捧览来问，抚爱过深。儿女之情，悲喜交集。兼惠花胜一合、口脂五寸，致耀首膏唇之饰。虽荷殊恩，谁复为容？睹物增怀，但积悲叹耳。伏承使于京中就业，进修之道，固在便安。但恨僻陋之人，永以遐弃。命也如此，知复何言！自去秋已来，常忽忽如有所失。于喧哗之下，或勉为语笑，闲宵自处，无不泪零。乃至梦寐之间，亦多感咽离忧之思。绸缪缱绻，暂若寻常，幽会未终，惊魂已断。虽半衾如暖，而思之甚遥。一昨拜辞，倏逾旧岁。长安行乐之地，触绪牵情。何幸不忘幽微，眷念无斁，鄙薄之志，无以奉酬。至于终始之盟，则固不忒。鄙昔中表相因，或同宴处。婢仆见诱，遂致私诚。儿女之心，不能自固。君子有援琴之挑，鄙人无投梭之拒。及荐寝席，义盛意深。愚陋之情，永谓终托。岂期既见君子，而不能定情，致有自献之羞，不复明侍巾帻。没身永恨，含叹何言！倘仁人用心，俯遂幽眇，虽死之日，犹生之年。如或达士略情，舍小从大，以先配为丑行，以要盟为可欺，则当骨化形销，丹诚不泯，因风委露，犹托清尘。存没之诚，言尽于此。临纸呜咽，情不能申。千万珍重，珍重千万！玉环一枚，是儿婴年所弄，寄充君子下体所佩。玉取其坚润不渝，环取其终始不绝。兼乱丝一绚、文竹茶碾子一枚。此数物不足见珍，意者欲君子如玉之真，弊志如环不解。泪痕在竹，愁绪萦丝，因物达情，永以为好耳。心迩身遐，拜会无期。幽愤所钟，千里神合。千万珍重！春风多厉，强饭为嘉。慎言自保，无以鄙为深念。</p>
+]]></content>
+      <categories>
+        <category>读书笔记</category>
+      </categories>
+      <tags>
+        <tag>故事</tag>
+        <tag>《莺莺传》</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>「转」一文看懂Linux内核！Linux内核架构和工作原理详解</title>
     <url>/public/2021/12/23/linux/linux_in_one/</url>
     <content><![CDATA[<p>全文导读</p>
@@ -7816,66 +7876,6 @@ REPORTING-BUGS ---- Bug 上报的指南。</p>
       </categories>
       <tags>
         <tag>linux kernel</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>「转」琉璃易碎，人言易坠——关于《莺莺传》的叙事</title>
-    <url>/public/2017/04/14/readings/yingyingzhuan/</url>
-    <content><![CDATA[<blockquote>
-<p>《西厢记》的书评:『琉璃易碎，人言易坠——关于《莺莺传》的叙事』转载
-…全文:<a href="https://www.douban.com/doubanapp/dispatch?uri=/review/1200691/" target="_blank" rel="noopener">(豆瓣link)</a></p>
-</blockquote>
-<p>“半欲天明半未明，醉闻花气睡闻莺。 狌儿撼起钟声动，二十年来晓寺情。 ”男人四十的元微之写着酸酸的诗，回忆年少风流。假如我是元微之，我一定会这般写道：天空尚未亮透，微微透着点光，远处传来钟声，让我的思绪一下子回忆到二十年前，也是这样的一个早晨，在那所古寺的西厢，那个散发着鲜花一样香气的女子，用鸟儿般宛转的声音在我耳边低语：“钟声响了，想来我也该回去了。”那声音一直萦绕在耳边，十年、二十年、也许一辈子在我在记忆深处响起……。</p>
-<a id="more"></a>
-<p>夜宿古刹，偶遇佳人，相伴遥夜，缠绵缱绻，天明而别。这样的际遇，是最最典型的古代书生的爱情幻想。在一个陌生的地方，遇到一个陌生人，发生一段有始无终的感情。书生注定要做个过客，一生漂泊在对那个女子的思念中，却没有勇气长相守。</p>
-<p>当我还是一个初中生的时候，我买来人民文学出版社的《西厢记》，上面盖本教科书，堂而皇之的上课看。但是很快，除了王实甫那华丽的辞藻，整个大团圆的故事构架让我兴趣索然，而前言里现代人给它冠上的什么“礼教叛逆者反抗封建卫道士”的宏大内涵更让我倒尽胃口。</p>
-<p>在书后还附着元稹的《莺莺传》。《莺莺传》所描写的其实只是两个人的故事，两个恋爱的人后来分开的故事，没有太宏大的叙事，没有那些官腔的说教和露骨的批判。这样的故事是我所喜的；这样的故事，也是中国文人所津津乐道的。关于类似内容的作品也就汗牛充栋，数不胜数。或许从《诗经》的“氓之蚩蚩，抱布贸丝”开始，就没有谁打算给自己的爱情故事赋予太宏大的命题，只是后来的人突然犯失心疯，发现了字里行间的微言大义。所以我很景仰孔夫子他老人家，他的《论语》里每一个字都可以养活一大批的圣贤大师。</p>
-<p>元稹的这篇传奇被人考据出是以自己为原型的故事，是一篇忏悔录。忏悔的味道我闻不出来，但是众前辈大师言之凿凿说张生便是元大才子，那我也就相信了罢。</p>
-<p>《莺莺传》的开头，交代道“在贞元年间，有位张生，他性格温和而富有感情，风度潇洒，容貌漂亮，意志坚强，脾气孤僻”。古人向来有画脸谱的习惯，只要不是丑的太离谱，一般的名士贤臣都被描写成“性温茂，美风容”之类。但是据说元稹的家族是著名的鲜卑拓跋，鲜卑人的美貌是相当出名的，就好象现在说日本人长的猥亵一样出名，所以我有理由相信，元稹在这点上也许没有吹牛。</p>
-<p>文章写道“以是年二十三，未尝近女色”，后面他自己解释道“登徒子非好色者，是有凶行；余真好色者，而适不我值。何以言之？大凡物之尤者，未尝不留连于心，是知其非忘情者也”，就仿佛现在的大学男生在卧谈会上被迫承认自己二十三岁高龄还是个处男，被人取笑之下只好解释“其实我哪里是没能力啊，我只是没遇到真正让我心动的；一般的庸脂俗粉我看不上眼，要是真有出类拔萃的，我也会追的。我是谈感情的，和你们玩肉体的垃圾是不一样的”诸如此类。但是考察元稹的家庭情况，他八岁丧父，在家族里又被同父异母的兄弟欺凌，从小随着母亲投奔舅氏，生活贫困，母亲教她念书。我们可以想象，一个幼年便寄人篱下，遭受贫困欺凌的味道，他只比林黛玉多了一个母亲而已，但是林黛玉在物质生活上绝对比他适意。我们的脑海里可以浮现这样一个人物性格：幼年丧父的人，对于男人所称道的齐家治国平天下之类的宏伟功名有着不同于常人的热情和执著，范仲淹就是很好的例子，所以元稹在事业上一直很上进努力，为达目的不惜代价不择手段，由于尝尽人情冷暖世态炎凉，他很敏感，这样的人物让我想到了《红与黑》里的主人公于连；他自幼由一个母亲抚养成人，一般这样的人具有恋母情结，对于女性有异于常人的喜好，所以他的性格里又有滥情懦弱的一面。多情和薄幸，坚毅和懦弱，正义和无耻都矛盾地体现在他身上，这也就能让我们更好的理解他后来为了追求功名而抛弃莺莺的举动了。由于家境贫寒，极端律己，自卑和敏感的元微之“内秉坚孤，非礼不可入”，就算偶尔参加朋友一起的游宴——古人的游宴和现在去歌舞厅唱歌跳舞一样，一般都安排了色情服务——“扰杂其间，他人皆汹汹拳拳，若将不及”，而他“容顺而已，终不能乱”。我不清楚他是不是冬天还要帮别人洗衣服赚钱，但是可以肯定他不会参与打牌这样不合礼仪的活动，所以也就不会有谁去污蔑他打牌作弊，不会有“樗蒲不胜，槌杀四生”的惨剧了。</p>
-<p>在这里他第一次提到“物之尤者”，后面他还有段很著名的话也提到“尤物”，为自己抛弃莺莺的行为做解释“大凡天之所命尤物也，不妖其身，必妖于人”。如此看来，仿佛我们的元大才子是个叶公好龙式的人物，这边在说假如能遇到尤物一定会动真情，那边厢却在说尤物不害她自身，必定祸害他人。没有得到的时候千方百计的追求，到手以后又不迭地甩掉去追求新的目标。人总是这样矛盾的动物，永远不明白自己所追求的到底是什么。我们知道最后元稹娶了豪门韦家的女儿为妻，使得他在仕途平步青云。于此，我们不妨看成是理智和情欲的对立，一边是代表事业投机的豪门韦家联姻的机会，而一边只是爱过的漂亮的女子，理智告诉他应该离开那个女子，但是情欲却欲罢不能，但是最后我们知道理智战胜了情欲，感情只好盘踞在文字里去凭吊，所以元微之为我们贡献了很多首脍炙人口的情诗。</p>
-<p>后来，张生，也就是元稹路过蒲州，搭救了寄住在普救寺的崔家寡妇一家。“是岁，浑瑊薨于蒲，有中人丁文雅，不善于军，军人因丧而扰，大掠蒲人。……先是张与蒲将之党有善，请吏护之，遂不及于难。十余日，廉使杜确将天子命以总戎节，令于军，军由是戢。”据《旧唐书·德宗纪》，贞元十五年十二月，河中绛州节度使浑瑊卒，以同州刺史杜确为河中尹、河中绛州观察使。元稹在贞元九年举明经科，并于贞元十五年在河中府任卑职，所以他和蒲将之党有交情，打个招呼关照一下也在情理之中；但据唐代举士制度，士之及第者还需要经过吏部考试才能正式任命官职，所以我们可以推测出在贞元十五年年底的时候，元稹便上路去长安应考，于是在蒲州遇上了莺莺一家。</p>
-<p>我们知道这篇传奇是有虚构的成分，就如元稹在里边成了张君瑞，但是有一点细节仍然需要注意的，就是莺莺家族的姓氏。在唐朝时候，年轻人普遍的梦想有两个，金榜题名，娶七姓女；就如同现在的大学生的梦想，考上公务员，讨个有钱人做老婆。娶个有钱人做老婆可以少奋斗十年，这是基于现实利益的考量，而娶七姓女等于瞬间提升了自身家族的社会层次，也是基于现实利益的考量。在中国人的现实生活里，找不到“爱情”这两个字--有时候看历史真的会看到掩卷叹息，中国人过了几千年，还是一点长进都没有啊。唐代的士族世家已经逐渐没落，但是依然地位显赫，其中以陇西李氏、太原王氏、荥阳郑氏、范阳卢氏、清河崔氏、博陵崔氏、赵郡李氏等七姓十族最为著名，一般这些世家大族互为婚姻，自惜羽毛。唐高宗时宰相李义府为子向山东士族求婚不遂，而向朝廷建议禁止七姓十族自为婚姻。可见娶个望族女子为妻，是多么的艰难啊。莺莺是姓崔的，而且“财产甚厚，多奴仆”，很自然的就联想到了清河崔氏、博陵崔氏这些世家大族；但是很奇怪的是元稹描写的张生居然抛弃了莺莺，一个出身寒族的士子抛弃了一个那么美貌温柔的世家女子，仅仅只为了他自己所谓的“予之德不足以胜妖孽，是用忍情”么？考察元某人在政治上趋炎附势的态度，我是不相信他冠冕堂皇的话的。姑且让我用自己邪恶的想法去揣测他：那个被唤作莺莺的女子必定不是什么世家望族，所以元稹为了前途而抛弃了她，之所以故意写成崔氏，只是制造了一种假象，让读者有个印象那个莺莺是世家女子，我元微之离开她只是因为好男儿不该沉溺于爱情，你看为了理想我连世家女都放弃了啊。这便是文人的下作！</p>
-<p>为了答谢这位刚认的远亲的救命之恩，于是请吃饭，贞元十五年十二月很快就在危机中渡过，这顿饭的时间也应该在贞元十六年的春天。当贞元十五年的大门“咣当”一声关掉，命运就载着我们的主人公来到了贞元十六年。饭局中张生曾问莺莺的年纪，“郑曰：‘今天子甲子岁之七月，终今贞元庚辰，生年十七矣。’”贞元庚辰，正是贞元十六年，那年元稹二十二岁，莺莺十七岁。</p>
-<p>拿破仑指示说“请客的菜一定要好”，这个世间有好多的阴谋和决策在餐桌上议定，有好多缠绵或者惨烈的故事由餐桌上发端。郑国的子宋因为吃饭的时候分不到王八汤，结果一怒就干掉了郑灵公；而我们的张生，也就是元微之同学因为吃饭认识了莺莺姑娘。这表明吃饭是一次冒险，运气好的可以吃出一段情缘，运气不好的就要丢了性命，所以列位正要去吃饭相亲的同学们，你们要小心啊。</p>
-<p>吃饭的时候，郑氏让儿子、女儿出来拜会救命恩人。那时侯未出阁的女子特别是大户人家的女子仿佛家之重宝，秘不见人；而郑氏却突然在一个年轻的刚认识不久的远房亲戚面前把女儿拉出来亮相，还要陪吃饭，哪怕这个年轻是救命恩人，这样的行为也是很突兀的，所以莺莺才会推三阻四的不想出来见面。郑氏这般的举动连一千多年后的我也想入非非，无疑也给了元稹兄弟很多假设的可能。不论当初的郑氏出于什么样的考虑做了这个决定，反正莺莺姑娘就此登场了。第一次召唤推说有疾，郑氏看起来很生气的说“张兄保尔之命，不然，尔且掳矣，能复远嫌乎”，这其中的话外之音，只能读者自己体会了。又过了很久，莺莺终于出场了。</p>
-<p>“常服睟容，不加新饰，垂鬟接黛，双脸销红而已。颜色艳异，光辉动人”，简直惊为天人啊。我们很可以理解元稹的心情，在记忆里，那个已经离开的初恋情人总是最美丽的，而那第一次的见面总是浪漫得无法言说，第一眼里情人的样貌也是美艳不可方物。但是假如当时有照相的话，看到莺莺的照片也许你会失望，那个时代普遍流行的美女的体态是肥胖丰满的，那个时代美女的画像普遍有双下巴（有些是三下巴或者更多），面颊鼓鼓外凸，因为胖所以嘴巴也被挤的小小的嘟起来，实乃人间惨剧，竟无语凝噎！幸好莺莺不加新饰，保持了一点自然状态，否则那个惨白的面容、用红颜料描出的樱桃小嘴、脸上贴的花状的金钿和浓晕蛾翅眉足足可以把你吓死。</p>
-<p>后面一句话很有意思：“张惊，为之礼。”张生看到莺莺那么漂亮，忙起来对她行礼。这个描写很传神，一般男子看到普通的女子，都保持一点点的风度，淡淡的仿佛视若不见；惟独见到美女，眼睛一亮，慌忙起身行礼，态度谦恭。足见莺莺之美。后来她坐到郑氏旁边，因为是郑氏强迫她出见的，所以她“凝睇怨绝，若不胜其体者”，那个样子就是《喜剧之王》里张柏芝所谓的“鹌鹑状”。如此楚楚动人的姿势，叫张生魂不守舍。问了年纪，只有十七岁，正是花季过后，果季之前，鲜脆欲滴，天真纯情的年纪啊！张生想和她找话题说话，但是莺莺就是不理睬他，一直到吃完饭也没有什么好说的。记得以前去参加一个朋友生日活动，饭桌遇上了朋友的表妹，也是一样的年轻明艳，也是一样的不理睬人，和她搭讪也装做没听见，搞得我们很没有面子，所以说，古往今来的好女孩一般都是很矜持的。由于没有机会接触，张生的思念就象潮水一样把他包围，所以他捉摸着要找个机会表白一下。</p>
-<p>于是他从莺莺的小伙伴，侍女红娘那边入手。这个策略在以后的无数次实践当中被证明是极端正确的。大学里你要追求某个女生，先要从她寝室的室友下手，打通所有关节，请他们吃喝玩乐，最后那个女孩子身边所有的朋友都在说你好话，那你就成功一大半了。红娘被张生吓了一跳，问了个问题：“你既然那么喜欢，何不凭借你对我们家的恩情向夫人正式提亲呢（何不因其德而求娶焉）？”张生回答的话简直有点无耻了：“我从孩童时候起，性情就不随便附合。有时和妇女们在一起，也不曾看过谁。当年不肯做的事，如今到底还是在习惯上做不来。昨天在宴会上，我几乎不能控制自己。这几天来，走路忘了到什么地方去，吃饭也感觉不出饱还是没饱。恐怕过不了早晚，我就会因相思而死了。如果通过媒人去娶亲，又要‘纳采’，又要‘问名’，手续多得很，少说也得三四个月，那时恐我也就不会在人世了。你说我该怎么办呢？（余始自孩提，性不苟合。或时纨绮闲居，曾莫流盼。不为当年，终有所蔽。昨日一席间，几不自持。数日来，行忘止，食忘饱，恐不能逾旦暮。若因媒氏而娶，纳采问名，则三数月间，索我于枯鱼之肆矣。尔其谓我何？）”先吹捧自己性格不随便，然后表明见到莺莺姑娘连这样的性情也抛掉了，再不快点接近自己，就挂掉了，哪有时间挺到纳采问名啊。我从来不知道爱一个人，居然连三四个月都无法等待，这是赤裸裸的情欲，而非爱情；张生的第一目标是得到莺莺，而非和她相爱。情欲是正常的，但是不正常的是张生光明正大的以自己的情欲作为接近的借口，在一套绚丽机巧的辞藻下，其实裹挟着的不过是阿Q对吴妈的那句“我要跟你困觉”！</p>
-<p>但是也许张生妇女工作做的好，红娘还真的帮他出主意，让他摇动笔杆。想来那时躲在深闺的大家闺秀并不知道外边文青的名声有多臭，结果一场悲剧上演了。</p>
-<p>亚里士多德《诗学》言道：“性格为悲剧六大要素之一。”毫无疑问，莺莺的性格决定了她的悲剧结局。在她的身上我们看到矜持和热情，顺从和叛逆，坚定和认命矛盾的结合在了一起。前面我们已经注意到莺莺出场时的矜持，和在她母亲召唤下不肯出来见面的叛逆，但是当她看了张生的情诗之后却用那首暧昧的《明月三五夜》作为回应，把张生招来相见。“待月西厢下，迎风户半开。拂墙花影动，疑是玉人来。”这诗不论莺莺怎么强调“犹惧兄之见难,是用鄙靡之词，以求其必至”,都无法掩盖字里行间的情意和期盼。</p>
-<p>二月十五的晚上，月亮大的吓人,文学青年元稹踏着美丽的月色，攀着墙边的杏花树翻过墙头投奔他的初恋去了。他来到西厢房,却只看到红娘躺在床上，双方都很奇怪。在红娘通报后，莺莺姑娘这才出现了。可能原本元大才子准备着类似“长夜漫漫，无心睡眠，没想到莺莺姑娘你也睡不着”之类的桥段，可是如此以来完全用不上了，而且莺莺姑娘一身包裹严实，表情严肃，狠狠地训斥了他一顿，然后扬长而去。元大才子只好承认都是月亮惹的祸，那样的月色太美太温柔，于是绝望了。元稹没有写他失恋后寻死觅活，更不像他自己说的“索之于枯鱼之肆”。但是很吊诡的是三天后莺莺就自荐枕席了。鉴于这段情节的突兀，《董解元西厢记诸宫调》里就设计了张生患相思病，莺莺探病的情节，王实甫也继承发扬了这段情节。这段情节看似让整个的故事情节更加合理，也让人物性格和心理有一定的起承转合，但其实是画蛇添足的一笔。</p>
-<p>莺莺是一个性格矛盾的人，她对待未知的将来既期待又恐惧，她知道自己所做的是不容于世的，但是她对于爱情满怀憧憬而渴望冒险。在爱情的冲动下，她一步步滑向张生的怀抱。也许从第一次出来见这个救命恩人的时候，她便已经心存好感，起码我们知道张生的相貌世让人赏心悦目，这是爱情的基础；当看到张生的两首诗，更加倾慕于他。唐代的女孩子也和现在的女孩子一样，有自己心目中的白马王子。也许那个时代比较流行的梦中情人形象，就是元稹这样的才子。于是她情不自禁回了一首诗，也许只是想见他一面，但是理智告诉她这样做法的危险性。也许在红娘去通报的时候，她还在那里犹豫到底要不要去见。最后她决定去看一眼那个自己衷情的男子，她穿戴齐整。当爱上一个男人的女子，在那个男人面前总是很低很低,低到尘埃里,尘埃里便开出花来，于是她潜意识的想保持自己的尊严，她不想被他看成是轻薄的女子。她终于见到了他，在月色下，俊朗的男子期盼地看着自己，眼神顾盼之间，让人心旌摇荡；那淡淡的笑容，刚毅的嘴角，也许随着那夜的月色一起留在莺莺地记忆深处。她发觉自己陷入一种前所未有的危机，一种爱上别人为了那男子可以不顾一切的冲动，于是她板下脸来，义正词严地拒绝了那个男子。“非礼之动，能不愧心？特愿以礼自持，毋及于乱！”这些话在我看来倒有一大半是在对自己萌动的心说的，莺莺在警告自己不要逾越了礼，否则将万劫不复。男子一脸地失望，仿佛满地月光都成了严霜。她还是转身离去。但是正如元稹在《会真诗》里所写的“戏调初微拒，柔情已暗通”。我不知道莺莺在这三天里是如何地心情，我也不知道其中红娘起了多大地作用，但是我知道到了十八日的晚上，莺莺终于做了自己一生中最重要的决定。</p>
-<p>“数夕，张生临轩独寝，忽有人觉之。惊骇而起，则红娘敛衾携枕而至，抚张曰：‘至矣！至矣！睡何为哉！’并枕重衾而去。张生拭目危坐久之，犹疑梦寐；然而修谨以俟。俄而红娘捧崔氏而至。至，则娇羞融冶，力不能运支体，曩时端庄，不复同矣。是夕，旬有八日也。斜月晶莹，幽辉半床。”唐贞元十六年二月十八日的夜晚，那一夜的经历对于元稹来说是如此的深刻，以至于很久以后依然清楚的记得那天的日期，那夜的月色。元稹在《会真诗》里清楚地描写了缠绵的经过，在千年之后的人们看来，那诗依然写得香艳露骨，荡人心旌：“微月透帘栊，萤光度碧空；遥天初缥缈，低树渐葱茏……低鬟蝉影动，回步玉尘蒙；转面流花雪，登床抱绮丛；鸳鸯交颈舞，翡翠合欢笼；眉黛羞频聚，朱唇暖更融；气清兰蕊馥，肤润玉肌丰；无力慵移腕，多娇爱敛躬；汗光珠点点，发乱绿松松……”。在晶莹的斜月下，天真善良的莺莺投奔了爱情，为了自己心爱的男子，为了梦想中的爱情，抛弃了一切，奉献了一切。也许古往今来有很多的人有这般的经历，曾经真心单纯地去爱一个人，为他（她）付出了一切。不管结果如何，起码在那一刻，付出的人是幸福的，虽然这样的幸福可能是要遭到报应的。</p>
-<p>在现代人的眼光来看，莺莺这床也上的太快了些。其实这还不算彻底的，汉代的司马相如不过弹了次琴，卓文君便跟着他私奔了，连富翁老爹也不认了。那个时代，女子应允了一份爱情就等于一生一世，不会再有给你重来改过的机会。那是个严肃的时代，女子地位低下，虽然相对于其他朝代，唐朝的风气算是比较开明宽松，但是逾越礼制的爱情依然不容于世，和一个男子相恋，要么嫁给他，要么就是再也得不到幸福和爱情。如那位被元稹好友白居易赞为“醉娇胜不得，风嫋牡丹花”的徐州名妓关盼盼，在其丈夫徐州守帅张愔死后却被白居易讽刺她不肯殉情，逼得她不得不绝食自尽；又如步非烟，因为父母之命而嫁于功曹参军武公业，毫无爱情可言，于是她红杏出墙，爱上了攻读课业的书生赵象，被丈夫发现后，只是淡淡说了句“生既相爱，死亦何恨”，于是从容淡定，任凭丈夫拷打，不肯开口求饶一句，最后终于被活活打死，以暴疾而亡的名义埋了。那个时代的女子，很少可以拥有幸福的爱情，所以这充分体现了新社会的优越性，起码你谈几场恋爱没有关系，女孩子只要不失身还是会有幸福的。</p>
-<p>红娘把枕头也带来了,在古时候,共同倚靠的枕头是充满暗示意味的情物，是在一起温柔缠绵的明证。本朝初年高阳公主嫁于房玄龄之子房遗爱为妻，却不爱房遗爱，在新婚之夜就把新郎拒于洞房之外。高贵的公主爱上了玄奘的高徒、最年轻却最聪慧的高僧辩机和尚，那时高阳公主十六岁，辩机和尚二十一岁。高阳公主送给辩机一个“金玉宝枕”，却被小偷偷出。结果事情因此泄露，高贵的辩机被腰斩于市，而高阳公主也一辈子恨上了自己的家族，“帝崩无哀容”。或许唐代的女子血液里奔流着冒险的因子，所以为了爱情不顾一切，哪怕被抛弃被鄙夷被万夫所指天地不容也再所不惜。于是整个唐朝给我们后人留下了一大堆让人向往的爱情故事。莺莺对待爱情的勇气，无疑是秉承了大唐女子一贯的风气，虽然她的命运因此让人心痛，但是她的形象也因此让人爱怜，在千百年后的今天依然让我爱慕钦佩。</p>
-<p>“有顷，寺钟鸣，天将晓。红娘促去。崔氏娇啼宛转，红娘又捧之而去，终夕无一言。”如此“金风玉露一相逢”的时光过的总是很快，古寺的朝钟响起，天快亮了，莺莺也要离去了。对于类似的幽会后的早晨，《诗经》里便有很细致的描述：《郑风·女曰鸡鸣》里写道“女曰鸡鸣，士曰昧旦；子兴视夜，明星有烂”，女子在催促说“鸡已经在打啼了”，男子眷恋枕衾，“天还没全亮；你起身看夜空，启明星还闪闪发光”，然后慢慢谈到工作，谈到两个人的未来，谈到恩爱到白头，“宜言饮酒，与子偕老。琴瑟在御，莫不静好”；《齐风．鸡鸣》里写道“鸡既鸣矣，朝既盈矣。匪鸡则鸣，苍蝇之声。东方明矣，朝既昌矣。匪东方则明，月出之光”，女子催促男子快起身，男子淹留不肯，“那不是鸡叫，是苍蝇嗡嗡声，东边也没亮，那是月亮光而已”，回答言语可爱缠绵。钱钟书说：“莎士比亚剧中写情人欢会，女曰：‘天尚未明，此夜莺啼，非云雀鸣也。’男曰：‘云雀报曙，东方云开透日矣。’女曰：‘此非晨光，乃流星耳。’用以比勘。”但是我们注意到，莺莺和张生一夜缠绵，居然不交一词，只是在天明将别的时候，呜咽哭泣。这个写法相当传神，我们可以从那“山盟海誓”的缺失和离别时的哭泣，感受到莺莺内心的矛盾：她明知道她正在做一件可能万劫不复的错事，但是却无法控制内心对于张生的情意，爱情的那种使双方合二为一的强烈愿望战胜了对命运的恐惧，她不敢说话，因为说话就代表了清醒，她宁愿在一种迷醉的状态下委身于自己的爱人，抛却一切利益的得失、道德的禁梏；当天明将别，她仿佛恍然从梦中惊醒，好象做错了事的孩子一样，为自己的选择和命运哭泣，为自己所失去的哭泣。当然在这眼泪之中，对于离别的伤感，也占了一定的比重，所以在未来的十多天里，她再也没有和张生联系。</p>
-<p>直到张生“赋《会真诗》三十韵，未毕，而红娘适至，因授之，以贻崔氏”，才又来与张生相会。想来未完的《会真诗》是个很好的说服自己的借口，只是来探讨文学罢了，但是总免不了“向谁行宿,不如休去”的挽留。于是这样相处了将近一个月。</p>
-<p>“张生常诘郑氏之情，则曰：‘我不可奈何矣。’因欲就成之。”这是最常见的断句，莺莺说：“我没有办法告诉她。”于是张生便想亲自和郑氏谈谈，促成这件事。但是见家长的事突然没有下文，很快张生也去了长安，这样的情节安排无论如何都是不通的。幸好还有另外一个版本：“张生常诘郑氏之情，则曰：‘知不可奈何矣，因欲就成之。’”莺莺说她妈知道也没其他办法了，所以想促成我们的婚事。他们相处同居了一个月，而寺院内有崔家那么多的仆役，就算郑氏再昏懵，也应该了解到女儿的事情了。事已既此，无可奈何，女儿大了，心向外人，现在也只能期盼那男人能负责任把她娶去了。这样的心情很可以理解，我的一个朋友，和她女朋友两地分居，而且女孩子在当地做了教师，不错的职业，眼看因为家里反对要分手了，但是有天女孩子的父母偷听他们的电话，知道了女儿已经失身于我的朋友，于是第二天就让女儿把我的朋友叫去见面，很快便结了婚。所以很多时候，我都分不清自己到底是生活在古代还是生活在现代，一千多年下来，对待某些问题的做法还是一点都没变化。</p>
-<p>但是张生可能很害怕被一桩寒门的婚姻套牢，一听这话赶快跑路；于是借口“为了梦想中金碧辉煌的长安,都市里充满了神奇的历险,满足一个男儿宏伟的心愿”，西下长安去了。去之前还先告诉了莺莺，“崔氏宛无难词，然而愁怨之容动人矣”。有一种哀伤，是哭不出来的，它会慢慢渗透进你的骨子，日日夜夜一点一滴地侵蚀你的情绪。或许她害怕自己会控制不住自己面对离别的悲伤，所以在张生将要走的第二天晚上，莺莺没有来。我总是不能理解女子的心思，明明想念你的，却不肯见面；明明想把你留下的，却早早地说出一路顺风的祝福；明明在说没有留下更多的甜蜜回忆，却连分手了也不肯来见最后一面，谁都无法想见女子的心里到底在想些什么，或许正是这样的复杂，才成就了莺莺形象的丰满。</p>
-<p>但是很快，张生又回到了蒲州，又与莺莺相处了好几个月，也许是他无法放下这段感情，也许是长安尚未有“实现一个男儿宏伟志向”的机会，更可能是长安还没那么早开考，想最后的缠绵一下。莺莺的字和文章写的都很好，却从不给张生看；她写文章的水平很好，但是却好象什么都不懂的样子；她言辞敏捷，但是在外人面前却很少说话。或许这样的女孩子最是让人怜爱。“待张之意甚厚，然未尝以词继之。时愁艳幽邃，恒若不识，喜愠之容，亦罕形见”，莺莺是个内向的女孩子，有了情绪却不轻易流露，她不会口口声声地和你说“我爱你”，但是连她注视你的目光都能让你感到无限柔情，你无法知晓她的想法，但是却沉溺于她时时流露的情意。她喜欢弹琴来抒发情感，可能是心情忧郁，所以弹奏的曲子异常伤感。</p>
-<p>不久张生便要去长安应试了，或许是下了决心终要割断前缘，一心功名，所以这个男人连说分手的勇气都没有，只能对着莺莺忧愁哀叹，自然他也是不肯去承诺些什么的。莺莺自然明白他的心思，面对爱人的负心薄情，做为一个弱女子又能说什么呢。莺莺是个坚强而又自尊的女子，她不会低声哀求张生留下，她态度恭敬，声音柔和，慢慢地对张生说：“始乱之，终弃之，固其宜矣，愚不敢恨。必也君乱之，君终之，君之惠也。则没身之誓，其有终矣，又何必深感于此行？然而君既不怿，无以奉宁。君常谓我善鼓琴，向时羞颜，所不能及。今且往矣，既君此诚。” 莺莺平静的面容下说出“始乱之，终弃之，固其宜矣，愚不敢恨”那是怎样的一种心痛呢，假如仅仅是个人爱情的失败也就罢了，但是其中还昭显出整个家族的衰败和老母最后一丝期望的落空。人很多时候并非为自己而活，所以人最不能承受的并非自身的失败，而是自身的失败给自己亲爱之人所带来的伤害。张生挥一挥衣袖，固然不带走一片云彩，还可以得到时人“善补过者”的赞誉，但是对于莺莺来说，不但她这一生的命运已经凄惨无疑，而且也给了她衰颓式微的家族一次重重的羞辱和打击。</p>
-<p>她终于明白了“则没身之誓，其有终矣”，古往今来男女说着“山无陵，江水为竭，冬雷阵阵，夏雨雪，天地合，乃敢与君绝”的誓言，可大多数的人言语远比自身华丽，现实远没有恶化到世界末日，便已经支持不住，爱情一如华美的琉璃，碰触现实难免粉碎。</p>
-<p>于是她为自己心爱的男子弹了最后一首曲子《霓裳羽衣曲序》，琴声因为心情悲伤而纷乱错杂，旁边的人都听着流泪，她终于弹不下去，扔下琴哭着跑到母亲的房里，再也没出来。在这部作品里，郑氏出场只有一次，侧面描写也并不多，但是我们却依然能想象一千多年前那位母亲的悲痛，为自己的命运，为家族的命运，更为自己女儿的命运感到悲伤。</p>
-<p>第二天我们的元大才子便神清气爽地踏上西去长安的路途，但是那年他没有考中。于是他留在了长安，从莺莺的信中我们了解到，这个鄙薄的文青曾托人给莺莺寄去一封信，让她看开些，“以广其意”，顺便送去“花胜一合、口脂五寸”做为分手礼物。唐代女子喜欢用绢纸、金银等材料做出一朵朵花形的小物件，贴在脸上，唐代就称之为“花胜”或者“花钿”。元稹很潇洒地给分手后的情人送去长安最时尚的化妆品和首饰，想以此来弥补内心的愧疚。但凡女子都爱最新潮时尚的化妆品，犹以情人所赠为甚；但是我不知道淹留蒲州普救寺的母女，在这个穷乡僻壤突然看到负心的男人送来长安的时尚货色，会是怎样的心情，或许如后世李清照所言“泪融残粉花钿重”。</p>
-<p>孤独无望地留在普救寺的莺莺回了一封信，那信却被张生炫耀于长安的朋友之间。就好象胡兰成把曾与他恩爱缠绵的女子都写进《今生今世》，古今文人下作起来都是一样。</p>
-<p>对于自己的负心，元稹还借用了《左传》那句“夫有尤物,足以移人,苟非道德,则必有祸”，义正词严地发表了一通高论：“大凡天之所命尤物也，不妖其身，必妖于人。使崔氏子遇合富贵，乘宠娇，不为云为雨，则为蛟为螭，吾不知其变化矣。昔殷之辛，周之幽，据百万之国，其势甚厚。然而一女子败之，溃其众，屠其身，至今为天下戮笑。予之德不足以胜妖孽，是用忍情。”最可怕的是听众的反应，“于时坐者皆为深叹”，大家叹口气，居然没人指责张生的负心薄幸，或者有一点小小的同情给予莺莺。</p>
-<p>对于美貌女子的恐惧，其实不过只是自身懦弱的借口罢了，男子严于律女子，宽于律己，实在是很无耻。《世说新语》里记载着石崇宴客让美人劝酒，如客人不饮，便杀掉劝酒的美人。有一次丞相王导和大将军王敦去赴宴，王导不善饮酒，也只好勉强自己喝，以至于喝醉了；而王敦死活不肯给面子，就是不喝，“已斩三人，颜色如故，尚不肯饮”。而此事，却被刘义庆归为“汰侈”，意思是奢侈浪费。在这里我们看到的是人正常情感的缺位，对于爱情和女性的残忍，却成了男子气度的象征。记得唐代曾有一个很出名的事件：军官冯燕，和同事张婴的漂亮老婆私通，张婴酗酒而归，冯燕逃避不及，只好藏到床底，却发觉自己的头巾还留在枕边，幸好张婴喝醉了并没发觉。于是冯燕指指头巾示意张妻把头巾取来免得事情败露，可是张妻会错了意，竟把枕边张婴的佩刀递给了他。冯燕看了张妻几眼，觉得这个女人太狠毒，就一刀砍下了张妻的头，然后戴上头巾走了。张婴于是就被认为杀害自己的妻子，被判死刑；结果在刑场上，冯燕出现了，他宣称张婴是无辜的，张妻是自己杀的。军政长官贾耽将此案据实上奏，并表示，宁愿免去自己的官职，也要为冯燕赎罪。最后皇帝的敕令是，将滑地的全部死刑犯同时赦免。这件案子影响很大，以至于那个时代的流行小说家沈下贤专门为之创作了传奇《冯燕传》；著名诗人司空图则写了长篇叙事诗《冯燕歌》，其中有一句诗写道“已为不平能割爱”，也就是说为了所谓的道德规范，能割舍爱情的才是大英雄。于是世情普遍鄙薄男欢女爱，积极培养冷血寡情的人，于是婚姻便成利益的交换，所谓的爱情只能沦落到勾栏瓦舍里去了。对比西方，希罗多德《历史》曾讲过吕底亚王坎道列斯的故事。坎道列斯认为自己的妻子是世上最美丽的女子，于是他想拿来炫耀了，他强迫他的亲信巨吉斯看王后的身体，以便确认这一点；不得已，巨吉斯只好藏在卧室，看了王后的身体。王后知道此事后，认为是奇耻大辱，就将巨吉斯召来，给他两个选择：要么他杀掉国王，“变成我的丈夫并取得吕底亚的王位”；要么被处死。结果巨吉斯选择了前者，他杀死了国王，并娶了王后，登上了吕底亚的王位。我们从中可以看到东西方文明对待情欲的差别。遗风留至如今，家里关心你的结婚对象，不是双方有多么相爱，感情有多深厚，而是这个人家里怎样，是不是老实，有没有本事赚钱升官；假如你斗胆和他们说起你们的爱情，于是大家都开始哄堂大笑或者不屑一顾，仿佛看你就是一个不成熟的孩子、精神错乱的病人。对于爱情的信仰，或许只存在于看戏的那段辰光。</p>
-<p>有了这样一种社会心理氛围，再加上有太子少保韦夏卿的赏识，那么元稹抛弃寒门女子莺莺而迎娶豪门韦家的千金韦丛，也就顺理成章了。但吊诡的是在蒋防写的《霍小玉传》里，元稹的老丈人韦夏卿却对负心薄行的朋友李益这般说：“风光甚丽，草木荣华。伤哉郑卿，衔冤空室！足下终能弃置，实是忍人。丈夫之心，不宜如此。足下宜为思之！”蒋防此人在仕途上得到过元稹的推荐，所以他写及元稹的岳父时总要润色拔高一下，只是他的恩公看到这番话时是否会心头一颤？</p>
-<p>或许是虬髯客已没，不会再有人“衔之十年”也要去取“天下负心者”的头颅心肝下酒，所以男人也就越发理直气壮地负心薄幸。负心人元稹没有得到什么报应，又过了一年多后，也就是贞元十九年他登拔萃科，署秘书省校书郎，娶了韦夏卿之女韦丛为妻，并在那一年与同中书判拔萃科的白居易相识订交，从此元白之名满天下。元稹在《梦游春七十韵》中写道：“当年二纪初，嘉节三星度……韦门正全盛，出入多欢裕。”在元稹志得意满，欢娱畅快之时，莺莺也匆匆嫁于他人了。后来元稹偶然路过莺莺居住的地方，以莺莺表兄的身份求见，终不得一见。莺莺的不复相见，是对情人的深深失望，或许她会深深的认同鱼玄机说的“易求无价宝，难得有情郎”；她没有霍小玉那般刚烈，她也许也会哀怜自己“我为女子，薄命如斯，是丈夫负心若此”，但她却说不出“我死之後，必为厉鬼，使君妻妾，终日不安”的话。莺莺只写了首诗给元稹，硬着骨头咬着牙说“弃置今何道，当时且自亲”，既然都已经分开了不爱我了又有什么好说的呢，当时恩爱缠绵也就足够了，让他“还将旧时意，怜取眼前人”，因为懂得，所以慈悲。当爱情归于寂寥，繁华消于落寞，一切都只存在与记忆里，曾经的美好，只能活在心底。“惆怅旧欢如梦，觉来无处追寻”。或许她也明白，往事只能追忆，不可重温。曾经年少单纯的莺莺已经死了，只留下一具逐渐衰老的躯壳和悲伤的灵魂继续苟活。现实那样丑恶，我们却不得不活下去。</p>
-<p>我真的怀疑元稹所谓的“曾经沧海难为水，除却巫山不是云”到底指哪一位，是莺莺，还是韦丛，抑或是薛涛？元和四年，韦丛去世，元稹写了三十三篇诗来悼念她，其中最有名的一句：“惟将终夜长开眼，报答平生未展眉。”根据陈寅恪先生的考证，这个“长开眼”不仅仅是睡不着的意思，“所谓‘常开眼’者，自比鳏鱼（有“鳏鱼眼长开”这一说法），即自誓终鳏之义”（陈寅恪《元白诗笺证稿》），元稹信誓旦旦的要为韦丛终生不娶，鳏孤到死了。但事实证明，元稹是个文过饰非的人，在韦丛凑趣去世的那年，他邂逅薛涛，两人相恋了一年后将之抛弃，可怜薛涛为之终身不嫁，“只欲栏边安枕席，夜深闲共说相思”；两年后纳妾安氏，又过数年续弦裴淑。简直是“取次花丛频回顾”啊！所以观陈寅恪先生对其评价“自私自利。综其一生行迹，巧宦固不待言，而巧婚尤为可恶也。岂其多情哉？实多诈而已矣”并不为过。</p>
-<p>读《元长庆集》，常免不了痛恨为什么如此深情优美的诗句却出自一个那么薄情负心的伧夫之手。雪莱在《致云雀》中说：“我们最甜美的歌，就是那些倾吐最哀伤的思想的。”不知道元稹所哀伤的到底是什么。贝克尔在《抗拒死亡》中说的：“所有动人心弦的事中，对死的恐惧是首当其冲的。”他的悼亡诗写的那么情深意切，大概是出于对死亡本身的恐惧和悲哀吧。</p>
-<p>或许不该过分指责元稹，他也不过是为了功名奔波的庸人，这个世界原本就是为庸人所设的。太过恩爱的情侣总是不容于世：苏东坡与王弗已是“十年生死两茫茫”了；陆游和唐婉儿只能“一怀愁绪，几年离索”；刘克庄在哀叹“旧日风烟草树，而今总断人肠”；冒辟疆和董小宛“一生清福,九年占尽,九年折尽矣”；还有纳兰性德，感慨着“被酒莫惊春睡重，睹书消得泼茶香，当时只道是寻常”。但是起码他们是能真心相爱的，就算不能“执子之手，与子偕老”，起码也是“骨化形销而丹诚不泯”，却可怜了单纯的莺莺，一个人用余生去背负全部的思念、悔恨和指摘。</p>
-<p>史籍上再没有关于莺莺以后生活的记载，或许她一生坎坷，慢慢地消磨了纯真善良，成了世间常见的庸俗势利的妇人。但哪怕是这样，我依然相信在她心底的最幽深隐蔽的角落、最柔嫩脆弱的地方，记忆会像一把锯齿慢慢地来回剧着那根最纤细的神经，午夜梦回的时候，依然会为贞元十六年的那个男子泪流满面。</p>
-<p>我怕我鄙薄的文字无法完美地译出那女子悲伤的文字，且让我们再细细读一读那信的原文,体会一下她的心情吧：</p>
-<p>捧览来问，抚爱过深。儿女之情，悲喜交集。兼惠花胜一合、口脂五寸，致耀首膏唇之饰。虽荷殊恩，谁复为容？睹物增怀，但积悲叹耳。伏承使于京中就业，进修之道，固在便安。但恨僻陋之人，永以遐弃。命也如此，知复何言！自去秋已来，常忽忽如有所失。于喧哗之下，或勉为语笑，闲宵自处，无不泪零。乃至梦寐之间，亦多感咽离忧之思。绸缪缱绻，暂若寻常，幽会未终，惊魂已断。虽半衾如暖，而思之甚遥。一昨拜辞，倏逾旧岁。长安行乐之地，触绪牵情。何幸不忘幽微，眷念无斁，鄙薄之志，无以奉酬。至于终始之盟，则固不忒。鄙昔中表相因，或同宴处。婢仆见诱，遂致私诚。儿女之心，不能自固。君子有援琴之挑，鄙人无投梭之拒。及荐寝席，义盛意深。愚陋之情，永谓终托。岂期既见君子，而不能定情，致有自献之羞，不复明侍巾帻。没身永恨，含叹何言！倘仁人用心，俯遂幽眇，虽死之日，犹生之年。如或达士略情，舍小从大，以先配为丑行，以要盟为可欺，则当骨化形销，丹诚不泯，因风委露，犹托清尘。存没之诚，言尽于此。临纸呜咽，情不能申。千万珍重，珍重千万！玉环一枚，是儿婴年所弄，寄充君子下体所佩。玉取其坚润不渝，环取其终始不绝。兼乱丝一绚、文竹茶碾子一枚。此数物不足见珍，意者欲君子如玉之真，弊志如环不解。泪痕在竹，愁绪萦丝，因物达情，永以为好耳。心迩身遐，拜会无期。幽愤所钟，千里神合。千万珍重！春风多厉，强饭为嘉。慎言自保，无以鄙为深念。</p>
-]]></content>
-      <categories>
-        <category>读书笔记</category>
-      </categories>
-      <tags>
-        <tag>故事</tag>
-        <tag>《莺莺传》</tag>
       </tags>
   </entry>
   <entry>
