@@ -6,7 +6,7 @@
   <link href="/public/atom.xml" rel="self"/>
   
   <link href="https://talengu.github.io/public/"/>
-  <updated>2025-02-15T16:00:04.000Z</updated>
+  <updated>2025-04-27T01:41:50.000Z</updated>
   <id>https://talengu.github.io/public/</id>
   
   <author>
@@ -15,6 +15,33 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>「转」本科生反驳 40 年前的猜想，发明新型哈希表</title>
+    <link href="https://talengu.github.io/public/2025/04/27/hash_tables_news/"/>
+    <id>https://talengu.github.io/public/2025/04/27/hash_tables_news/</id>
+    <published>2025-04-27T12:00:00.000Z</published>
+    <updated>2025-04-27T01:41:50.000Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="前言"><a class="header-anchor" href="#前言">¶</a>前言</h2><blockquote><p>本文原文发表于《广达杂志》（Quanta Magazine）。</p></blockquote><p><a href="https://www.quantamagazine.org/undergraduate-upends-a-40-year-old-data-science-conjecture-20250210/" target="_blank" rel="noopener"><em>本文</em></a>原文_发表于 <a href="https://www.quantamagazine.org/" target="_blank" rel="noopener">《广达杂志》（Quanta Magazine</a>）。_</p><p>2021 年秋天的某个时候，罗格斯大学 （Rutgers University） 的本科生安德鲁·克拉皮文 （Andrew Krapivin） 遇到了一篇改变他生活的论文。当时，克拉皮文并没有多想。但两年后，当他终于抽出时间阅读这篇论文时（用他的话说，“只是为了好玩”），他的努力将导致对计算机科学中广泛使用的工具的重新思考。</p>  <a id="more"></a><p>该论文的标题“<a href="https://arxiv.org/abs/2111.12800" target="_blank" rel="noopener">Tiny Pointers</a>”指的是箭头状实体，可以将您引导至计算机内存中的一条信息或元素。Krapivin 很快就想出了一种潜在的方法来进一步缩小指针，从而减少它们消耗的内存。但是，为了实现这一点，他需要一种更好的方法来组织指针将指向的数据。</p><p>他转向了一种称为哈希表的常用数据存储方法。但在修补过程中，Krapivin 意识到他发明了一种新型的哈希表，这种表的运行速度比预期的要快 — 查找特定元素所需的时间和步骤更少。</p><p>“Tiny Pointers”论文的合著者、Krapivin 在罗格斯大学的前教授 <a href="https://engineering.nyu.edu/faculty/martin-farach-colton" target="_blank" rel="noopener">Martín Farach-Colton</a> 最初对 Krapivin 的新设计持怀疑态度。哈希表是所有计算机科学中研究最深入的数据结构之一;这个预告听起来好得令人难以置信。但为了保险起见，他请了一位经常合作的人（也是《Tiny Pointers》的合著者），卡内基梅隆大学的<a href="https://csd.cmu.edu/people/faculty/william-kuszmaul" target="_blank" rel="noopener">威廉·库斯莫尔（William Kuszmaul</a>）来看看他学生的发明。库斯莫尔有不同的反应。“你不只是想出了一个很酷的哈希表，”他记得对 Krapivin 说。“你居然彻底抹杀了一个 40 年前的猜想！”</p><p><img src="/public/2025/04/27/hash_tables_news/4540c60338f01ec8cccbe2f8baa9f536_MD5.jpg" alt></p><p>Andrew Krapivin 没有打算这样做，它颠覆了围绕哈希表的常见思维，哈希表是计算机科学中研究得最多的工具之一。</p><p>照片：Phillip Ammon for Quanta Magazine</p><p>Krapivin（现在是剑桥大学的研究生）、Farach-Colton（现在在纽约大学）和 Kuszmaul 在 <a href="https://arxiv.org/abs/2501.02305" target="_blank" rel="noopener">2025 年 1 月</a>的一篇论文中一起证明，这种新的哈希表确实可以比人们认为的更快地找到元素。他们这样做，就反驳了一个长期以来被认为是正确的猜想。</p><p>“这是一篇重要的论文，”纽约市康奈尔理工学院的<a href="https://ajhconway.com/" target="_blank" rel="noopener">亚历克斯·康威（Alex Conway</a>）说。“哈希表是我们拥有的最古老的数据结构之一。而且它们仍然是最有效的数据存储方式之一。然而，他说，关于它们如何运作仍然存在悬而未决的问题。“这篇论文以令人惊讶的方式回答了其中的几个问题。”</p><p>哈希表在计算中无处不在，部分原因是它们的简单性和易用性。它们旨在允许用户执行三项作：“查询”（搜索）元素、删除元素或将元素插入空槽。第一个哈希表可以追溯到 1950 年代初，从那时起，计算机科学家一直在研究和使用它们。除其他外，研究人员希望弄清楚其中一些作的速度限制。例如，新的搜索或插入可能有多快？</p><p><img src="/public/2025/04/27/hash_tables_news/94be07a640f87d1921f3057b2e88b1c4_MD5.jpg" alt></p><p>Martín Farach-Colton 帮助 Krapivin 证明他的新哈希表与一个长期存在的猜想相矛盾。</p><p>摄影：Andrew Farach-Colton</p><p>答案通常取决于在哈希表中查找空位所需的时间。反过来，这通常取决于哈希表的填充程度。充实度可以用总体百分比来描述——这个表格是 50%，那个表格是 90%——但研究人员经常处理更完整的表格。因此，他们可能会使用一个由 <em>x</em> 表示的整数来指定哈希表接近 100% 满的程度。如果 <em>x</em> 为 100，则表已满 99%。如果 <em>x</em> 为 1,000，则表已满 99.9%。这种填充度度量提供了一种便捷的方法来评估执行查询或插入等作需要多长时间。</p><p>研究人员早就知道，对于某些常见的哈希表，进行最差的可能插入（例如，将项目放入最后一个剩余的空位）所需的预期时间与 <em>x</em> 成正比。“如果你的哈希表已经满了 99%，”Kuszmaul 说，“那么你必须查看大约 100 个不同的位置才能找到一个空闲位置是有道理的。</p><p>在 <a href="https://dl.acm.org/doi/10.1145/3828.3836" target="_blank" rel="noopener">1985</a> 年的一篇论文中，后来获得 A.M. 图灵奖的计算机科学家 <a href="https://amturing.acm.org/award_winners/yao_1611524.cfm" target="_blank" rel="noopener">Andrew Yao</a> 断言，在具有一组特定属性的哈希表中，查找单个元素或空点的最佳方法是随机遍历潜在点，这种方法称为统一探测。他还表示，在最坏的情况下，你正在寻找最后一个剩余的空位，你永远无法做得比 <em>x</em> 更好。40 年来，大多数计算机科学家都认为姚明的猜想是正确的。</p><p>克拉皮文并没有被传统智慧所阻碍，原因很简单，他没有意识到这一点。“我在不知道姚明的猜想的情况下做了这件事，”他说。他对微小指针的探索导致了一种新型的哈希表，一种不依赖于统一探测的哈希表。对于这个新的哈希表，最坏情况下的查询和插入所需的时间与 （log <em>x</em>）2 成正比，比 <em>x</em> 快得多。这个结果直接与姚的猜想相矛盾。Farach-Colton 和 Kuszmaul 帮助 Krapivin 证明 （log <em>x</em>）2 是 Yao 所写的流行哈希表类别的最佳、无敌的边界。</p><p>“这个结果很美，因为它解决并解决了这样一个经典问题，”卡内基梅隆大学的 <a href="http://www.cs.cmu.edu/~guyb/" target="_blank" rel="noopener">Guy Blelloch</a> 说。</p><p>“他们不仅反驳了[姚明的猜想]，还为他的问题找到了最好的答案，”滑铁卢大学（University of Waterloo）的<a href="https://cs.uwaterloo.ca/about/people/sassadi" target="_blank" rel="noopener">塞佩尔·阿萨迪（Sepehr Assadi</a>）说。“我们本可以再过 40 年才知道正确的答案。”</p><p><img src="/public/2025/04/27/hash_tables_news/012bca0306b004b04731e17eb0357f1f_MD5.jpg" alt></p><p>剑桥大学国王学院桥上的 Krapivin。他的新哈希表可以以前所未有的速度查找和存储数据。</p><p>照片：Phillip Ammon 为 Quanta 杂志拍摄</p><p>除了反驳姚明的猜想外，这篇新论文还包含了许多人认为更令人惊讶的结果。它与一个相关但略有不同的情况有关：在 1985 年，Yao 不仅研究了查询的最坏情况，还研究了所有可能的查询所花费的平均时间。他证明，具有某些属性的哈希表（包括那些标记为“贪婪”的哈希表，这意味着必须将新元素放置在第一个可用位置）永远无法实现比 log <em>x</em> 更好的平均时间。</p><p>Farach-Colton、Krapivin 和 Kuszmaul 想看看同样的限制是否也适用于非贪婪哈希表。他们通过提供一个反例来证明它没有，一个非贪婪哈希表，平均查询时间比 log <em>x</em> 好得多。事实上，它根本不依赖于 <em>x</em>。“你会得到一个数字，”Farach-Colton 说，“它只是一个常数，不取决于哈希表的填充程度。无论哈希表的填充度如何，您都可以实现恒定的平均查询时间，这一事实完全出乎意料，即使对作者自己也是如此。</p><p>Conway 说，该团队的结果可能不会立即导致任何申请，但这并不是最重要的。“更好地了解这类数据结构很重要。你不知道这样的结果什么时候会解锁一些让你在练习中做得更好的东西。</p><hr><p><a href="https://www.quantamagazine.org/undergraduate-upends-a-40-year-old-data-science-conjecture-20250210/" target="_blank" rel="noopener"><em>原文</em></a><em>经 Quanta Magazine 许可转载，<a href="https://www.quantamagazine.org/" target="_blank" rel="noopener">Quanta Magazine</a> 是</em> <a href="https://www.simonsfoundation.org/" target="_blank" rel="noopener"><em>Simons 基金会</em></a>的独立编辑出版物 <em>，其使命是通过报道数学、物理和生命科学的研究发展和趋势来增强公众对科学的理解。</em></p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;前言&quot;&gt;&lt;a class=&quot;header-anchor&quot; href=&quot;#前言&quot;&gt;¶&lt;/a&gt;前言&lt;/h2&gt;
+&lt;blockquote&gt;
+&lt;p&gt;本文原文发表于《广达杂志》（Quanta Magazine）。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;&lt;a href=&quot;https://www.quantamagazine.org/undergraduate-upends-a-40-year-old-data-science-conjecture-20250210/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;&lt;em&gt;本文&lt;/em&gt;&lt;/a&gt;原文_发表于 &lt;a href=&quot;https://www.quantamagazine.org/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;《广达杂志》（Quanta Magazine&lt;/a&gt;）。_&lt;/p&gt;
+&lt;p&gt;2021 年秋天的某个时候，罗格斯大学 （Rutgers University） 的本科生安德鲁·克拉皮文 （Andrew Krapivin） 遇到了一篇改变他生活的论文。当时，克拉皮文并没有多想。但两年后，当他终于抽出时间阅读这篇论文时（用他的话说，“只是为了好玩”），他的努力将导致对计算机科学中广泛使用的工具的重新思考。&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="数学" scheme="https://talengu.github.io/public/categories/%E6%95%B0%E5%AD%A6/"/>
+    
+    
+      <category term="哈希" scheme="https://talengu.github.io/public/tags/%E5%93%88%E5%B8%8C/"/>
+    
+  </entry>
   
   <entry>
     <title>「202502月度汇报」auto report</title>
@@ -463,28 +490,6 @@ CEO 当着全公司的面落井下石，羞辱我是滥竽充数。
 &lt;h3 id=&quot;✅-0&quot;&gt;&lt;a class=&quot;header-anchor&quot; href=&quot;#✅-0&quot;&gt;¶&lt;/a&gt;✅ : 0&lt;/h3&gt;
 &lt;h3 id=&quot;📅-0&quot;&gt;&lt;a class=&quot;header-anchor&quot; href=&quot;#📅-0&quot;&gt;¶&lt;/a&gt;📅 : 0&lt;/h3&gt;
 &lt;h3 id=&quot;🔖-0&quot;&gt;&lt;a class=&quot;header-anchor&quot; href=&quot;#🔖-0&quot;&gt;¶&lt;/a&gt;🔖 : 0&lt;/h3&gt;
-    
-    </summary>
-    
-      <category term="月度汇报" scheme="https://talengu.github.io/public/categories/%E6%9C%88%E5%BA%A6%E6%B1%87%E6%8A%A5/"/>
-    
-    
-      <category term="月度汇报" scheme="https://talengu.github.io/public/tags/%E6%9C%88%E5%BA%A6%E6%B1%87%E6%8A%A5/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>「202309月度汇报」ttrss</title>
-    <link href="https://talengu.github.io/public/2023/09/15/test/202309/"/>
-    <id>https://talengu.github.io/public/2023/09/15/test/202309/</id>
-    <published>2023-09-15T16:00:04.000Z</published>
-    <updated>2023-09-15T16:00:04.000Z</updated>
-    
-    <content type="html"><![CDATA[<p>total: 11</p><a id="more"></a><h2 id="🔖OneNote-Md-Exporter-–-一键导出-OneNote-笔记为-Joplin、MarkDown-格式-Windows"><a class="header-anchor" href="#🔖OneNote-Md-Exporter-–-一键导出-OneNote-笔记为-Joplin、MarkDown-格式-Windows">¶</a>🔖<a href="https://www.appinn.com/onenote-md-exporter/" target="_blank" rel="noopener">OneNote Md Exporter – 一键导出 OneNote 笔记为 Joplin、MarkDown 格式[Windows]</a></h2><p>pubdata:2023-09-01 08:48:28markdate:2023-09-03 00:28:09.701339</p><p><img src="/public/2023/09/15/test/202309/2023-09-03-002809701339.jpg" alt="img"></p><h2 id="🔖AirPodsDesktop-–-开源-AirPods-增强：在-Windows-上动画显示电池信息、入耳检测、低音频延迟"><a class="header-anchor" href="#🔖AirPodsDesktop-–-开源-AirPods-增强：在-Windows-上动画显示电池信息、入耳检测、低音频延迟">¶</a>🔖<a href="https://www.appinn.com/airpodsdesktop/" target="_blank" rel="noopener">AirPodsDesktop – 开源 AirPods 增强：在 Windows 上动画显示电池信息、入耳检测、低音频延迟</a></h2><p>pubdata:2023-09-02 04:05:18markdate:2023-09-03 08:24:54.291660</p><p><img src="/public/2023/09/15/test/202309/2023-09-03-082454291660.jpg" alt="img"></p><h2 id="🔖你或许总不满意，但它不全是秘密：聊聊-Twitter-开源的时间线算法"><a class="header-anchor" href="#🔖你或许总不满意，但它不全是秘密：聊聊-Twitter-开源的时间线算法">¶</a>🔖<a href="https://sspai.com/post/82586" target="_blank" rel="noopener">你或许总不满意，但它不全是秘密：聊聊 Twitter 开源的时间线算法</a></h2><p>pubdata:2023-09-05 07:30:00markdate:2023-09-06 07:48:40.277952</p><p><img src="/public/2023/09/15/test/202309/2023-09-06-074840277952.jpg" alt="img"></p><h2 id="🔖导出多年微信聊天记录，我用可视化分析了出自己的口头禅"><a class="header-anchor" href="#🔖导出多年微信聊天记录，我用可视化分析了出自己的口头禅">¶</a>🔖<a href="https://sspai.com/post/82577" target="_blank" rel="noopener">导出多年微信聊天记录，我用可视化分析了出自己的口头禅</a></h2><p>pubdata:2023-08-31 03:37:31markdate:2023-09-06 07:53:47.336536</p><p><img src="/public/2023/09/15/test/202309/2023-09-06-075347336536.jpg" alt="img"></p><h2 id="🔖-Linux-distrobox-真是一个实用的工具"><a class="header-anchor" href="#🔖-Linux-distrobox-真是一个实用的工具">¶</a>🔖<a href="https://www.v2ex.com/t/971864#reply0" target="_blank" rel="noopener">[Linux] distrobox 真是一个实用的工具</a></h2><p>pubdata:2023-09-07 14:17:37markdate:2023-09-08 03:19:35.185065</p><p><img src="/public/2023/09/15/test/202309/2023-09-08-031935185065.jpg" alt="img"></p><h2 id="🔖tldraw-–-一个人人都会用，开源在线白板"><a class="header-anchor" href="#🔖tldraw-–-一个人人都会用，开源在线白板">¶</a>🔖<a href="https://www.appinn.com/tldraw/" target="_blank" rel="noopener">tldraw – 一个人人都会用，开源在线白板</a></h2><p>pubdata:2023-09-10 08:17:39markdate:2023-09-11 15:44:53.433367</p><p><img src="/public/2023/09/15/test/202309/2023-09-11-154453433367.jpg" alt="img"></p><h2 id="🔖居然有这种网站？涮火锅啦"><a class="header-anchor" href="#🔖居然有这种网站？涮火锅啦">¶</a>🔖<a href="https://www.appinn.com/shuanhuoguo/" target="_blank" rel="noopener">居然有这种网站？涮火锅啦</a></h2><p>pubdata:2023-09-13 13:10:17markdate:2023-09-14 08:06:51.509429</p><p><img src="/public/2023/09/15/test/202309/2023-09-14-080651509429.jpg" alt="img"></p><h2 id="🔖我在数字时代做了一个电子日历，让油画和照片可以被装进去"><a class="header-anchor" href="#🔖我在数字时代做了一个电子日历，让油画和照片可以被装进去">¶</a>🔖<a href="https://sspai.com/post/82704" target="_blank" rel="noopener">我在数字时代做了一个电子日历，让油画和照片可以被装进去</a></h2><p>pubdata:2023-09-07 09:12:48markdate:2023-09-14 11:21:50.001074</p><p><img src="/public/2023/09/15/test/202309/2023-09-14-112150001074.jpg" alt="img"></p><h2 id="🔖百元级售价、小程序操作的门禁卡复制器-，小白也能轻松上手啦～"><a class="header-anchor" href="#🔖百元级售价、小程序操作的门禁卡复制器-，小白也能轻松上手啦～">¶</a>🔖<a href="https://sg.talenss.xyz/rss4/Bp5P1ub8yaA.mp4" target="_blank" rel="noopener">百元级售价、小程序操作的门禁卡复制器 ，小白也能轻松上手啦～</a></h2><p>pubdata:2023-09-16 06:00:00markdate:2023-09-20 01:39:33.785373</p><p><img src="/public/2023/09/15/test/202309/2023-09-20-013933785373.jpg" alt="img"></p><h2 id="🔖双轨歌词、动态封面：我是如何用-mpv-听歌的"><a class="header-anchor" href="#🔖双轨歌词、动态封面：我是如何用-mpv-听歌的">¶</a>🔖<a href="https://sspai.com/post/82744" target="_blank" rel="noopener">双轨歌词、动态封面：我是如何用 mpv 听歌的</a></h2><p>pubdata:2023-09-20 09:30:00markdate:2023-09-22 01:13:47.865803</p><p><img src="/public/2023/09/15/test/202309/2023-09-22-011347865803.jpg" alt="img"></p><h2 id="🔖Obsidian-Excalidraw：我的个人知识管理可视化方法论"><a class="header-anchor" href="#🔖Obsidian-Excalidraw：我的个人知识管理可视化方法论">¶</a>🔖<a href="https://sspai.com/post/82130" target="_blank" rel="noopener">Obsidian + Excalidraw：我的个人知识管理可视化方法论</a></h2><p>pubdata:2023-09-18 03:01:49markdate:2023-09-22 05:29:59.547928</p><p><img src="/public/2023/09/15/test/202309/2023-09-22-052959547928.jpg" alt="img"></p><p>统计 ✅ : 0 📅 : 0 🔖 : 0</p><!-- more --><h2 id="✅-0"><a class="header-anchor" href="#✅-0">¶</a>✅ : 0</h2><h2 id="📅-0"><a class="header-anchor" href="#📅-0">¶</a>📅 : 0</h2><h2 id="🔖-0"><a class="header-anchor" href="#🔖-0">¶</a>🔖 : 0</h2>]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;total: 11&lt;/p&gt;
     
     </summary>
     
