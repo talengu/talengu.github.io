@@ -9,3 +9,4 @@ blog.zip
 source/*
 hugo
 .hugo_build.lock
+public/*
