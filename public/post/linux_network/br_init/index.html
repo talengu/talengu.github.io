@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>「转」桥初始化（一） | 一塘</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+<script>
+window.MathJax = {
+  tex: {
+    inlineMath: [['$', '$'], ['\\(', '\\)']],
+    displayMath: [['$$', '$$'], ['\\[', '\\]']]
+  },
+  options: {
+    skipHtmlTags: ['script','noscript','style','textarea','pre','code']
+  }
+};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  </head>
+
+  <body>
+    <nav>
+    <ul class="menu">
+      
+      <li><a href="/about/">一塘</a></li>
+      
+      <li><a href="/post/">博客</a></li>
+      
+      <li><a href="/categories/">分类</a></li>
+      
+      <li><a href="/tags/">标签</a></li>
+      
+    </ul>
+    <hr/>
+    </nav>
+
+<div class="article-meta">
+<h1><span class="title">「转」桥初始化（一）</span></h1>
+
+
+</div>
+
+<div class="post-stats" style="text-align: right;">
+   
+  2021/12/02
+  
+</div>
+
+
+
+
+<main>
+<h2 id="前言">前言</h2>
+<p>注：章节中的源代码，基于 linux 内核 4.7.4</p>
+<p>网桥的背景到处都有，在这里就不浪费的时间说废话了。</p>
+<p>桥接程序的初始化，桥接程序既可以集成在内核中，也可以编译成独立模块。初始化函数br_init和清理函数br_deinit的定义在/net/bridge/br.c中</p>
+<p>在网桥设备初始化的时候，主要是做一些注册和初始化的操作。</p>
+<h2 id="桥初始化">桥初始化</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#66d9ef">static</span> <span style="color:#66d9ef">int</span> __init <span style="color:#a6e22e">br_init</span>(<span style="color:#66d9ef">void</span>)
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span> err;
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">/*注册协议生成树收包函数*/</span>
+</span></span><span style="display:flex;"><span>    err <span style="color:#f92672">=</span> <span style="color:#a6e22e">stp_proto_register</span>(<span style="color:#f92672">&amp;</span>br_stp_proto);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (err <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">0</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">pr_err</span>(<span style="color:#e6db74">&#34;bridge: can&#39;t register sap for STP</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>);
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> err;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">/*转发数据库初始化*/</span>
+</span></span><span style="display:flex;"><span>    err <span style="color:#f92672">=</span> <span style="color:#a6e22e">br_fdb_init</span>();
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (err)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">goto</span> err_out;
+</span></span><span style="display:flex;"><span>   <span style="color:#75715e">/*在/proc目录下生成任何与bridge相关的目录，如果我们想在/proc下生成bridge相关的子目录或子文件*/</span>
+</span></span><span style="display:flex;"><span>    err <span style="color:#f92672">=</span> <span style="color:#a6e22e">register_pernet_subsys</span>(<span style="color:#f92672">&amp;</span>br_net_ops);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (err)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">goto</span> err_out1;
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">/*目前好像没有什么实际作用，在内核中所注册的函数为空*/</span>
+</span></span><span style="display:flex;"><span>    err <span style="color:#f92672">=</span> <span style="color:#a6e22e">br_nf_core_init</span>();
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (err)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">goto</span> err_out2;
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">/*注册相关网络设备的事件通知连*/</span>
+</span></span><span style="display:flex;"><span>    err <span style="color:#f92672">=</span> <span style="color:#a6e22e">register_netdevice_notifier</span>(<span style="color:#f92672">&amp;</span>br_device_notifier);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (err)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">goto</span> err_out3;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">/*注册通知连，主要针对桥转发表事件的相关信息*/</span>
+</span></span><span style="display:flex;"><span>    err <span style="color:#f92672">=</span> <span style="color:#a6e22e">register_switchdev_notifier</span>(<span style="color:#f92672">&amp;</span>br_switchdev_notifier);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (err)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">goto</span> err_out4;
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">/*进行netlink的初始化*/</span>
+</span></span><span style="display:flex;"><span>    err <span style="color:#f92672">=</span> <span style="color:#a6e22e">br_netlink_init</span>();
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (err)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">goto</span> err_out5;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">/*用来处理ioctl命令的函数，比如添加和删除网桥*/</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">brioctl_set</span>(br_ioctl_deviceless_stub);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#if IS_ENABLED(CONFIG_ATM_LANE)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    br_fdb_test_addr_hook <span style="color:#f92672">=</span> br_fdb_test_addr;
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#endif
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h2 id="具体的">具体的</h2>
+<p>了解了桥初始化大致要做的事情后，我们再来看看这些初始化或者注册的事情到底干了些什么？</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#ae81ff">1.</span><span style="color:#960050;background-color:#1e0010">注册协议生成树收包函数</span>stp_proto_register
+</span></span><span style="display:flex;"><span>    <span style="color:#960050;background-color:#1e0010">在桥初始化的时候，注册了一个</span>br_stp_proto参数<span style="color:#960050;background-color:#1e0010">，此参数的具体模样是这样子的</span>
+</span></span><span style="display:flex;"><span>   <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">struct</span> stp_proto br_stp_proto <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>         .rcv   <span style="color:#f92672">=</span> br_stp_rcv,
+</span></span><span style="display:flex;"><span>    };
+</span></span><span style="display:flex;"><span>    br_stp_rcv函数在<span style="color:#f92672">/</span>net<span style="color:#f92672">/</span>bridge<span style="color:#f92672">/</span>br_stp_bpdu.c中主要针对网桥进行协议交换的帧<span style="color:#960050;background-color:#1e0010">（</span>BPDU<span style="color:#960050;background-color:#1e0010">）进行配置操作。</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">2.</span><span style="color:#960050;background-color:#1e0010">桥转发数据库初始化</span>br_fdb_init
+</span></span><span style="display:flex;"><span>    <span style="color:#960050;background-color:#1e0010">此函数就是在内存中建立一块</span>slab cache<span style="color:#960050;background-color:#1e0010">，以存放</span>net_bridge_fdb_entry
+</span></span><span style="display:flex;"><span>    <span style="color:#960050;background-color:#1e0010">其中：</span>net_bridge_fdb_entry是一个结构体<span style="color:#960050;background-color:#1e0010">，用来转发数据库的记录项网桥所学到对的每个</span>MAC地址都有这样一个记录
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">3.</span><span style="color:#960050;background-color:#1e0010">在</span>proc目录下生成相关文件的注册函数register_pernet_subsys<span style="color:#960050;background-color:#1e0010">，初始化的时候给这个函数传递了一个参数</span>br_net_ops<span style="color:#960050;background-color:#1e0010">，这个参数的模样是这样的</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">struct</span> pernet_operations br_net_ops <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>        .exit   <span style="color:#f92672">=</span> br_net_exit,
+</span></span><span style="display:flex;"><span>  };
+</span></span><span style="display:flex;"><span>  <span style="color:#960050;background-color:#1e0010">但是在桥初始化的时候，仅仅注册了</span>br_net_exit<span style="color:#960050;background-color:#1e0010">，这个函数会将桥下面的所有文件全部清空。</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span> <span style="color:#ae81ff">4.</span><span style="color:#960050;background-color:#1e0010">通知链的相关函数注册</span>register_netdevice_notifier这个注册函数主要针对设备信息的变化<span style="color:#960050;background-color:#1e0010">，注册参数</span>br_device_notifier<span style="color:#960050;background-color:#1e0010">，具体如下：</span>
+</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">struct</span> notifier_block br_device_notifier <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>        .notifier_call <span style="color:#f92672">=</span> br_device_event
+</span></span><span style="display:flex;"><span>};
+</span></span><span style="display:flex;"><span>br_device_event函数是用来当桥上的设备状态或者设备信息发生改变时做相应的处理<span style="color:#960050;background-color:#1e0010">，该函数在</span><span style="color:#f92672">/</span>net<span style="color:#f92672">/</span>bridge<span style="color:#f92672">/</span>br.c中
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span> <span style="color:#ae81ff">5.</span><span style="color:#960050;background-color:#1e0010">注册通知连，主要针对桥转发表事件的相关信息</span>register_switchdev_notifier<span style="color:#960050;background-color:#1e0010">，传入的参数</span>br_switchdev_notifier详细信息如下<span style="color:#960050;background-color:#1e0010">：</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">static</span> <span style="color:#66d9ef">struct</span> notifier_block br_switchdev_notifier <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>    .notifier_call <span style="color:#f92672">=</span> br_switchdev_event,
+</span></span><span style="display:flex;"><span>};
+</span></span><span style="display:flex;"><span>br_switchdev_event<span style="color:#960050;background-color:#1e0010">，主要针对桥转发表的事件做出相应的处理该函数在</span><span style="color:#f92672">/</span>net<span style="color:#f92672">/</span>bridge<span style="color:#f92672">/</span>br.c中
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">6.</span>brioctl_set用来处理ioctl命令的函数<span style="color:#960050;background-color:#1e0010">，比如添加和删除网桥，</span>br_ioctl_deviceless_stub给回调函数br_ioctl_hook,<span style="color:#960050;background-color:#1e0010">而</span>br_ioctl_hook在sock_ioctl中
+</span></span><span style="display:flex;"><span><span style="color:#960050;background-color:#1e0010">使用，这样通过在应用层调用</span>socket的ioctl函数<span style="color:#960050;background-color:#1e0010">，就能够进行网桥的添加与删除了，函数用来处理添加和删除网桥的相关操作，会在下一节详细介绍。</span>                                                                                                                                                                   
+</span></span></code></pre></div><p>以上就是网桥初始化的相关操作 <sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup></p>
+<h2 id="参考">参考</h2>
+<div class="footnotes" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn:1">
+<p><a href="https://blog.csdn.net/NW_NW_NW">@不留你的名字</a> <a href="https://blog.csdn.net/NW_NW_NW/article/details/75045966">桥初始化</a> 2010-12-01&#160;<a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+</ol>
+</div>
+
+</main>
+
+
+
+
+
+
+  <footer>
+  - END -
+  
+  <hr/>
+  © 2025 一塘
+  
+  </footer>
+  </body>
+</html>
+

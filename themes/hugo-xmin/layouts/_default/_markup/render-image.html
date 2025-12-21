@@ -1,0 +1,14 @@
+<!-- layouts/_default/_markup/render-image.html -->
+{{ $src := .Destination }}
+
+<!-- 如果不是 http/https 开头，就只保留文件名 -->
+{{ if not (or (strings.HasPrefix $src "http://") (strings.HasPrefix $src "https://")) }}
+  {{ $src = path.Base $src }}  <!-- 只保留文件名，去掉路径和斜杠 -->
+{{ end }}
+
+<div style="text-align: center;">
+<img src="{{ $src }}" 
+     alt="{{ .Text }}" 
+     {{ with .Title }}title="{{ . }}"{{ end }} 
+/>
+</div>

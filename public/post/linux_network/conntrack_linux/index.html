@@ -1,0 +1,1166 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>「转」连接跟踪（conntrack）：原理、应用及 Linux 内核实现 | 一塘</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+<script>
+window.MathJax = {
+  tex: {
+    inlineMath: [['$', '$'], ['\\(', '\\)']],
+    displayMath: [['$$', '$$'], ['\\[', '\\]']]
+  },
+  options: {
+    skipHtmlTags: ['script','noscript','style','textarea','pre','code']
+  }
+};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  </head>
+
+  <body>
+    <nav>
+    <ul class="menu">
+      
+      <li><a href="/about/">一塘</a></li>
+      
+      <li><a href="/post/">博客</a></li>
+      
+      <li><a href="/categories/">分类</a></li>
+      
+      <li><a href="/tags/">标签</a></li>
+      
+    </ul>
+    <hr/>
+    </nav>
+
+<div class="article-meta">
+<h1><span class="title">「转」连接跟踪（conntrack）：原理、应用及 Linux 内核实现</span></h1>
+
+
+</div>
+
+<div class="post-stats" style="text-align: right;">
+   
+  2022/12/04
+  
+</div>
+
+
+
+
+<main>
+<h2 id="摘要">摘要</h2>
+<p>本文介绍连接跟踪（connection tracking，conntrack，CT）的原理，应用，及其在 Linux 内核中的实现。</p>
+<p>代码分析基于内核 <code>4.19</code>。为使行文简洁，所贴代码只保留了核心逻辑，但都给出了代码 所在的源文件，如有需要请查阅。</p>
+<p>水平有限，文中不免有错误之处，欢迎指正交流。</p>
+<p>连接跟踪是许多网络应用的基础。例如，Kubernetes Service、ServiceMesh sidecar、 软件四层负载均衡器 LVS/IPVS、Docker network、OVS、iptables 主机防火墙等等，都依赖 连接跟踪功能。</p>
+<!-- more -->
+<h2 id="11-概念">1.1 概念</h2>
+<p>连接跟踪，顾名思义，就是<strong>跟踪（并记录）连接的状态</strong>。</p>
+<p>
+
+
+
+
+    
+
+
+<div style="text-align: center;">
+<img src="node-conntrack.png" 
+     alt="" 
+      
+/>
+</div></p>
+<p>Fig 1.1. 连接跟踪及其内核位置示意图</p>
+<p>例如，上图是一台 IP 地址为 <code>10.1.1.2</code> 的 Linux 机器，我们能看到这台机器上有三条 连接：</p>
+<ol>
+<li>机器访问外部 HTTP 服务的连接（目的端口 80）</li>
+<li>外部访问机器内 FTP 服务的连接（目的端口 21）</li>
+<li>机器访问外部 DNS 服务的连接（目的端口 53）</li>
+</ol>
+<p>连接跟踪所做的事情就是发现并跟踪这些连接的状态，具体包括：</p>
+<ul>
+<li>从数据包中提取<strong>元组</strong>（tuple）信息，辨别<strong>数据流</strong>（flow）和对应的<strong>连接</strong>（connection）</li>
+<li>为所有连接维护一个<strong>状态数据库</strong>（conntrack table），例如连接的创建时间、发送 包数、发送字节数等等</li>
+<li>回收过期的连接（GC）</li>
+<li>为更上层的功能（例如 NAT）提供服务</li>
+</ul>
+<p>需要注意的是，<strong>连接跟踪中所说的“连接”，概念和 TCP/IP 协议中“面向连接”（ connection oriented）的 “连接” 并不完全相同</strong>，简单来说：</p>
+<ul>
+<li>TCP/IP 协议中，连接是一个四层（Layer 4）的概念。
+<ul>
+<li>TCP 是有连接的，或称面向连接的（connection oriented），发送出去的包都要求对端应答（ACK），并且有重传机制</li>
+<li>UDP 是无连接的，发送的包无需对端应答，也没有重传机制</li>
+</ul>
+</li>
+<li>CT 中，一个元组（tuple）定义的一条数据流（flow ）就表示一条连接（connection）。
+<ul>
+<li>后面会看到 UDP 甚至是 <strong>ICMP 这种三层协议在 CT 中也都是有连接记录的</strong></li>
+<li>但<strong>不是所有协议都会被连接跟踪</strong></li>
+</ul>
+</li>
+</ul>
+<p>本文中用到 “连接” 一词时，大部分情况下指的都是后者，即 “连接跟踪” 中的“连接”。</p>
+<h2 id="12-原理">1.2 原理</h2>
+<p>了解以上概念之后，我们来思考下连接跟踪的技术原理。</p>
+<p>要跟踪一台机器的所有连接状态，就需要</p>
+<ol>
+<li><strong>拦截（或称过滤）流经这台机器的每一个数据包，并进行分析</strong>。</li>
+<li>根据这些信息<strong>建立</strong>起这台机器上的<strong>连接信息数据库</strong>（conntrack table）。</li>
+<li>根据拦截到的包信息，不断更新数据库</li>
+</ol>
+<p>例如，</p>
+<ol>
+<li>拦截到一个 TCP <code>SYNC</code> 包时，说明正在尝试建立 TCP 连接，需要创建一条新 conntrack entry 来记录这条连接</li>
+<li>拦截到一个属于已有 conntrack entry 的包时，需要更新这条 conntrack entry 的收发包数等统计信息</li>
+</ol>
+<p>除了以上两点功能需求，还要考虑<strong>性能问题</strong>，因为连接跟踪要对每个包进行过滤和分析 。性能问题非常重要，但不是本文重点，后面介绍实现时会进一步提及。</p>
+<p>之外，这些功能最好还有配套的管理工具来更方便地使用。</p>
+<h2 id="13-设计netfilter">1.3 设计：Netfilter</h2>
+<p><strong>Linux 的连接跟踪是在 <a href="https://en.wikipedia.org/wiki/Netfilter">Netfilter</a> 中实现的。</strong></p>
+<p>
+
+
+
+
+    
+
+
+<div style="text-align: center;">
+<img src="netfilter-design.png" 
+     alt="" 
+      
+/>
+</div></p>
+<p>Fig 1.2. Netfilter architecture inside Linux kernel</p>
+<p><a href="https://en.wikipedia.org/wiki/Netfilter">Netfilter</a> 是 Linux 内核中一个对数据 包进行<strong>控制、修改和过滤</strong>（manipulation and filtering）的框架。它在内核协议 栈中设置了若干 hook 点，以此对数据包进行拦截、过滤或其他处理。</p>
+<blockquote>
+<p>说地更直白一些，hook 机制就是在数据包的必经之路上设置若干检测点，所有到达这 些检测点的包都必须接受检测，根据检测的结果决定：</p>
+<ol>
+<li>放行：不对包进行任何修改，退出检测逻辑，继续后面正常的包处理</li>
+<li>修改：例如修改 IP 地址进行 NAT，然后将包放回正常的包处理逻辑</li>
+<li>丢弃：安全策略或防火墙功能</li>
+</ol>
+<p>连接跟踪模块只是完成连接信息的采集和录入功能，并不会修改或丢弃数据包，后者是其 他模块（例如 NAT）基于 Netfilter hook 完成的。</p></blockquote>
+<p>Netfilter 是最古老的内核框架之一，1998 年开始开发，2000 年合并到 <code>2.4.x</code> 内 核主线版本 [5]。</p>
+<h2 id="14-设计进一步思考">1.4 设计：进一步思考</h2>
+<p>现在提到连接跟踪（conntrack），可能首先都会想到 Netfilter。但由上节讨论可知， 连接跟踪概念是独立于 Netfilter 的，<strong>Netfilter 只是 Linux 内核中的一种连接跟踪实现</strong>。</p>
+<p>换句话说，<strong>只要具备了 hook 能力，能拦截到进出主机的每个包，完全可以在此基础上自 己实现一套连接跟踪</strong>。</p>
+<p>
+
+
+
+
+    
+
+
+<div style="text-align: center;">
+<img src="cilium-conntrack.png" 
+     alt="" 
+      
+/>
+</div></p>
+<p>Fig 1.3. Cilium&rsquo;s conntrack and NAT architectrue</p>
+<p>云原生网络方案 Cilium 在 <code>1.7.4+</code> 版本就实现了这样一套独立的连接跟踪和 NAT 机制 （完备功能需要 Kernel <code>4.19+</code>）。其基本原理是：</p>
+<ol>
+<li>基于 BPF hook 实现数据包的拦截功能（等价于 netfilter 里面的 hook 机制）</li>
+<li>在 BPF hook 的基础上，实现一套全新的 conntrack 和 NAT</li>
+</ol>
+<p>因此，即便<a href="https://github.com/cilium/cilium/issues/12879">卸载 Netfilter</a> ，也不会影响 Cilium 对 Kubernetes ClusterIP、NodePort、ExternalIPs 和 LoadBalancer 等功能的支持 [2]。</p>
+<p>由于这套连接跟踪机制是独立于 Netfilter 的，因此它的 conntrack 和 NAT 信息也没有 存储在内核的（也就是 Netfilter 的）conntrack table 和 NAT table。所以常规的 <code>conntrack/netstats/ss/lsof</code> 等工具是看不到的，要使用 Cilium 的命令，例如：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ cilium bpf nat list
+</span></span><span style="display:flex;"><span>$ cilium bpf ct list global
+</span></span></code></pre></div><p>配置也是独立的，需要在 Cilium 里面配置，例如命令行选项 <code>--bpf-ct-tcp-max</code>。</p>
+<p>另外，本文会多次提到连接跟踪模块和 NAT 模块独立，但<strong>出于性能考虑，具体实现中 二者代码可能是有耦合的</strong>。例如 Cilium 做 conntrack 的垃圾回收（GC）时就会顺便把 NAT 里相应的 entry 回收掉，而非为 NAT 做单独的 GC。</p>
+<h2 id="15-应用">1.5 应用</h2>
+<p>来看几个 conntrack 的具体应用。</p>
+<h3 id="151-网络地址转换nat">1.5.1 网络地址转换（NAT）</h3>
+<p>网络地址转换（NAT），名字表达的意思也比较清楚：对（数据包的）网络地址（<code>IP + Port</code>）进行转换。</p>
+<p>
+
+
+
+
+    
+
+
+<div style="text-align: center;">
+<img src="node-nat.png" 
+     alt="" 
+      
+/>
+</div></p>
+<p>Fig 1.4. NAT 及其内核位置示意图</p>
+<p>例如上图中，机器自己的 IP <code>10.1.1.2</code> 是能与外部正常通信的，但 <code>192.168</code> 网段是私有 IP 段，外界无法访问，也就是说源 IP 地址是 <code>192.168</code> 的包，其<strong>应答包是无 法回来的</strong>。因此，</p>
+<ul>
+<li>当源地址为 <code>192.168</code> 网段的包要出去时，机器会先将源 IP 换成机器自己的 <code>10.1.1.2</code> 再发送出去；</li>
+<li>收到应答包时，再进行相反的转换。</li>
+</ul>
+<p>这就是 NAT 的基本过程。</p>
+<p>Docker 默认的 <code>bridge</code> 网络模式就是这个原理 [4]。每个容器会分一个私有网段的 IP 地址，这个 IP 地址可以在宿主机内的不同容器之间通信，但容器流量出宿主机时要进行 NAT。</p>
+<p>NAT 又可以细分为几类：</p>
+<ul>
+<li>SNAT：对源地址（source）进行转换</li>
+<li>DNAT：对目的地址（destination）进行转换</li>
+<li>Full NAT：同时对源地址和目的地址进行转换</li>
+</ul>
+<p>以上场景属于 SNAT，将不同私有 IP 都映射成同一个 “公有 IP”，以使其能访问外部网络服 务。这种场景也属于正向代理。</p>
+<p>NAT 依赖连接跟踪的结果。连接跟踪<strong>最重要的使用场景</strong>就是 NAT。</p>
+<h4 id="四层负载均衡l4lb">四层负载均衡（L4LB）</h4>
+<p>再将范围稍微延伸一点，讨论一下 NAT 模式的四层负载均衡。</p>
+<p>四层负载均衡是根据包的四层信息（例如 <code>src/dst ip, src/dst port, proto</code>）做流量分发。</p>
+<p>VIP（Virtual IP）是四层负载均衡的一种实现方式：</p>
+<ul>
+<li>多个后端真实 IP（Real IP）挂到同一个虚拟 IP（VIP）上</li>
+<li>客户端过来的流量先到达 VIP，再经负载均衡算法转发给某个特定的后端 IP</li>
+</ul>
+<p>如果在 VIP 和 Real IP 节点之间使用的 NAT 技术（也可以使用其他技术），那客户端访 问服务端时，L4LB 节点将做双向 NAT（Full NAT），数据流如下图所示：</p>
+<p>
+
+
+
+
+    
+
+
+<div style="text-align: center;">
+<img src="nat.png" 
+     alt="" 
+      
+/>
+</div></p>
+<p>Fig 1.5. L4LB: Traffic path in NAT mode [3]</p>
+<h3 id="152-有状态防火墙">1.5.2 有状态防火墙</h3>
+<p>有状态防火墙（stateful firewall）是相对于早期的<strong>无状态防火墙</strong>（stateless firewall）而言的：早期防火墙只能写 <code>drop syn to port 443</code> 或者 <code>allow syn to port 80</code> 这种非常简单直接 的规则，<strong>没有 flow 的概念</strong>，因此无法实现诸如 <strong>“如果这个 ack 之前已经有 syn， 就 allow，否则 drop”</strong> 这样的规则，使用非常受限 [6]。</p>
+<p>显然，要实现有状态防火墙，就必须记录 flow 和状态，这正是 conntrack 做的事情。</p>
+<p>来看个更具体的防火墙应用：OpenStack 主机防火墙解决方案 —— 安全组（security group）。</p>
+<h4 id="openstack-安全组">OpenStack 安全组</h4>
+<p>简单来说，安全组实现了<strong>虚拟机级别</strong>的安全隔离，具体实现是：在 node 上连接 VM 的 网络设备上做有状态防火墙。在当时，最能实现这一功能的可能就是 Netfilter/iptables。</p>
+<p>回到宿主机内网络拓扑问题： OpenStack 使用 OVS bridge 来连接一台宿主机内的所有 VM。 如果只从网络连通性考虑，那每个 VM 应该直接连到 OVS bridge <code>br-int</code>。但这里问题 就来了 [7]：</p>
+<ul>
+<li>（较早版本的）OVS 没有 conntrack 模块，</li>
+<li>Linux 中有 conntrack 模块，但基于 conntrack 的防火墙<strong>工作在 IP 层</strong>（L3），通过 iptables 控制，</li>
+<li>而 <strong>OVS 是 L2 模块</strong>，无法使用 L3 模块的功能，</li>
+</ul>
+<p>最终结果是：无法在 OVS （连接虚拟机）的设备上做防火墙。</p>
+<p>所以，2016 之前 OpenStack 的解决方案是，在每个 OVS 和 VM 之间再加一个 Linux bridge ，如下图所示，</p>
+<p>
+
+
+
+
+    
+
+
+<div style="text-align: center;">
+<img src="ovs-compute.png" 
+     alt="" 
+      
+/>
+</div></p>
+<p>Fig 1.6. Network topology within an OpenStack compute node, picture from <a href="https://thesaitech.wordpress.com/2017/09/24/how-to-trace-the-tap-interfaces-and-linux-bridges-on-the-hypervisor-your-openstack-vm-is-on/">Sai&rsquo;s Blog</a></p>
+<p>Linux bridge 也是 L2 模块，按道理也无法使用 iptables。但是，<strong>它有一个 L2 工具 ebtables，能够跳转到 iptables</strong>，因此间接支持了 iptables，也就能用到 Netfilter/iptables 防火墙的功能。</p>
+<p>这种暴力堆砌的方式不仅丑陋、增加网络复杂性，而且会导致性能问题。因此， RedHat 在 2016 年提出了一个 OVS conntrack 方案 [7]，从那以后，才有可能干掉 Linux bridge 而仍然具备安全组的功能。</p>
+<h2 id="16-小结">1.6 小结</h2>
+<p>以上是理论篇，接下来看一下内核实现。</p>
+<p>Netfilter 由几个模块构成，其中最主要的是<strong>连接跟踪</strong>（CT）模块和<strong>网络地址转换</strong>（NAT）模块。</p>
+<p>CT 模块的主要职责是识别出可进行连接跟踪的包。 CT 模块独立于 NAT 模块，但主要目的是服务于后者。</p>
+<h2 id="21-netfilter-框架">2.1 Netfilter 框架</h2>
+<h3 id="5-个-hook-点">5 个 hook 点</h3>
+<p>
+
+
+
+
+    
+
+
+<div style="text-align: center;">
+<img src="hooks.png" 
+     alt="" 
+      
+/>
+</div></p>
+<p>图 2.1. The 5 hook points in netfilter framework</p>
+<p>如上图所示，Netfilter 在内核协议栈的包处理路径上提供了 5 个 hook 点，分别是：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#75715e">// include/uapi/linux/netfilter_ipv4.h
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#define NF_IP_PRE_ROUTING    0 </span><span style="color:#75715e">/* After promisc drops, checksum checks. */</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#define NF_IP_LOCAL_IN       1 </span><span style="color:#75715e">/* If the packet is destined for this box. */</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#define NF_IP_FORWARD        2 </span><span style="color:#75715e">/* If the packet is destined for another interface. */</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#define NF_IP_LOCAL_OUT      3 </span><span style="color:#75715e">/* Packets coming from a local process. */</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#define NF_IP_POST_ROUTING   4 </span><span style="color:#75715e">/* Packets about to hit the wire. */</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#define NF_IP_NUMHOOKS       5
+</span></span></span></code></pre></div><p>用户可以在这些 hook 点注册自己的处理函数（handlers）。当有数据包经过 hook 点时， 就会调用相应的 handlers。</p>
+<blockquote>
+<p>另外还有一套 <code>NF_INET_</code> 开头的定义，<code>include/uapi/linux/netfilter.h</code>。 这两套是等价的，从注释看，<code>NF_IP_</code> 开头的定义可能是为了保持兼容性。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#66d9ef">enum</span> nf_inet_hooks {
+</span></span><span style="display:flex;"><span> NF_INET_PRE_ROUTING,
+</span></span><span style="display:flex;"><span> NF_INET_LOCAL_IN,
+</span></span><span style="display:flex;"><span> NF_INET_FORWARD,
+</span></span><span style="display:flex;"><span> NF_INET_LOCAL_OUT,
+</span></span><span style="display:flex;"><span> NF_INET_POST_ROUTING,
+</span></span><span style="display:flex;"><span> NF_INET_NUMHOOKS
+</span></span><span style="display:flex;"><span>};
+</span></span></code></pre></div></blockquote>
+<h3 id="hook-返回值类型">hook 返回值类型</h3>
+<p>hook 函数对包进行判断或处理之后，需要返回一个判断结果，指导接下来要对这个包做什 么。可能的结果有：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#75715e">// include/uapi/linux/netfilter.h
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#define NF_DROP   0  </span><span style="color:#75715e">// 已丢弃这个包
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#75715e">#define NF_ACCEPT 1  </span><span style="color:#75715e">// 接受这个包，结束判断，继续下一步处理
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#75715e">#define NF_STOLEN 2  </span><span style="color:#75715e">// 临时 hold 这个包，不用再继续穿越协议栈了。常见的情形是缓存分片之后的包（等待重组）
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#75715e">#define NF_QUEUE  3  </span><span style="color:#75715e">// 应当将包放到队列
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#75715e">#define NF_REPEAT 4  </span><span style="color:#75715e">// 当前处理函数应当被再次调用
+</span></span></span></code></pre></div><h3 id="hook-优先级">hook 优先级</h3>
+<p>每个 hook 点可以注册多个处理函数（handler）。在注册时必须指定这些 handlers 的<strong>优先级</strong>，这样触发 hook 时能够根据优先级依次调用处理函数。</p>
+<h2 id="22-过滤规则的组织">2.2 过滤规则的组织</h2>
+<p><code>iptables</code> 是配置 Netfilter 过滤功能的用户空间工具。为便于管理， 过滤规则按功能分为若干 table：</p>
+<ul>
+<li>raw</li>
+<li>filter</li>
+<li>nat</li>
+<li>mangle</li>
+</ul>
+<p>这不是本文重点。更多信息可参考 <a href="chrome-extension://ijllcpnolfcooahcekpamkbidhejabll/blog/deep-dive-into-iptables-and-netfilter-arch-zh/">(译) 深入理解 iptables 和 netfilter 架构</a></p>
+<p>连接跟踪模块用于维护<strong>可跟踪协议</strong>（trackable protocols）的连接状态。 也就是说，连接跟踪<strong>针对的是特定协议的包，而不是所有协议的包</strong>。 稍后会看到它支持哪些协议。</p>
+<h2 id="31-重要结构体和函数">3.1 重要结构体和函数</h2>
+<p>重要结构体：</p>
+<ul>
+<li><code>struct nf_conntrack_tuple {}</code>: 定义一个 tuple。
+<ul>
+<li><code>struct nf_conntrack_man {}</code>：tuple 的 manipulable part。
+<ul>
+<li><code>struct nf_conntrack_man_proto {}</code>：manipulable part 中协议相关的部分。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><code>struct nf_conntrack_l4proto {}</code>: 支持连接跟踪的<strong>协议需要实现的方法集</strong>（以及其他协议相关字段）。</li>
+<li><code>struct nf_conntrack_tuple_hash {}</code>：哈希表（conntrack table）中的表项（entry）。</li>
+<li><code>struct nf_conn {}</code>：<strong>定义一个 flow</strong>。</li>
+</ul>
+<p>重要函数：</p>
+<ul>
+<li>
+<p><code>hash_conntrack_raw()</code>：根据 tuple 计算出一个 32 位的哈希值（hash key）。</p>
+</li>
+<li>
+<p><code>nf_conntrack_in()</code>：<strong>连接跟踪模块的核心，包进入连接跟踪的地方</strong>。</p>
+</li>
+<li>
+<p><code>resolve_normal_ct() -&gt; init_conntrack() -&gt; ct = __nf_conntrack_alloc(); l4proto-&gt;new(ct)</code></p>
+<p>创建一个新的连接记录（conntrack entry），然后初始化。</p>
+</li>
+<li>
+<p><code>nf_conntrack_confirm()</code>：确认前面通过 <code>nf_conntrack_in()</code> 创建的新连接（是否被丢弃）。</p>
+</li>
+</ul>
+<h2 id="32-struct-nf_conntrack_tuple-元组tuple">3.2 <code>struct nf_conntrack_tuple {}</code>：元组（Tuple）</h2>
+<p>Tuple 是连接跟踪中最重要的概念之一。</p>
+<p><strong>一个 tuple 定义一个单向（unidirectional）flow</strong>。内核代码中有如下注释：</p>
+<blockquote>
+<p>//include/net/netfilter/nf_conntrack_tuple.h</p>
+<p>A <code>tuple</code> is a structure containing the information to uniquely identify a connection. ie. if two packets have the same tuple, they are in the same connection; if not, they are not.</p></blockquote>
+<h3 id="结构体定义">结构体定义</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#75715e">//include/net/netfilter/nf_conntrack_tuple.h
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 为方便 NAT 的实现，内核将 tuple 结构体拆分为 &#34;manipulatable&#34; 和 &#34;non-manipulatable&#34; 两部分
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// 下面结构体中的 _man 是 manipulatable 的缩写
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>                                               <span style="color:#75715e">// ude/uapi/linux/netfilter.h
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>                                               <span style="color:#66d9ef">union</span> nf_inet_addr {
+</span></span><span style="display:flex;"><span>                                                   __u32            all[<span style="color:#ae81ff">4</span>];
+</span></span><span style="display:flex;"><span>                                                   __be32           ip;
+</span></span><span style="display:flex;"><span>                                                   __be32           ip6[<span style="color:#ae81ff">4</span>];
+</span></span><span style="display:flex;"><span>                                                   <span style="color:#66d9ef">struct</span> in_addr   in;
+</span></span><span style="display:flex;"><span>                                                   <span style="color:#66d9ef">struct</span> in6_addr  in6;
+</span></span><span style="display:flex;"><span><span style="color:#75715e">/* manipulable part of the tuple */</span>         <span style="color:#f92672">/</span>  };
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">struct</span> nf_conntrack_man {                  <span style="color:#f92672">/</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">union</span> nf_inet_addr           u3; <span style="color:#f92672">--&gt;--/</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">union</span> nf_conntrack_man_proto u;  <span style="color:#f92672">--&gt;--</span>\
+</span></span><span style="display:flex;"><span>                                           <span style="color:#960050;background-color:#1e0010">\</span>   <span style="color:#75715e">// include/uapi/linux/netfilter/nf_conntrack_tuple_common.h
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">u_int16_t</span> l3num; <span style="color:#75715e">// L3 proto            \  // 协议相关的部分
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>};                                            <span style="color:#66d9ef">union</span> nf_conntrack_man_proto {
+</span></span><span style="display:flex;"><span>                                                  __be16 all;<span style="color:#75715e">/* Add other protocols here. */</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>                                                  <span style="color:#66d9ef">struct</span> { __be16 port; } tcp;
+</span></span><span style="display:flex;"><span>                                                  <span style="color:#66d9ef">struct</span> { __be16 port; } udp;
+</span></span><span style="display:flex;"><span>                                                  <span style="color:#66d9ef">struct</span> { __be16 id;   } icmp;
+</span></span><span style="display:flex;"><span>                                                  <span style="color:#66d9ef">struct</span> { __be16 port; } dccp;
+</span></span><span style="display:flex;"><span>                                                  <span style="color:#66d9ef">struct</span> { __be16 port; } sctp;
+</span></span><span style="display:flex;"><span>                                                  <span style="color:#66d9ef">struct</span> { __be16 key;  } gre;
+</span></span><span style="display:flex;"><span>                                              };
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">struct</span> nf_conntrack_tuple { <span style="color:#75715e">/* This contains the information to distinguish a connection. */</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">struct</span> nf_conntrack_man src;  <span style="color:#75715e">// 源地址信息，manipulable part
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">struct</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">union</span> nf_inet_addr u3;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">union</span> {
+</span></span><span style="display:flex;"><span>            __be16 all; <span style="color:#75715e">/* Add other protocols here. */</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">struct</span> { __be16 port;         } tcp;
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">struct</span> { __be16 port;         } udp;
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">struct</span> { <span style="color:#66d9ef">u_int8_t</span> type, code; } icmp;
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">struct</span> { __be16 port;         } dccp;
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">struct</span> { __be16 port;         } sctp;
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">struct</span> { __be16 key;          } gre;
+</span></span><span style="display:flex;"><span>        } u;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">u_int8_t</span> protonum; <span style="color:#75715e">/* The protocol. */</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">u_int8_t</span> dir;      <span style="color:#75715e">/* The direction (for tuplehash) */</span>
+</span></span><span style="display:flex;"><span>    } dst;                       <span style="color:#75715e">// 目的地址信息
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>};
+</span></span></code></pre></div><p><strong>Tuple 结构体中只有两个字段 src 和 dst</strong>，分别保存源和目的信息。<code>src</code> 和 <code>dst</code> 自身也是结构体，能保存不同类型协议的数据。以 IPv4 UDP 为例，五元组分别保存在如下字段：</p>
+<ul>
+<li><code>dst.protonum</code>：协议类型</li>
+<li><code>src.u3.ip</code>：源 IP 地址</li>
+<li><code>dst.u3.ip</code>：目的 IP 地址</li>
+<li><code>src.u.udp.port</code>：源端口号</li>
+<li><code>dst.u.udp.port</code>：目的端口号</li>
+</ul>
+<h3 id="ct-支持的协议">CT 支持的协议</h3>
+<p>从以上定义可以看到，连接跟踪模块<strong>目前只支持以下六种协议</strong>：TCP、UDP、ICMP、DCCP、SCTP、GRE。</p>
+<p><strong>注意其中的 ICMP 协议</strong>。大家可能会认为，连接跟踪模块依据包的三层和四层信息做 哈希，而 ICMP 是三层协议，没有四层信息，因此 ICMP 肯定不会被 CT 记录。但<strong>实际上 是会的</strong>，上面代码可以看到，ICMP 使用了其头信息中的 ICMP <code>type</code>和 <code>code</code> 字段来 定义 tuple。</p>
+<h2 id="33-struct-nf_conntrack_l4proto-协议需要实现的方法集合">3.3 <code>struct nf_conntrack_l4proto {}</code>：协议需要实现的方法集合</h2>
+<p>支持连接跟踪的协议都需要实现 <code>struct nf_conntrack_l4proto {}</code> 结构体 中定义的方法，例如 <code>pkt_to_tuple()</code>。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#75715e">// include/net/netfilter/nf_conntrack_l4proto.h
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">struct</span> nf_conntrack_l4proto {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">u_int16_t</span> l3proto; <span style="color:#75715e">/* L3 Protocol number. */</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">u_int8_t</span>  l4proto; <span style="color:#75715e">/* L4 Protocol number. */</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 从包（skb）中提取 tuple
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">bool</span> (<span style="color:#f92672">*</span>pkt_to_tuple)(<span style="color:#66d9ef">struct</span> sk_buff <span style="color:#f92672">*</span>skb, ... <span style="color:#66d9ef">struct</span> nf_conntrack_tuple <span style="color:#f92672">*</span>tuple);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 对包进行判决，返回判决结果（returns verdict for packet）
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">int</span> (<span style="color:#f92672">*</span>packet)(<span style="color:#66d9ef">struct</span> nf_conn <span style="color:#f92672">*</span>ct, <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">struct</span> sk_buff <span style="color:#f92672">*</span>skb ...);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 创建一个新连接。如果成功返回 TRUE；如果返回的是 TRUE，接下来会调用 packet() 方法
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">bool</span> (<span style="color:#f92672">*</span>new)(<span style="color:#66d9ef">struct</span> nf_conn <span style="color:#f92672">*</span>ct, <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">struct</span> sk_buff <span style="color:#f92672">*</span>skb, <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">int</span> dataoff);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 判断当前数据包能否被连接跟踪。如果返回成功，接下来会调用 packet() 方法
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">int</span> (<span style="color:#f92672">*</span>error)(<span style="color:#66d9ef">struct</span> net <span style="color:#f92672">*</span>net, <span style="color:#66d9ef">struct</span> nf_conn <span style="color:#f92672">*</span>tmpl, <span style="color:#66d9ef">struct</span> sk_buff <span style="color:#f92672">*</span>skb, ...);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    ...
+</span></span><span style="display:flex;"><span>};
+</span></span></code></pre></div><h2 id="34-struct-nf_conntrack_tuple_hash-哈希表项">3.4 <code>struct nf_conntrack_tuple_hash {}</code>：哈希表项</h2>
+<p>conntrack 将活动连接的状态存储在一张哈希表中（<code>key: value</code>）。</p>
+<p><code>hash_conntrack_raw()</code> 根据 tuple 计算出一个 32 位的哈希值（key）：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#75715e">// net/netfilter/nf_conntrack_core.c
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">static</span> u32 <span style="color:#a6e22e">hash_conntrack_raw</span>(<span style="color:#66d9ef">struct</span> nf_conntrack_tuple <span style="color:#f92672">*</span>tuple, <span style="color:#66d9ef">struct</span> net <span style="color:#f92672">*</span>net)
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">get_random_once</span>(<span style="color:#f92672">&amp;</span>nf_conntrack_hash_rnd, <span style="color:#66d9ef">sizeof</span>(nf_conntrack_hash_rnd));
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">/* The direction must be ignored, so we hash everything up to the
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">     * destination ports (which is a multiple of 4) and treat the last three bytes manually.  */</span>
+</span></span><span style="display:flex;"><span>    u32 seed <span style="color:#f92672">=</span> nf_conntrack_hash_rnd <span style="color:#f92672">^</span> <span style="color:#a6e22e">net_hash_mix</span>(net);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">int</span> n <span style="color:#f92672">=</span> (<span style="color:#66d9ef">sizeof</span>(tuple<span style="color:#f92672">-&gt;</span>src) <span style="color:#f92672">+</span> <span style="color:#66d9ef">sizeof</span>(tuple<span style="color:#f92672">-&gt;</span>dst.u3)) <span style="color:#f92672">/</span> <span style="color:#66d9ef">sizeof</span>(u32);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">jhash2</span>((u32 <span style="color:#f92672">*</span>)tuple, n, seed <span style="color:#f92672">^</span> ((tuple<span style="color:#f92672">-&gt;</span>dst.u.all <span style="color:#f92672">&lt;&lt;</span> <span style="color:#ae81ff">16</span>) <span style="color:#f92672">|</span> tuple<span style="color:#f92672">-&gt;</span>dst.protonum));
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>注意其中是如何利用 tuple 的不同字段来计算哈希的。</p>
+<p><code>nf_conntrack_tuple_hash</code> 是哈希表中的表项（value）:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#75715e">// include/net/netfilter/nf_conntrack_tuple.h
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 每条连接在哈希表中都对应两项，分别对应两个方向（egress/ingress）
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// Connections have two entries in the hash table: one for each way
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">struct</span> nf_conntrack_tuple_hash {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">struct</span> hlist_nulls_node   hnnode;   <span style="color:#75715e">// 指向该哈希对应的连接 struct nf_conn，采用 list 形式是为了解决哈希冲突
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">struct</span> nf_conntrack_tuple tuple;    <span style="color:#75715e">// N 元组，前面详细介绍过了
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>};
+</span></span></code></pre></div><h2 id="35-struct-nf_conn-连接connection">3.5 <code>struct nf_conn {}</code>：连接（connection）</h2>
+<p><strong>Netfilter 中每个 flow 都称为一个 connection</strong>，即使是对那些非面向连接的协议（例 如 UDP）。每个 connection 用 <code>struct nf_conn {}</code> 表示，主要字段如下：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#75715e">// include/net/netfilter/nf_conntrack.h
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>                                                  <span style="color:#75715e">// include/linux/skbuff.h
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>                                        <span style="color:#f92672">------&gt;</span>   <span style="color:#66d9ef">struct</span> nf_conntrack {
+</span></span><span style="display:flex;"><span>                                        <span style="color:#f92672">|</span>             <span style="color:#66d9ef">atomic_t</span> use;  <span style="color:#75715e">// 连接引用计数？
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>                                        <span style="color:#f92672">|</span>         };
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">struct</span> nf_conn {                        <span style="color:#f92672">|</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">struct</span> nf_conntrack            ct_general;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">struct</span> nf_conntrack_tuple_hash tuplehash[IP_CT_DIR_MAX]; <span style="color:#75715e">// 哈希表项，数组是因为要记录两个方向的 flow
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">long</span> status; <span style="color:#75715e">// 连接状态，见下文
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    u32 timeout;          <span style="color:#75715e">// 连接状态的定时器
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">possible_net_t</span> ct_net;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">struct</span> hlist_node    nat_bysource;
+</span></span><span style="display:flex;"><span>                                                        <span style="color:#75715e">// per conntrack: protocol private data
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">struct</span> nf_conn <span style="color:#f92672">*</span>master;                             <span style="color:#66d9ef">union</span> nf_conntrack_proto {
+</span></span><span style="display:flex;"><span>                                                       <span style="color:#f92672">/</span>    <span style="color:#75715e">/* insert conntrack proto private data here */</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">u_int32_t</span> mark;    <span style="color:#75715e">/* 对 skb 进行特殊标记 */</span>      <span style="color:#f92672">/</span>     <span style="color:#66d9ef">struct</span> nf_ct_dccp dccp;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">u_int32_t</span> secmark;                               <span style="color:#f92672">/</span>      <span style="color:#66d9ef">struct</span> ip_ct_sctp sctp;
+</span></span><span style="display:flex;"><span>                                                    <span style="color:#f92672">/</span>       <span style="color:#66d9ef">struct</span> ip_ct_tcp tcp;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">union</span> nf_conntrack_proto proto; <span style="color:#f92672">----------&gt;----/</span>        <span style="color:#66d9ef">struct</span> nf_ct_gre gre;
+</span></span><span style="display:flex;"><span>};                                                          <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">int</span> tmpl_padto;
+</span></span><span style="display:flex;"><span>                                                        };
+</span></span></code></pre></div><p><strong>连接的状态集合 enum ip_conntrack_status</strong>：</p>
+<pre tabindex="0"><code>// include/uapi/linux/netfilter/nf_conntrack_common.h
+
+enum ip_conntrack_status {
+    IPS_EXPECTED      = (1 &lt;&lt; IPS_EXPECTED_BIT),
+    IPS_SEEN_REPLY    = (1 &lt;&lt; IPS_SEEN_REPLY_BIT),
+    IPS_ASSURED       = (1 &lt;&lt; IPS_ASSURED_BIT),
+    IPS_CONFIRMED     = (1 &lt;&lt; IPS_CONFIRMED_BIT),
+    IPS_SRC_NAT       = (1 &lt;&lt; IPS_SRC_NAT_BIT),
+    IPS_DST_NAT       = (1 &lt;&lt; IPS_DST_NAT_BIT),
+    IPS_NAT_MASK      = (IPS_DST_NAT | IPS_SRC_NAT),
+    IPS_SEQ_ADJUST    = (1 &lt;&lt; IPS_SEQ_ADJUST_BIT),
+    IPS_SRC_NAT_DONE  = (1 &lt;&lt; IPS_SRC_NAT_DONE_BIT),
+    IPS_DST_NAT_DONE  = (1 &lt;&lt; IPS_DST_NAT_DONE_BIT),
+    IPS_NAT_DONE_MASK = (IPS_DST_NAT_DONE | IPS_SRC_NAT_DONE),
+    IPS_DYING         = (1 &lt;&lt; IPS_DYING_BIT),
+    IPS_FIXED_TIMEOUT = (1 &lt;&lt; IPS_FIXED_TIMEOUT_BIT),
+    IPS_TEMPLATE      = (1 &lt;&lt; IPS_TEMPLATE_BIT),
+    IPS_UNTRACKED     = (1 &lt;&lt; IPS_UNTRACKED_BIT),
+    IPS_HELPER        = (1 &lt;&lt; IPS_HELPER_BIT),
+    IPS_OFFLOAD       = (1 &lt;&lt; IPS_OFFLOAD_BIT),
+
+    IPS_UNCHANGEABLE_MASK = (IPS_NAT_DONE_MASK | IPS_NAT_MASK |
+                 IPS_EXPECTED | IPS_CONFIRMED | IPS_DYING |
+                 IPS_SEQ_ADJUST | IPS_TEMPLATE | IPS_OFFLOAD),
+};
+</code></pre><h2 id="36-nf_conntrack_in进入连接跟踪">3.6 <code>nf_conntrack_in()</code>：进入连接跟踪</h2>
+<p>
+
+
+
+
+    
+
+
+<div style="text-align: center;">
+<img src="netfilter-conntrack.png" 
+     alt="" 
+      
+/>
+</div></p>
+<p>Fig. Netfilter 中的连接跟踪点</p>
+<p>如上图所示，Netfilter 在四个 Hook 点对包进行跟踪：</p>
+<ol>
+<li>
+<p><code>PRE_ROUTING</code> 和 <code>LOCAL_OUT</code>：<strong>调用 nf_conntrack_in() 开始连接跟踪</strong>， 正常情况下会创建一条新连接记录，然后将 conntrack entry 放到 <strong>unconfirmed list</strong>。</p>
+<p>为什么是这两个 hook 点呢？因为它们都是<strong>新连接的第一个包最先达到的地方</strong>，</p>
+<ul>
+<li><code>PRE_ROUTING</code> 是<strong>外部主动和本机建连</strong>时包最先到达的地方</li>
+<li><code>LOCAL_OUT</code> 是<strong>本机主动和外部建连</strong>时包最先到达的地方</li>
+</ul>
+</li>
+<li>
+<p><code>POST_ROUTING</code> 和 <code>LOCAL_IN</code>：<strong>调用 nf_conntrack_confirm() 将 nf_conntrack_in() 创建的连接移到 confirmed list</strong>。</p>
+<p>同样要问，为什么在这两个 hook 点呢？因为如果新连接的第一个包没有被丢弃，那这 是它们<strong>离开 netfilter 之前的最后 hook 点</strong>：</p>
+<ul>
+<li><strong>外部主动和本机建连</strong>的包，如果在中间处理中没有被丢弃，<code>LOCAL_IN</code> 是其被送到应用（例如 nginx 服务）之前的最后 hook 点</li>
+<li><strong>本机主动和外部建连</strong>的包，如果在中间处理中没有被丢弃，<code>POST_ROUTING</code> 是其离开主机时的最后 hook 点</li>
+</ul>
+</li>
+</ol>
+<p>下面的代码可以看到<strong>这些 handler 是如何注册到 Netfilter hook 点的</strong>：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#75715e">// net/netfilter/nf_conntrack_proto.c
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">/* Connection tracking may drop packets, but never alters them, so make it the first hook.  */</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">static</span> <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">struct</span> nf_hook_ops ipv4_conntrack_ops[] <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>        .hook        <span style="color:#f92672">=</span> ipv4_conntrack_in,       <span style="color:#75715e">// 调用 nf_conntrack_in() 进入连接跟踪
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        .pf          <span style="color:#f92672">=</span> NFPROTO_IPV4,
+</span></span><span style="display:flex;"><span>        .hooknum     <span style="color:#f92672">=</span> NF_INET_PRE_ROUTING,     <span style="color:#75715e">// PRE_ROUTING hook 点
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        .priority    <span style="color:#f92672">=</span> NF_IP_PRI_CONNTRACK,
+</span></span><span style="display:flex;"><span>    },
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>        .hook        <span style="color:#f92672">=</span> ipv4_conntrack_local,    <span style="color:#75715e">// 调用 nf_conntrack_in() 进入连接跟踪
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        .pf          <span style="color:#f92672">=</span> NFPROTO_IPV4,
+</span></span><span style="display:flex;"><span>        .hooknum     <span style="color:#f92672">=</span> NF_INET_LOCAL_OUT,       <span style="color:#75715e">// LOCAL_OUT hook 点
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        .priority    <span style="color:#f92672">=</span> NF_IP_PRI_CONNTRACK,
+</span></span><span style="display:flex;"><span>    },
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>        .hook        <span style="color:#f92672">=</span> ipv4_confirm,            <span style="color:#75715e">// 调用 nf_conntrack_confirm()
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        .pf          <span style="color:#f92672">=</span> NFPROTO_IPV4,
+</span></span><span style="display:flex;"><span>        .hooknum     <span style="color:#f92672">=</span> NF_INET_POST_ROUTING,    <span style="color:#75715e">// POST_ROUTING hook 点
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        .priority    <span style="color:#f92672">=</span> NF_IP_PRI_CONNTRACK_CONFIRM,
+</span></span><span style="display:flex;"><span>    },
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>        .hook        <span style="color:#f92672">=</span> ipv4_confirm,            <span style="color:#75715e">// 调用 nf_conntrack_confirm()
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        .pf          <span style="color:#f92672">=</span> NFPROTO_IPV4,
+</span></span><span style="display:flex;"><span>        .hooknum     <span style="color:#f92672">=</span> NF_INET_LOCAL_IN,        <span style="color:#75715e">// LOCAL_IN hook 点
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        .priority    <span style="color:#f92672">=</span> NF_IP_PRI_CONNTRACK_CONFIRM,
+</span></span><span style="display:flex;"><span>    },
+</span></span><span style="display:flex;"><span>};
+</span></span></code></pre></div><p><code>nf_conntrack_in()</code> 是<strong>连接跟踪模块的核心</strong>。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#75715e">// net/netfilter/nf_conntrack_core.c
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">int</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">nf_conntrack_in</span>(<span style="color:#66d9ef">struct</span> net <span style="color:#f92672">*</span>net, <span style="color:#66d9ef">u_int8_t</span> pf, <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">int</span> hooknum, <span style="color:#66d9ef">struct</span> sk_buff <span style="color:#f92672">*</span>skb)
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">struct</span> nf_conn <span style="color:#f92672">*</span>tmpl <span style="color:#f92672">=</span> <span style="color:#a6e22e">nf_ct_get</span>(skb, <span style="color:#f92672">&amp;</span>ctinfo); <span style="color:#75715e">// 获取 skb 对应的 conntrack_info 和连接记录
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#66d9ef">if</span> (tmpl <span style="color:#f92672">||</span> ctinfo <span style="color:#f92672">==</span> IP_CT_UNTRACKED) {        <span style="color:#75715e">// 如果记录存在，或者是不需要跟踪的类型
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>      <span style="color:#66d9ef">if</span> ((tmpl <span style="color:#f92672">&amp;&amp;</span> <span style="color:#f92672">!</span><span style="color:#a6e22e">nf_ct_is_template</span>(tmpl)) <span style="color:#f92672">||</span> ctinfo <span style="color:#f92672">==</span> IP_CT_UNTRACKED) {
+</span></span><span style="display:flex;"><span>          <span style="color:#a6e22e">NF_CT_STAT_INC_ATOMIC</span>(net, ignore);     <span style="color:#75715e">// 无需跟踪的类型，增加 ignore 计数
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>          <span style="color:#66d9ef">return</span> NF_ACCEPT;                       <span style="color:#75715e">// 返回 NF_ACCEPT，继续后面的处理
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>      }
+</span></span><span style="display:flex;"><span>      skb<span style="color:#f92672">-&gt;</span>_nfct <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;                             <span style="color:#75715e">// 不属于 ignore 类型，计数器置零，准备后续处理
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">struct</span> nf_conntrack_l4proto <span style="color:#f92672">*</span>l4proto <span style="color:#f92672">=</span> <span style="color:#a6e22e">__nf_ct_l4proto_find</span>(...);    <span style="color:#75715e">// 提取协议相关的 L4 头信息
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span> (l4proto<span style="color:#f92672">-&gt;</span>error <span style="color:#f92672">!=</span> NULL) {                   <span style="color:#75715e">// skb 的完整性和合法性验证
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>      <span style="color:#66d9ef">if</span> (l4proto<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">error</span>(net, tmpl, skb, dataoff, pf, hooknum) <span style="color:#f92672">&lt;=</span> <span style="color:#ae81ff">0</span>) {
+</span></span><span style="display:flex;"><span>          <span style="color:#a6e22e">NF_CT_STAT_INC_ATOMIC</span>(net, error);
+</span></span><span style="display:flex;"><span>          <span style="color:#a6e22e">NF_CT_STAT_INC_ATOMIC</span>(net, invalid);
+</span></span><span style="display:flex;"><span>          <span style="color:#66d9ef">goto</span> out;
+</span></span><span style="display:flex;"><span>      }
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>repeat:
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// 开始连接跟踪：提取 tuple；创建新连接记录，或者更新已有连接的状态
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#a6e22e">resolve_normal_ct</span>(net, tmpl, skb, ... l4proto);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  l4proto<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">packet</span>(ct, skb, dataoff, ctinfo); <span style="color:#75715e">// 进行一些协议相关的处理，例如 UDP 会更新 timeout
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span> (ctinfo <span style="color:#f92672">==</span> IP_CT_ESTABLISHED_REPLY <span style="color:#f92672">&amp;&amp;</span> <span style="color:#f92672">!</span><span style="color:#a6e22e">test_and_set_bit</span>(IPS_SEEN_REPLY_BIT, <span style="color:#f92672">&amp;</span>ct<span style="color:#f92672">-&gt;</span>status))
+</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">nf_conntrack_event_cache</span>(IPCT_REPLY, ct);
+</span></span><span style="display:flex;"><span>out:
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span> (tmpl)
+</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">nf_ct_put</span>(tmpl); <span style="color:#75715e">// 解除对连接记录 tmpl 的引用
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>}
+</span></span></code></pre></div><p>大致流程：</p>
+<ol>
+<li>尝试获取这个 skb 对应的连接跟踪记录</li>
+<li>判断是否需要对这个包做连接跟踪，如果不需要，更新 ignore 计数（<code>conntrack -S</code> 能看到这个计数）， 返回 <code>NF_ACCEPT</code>；如果需要，就<strong>初始化这个 skb 的引用计数</strong>。</li>
+<li>从包的 L4 header 中提取信息，初始化协议相关的 <code>struct nf_conntrack_l4proto {}</code> 变量，其中包含了该协议的<strong>连接跟踪相关的回调方法</strong>。</li>
+<li>调用该协议的 <code>error()</code> 方法检查包的完整性、校验和等信息。</li>
+<li>调用 <code>resolve_normal_ct()</code> <strong>开始连接跟踪</strong>，它会创建新 tuple，新 conntrack entry，或者更新已有连接的状态。</li>
+<li>调用该协议的 <code>packet()</code> 方法进行一些协议相关的处理，例如对于 UDP，如果 status bit 里面设置了 <code>IPS_SEEN_REPLY</code> 位，就会更新 timeout。timeout 大小和协 议相关，越小越越可以防止 DoS 攻击（DoS 的基本原理就是将机器的可用连接耗尽）</li>
+</ol>
+<h2 id="37-init_conntrack创建新连接记录">3.7 <code>init_conntrack()</code>：创建新连接记录</h2>
+<p>如果连接不存在（flow 的第一个包），<code>resolve_normal_ct()</code> 会调用 <code>init_conntrack</code> ，后者进而会调用 <code>new()</code> 方法创建一个新的 conntrack entry。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#75715e">// include/net/netfilter/nf_conntrack_core.c
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// Allocate a new conntrack
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">static</span> noinline <span style="color:#66d9ef">struct</span> nf_conntrack_tuple_hash <span style="color:#f92672">*</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">init_conntrack</span>(<span style="color:#66d9ef">struct</span> net <span style="color:#f92672">*</span>net, <span style="color:#66d9ef">struct</span> nf_conn <span style="color:#f92672">*</span>tmpl,
+</span></span><span style="display:flex;"><span>           <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">struct</span> nf_conntrack_tuple <span style="color:#f92672">*</span>tuple,
+</span></span><span style="display:flex;"><span>           <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">struct</span> nf_conntrack_l4proto <span style="color:#f92672">*</span>l4proto,
+</span></span><span style="display:flex;"><span>           <span style="color:#66d9ef">struct</span> sk_buff <span style="color:#f92672">*</span>skb, <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">int</span> dataoff, u32 hash)
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">struct</span> nf_conn <span style="color:#f92672">*</span>ct;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 从 conntrack table 中分配一个 entry，如果哈希表满了，会在内核日志中打印
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#75715e">// &#34;nf_conntrack: table full, dropping packet&#34; 信息，通过 `dmesg -T` 能看到
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    ct <span style="color:#f92672">=</span> <span style="color:#a6e22e">__nf_conntrack_alloc</span>(net, zone, tuple, <span style="color:#f92672">&amp;</span>repl_tuple, GFP_ATOMIC, hash);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    l4proto<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">new</span>(ct, skb, dataoff); <span style="color:#75715e">// 协议相关的方法
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">local_bh_disable</span>();             <span style="color:#75715e">// 关闭软中断
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">if</span> (net<span style="color:#f92672">-&gt;</span>ct.expect_count) {
+</span></span><span style="display:flex;"><span>        exp <span style="color:#f92672">=</span> <span style="color:#a6e22e">nf_ct_find_expectation</span>(net, zone, tuple);
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (exp) {
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">/* Welcome, Mr. Bond.  We&#39;ve been expecting you... */</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">__set_bit</span>(IPS_EXPECTED_BIT, <span style="color:#f92672">&amp;</span>ct<span style="color:#f92672">-&gt;</span>status);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">/* exp-&gt;master safe, refcnt bumped in nf_ct_find_expectation */</span>
+</span></span><span style="display:flex;"><span>            ct<span style="color:#f92672">-&gt;</span>master <span style="color:#f92672">=</span> exp<span style="color:#f92672">-&gt;</span>master;
+</span></span><span style="display:flex;"><span>            ct<span style="color:#f92672">-&gt;</span>mark <span style="color:#f92672">=</span> exp<span style="color:#f92672">-&gt;</span>master<span style="color:#f92672">-&gt;</span>mark;
+</span></span><span style="display:flex;"><span>            ct<span style="color:#f92672">-&gt;</span>secmark <span style="color:#f92672">=</span> exp<span style="color:#f92672">-&gt;</span>master<span style="color:#f92672">-&gt;</span>secmark;
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">NF_CT_STAT_INC</span>(net, expect_new);
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">/* Now it is inserted into the unconfirmed list, bump refcount */</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 至此这个新的 conntrack entry 已经被插入 unconfirmed list
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#a6e22e">nf_conntrack_get</span>(<span style="color:#f92672">&amp;</span>ct<span style="color:#f92672">-&gt;</span>ct_general);
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">nf_ct_add_to_unconfirmed_list</span>(ct);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">local_bh_enable</span>();              <span style="color:#75715e">// 重新打开软中断
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (exp) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (exp<span style="color:#f92672">-&gt;</span>expectfn)
+</span></span><span style="display:flex;"><span>            exp<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">expectfn</span>(ct, exp);
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">nf_ct_expect_put</span>(exp);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#f92672">&amp;</span>ct<span style="color:#f92672">-&gt;</span>tuplehash[IP_CT_DIR_ORIGINAL];
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>每种协议需要实现自己的 <code>l4proto-&gt;new()</code> 方法，代码见：<code>net/netfilter/nf_conntrack_proto_*.c</code>。 例如 TCP 协议对应的 <code>new()</code> 方法是：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#75715e">// net/netfilter/nf_conntrack_proto_tcp.c
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">/* Called when a new connection for this protocol found. */</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">static</span> <span style="color:#66d9ef">bool</span> <span style="color:#a6e22e">tcp_new</span>(<span style="color:#66d9ef">struct</span> nf_conn <span style="color:#f92672">*</span>ct, <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">struct</span> sk_buff <span style="color:#f92672">*</span>skb, <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">int</span> dataoff)
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (new_state <span style="color:#f92672">==</span> TCP_CONNTRACK_SYN_SENT) {
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">memset</span>(<span style="color:#f92672">&amp;</span>ct<span style="color:#f92672">-&gt;</span>proto.tcp, <span style="color:#ae81ff">0</span>, <span style="color:#66d9ef">sizeof</span>(ct<span style="color:#f92672">-&gt;</span>proto.tcp));
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">/* SYN packet */</span>
+</span></span><span style="display:flex;"><span>        ct<span style="color:#f92672">-&gt;</span>proto.tcp.seen[<span style="color:#ae81ff">0</span>].td_end <span style="color:#f92672">=</span> <span style="color:#a6e22e">segment_seq_plus_len</span>(<span style="color:#a6e22e">ntohl</span>(th<span style="color:#f92672">-&gt;</span>seq), skb<span style="color:#f92672">-&gt;</span>len, dataoff, th);
+</span></span><span style="display:flex;"><span>        ct<span style="color:#f92672">-&gt;</span>proto.tcp.seen[<span style="color:#ae81ff">0</span>].td_maxwin <span style="color:#f92672">=</span> <span style="color:#a6e22e">ntohs</span>(th<span style="color:#f92672">-&gt;</span>window);
+</span></span><span style="display:flex;"><span>        ...
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>如果当前包会影响后面包的状态判断，<code>init_conntrack()</code> 会设置 <code>struct nf_conn</code> 的 <code>master</code> 字段。面向连接的协议会用到这个特性，例如 TCP。</p>
+<h2 id="38-nf_conntrack_confirm确认包没有被丢弃">3.8 <code>nf_conntrack_confirm()</code>：确认包没有被丢弃</h2>
+<p><code>nf_conntrack_in()</code> 创建的新 conntrack entry 会插入到一个 <strong>未确认连接</strong>（ unconfirmed connection）列表。</p>
+<p>如果这个包之后没有被丢弃，那它在经过 <code>POST_ROUTING</code> 时会被 <code>nf_conntrack_confirm()</code> 方法处理，原理我们在分析过了 3.6 节的开头分析过了。 <code>nf_conntrack_confirm()</code> 完成之后，状态就变为了 <code>IPS_CONFIRMED</code>，并且连接记录从 <strong>未确认列表</strong>移到<strong>正常</strong>的列表。</p>
+<p>之所以把创建一个新 entry 的过程分为创建（new）和确认（confirm）两个阶段 ，是因为<strong>包在经过 nf_conntrack_in() 之后，到达 nf_conntrack_confirm() 之前 ，可能会被内核丢弃</strong>。这样会导致系统残留大量的半连接状态记录，在性能和安全性上都 是很大问题。分为两步之后，可以加快半连接状态 conntrack entry 的 GC。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#75715e">// include/net/netfilter/nf_conntrack_core.h
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">/* Confirm a connection: returns NF_DROP if packet must be dropped. */</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">static</span> <span style="color:#66d9ef">inline</span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">nf_conntrack_confirm</span>(<span style="color:#66d9ef">struct</span> sk_buff <span style="color:#f92672">*</span>skb)
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">struct</span> nf_conn <span style="color:#f92672">*</span>ct <span style="color:#f92672">=</span> (<span style="color:#66d9ef">struct</span> nf_conn <span style="color:#f92672">*</span>)<span style="color:#a6e22e">skb_nfct</span>(skb);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span> ret <span style="color:#f92672">=</span> NF_ACCEPT;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (ct) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (<span style="color:#f92672">!</span><span style="color:#a6e22e">nf_ct_is_confirmed</span>(ct))
+</span></span><span style="display:flex;"><span>            ret <span style="color:#f92672">=</span> <span style="color:#a6e22e">__nf_conntrack_confirm</span>(skb);
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">likely</span>(ret <span style="color:#f92672">==</span> NF_ACCEPT))
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">nf_ct_deliver_cached_events</span>(ct);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> ret;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>confirm 逻辑，省略了各种错误处理逻辑：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#75715e">// net/netfilter/nf_conntrack_core.c
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">/* Confirm a connection given skb; places it in hash table */</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">int</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">__nf_conntrack_confirm</span>(<span style="color:#66d9ef">struct</span> sk_buff <span style="color:#f92672">*</span>skb)
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">struct</span> nf_conn <span style="color:#f92672">*</span>ct;
+</span></span><span style="display:flex;"><span>    ct <span style="color:#f92672">=</span> <span style="color:#a6e22e">nf_ct_get</span>(skb, <span style="color:#f92672">&amp;</span>ctinfo);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">local_bh_disable</span>();               <span style="color:#75715e">// 关闭软中断
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>    hash <span style="color:#f92672">=</span> <span style="color:#f92672">*</span>(<span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">long</span> <span style="color:#f92672">*</span>)<span style="color:#f92672">&amp;</span>ct<span style="color:#f92672">-&gt;</span>tuplehash[IP_CT_DIR_REPLY].hnnode.pprev;
+</span></span><span style="display:flex;"><span>    reply_hash <span style="color:#f92672">=</span> <span style="color:#a6e22e">hash_conntrack</span>(net, <span style="color:#f92672">&amp;</span>ct<span style="color:#f92672">-&gt;</span>tuplehash[IP_CT_DIR_REPLY].tuple);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    ct<span style="color:#f92672">-&gt;</span>timeout <span style="color:#f92672">+=</span> nfct_time_stamp;   <span style="color:#75715e">// 更新连接超时时间，超时后会被 GC
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#a6e22e">atomic_inc</span>(<span style="color:#f92672">&amp;</span>ct<span style="color:#f92672">-&gt;</span>ct_general.use);  <span style="color:#75715e">// 设置连接引用计数？
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    ct<span style="color:#f92672">-&gt;</span>status <span style="color:#f92672">|=</span> IPS_CONFIRMED;      <span style="color:#75715e">// 设置连接状态为 confirmed
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">__nf_conntrack_hash_insert</span>(ct, hash, reply_hash);  <span style="color:#75715e">// 插入到连接跟踪哈希表
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">local_bh_enable</span>();                <span style="color:#75715e">// 重新打开软中断
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">nf_conntrack_event_cache</span>(<span style="color:#a6e22e">master_ct</span>(ct) <span style="color:#f92672">?</span> IPCT_RELATED : IPCT_NEW, ct);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> NF_ACCEPT;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>可以看到，<strong>连接跟踪的处理逻辑中需要频繁关闭和打开软中断</strong>，此外还有各种锁， 这是短连高并发场景下连接跟踪性能损耗的主要原因？。</p>
+<p>NAT 是与连接跟踪独立的模块。</p>
+<h2 id="41-重要数据结构和函数">4.1 重要数据结构和函数</h2>
+<p><strong>重要数据结构：</strong></p>
+<p>支持 NAT 的协议需要实现其中的方法：</p>
+<ul>
+<li><code>struct nf_nat_l3proto {}</code></li>
+<li><code>struct nf_nat_l4proto {}</code></li>
+</ul>
+<p><strong>重要函数：</strong></p>
+<ul>
+<li><code>nf_nat_inet_fn()</code>：NAT 的核心函数，在<strong>除 NF_INET_FORWARD 之外的其他 hook 点都会被调用</strong>。</li>
+</ul>
+<h2 id="42-nat-模块初始化">4.2 NAT 模块初始化</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#75715e">// net/netfilter/nf_nat_core.c
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">static</span> <span style="color:#66d9ef">struct</span> nf_nat_hook nat_hook <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>    .parse_nat_setup    <span style="color:#f92672">=</span> nfnetlink_parse_nat_setup,
+</span></span><span style="display:flex;"><span>    .decode_session        <span style="color:#f92672">=</span> __nf_nat_decode_session,
+</span></span><span style="display:flex;"><span>    .manip_pkt        <span style="color:#f92672">=</span> nf_nat_manip_pkt,
+</span></span><span style="display:flex;"><span>};
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">static</span> <span style="color:#66d9ef">int</span> __init <span style="color:#a6e22e">nf_nat_init</span>(<span style="color:#66d9ef">void</span>)
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    nf_nat_bysource <span style="color:#f92672">=</span> <span style="color:#a6e22e">nf_ct_alloc_hashtable</span>(<span style="color:#f92672">&amp;</span>nf_nat_htable_size, <span style="color:#ae81ff">0</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">nf_ct_helper_expectfn_register</span>(<span style="color:#f92672">&amp;</span>follow_master_nat);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">RCU_INIT_POINTER</span>(nf_nat_hook, <span style="color:#f92672">&amp;</span>nat_hook);
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">MODULE_LICENSE</span>(<span style="color:#e6db74">&#34;GPL&#34;</span>);
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">module_init</span>(nf_nat_init);
+</span></span></code></pre></div><h2 id="43-struct-nf_nat_l3proto-协议相关的-nat-方法集">4.3 <code>struct nf_nat_l3proto {}</code>：协议相关的 NAT 方法集</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#75715e">// include/net/netfilter/nf_nat_l3proto.h
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">struct</span> nf_nat_l3proto {
+</span></span><span style="display:flex;"><span>    u8    l3proto; <span style="color:#75715e">// 例如，AF_INET
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">u32</span>     (<span style="color:#f92672">*</span>secure_port    )(<span style="color:#66d9ef">const</span> <span style="color:#66d9ef">struct</span> nf_conntrack_tuple <span style="color:#f92672">*</span>t, __be16);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">bool</span>    (<span style="color:#f92672">*</span>manip_pkt      )(<span style="color:#66d9ef">struct</span> sk_buff <span style="color:#f92672">*</span>skb, ...);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">void</span>    (<span style="color:#f92672">*</span>csum_update    )(<span style="color:#66d9ef">struct</span> sk_buff <span style="color:#f92672">*</span>skb, ...);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">void</span>    (<span style="color:#f92672">*</span>csum_recalc    )(<span style="color:#66d9ef">struct</span> sk_buff <span style="color:#f92672">*</span>skb, u8 proto, ...);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">void</span>    (<span style="color:#f92672">*</span>decode_session )(<span style="color:#66d9ef">struct</span> sk_buff <span style="color:#f92672">*</span>skb, ...);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span>     (<span style="color:#f92672">*</span>nlattr_to_range)(<span style="color:#66d9ef">struct</span> nlattr <span style="color:#f92672">*</span>tb[], <span style="color:#66d9ef">struct</span> nf_nat_range2 <span style="color:#f92672">*</span>range);
+</span></span><span style="display:flex;"><span>};
+</span></span></code></pre></div><h2 id="44-struct-nf_nat_l4proto-协议相关的-nat-方法集">4.4 <code>struct nf_nat_l4proto {}</code>：协议相关的 NAT 方法集</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#75715e">// include/net/netfilter/nf_nat_l4proto.h
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">struct</span> nf_nat_l4proto {
+</span></span><span style="display:flex;"><span>    u8 l4proto; <span style="color:#75715e">// Protocol number，例如 IPPROTO_UDP, IPPROTO_TCP
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 根据传入的 tuple 和 NAT 类型（SNAT/DNAT）修改包的 L3/L4 头
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">bool</span> (<span style="color:#f92672">*</span>manip_pkt)(<span style="color:#66d9ef">struct</span> sk_buff <span style="color:#f92672">*</span>skb, <span style="color:#f92672">*</span>l3proto, <span style="color:#f92672">*</span>tuple, maniptype);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 创建一个唯一的 tuple
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#75715e">// 例如对于 UDP，会根据 src_ip, dst_ip, src_port 加一个随机数生成一个 16bit 的 dst_port
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">void</span> (<span style="color:#f92672">*</span>unique_tuple)(<span style="color:#f92672">*</span>l3proto, tuple, <span style="color:#66d9ef">struct</span> nf_nat_range2 <span style="color:#f92672">*</span>range, maniptype, <span style="color:#66d9ef">struct</span> nf_conn <span style="color:#f92672">*</span>ct);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// If the address range is exhausted the NAT modules will begin to drop packets.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">int</span> (<span style="color:#f92672">*</span>nlattr_to_range)(<span style="color:#66d9ef">struct</span> nlattr <span style="color:#f92672">*</span>tb[], <span style="color:#66d9ef">struct</span> nf_nat_range2 <span style="color:#f92672">*</span>range);
+</span></span><span style="display:flex;"><span>};
+</span></span></code></pre></div><p>各协议实现的方法，见：<code>net/netfilter/nf_nat_proto_*.c</code>。例如 TCP 的实现：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#75715e">// net/netfilter/nf_nat_proto_tcp.c
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#66d9ef">struct</span> nf_nat_l4proto nf_nat_l4proto_tcp <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>    .l4proto        <span style="color:#f92672">=</span> IPPROTO_TCP,
+</span></span><span style="display:flex;"><span>    .manip_pkt        <span style="color:#f92672">=</span> tcp_manip_pkt,
+</span></span><span style="display:flex;"><span>    .in_range        <span style="color:#f92672">=</span> nf_nat_l4proto_in_range,
+</span></span><span style="display:flex;"><span>    .unique_tuple        <span style="color:#f92672">=</span> tcp_unique_tuple,
+</span></span><span style="display:flex;"><span>    .nlattr_to_range    <span style="color:#f92672">=</span> nf_nat_l4proto_nlattr_to_range,
+</span></span><span style="display:flex;"><span>};
+</span></span></code></pre></div><h2 id="45-nf_nat_inet_fn进入-nat">4.5 <code>nf_nat_inet_fn()</code>：进入 NAT</h2>
+<p>NAT 的核心函数是 <code>nf_nat_inet_fn()</code>，它会在以下 hook 点被调用：</p>
+<ul>
+<li><code>NF_INET_PRE_ROUTING</code></li>
+<li><code>NF_INET_POST_ROUTING</code></li>
+<li><code>NF_INET_LOCAL_OUT</code></li>
+<li><code>NF_INET_LOCAL_IN</code></li>
+</ul>
+<p>也就是除了 <code>NF_INET_FORWARD</code> 之外其他 hook 点都会被调用。</p>
+<p><strong>在这些 hook 点的优先级</strong>：<strong>Conntrack &gt; NAT &gt; Packet Filtering</strong>。 <strong>连接跟踪的优先级高于 NAT</strong> 是因为 NAT 依赖连接跟踪的结果。</p>
+<p>
+
+
+
+
+    
+
+
+<div style="text-align: center;">
+<img src="hook-to-nat.png" 
+     alt="" 
+      
+/>
+</div></p>
+<p>Fig. NAT</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">int</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">nf_nat_inet_fn</span>(<span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>priv, <span style="color:#66d9ef">struct</span> sk_buff <span style="color:#f92672">*</span>skb, <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">struct</span> nf_hook_state <span style="color:#f92672">*</span>state)
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    ct <span style="color:#f92672">=</span> <span style="color:#a6e22e">nf_ct_get</span>(skb, <span style="color:#f92672">&amp;</span>ctinfo);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (<span style="color:#f92672">!</span>ct)    <span style="color:#75715e">// conntrack 不存在就做不了 NAT，直接返回，这也是我们为什么说 NAT 依赖 conntrack 的结果
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        <span style="color:#66d9ef">return</span> NF_ACCEPT;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    nat <span style="color:#f92672">=</span> <span style="color:#a6e22e">nfct_nat</span>(ct);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">switch</span> (ctinfo) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">case</span> IP_CT_RELATED:
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">case</span> IP_CT_RELATED_REPLY: <span style="color:#75715e">/* Only ICMPs can be IP_CT_IS_REPLY.  Fallthrough */</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">case</span> IP_CT_NEW: <span style="color:#75715e">/* Seen it before? This can happen for loopback, retrans, or local packets. */</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (<span style="color:#f92672">!</span><span style="color:#a6e22e">nf_nat_initialized</span>(ct, maniptype)) {
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">struct</span> nf_hook_entries <span style="color:#f92672">*</span>e <span style="color:#f92672">=</span> <span style="color:#a6e22e">rcu_dereference</span>(lpriv<span style="color:#f92672">-&gt;</span>entries); <span style="color:#75715e">// 获取所有 NAT 规则
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>            <span style="color:#66d9ef">if</span> (<span style="color:#f92672">!</span>e)
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">goto</span> null_bind;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">for</span> (i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; i <span style="color:#f92672">&lt;</span> e<span style="color:#f92672">-&gt;</span>num_hook_entries; i<span style="color:#f92672">++</span>) { <span style="color:#75715e">// 依次执行 NAT 规则
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>                <span style="color:#66d9ef">if</span> (e<span style="color:#f92672">-&gt;</span>hooks[i].<span style="color:#a6e22e">hook</span>(e<span style="color:#f92672">-&gt;</span>hooks[i].priv, skb, state) <span style="color:#f92672">!=</span> NF_ACCEPT )
+</span></span><span style="display:flex;"><span>                    <span style="color:#66d9ef">return</span> ret;                         <span style="color:#75715e">// 任何规则返回非 NF_ACCEPT，就停止当前处理
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">nf_nat_initialized</span>(ct, maniptype))
+</span></span><span style="display:flex;"><span>                    <span style="color:#66d9ef">goto</span> do_nat;
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>null_bind:
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">nf_nat_alloc_null_binding</span>(ct, state<span style="color:#f92672">-&gt;</span>hook);
+</span></span><span style="display:flex;"><span>        } <span style="color:#66d9ef">else</span> { <span style="color:#75715e">// Already setup manip
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>            <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">nf_nat_oif_changed</span>(state<span style="color:#f92672">-&gt;</span>hook, ctinfo, nat, state<span style="color:#f92672">-&gt;</span>out))
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">goto</span> oif_changed;
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">break</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">default</span><span style="color:#f92672">:</span> <span style="color:#75715e">/* ESTABLISHED */</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">nf_nat_oif_changed</span>(state<span style="color:#f92672">-&gt;</span>hook, ctinfo, nat, state<span style="color:#f92672">-&gt;</span>out))
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">goto</span> oif_changed;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>do_nat:
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">nf_nat_packet</span>(ct, ctinfo, state<span style="color:#f92672">-&gt;</span>hook, skb);
+</span></span><span style="display:flex;"><span>oif_changed:
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">nf_ct_kill_acct</span>(ct, ctinfo, skb);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> NF_DROP;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>首先查询 conntrack 记录，如果不存在，就意味着无法跟踪这个连接，那就更不可能做 NAT 了，因此直接返回。</p>
+<p>如果找到了 conntrack 记录，并且是 <code>IP_CT_RELATED</code>、<code>IP_CT_RELATED_REPLY</code> 或 <code>IP_CT_NEW</code> 状态，就去获取 NAT 规则。如果没有规则，直接返回 <code>NF_ACCEPT</code>，对包不 做任何改动；如果有规则，最后执行 <code>nf_nat_packet</code>，这个函数会进一步调用 <code>manip_pkt</code> 完成对包的修改，如果失败，包将被丢弃。</p>
+<h3 id="masquerade">Masquerade</h3>
+<p>NAT 模块</p>
+<ul>
+<li>一般配置方式：<code>Change IP1 to IP2 if matching XXX</code>。</li>
+<li>高级配置方式：<code>Change IP1 to dev1's IP if matching XXX</code>，这种方式称为 Masquerade。</li>
+</ul>
+<p>Masquerade 优缺点：</p>
+<ul>
+<li>优点：<strong>当设备（网卡）的 IP 地址发生变化时，NAT 规则无需做任何修改</strong>。</li>
+<li>缺点：<strong>性能比第一种方式要差</strong>。</li>
+</ul>
+<h2 id="46-nf_nat_packet执行-nat">4.6 <code>nf_nat_packet()</code>：执行 NAT</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#75715e">// net/netfilter/nf_nat_core.c
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">/* Do packet manipulations according to nf_nat_setup_info. */</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">nf_nat_packet</span>(<span style="color:#66d9ef">struct</span> nf_conn <span style="color:#f92672">*</span>ct, <span style="color:#66d9ef">enum</span> ip_conntrack_info ctinfo,
+</span></span><span style="display:flex;"><span>               <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">int</span> hooknum, <span style="color:#66d9ef">struct</span> sk_buff <span style="color:#f92672">*</span>skb)
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">enum</span> nf_nat_manip_type mtype <span style="color:#f92672">=</span> <span style="color:#a6e22e">HOOK2MANIP</span>(hooknum);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">enum</span> ip_conntrack_dir dir <span style="color:#f92672">=</span> <span style="color:#a6e22e">CTINFO2DIR</span>(ctinfo);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">int</span> verdict <span style="color:#f92672">=</span> NF_ACCEPT;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    statusbit <span style="color:#f92672">=</span> (mtype <span style="color:#f92672">==</span> NF_NAT_MANIP_SRC<span style="color:#f92672">?</span> IPS_SRC_NAT : IPS_DST_NAT)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (dir <span style="color:#f92672">==</span> IP_CT_DIR_REPLY)     <span style="color:#75715e">// Invert if this is reply dir
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        statusbit <span style="color:#f92672">^=</span> IPS_NAT_MASK;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (ct<span style="color:#f92672">-&gt;</span>status <span style="color:#f92672">&amp;</span> statusbit)     <span style="color:#75715e">// Non-atomic: these bits don&#39;t change. */
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        verdict <span style="color:#f92672">=</span> <span style="color:#a6e22e">nf_nat_manip_pkt</span>(skb, ct, mtype, dir);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> verdict;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#66d9ef">static</span> <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">nf_nat_manip_pkt</span>(<span style="color:#66d9ef">struct</span> sk_buff <span style="color:#f92672">*</span>skb, <span style="color:#66d9ef">struct</span> nf_conn <span style="color:#f92672">*</span>ct,
+</span></span><span style="display:flex;"><span>                     <span style="color:#66d9ef">enum</span> nf_nat_manip_type mtype, <span style="color:#66d9ef">enum</span> ip_conntrack_dir dir)
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">struct</span> nf_conntrack_tuple target;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">/* We are aiming to look like inverse of other direction. */</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">nf_ct_invert_tuplepr</span>(<span style="color:#f92672">&amp;</span>target, <span style="color:#f92672">&amp;</span>ct<span style="color:#f92672">-&gt;</span>tuplehash[<span style="color:#f92672">!</span>dir].tuple);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    l3proto <span style="color:#f92672">=</span> <span style="color:#a6e22e">__nf_nat_l3proto_find</span>(target.src.l3num);
+</span></span><span style="display:flex;"><span>    l4proto <span style="color:#f92672">=</span> <span style="color:#a6e22e">__nf_nat_l4proto_find</span>(target.src.l3num, target.dst.protonum);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (<span style="color:#f92672">!</span>l3proto<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">manip_pkt</span>(skb, <span style="color:#ae81ff">0</span>, l4proto, <span style="color:#f92672">&amp;</span>target, mtype)) <span style="color:#75715e">// 协议相关处理
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        <span style="color:#66d9ef">return</span> NF_DROP;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> NF_ACCEPT;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h2 id="51-查看--加载--卸载-nf_conntrack-模块">5.1 查看 / 加载 / 卸载 nf_conntrack 模块</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ modinfo nf_conntrack
+</span></span><span style="display:flex;"><span>filename:       /lib/modules/5.15.0-46-generic/kernel/net/netfilter/nf_conntrack.ko
+</span></span><span style="display:flex;"><span>license:        GPL
+</span></span><span style="display:flex;"><span>alias:          nf_conntrack-10
+</span></span><span style="display:flex;"><span>alias:          nf_conntrack-2
+</span></span><span style="display:flex;"><span>alias:          ip_conntrack
+</span></span><span style="display:flex;"><span>srcversion:     30B45E5822722ACEDE23A4B
+</span></span><span style="display:flex;"><span>depends:        nf_defrag_ipv6,libcrc32c,nf_defrag_ipv4
+</span></span><span style="display:flex;"><span>retpoline:      Y
+</span></span><span style="display:flex;"><span>intree:         Y
+</span></span><span style="display:flex;"><span>name:           nf_conntrack
+</span></span><span style="display:flex;"><span>vermagic:       5.15.0-46-generic SMP mod_unload modversions
+</span></span><span style="display:flex;"><span>sig_id:         PKCS#7
+</span></span><span style="display:flex;"><span>signer:         Build time autogenerated kernel key
+</span></span><span style="display:flex;"><span>sig_key:        17:6F:92:2F:58:6B:B2:28:13:DC:71:DC:5A:97:EE:BA:D8:4B:C7:DE
+</span></span><span style="display:flex;"><span>sig_hashalgo:   sha512
+</span></span><span style="display:flex;"><span>signature:      0B:32:AA:93:F4:31:52:9C:FE:0D:80:B4:F6:7C:30:63:4C:F6:03:AA:
+</span></span><span style="display:flex;"><span>                ...
+</span></span><span style="display:flex;"><span>                E9:1F:45:C6:77:C2:29:99:B4:3D:1A:D2
+</span></span><span style="display:flex;"><span>parm:           tstamp:Enable connection tracking flow timestamping. <span style="color:#f92672">(</span>bool<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>parm:           acct:Enable connection tracking flow accounting. <span style="color:#f92672">(</span>bool<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>parm:           nf_conntrack_helper:Enable automatic conntrack helper assignment <span style="color:#f92672">(</span>default 0<span style="color:#f92672">)</span> <span style="color:#f92672">(</span>bool<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>parm:           expect_hashsize:uint
+</span></span><span style="display:flex;"><span>parm:           enable_hooks:Always enable conntrack hooks <span style="color:#f92672">(</span>bool<span style="color:#f92672">)</span>
+</span></span></code></pre></div><p>卸载：</p>
+<pre tabindex="0"><code>$ rmmod nf_conntrack_netlink nf_conntrack
+</code></pre><p>重新加载：</p>
+<pre tabindex="0"><code>$ modprobe nf_conntrack
+
+# 加载时还可以指定额外的配置参数，例如：
+$ modprobe nf_conntrack nf_conntrack_helper=1 expect_hashsize=131072
+</code></pre><h2 id="52-sysctl-配置项">5.2 sysctl 配置项</h2>
+<pre tabindex="0"><code>$ sysctl -a | grep nf_conntrack
+net.netfilter.nf_conntrack_acct = 0
+net.netfilter.nf_conntrack_buckets = 262144                 # hashsize = nf_conntrack_max/nf_conntrack_buckets
+net.netfilter.nf_conntrack_checksum = 1
+net.netfilter.nf_conntrack_count = 2148
+... # DCCP options
+net.netfilter.nf_conntrack_events = 1
+net.netfilter.nf_conntrack_expect_max = 1024
+... # IPv6 options
+net.netfilter.nf_conntrack_generic_timeout = 600
+net.netfilter.nf_conntrack_helper = 0
+net.netfilter.nf_conntrack_icmp_timeout = 30
+net.netfilter.nf_conntrack_log_invalid = 0
+net.netfilter.nf_conntrack_max = 1048576                    # conntrack table size
+... # SCTP options
+net.netfilter.nf_conntrack_tcp_be_liberal = 0
+net.netfilter.nf_conntrack_tcp_loose = 1
+net.netfilter.nf_conntrack_tcp_max_retrans = 3
+net.netfilter.nf_conntrack_tcp_timeout_close = 10
+net.netfilter.nf_conntrack_tcp_timeout_close_wait = 60
+net.netfilter.nf_conntrack_tcp_timeout_established = 21600
+net.netfilter.nf_conntrack_tcp_timeout_fin_wait = 120
+net.netfilter.nf_conntrack_tcp_timeout_last_ack = 30
+net.netfilter.nf_conntrack_tcp_timeout_max_retrans = 300
+net.netfilter.nf_conntrack_tcp_timeout_syn_recv = 60
+net.netfilter.nf_conntrack_tcp_timeout_syn_sent = 120
+net.netfilter.nf_conntrack_tcp_timeout_time_wait = 120
+net.netfilter.nf_conntrack_tcp_timeout_unacknowledged = 300
+net.netfilter.nf_conntrack_timestamp = 0
+net.netfilter.nf_conntrack_udp_timeout = 30
+net.netfilter.nf_conntrack_udp_timeout_stream = 180
+</code></pre><h2 id="53-监控">5.3 监控</h2>
+<h3 id="丢包监控">丢包监控</h3>
+<p><code>/proc/net/stat</code> 下面有一些关于 conntrack 的详细统计：</p>
+<pre tabindex="0"><code>$ cat /proc/net/stat/nf_conntrack
+entries   searched found    new      invalid  ignore   delete   delete_list insert   insert_failed drop     early_drop icmp_error  expect_new expect_create expect_delete search_restart
+000008e3  00000000 00000000 00000000 0000309d 001e72d4 00000000 00000000    00000000 00000000      00000000 00000000   000000ee    00000000   00000000      00000000       000368d7
+000008e3  00000000 00000000 00000000 00007301 002b8e8c 00000000 00000000    00000000 00000000      00000000 00000000   00000170    00000000   00000000      00000000       00035794
+000008e3  00000000 00000000 00000000 00001eea 001e6382 00000000 00000000    00000000 00000000      00000000 00000000   00000059    00000000   00000000      00000000       0003f166
+...
+</code></pre><p>此外，还可以用 <code>conntrack</code> 命令：</p>
+<pre tabindex="0"><code>$ conntrack -S
+cpu=0   found=0 invalid=743150 ignore=238069 insert=0 insert_failed=0 drop=195603 early_drop=118583 error=16 search_restart=22391652
+cpu=1   found=0 invalid=2004   ignore=402790 insert=0 insert_failed=0 drop=44371  early_drop=34890  error=0  search_restart=1225447
+...
+</code></pre><ul>
+<li>ignore：不需要做连接跟踪的包（回忆前面，只有特定协议的包才会做连接跟踪）</li>
+</ul>
+<h3 id="conntrack-table-使用量监控">conntrack table 使用量监控</h3>
+<p>可以定期采集系统的 conntrack 使用量，</p>
+<pre tabindex="0"><code>$ cat /proc/sys/net/netfilter/nf_conntrack_count
+257273
+</code></pre><p>并与最大值比较：</p>
+<pre tabindex="0"><code>$ cat /proc/sys/net/netfilter/nf_conntrack_max
+262144
+</code></pre><h2 id="61-连接太多导致-conntrack-table-被打爆">6.1 连接太多导致 conntrack table 被打爆</h2>
+<h3 id="现象">现象</h3>
+<h4 id="业务层应用层现象">业务层（应用层）现象</h4>
+<ol>
+<li>
+<p>存在随机、偶发的<strong>新建连接</strong>超时（connect timeout）。</p>
+<p>例如，如果业务用的是 Java，那对应的是 <code>jdbc4.CommunicationsException</code> communications link failure 之类的错误。</p>
+</li>
+<li>
+<p><strong>已有连接</strong>正常。</p>
+<p>也就是没有 read timeout 或 write timeout 之类的报错，报错都集中为 connect timeout。</p>
+</li>
+</ol>
+<h4 id="网络层现象">网络层现象</h4>
+<ol>
+<li>
+<p>抓包会看到三次握手的<strong>第一个 SYN 包被宿主机静默丢弃了</strong>。</p>
+<p>需要注意的是，常规的网卡统计（<code>ifconfig</code>）和内核统计（<code>/proc/net/softnet_stat</code>） <strong>无法反映出这些丢包</strong>。</p>
+</li>
+<li>
+<p><code>1s+</code> 之后出发 SYN 重传，或者还没重传连接就关闭了。</p>
+<p><strong>第一个 SYN 的重传是 1s，这个是内核代码里写死的，不可配置</strong>（具体实现见 <a href="#ch_8.1">附录</a>）。</p>
+<p>再考虑到其他一些耗时，第一次重传的实际间隔要大于 1s。 如果客户端设置的超时时间很小，例如 <code>1.05s</code>，那可能来不及重传连接就被关闭了，然后向上层报 connect timeout 错误。</p>
+</li>
+</ol>
+<h4 id="操作系统层现象">操作系统层现象</h4>
+<p>内核日志中有如下报错：</p>
+<pre tabindex="0"><code>$ demsg -T
+[Tue Apr  6 18:12:30 2021] nf_conntrack: nf_conntrack: table full, dropping packet
+[Tue Apr  6 18:12:30 2021] nf_conntrack: nf_conntrack: table full, dropping packet
+[Tue Apr  6 18:12:30 2021] nf_conntrack: nf_conntrack: table full, dropping packet
+...
+</code></pre><p>另外，<code>cat /proc/net/stat/nf_conntrack</code> 或 <code>conntrack -S</code> 能看到有 drop 统计。</p>
+<h3 id="确认-conntrack-table-被打爆">确认 conntrack table 被打爆</h3>
+<p>遇到以上现象，基本就是 conntrack 表被打爆了。确认：</p>
+<pre tabindex="0"><code>$ cat /proc/sys/net/netfilter/nf_conntrack_count
+257273
+
+$ cat /proc/sys/net/netfilter/nf_conntrack_max
+net.netfilter.nf_conntrack_max = 262144
+</code></pre><p>如果有 conntrack count 监控会看的更清楚，因为我们命令行查看时，高峰可能过了。</p>
+<h3 id="解决方式">解决方式</h3>
+<p>优先级从高到低：</p>
+<ol>
+<li>
+<p>调大 conntrack 表</p>
+<p>运行时配置（经实际测试，<strong>不会对现有连接造成影响</strong>）：</p>
+<pre tabindex="0"><code> $ sysctl -w net.netfilter.nf_conntrack_max=524288
+ $ sysctl -w net.netfilter.nf_conntrack_buckets=131072 # 推荐配置 hashsize=nf_conntrack_count/4
+</code></pre><p>持久化配置：</p>
+<pre tabindex="0"><code> $ echo &#39;net.netfilter.nf_conntrack_max = 524288&#39; &gt;&gt; /etc/sysctl.conf
+ $ echo &#39;net.netfilter.nf_conntrack_buckets = 131072&#39; &gt;&gt; /etc/sysctl.conf
+</code></pre><p>影响：连接跟踪模块<strong>会多用一些内存</strong>。具体多用多少内存，可参考 <a href="#ch_8.2">附录</a>。</p>
+</li>
+<li>
+<p>减小 GC 时间</p>
+<p>还可以调小 conntrack 的 GC（也叫 timeout）时间，加快过期 entry 的回收。</p>
+<p><code>nf_conntrack</code> 针对不同 TCP 状态（established、fin_wait、time_wait 等）的 entry 有不同的 GC 时间。</p>
+<p>例如，<strong>默认的 established 状态的 GC 时间是 423000s（5 天）</strong>。设置成这么长的 <strong>可能原因</strong>是：TCP/IP 协议中允许 established 状态的连接无限期不发送任何东西（但仍然活着） [8]，协议的具体实现（Linux、BSD、Windows 等）会设置各自允许的最大 idle timeout。为防止 GC 掉这样长时间没流量但实际还活着的连接，就设置一个足够保守的 timeout 时间。[8] 中建议这个值不小于 2 小时 4 分钟（作为对比和参考， <strong>Cilium 自己实现的 CT 中，默认 established GC 是 6 小时</strong>）。 但也能看到一些厂商推荐比这个小得多的配置，例如 20 分钟。</p>
+<p>如果对自己的网络环境和需求非常清楚，那可以将这个时间调到一个合理的、足够小的值； 如果不是非常确定的话，还是<strong>建议保守一些，例如设置 6 个小时</strong> —— 这已经比默认值 5 天小多了。</p>
+<pre tabindex="0"><code> $ sysctl -w net.netfilter.nf_conntrack_tcp_timeout_established = 21600
+</code></pre><p>持久化：</p>
+<pre tabindex="0"><code> $ echo &#39;net.netfilter.nf_conntrack_tcp_timeout_established = 21600&#39; &gt;&gt; /etc/sysctl.conf
+</code></pre><p>其他几个 timeout 值（尤其是 <code>nf_conntrack_tcp_timeout_time_wait</code>，默认 <code>120s</code>）也可以适当调小， 但还是那句话：<strong>如果不确定潜在后果，千万不要激进地调小</strong>。</p>
+</li>
+</ol>
+<p>连接跟踪是一个非常基础且重要的网络模块，但只有在少数场景下才会引起普通开发者的注意。</p>
+<p>例如，L4LB 短时高并发场景下，LB 节点每秒接受大量并发短连接，可能导致 conntrack table 被打爆。此时的现象是：</p>
+<ul>
+<li>客户端和 L4LB 建连失败，失败可能是随机的，也可能是集中在某些时间点。</li>
+<li>客户端重试可能会成功，也可能会失败。</li>
+<li>在 L4LB 节点抓包看，客户端过来的 TCP SYNC 包 L4LB 收到了，但没有回 ACK。即，包 被静默丢弃了（silently dropped）。</li>
+</ul>
+<p>此时的原因可能是 conntrack table 太小，也可能是 GC 不够及 时，甚至是 <a href="https://github.com/cilium/cilium/pull/12729">GC 有 bug</a>。</p>
+<h2 id="81-第一个-syn-包的重传间隔计算linux-419118-实现">8.1 第一个 SYN 包的重传间隔计算（Linux 4.19.118 实现）</h2>
+<p>调用路径：<code>tcp_connect() -&gt; tcp_connect_init() -&gt; tcp_timeout_init()</code>。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#75715e">// net/ipv4/tcp_output.c
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#75715e">/* Do all connect socket setups that can be done AF independent. */</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">tcp_connect_init</span>(<span style="color:#66d9ef">struct</span> sock <span style="color:#f92672">*</span>sk)
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">inet_csk</span>(sk)<span style="color:#f92672">-&gt;</span>icsk_rto <span style="color:#f92672">=</span> <span style="color:#a6e22e">tcp_timeout_init</span>(sk);
+</span></span><span style="display:flex;"><span>    ...
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// include/net/tcp.h
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">static</span> <span style="color:#66d9ef">inline</span> u32 <span style="color:#a6e22e">tcp_timeout_init</span>(<span style="color:#66d9ef">struct</span> sock <span style="color:#f92672">*</span>sk)
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 获取 SYN-RTO：如果这个 socket 上没有 BPF 程序，或者有 BPF 程序但执行失败，都返回 -1
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#75715e">// 除非用户自己编写 BPF 程序并 attach 到 cgroup/socket，否则这里都是没有 BPF 的，因此这里返回 -1
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    timeout <span style="color:#f92672">=</span> <span style="color:#a6e22e">tcp_call_bpf</span>(sk, BPF_SOCK_OPS_TIMEOUT_INIT, <span style="color:#ae81ff">0</span>, NULL);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (timeout <span style="color:#f92672">&lt;=</span> <span style="color:#ae81ff">0</span>)                <span style="color:#75715e">// timeout == -1，接下来使用默认值
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        timeout <span style="color:#f92672">=</span> TCP_TIMEOUT_INIT;  <span style="color:#75715e">// 宏定义，等于系统的 HZ 数，也就是 1 秒，见下面
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">return</span> timeout;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// include/net/tcp.h
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#75715e">#define TCP_RTO_MAX    ((unsigned)(120*HZ))
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#define TCP_RTO_MIN    ((unsigned)(HZ/5))
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#define TCP_TIMEOUT_MIN    (2U) </span><span style="color:#75715e">/* Min timeout for TCP timers in jiffies */</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#define TCP_TIMEOUT_INIT ((unsigned)(1*HZ))    </span><span style="color:#75715e">/* RFC6298 2.1 initial RTO value    */</span><span style="color:#75715e">
+</span></span></span></code></pre></div><h2 id="82-根据-nf_conntrack_max-计算-conntrack-模块所需的内存">8.2 根据 nf_conntrack_max 计算 conntrack 模块所需的内存</h2>
+<pre tabindex="0"><code>$ cat /proc/slabinfo | head -n2; cat /proc/slabinfo | grep conntrack
+slabinfo - version: 2.1
+# name            &lt;active_objs&gt; &lt;num_objs&gt; &lt;objsize&gt; &lt;objperslab&gt; &lt;pagesperslab&gt; : tunables &lt;limit&gt; &lt;batchcount&gt; &lt;sharedfactor&gt; : slabdata &lt;active_slabs&gt; &lt;num_slabs&gt; &lt;sharedavail&gt;
+nf_conntrack      512824 599505    320   51    4 : tunables    0    0    0 : slabdata  11755  11755      0
+</code></pre><p>其中的 <strong>objsize 表示这个内核对象</strong>（这里对应的是 <code>struct nf_conn</code>）的大小， 单位是<strong>字节</strong>，所以以上输出表明<strong>每个 conntrack entry 占用 320 字节的内存空间</strong>。</p>
+<p>如果忽略内存碎片（内存分配单位为 slab），那<strong>不同 size 的 conntrack table 占用的内存</strong>如下：</p>
+<ul>
+<li><code>nf_conntrack_max=512K</code>: <code>512K * 320Byte = 160MB</code></li>
+<li><code>nf_conntrack_max=1M</code>: <code>1M * 320Byte = 320MB</code></li>
+</ul>
+<p>更精确的计算，可以参考 [9]。</p>
+<ol>
+<li><a href="https://wiki.aalto.fi/download/attachments/69901948/netfilter-paper.pdf">Netfilter connection tracking and NAT implementation</a>. Proc. Seminar on Network Protocols in Operating Systems, Dept. Commun. and Networking, Aalto Univ. 2013.</li>
+<li><a href="https://docs.cilium.io/en/v1.7/gettingstarted/kubeproxy-free/">Cilium: Kubernetes without kube-proxy</a></li>
+<li><a href="chrome-extension://ijllcpnolfcooahcekpamkbidhejabll/blog/k8s-l4lb/">L4LB for Kubernetes: Theory and Practice with Cilium+BGP+ECMP</a></li>
+<li><a href="https://docs.docker.com/network/bridge/">Docker bridge network mode</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Netfilter">Wikipedia: Netfilter</a></li>
+<li><a href="https://blog.cloudflare.com/conntrack-tales-one-thousand-and-one-flows/">Conntrack tales - one thousand and one flows</a></li>
+<li><a href="https://www.redhat.com/en/blog/how-connection-tracking-open-vswitch-helps-openstack-performance">How connection tracking in Open vSwitch helps OpenStack performance</a></li>
+<li><a href="https://tools.ietf.org/html/rfc5382#section-5">NAT Behavioral Requirements for TCP</a>, RFC5382</li>
+<li><a href="https://johnleach.co.uk/posts/2009/06/17/netfilter-conntrack-memory-usage/">Netfilter Conntrack Memory Usage</a></li>
+</ol>
+
+</main>
+
+
+
+
+
+
+  <footer>
+  - END -
+  
+  <hr/>
+  © 2025 一塘
+  
+  </footer>
+  </body>
+</html>
+

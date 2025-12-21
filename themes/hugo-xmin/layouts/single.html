@@ -1,0 +1,63 @@
+{{ partial "header.html" . }}
+<div class="article-meta">
+<h1><span class="title">{{ .Title | markdownify }}</span></h1>
+{{ with .Params.author }}<h2 class="author">{{ . }}</h2>{{ end }}
+<!-- {{ if (gt .Params.date 0) }}<h2 class="date">{{ .Date.Format "2006/01/02" }}</h2>{{ end }} -->
+</div>
+<!-- 文章统计信息📄 ⏱ 🖼 -->
+<div class="post-stats" style="text-align: right;">
+   <!-- {{ .WordCount }} 字  
+  ·  {{ .ReadingTime }} 分钟  -->
+  {{ if (gt .Params.date 0) }}{{ .Date.Format "2006/01/02" }}{{ end }}
+  <!-- · {{ len (.Resources.ByType "image") }} 张 -->
+</div>
+
+{{ if .Params.toc }}
+{{ if .TableOfContents }}
+<div id="toc">
+  {{ .TableOfContents | safeHTML }}
+</div>
+{{ end }}
+{{ end }}
+
+
+<main>
+{{ .Content }}
+</main>
+
+{{ if .Params.math }}
+<script>
+window.MathJax = {
+  tex: {
+    inlineMath: [['$', '$'], ['\\(', '\\)']],
+    displayMath: [['$$', '$$'], ['\\[', '\\]']]
+  },
+  options: {
+    skipHtmlTags: ['script','noscript','style','textarea','pre','code']
+  }
+};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+{{ end }}
+
+{{ if .Params.toc }}
+{{ if .TableOfContents }}
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  document.querySelectorAll("h2[id], h3[id], h4[id]").forEach(function (h) {
+    const a = document.createElement("a");
+    a.href = "#toc";
+    a.textContent = " 🔝";
+    a.style.fontSize = "0.8em";
+    a.style.marginLeft = "0.4em";
+    a.style.color = "#999";
+    a.style.textDecoration = "none";
+    h.appendChild(a);
+  });
+});
+</script>
+{{ end }}
+{{ end }}
+
+
+{{ partial "footer.html" . }}

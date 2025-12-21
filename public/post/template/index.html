@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>博客模版 | 一塘</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+<script>
+window.MathJax = {
+  tex: {
+    inlineMath: [['$', '$'], ['\\(', '\\)']],
+    displayMath: [['$$', '$$'], ['\\[', '\\]']]
+  },
+  options: {
+    skipHtmlTags: ['script','noscript','style','textarea','pre','code']
+  }
+};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  </head>
+
+  <body>
+    <nav>
+    <ul class="menu">
+      
+      <li><a href="/about/">一塘</a></li>
+      
+      <li><a href="/post/">博客</a></li>
+      
+      <li><a href="/categories/">分类</a></li>
+      
+      <li><a href="/tags/">标签</a></li>
+      
+    </ul>
+    <hr/>
+    </nav>
+
+<div class="article-meta">
+<h1><span class="title">博客模版</span></h1>
+
+
+</div>
+
+<div class="post-stats" style="text-align: right;">
+   
+  2019/07/25
+  
+</div>
+
+
+
+
+<main>
+<p>文件head，设置标题、日期、分类、标签、评论、版权、是否使用公式，如下。</p>
+<pre tabindex="0"><code>---
+title: 模版文件
+date: 2019-07-25 12:00:00
+updated: 2019-07-25 12:00:00
+categories:
+  - 博客搭建
+  - 模版文件
+tags:
+  - Writing
+comments: true
+copyright: true
+math: true
+---
+</code></pre><p><strong>摘要</strong></p>
+<p>本部分说明文章的写作意图。涉及的背景、主要内容、本文与其他文章关系等。</p>
+<p>本文为Hexo博客模版文件，以Markdown语言书写。</p>
+<pre tabindex="0"><code>前言一般放到主页，可利用 &lt;!-- more --&gt; 隔断。
+</code></pre><!-- more -->
+<h2 id="1-构思与起草">1 构思与起草</h2>
+<ul>
+<li>对文章的阅读群体、写作意图和反馈（Audience Intention Response AIR）要有一个清楚的认识。照顾沟通对象的需要、你的意图（信息）以及希望的反馈。</li>
+<li>在思维导图上，放上你需要的关键名词，然后依次在它基础上添加动词，在加上形容词。最后以一定顺序组织你将要阐述的信息。比如重要性排序，对比优势劣势，方案的不同层面，时间上逻辑上的因果性等等。</li>
+</ul>
+<h2 id="2-主体内容">2 主体内容</h2>
+<p>文章的主要内容，包括你对跟进过程或发现成果的描述，以数据、事实证据以及其他的信息支撑主要内容。在你的论说中，你应该把对客观事实的描述和写作者对事情的主管阐述区分开来。</p>
+<p>当你在报告中对一个观点进行陈述的时候，你需要记住以下几点：</p>
+<ul>
+<li>清晰的呈现事实</li>
+<li>有逻辑地提出论据</li>
+<li>引用相关的语录、简明易懂的事实和例子来支持你的论点</li>
+<li>给出支持或反对该行为的理由</li>
+<li>始终围绕主要观点进行讨论</li>
+<li>处理好重要的假设关系</li>
+<li>区分说明（具体阐述）和论证（有理有据）</li>
+</ul>
+<p>链接：https://talengu.github.io/</p>
+<h3 id="21-图">2.1 图</h3>
+<pre tabindex="0"><code>![GDP](http://www.stats.gov.cn/sj/zxfb/202302/W020230228515999473627.png)
+&lt;div align=&#39;center&#39;&gt; &lt;b&gt;图1 2022年国内生产总值及其增速度&lt;/b&gt;&lt;/div&gt;
+</code></pre><p>这两行代码生成下面的图和标题。</p>
+<p>
+
+
+
+
+
+<div style="text-align: center;">
+<img src="http://www.stats.gov.cn/sj/zxfb/202302/W020230228515999473627.png" 
+     alt="GDP" 
+      
+/>
+</div>图 1 展示的是2018-2022年的GDP和增长速度，来自<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup>。图中数据反应出国内生产总值在2018-2022年度增长率存在波动但稳中向好的情况。</p>
+<h3 id="22-表">2.2 表</h3>
+<pre tabindex="0"><code>&lt;div align=&#39;center&#39;&gt; &lt;b&gt;表1 2018年年末人口数及其构成&lt;/b&gt;&lt;/div&gt;
+
+| 指标       | 年末数（万人） | 比重（%） |
+| ---------- | -------------- | --------- |
+| 全国总人口 | 139538         | 100.0     |
+| 其中：城镇 | 83137          | 59.58     |
+| 乡村       | 56401          | 40.42     |
+</code></pre><p>这两行代码生成下面的表和标题。</p>
+<div align='center'> <b>表1 2018年年末人口数及其构成</b></div>
+<table>
+  <thead>
+      <tr>
+          <th>指标</th>
+          <th>年末数（万人）</th>
+          <th>比重（%）</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>全国总人口</td>
+          <td>139538</td>
+          <td>100.0</td>
+      </tr>
+      <tr>
+          <td>城镇</td>
+          <td>83137</td>
+          <td>59.58</td>
+      </tr>
+      <tr>
+          <td>乡村</td>
+          <td>56401</td>
+          <td>40.42</td>
+      </tr>
+  </tbody>
+</table>
+<p>从表1中得出，2018年年末城镇人口占总人口的59.58%，乡村人口占总人口的40.42%，城镇人口大比例超过乡村人口。</p>
+<h3 id="23-公式">2.3 公式</h3>
+<pre tabindex="0"><code>$$
+f=w_1 x_1 + w_2 x_2
+\tag{1}
+$$
+</code></pre><p>数学Tex代码渲染成下面的公式，见公式（1）。公式可以在网站<sup id="fnref:2"><a href="#fn:2" class="footnote-ref" role="doc-noteref">2</a></sup> 进行可视化编写。
+$$
+f=w_1 x_1 + w_2 x_2
+\tag{1}
+$$</p>
+<h4 id="定理证明">定理证明</h4>
+<p><strong>定理 3.1</strong> 如果时域混合场积分方程是时域电场积分方程与时域磁场积分方程的线性组合……</p>
+<p><strong>证明：</strong></p>
+<p>首先，由于 ……</p>
+<p>……</p>
+<p>根据 ……，结论得证。                        ■</p>
+<h2 id="3-写作检查">3 写作检查</h2>
+<p>主体内容完成后，要进行写作检查。</p>
+<ul>
+<li>保证信息的准确性，时间地点等信息的准确。</li>
+<li>确保语法规范性</li>
+<li>段落写作
+<ul>
+<li>主题句，核心思想</li>
+<li>使用关联词，但勿滥
+<ul>
+<li>表示转折：虽然，尽管，但是，相反的是，另一方面</li>
+<li>对已阐述观点的强调：此外，与此同时，除此以外，再补充一点</li>
+<li>阐述结果：结果是，相应的结果是，因此</li>
+</ul>
+</li>
+<li>简单的句子 15-25</li>
+</ul>
+</li>
+<li>精心选择词语
+<ul>
+<li>同一个意思，换一下说法</li>
+<li>少用名词，多用动词。我们想用名词表达意思，采用动名组合，或者一个意群搭配上动词会更有力。</li>
+<li>多用主动动词，少用被动动词</li>
+</ul>
+</li>
+<li>核对标点符号，逗号，与分号。英文的话，检查一下拼写</li>
+<li>注意行为的语气</li>
+<li>保持连贯性，使用一种统一的方式表达。</li>
+</ul>
+<h3 id="添加iframes">添加iframes</h3>
+<iframe src="https://player.bilibili.com/player.html?bvid=BV1Wb411v7WN" width="640" height="430">
+</iframe>
+<iframe src="https://www.youtube.com/embed/OyCN04p-uS8" width="640" height="430">
+</iframe>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-html" data-lang="html"><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">&lt;!-- {}替换为视频id，同时去掉{} --&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">&lt;!-- 小破站 --&gt;</span>
+</span></span><span style="display:flex;"><span>&lt;<span style="color:#f92672">iframe</span> <span style="color:#a6e22e">src</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;https://player.bilibili.com/player.html?bvid={}&#34;</span> <span style="color:#a6e22e">width</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;640&#34;</span> <span style="color:#a6e22e">height</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;430&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>&lt;/<span style="color:#f92672">iframe</span>&gt;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">&lt;!-- youtube --&gt;</span>
+</span></span><span style="display:flex;"><span>&lt;<span style="color:#f92672">iframe</span> <span style="color:#a6e22e">src</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;https://www.youtube.com/embed/{}&#34;</span> <span style="color:#a6e22e">width</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;640&#34;</span> <span style="color:#a6e22e">height</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;430&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>&lt;/<span style="color:#f92672">iframe</span>&gt;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">&lt;!-- 腾讯视频 --&gt;</span>
+</span></span><span style="display:flex;"><span>&lt;<span style="color:#f92672">iframe</span> <span style="color:#a6e22e">src</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;http://v.qq.com/iframe/player.html?vid={}&#34;</span> <span style="color:#a6e22e">width</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;640&#34;</span> <span style="color:#a6e22e">height</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;430&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>&lt;/<span style="color:#f92672">iframe</span>&gt;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">&lt;!-- 优酷视频 --&gt;</span>
+</span></span><span style="display:flex;"><span>&lt;<span style="color:#f92672">iframe</span>  <span style="color:#a6e22e">src</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#39;https://player.youku.com/embed/{}&#39;</span> <span style="color:#a6e22e">width</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;640&#34;</span> <span style="color:#a6e22e">height</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;430&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>&lt;/<span style="color:#f92672">iframe</span>&gt;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">&lt;!-- PDF --&gt;</span>
+</span></span><span style="display:flex;"><span>&lt;<span style="color:#f92672">iframe</span>  <span style="color:#a6e22e">src</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#39;https://arxiv.org/pdf/1406.2661.pdf&#39;</span> <span style="color:#a6e22e">width</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;800&#34;</span> <span style="color:#a6e22e">height</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;450&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>&lt;/<span style="color:#f92672">iframe</span>&gt;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">&lt;!-- HTML --&gt;</span>
+</span></span><span style="display:flex;"><span>&lt;<span style="color:#f92672">iframe</span>  <span style="color:#a6e22e">src</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#39;https://www.sohu.com/a/287817933_100118081&#39;</span> <span style="color:#a6e22e">width</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;800&#34;</span> <span style="color:#a6e22e">height</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;450&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>&lt;/<span style="color:#f92672">iframe</span>&gt;
+</span></span></code></pre></div><h2 id="4-总结">4 总结</h2>
+<p>一个清晰的总结应该概括全部论点。</p>
+<h2 id="其他">其他</h2>
+<ul>
+<li>逻辑清楚，达情切意<sup id="fnref:3"><a href="#fn:3" class="footnote-ref" role="doc-noteref">3</a></sup>。准备看一些基础的逻辑学。</li>
+<li>写完要读两遍，修改错别字，标点，语序连接等等。<sup id="fnref1:3"><a href="#fn:3" class="footnote-ref" role="doc-noteref">3</a></sup></li>
+<li>修改可以反着读，正着读对熟悉的材料会有一种连贯性忽略掉错误或者不顺的地方。</li>
+</ul>
+<hr>
+<p><strong>参考</strong></p>
+<pre tabindex="0"><code>[^statics_report_2022]: [国家统计局：2022年国民经济和社会发展统计公报](http://www.stats.gov.cn/tjsj/zxfb/201902/t20190228_1651265.html)
+[^latex_editor]: [Latex公式在线可视化编辑器](http://latex.codecogs.com/eqneditor/editor.php)
+[^hetang]: 美学散步系列书籍 - 朱自清的《荷塘清韵》
+</code></pre><div class="footnotes" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn:1">
+<p><a href="http://www.stats.gov.cn/sj/zxfb/202302/t20230228_1919011.html">国家统计局：2022年国民经济和社会发展统计公报</a>&#160;<a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:2">
+<p><a href="http://latex.codecogs.com/eqneditor/editor.php">Latex公式在线可视化编辑器</a> or <a href="https://www.latexlive.com/">Latex</a>&#160;<a href="#fnref:2" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:3">
+<p>美学散步系列书籍 - 朱自清的《荷塘清韵》&#160;<a href="#fnref:3" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a>&#160;<a href="#fnref1:3" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+</ol>
+</div>
+
+</main>
+
+
+<script>
+window.MathJax = {
+  tex: {
+    inlineMath: [['$', '$'], ['\\(', '\\)']],
+    displayMath: [['$$', '$$'], ['\\[', '\\]']]
+  },
+  options: {
+    skipHtmlTags: ['script','noscript','style','textarea','pre','code']
+  }
+};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+
+
+
+
+  <footer>
+  - END -
+  
+  <hr/>
+  © 2025 一塘
+  
+  </footer>
+  </body>
+</html>
+

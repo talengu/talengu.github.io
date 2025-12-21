@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>rss统计 基于ttrss的PostgresQL数据库 | 一塘</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+<script>
+window.MathJax = {
+  tex: {
+    inlineMath: [['$', '$'], ['\\(', '\\)']],
+    displayMath: [['$$', '$$'], ['\\[', '\\]']]
+  },
+  options: {
+    skipHtmlTags: ['script','noscript','style','textarea','pre','code']
+  }
+};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  </head>
+
+  <body>
+    <nav>
+    <ul class="menu">
+      
+      <li><a href="/about/">一塘</a></li>
+      
+      <li><a href="/post/">博客</a></li>
+      
+      <li><a href="/categories/">分类</a></li>
+      
+      <li><a href="/tags/">标签</a></li>
+      
+    </ul>
+    <hr/>
+    </nav>
+
+<div class="article-meta">
+<h1><span class="title">rss统计 基于ttrss的PostgresQL数据库</span></h1>
+
+
+</div>
+
+<div class="post-stats" style="text-align: right;">
+   
+  2022/05/08
+  
+</div>
+
+
+
+
+<main>
+<p><strong>前言</strong>
+统计ttrss的使用数据。</p>
+<ul>
+<li>月度mark文件分析 OK</li>
+</ul>
+<p>TODO：</p>
+<ul>
+<li>全年阅读报告 doing</li>
+</ul>
+<!-- more -->
+<h2 id="按月保存mark的内容">按月保存mark的内容</h2>
+<p>账号 密码 和你docker文件里面的一致。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># 按月来保存</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> html2text
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># psycopg2 head</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> psycopg2
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># pip3 install psycopg2-binary</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># ref:https://blog.csdn.net/Haiqiang1995/article/details/89069791</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">get_from_dataset</span>(cmd_sql):
+</span></span><span style="display:flex;"><span>    conn <span style="color:#f92672">=</span> <span style="color:#66d9ef">None</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">try</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># read database configuration</span>
+</span></span><span style="display:flex;"><span>        params <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#39;host&#39;</span>: <span style="color:#e6db74">&#34;?????&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#39;user&#39;</span>: <span style="color:#e6db74">&#34;????&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#39;password&#39;</span>: <span style="color:#e6db74">&#34;????&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#39;dbname&#39;</span>: <span style="color:#e6db74">&#34;ttrss&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#39;port&#39;</span>: <span style="color:#960050;background-color:#1e0010">??</span><span style="color:#ae81ff">00</span>
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># connect to the PostgresQL database</span>
+</span></span><span style="display:flex;"><span>        conn <span style="color:#f92672">=</span> psycopg2<span style="color:#f92672">.</span>connect(<span style="color:#f92672">**</span>params)
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># create a new cursor object</span>
+</span></span><span style="display:flex;"><span>        cur <span style="color:#f92672">=</span> conn<span style="color:#f92672">.</span>cursor()
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># execute the SELECT statement</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        print(cmd_sql)
+</span></span><span style="display:flex;"><span>        cur<span style="color:#f92672">.</span>execute(cmd_sql)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        blob <span style="color:#f92672">=</span> cur<span style="color:#f92672">.</span>fetchall()
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># blob = cur.fetchone()</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">#open(path_to_dir + str(blob[0]) + &#39;.jpg&#39;, &#39;wb&#39;).write(blob[1])</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># close the communication with the PostgresQL database</span>
+</span></span><span style="display:flex;"><span>        cur<span style="color:#f92672">.</span>close()
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">except</span> (<span style="color:#a6e22e">Exception</span>, psycopg2<span style="color:#f92672">.</span>DatabaseError) <span style="color:#66d9ef">as</span> error:
+</span></span><span style="display:flex;"><span>        print(error)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">finally</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> conn <span style="color:#f92672">is</span> <span style="color:#f92672">not</span> <span style="color:#66d9ef">None</span>:
+</span></span><span style="display:flex;"><span>            conn<span style="color:#f92672">.</span>close()
+</span></span><span style="display:flex;"><span>    print(<span style="color:#e6db74">&#34;get_from_dataset success&#34;</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> blob
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>_s<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;ref_id,feed_id,last_read,last_marked&#34;</span>
+</span></span><span style="display:flex;"><span>cmd_sql<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;SELECT </span><span style="color:#e6db74">%s</span><span style="color:#e6db74">  FROM public.ttrss_user_entries Where marked=TRUE AND last_marked BETWEEN &#39;2022-04-01&#39; And &#39;2022-5-01&#39;&#34;</span> <span style="color:#f92672">%</span> _s
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 可以自己改日期</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>g_content<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> _e <span style="color:#f92672">in</span> sorted(get_from_dataset(cmd_sql),key<span style="color:#f92672">=</span><span style="color:#66d9ef">lambda</span> x:x[<span style="color:#ae81ff">3</span>]):
+</span></span><span style="display:flex;"><span>    [ref_id,feed_id,last_read,last_marked] <span style="color:#f92672">=</span> _e
+</span></span><span style="display:flex;"><span>    _s<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;id,title,link,updated,content&#34;</span>
+</span></span><span style="display:flex;"><span>    cmd_sql<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;SELECT </span><span style="color:#e6db74">%s</span><span style="color:#e6db74"> FROM public.ttrss_entries WHERE id = </span><span style="color:#e6db74">%s</span><span style="color:#e6db74">&#34;</span> <span style="color:#f92672">%</span> (_s,ref_id)
+</span></span><span style="display:flex;"><span>    [id,title,link,updated,content] <span style="color:#f92672">=</span>get_from_dataset(cmd_sql)[<span style="color:#ae81ff">0</span>]
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    g_content <span style="color:#f92672">+=</span> <span style="color:#e6db74">&#34;# [</span><span style="color:#e6db74">%s</span><span style="color:#e6db74">](</span><span style="color:#e6db74">%s</span><span style="color:#e6db74">)</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span><span style="color:#f92672">%</span>(title,link)
+</span></span><span style="display:flex;"><span>    g_content <span style="color:#f92672">+=</span><span style="color:#e6db74">&#34;pubdata:</span><span style="color:#e6db74">%s</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span><span style="color:#f92672">%</span>str(updated)
+</span></span><span style="display:flex;"><span>    g_content <span style="color:#f92672">+=</span><span style="color:#e6db74">&#34;markdate:</span><span style="color:#e6db74">%s</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span><span style="color:#f92672">%</span>str(last_marked)
+</span></span><span style="display:flex;"><span>    g_content<span style="color:#f92672">+=</span>html2text<span style="color:#f92672">.</span>html2text(content)
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    g_content<span style="color:#f92672">+=</span><span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n\n</span><span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>D<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;C:</span><span style="color:#ae81ff">\\</span><span style="color:#e6db74">Users</span><span style="color:#ae81ff">\\</span><span style="color:#e6db74">talen</span><span style="color:#ae81ff">\\</span><span style="color:#e6db74">Desktop</span><span style="color:#ae81ff">\\</span><span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">with</span> open(D<span style="color:#f92672">+</span><span style="color:#e6db74">&#34;cc.md&#34;</span>,<span style="color:#e6db74">&#39;w&#39;</span>,encoding<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;utf-8&#39;</span>) <span style="color:#66d9ef">as</span> f:
+</span></span><span style="display:flex;"><span>        f<span style="color:#f92672">.</span>write(g_content)
+</span></span></code></pre></div>
+</main>
+
+
+
+
+
+
+  <footer>
+  - END -
+  
+  <hr/>
+  © 2025 一塘
+  
+  </footer>
+  </body>
+</html>
+

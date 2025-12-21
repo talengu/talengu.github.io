@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>RSS跟踪github文件更新&#43;某管子更新 | 一塘</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+<script>
+window.MathJax = {
+  tex: {
+    inlineMath: [['$', '$'], ['\\(', '\\)']],
+    displayMath: [['$$', '$$'], ['\\[', '\\]']]
+  },
+  options: {
+    skipHtmlTags: ['script','noscript','style','textarea','pre','code']
+  }
+};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  </head>
+
+  <body>
+    <nav>
+    <ul class="menu">
+      
+      <li><a href="/about/">一塘</a></li>
+      
+      <li><a href="/post/">博客</a></li>
+      
+      <li><a href="/categories/">分类</a></li>
+      
+      <li><a href="/tags/">标签</a></li>
+      
+    </ul>
+    <hr/>
+    </nav>
+
+<div class="article-meta">
+<h1><span class="title">RSS跟踪github文件更新+某管子更新</span></h1>
+
+
+</div>
+
+<div class="post-stats" style="text-align: right;">
+   
+  2021/07/24
+  
+</div>
+
+
+
+
+<main>
+<p><strong>前言</strong></p>
+<p>好久没有更新博客了。RSS这种形式的信息获取方式，似乎又流行起来。</p>
+<!-- more -->
+<h2 id="github文件更新">github文件更新</h2>
+<p>github上面有很多不错的资源。我的流程是：github readme文件更新-&gt;svn下载对应文件-&gt;生成rss文件。</p>
+<p>这里为什么要这么复杂，因为github仓库更新多了好多不需要的rss信息，而且github文件下载比较慢。</p>
+<p>最后效果，获取《经济学人》和《纽约客》的更新～</p>
+<p>
+
+
+
+
+    
+
+
+<div style="text-align: center;">
+<img src="rss_result.png" 
+     alt="image-20210724005152399" 
+      
+/>
+</div></p>
+<h3 id="下载脚本">下载脚本</h3>
+<p>解析readme中的地址，自动下载，并生成rss源。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># -*- coding: utf-8 -*-</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># /etc/cron.hour </span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> urllib <span style="color:#f92672">import</span> request
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> datetime
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> rfeed <span style="color:#f92672">import</span> <span style="color:#f92672">*</span> <span style="color:#75715e"># 为生成rss.xml的库</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> re
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> os
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> glob <span style="color:#f92672">import</span> glob
+</span></span><span style="display:flex;"><span>URL<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;https://raw.githubusercontent.com/hehonghui/the-economist-ebooks/master/README.md&#34;</span>
+</span></span><span style="display:flex;"><span>BASE_URL<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;http://your_vps_host/download/&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>SVN_BASE_URL<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;https://github.com/hehonghui/the-economist-ebooks/trunk/&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>s<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;&#34;&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">* [经济学人 - 周刊, 点击这里下载最新一期](01_economist/te_2021.02.27) , 每周五十一点更新
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">* [纽约客 - 周刊, 点击这里下载最新一期](02_new_yorker/2021.03.01) , 每周六上午更新
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">* [卫报 - 每周两期](09_guardian/), 每周三、周日更新
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>s <span style="color:#f92672">=</span> request<span style="color:#f92672">.</span>urlopen(URL)<span style="color:#f92672">.</span>read()<span style="color:#f92672">.</span>decode(<span style="color:#e6db74">&#39;utf8&#39;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>res<span style="color:#f92672">=</span> re<span style="color:#f92672">.</span>findall(<span style="color:#e6db74">r</span><span style="color:#e6db74">&#34;\[.+\]\((0.+)\)&#34;</span>,s)[<span style="color:#ae81ff">0</span>:<span style="color:#ae81ff">2</span>]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># generate xml</span>
+</span></span><span style="display:flex;"><span>res_list<span style="color:#f92672">=</span>[]
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> item <span style="color:#f92672">in</span> res:
+</span></span><span style="display:flex;"><span>	res_list<span style="color:#f92672">+=</span>sorted(glob(item<span style="color:#f92672">.</span>split(<span style="color:#e6db74">&#39;/&#39;</span>)[<span style="color:#ae81ff">0</span>]<span style="color:#f92672">+</span><span style="color:#e6db74">&#34;/*&#34;</span>))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>item_list<span style="color:#f92672">=</span>[]
+</span></span><span style="display:flex;"><span>print(item_list)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> item <span style="color:#f92672">in</span> res_list:
+</span></span><span style="display:flex;"><span>    _one <span style="color:#f92672">=</span> Item(
+</span></span><span style="display:flex;"><span>			title <span style="color:#f92672">=</span> item[<span style="color:#ae81ff">3</span>:],
+</span></span><span style="display:flex;"><span>        link <span style="color:#f92672">=</span> BASE_URL<span style="color:#f92672">+</span>item,
+</span></span><span style="display:flex;"><span>		description <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;pdf etc. &lt;a href=&#34;</span><span style="color:#e6db74">%s</span><span style="color:#e6db74">&#34;&gt;link&lt;/a&gt; &#39;</span><span style="color:#f92672">%</span> (BASE_URL<span style="color:#f92672">+</span>item),
+</span></span><span style="display:flex;"><span>        author <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;hehonghui&#34;</span>,
+</span></span><span style="display:flex;"><span>        guid <span style="color:#f92672">=</span> Guid(BASE_URL<span style="color:#f92672">+</span>item),
+</span></span><span style="display:flex;"><span>        pubDate <span style="color:#f92672">=</span> datetime<span style="color:#f92672">.</span>datetime(<span style="color:#ae81ff">2020</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">4</span>, <span style="color:#ae81ff">0</span>)) <span style="color:#75715e"># year, month, date, hh, mm, ss</span>
+</span></span><span style="display:flex;"><span>    item_list<span style="color:#f92672">+=</span>[_one]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>feed <span style="color:#f92672">=</span> Feed(
+</span></span><span style="display:flex;"><span>        title <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;经济学人+纽约客更新&#34;</span>,
+</span></span><span style="display:flex;"><span>        link <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;https://www.xxxxx.biz/atom/updated.xml&#34;</span>,
+</span></span><span style="display:flex;"><span>        description <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;更新经济学人，纽约客&#34;</span>,
+</span></span><span style="display:flex;"><span>        language <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;en-US&#34;</span>,
+</span></span><span style="display:flex;"><span>        lastBuildDate <span style="color:#f92672">=</span> datetime<span style="color:#f92672">.</span>datetime<span style="color:#f92672">.</span>now(),
+</span></span><span style="display:flex;"><span>        items <span style="color:#f92672">=</span> item_list)
+</span></span><span style="display:flex;"><span> 
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">save_to_file</span>(file_name, contents):
+</span></span><span style="display:flex;"><span>    fh <span style="color:#f92672">=</span> open(file_name, <span style="color:#e6db74">&#39;w&#39;</span>)
+</span></span><span style="display:flex;"><span>    fh<span style="color:#f92672">.</span>write(contents)
+</span></span><span style="display:flex;"><span>    fh<span style="color:#f92672">.</span>close()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>save_to_file(<span style="color:#e6db74">&#39;test.xml&#39;</span>, feed<span style="color:#f92672">.</span>rss())
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># start downing </span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> item <span style="color:#f92672">in</span> res:
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> item <span style="color:#f92672">not</span> <span style="color:#f92672">in</span> res_list:
+</span></span><span style="display:flex;"><span>	    print(<span style="color:#e6db74">&#34;downing </span><span style="color:#e6db74">%s</span><span style="color:#e6db74">&#34;</span><span style="color:#f92672">%</span>item)
+</span></span><span style="display:flex;"><span>	    os<span style="color:#f92672">.</span>popen(<span style="color:#e6db74">&#34;svn checkout </span><span style="color:#e6db74">%s</span><span style="color:#e6db74"> </span><span style="color:#e6db74">%s</span><span style="color:#e6db74">&#34;</span><span style="color:#f92672">%</span>(SVN_BASE_URL<span style="color:#f92672">+</span>item,item))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    _now<span style="color:#f92672">=</span>sorted(glob(item<span style="color:#f92672">.</span>split(<span style="color:#e6db74">&#39;/&#39;</span>)[<span style="color:#ae81ff">0</span>]<span style="color:#f92672">+</span><span style="color:#e6db74">&#34;/*&#34;</span>))
+</span></span><span style="display:flex;"><span>    print(_now)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> len(_now)<span style="color:#f92672">&gt;=</span><span style="color:#ae81ff">5</span>: <span style="color:#75715e"># 最多5个，免得服务器下载过多。</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">for</span> _d <span style="color:#f92672">in</span> _now[:<span style="color:#f92672">-</span><span style="color:#ae81ff">5</span>]:
+</span></span><span style="display:flex;"><span>            os<span style="color:#f92672">.</span>popen(<span style="color:#e6db74">&#34;rm -rf </span><span style="color:#e6db74">%s</span><span style="color:#e6db74">&#34;</span><span style="color:#f92672">%</span>_d)
+</span></span><span style="display:flex;"><span>    
+</span></span></code></pre></div><p>在linux亦可使用<a href="https://www.runoob.com/w3cnote/linux-crontab-tasks.html">crontab</a>定时启动下载任务。在 <code>/etc/cron.hourly/</code> 设置即可。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e">#!/bin/sh
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>date &gt;&gt; test.log
+</span></span><span style="display:flex;"><span>python3 down_ecomic.py &gt;&gt;test.log
+</span></span><span style="display:flex;"><span>exit <span style="color:#ae81ff">0</span>
+</span></span></code></pre></div><h2 id="下载某管音频自动转成mp3格式">下载某管音频，自动转成mp3格式</h2>
+<p>某管自带rss的，所以只要用feedparser解析一下，然后调用youtube_dl下载一哈。
+各种码包自行安装。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># -*- coding: utf-8 -*-</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 2020-04-18</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># /etc/cron.hour # https://www.runoob.com/w3cnote/linux-crontab-tasks.html</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> urllib <span style="color:#f92672">import</span> request
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> datetime
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> rfeed <span style="color:#f92672">import</span> <span style="color:#f92672">*</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> re
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> os
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> glob <span style="color:#f92672">import</span> glob
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> feedparser
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> pprint
+</span></span><span style="display:flex;"><span>URL<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;https://www.youtube.com/feeds/videos.xml?channel_id=UCFhp6N5z8W9Ann2eyHAzbbA&#34;</span>
+</span></span><span style="display:flex;"><span>rss <span style="color:#f92672">=</span> feedparser<span style="color:#f92672">.</span>parse(URL)
+</span></span><span style="display:flex;"><span>entries<span style="color:#f92672">=</span>rss[<span style="color:#e6db74">&#39;entries&#39;</span>][:<span style="color:#ae81ff">3</span>]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>BASE_URL<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;http://xxxxx/down_youtube/&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>item_list<span style="color:#f92672">=</span>[]
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> entry <span style="color:#f92672">in</span> entries:
+</span></span><span style="display:flex;"><span>    print(entry[<span style="color:#e6db74">&#39;title&#39;</span>])
+</span></span><span style="display:flex;"><span>    print(entry[<span style="color:#e6db74">&#39;published&#39;</span>])
+</span></span><span style="display:flex;"><span>    print(entry[<span style="color:#e6db74">&#39;link&#39;</span>])
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">#print(entry[&#39;summary&#39;])</span>
+</span></span><span style="display:flex;"><span>    new_link<span style="color:#f92672">=</span>BASE_URL<span style="color:#f92672">+</span><span style="color:#e6db74">&#34;book_audios/</span><span style="color:#e6db74">%s</span><span style="color:#e6db74">.mp3&#34;</span><span style="color:#f92672">%</span>entry[<span style="color:#e6db74">&#39;yt_videoid&#39;</span>]
+</span></span><span style="display:flex;"><span>    _one <span style="color:#f92672">=</span> Item(
+</span></span><span style="display:flex;"><span>			title <span style="color:#f92672">=</span> entry[<span style="color:#e6db74">&#39;title&#39;</span>],
+</span></span><span style="display:flex;"><span>        link <span style="color:#f92672">=</span> new_link,
+</span></span><span style="display:flex;"><span>		description <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;audio: &lt;a href=&#34;</span><span style="color:#e6db74">%s</span><span style="color:#e6db74">&#34;&gt;mp3&lt;/a&gt; </span><span style="color:#e6db74">%s</span><span style="color:#e6db74">&#39;</span><span style="color:#f92672">%</span> (new_link,entry[<span style="color:#e6db74">&#39;summary&#39;</span>]),
+</span></span><span style="display:flex;"><span>        author <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;Youtube&#34;</span>,
+</span></span><span style="display:flex;"><span>        guid <span style="color:#f92672">=</span> Guid(new_link),
+</span></span><span style="display:flex;"><span>        pubDate <span style="color:#f92672">=</span> datetime<span style="color:#f92672">.</span>datetime(<span style="color:#ae81ff">2020</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">4</span>, <span style="color:#ae81ff">0</span>)) <span style="color:#75715e"># year, month, date, hh, mm, ss</span>
+</span></span><span style="display:flex;"><span>    item_list<span style="color:#f92672">+=</span>[_one]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>feed <span style="color:#f92672">=</span> Feed(
+</span></span><span style="display:flex;"><span>        title <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;知乎读书会更新&#34;</span>,
+</span></span><span style="display:flex;"><span>        link <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;https://www.xxxxx.biz/atom/updated.xml&#34;</span>,
+</span></span><span style="display:flex;"><span>        description <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;更新Youtube知乎读书会&#34;</span>,
+</span></span><span style="display:flex;"><span>        language <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;en-US&#34;</span>,
+</span></span><span style="display:flex;"><span>        lastBuildDate <span style="color:#f92672">=</span> datetime<span style="color:#f92672">.</span>datetime<span style="color:#f92672">.</span>now(),
+</span></span><span style="display:flex;"><span>        items <span style="color:#f92672">=</span> item_list)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">save_to_file</span>(file_name, contents):
+</span></span><span style="display:flex;"><span>    fh <span style="color:#f92672">=</span> open(file_name, <span style="color:#e6db74">&#39;w&#39;</span>)
+</span></span><span style="display:flex;"><span>    fh<span style="color:#f92672">.</span>write(contents)
+</span></span><span style="display:flex;"><span>    fh<span style="color:#f92672">.</span>close()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>save_to_file(<span style="color:#e6db74">&#39;audio.xml&#39;</span>, feed<span style="color:#f92672">.</span>rss())
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> os <span style="color:#f92672">import</span> rename
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> youtube_dl
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># start downing </span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> <span style="color:#f92672">not</span> os<span style="color:#f92672">.</span>path<span style="color:#f92672">.</span>exists(<span style="color:#e6db74">&#34;book_audios/&#34;</span>):
+</span></span><span style="display:flex;"><span>    os<span style="color:#f92672">.</span>makedirs(<span style="color:#e6db74">&#34;book_audios/&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">audio_download</span>(youtube_url):
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 定义某些下载参数</span>
+</span></span><span style="display:flex;"><span>    ydl_opts <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#39;format&#39;</span>: <span style="color:#e6db74">&#39;bestaudio/best&#39;</span>,
+</span></span><span style="display:flex;"><span>     <span style="color:#75715e">#   &#39;download_archive&#39;: &#39;downloaded_songs.txt&#39;,</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#39;outtmpl&#39;</span>: <span style="color:#e6db74">&#39;book_audios/</span><span style="color:#e6db74">%(id)s</span><span style="color:#e6db74">.</span><span style="color:#e6db74">%(ext)s</span><span style="color:#e6db74">&#39;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#39;postprocessors&#39;</span>: [{
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#39;key&#39;</span>: <span style="color:#e6db74">&#39;FFmpegExtractAudio&#39;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#39;preferredcodec&#39;</span>: <span style="color:#e6db74">&#39;mp3&#39;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#39;preferredquality&#39;</span>: <span style="color:#e6db74">&#39;192&#39;</span>,
+</span></span><span style="display:flex;"><span>            }],
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">with</span> youtube_dl<span style="color:#f92672">.</span>YoutubeDL(ydl_opts) <span style="color:#66d9ef">as</span> ydl:
+</span></span><span style="display:flex;"><span>        ydl<span style="color:#f92672">.</span>download([youtube_url])
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#download(&#39;https://www.youtube.com/watch?v=JElpSrsmbTU&#39;)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> entry <span style="color:#f92672">in</span> entries:
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> entry[<span style="color:#e6db74">&#39;yt_videoid&#39;</span>]<span style="color:#f92672">+</span><span style="color:#e6db74">&#39;.mp3&#39;</span> <span style="color:#f92672">not</span> <span style="color:#f92672">in</span> os<span style="color:#f92672">.</span>listdir(<span style="color:#e6db74">&#39;book_audios&#39;</span>):
+</span></span><span style="display:flex;"><span>        print(<span style="color:#e6db74">&#34;downing </span><span style="color:#e6db74">%s</span><span style="color:#e6db74">, </span><span style="color:#e6db74">%s</span><span style="color:#e6db74">&#34;</span><span style="color:#f92672">%</span>(entry[<span style="color:#e6db74">&#39;title&#39;</span>], entry[<span style="color:#e6db74">&#39;link&#39;</span>]))
+</span></span><span style="display:flex;"><span>        audio_download(entry[<span style="color:#e6db74">&#39;link&#39;</span>])
+</span></span><span style="display:flex;"><span>   
+</span></span><span style="display:flex;"><span>    _now<span style="color:#f92672">=</span>sorted(glob(<span style="color:#e6db74">&#34;book_audios/*&#34;</span>),key<span style="color:#f92672">=</span>os<span style="color:#f92672">.</span>path<span style="color:#f92672">.</span>getctime)
+</span></span><span style="display:flex;"><span>    print(_now)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> len(_now)<span style="color:#f92672">&gt;=</span><span style="color:#ae81ff">6</span>: <span style="color:#75715e"># 多余删除</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">for</span> _d <span style="color:#f92672">in</span> _now[:<span style="color:#f92672">-</span><span style="color:#ae81ff">5</span>]:
+</span></span><span style="display:flex;"><span>            os<span style="color:#f92672">.</span>popen(<span style="color:#e6db74">&#34;rm -rf </span><span style="color:#e6db74">%s</span><span style="color:#e6db74">&#34;</span><span style="color:#f92672">%</span>_d)
+</span></span><span style="display:flex;"><span>    
+</span></span></code></pre></div><h2 id="下载某管视频">下载某管视频</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># -*- coding: utf-8 -*-</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 2020-04-18</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># /etc/cron.hour # https://www.runoob.com/w3cnote/linux-crontab-tasks.html</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># pip install feedparser youtube_dl</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> urllib <span style="color:#f92672">import</span> request
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> datetime
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> rfeed <span style="color:#f92672">import</span> <span style="color:#f92672">*</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> re
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> os
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> glob <span style="color:#f92672">import</span> glob
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> feedparser
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> pprint
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> os <span style="color:#f92672">import</span> rename
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> youtube_dl
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">save_to_file</span>(file_name, contents):
+</span></span><span style="display:flex;"><span>    fh <span style="color:#f92672">=</span> open(file_name, <span style="color:#e6db74">&#39;w&#39;</span>)
+</span></span><span style="display:flex;"><span>    fh<span style="color:#f92672">.</span>write(contents)
+</span></span><span style="display:flex;"><span>    fh<span style="color:#f92672">.</span>close()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">audio_download</span>(youtube_url, file_root, only_audio<span style="color:#f92672">=</span><span style="color:#66d9ef">False</span>):
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 定义某些下载参数</span>
+</span></span><span style="display:flex;"><span>    ydl_opts <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#39;format&#39;</span>: <span style="color:#e6db74">&#39;best&#39;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#39;outtmpl&#39;</span>: file_root<span style="color:#f92672">+</span><span style="color:#e6db74">&#39;/</span><span style="color:#e6db74">%(id)s</span><span style="color:#e6db74">.</span><span style="color:#e6db74">%(ext)s</span><span style="color:#e6db74">&#39;</span>,
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># 定义某些下载参数</span>
+</span></span><span style="display:flex;"><span>    ydl_opts_a <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#39;format&#39;</span>: <span style="color:#e6db74">&#39;bestaudio/best&#39;</span>,
+</span></span><span style="display:flex;"><span>     <span style="color:#75715e">#   &#39;download_archive&#39;: &#39;downloaded_songs.txt&#39;,</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#39;outtmpl&#39;</span>: file_root<span style="color:#f92672">+</span><span style="color:#e6db74">&#39;/</span><span style="color:#e6db74">%(id)s</span><span style="color:#e6db74">.</span><span style="color:#e6db74">%(ext)s</span><span style="color:#e6db74">&#39;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#39;postprocessors&#39;</span>: [{
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#39;key&#39;</span>: <span style="color:#e6db74">&#39;FFmpegExtractAudio&#39;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#39;preferredcodec&#39;</span>: <span style="color:#e6db74">&#39;mp3&#39;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#39;preferredquality&#39;</span>: <span style="color:#e6db74">&#39;192&#39;</span>,
+</span></span><span style="display:flex;"><span>            }],
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> only_audio:
+</span></span><span style="display:flex;"><span>        ydl_opts <span style="color:#f92672">=</span> ydl_opts_a
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">with</span> youtube_dl<span style="color:#f92672">.</span>YoutubeDL(ydl_opts) <span style="color:#66d9ef">as</span> ydl:
+</span></span><span style="display:flex;"><span>        ydl<span style="color:#f92672">.</span>download([youtube_url])
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">YoutubeDowner</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> __init__(self, yurl, burl, file_root, feed_title, only_audio<span style="color:#f92672">=</span><span style="color:#66d9ef">False</span>):
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>yurl <span style="color:#f92672">=</span> yurl
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>burl <span style="color:#f92672">=</span> burl
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>file_root <span style="color:#f92672">=</span> file_root
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>feed_title <span style="color:#f92672">=</span> feed_title
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>feed_des <span style="color:#f92672">=</span> feed_title
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>only_audio <span style="color:#f92672">=</span> only_audio
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>type_name <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;mp4&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> only_audio:
+</span></span><span style="display:flex;"><span>            self<span style="color:#f92672">.</span>type_name <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;mp3&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        rss <span style="color:#f92672">=</span> feedparser<span style="color:#f92672">.</span>parse(yurl)
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>entries <span style="color:#f92672">=</span> rss[<span style="color:#e6db74">&#39;entries&#39;</span>][:<span style="color:#ae81ff">3</span>]
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> <span style="color:#f92672">not</span> os<span style="color:#f92672">.</span>path<span style="color:#f92672">.</span>exists(file_root):
+</span></span><span style="display:flex;"><span>            os<span style="color:#f92672">.</span>makedirs(file_root)
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>generate_xml()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>down()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">generate_xml</span>(self):
+</span></span><span style="display:flex;"><span>        item_list <span style="color:#f92672">=</span> []
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">for</span> entry <span style="color:#f92672">in</span> self<span style="color:#f92672">.</span>entries:
+</span></span><span style="display:flex;"><span>            print(entry[<span style="color:#e6db74">&#39;title&#39;</span>],entry[<span style="color:#e6db74">&#39;published&#39;</span>],entry[<span style="color:#e6db74">&#39;link&#39;</span>])
+</span></span><span style="display:flex;"><span>           <span style="color:#75715e"># print(entry[&#39;summary&#39;])</span>
+</span></span><span style="display:flex;"><span>            date_s <span style="color:#f92672">=</span> entry[<span style="color:#e6db74">&#39;published&#39;</span>]<span style="color:#f92672">.</span>split(<span style="color:#e6db74">&#39;T&#39;</span>)[<span style="color:#ae81ff">0</span>]<span style="color:#f92672">.</span>split(<span style="color:#e6db74">&#39;-&#39;</span>)
+</span></span><span style="display:flex;"><span>            dates <span style="color:#f92672">=</span> [int(x) <span style="color:#66d9ef">for</span> x <span style="color:#f92672">in</span> date_s]
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e"># print(dates)</span>
+</span></span><span style="display:flex;"><span>            new_link <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>burl <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;/</span><span style="color:#e6db74">%s</span><span style="color:#e6db74">.</span><span style="color:#e6db74">%s</span><span style="color:#e6db74">&#34;</span> <span style="color:#f92672">%</span> (entry[<span style="color:#e6db74">&#39;yt_videoid&#39;</span>],self<span style="color:#f92672">.</span>type_name) <span style="color:#75715e"># 下载的实际地址</span>
+</span></span><span style="display:flex;"><span>            print(<span style="color:#e6db74">&#39;</span><span style="color:#e6db74">%s</span><span style="color:#e6db74">: &lt;a href=&#34;</span><span style="color:#e6db74">%s</span><span style="color:#e6db74">&#34;&gt;</span><span style="color:#e6db74">%s</span><span style="color:#e6db74">&lt;/a&gt; &lt;pre&gt;</span><span style="color:#e6db74">%s</span><span style="color:#e6db74">&lt;/pre&gt;&#39;</span> <span style="color:#f92672">%</span> (self<span style="color:#f92672">.</span>type_name,new_link,self<span style="color:#f92672">.</span>type_name,entry[<span style="color:#e6db74">&#39;summary&#39;</span>]))
+</span></span><span style="display:flex;"><span>            _one <span style="color:#f92672">=</span> Item(
+</span></span><span style="display:flex;"><span>                    title <span style="color:#f92672">=</span> entry[<span style="color:#e6db74">&#39;title&#39;</span>],
+</span></span><span style="display:flex;"><span>                link <span style="color:#f92672">=</span> new_link,
+</span></span><span style="display:flex;"><span>                description <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;</span><span style="color:#e6db74">%s</span><span style="color:#e6db74">: &lt;a href=&#34;</span><span style="color:#e6db74">%s</span><span style="color:#e6db74">&#34;&gt;</span><span style="color:#e6db74">%s</span><span style="color:#e6db74">&lt;/a&gt; &lt;pre&gt;</span><span style="color:#e6db74">%s</span><span style="color:#e6db74">&lt;/pre&gt;&#39;</span> <span style="color:#f92672">%</span> (self<span style="color:#f92672">.</span>type_name,new_link,self<span style="color:#f92672">.</span>type_name,entry[<span style="color:#e6db74">&#39;summary&#39;</span>]),
+</span></span><span style="display:flex;"><span>                author <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;Youtube&#34;</span>,
+</span></span><span style="display:flex;"><span>                guid <span style="color:#f92672">=</span> Guid(new_link),
+</span></span><span style="display:flex;"><span>                pubDate <span style="color:#f92672">=</span> datetime<span style="color:#f92672">.</span>datetime(dates[<span style="color:#ae81ff">0</span>], dates[<span style="color:#ae81ff">1</span>], dates[<span style="color:#ae81ff">2</span>], <span style="color:#ae81ff">6</span>, <span style="color:#ae81ff">0</span>)) <span style="color:#75715e"># year, month, date, hh, mm, ss</span>
+</span></span><span style="display:flex;"><span>            item_list<span style="color:#f92672">+=</span>[_one]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        feed <span style="color:#f92672">=</span> Feed(
+</span></span><span style="display:flex;"><span>                title <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>feed_title,
+</span></span><span style="display:flex;"><span>                link <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;https://www.xxxxx.biz/atom/updated.xml&#34;</span>,
+</span></span><span style="display:flex;"><span>                description <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>feed_des,
+</span></span><span style="display:flex;"><span>                language <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;en-US&#34;</span>,
+</span></span><span style="display:flex;"><span>                lastBuildDate <span style="color:#f92672">=</span> datetime<span style="color:#f92672">.</span>datetime<span style="color:#f92672">.</span>now(),
+</span></span><span style="display:flex;"><span>                items <span style="color:#f92672">=</span> item_list)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        save_to_file(<span style="color:#e6db74">&#39;</span><span style="color:#e6db74">%s</span><span style="color:#e6db74">.xml&#39;</span> <span style="color:#f92672">%</span> self<span style="color:#f92672">.</span>file_root, feed<span style="color:#f92672">.</span>rss())
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">down</span>(self):
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">for</span> entry <span style="color:#f92672">in</span> self<span style="color:#f92672">.</span>entries:
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> entry[<span style="color:#e6db74">&#39;yt_videoid&#39;</span>]<span style="color:#f92672">+</span><span style="color:#e6db74">&#39;.&#39;</span><span style="color:#f92672">+</span>self<span style="color:#f92672">.</span>type_name <span style="color:#f92672">not</span> <span style="color:#f92672">in</span> os<span style="color:#f92672">.</span>listdir(self<span style="color:#f92672">.</span>file_root):
+</span></span><span style="display:flex;"><span>                print(<span style="color:#e6db74">&#34;downing </span><span style="color:#e6db74">%s</span><span style="color:#e6db74">, </span><span style="color:#e6db74">%s</span><span style="color:#e6db74">&#34;</span><span style="color:#f92672">%</span>(entry[<span style="color:#e6db74">&#39;title&#39;</span>], entry[<span style="color:#e6db74">&#39;link&#39;</span>]))
+</span></span><span style="display:flex;"><span>                audio_download(entry[<span style="color:#e6db74">&#39;link&#39;</span>], self<span style="color:#f92672">.</span>file_root, self<span style="color:#f92672">.</span>only_audio)
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>        _now <span style="color:#f92672">=</span> sorted(glob(self<span style="color:#f92672">.</span>file_root <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;/*&#34;</span>),key<span style="color:#f92672">=</span>os<span style="color:#f92672">.</span>path<span style="color:#f92672">.</span>getctime)
+</span></span><span style="display:flex;"><span>        print(_now)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> len(_now)<span style="color:#f92672">&gt;=</span><span style="color:#ae81ff">6</span>: <span style="color:#75715e"># 多余删除</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">for</span> _d <span style="color:#f92672">in</span> _now[:<span style="color:#f92672">-</span><span style="color:#ae81ff">5</span>]:
+</span></span><span style="display:flex;"><span>                os<span style="color:#f92672">.</span>popen(<span style="color:#e6db74">&#34;rm -rf </span><span style="color:#e6db74">%s</span><span style="color:#e6db74">&#34;</span><span style="color:#f92672">%</span>_d)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># url_rss = &#34;https://www.youtube.com/feeds/videos.xml?channel_id=UCSs4A6HYKmHA2MG_0z-F0xw&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># url_base=&#34;http://xxxxx/&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># root=&#34;rss2&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># title=&#34;李永乐老师&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># YoutubeDowner(url_rss, url_base, root, title)</span>
+</span></span></code></pre></div><p>最后效果如下：</p>
+<p>
+
+
+
+
+    
+
+
+<div style="text-align: center;">
+<img src="20220511-00-35-57.png" 
+     alt="" 
+      
+/>
+</div></p>
+<p>祝大家使用愉快！</p>
+
+</main>
+
+
+
+
+
+
+  <footer>
+  - END -
+  
+  <hr/>
+  © 2025 一塘
+  
+  </footer>
+  </body>
+</html>
+

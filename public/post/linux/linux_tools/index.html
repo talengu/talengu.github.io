@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>「转」九张图一览 Linux 性能工具 全景图 | 一塘</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+<script>
+window.MathJax = {
+  tex: {
+    inlineMath: [['$', '$'], ['\\(', '\\)']],
+    displayMath: [['$$', '$$'], ['\\[', '\\]']]
+  },
+  options: {
+    skipHtmlTags: ['script','noscript','style','textarea','pre','code']
+  }
+};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  </head>
+
+  <body>
+    <nav>
+    <ul class="menu">
+      
+      <li><a href="/about/">一塘</a></li>
+      
+      <li><a href="/post/">博客</a></li>
+      
+      <li><a href="/categories/">分类</a></li>
+      
+      <li><a href="/tags/">标签</a></li>
+      
+    </ul>
+    <hr/>
+    </nav>
+
+<div class="article-meta">
+<h1><span class="title">「转」九张图一览 Linux 性能工具 全景图</span></h1>
+
+
+</div>
+
+<div class="post-stats" style="text-align: right;">
+   
+  2022/12/11
+  
+</div>
+
+
+
+
+<main>
+<h2 id="前言">前言</h2>
+<p>当今时代，绝大多数企业的应用都是运行在 Linux 操作系统上，所以对应用进行性能诊断和性能优化时，离不开 Linux 的各种性能观测工具和性能优化工具。</p>
+<p>笔者使用过的常见的 Linux 性能观测和性能优化工具有：</p>
+<ul>
+<li>top/uptime</li>
+<li>ps/pstree</li>
+<li>df/du/free/lsblk</li>
+<li>ip/ifconfig/ping/telnet</li>
+<li>route/dig/nslookup</li>
+<li>lsof/netstat/ss</li>
+<li>tcpdump/tshark/wireshark</li>
+<li>netstat/vmstat/iostat/pidstat/dstat/mpstat</li>
+<li>sar/sysctl/ethtool</li>
+</ul>
+<p>最近在拜读国际著名的 LINUX 性能专家 Brendan Gregg 的个人博客和技术书籍，摘抄了如下九张图，一览 Linux 性能工具全景图，大家共勉！</p>
+<!-- more -->
+<h2 id="2-linux-性能工具全景图"><strong>2. Linux 性能工具全景图</strong></h2>
+<ul>
+<li>linux performance observability tools</li>
+</ul>
+<p>
+
+
+
+
+    
+
+
+<div style="text-align: center;">
+<img src="v2-2eadd97c53a3f20f255394c3d90ea914_r.jpg" 
+     alt="" 
+      
+/>
+</div></p>
+<ul>
+<li>linux static performance tools</li>
+</ul>
+<p>
+
+
+
+
+    
+
+
+<div style="text-align: center;">
+<img src="v2-20032bac53c856c5733259eece5c2f76_r.jpg" 
+     alt="" 
+      
+/>
+</div></p>
+<ul>
+<li>linux performance benchmark tools</li>
+</ul>
+<p>
+
+
+
+
+    
+
+
+<div style="text-align: center;">
+<img src="v2-de23423f2eb9deb5410b7128c933f9a9_r.jpg" 
+     alt="" 
+      
+/>
+</div></p>
+<ul>
+<li>linux performance tuning tools</li>
+</ul>
+<p>
+
+
+
+
+    
+
+
+<div style="text-align: center;">
+<img src="v2-cdf37de145763b762ba5af1a620f9686_r.jpg" 
+     alt="" 
+      
+/>
+</div></p>
+<ul>
+<li>linux performance observability: sar</li>
+</ul>
+<p>
+
+
+
+
+    
+
+
+<div style="text-align: center;">
+<img src="v2-eee71a6bf3865367741137da03031411_r.jpg" 
+     alt="" 
+      
+/>
+</div></p>
+<ul>
+<li>linux performance observability: perf-tools</li>
+</ul>
+<p>
+
+
+
+
+    
+
+
+<div style="text-align: center;">
+<img src="v2-1c0134fefbb04597db98ae455a40fad5_r.jpg" 
+     alt="" 
+      
+/>
+</div></p>
+<ul>
+<li><a href="https://www.zhihu.com/search?q=linux%20bcc&amp;search_source=Entity&amp;hybrid_search_source=Entity&amp;hybrid_search_extra=%7B%22sourceType%22%3A%22answer%22%2C%22sourceId%22%3A2795830055%7D">linux bcc</a>/BPF Tracing tools</li>
+</ul>
+<p>
+
+
+
+
+    
+
+
+<div style="text-align: center;">
+<img src="v2-ffe70303f4d64828ca931d987b12a6d8_r.jpg" 
+     alt="" 
+      
+/>
+</div></p>
+<ul>
+<li>bpftrace/eBPF Tools</li>
+</ul>
+<p>
+
+
+
+
+    
+
+
+<div style="text-align: center;">
+<img src="v2-5985d44e43738933c0b54c89cc20ec09_r.jpg" 
+     alt="" 
+      
+/>
+</div></p>
+<ul>
+<li>BPF Performance Tools: Linux System and Application Observability</li>
+</ul>
+<p>
+
+
+
+
+    
+
+
+<div style="text-align: center;">
+<img src="v2-0f53016fa1d993ffbbf6fc520e318784_r.jpg" 
+     alt="" 
+      
+/>
+</div></p>
+<h2 id="后记">后记</h2>
+<p>更多 LINUX 性能资料，大家可以访问大师的个人网站和和技术书籍</p>
+<ul>
+<li><a href="https://www.brendangregg.com/">https://www.brendangregg.com/</a></li>
+<li>《性能之巅：洞悉系统、企业与云计算》（《Systems Performance: Enterprise and the Cloud, 2nd Edition (2020)》）</li>
+<li>《洞悉 Linux 系统和应用性能》（《BPF Performance Tools》）</li>
+<li>ps: 要说 LINUX 内核近几年 (和今后几年）最引人注目的发展模块，那就是 <a href="https://www.zhihu.com/search?q=bpf&amp;search_source=Entity&amp;hybrid_search_source=Entity&amp;hybrid_search_extra=%7B%22sourceType%22%3A%22answer%22%2C%22sourceId%22%3A2795830055%7D">bpf</a> 了，完全值得花点精力学习跟进下。</li>
+<li>如何更深入地学习 Linux？ - michaelli的回答 - 知乎
+<a href="https://www.zhihu.com/question/23564190/answer/2795830055">https://www.zhihu.com/question/23564190/answer/2795830055</a></li>
+</ul>
+
+</main>
+
+
+
+
+
+
+  <footer>
+  - END -
+  
+  <hr/>
+  © 2025 一塘
+  
+  </footer>
+  </body>
+</html>
+

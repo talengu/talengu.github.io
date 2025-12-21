@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Ubuntu的优化与设置 | 一塘</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+<script>
+window.MathJax = {
+  tex: {
+    inlineMath: [['$', '$'], ['\\(', '\\)']],
+    displayMath: [['$$', '$$'], ['\\[', '\\]']]
+  },
+  options: {
+    skipHtmlTags: ['script','noscript','style','textarea','pre','code']
+  }
+};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  </head>
+
+  <body>
+    <nav>
+    <ul class="menu">
+      
+      <li><a href="/about/">一塘</a></li>
+      
+      <li><a href="/post/">博客</a></li>
+      
+      <li><a href="/categories/">分类</a></li>
+      
+      <li><a href="/tags/">标签</a></li>
+      
+    </ul>
+    <hr/>
+    </nav>
+
+<div class="article-meta">
+<h1><span class="title">Ubuntu的优化与设置</span></h1>
+
+
+</div>
+
+<div class="post-stats" style="text-align: right;">
+   
+  2017/05/22
+  
+</div>
+
+
+
+
+<main>
+<h1></h1>
+<h2 id="前言">前言</h2>
+<ul>
+<li>
+<h2 id="窗口颜色设置浅绿色">窗口颜色设置浅绿色</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>cd /usr/share/themes/Ambiance/gtk-3.0
+</span></span><span style="display:flex;"><span>sudo gedit gtk-main.css
+</span></span></code></pre></div></li>
+</ul>
+<h2 id="2--常用环境">2  常用环境</h2>
+<ul>
+<li>
+<h2 id="安装jdk">安装jdk</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># add java path</span>
+</span></span><span style="display:flex;"><span>export JAVA_HOME<span style="color:#f92672">=</span>/usr/local/java/jdk1.7
+</span></span><span style="display:flex;"><span>export JRE_HOME<span style="color:#f92672">=</span><span style="color:#e6db74">${</span>JAVA_HOME<span style="color:#e6db74">}</span>/jre
+</span></span><span style="display:flex;"><span>export CLASSPATH<span style="color:#f92672">=</span>.:<span style="color:#e6db74">${</span>JAVA_HOME<span style="color:#e6db74">}</span>/lib:<span style="color:#e6db74">${</span>JRE_HOME<span style="color:#e6db74">}</span>/lib
+</span></span><span style="display:flex;"><span>export PATH<span style="color:#f92672">=</span><span style="color:#e6db74">${</span>JAVA_HOME<span style="color:#e6db74">}</span>/bin:$PATH
+</span></span></code></pre></div></li>
+</ul>
+<h2 id="3-安装软件">3 安装软件</h2>
+<ul>
+<li>
+<h2 id="在线软件安装">在线软件安装</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># 备份源列表地址</span>
+</span></span><span style="display:flex;"><span>sudo cp /etc/apt/sources.list /etc/apt/sources.list_backup
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 修改</span>
+</span></span><span style="display:flex;"><span>sudo vim /etc/apt/sources.list
+</span></span></code></pre></div><ul>
+<li>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># 更新源</span>
+</span></span><span style="display:flex;"><span>apt-get update
+</span></span><span style="display:flex;"><span>apt-get install xxx
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 包search</span>
+</span></span><span style="display:flex;"><span>apt-cache search xxx
+</span></span></code></pre></div></li>
+</ul>
+</li>
+<li>
+<h2 id="deb本地软件安装">deb本地软件安装</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span><span style="color:#75715e"># 安装deb包命令</span>
+</span></span><span style="display:flex;"><span>dpkg -i *.deb
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 如果缺少依赖执行</span>
+</span></span><span style="display:flex;"><span>apt-get -f install
+</span></span></code></pre></div></li>
+</ul>
+<h2 id="4-常用软件">4 常用软件</h2>
+<ul>
+<li>mpv播放器</li>
+<li>有道字典</li>
+<li>
+<h2 id="atom">atom</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-css" data-lang="css"><span style="display:flex;"><span><span style="color:#f92672">atom-pane</span> {
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">font-size</span>: <span style="color:#ae81ff">16</span><span style="color:#66d9ef">px</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>.<span style="color:#a6e22e">command-palette</span> {
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">font-size</span>: <span style="color:#ae81ff">16</span><span style="color:#66d9ef">px</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div></li>
+<li>
+<h2 id="图标设置">图标设置</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>cd /usr/share/applications
+</span></span><span style="display:flex;"><span>vim eclipse.desktop
+</span></span></code></pre></div><ul>
+<li>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span><span style="color:#75715e">#!/usr/bin/env xdg-open
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>Desktop Entry<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>Version<span style="color:#f92672">=</span>22.0
+</span></span><span style="display:flex;"><span>Name<span style="color:#f92672">=</span>eclipse
+</span></span><span style="display:flex;"><span>Exec<span style="color:#f92672">=</span>/home/gtc/Android/adt-bundle-linux/eclipse/eclipse
+</span></span><span style="display:flex;"><span>Terminal<span style="color:#f92672">=</span>false
+</span></span><span style="display:flex;"><span>Icon<span style="color:#f92672">=</span>/home/gtc/Android/adt-bundle-linux/eclipse/icon.xpm
+</span></span><span style="display:flex;"><span>Type<span style="color:#f92672">=</span>Application
+</span></span><span style="display:flex;"><span>Categories<span style="color:#f92672">=</span>Development
+</span></span></code></pre></div></li>
+</ul>
+</li>
+</ul>
+<h3 id="设备使用率指示">设备使用率指示</h3>
+<p><a href="https://github.com/fossfreedom/indicator-sysmonitor">https://github.com/fossfreedom/indicator-sysmonitor</a></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> gi
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">try</span>:
+</span></span><span style="display:flex;"><span>    gi<span style="color:#f92672">.</span>require_version(<span style="color:#e6db74">&#39;AyatanaAppIndicator3&#39;</span>, <span style="color:#e6db74">&#39;0.1&#39;</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">from</span> gi.repository <span style="color:#f92672">import</span> AyatanaAppIndicator3 <span style="color:#66d9ef">as</span> appindicator
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">except</span> <span style="color:#a6e22e">ValueError</span>:
+</span></span><span style="display:flex;"><span>    gi<span style="color:#f92672">.</span>require_version(<span style="color:#e6db74">&#39;AppIndicator3&#39;</span>, <span style="color:#e6db74">&#39;0.1&#39;</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">from</span> gi.repository <span style="color:#f92672">import</span> AppIndicator3 <span style="color:#66d9ef">as</span> appindicator
+</span></span></code></pre></div><p>apt install gir1.2-ayatanaappindicator3-0.1</p>
+<h2 id="5-其他优化">5 其他优化</h2>
+<ul>
+<li>
+<h2 id="关闭错误报告">关闭错误报告</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span><span style="color:#75715e"># 关闭烦人的错误报告</span>
+</span></span><span style="display:flex;"><span>sudo gedit /etc/default/apport
+</span></span></code></pre></div></li>
+<li>
+<h2 id="cpu-100占用">CPU 100%占用</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>cd /usr/lib/gvfs
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 将gvfsd-smb-brows权限改成744，取消普通用户的执行权限，</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 也挺有意思，暂时没引发别的问题</span>
+</span></span></code></pre></div></li>
+</ul>
+<h2 id="smb">smb</h2>
+<p>apt-get install samba
+vim /etc/samba/smb.conf
+service smbd restart
+smbpasswd -a xxx</p>
+<pre tabindex="0"><code>vfs objects = catia fruit streams_xattr
+fruit:nfs_aces = no
+
+[share]
+path = /home/talen/share
+valid users = talen
+available = yes
+browseable = yes
+writable = yes
+public = no
+</code></pre>
+</main>
+
+
+
+
+
+
+  <footer>
+  - END -
+  
+  <hr/>
+  © 2025 一塘
+  
+  </footer>
+  </body>
+</html>
+
