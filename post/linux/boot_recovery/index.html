@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>ubuntu引导修复 | 一塘</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+<script>
+window.MathJax = {
+  tex: {
+    inlineMath: [['$', '$'], ['\\(', '\\)']],
+    displayMath: [['$$', '$$'], ['\\[', '\\]']]
+  },
+  options: {
+    skipHtmlTags: ['script','noscript','style','textarea','pre','code']
+  }
+};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  </head>
+
+  <body>
+    <nav>
+    <ul class="menu">
+      
+      <li><a href="/about/">一塘</a></li>
+      
+      <li><a href="/post/">博客</a></li>
+      
+      <li><a href="/categories/">分类</a></li>
+      
+      <li><a href="/tags/">标签</a></li>
+      
+    </ul>
+    <hr/>
+    </nav>
+
+<div class="article-meta">
+<h1><span class="title">ubuntu引导修复</span></h1>
+
+
+</div>
+
+<div class="post-stats" style="text-align: right;">
+   
+  2017/06/14
+  
+</div>
+
+
+
+
+<main>
+<h2 id="前言">前言</h2>
+<p>本文记录修复ubuntu引导，并修改ubuntu盘的大小过程。
+参考：<a href="http://www.cnblogs.com/jloveu/p/Ubuntu-partition-expansion-record.html">http://www.cnblogs.com/jloveu/p/Ubuntu-partition-expansion-record.html</a>
+工具：Ubuntu 的live U盘，带有gparted分区工具，和grub修复工具</p>
+<!-- more -->
+<h2 id="修复启动">修复启动</h2>
+<p>对于使用gpt的格式的硬盘，ubuntu不要用uefi来安装。gpt还要生成一个bootgios的分区，很重要。</p>
+<p>执行以下命令（以root身份）：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>mkdir /tmp/mydir
+</span></span><span style="display:flex;"><span>mount /dev/sda8 /tmp/mydir  <span style="color:#f92672">(</span>注：其中的<span style="color:#e6db74">`</span>/dev/sda8<span style="color:#e6db74">`</span>为我的<span style="color:#e6db74">`</span>/<span style="color:#e6db74">`</span>分区标识，根据自己情况修改为自己的<span style="color:#e6db74">`</span>/<span style="color:#e6db74">`</span>分区标识<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>mount /dev/sda11 /tmp/mydir/boot  <span style="color:#f92672">(</span>注：同上，<span style="color:#e6db74">`</span>/dev/sda11<span style="color:#e6db74">`</span>为<span style="color:#e6db74">`</span>/boot<span style="color:#e6db74">`</span>分区标识<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>mount --bind /dev /tmp/mydir/dev
+</span></span><span style="display:flex;"><span>mount --bind /proc /tmp/mydir/proc
+</span></span><span style="display:flex;"><span>mount --bind /sys /tmp/mydir/sys
+</span></span><span style="display:flex;"><span>chroot /tmp/mydir  <span style="color:#f92672">(</span>此步可能输出一些信息，可以无视<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>grub-install /dev/sda  <span style="color:#f92672">(</span>注：其中的<span style="color:#e6db74">`</span>/dev/sda<span style="color:#e6db74">`</span>为<span style="color:#e6db74">`</span>/<span style="color:#e6db74">`</span>分区所在硬盘的标识<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>exit
+</span></span></code></pre></div><h2 id="修改ubuntu多系统的默认启动顺序">修改Ubuntu多系统的默认启动顺序</h2>
+<p><a href="http://jingyan.baidu.com/article/f71d60379e16021ab641d1ab.html">link</a>
+打开该配置文件&quot;/etc/default/grub&quot;</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>sudo vim /etc/default/grub
+</span></span><span style="display:flex;"><span>sudo update-grub
+</span></span></code></pre></div><p>其中的“GRUB_DEFAULT=0”为设置默认启动项。系统启动菜单Windows10的启动项在第5项，修改为4（GRUB启动项是从0开始的）。<br>
+
+
+
+
+
+    
+
+
+<div style="text-align: center;">
+<img src="boot_file.png" 
+     alt="GRUB修改" 
+      
+/>
+</div></p>
+<h2 id="去除多余grub启动项直接">去除多余GRUB启动项（直接）</h2>
+<p><a href="https://zhidao.baidu.com/question/472571337.html">link</a><br>
+注释掉“/boot/grub/grub.cfg”中对应</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>sudo gedit /boot/grub/grub.cfg
+</span></span></code></pre></div><h2 id="ubuntu下如何修复grub引导">Ubuntu下如何修复Grub引导</h2>
+<p><a href="https://mp.weixin.qq.com/s/NDZPPA-0FhqSzRndQOhNEw">link</a></p>
+<p>本文以 Ubuntu Live CD 修复 Grub 引导为例，已在 /dev/sda3 安装 Fedora。</p>
+<p>首先制作 Ubuntu 启动 USB</p>
+<p>复制代码代码如下：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo dd <span style="color:#66d9ef">if</span><span style="color:#f92672">=</span>ubuntu-13.10-desktop-amd64.iso of<span style="color:#f92672">=</span>/dev/sdb 
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#/dev/sdb 为 USB 盘符</span>
+</span></span></code></pre></div><p>1.使用启动 USB 进入 Ubuntu 试用环境</p>
+<p>2.查看硬盘分区状况，获取 Linux 系统安装分区编号
+代码如下：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo fdisk -l
+</span></span></code></pre></div><p>查看输出结果，然后根据文件类型和分区大小来判定 Linux 系统安装在哪块硬盘和安装的分区。我的电脑是在 /dev/sda3 安装了 Fedora。</p>
+<p>或者，打开 Gparted 图形化工具来查看分区信息也可以。</p>
+<p>挂载 Fedora 安装分区</p>
+<p>3.已知 Fedora 安装在了 /dev/sda3 上，所以我们可以用下面命令来挂载 Fedora 安装分区。你需要将 /dev/sda3 换成自己的 Linux 安装分区。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo mount /dev/sda3 /mnt
+</span></span></code></pre></div><p>4.挂载其他所需的目录（使用 &ndash;bind）</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo mount --bind /dev /mnt/dev
+</span></span><span style="display:flex;"><span>sudo mount --bind /proc /mnt/proc
+</span></span><span style="display:flex;"><span>sudo mount --bind /sys /mnt/sys
+</span></span></code></pre></div><p>5.Chroot 到硬盘上的 Linux 系统</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo chroot /mnt
+</span></span></code></pre></div><p>6.安装&amp;更新 Grub</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>grub2-install /dev/sda
+</span></span><span style="display:flex;"><span>grub2-mkconfig -o /boot/grub2/grub.cfg
+</span></span></code></pre></div><p>7.Grub 已经修复成功，我们还需要退出 chroot 环境、卸载已经挂载的设备与目录：</p>
+<p>exit 退出 chroot 环境</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo umount /mnt/dev
+</span></span><span style="display:flex;"><span>sudo umount /mnt/proc
+</span></span><span style="display:flex;"><span>sudo umount /mnt/sys
+</span></span><span style="display:flex;"><span>sudo umount /mnt
+</span></span></code></pre></div><p>8.重启！</p>
+<p>上面就是使用Ubuntu LiveCD修复grub的方法介绍了，如果你在使用双系统安装windows中出现Grub引导错误，不妨使用该方法进行修复吧。</p>
+
+</main>
+
+
+
+
+
+
+  <footer>
+  - END -
+  
+  <hr/>
+  © 2025 一塘
+  
+  </footer>
+  </body>
+</html>
+

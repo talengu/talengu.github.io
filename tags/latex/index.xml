@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Latex on 一塘</title>
+    <link>http://localhost:1313/tags/latex/</link>
+    <description>Recent content in Latex on 一塘</description>
+    <generator>Hugo</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Fri, 05 May 2017 16:00:04 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/latex/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>为什么正好经过这个空隙？</title>
+      <link>http://localhost:1313/post/math/math_q1/</link>
+      <pubDate>Fri, 05 May 2017 16:00:04 +0000</pubDate>
+      <guid>http://localhost:1313/post/math/math_q1/</guid>
+      <description>&lt;p&gt;&lt;strong&gt;前言&lt;/strong&gt;&#xA;偶然看到的一个问题，如图1，为什么正好经过这个空隙？我们用空间解析几何来解一下吧。&lt;/p&gt;&#xA;&lt;p&gt;&#xA;&#xA;&#xA;&#xA;&#xA;    &#xA;&#xA;&#xA;&lt;div style=&#34;text-align: center;&#34;&gt;&#xA;&lt;img src=&#34;math_q1_show.gif&#34; &#xA;     alt=&#34;动图&#34; &#xA;      &#xA;/&gt;&#xA;&lt;/div&gt;&lt;/p&gt;&#xA;&lt;div align=&#39;center&#39;&gt; 图1 为什么会经过这个空隙？&lt;/div&gt;&#xA;&lt;!-- more --&gt;&#xA;&lt;p&gt;&lt;strong&gt;解答&lt;/strong&gt;&lt;/p&gt;&#xA;&lt;p&gt;如图2，建立空间直角坐标系$xyz$，原点记为 $O$ ， $P$  点为水平杆与斜杆的交点， $Q$ 点为垂直杆与水平杆的交点， 将斜杆标记为 $L$ 。&lt;/p&gt;&#xA;&lt;p&gt;&#xA;&#xA;&#xA;&#xA;&#xA;    &#xA;&#xA;&#xA;&lt;div style=&#34;text-align: center;&#34;&gt;&#xA;&lt;img src=&#34;v2-80ac80b8031d5782412f4f4ef4e22a1a_b.jpeg&#34; &#xA;     alt=&#34;img&#34; &#xA;      &#xA;/&gt;&#xA;&lt;/div&gt;&lt;/p&gt;&#xA;&lt;div align=&#39;center&#39;&gt; 图2 建立空间直角坐标系&lt;/div&gt;&#xA;&lt;p&gt;设 $OQ=q$  ， $QP=r$  。$Q$ 点坐标为 $(0, 0, q)$  。&lt;/p&gt;&#xA;&lt;p&gt;设水平杆  $QP$  绕  $z$   轴以  $\omega, rad/s$  的角速度旋转，并设从开始旋转到现在的时长为 $t$  秒， 则  $P$  点坐标为 $(r\cos{\omega t}, r\sin{\omega t}, q)$  。&lt;/p&gt;&#xA;&lt;p&gt;由 $Q$、$P$ 两点坐标得：&lt;/p&gt;&#xA;&lt;p&gt;$$&#xA;\overrightarrow{OQ}=(0, 0, q) \qquad \overrightarrow{QP}=(r\cos{\omega t}, r\sin{\omega t}, 0) \tag{1}&#xA;$$&lt;/p&gt;&#xA;&lt;p&gt;设 $L$ 的方向向量 $\overrightarrow{S}=(a, b, c) $，由 $L$ 的方向向量 $\overrightarrow{S}$ 和 $P$ 点得，得斜杆  $L$  代表的直线方程：&#xA;$$&#xA;\frac{x-r\cos{\omega t}}{a}=\frac{y-r\sin{\omega t}}{b}=\frac{z-q}{c} \tag{2}&#xA;$$&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>
