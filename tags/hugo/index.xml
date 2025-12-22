@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Hugo on 一塘</title><link>https://example.com/tags/hugo/</link><description>Recent content in Hugo on 一塘</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Mon, 22 Dec 2025 12:39:04 +0000</lastBuildDate><atom:link href="https://example.com/tags/hugo/index.xml" rel="self" type="application/rss+xml"/><item><title>hugo搭建</title><link>https://example.com/post/hugo_build/</link><pubDate>Mon, 22 Dec 2025 12:39:04 +0000</pubDate><guid>https://example.com/post/hugo_build/</guid><description>&lt;p>从2015年开始，我使用Hexo框架Next主题搭建，个人博客系统，正好十年。
+框架和主题配置完成后，我只要关注markdown内容即可。&lt;/p>
+&lt;p>在这使用过程中，遇到过一次大规模的js投毒，那一次hexo 编译不出。
+hexo 和next 框架 变更实在是太快了，最近在github 的页面编译不出后，我修复无果，也懒得折腾了，在初步调研后，准备使用&lt;a href="https://gohugo.io">hugo&lt;/a>和&lt;a href="https://www.gohugothemes.com/theme/yihui-hugo-xmin/">Hugo Xmin&lt;/a>&lt;/p>
+&lt;p>安装 docker hugo&lt;/p>
+&lt;p>选择合适的docker镜像&lt;/p>
+&lt;p>&lt;a href="https://hub.docker.com/r/klakegg/hugo/tags?name=debian">https://hub.docker.com/r/klakegg/hugo/tags?name=debian&lt;/a>&lt;/p>
+&lt;h2 id="hugo-与-hugo-xmin">hugo 与 hugo-xmin&lt;/h2>
+&lt;p>&lt;a href="https://github.com/gohugoio/hugo/releases?page=3">https://github.com/gohugoio/hugo/releases?page=3&lt;/a>
+hugo v0.146.7&lt;/p>
+&lt;p>&lt;a href="https://github.com/yihui/hugo-xmin">https://github.com/yihui/hugo-xmin&lt;/a>
+c871e5665f5eceb919c8fdb284b73c7a07012646&lt;/p>
+&lt;h2 id="hugo">hugo&lt;/h2>
+&lt;p>./hugo server &amp;ndash;bind 0.0.0.0
+./hugo build&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>cd public
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>git init
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>git remote add origin git@github.com:talengu/talengu.github.io.git
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>git checkout -b gh-pages
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>git add .
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>git commit -m &lt;span style="color:#e6db74">&amp;#34;Deploy Hugo site&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>git push -f origin gh-pages
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item></channel></rss>

@@ -1,19 +1,37 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-  <channel>
-    <title>计算机网络 on 一塘</title>
-    <link>http://localhost:1313/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/</link>
-    <description>Recent content in 计算机网络 on 一塘</description>
-    <generator>Hugo</generator>
-    <language>zh-cn</language>
-    <lastBuildDate>Thu, 05 May 2022 22:52:28 +0000</lastBuildDate>
-    <atom:link href="http://localhost:1313/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>「转」GRE隧道测试</title>
-      <link>http://localhost:1313/post/linux/gre_test/</link>
-      <pubDate>Thu, 05 May 2022 22:52:28 +0000</pubDate>
-      <guid>http://localhost:1313/post/linux/gre_test/</guid>
-      <description>&lt;blockquote&gt;&#xA;&lt;p&gt;本文由 &lt;a href=&#34;http://ksria.com/simpread/&#34;&gt;简悦 SimpRead&lt;/a&gt; 转码， 原文地址 &lt;a href=&#34;https://juejin.cn/post/6988645230987706398&#34;&gt;juejin.cn&lt;/a&gt;&lt;/p&gt;&lt;/blockquote&gt;&#xA;&lt;p&gt;&#xA;&#xA;&#xA;&#xA;&#xA;    &#xA;&#xA;&#xA;&lt;div style=&#34;text-align: center;&#34;&gt;&#xA;&lt;img src=&#34;e31bac5bcb1347a59142486adaf94e30.jpg&#34; &#xA;     alt=&#34;&#34; &#xA;      &#xA;/&gt;&#xA;&lt;/div&gt;&lt;/p&gt;&#xA;&lt;h2 id=&#34;0-前言&#34;&gt;0. 前言&lt;/h2&gt;&#xA;&lt;p&gt;在学习 ipsec 过程中，一般都会涉及到 ipsec 的局限性：ipsec 协议是一种点对点协议，不支持组播，也不能保护组播、广播报文。因此 ipsec 协议无法用于音视频会议等场合，此时通常的解决办法是采用 &lt;strong&gt;GRE Over IPSec&lt;/strong&gt; .&lt;/p&gt;&#xA;&lt;p&gt;给出的解释是：GRE 协议可以封装组播、广播报文，但是无法对业务内容进行加密；而 ipsec 可以对报文进行加密，但是无法封装组播和广播报文。因此将两种协议结合，因而 GRE over IPSec 协议应运而生。 但是我找了很多资料 (其实没有多少)，都没有找到为什么 GRE 协议支持封装组播和广播报文，而 ipsec 不行；他们作为点对点协议，为什么  GRE 可以而 IPsec  不行呢？因为没有找到答案，所以不能证实自己的想法正确与否，于是通过搭建 GRE 隧道环境，学习 Linux 内核中 GRE 隧道的操作配置原则，希望能从中得到些许启发。&lt;/p&gt;&#xA;&lt;p&gt;搭建 GRE 隧道环境实际上是很简单的，因为 Linux 内核已经支持了 GRE 隧道，因此直接在虚拟机 (ubuntu 和 CentOS) 里进行简单的配置即可完成操作。&lt;/p&gt;&#xA;&lt;!-- more --&gt;&#xA;&lt;p&gt;&#xA;&#xA;&#xA;&#xA;&#xA;    &#xA;&#xA;&#xA;&lt;div style=&#34;text-align: center;&#34;&gt;&#xA;&lt;img src=&#34;db260d2dc98445f9988f1c768ca3e744.jpg&#34; &#xA;     alt=&#34;&#34; &#xA;      &#xA;/&gt;&#xA;&lt;/div&gt;&lt;/p&gt;&#xA;&lt;h2 id=&#34;1-linux-内核支持的隧道类型&#34;&gt;1. Linux 内核支持的隧道类型&lt;/h2&gt;&#xA;&lt;p&gt;目前 Linux 内核已经支持多种隧道类型，包括：IPIP 隧道，GRE 隧道，&amp;hellip; 。其余这几个我也没见过。当然除了这几种，还有 ipsec 协议，l2tp 协议，可以的是我目前都还没有用过，实在是暴殄天物，罪过罪过&lt;/p&gt;</description>
-    </item>
-  </channel>
-</rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>计算机网络 on 一塘</title><link>https://example.com/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/</link><description>Recent content in 计算机网络 on 一塘</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Thu, 05 May 2022 22:52:28 +0000</lastBuildDate><atom:link href="https://example.com/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/index.xml" rel="self" type="application/rss+xml"/><item><title>「转」GRE隧道测试</title><link>https://example.com/post/linux/gre_test/</link><pubDate>Thu, 05 May 2022 22:52:28 +0000</pubDate><guid>https://example.com/post/linux/gre_test/</guid><description>&lt;blockquote>
+&lt;p>本文由 &lt;a href="http://ksria.com/simpread/">简悦 SimpRead&lt;/a> 转码， 原文地址 &lt;a href="https://juejin.cn/post/6988645230987706398">juejin.cn&lt;/a>&lt;/p>&lt;/blockquote>
+&lt;p>
+
+
+
+
+ 
+
+
+&lt;div style="text-align: center;">
+&lt;img src="e31bac5bcb1347a59142486adaf94e30.jpg" 
+ alt="" 
+ 
+/>
+&lt;/div>&lt;/p>
+&lt;h2 id="0-前言">0. 前言&lt;/h2>
+&lt;p>在学习 ipsec 过程中，一般都会涉及到 ipsec 的局限性：ipsec 协议是一种点对点协议，不支持组播，也不能保护组播、广播报文。因此 ipsec 协议无法用于音视频会议等场合，此时通常的解决办法是采用 &lt;strong>GRE Over IPSec&lt;/strong> .&lt;/p>
+&lt;p>给出的解释是：GRE 协议可以封装组播、广播报文，但是无法对业务内容进行加密；而 ipsec 可以对报文进行加密，但是无法封装组播和广播报文。因此将两种协议结合，因而 GRE over IPSec 协议应运而生。 但是我找了很多资料 (其实没有多少)，都没有找到为什么 GRE 协议支持封装组播和广播报文，而 ipsec 不行；他们作为点对点协议，为什么 GRE 可以而 IPsec 不行呢？因为没有找到答案，所以不能证实自己的想法正确与否，于是通过搭建 GRE 隧道环境，学习 Linux 内核中 GRE 隧道的操作配置原则，希望能从中得到些许启发。&lt;/p>
+&lt;p>搭建 GRE 隧道环境实际上是很简单的，因为 Linux 内核已经支持了 GRE 隧道，因此直接在虚拟机 (ubuntu 和 CentOS) 里进行简单的配置即可完成操作。&lt;/p>
+&lt;!-- more -->
+&lt;p>
+
+
+
+
+ 
+
+
+&lt;div style="text-align: center;">
+&lt;img src="db260d2dc98445f9988f1c768ca3e744.jpg" 
+ alt="" 
+ 
+/>
+&lt;/div>&lt;/p>
+&lt;h2 id="1-linux-内核支持的隧道类型">1. Linux 内核支持的隧道类型&lt;/h2>
+&lt;p>目前 Linux 内核已经支持多种隧道类型，包括：IPIP 隧道，GRE 隧道，&amp;hellip; 。其余这几个我也没见过。当然除了这几种，还有 ipsec 协议，l2tp 协议，可以的是我目前都还没有用过，实在是暴殄天物，罪过罪过&lt;/p></description></item></channel></rss>

@@ -1,19 +1,32 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-  <channel>
-    <title>知识管理 on 一塘</title>
-    <link>http://localhost:1313/categories/%E7%9F%A5%E8%AF%86%E7%AE%A1%E7%90%86/</link>
-    <description>Recent content in 知识管理 on 一塘</description>
-    <generator>Hugo</generator>
-    <language>zh-cn</language>
-    <lastBuildDate>Thu, 14 Apr 2022 12:39:04 +0000</lastBuildDate>
-    <atom:link href="http://localhost:1313/categories/%E7%9F%A5%E8%AF%86%E7%AE%A1%E7%90%86/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>知识记忆软件anki的使用</title>
-      <link>http://localhost:1313/post/anki_tips/</link>
-      <pubDate>Thu, 14 Apr 2022 12:39:04 +0000</pubDate>
-      <guid>http://localhost:1313/post/anki_tips/</guid>
-      <description>&lt;h2 id=&#34;anki使用---自建-anki--server&#34;&gt;anki使用 - 自建 anki  server&lt;/h2&gt;&#xA;&lt;p&gt;当初想设计好用的英语背诵软件，现在发现了anki人家功能全部实现，还要啥自行车。&lt;/p&gt;&#xA;&lt;p&gt;我当时设计的单词勇士开源Android软件：&#xA;&lt;a href=&#34;https://github.com/talengu/WordWarrior&#34;&gt;https://github.com/talengu/WordWarrior&lt;/a&gt;&#xA;现在已弃坑。&lt;/p&gt;&#xA;&lt;p&gt;我们当然选用docker compose 来安装，相当丝滑。&lt;/p&gt;&#xA;&lt;p&gt;在使用Anki过程中，主要工作是制作卡组，我们可以只关心内容而不关心技术。&lt;/p&gt;&#xA;&lt;!-- more --&gt;&#xA;&lt;h2 id=&#34;docker-compose&#34;&gt;docker compose&lt;/h2&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# docker-compose.yml&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;version&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;2&amp;#34;&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;services&lt;/span&gt;:&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#f92672&#34;&gt;service.anki&lt;/span&gt;:&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#f92672&#34;&gt;image&lt;/span&gt;: &lt;span style=&#34;color:#ae81ff&#34;&gt;kuklinistvan/anki-sync-server&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#f92672&#34;&gt;container_name&lt;/span&gt;: &lt;span style=&#34;color:#ae81ff&#34;&gt;anki-container&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#f92672&#34;&gt;ports&lt;/span&gt;:&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;      - &lt;span style=&#34;color:#ae81ff&#34;&gt;8121&lt;/span&gt;:&lt;span style=&#34;color:#ae81ff&#34;&gt;27701&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#f92672&#34;&gt;volumes&lt;/span&gt;:&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;      - &lt;span style=&#34;color:#ae81ff&#34;&gt;~/anki-sync-server:/app/data&lt;/span&gt; &lt;span style=&#34;color:#75715e&#34;&gt;# anki data&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#f92672&#34;&gt;restart&lt;/span&gt;: &lt;span style=&#34;color:#ae81ff&#34;&gt;always&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;docker-compose up -d &#xA;&lt;/code&gt;&lt;/pre&gt;&lt;h3 id=&#34;登陆container&#34;&gt;登陆container&lt;/h3&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;docker exec -it anki-container /bin/sh&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;./ankisyncctl.py lsuser             - list users&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;./ankisyncctl.py adduser &amp;lt;username&amp;gt; - add a new user&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;./ankisyncctl.py deluser &amp;lt;username&amp;gt; - delete a user&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;./ankisyncctl.py passwd &amp;lt;username&amp;gt;  - change password of a user&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;客户端&#34;&gt;客户端&lt;/h2&gt;&#xA;&lt;img src=&#34;anki_tips/image-20200424005627732.png&#34; alt=&#34;image-20200424005627732&#34; style=&#34;zoom:33%;&#34; /&gt;&#xA;&lt;h3 id=&#34;macwin-客户端&#34;&gt;mac/win 客户端&lt;/h3&gt;&#xA;&lt;p&gt;从官网下载 anki mac版本 2.1.21 (f1734a47) / Windows PC 客户端&lt;/p&gt;</description>
-    </item>
-  </channel>
-</rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>知识管理 on 一塘</title><link>https://example.com/categories/%E7%9F%A5%E8%AF%86%E7%AE%A1%E7%90%86/</link><description>Recent content in 知识管理 on 一塘</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Thu, 14 Apr 2022 12:39:04 +0000</lastBuildDate><atom:link href="https://example.com/categories/%E7%9F%A5%E8%AF%86%E7%AE%A1%E7%90%86/index.xml" rel="self" type="application/rss+xml"/><item><title>知识记忆软件anki的使用</title><link>https://example.com/post/anki_tips/</link><pubDate>Thu, 14 Apr 2022 12:39:04 +0000</pubDate><guid>https://example.com/post/anki_tips/</guid><description>&lt;h2 id="anki使用---自建-anki--server">anki使用 - 自建 anki server&lt;/h2>
+&lt;p>当初想设计好用的英语背诵软件，现在发现了anki人家功能全部实现，还要啥自行车。&lt;/p>
+&lt;p>我当时设计的单词勇士开源Android软件：
+&lt;a href="https://github.com/talengu/WordWarrior">https://github.com/talengu/WordWarrior&lt;/a>
+现在已弃坑。&lt;/p>
+&lt;p>我们当然选用docker compose 来安装，相当丝滑。&lt;/p>
+&lt;p>在使用Anki过程中，主要工作是制作卡组，我们可以只关心内容而不关心技术。&lt;/p>
+&lt;!-- more -->
+&lt;h2 id="docker-compose">docker compose&lt;/h2>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-yaml" data-lang="yaml">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># docker-compose.yml&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">version&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;2&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">services&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">service.anki&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">image&lt;/span>: &lt;span style="color:#ae81ff">kuklinistvan/anki-sync-server&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">container_name&lt;/span>: &lt;span style="color:#ae81ff">anki-container&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">ports&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> - &lt;span style="color:#ae81ff">8121&lt;/span>:&lt;span style="color:#ae81ff">27701&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">volumes&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> - &lt;span style="color:#ae81ff">~/anki-sync-server:/app/data&lt;/span> &lt;span style="color:#75715e"># anki data&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">restart&lt;/span>: &lt;span style="color:#ae81ff">always&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;pre tabindex="0">&lt;code>docker-compose up -d 
+&lt;/code>&lt;/pre>&lt;h3 id="登陆container">登陆container&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-shell" data-lang="shell">&lt;span style="display:flex;">&lt;span>docker exec -it anki-container /bin/sh
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>./ankisyncctl.py lsuser - list users
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>./ankisyncctl.py adduser &amp;lt;username&amp;gt; - add a new user
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>./ankisyncctl.py deluser &amp;lt;username&amp;gt; - delete a user
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>./ankisyncctl.py passwd &amp;lt;username&amp;gt; - change password of a user
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="客户端">客户端&lt;/h2>
+&lt;img src="anki_tips/image-20200424005627732.png" alt="image-20200424005627732" style="zoom:33%;" />
+&lt;h3 id="macwin-客户端">mac/win 客户端&lt;/h3>
+&lt;p>从官网下载 anki mac版本 2.1.21 (f1734a47) / Windows PC 客户端&lt;/p></description></item></channel></rss>

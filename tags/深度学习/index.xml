@@ -1,19 +1,138 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-  <channel>
-    <title>深度学习 on 一塘</title>
-    <link>http://localhost:1313/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/</link>
-    <description>Recent content in 深度学习 on 一塘</description>
-    <generator>Hugo</generator>
-    <language>zh-cn</language>
-    <lastBuildDate>Mon, 01 Oct 2018 12:00:00 +0000</lastBuildDate>
-    <atom:link href="http://localhost:1313/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>怎样成为一名优秀的算法工程师</title>
-      <link>http://localhost:1313/post/ai/how_algorithm_engineer/</link>
-      <pubDate>Mon, 01 Oct 2018 12:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/post/ai/how_algorithm_engineer/</guid>
-      <description>&lt;blockquote&gt;&#xA;&lt;p&gt;转载 原创： AI学习与实践平台&#xA;TODO: 看完里面的文章，对每篇文章做个总结，实验+文章。&lt;/p&gt;&lt;/blockquote&gt;&#xA;&lt;h2 id=&#34;1-导言&#34;&gt;1. 导言&lt;/h2&gt;&#xA;&lt;p&gt;怎样成为一名优秀的算法工程师？这是很多从事人工智能学术研究和产品研发的同学都关心的一个问题。面对市场对人才的大量需求与供给的严重不足，以及高薪水的诱惑，越来越多的人开始学习这个方向的技术，或者打算向人工智能转型。市面上各种鱼龙混杂的培训班以及误导人的文章会把很多初学者带入歧途，浮躁的跟风将会让你最后收获甚微，根本达不到企业的用人要求。为了更好的帮助大家学习和成长，少走弯路，在今天的文章里，&lt;a href=&#34;http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;amp;mid=2247485551&amp;amp;idx=2&amp;amp;sn=a6689528f10aedab3fce91857eec877b&amp;amp;chksm=fdb695f8cac11cee025ad6d8d77ed90f7169142d6b20b2f5a6945b58edd97c27225f4a2eba91&amp;amp;scene=21#wechat_redirect&#34;&gt;SIGAI&lt;/a&gt; 的作者以自己的亲身经历和思考，为大家写下对这一问题的理解与答案。&lt;/p&gt;&#xA;&lt;p&gt;首先来看一个高度相关的问题：一个优秀的算法工程师必须具备哪些素质？我们给出的答案是这样的：&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;数学知识&lt;/li&gt;&#xA;&lt;li&gt;编程能力&lt;/li&gt;&#xA;&lt;li&gt;机器学习与深度学习的知识&lt;/li&gt;&#xA;&lt;li&gt;应用方向的知识&lt;/li&gt;&#xA;&lt;li&gt;对自己所做的问题的思考和经验&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;除去教育背景，逻辑思维，学习能力，沟通能力等其他方面的因素，大多数公司在考察算法工程师的技术水平时都会考虑上面这几个因素。接下来我们将按照这几个方面进行展开，详细的说明如何学习这些方面的知识以及积累经验。&lt;/p&gt;&#xA;&lt;!-- more --&gt;&#xA;&lt;h2 id=&#34;2-数学知识&#34;&gt;2. 数学知识&lt;/h2&gt;&#xA;&lt;p&gt;与其他工作方向如app、服务器开发相比，以及与计算机科学的其他方向如网络，数据库，分布式计算等相比，人工智能尤其是机器学习属于数学知识密集的方向。在各种书籍，论文，算法中都充斥着大量的数学公式，这让很多打算入门的人或者开始学习的人感到明显的压力。首先我们考虑一个最核心的问题：机器学习和深度学习究竟需要哪些数学知识？在&lt;a href=&#34;http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;amp;mid=2247485551&amp;amp;idx=2&amp;amp;sn=a6689528f10aedab3fce91857eec877b&amp;amp;chksm=fdb695f8cac11cee025ad6d8d77ed90f7169142d6b20b2f5a6945b58edd97c27225f4a2eba91&amp;amp;scene=21#wechat_redirect&#34;&gt;SIGAI&lt;/a&gt;之前的公众号文章“&lt;a href=&#34;http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;amp;mid=2247483713&amp;amp;idx=1&amp;amp;sn=1e7c81381d16806ac73e15691fe17aec&amp;amp;chksm=fdb69cd6cac115c05f1f90b0407e3f8ae9be8719e454f908074ac0d079885b5c134e2d60fd64&amp;amp;scene=21#wechat_redirect&#34;&gt;学好机器学习需要哪些数学知识&lt;/a&gt;”里，我们已经给出了答案。先看下面这张表：&lt;/p&gt;&#xA;&lt;p&gt;&#xA;&#xA;&#xA;&#xA;&#xA;    &#xA;&#xA;&#xA;&lt;div style=&#34;text-align: center;&#34;&gt;&#xA;&lt;img src=&#34;clip_image003.gif&#34; &#xA;     alt=&#34;EB5E93E91C3643F991C93D61F363373E.jpeg&#34; &#xA;      &#xA;/&gt;&#xA;&lt;/div&gt;&lt;/p&gt;&#xA;&lt;p&gt;更多算法工程师的必读文章，请关注SIGAICN公众号&lt;/p&gt;&#xA;&lt;p&gt;上面的表给出了各种典型的机器学习算法所用到的数学知识点。我们之前已经总结过，理解绝大多数算法和理论，有微积分/高等数学，线性代数，概率论，最优化方法的知识就够了。除流形学习需要简单的微分几何概念之外，深层次的数学知识如实变函数，泛函分析等主要用在一些基础理论结果的证明上，即使不能看懂证明过程，也不影响我们使用具体的机器学习算法。概率图模型、流形学习中基于图的模型会用到图论的一些基本知识，如果学习过离散数学或者数据结构，这些概念很容易理解。除此之外，某些算法会用到离散数学中的树的概念，但很容易理解。&lt;/p&gt;&#xA;&lt;h3 id=&#34;21-高等数学&#34;&gt;2.1 高等数学&lt;/h3&gt;&#xA;&lt;p&gt;如果你已经学过这些大学数学课，只要把所需的知识点复习一遍就够了。对于微积分，通俗易懂而又被广为采用的是同济版的高等数学：&lt;/p&gt;&#xA;&lt;p&gt;&#xA;&#xA;&#xA;&#xA;&#xA;    &#xA;&#xA;&#xA;&lt;div style=&#34;text-align: center;&#34;&gt;&#xA;&lt;img src=&#34;clip_image005.gif&#34; &#xA;     alt=&#34;88F2EB8BDFE1448EBD2DF61848E355FD.jpeg&#34; &#xA;      &#xA;/&gt;&#xA;&lt;/div&gt;&lt;/p&gt;&#xA;&lt;p&gt;在机器学习中主要用到了微分部分，积分用的非常少。具体的，用到了下面的概念：&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;导数和偏导数的定义与计算方法，与函数性质的关系&lt;/li&gt;&#xA;&lt;li&gt;梯度向量的定义&lt;/li&gt;&#xA;&lt;li&gt;极值定理，可导函数在极值点处导数或梯度必须为0&lt;/li&gt;&#xA;&lt;li&gt;雅克比矩阵，这是向量到向量映射函数的偏导数构成的矩阵，在求导推导中会用到&lt;/li&gt;&#xA;&lt;li&gt;Hessian矩阵，这是2阶导数对多元函数的推广，与函数的极值有密切的联系&lt;/li&gt;&#xA;&lt;li&gt;凸函数的定义与判断方法&lt;/li&gt;&#xA;&lt;li&gt;泰勒展开公式&lt;/li&gt;&#xA;&lt;li&gt;拉格朗日乘数法，用于求解带等式约束的极值问题&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;其中最核心的是多元函数的泰勒展开公式，根据它我们可以推导出梯度下降法，牛顿法，拟牛顿法等一系列最优化方法。&lt;/p&gt;&#xA;&lt;p&gt;如果你想要深入的学习微积分，可以阅读数学系的教程，称为数学分析：&lt;/p&gt;&#xA;&lt;p&gt;&#xA;&#xA;&#xA;&#xA;&#xA;    &#xA;&#xA;&#xA;&lt;div style=&#34;text-align: center;&#34;&gt;&#xA;&lt;img src=&#34;clip_image007.gif&#34; &#xA;     alt=&#34;DEB5F0D2FC584E0B96B263FE1D559AFF.jpeg&#34; &#xA;      &#xA;/&gt;&#xA;&lt;/div&gt;&lt;/p&gt;&#xA;&lt;p&gt;与工科的高等数学偏重计算不同，它里面有大量的理论证明，对于锻炼数学思维非常有帮助。北大张筑生先生所著的数学分析可谓是国内这方面教材的精品。&lt;/p&gt;&#xA;&lt;h3 id=&#34;22-线性代数&#34;&gt;2.2 线性代数&lt;/h3&gt;&#xA;&lt;p&gt;下面来看线性代数，同样是同济版的教材：&lt;/p&gt;&#xA;&lt;p&gt;&#xA;&#xA;&#xA;&#xA;&#xA;    &#xA;&#xA;&#xA;&lt;div style=&#34;text-align: center;&#34;&gt;&#xA;&lt;img src=&#34;clip_image009.gif&#34; &#xA;     alt=&#34;48D5E515A7144CE6A9CB78162F6ECAAF.jpeg&#34; &#xA;      &#xA;/&gt;&#xA;&lt;/div&gt;&lt;/p&gt;&#xA;&lt;p&gt;如果想更全面系统的学习线性代数，可以看这本书：&lt;/p&gt;&#xA;&lt;p&gt;&#xA;&#xA;&#xA;&#xA;&#xA;    &#xA;&#xA;&#xA;&lt;div style=&#34;text-align: center;&#34;&gt;&#xA;&lt;img src=&#34;clip_image011.gif&#34; &#xA;     alt=&#34;BF71AB68DB2B4D71AC8D2B3263C197E5.jpeg&#34; &#xA;      &#xA;/&gt;&#xA;&lt;/div&gt;&lt;/p&gt;&#xA;&lt;p&gt;相比之下，线性代数用的更多。具体用到的知识点有：&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;向量和它的各种运算，包括加法，减法，数乘，转置，内积&lt;/li&gt;&#xA;&lt;li&gt;向量和矩阵的范数，L1范数和L2范数&lt;/li&gt;&#xA;&lt;li&gt;矩阵和它的各种运算，包括加法，减法，乘法，数乘&lt;/li&gt;&#xA;&lt;li&gt;逆矩阵的定义与性质&lt;/li&gt;&#xA;&lt;li&gt;行列式的定义与计算方法&lt;/li&gt;&#xA;&lt;li&gt;二次型的定义&lt;/li&gt;&#xA;&lt;li&gt;矩阵的正定性&lt;/li&gt;&#xA;&lt;li&gt;特征值与特征向量&lt;/li&gt;&#xA;&lt;li&gt;奇异值分解&lt;/li&gt;&#xA;&lt;li&gt;线性方程组的数值解&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;机器学习算法处理的数据一般都是向量、矩阵或者张量。经典的机器学习算法输入的数据都是特征向量，深度学习算法在处理图像时输入的2维的矩阵或者3维的张量。掌握这些概念是你理解机器学习和深度学习算法的基础。&lt;/p&gt;&#xA;&lt;h3 id=&#34;23-概率论&#34;&gt;2.3 概率论&lt;/h3&gt;&#xA;&lt;p&gt;概率论国内理工科专业使用最多的是浙大版的教材：&lt;/p&gt;&#xA;&lt;p&gt;&#xA;&#xA;&#xA;&#xA;&#xA;    &#xA;&#xA;&#xA;&lt;div style=&#34;text-align: center;&#34;&gt;&#xA;&lt;img src=&#34;clip_image013.gif&#34; &#xA;     alt=&#34;91E918CF7ED84C7488BDDFFC7594E0D4.jpeg&#34; &#xA;      &#xA;/&gt;&#xA;&lt;/div&gt;&lt;/p&gt;</description>
-    </item>
-  </channel>
-</rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>深度学习 on 一塘</title><link>https://example.com/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/</link><description>Recent content in 深度学习 on 一塘</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Mon, 01 Oct 2018 12:00:00 +0000</lastBuildDate><atom:link href="https://example.com/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/index.xml" rel="self" type="application/rss+xml"/><item><title>怎样成为一名优秀的算法工程师</title><link>https://example.com/post/ai/how_algorithm_engineer/</link><pubDate>Mon, 01 Oct 2018 12:00:00 +0000</pubDate><guid>https://example.com/post/ai/how_algorithm_engineer/</guid><description>&lt;blockquote>
+&lt;p>转载 原创： AI学习与实践平台
+TODO: 看完里面的文章，对每篇文章做个总结，实验+文章。&lt;/p>&lt;/blockquote>
+&lt;h2 id="1-导言">1. 导言&lt;/h2>
+&lt;p>怎样成为一名优秀的算法工程师？这是很多从事人工智能学术研究和产品研发的同学都关心的一个问题。面对市场对人才的大量需求与供给的严重不足，以及高薪水的诱惑，越来越多的人开始学习这个方向的技术，或者打算向人工智能转型。市面上各种鱼龙混杂的培训班以及误导人的文章会把很多初学者带入歧途，浮躁的跟风将会让你最后收获甚微，根本达不到企业的用人要求。为了更好的帮助大家学习和成长，少走弯路，在今天的文章里，&lt;a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;amp;mid=2247485551&amp;amp;idx=2&amp;amp;sn=a6689528f10aedab3fce91857eec877b&amp;amp;chksm=fdb695f8cac11cee025ad6d8d77ed90f7169142d6b20b2f5a6945b58edd97c27225f4a2eba91&amp;amp;scene=21#wechat_redirect">SIGAI&lt;/a> 的作者以自己的亲身经历和思考，为大家写下对这一问题的理解与答案。&lt;/p>
+&lt;p>首先来看一个高度相关的问题：一个优秀的算法工程师必须具备哪些素质？我们给出的答案是这样的：&lt;/p>
+&lt;ul>
+&lt;li>数学知识&lt;/li>
+&lt;li>编程能力&lt;/li>
+&lt;li>机器学习与深度学习的知识&lt;/li>
+&lt;li>应用方向的知识&lt;/li>
+&lt;li>对自己所做的问题的思考和经验&lt;/li>
+&lt;/ul>
+&lt;p>除去教育背景，逻辑思维，学习能力，沟通能力等其他方面的因素，大多数公司在考察算法工程师的技术水平时都会考虑上面这几个因素。接下来我们将按照这几个方面进行展开，详细的说明如何学习这些方面的知识以及积累经验。&lt;/p>
+&lt;!-- more -->
+&lt;h2 id="2-数学知识">2. 数学知识&lt;/h2>
+&lt;p>与其他工作方向如app、服务器开发相比，以及与计算机科学的其他方向如网络，数据库，分布式计算等相比，人工智能尤其是机器学习属于数学知识密集的方向。在各种书籍，论文，算法中都充斥着大量的数学公式，这让很多打算入门的人或者开始学习的人感到明显的压力。首先我们考虑一个最核心的问题：机器学习和深度学习究竟需要哪些数学知识？在&lt;a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;amp;mid=2247485551&amp;amp;idx=2&amp;amp;sn=a6689528f10aedab3fce91857eec877b&amp;amp;chksm=fdb695f8cac11cee025ad6d8d77ed90f7169142d6b20b2f5a6945b58edd97c27225f4a2eba91&amp;amp;scene=21#wechat_redirect">SIGAI&lt;/a>之前的公众号文章“&lt;a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;amp;mid=2247483713&amp;amp;idx=1&amp;amp;sn=1e7c81381d16806ac73e15691fe17aec&amp;amp;chksm=fdb69cd6cac115c05f1f90b0407e3f8ae9be8719e454f908074ac0d079885b5c134e2d60fd64&amp;amp;scene=21#wechat_redirect">学好机器学习需要哪些数学知识&lt;/a>”里，我们已经给出了答案。先看下面这张表：&lt;/p>
+&lt;p>
+
+
+
+
+ 
+
+
+&lt;div style="text-align: center;">
+&lt;img src="clip_image003.gif" 
+ alt="EB5E93E91C3643F991C93D61F363373E.jpeg" 
+ 
+/>
+&lt;/div>&lt;/p>
+&lt;p>更多算法工程师的必读文章，请关注SIGAICN公众号&lt;/p>
+&lt;p>上面的表给出了各种典型的机器学习算法所用到的数学知识点。我们之前已经总结过，理解绝大多数算法和理论，有微积分/高等数学，线性代数，概率论，最优化方法的知识就够了。除流形学习需要简单的微分几何概念之外，深层次的数学知识如实变函数，泛函分析等主要用在一些基础理论结果的证明上，即使不能看懂证明过程，也不影响我们使用具体的机器学习算法。概率图模型、流形学习中基于图的模型会用到图论的一些基本知识，如果学习过离散数学或者数据结构，这些概念很容易理解。除此之外，某些算法会用到离散数学中的树的概念，但很容易理解。&lt;/p>
+&lt;h3 id="21-高等数学">2.1 高等数学&lt;/h3>
+&lt;p>如果你已经学过这些大学数学课，只要把所需的知识点复习一遍就够了。对于微积分，通俗易懂而又被广为采用的是同济版的高等数学：&lt;/p>
+&lt;p>
+
+
+
+
+ 
+
+
+&lt;div style="text-align: center;">
+&lt;img src="clip_image005.gif" 
+ alt="88F2EB8BDFE1448EBD2DF61848E355FD.jpeg" 
+ 
+/>
+&lt;/div>&lt;/p>
+&lt;p>在机器学习中主要用到了微分部分，积分用的非常少。具体的，用到了下面的概念：&lt;/p>
+&lt;ul>
+&lt;li>导数和偏导数的定义与计算方法，与函数性质的关系&lt;/li>
+&lt;li>梯度向量的定义&lt;/li>
+&lt;li>极值定理，可导函数在极值点处导数或梯度必须为0&lt;/li>
+&lt;li>雅克比矩阵，这是向量到向量映射函数的偏导数构成的矩阵，在求导推导中会用到&lt;/li>
+&lt;li>Hessian矩阵，这是2阶导数对多元函数的推广，与函数的极值有密切的联系&lt;/li>
+&lt;li>凸函数的定义与判断方法&lt;/li>
+&lt;li>泰勒展开公式&lt;/li>
+&lt;li>拉格朗日乘数法，用于求解带等式约束的极值问题&lt;/li>
+&lt;/ul>
+&lt;p>其中最核心的是多元函数的泰勒展开公式，根据它我们可以推导出梯度下降法，牛顿法，拟牛顿法等一系列最优化方法。&lt;/p>
+&lt;p>如果你想要深入的学习微积分，可以阅读数学系的教程，称为数学分析：&lt;/p>
+&lt;p>
+
+
+
+
+ 
+
+
+&lt;div style="text-align: center;">
+&lt;img src="clip_image007.gif" 
+ alt="DEB5F0D2FC584E0B96B263FE1D559AFF.jpeg" 
+ 
+/>
+&lt;/div>&lt;/p>
+&lt;p>与工科的高等数学偏重计算不同，它里面有大量的理论证明，对于锻炼数学思维非常有帮助。北大张筑生先生所著的数学分析可谓是国内这方面教材的精品。&lt;/p>
+&lt;h3 id="22-线性代数">2.2 线性代数&lt;/h3>
+&lt;p>下面来看线性代数，同样是同济版的教材：&lt;/p>
+&lt;p>
+
+
+
+
+ 
+
+
+&lt;div style="text-align: center;">
+&lt;img src="clip_image009.gif" 
+ alt="48D5E515A7144CE6A9CB78162F6ECAAF.jpeg" 
+ 
+/>
+&lt;/div>&lt;/p>
+&lt;p>如果想更全面系统的学习线性代数，可以看这本书：&lt;/p>
+&lt;p>
+
+
+
+
+ 
+
+
+&lt;div style="text-align: center;">
+&lt;img src="clip_image011.gif" 
+ alt="BF71AB68DB2B4D71AC8D2B3263C197E5.jpeg" 
+ 
+/>
+&lt;/div>&lt;/p>
+&lt;p>相比之下，线性代数用的更多。具体用到的知识点有：&lt;/p>
+&lt;ul>
+&lt;li>向量和它的各种运算，包括加法，减法，数乘，转置，内积&lt;/li>
+&lt;li>向量和矩阵的范数，L1范数和L2范数&lt;/li>
+&lt;li>矩阵和它的各种运算，包括加法，减法，乘法，数乘&lt;/li>
+&lt;li>逆矩阵的定义与性质&lt;/li>
+&lt;li>行列式的定义与计算方法&lt;/li>
+&lt;li>二次型的定义&lt;/li>
+&lt;li>矩阵的正定性&lt;/li>
+&lt;li>特征值与特征向量&lt;/li>
+&lt;li>奇异值分解&lt;/li>
+&lt;li>线性方程组的数值解&lt;/li>
+&lt;/ul>
+&lt;p>机器学习算法处理的数据一般都是向量、矩阵或者张量。经典的机器学习算法输入的数据都是特征向量，深度学习算法在处理图像时输入的2维的矩阵或者3维的张量。掌握这些概念是你理解机器学习和深度学习算法的基础。&lt;/p>
+&lt;h3 id="23-概率论">2.3 概率论&lt;/h3>
+&lt;p>概率论国内理工科专业使用最多的是浙大版的教材：&lt;/p>
+&lt;p>
+
+
+
+
+ 
+
+
+&lt;div style="text-align: center;">
+&lt;img src="clip_image013.gif" 
+ alt="91E918CF7ED84C7488BDDFFC7594E0D4.jpeg" 
+ 
+/>
+&lt;/div>&lt;/p></description></item></channel></rss>

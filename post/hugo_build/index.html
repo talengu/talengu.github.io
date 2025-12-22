@@ -1,0 +1,14 @@
+<!doctype html><html lang=zh-cn><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><title>hugo搭建 | 一塘</title>
+<link rel=stylesheet href=/css/style.css><link rel=stylesheet href=/css/fonts.css></head><body><nav><ul class=menu><li><a href=/about/>一塘</a></li><li><a href=/post/>博客</a></li><li><a href=/categories/>分类</a></li><li><a href=/tags/>标签</a></li></ul><hr></nav><div class=article-meta><h1><span class=title>hugo搭建</span></h1></div><div class=post-stats style=text-align:right>2025/12/22</div><main><p>从2015年开始，我使用Hexo框架Next主题搭建，个人博客系统，正好十年。
+框架和主题配置完成后，我只要关注markdown内容即可。</p><p>在这使用过程中，遇到过一次大规模的js投毒，那一次hexo 编译不出。
+hexo 和next 框架 变更实在是太快了，最近在github 的页面编译不出后，我修复无果，也懒得折腾了，在初步调研后，准备使用<a href=https://gohugo.io>hugo</a>和<a href=https://www.gohugothemes.com/theme/yihui-hugo-xmin/>Hugo Xmin</a></p><p>安装 docker hugo</p><p>选择合适的docker镜像</p><p><a href="https://hub.docker.com/r/klakegg/hugo/tags?name=debian">https://hub.docker.com/r/klakegg/hugo/tags?name=debian</a></p><h2 id=hugo-与-hugo-xmin>hugo 与 hugo-xmin</h2><p><a href="https://github.com/gohugoio/hugo/releases?page=3">https://github.com/gohugoio/hugo/releases?page=3</a>
+hugo v0.146.7</p><p><a href=https://github.com/yihui/hugo-xmin>https://github.com/yihui/hugo-xmin</a>
+c871e5665f5eceb919c8fdb284b73c7a07012646</p><h2 id=hugo>hugo</h2><p>./hugo server &ndash;bind 0.0.0.0
+./hugo build</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>cd public
+</span></span><span style=display:flex><span>git init
+</span></span><span style=display:flex><span>git remote add origin git@github.com:talengu/talengu.github.io.git
+</span></span><span style=display:flex><span>git checkout -b gh-pages
+</span></span><span style=display:flex><span>git add .
+</span></span><span style=display:flex><span>git commit -m <span style=color:#e6db74>&#34;Deploy Hugo site&#34;</span>
+</span></span><span style=display:flex><span>git push -f origin gh-pages
+</span></span></code></pre></div></main><footer>- END -<hr>© 2025 一塘</footer></body></html>

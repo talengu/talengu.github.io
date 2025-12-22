@@ -1,143 +1,45 @@
-<!DOCTYPE html>
-<html lang="zh-cn">
-  <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>知识记忆软件anki的使用 | 一塘</title>
-    <link rel="stylesheet" href="/css/style.css" />
-    <link rel="stylesheet" href="/css/fonts.css" />
-    
-<script>
-window.MathJax = {
-  tex: {
-    inlineMath: [['$', '$'], ['\\(', '\\)']],
-    displayMath: [['$$', '$$'], ['\\[', '\\]']]
-  },
-  options: {
-    skipHtmlTags: ['script','noscript','style','textarea','pre','code']
-  }
-};
-</script>
-<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-  </head>
-
-  <body>
-    <nav>
-    <ul class="menu">
-      
-      <li><a href="/about/">一塘</a></li>
-      
-      <li><a href="/post/">博客</a></li>
-      
-      <li><a href="/categories/">分类</a></li>
-      
-      <li><a href="/tags/">标签</a></li>
-      
-    </ul>
-    <hr/>
-    </nav>
-
-<div class="article-meta">
-<h1><span class="title">知识记忆软件anki的使用</span></h1>
-
-
-</div>
-
-<div class="post-stats" style="text-align: right;">
-   
-  2022/04/14
-  
-</div>
-
-
-
-
-<main>
-<h2 id="anki使用---自建-anki--server">anki使用 - 自建 anki  server</h2>
-<p>当初想设计好用的英语背诵软件，现在发现了anki人家功能全部实现，还要啥自行车。</p>
-<p>我当时设计的单词勇士开源Android软件：
-<a href="https://github.com/talengu/WordWarrior">https://github.com/talengu/WordWarrior</a>
-现在已弃坑。</p>
-<p>我们当然选用docker compose 来安装，相当丝滑。</p>
-<p>在使用Anki过程中，主要工作是制作卡组，我们可以只关心内容而不关心技术。</p>
-<!-- more -->
-<h2 id="docker-compose">docker compose</h2>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#75715e"># docker-compose.yml</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">version</span>: <span style="color:#e6db74">&#34;2&#34;</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">services</span>:
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">service.anki</span>:
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">image</span>: <span style="color:#ae81ff">kuklinistvan/anki-sync-server</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">container_name</span>: <span style="color:#ae81ff">anki-container</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">ports</span>:
-</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">8121</span>:<span style="color:#ae81ff">27701</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">volumes</span>:
-</span></span><span style="display:flex;"><span>      - <span style="color:#ae81ff">~/anki-sync-server:/app/data</span> <span style="color:#75715e"># anki data</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">restart</span>: <span style="color:#ae81ff">always</span>
-</span></span></code></pre></div><pre tabindex="0"><code>docker-compose up -d 
-</code></pre><h3 id="登陆container">登陆container</h3>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>docker exec -it anki-container /bin/sh
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>./ankisyncctl.py lsuser             - list users
-</span></span><span style="display:flex;"><span>./ankisyncctl.py adduser &lt;username&gt; - add a new user
-</span></span><span style="display:flex;"><span>./ankisyncctl.py deluser &lt;username&gt; - delete a user
-</span></span><span style="display:flex;"><span>./ankisyncctl.py passwd &lt;username&gt;  - change password of a user
-</span></span></code></pre></div><h2 id="客户端">客户端</h2>
-<img src="anki_tips/image-20200424005627732.png" alt="image-20200424005627732" style="zoom:33%;" />
-<h3 id="macwin-客户端">mac/win 客户端</h3>
-<p>从官网下载 anki mac版本 2.1.21 (f1734a47) / Windows PC 客户端</p>
-<p>中文网：<a href="http://www.ankichina.net/">http://www.ankichina.net/</a></p>
-<p>工具-&gt;附加组件-&gt;<code>获取插件</code>，输入 代码：2124817646</p>
-<img src="anki_tips/add_server.png" alt="add_server" style="zoom:30%;" />
-<img src="anki_tips/add_on1.png" alt="add_on1" style="zoom:30%;" />
-<p>插件下载完成后设置ip地址，点击<code>设置</code>。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;msyncUrl&#34;</span>: <span style="color:#e6db74">&#34;http://127.0.0.1:27701/msync/&#34;</span>,
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;syncUrl&#34;</span>: <span style="color:#e6db74">&#34;http://127.0.0.1:27701/sync/&#34;</span>
-</span></span><span style="display:flex;"><span>}
-</span></span></code></pre></div><img src="anki_tips/addon_2.png" alt="addon_2" style="zoom:30%;" />
-<p>重启anki，同步并输入输入自定义服务器中配置的账户</p>
-<h3 id="android客户端---ankidroid">Android客户端 - AnkiDroid</h3>
-<p>首先配置服务器地址信息，打开<code>设置-&gt;高级设置-&gt;自定义同步服务器</code>，输入同步地址 和 媒体文件同步地址。</p>
-<pre tabindex="0"><code># 同步地址
+<!doctype html><html lang=zh-cn><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><title>知识记忆软件anki的使用 | 一塘</title>
+<link rel=stylesheet href=/css/style.css><link rel=stylesheet href=/css/fonts.css></head><body><nav><ul class=menu><li><a href=/about/>一塘</a></li><li><a href=/post/>博客</a></li><li><a href=/categories/>分类</a></li><li><a href=/tags/>标签</a></li></ul><hr></nav><div class=article-meta><h1><span class=title>知识记忆软件anki的使用</span></h1></div><div class=post-stats style=text-align:right>2022/04/14</div><main><h2 id=anki使用---自建-anki--server>anki使用 - 自建 anki server</h2><p>当初想设计好用的英语背诵软件，现在发现了anki人家功能全部实现，还要啥自行车。</p><p>我当时设计的单词勇士开源Android软件：
+<a href=https://github.com/talengu/WordWarrior>https://github.com/talengu/WordWarrior</a>
+现在已弃坑。</p><p>我们当然选用docker compose 来安装，相当丝滑。</p><p>在使用Anki过程中，主要工作是制作卡组，我们可以只关心内容而不关心技术。</p><h2 id=docker-compose>docker compose</h2><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#75715e># docker-compose.yml</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>version</span>: <span style=color:#e6db74>&#34;2&#34;</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>services</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>service.anki</span>:
+</span></span><span style=display:flex><span>    <span style=color:#f92672>image</span>: <span style=color:#ae81ff>kuklinistvan/anki-sync-server</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>container_name</span>: <span style=color:#ae81ff>anki-container</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>ports</span>:
+</span></span><span style=display:flex><span>      - <span style=color:#ae81ff>8121</span>:<span style=color:#ae81ff>27701</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>volumes</span>:
+</span></span><span style=display:flex><span>      - <span style=color:#ae81ff>~/anki-sync-server:/app/data</span> <span style=color:#75715e># anki data</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>restart</span>: <span style=color:#ae81ff>always</span>
+</span></span></code></pre></div><pre tabindex=0><code>docker-compose up -d 
+</code></pre><h3 id=登陆container>登陆container</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>docker exec -it anki-container /bin/sh
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>./ankisyncctl.py lsuser             - list users
+</span></span><span style=display:flex><span>./ankisyncctl.py adduser &lt;username&gt; - add a new user
+</span></span><span style=display:flex><span>./ankisyncctl.py deluser &lt;username&gt; - delete a user
+</span></span><span style=display:flex><span>./ankisyncctl.py passwd &lt;username&gt;  - change password of a user
+</span></span></code></pre></div><h2 id=客户端>客户端</h2><img src=anki_tips/image-20200424005627732.png alt=image-20200424005627732 style=zoom:33%><h3 id=macwin-客户端>mac/win 客户端</h3><p>从官网下载 anki mac版本 2.1.21 (f1734a47) / Windows PC 客户端</p><p>中文网：<a href=http://www.ankichina.net/>http://www.ankichina.net/</a></p><p>工具->附加组件-><code>获取插件</code>，输入 代码：2124817646</p><img src=anki_tips/add_server.png alt=add_server style=zoom:30%>
+<img src=anki_tips/add_on1.png alt=add_on1 style=zoom:30%><p>插件下载完成后设置ip地址，点击<code>设置</code>。</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-json data-lang=json><span style=display:flex><span>{
+</span></span><span style=display:flex><span>    <span style=color:#f92672>&#34;msyncUrl&#34;</span>: <span style=color:#e6db74>&#34;http://127.0.0.1:27701/msync/&#34;</span>,
+</span></span><span style=display:flex><span>    <span style=color:#f92672>&#34;syncUrl&#34;</span>: <span style=color:#e6db74>&#34;http://127.0.0.1:27701/sync/&#34;</span>
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><img src=anki_tips/addon_2.png alt=addon_2 style=zoom:30%><p>重启anki，同步并输入输入自定义服务器中配置的账户</p><h3 id=android客户端---ankidroid>Android客户端 - AnkiDroid</h3><p>首先配置服务器地址信息，打开<code>设置->高级设置->自定义同步服务器</code>，输入同步地址 和 媒体文件同步地址。</p><pre tabindex=0><code># 同步地址
 http://127.0.0.1:27701/
 # 媒体文件同步地址
 http://127.0.0.1:27701/msync/
-</code></pre><p>然后打开 <code>设置-&gt;AnkiDroid常用设置-&gt;AnkiWeb账户</code>，输入在服务器里面设置的账户和密码。PS：可在服务器重置密码。</p>
-<table><tr>
-<td><center><img src="anki_tips/IMG_20200424_010047.jpg" >图1    </center></td>
-<td><center><img src="anki_tips/IMG_20200424_011338.jpg"  >图2      </center></td>
-</tr></table>
-<p>coco20000 anki 包 <a href="https://www.dazhuanlan.com/2019/11/20/5dd54a6571f01/">https://www.dazhuanlan.com/2019/11/20/5dd54a6571f01/</a></p>
-<h2 id="使用-docker-安装">使用 Docker 安装</h2>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>export ANKI_SYNC_DATA_DIR<span style="color:#f92672">=</span>$HOME/anki-sync-server
-</span></span><span style="display:flex;"><span>export HOST_PORT<span style="color:#f92672">=</span><span style="color:#ae81ff">27701</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>mkdir -p <span style="color:#e6db74">&#34;</span>$ANKI_SYNC_DATA_DIR<span style="color:#e6db74">&#34;</span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">#export DOCKER_USER=root</span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">#chown &#34;$DOCKER_USER&#34; &#34;$ANKI_SYNC_DATA_DIR&#34;</span>
-</span></span><span style="display:flex;"><span>chmod <span style="color:#ae81ff">700</span> <span style="color:#e6db74">&#34;</span>$ANKI_SYNC_DATA_DIR<span style="color:#e6db74">&#34;</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>docker run -itd <span style="color:#ae81ff">\
-</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>   -v <span style="color:#e6db74">&#34;</span>$ANKI_SYNC_DATA_DIR<span style="color:#e6db74">&#34;</span>:/app/data <span style="color:#ae81ff">\
-</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>   -p <span style="color:#e6db74">&#34;</span>$HOST_PORT<span style="color:#e6db74">&#34;</span>:27701 <span style="color:#ae81ff">\
-</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>   --name anki-container <span style="color:#ae81ff">\
-</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>   --restart always <span style="color:#ae81ff">\
-</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>   kuklinistvan/anki-sync-server:latest
-</span></span></code></pre></div>
-</main>
-
-
-
-
-
-
-  <footer>
-  - END -
-  
-  <hr/>
-  © 2025 一塘
-  
-  </footer>
-  </body>
-</html>
-
+</code></pre><p>然后打开 <code>设置->AnkiDroid常用设置->AnkiWeb账户</code>，输入在服务器里面设置的账户和密码。PS：可在服务器重置密码。</p><table><tr><td><center><img src=anki_tips/IMG_20200424_010047.jpg>图1</center></td><td><center><img src=anki_tips/IMG_20200424_011338.jpg>图2</center></td></tr></table><p>coco20000 anki 包 <a href=https://www.dazhuanlan.com/2019/11/20/5dd54a6571f01/>https://www.dazhuanlan.com/2019/11/20/5dd54a6571f01/</a></p><h2 id=使用-docker-安装>使用 Docker 安装</h2><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>export ANKI_SYNC_DATA_DIR<span style=color:#f92672>=</span>$HOME/anki-sync-server
+</span></span><span style=display:flex><span>export HOST_PORT<span style=color:#f92672>=</span><span style=color:#ae81ff>27701</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>mkdir -p <span style=color:#e6db74>&#34;</span>$ANKI_SYNC_DATA_DIR<span style=color:#e6db74>&#34;</span>
+</span></span><span style=display:flex><span><span style=color:#75715e>#export DOCKER_USER=root</span>
+</span></span><span style=display:flex><span><span style=color:#75715e>#chown &#34;$DOCKER_USER&#34; &#34;$ANKI_SYNC_DATA_DIR&#34;</span>
+</span></span><span style=display:flex><span>chmod <span style=color:#ae81ff>700</span> <span style=color:#e6db74>&#34;</span>$ANKI_SYNC_DATA_DIR<span style=color:#e6db74>&#34;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>docker run -itd <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>   -v <span style=color:#e6db74>&#34;</span>$ANKI_SYNC_DATA_DIR<span style=color:#e6db74>&#34;</span>:/app/data <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>   -p <span style=color:#e6db74>&#34;</span>$HOST_PORT<span style=color:#e6db74>&#34;</span>:27701 <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>   --name anki-container <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>   --restart always <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>   kuklinistvan/anki-sync-server:latest
+</span></span></code></pre></div></main><footer>- END -<hr>© 2025 一塘</footer></body></html>

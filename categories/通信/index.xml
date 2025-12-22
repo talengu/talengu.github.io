@@ -1,26 +1,46 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-  <channel>
-    <title>通信 on 一塘</title>
-    <link>http://localhost:1313/categories/%E9%80%9A%E4%BF%A1/</link>
-    <description>Recent content in 通信 on 一塘</description>
-    <generator>Hugo</generator>
-    <language>zh-cn</language>
-    <lastBuildDate>Sat, 20 Dec 2025 12:39:04 +0000</lastBuildDate>
-    <atom:link href="http://localhost:1313/categories/%E9%80%9A%E4%BF%A1/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>hugo博客搭建</title>
-      <link>http://localhost:1313/post/hugo%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/</link>
-      <pubDate>Sat, 20 Dec 2025 12:39:04 +0000</pubDate>
-      <guid>http://localhost:1313/post/hugo%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/</guid>
-      <description>&lt;p&gt;从2015年开始，我使用Hexo框架Next主题搭建，个人博客系统，正好十年。&#xA;框架和主题配置完成后，我只要关注markdown内容即可。&lt;/p&gt;&#xA;&lt;p&gt;在这使用过程中，遇到过一次大规模的js投毒，那一次hexo 编译不出。&#xA;hexo 和next 框架 变更实在是太快了，最近在github 的页面编译不出后，我修复无果，也懒得折腾了，在初步调研后，准备使用&lt;a href=&#34;https://gohugo.io&#34;&gt;hugo&lt;/a&gt;和&lt;a href=&#34;https://www.gohugothemes.com/theme/yihui-hugo-xmin/&#34;&gt;Hugo Xmin&lt;/a&gt;&lt;/p&gt;&#xA;&lt;p&gt;安装 docker hugo&lt;/p&gt;&#xA;&lt;p&gt;选择合适的docker镜像&lt;/p&gt;&#xA;&lt;p&gt;&lt;a href=&#34;https://hub.docker.com/r/klakegg/hugo/tags?name=debian&#34;&gt;https://hub.docker.com/r/klakegg/hugo/tags?name=debian&lt;/a&gt;&lt;/p&gt;&#xA;&lt;p&gt;&lt;a href=&#34;https://github.com/gohugoio/hugo/releases?page=3&#34;&gt;https://github.com/gohugoio/hugo/releases?page=3&lt;/a&gt;&lt;/p&gt;</description>
-    </item>
-    <item>
-      <title>爱立信的百年沉浮</title>
-      <link>http://localhost:1313/post/history_ericsson/</link>
-      <pubDate>Fri, 01 Apr 2022 12:39:04 +0000</pubDate>
-      <guid>http://localhost:1313/post/history_ericsson/</guid>
-      <description>&lt;blockquote&gt;&#xA;&lt;p&gt;文章来源：&lt;br&gt;&#xA;鲜枣课堂（ID：xzclasscom）&#xA;&lt;a href=&#34;https://mp.weixin.qq.com/s?__biz=MjM5NTY1MjY0MQ==&amp;amp;mid=2650814278&amp;amp;idx=1&amp;amp;sn=26083fed8d8dd76340e063fd42a59dea&#34;&gt;原文&lt;/a&gt;&lt;/p&gt;&lt;/blockquote&gt;&#xA;&lt;p&gt;19 世纪中叶，电报业务在欧洲大陆逐渐开始普及。&lt;/p&gt;&#xA;&lt;p&gt;1853 年，北欧小国瑞典动用 “海盗基金”（不是海盗的钱，是政府用来打海盗的钱），架设了自己的第一条电报线路，从首都斯德哥尔摩到乌普萨拉。&lt;/p&gt;&#xA;&lt;p&gt;为了确保负责这条线路的正常运营，瑞典政府还成立了自己的第一家电报公司，名字叫 Televerket。&lt;/p&gt;&#xA;&lt;p&gt;当时，Televerket 公司急需大量的电报硬件设备。于是，乌普萨拉电报局的局长，&lt;strong&gt;安东 · 亨里克 · 奥勒&lt;/strong&gt;（Anton Henric Öller），决定创办一家公司，为 Televerket 生产、修理和改进电报机。&lt;/p&gt;&#xA;&lt;p&gt;不久后，这家电气设备维修公司正式成立，名字叫奥勒公司（Öller &amp;amp; Co）。&lt;/p&gt;&#xA;&lt;p&gt;&#xA;&#xA;&#xA;&#xA;&#xA;    &#xA;&#xA;&#xA;&lt;div style=&#34;text-align: center;&#34;&gt;&#xA;&lt;img src=&#34;640.png&#34; &#xA;     alt=&#34;&#34; &#xA;      &#xA;/&gt;&#xA;&lt;/div&gt;&lt;/p&gt;&#xA;&lt;center&gt;&lt;div&gt;安东 · 亨里克 · 奥勒，瑞典电信业的先驱&lt;/div&gt;&lt;/center&gt;&#xA;&lt;p&gt;奥勒公司名义上是一家公司，但实际上就是一个手工作坊，规模很小，只能靠 Televerket 公司的资助才能维持生存。&lt;/p&gt;&#xA;&lt;p&gt;在奥勒公司的员工中，有一个勤奋的小伙子，当时专门负责维修电报设备以及其它机械设备。他的名字，叫做&lt;strong&gt;拉什 · 玛格纳斯 · 爱立信&lt;/strong&gt;（Lars Magnus Ericsson）。&lt;/p&gt;&#xA;&lt;p&gt;&#xA;&#xA;&#xA;&#xA;&#xA;    &#xA;&#xA;&#xA;&lt;div style=&#34;text-align: center;&#34;&gt;&#xA;&lt;img src=&#34;640-16487839499382.png&#34; &#xA;     alt=&#34;&#34; &#xA;      &#xA;/&gt;&#xA;&lt;/div&gt;&lt;/p&gt;&#xA;&lt;center&gt;&lt;div&gt; 拉什 · 玛格纳斯 · 爱立信&lt;/div&gt;&lt;/center&gt;&#xA;&lt;!-- more --&gt;&#xA;&lt;p&gt;拉什 · 爱立信 1846 年 5 月 5 日出生于瑞典中部瓦姆兰省的一个小农场里。他的家庭条件贫困，自己在 9 个兄弟姐妹中排行第六。&lt;/p&gt;&#xA;&lt;p&gt;11 岁时，由于父亲病逝，他不得不外出工作，养家糊口。这期间，他当过矿工，修过铁路，还在铁匠铺做了很长时间的学徒。&lt;/p&gt;&#xA;&lt;p&gt;1867 年，拉什 · 爱立信终于攒够了路费，来到他梦寐以求的瑞典首都——斯德哥尔摩。经过一周的试用后，他成功加入了奥勒公司，成为一名修理工。&lt;/p&gt;&#xA;&lt;p&gt;尽管这份工作的工资微薄，拉什 · 爱立信仍然感到十分满足。他后来回忆说：“（这份工作）足以满足我的需求，让我庆幸地看到生活比以往任何时候都更加光明，我心中第一次感受到了生活的快乐。”&lt;/p&gt;</description>
-    </item>
-  </channel>
-</rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>通信 on 一塘</title><link>https://example.com/categories/%E9%80%9A%E4%BF%A1/</link><description>Recent content in 通信 on 一塘</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Fri, 01 Apr 2022 12:39:04 +0000</lastBuildDate><atom:link href="https://example.com/categories/%E9%80%9A%E4%BF%A1/index.xml" rel="self" type="application/rss+xml"/><item><title>爱立信的百年沉浮</title><link>https://example.com/post/history_ericsson/</link><pubDate>Fri, 01 Apr 2022 12:39:04 +0000</pubDate><guid>https://example.com/post/history_ericsson/</guid><description>&lt;blockquote>
+&lt;p>文章来源：&lt;br>
+鲜枣课堂（ID：xzclasscom）
+&lt;a href="https://mp.weixin.qq.com/s?__biz=MjM5NTY1MjY0MQ==&amp;amp;mid=2650814278&amp;amp;idx=1&amp;amp;sn=26083fed8d8dd76340e063fd42a59dea">原文&lt;/a>&lt;/p>&lt;/blockquote>
+&lt;p>19 世纪中叶，电报业务在欧洲大陆逐渐开始普及。&lt;/p>
+&lt;p>1853 年，北欧小国瑞典动用 “海盗基金”（不是海盗的钱，是政府用来打海盗的钱），架设了自己的第一条电报线路，从首都斯德哥尔摩到乌普萨拉。&lt;/p>
+&lt;p>为了确保负责这条线路的正常运营，瑞典政府还成立了自己的第一家电报公司，名字叫 Televerket。&lt;/p>
+&lt;p>当时，Televerket 公司急需大量的电报硬件设备。于是，乌普萨拉电报局的局长，&lt;strong>安东 · 亨里克 · 奥勒&lt;/strong>（Anton Henric Öller），决定创办一家公司，为 Televerket 生产、修理和改进电报机。&lt;/p>
+&lt;p>不久后，这家电气设备维修公司正式成立，名字叫奥勒公司（Öller &amp;amp; Co）。&lt;/p>
+&lt;p>
+
+
+
+
+ 
+
+
+&lt;div style="text-align: center;">
+&lt;img src="640.png" 
+ alt="" 
+ 
+/>
+&lt;/div>&lt;/p>
+&lt;center>&lt;div>安东 · 亨里克 · 奥勒，瑞典电信业的先驱&lt;/div>&lt;/center>
+&lt;p>奥勒公司名义上是一家公司，但实际上就是一个手工作坊，规模很小，只能靠 Televerket 公司的资助才能维持生存。&lt;/p>
+&lt;p>在奥勒公司的员工中，有一个勤奋的小伙子，当时专门负责维修电报设备以及其它机械设备。他的名字，叫做&lt;strong>拉什 · 玛格纳斯 · 爱立信&lt;/strong>（Lars Magnus Ericsson）。&lt;/p>
+&lt;p>
+
+
+
+
+ 
+
+
+&lt;div style="text-align: center;">
+&lt;img src="640-16487839499382.png" 
+ alt="" 
+ 
+/>
+&lt;/div>&lt;/p>
+&lt;center>&lt;div> 拉什 · 玛格纳斯 · 爱立信&lt;/div>&lt;/center>
+&lt;!-- more -->
+&lt;p>拉什 · 爱立信 1846 年 5 月 5 日出生于瑞典中部瓦姆兰省的一个小农场里。他的家庭条件贫困，自己在 9 个兄弟姐妹中排行第六。&lt;/p>
+&lt;p>11 岁时，由于父亲病逝，他不得不外出工作，养家糊口。这期间，他当过矿工，修过铁路，还在铁匠铺做了很长时间的学徒。&lt;/p>
+&lt;p>1867 年，拉什 · 爱立信终于攒够了路费，来到他梦寐以求的瑞典首都——斯德哥尔摩。经过一周的试用后，他成功加入了奥勒公司，成为一名修理工。&lt;/p>
+&lt;p>尽管这份工作的工资微薄，拉什 · 爱立信仍然感到十分满足。他后来回忆说：“（这份工作）足以满足我的需求，让我庆幸地看到生活比以往任何时候都更加光明，我心中第一次感受到了生活的快乐。”&lt;/p></description></item></channel></rss>

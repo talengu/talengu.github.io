@@ -1,19 +1,45 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-  <channel>
-    <title>BootRecovery on 一塘</title>
-    <link>http://localhost:1313/tags/bootrecovery/</link>
-    <description>Recent content in BootRecovery on 一塘</description>
-    <generator>Hugo</generator>
-    <language>zh-cn</language>
-    <lastBuildDate>Wed, 14 Jun 2017 16:00:04 +0000</lastBuildDate>
-    <atom:link href="http://localhost:1313/tags/bootrecovery/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>ubuntu引导修复</title>
-      <link>http://localhost:1313/post/linux/boot_recovery/</link>
-      <pubDate>Wed, 14 Jun 2017 16:00:04 +0000</pubDate>
-      <guid>http://localhost:1313/post/linux/boot_recovery/</guid>
-      <description>&lt;h2 id=&#34;前言&#34;&gt;前言&lt;/h2&gt;&#xA;&lt;p&gt;本文记录修复ubuntu引导，并修改ubuntu盘的大小过程。&#xA;参考：&lt;a href=&#34;http://www.cnblogs.com/jloveu/p/Ubuntu-partition-expansion-record.html&#34;&gt;http://www.cnblogs.com/jloveu/p/Ubuntu-partition-expansion-record.html&lt;/a&gt;&#xA;工具：Ubuntu 的live U盘，带有gparted分区工具，和grub修复工具&lt;/p&gt;&#xA;&lt;!-- more --&gt;&#xA;&lt;h2 id=&#34;修复启动&#34;&gt;修复启动&lt;/h2&gt;&#xA;&lt;p&gt;对于使用gpt的格式的硬盘，ubuntu不要用uefi来安装。gpt还要生成一个bootgios的分区，很重要。&lt;/p&gt;&#xA;&lt;p&gt;执行以下命令（以root身份）：&lt;/p&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;mkdir /tmp/mydir&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;mount /dev/sda8 /tmp/mydir  &lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;注：其中的&lt;span style=&#34;color:#e6db74&#34;&gt;`&lt;/span&gt;/dev/sda8&lt;span style=&#34;color:#e6db74&#34;&gt;`&lt;/span&gt;为我的&lt;span style=&#34;color:#e6db74&#34;&gt;`&lt;/span&gt;/&lt;span style=&#34;color:#e6db74&#34;&gt;`&lt;/span&gt;分区标识，根据自己情况修改为自己的&lt;span style=&#34;color:#e6db74&#34;&gt;`&lt;/span&gt;/&lt;span style=&#34;color:#e6db74&#34;&gt;`&lt;/span&gt;分区标识&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;mount /dev/sda11 /tmp/mydir/boot  &lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;注：同上，&lt;span style=&#34;color:#e6db74&#34;&gt;`&lt;/span&gt;/dev/sda11&lt;span style=&#34;color:#e6db74&#34;&gt;`&lt;/span&gt;为&lt;span style=&#34;color:#e6db74&#34;&gt;`&lt;/span&gt;/boot&lt;span style=&#34;color:#e6db74&#34;&gt;`&lt;/span&gt;分区标识&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;mount --bind /dev /tmp/mydir/dev&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;mount --bind /proc /tmp/mydir/proc&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;mount --bind /sys /tmp/mydir/sys&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;chroot /tmp/mydir  &lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;此步可能输出一些信息，可以无视&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;grub-install /dev/sda  &lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;注：其中的&lt;span style=&#34;color:#e6db74&#34;&gt;`&lt;/span&gt;/dev/sda&lt;span style=&#34;color:#e6db74&#34;&gt;`&lt;/span&gt;为&lt;span style=&#34;color:#e6db74&#34;&gt;`&lt;/span&gt;/&lt;span style=&#34;color:#e6db74&#34;&gt;`&lt;/span&gt;分区所在硬盘的标识&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;exit&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;修改ubuntu多系统的默认启动顺序&#34;&gt;修改Ubuntu多系统的默认启动顺序&lt;/h2&gt;&#xA;&lt;p&gt;&lt;a href=&#34;http://jingyan.baidu.com/article/f71d60379e16021ab641d1ab.html&#34;&gt;link&lt;/a&gt;&#xA;打开该配置文件&amp;quot;/etc/default/grub&amp;quot;&lt;/p&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;sudo vim /etc/default/grub&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;sudo update-grub&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;其中的“GRUB_DEFAULT=0”为设置默认启动项。系统启动菜单Windows10的启动项在第5项，修改为4（GRUB启动项是从0开始的）。&lt;br&gt;&#xA;&#xA;&#xA;&#xA;&#xA;&#xA;    &#xA;&#xA;&#xA;&lt;div style=&#34;text-align: center;&#34;&gt;&#xA;&lt;img src=&#34;boot_file.png&#34; &#xA;     alt=&#34;GRUB修改&#34; &#xA;      &#xA;/&gt;&#xA;&lt;/div&gt;&lt;/p&gt;&#xA;&lt;h2 id=&#34;去除多余grub启动项直接&#34;&gt;去除多余GRUB启动项（直接）&lt;/h2&gt;&#xA;&lt;p&gt;&lt;a href=&#34;https://zhidao.baidu.com/question/472571337.html&#34;&gt;link&lt;/a&gt;&lt;br&gt;&#xA;注释掉“/boot/grub/grub.cfg”中对应&lt;/p&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;sudo gedit /boot/grub/grub.cfg&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;ubuntu下如何修复grub引导&#34;&gt;Ubuntu下如何修复Grub引导&lt;/h2&gt;&#xA;&lt;p&gt;&lt;a href=&#34;https://mp.weixin.qq.com/s/NDZPPA-0FhqSzRndQOhNEw&#34;&gt;link&lt;/a&gt;&lt;/p&gt;&#xA;&lt;p&gt;本文以 Ubuntu Live CD 修复 Grub 引导为例，已在 /dev/sda3 安装 Fedora。&lt;/p&gt;&#xA;&lt;p&gt;首先制作 Ubuntu 启动 USB&lt;/p&gt;</description>
-    </item>
-  </channel>
-</rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>BootRecovery on 一塘</title><link>https://example.com/tags/bootrecovery/</link><description>Recent content in BootRecovery on 一塘</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Wed, 14 Jun 2017 16:00:04 +0000</lastBuildDate><atom:link href="https://example.com/tags/bootrecovery/index.xml" rel="self" type="application/rss+xml"/><item><title>ubuntu引导修复</title><link>https://example.com/post/linux/boot_recovery/</link><pubDate>Wed, 14 Jun 2017 16:00:04 +0000</pubDate><guid>https://example.com/post/linux/boot_recovery/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
+&lt;p>本文记录修复ubuntu引导，并修改ubuntu盘的大小过程。
+参考：&lt;a href="http://www.cnblogs.com/jloveu/p/Ubuntu-partition-expansion-record.html">http://www.cnblogs.com/jloveu/p/Ubuntu-partition-expansion-record.html&lt;/a>
+工具：Ubuntu 的live U盘，带有gparted分区工具，和grub修复工具&lt;/p>
+&lt;!-- more -->
+&lt;h2 id="修复启动">修复启动&lt;/h2>
+&lt;p>对于使用gpt的格式的硬盘，ubuntu不要用uefi来安装。gpt还要生成一个bootgios的分区，很重要。&lt;/p>
+&lt;p>执行以下命令（以root身份）：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-shell" data-lang="shell">&lt;span style="display:flex;">&lt;span>mkdir /tmp/mydir
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mount /dev/sda8 /tmp/mydir &lt;span style="color:#f92672">(&lt;/span>注：其中的&lt;span style="color:#e6db74">`&lt;/span>/dev/sda8&lt;span style="color:#e6db74">`&lt;/span>为我的&lt;span style="color:#e6db74">`&lt;/span>/&lt;span style="color:#e6db74">`&lt;/span>分区标识，根据自己情况修改为自己的&lt;span style="color:#e6db74">`&lt;/span>/&lt;span style="color:#e6db74">`&lt;/span>分区标识&lt;span style="color:#f92672">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mount /dev/sda11 /tmp/mydir/boot &lt;span style="color:#f92672">(&lt;/span>注：同上，&lt;span style="color:#e6db74">`&lt;/span>/dev/sda11&lt;span style="color:#e6db74">`&lt;/span>为&lt;span style="color:#e6db74">`&lt;/span>/boot&lt;span style="color:#e6db74">`&lt;/span>分区标识&lt;span style="color:#f92672">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mount --bind /dev /tmp/mydir/dev
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mount --bind /proc /tmp/mydir/proc
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>mount --bind /sys /tmp/mydir/sys
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>chroot /tmp/mydir &lt;span style="color:#f92672">(&lt;/span>此步可能输出一些信息，可以无视&lt;span style="color:#f92672">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>grub-install /dev/sda &lt;span style="color:#f92672">(&lt;/span>注：其中的&lt;span style="color:#e6db74">`&lt;/span>/dev/sda&lt;span style="color:#e6db74">`&lt;/span>为&lt;span style="color:#e6db74">`&lt;/span>/&lt;span style="color:#e6db74">`&lt;/span>分区所在硬盘的标识&lt;span style="color:#f92672">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>exit
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="修改ubuntu多系统的默认启动顺序">修改Ubuntu多系统的默认启动顺序&lt;/h2>
+&lt;p>&lt;a href="http://jingyan.baidu.com/article/f71d60379e16021ab641d1ab.html">link&lt;/a>
+打开该配置文件&amp;quot;/etc/default/grub&amp;quot;&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-shell" data-lang="shell">&lt;span style="display:flex;">&lt;span>sudo vim /etc/default/grub
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo update-grub
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>其中的“GRUB_DEFAULT=0”为设置默认启动项。系统启动菜单Windows10的启动项在第5项，修改为4（GRUB启动项是从0开始的）。&lt;br>
+
+
+
+
+
+ 
+
+
+&lt;div style="text-align: center;">
+&lt;img src="boot_file.png" 
+ alt="GRUB修改" 
+ 
+/>
+&lt;/div>&lt;/p>
+&lt;h2 id="去除多余grub启动项直接">去除多余GRUB启动项（直接）&lt;/h2>
+&lt;p>&lt;a href="https://zhidao.baidu.com/question/472571337.html">link&lt;/a>&lt;br>
+注释掉“/boot/grub/grub.cfg”中对应&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-shell" data-lang="shell">&lt;span style="display:flex;">&lt;span>sudo gedit /boot/grub/grub.cfg
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="ubuntu下如何修复grub引导">Ubuntu下如何修复Grub引导&lt;/h2>
+&lt;p>&lt;a href="https://mp.weixin.qq.com/s/NDZPPA-0FhqSzRndQOhNEw">link&lt;/a>&lt;/p>
+&lt;p>本文以 Ubuntu Live CD 修复 Grub 引导为例，已在 /dev/sda3 安装 Fedora。&lt;/p>
+&lt;p>首先制作 Ubuntu 启动 USB&lt;/p></description></item></channel></rss>

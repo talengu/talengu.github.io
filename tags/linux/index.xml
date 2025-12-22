@@ -1,40 +1,270 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-  <channel>
-    <title>Linux on 一塘</title>
-    <link>http://localhost:1313/tags/linux/</link>
-    <description>Recent content in Linux on 一塘</description>
-    <generator>Hugo</generator>
-    <language>zh-cn</language>
-    <lastBuildDate>Thu, 15 Dec 2022 12:00:00 +0000</lastBuildDate>
-    <atom:link href="http://localhost:1313/tags/linux/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>「转」Linux 内核精通</title>
-      <link>http://localhost:1313/post/%E7%AE%80%E6%82%A6%E5%90%8C%E6%AD%A5md/%E8%82%9D%E4%B8%8B-50-%E4%B8%87%E5%AD%97%E7%9A%84linux-%E5%86%85%E6%A0%B8%E7%B2%BE%E9%80%9A%E7%AC%94%E8%AE%B0%E4%BD%A0%E7%9A%84%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86%E6%B0%B4%E5%B9%B3%E5%B0%86%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E5%85%A5%E9%AD%94%E5%BB%BA%E8%AE%AE%E6%94%B6%E8%97%8F/</link>
-      <pubDate>Thu, 15 Dec 2022 12:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/post/%E7%AE%80%E6%82%A6%E5%90%8C%E6%AD%A5md/%E8%82%9D%E4%B8%8B-50-%E4%B8%87%E5%AD%97%E7%9A%84linux-%E5%86%85%E6%A0%B8%E7%B2%BE%E9%80%9A%E7%AC%94%E8%AE%B0%E4%BD%A0%E7%9A%84%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86%E6%B0%B4%E5%B9%B3%E5%B0%86%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E5%85%A5%E9%AD%94%E5%BB%BA%E8%AE%AE%E6%94%B6%E8%97%8F/</guid>
-      <description>&lt;blockquote&gt;&#xA;&lt;p&gt;本文由 &lt;a href=&#34;http://ksria.com/simpread/&#34;&gt;简悦 SimpRead&lt;/a&gt; 转码， 原文地址 &lt;a href=&#34;https://zhuanlan.zhihu.com/p/572266986&#34;&gt;zhuanlan.zhihu.com&lt;/a&gt;&lt;/p&gt;&lt;/blockquote&gt;&#xA;&lt;h2 id=&#34;一为什么要学习-linux-内核&#34;&gt;一、为什么要学习 Linux 内核&lt;/h2&gt;&#xA;&lt;!-- more --&gt;&#xA;&lt;p&gt;大部分程序员可能永远没有机会开发 Linux 内核或者驱动 Linux，那么我们为什么还需要学习 Linux 内核呢？Linux 的源代码和架构都是开放的，我们可以学到很多操作系统的概念和实现原理。Linux 的设计哲学体系继承了 UNIX，现在整个设计体系相当稳定和简化，这是大部分服务器使用 Linux 的重要原因。&lt;/p&gt;&#xA;&lt;p&gt;&lt;strong&gt;那学习 Linux 内核的原因就在于此。&lt;/strong&gt;&lt;/p&gt;&#xA;&lt;p&gt;进一步了解内核的原理，有助于你更好地使用命令和程序设计，让你的面试和开发更上一层楼。但是不建议直接看源代码，因为 Linux 代码太大，容易丢失。&lt;/p&gt;&#xA;&lt;p&gt;而最好的办法是，先了解一下 Linux 内核机制，知道基本的原理与流程。&lt;/p&gt;&#xA;&lt;p&gt;不过，Linux 内核机制也非常复杂，而且其中互相关联。&lt;/p&gt;&#xA;&lt;p&gt;&#xA;&#xA;&#xA;&#xA;&#xA;&#xA;&lt;div style=&#34;text-align: center;&#34;&gt;&#xA;&lt;img src=&#34;https://pic1.zhimg.com/v2-f34e4013f744ab349c160d1b3564f68c_r.jpg&#34; &#xA;     alt=&#34;&#34; &#xA;      &#xA;/&gt;&#xA;&lt;/div&gt;&lt;/p&gt;&#xA;&lt;p&gt;比如说，进程运行要分配内存，内存映射涉及文件的关联，文件的读写需要经过块设备，从文件中加载代码才能运行起来进程。这些知识点要反复对照，才能理清。&lt;/p&gt;&#xA;&lt;p&gt;&lt;strong&gt;但是一旦攻克！你会发现 Linux 这个复杂的系统开始透明起来。&lt;/strong&gt;&lt;/p&gt;&#xA;&lt;h2 id=&#34;二如何学习-linux-内核&#34;&gt;二、如何学习 Linux 内核？&lt;/h2&gt;&#xA;&lt;p&gt;内核的知识就像下面的绳结一样，一环扣一环，我们要解开它们，就必须要先找到线头也就是内核中的函数接口。初学阶段，我们一般不深入的研究内核代码，会使用内核的接口函数就不错了。&lt;/p&gt;&#xA;&lt;p&gt;下面提供了如何学习这些内核函数的方法，就像解绳子一样&lt;/p&gt;&#xA;&lt;p&gt;&lt;strong&gt;在我们学习 Linux 内核之前，我们首先需要掌握以下几点：&lt;/strong&gt;&lt;/p&gt;&#xA;&lt;p&gt;&lt;a href=&#34;https://zhuanlan.zhihu.com/p/440423464&#34;&gt;(1) 如何学习内核，先了解 Linux 内核由哪些组成？&lt;/a&gt;&lt;/p&gt;&#xA;&lt;p&gt;&lt;a href=&#34;https://zhuanlan.zhihu.com/p/440423464&#34;&gt;(2) 须知 Linux 内核源码（下载的链接 ）组织结构？&lt;/a&gt;&lt;/p&gt;&#xA;&lt;p&gt;(3) &lt;a href=&#34;https://zhuanlan.zhihu.com/p/440423464&#34;&gt;重点需要学习地知识点有哪些？&lt;/a&gt;&lt;/p&gt;&#xA;&lt;p&gt;(4) &lt;a href=&#34;https://link.zhihu.com/?target=https%3A//docs.qq.com/doc/DTXFKZlZ4YmFYQWZS&#34;&gt;最后依据我为大家提供的的学习资料，开启我们的 Linux 内核学习之旅。&lt;/a&gt;&lt;/p&gt;&#xA;&lt;p&gt;&lt;a href=&#34;https://zhuanlan.zhihu.com/p/437667448&#34;&gt;(5) 全网最牛 Linux 内核 Makefile 系统文件详解 (纯文字代码)&lt;/a&gt;&lt;/p&gt;&#xA;&lt;p&gt;&lt;a href=&#34;https://zhuanlan.zhihu.com/p/436340295&#34;&gt;(6) 全网最详细的 Intel CPU 体系结构分析 (内核源码)&lt;/a&gt;&lt;/p&gt;</description>
-    </item>
-    <item>
-      <title>「转」九张图一览 Linux 性能工具 全景图</title>
-      <link>http://localhost:1313/post/linux/linux_tools/</link>
-      <pubDate>Sun, 11 Dec 2022 12:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/post/linux/linux_tools/</guid>
-      <description>&lt;h2 id=&#34;前言&#34;&gt;前言&lt;/h2&gt;&#xA;&lt;p&gt;当今时代，绝大多数企业的应用都是运行在 Linux 操作系统上，所以对应用进行性能诊断和性能优化时，离不开 Linux 的各种性能观测工具和性能优化工具。&lt;/p&gt;&#xA;&lt;p&gt;笔者使用过的常见的 Linux 性能观测和性能优化工具有：&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;top/uptime&lt;/li&gt;&#xA;&lt;li&gt;ps/pstree&lt;/li&gt;&#xA;&lt;li&gt;df/du/free/lsblk&lt;/li&gt;&#xA;&lt;li&gt;ip/ifconfig/ping/telnet&lt;/li&gt;&#xA;&lt;li&gt;route/dig/nslookup&lt;/li&gt;&#xA;&lt;li&gt;lsof/netstat/ss&lt;/li&gt;&#xA;&lt;li&gt;tcpdump/tshark/wireshark&lt;/li&gt;&#xA;&lt;li&gt;netstat/vmstat/iostat/pidstat/dstat/mpstat&lt;/li&gt;&#xA;&lt;li&gt;sar/sysctl/ethtool&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;最近在拜读国际著名的 LINUX 性能专家 Brendan Gregg 的个人博客和技术书籍，摘抄了如下九张图，一览 Linux 性能工具全景图，大家共勉！&lt;/p&gt;&#xA;&lt;!-- more --&gt;&#xA;&lt;h2 id=&#34;2-linux-性能工具全景图&#34;&gt;&lt;strong&gt;2. Linux 性能工具全景图&lt;/strong&gt;&lt;/h2&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;linux performance observability tools&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;&#xA;&#xA;&#xA;&#xA;&#xA;    &#xA;&#xA;&#xA;&lt;div style=&#34;text-align: center;&#34;&gt;&#xA;&lt;img src=&#34;v2-2eadd97c53a3f20f255394c3d90ea914_r.jpg&#34; &#xA;     alt=&#34;&#34; &#xA;      &#xA;/&gt;&#xA;&lt;/div&gt;&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;linux static performance tools&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;&#xA;&#xA;&#xA;&#xA;&#xA;    &#xA;&#xA;&#xA;&lt;div style=&#34;text-align: center;&#34;&gt;&#xA;&lt;img src=&#34;v2-20032bac53c856c5733259eece5c2f76_r.jpg&#34; &#xA;     alt=&#34;&#34; &#xA;      &#xA;/&gt;&#xA;&lt;/div&gt;&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;linux performance benchmark tools&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;&#xA;&#xA;&#xA;&#xA;&#xA;    &#xA;&#xA;&#xA;&lt;div style=&#34;text-align: center;&#34;&gt;&#xA;&lt;img src=&#34;v2-de23423f2eb9deb5410b7128c933f9a9_r.jpg&#34; &#xA;     alt=&#34;&#34; &#xA;      &#xA;/&gt;&#xA;&lt;/div&gt;&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;linux performance tuning tools&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;&#xA;&#xA;&#xA;&#xA;&#xA;    &#xA;&#xA;&#xA;&lt;div style=&#34;text-align: center;&#34;&gt;&#xA;&lt;img src=&#34;v2-cdf37de145763b762ba5af1a620f9686_r.jpg&#34; &#xA;     alt=&#34;&#34; &#xA;      &#xA;/&gt;&#xA;&lt;/div&gt;&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;linux performance observability: sar&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;&#xA;&#xA;&#xA;&#xA;&#xA;    &#xA;&#xA;&#xA;&lt;div style=&#34;text-align: center;&#34;&gt;&#xA;&lt;img src=&#34;v2-eee71a6bf3865367741137da03031411_r.jpg&#34; &#xA;     alt=&#34;&#34; &#xA;      &#xA;/&gt;&#xA;&lt;/div&gt;&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;linux performance observability: perf-tools&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;&#xA;&#xA;&#xA;&#xA;&#xA;    &#xA;&#xA;&#xA;&lt;div style=&#34;text-align: center;&#34;&gt;&#xA;&lt;img src=&#34;v2-1c0134fefbb04597db98ae455a40fad5_r.jpg&#34; &#xA;     alt=&#34;&#34; &#xA;      &#xA;/&gt;&#xA;&lt;/div&gt;&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&lt;a href=&#34;https://www.zhihu.com/search?q=linux%20bcc&amp;amp;search_source=Entity&amp;amp;hybrid_search_source=Entity&amp;amp;hybrid_search_extra=%7B%22sourceType%22%3A%22answer%22%2C%22sourceId%22%3A2795830055%7D&#34;&gt;linux bcc&lt;/a&gt;/BPF Tracing tools&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;&#xA;&#xA;&#xA;&#xA;&#xA;    &#xA;&#xA;&#xA;&lt;div style=&#34;text-align: center;&#34;&gt;&#xA;&lt;img src=&#34;v2-ffe70303f4d64828ca931d987b12a6d8_r.jpg&#34; &#xA;     alt=&#34;&#34; &#xA;      &#xA;/&gt;&#xA;&lt;/div&gt;&lt;/p&gt;</description>
-    </item>
-    <item>
-      <title>linux代理的使用</title>
-      <link>http://localhost:1313/post/linux/linux_proxy/</link>
-      <pubDate>Tue, 24 Jul 2018 22:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/post/linux/linux_proxy/</guid>
-      <description>&lt;h2 id=&#34;前言&#34;&gt;前言&lt;/h2&gt;&#xA;&lt;p&gt;最近要下载一个在youtube上的数据库，用来训练神经网络。走国内通道下载比较慢。于是，我使用了vps代理方式下载，速度取决于你的机器连接vps的网速。本文的主要内容有，实现shadowsocks 代理 ，tsocks 代理工具使用，可组合使用的一些下载工具如wget 和axel等。&lt;/p&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# 举个栗子&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;$ tsocks wget -c https://www.dropbox.com/s/minpyv59crdifk9/datasets.zip&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;嗯嗯，这个速度还不错！&lt;/p&gt;&#xA;&lt;center&gt;&lt;img src=&#34;linux_proxy/1565246896718.png&#34; width=&#34;60%&#34;&gt;&#xA;&lt;/center&gt;&#xA;&lt;p&gt;&lt;strong&gt;声明&lt;/strong&gt;：本文以科学研究为目的，请勿滥用。&lt;/p&gt;&#xA;&lt;!-- more --&gt;&#xA;&lt;h2 id=&#34;1-shadowsocks&#34;&gt;1 Shadowsocks&lt;/h2&gt;&#xA;&lt;p&gt;&lt;strong&gt;Shadowsocks&lt;/strong&gt;是一个轻量级socks5代理工具。在linux平台，我们可使用 python 提供的包管理工具 pip &lt;strong&gt;安装 Shadowsocks&lt;/strong&gt; ，如下。&lt;/p&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# pip 安装 Shadowsocks&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;$ pip install shadowsocks&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# 或者&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;$ pip install git+https://github.com/shadowsocks/shadowsocks.git@master&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;pip安装完之后，可能要重启终端，我们就有ssserver和sslocal小工具了。下面配置server或者client。一般，server配置在国外的vps上，client配置在本地国内机器上。&lt;/p&gt;&#xA;&lt;p&gt;PS：其他平台安装 参考 shadowsocks官方 &lt;a href=&#34;https://github.com/shadowsocks/shadowsocks/tree/master#install&#34;&gt;install&lt;/a&gt;&lt;/p&gt;&#xA;&lt;h3 id=&#34;11-配置-shadowsocks-server&#34;&gt;1.1 配置 Shadowsocks server&lt;/h3&gt;&#xA;&lt;p&gt;按下面的三步走，即可。&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&#xA;&lt;p&gt;通过ssh连接到（Virtual Private Server）vps上，或者本地打开终端。&lt;/p&gt;&#xA;&lt;/li&gt;&#xA;&lt;li&gt;&#xA;&lt;p&gt;新建一个&lt;strong&gt;server_shadowsocks.json&lt;/strong&gt;文件，内容如下：&lt;/p&gt;&#xA;&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-json&#34; data-lang=&#34;json&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;{&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;server&amp;#34;&lt;/span&gt;:&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;0.0.0.0&amp;#34;&lt;/span&gt;,&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;server_port&amp;#34;&lt;/span&gt;:&lt;span style=&#34;color:#ae81ff&#34;&gt;443&lt;/span&gt;,&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;local_address&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;127.0.0.1&amp;#34;&lt;/span&gt;,&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;local_port&amp;#34;&lt;/span&gt;:&lt;span style=&#34;color:#ae81ff&#34;&gt;1080&lt;/span&gt;,&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;password&amp;#34;&lt;/span&gt;:&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;密码&amp;#34;&lt;/span&gt;,&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;timeout&amp;#34;&lt;/span&gt;:&lt;span style=&#34;color:#ae81ff&#34;&gt;300&lt;/span&gt;,&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;method&amp;#34;&lt;/span&gt;:&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;aes-256-cfb&amp;#34;&lt;/span&gt;,&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;#34;fast_open&amp;#34;&lt;/span&gt;: &lt;span style=&#34;color:#66d9ef&#34;&gt;false&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ul&gt;&#xA;&lt;li&gt;执行&lt;code&gt;ssserver -c server_shadowsocks.json&lt;/code&gt;&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;说一点: 由于我们的下载任务是临时的，开个screen（终端复用工具）放在后台。当然你也可以设置为开机自启动，这里不再赘述。&lt;/p&gt;</description>
-    </item>
-    <item>
-      <title>Why Software Should Not Have Owners</title>
-      <link>http://localhost:1313/post/why_gnu/</link>
-      <pubDate>Fri, 11 May 2018 12:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/post/why_gnu/</guid>
-      <description>&lt;p&gt;&lt;a href=&#34;http://www.gnu.org/philosophy/why-free.html&#34;&gt;Why Software Should Not Have Owners&lt;/a&gt;&#xA;为什么软件不应有主人&#xA;作者︰&lt;a href=&#34;https://www.stallman.org/&#34;&gt;Richard Stallman&lt;/a&gt;&lt;/p&gt;&#xA;&lt;!-- more --&gt;&#xA;&lt;p&gt;数字资讯科技令大众更容易复制和变更资料。然而不是所有人都希望这样。版权制度容许软件有「主人」。他们主要目的在于从公众夺取软件的潜在利益。他们希望独占这些软件的复制、更改权利。&lt;/p&gt;&#xA;&lt;p&gt;版权制度随著印刷技术而发展——印刷是一种大量制作副本的技术。版权很适合这项技术，因为它只限制了大规模的复制。它并没有剥夺图书读者的自由。一般读者没有印刷机，他们只能用笔墨抄写作品，所以很少有读者因此而被控告。&lt;/p&gt;&#xA;&lt;p&gt;数字科技比印刷机更灵活：当信息呈数字形式时，你能很容易把它跟别人分享。这种情况不太配合故有的版权制度，所以现在有越来越多日益严厉的措施用来加强软件版权。看看这些软件出版商协会（Software Publishers Association, SPA）的四种惯常说法：&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;大肆宣传违反版权法去帮助朋友是错误的。&lt;/li&gt;&#xA;&lt;li&gt;诱使大家告发违返规定的同事和同僚。&lt;/li&gt;&#xA;&lt;li&gt;如果警察协助突击搜查公司和学校，那里的人们必须证明自己没有非法复制。&lt;/li&gt;&#xA;&lt;li&gt;因软件出版商协会提出要求，美国政府起诉一些如麻省理工学院的 David LaMacchia的人，不是因为他非法软复制件，而只是因为破解复制工具，从而不能对用户非法复制进行检查。&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;这些惯常说法和前苏联曾用过的做法相似，在每一台影印机前都有一个守卫，以防止那些未经许可复印，同时个人只有秘密地复制信息，并像「秘密出版物」一样在手头传播。不同的是，苏联管制信息是政治原因，而美国则是为了经济利益。无论动机如何，我们都受到影响。不管什么原因，任何人企图阻止信息共享，都导致了相同的后果和同样的不便。&lt;/p&gt;&#xA;&lt;p&gt;软件所有者用各种理由来控制我们如何使用资讯的权利︰&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&#xA;&lt;p&gt;中伤&#xA;软件所有者使用「盗窃」、「剽窃」这类带有污蔑的词语，或者「知识产权」、「损害」之类专业的术语，向公众暗示他们是合理的——其实，他们是将软件和真实物件混为一谈。&#xA;我们对「拿取别人的物件」的概念 ，并不能直接套用在复制这件事，然而软件所有者却迫使我们必须接受他们的想法。&lt;/p&gt;&#xA;&lt;/li&gt;&#xA;&lt;li&gt;&#xA;&lt;p&gt;凭空夸大&#xA;软件所有者声称当用户复制他们的程序时，他们受到「伤害」或「经济损失」。但复制并不会对软件所有者造成直接的影响，也没有伤害到任何人。只有在使用复制者不愿意给软件所有者付费时，软件所有者才会受损失。&#xA;很明显大多数这样的人不愿意购买这些程序，但是软件所有者会假定所有人都会购买，并以此来计算他们的「损失」。客气点说这就是夸大了专有软件的价值。&lt;/p&gt;&#xA;&lt;/li&gt;&#xA;&lt;li&gt;&#xA;&lt;p&gt;法律&#xA;软件所有者经常引用当今的法律和苛刻的刑罚来威胁我们。这暗示现今的法律反映了一个不容置疑的道德观念，同时怂恿我们视这些刑罚为正常及不能推卸。&#xA;这些说词面对严谨的思维是站不住脚的，这做法只是打算利用了人的惯性思维。&#xA;显然法律是不能决定错对的。美国人都应该知道，五十年代的黑人在许多州份坐在巴士前座是违法的；但只有种族主义者才会说他们是错误的。&lt;/p&gt;&#xA;&lt;/li&gt;&#xA;&lt;li&gt;&#xA;&lt;p&gt;自然权利&#xA;软件作者常常声称与自己编写的程序有一种特殊联系，因此他们宣称对这个程序的渴望和兴趣是高于世上任何人。（通常是公司持有软件版权，而不是作者，但是我们预期忽略这个差异。)&#xA;对那些打算把「作者高于一切」推崇为一种道德的人，本人作为一个著名的软件开发者，只能说这是废话。&#xA;但一般人有两个原因对自然权利的说法产生共鸣。&#xA;第一个原因是将软件与现实事物过分地类比。当我做意大利面时，如果其他人也要吃，我一定会反感，因为那样的话，我就吃不上了。他的行为对我造成的损失，正如他得到的利益一样。我们中仅有一人可以吃意大利面，问题是谁来吃？我们两者之间最小的分歧也足以打破道德上的平衡。&#xA;问题是︰你会否因为运行或修改一个我写的程序而直接影响到你，而对我只会产生一点间接影响？你是否复制我的软件给你的朋友，而对你们的影响远比对我的还要大？我不应有这样的权利去叫你不要这么做。任何人都不该有。&#xA;这第二个原因就是，人们被告知作者的自然权利是社会约定俗成的准则。&#xA;历史证明，相反的一方才是正确的。当年起草美国宪法时坚决驳回了关于作者自然权利的提议。这就是为什么宪法只是允许版权体系，而并不强制要求；所以说版权体制一定是临时的。宪法也说明版权体制的目的是促进发展，而不是奖励作者。版权确实给作者和出版社带来了更多收益，但这本来只是一种激励他们的手段而已。&#xA;事实是我们的社会建立了削弱公众自然权利的版权制度。然而版权只有用于公益事业才是正当的。&lt;/p&gt;&#xA;&lt;/li&gt;&#xA;&lt;li&gt;&#xA;&lt;p&gt;经济&#xA;软件应该有主人的最终辩解理由是，这会提高软件产量。&#xA;这个论据至少比以上的更切合主题。它立足于一个合理目标——满足软件用户的需求。以经验看来，人们因为满意的回报而生产更多，是很容易理解的。&#xA;但是这个关于经济的论据有瑕疵：它基于这样一个假设，区别仅仅是我们要付多少钱的问题。它假设无论软件是否有其所有者，「软件产品」都是我们想要的。&#xA;由于这个假设合乎我们处理真实物件的经验，所以人们很乐意接受。假设你付费与否都能得到一份一样的三明治，这样你付的费用就是唯一的分别。不管你是否购买，三明治有相同的味道和相同的营养，但你只能吃一次。不管你是否从所有者手中得到三明治，它都不能直接影响到你的金钱以外的任何事情。&#xA;对任何真实物件，这都是正确的︰不管它是否有主人都不会直接影响它的本质和用途。&#xA;如果程序有了主人，这将大大影响它的本质，和你对它的用途。不同之处不仅仅是钱的问题。软件该有主人的体制鼓励软件主人生产，但不一定是社会真正需要的。它导致的道德低落影响我们所有人。&#xA;社会需要什么？社会需要对公民真实可用的信息──例如，人们可以解读、修补、使用和改进的程序，而不只是操作。但是软件主人往往会给我们一个不能研究和修改的黑盒子。&lt;/p&gt;&#xA;&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;社会也需要自由。当程序有了主人，用户就失去了控制他们部分生活的自由。&lt;/p&gt;&#xA;&lt;p&gt;总之社会需要鼓励公民们自主合作的精神。当软件主人告诉我们用这种自然的方式帮助旁人是剽窃行为时，那他们就是玷污我们的人格。&lt;/p&gt;&#xA;&lt;p&gt;这正是我们提倡自由软件 事关自由，而并非价格的原因。&lt;/p&gt;&#xA;&lt;p&gt;支持所有者的经济论据是错误的，但是经济问题确实存在。一些人出于荣誉、认同和博爱，而编写了有用的软件，但是如果我们希望有更多的软件，就需要筹集资金。&lt;/p&gt;&#xA;&lt;p&gt;自由软件开发者自从八十年代尝试过许多寻求财源的方法，稍有小成。我们不需要让任何人致富，典型的收入，足以吸引人做很多比编程少满足感的工作。&lt;/p&gt;&#xA;&lt;p&gt;多年以来，我一直靠改进自己编写的自由软件为生，直到获得研究经费。每次改进我都会添加到标準发佈版本，使得大众受益。客户为我付费，这样我就会优先完成他们需求，自己的变成次要。&lt;/p&gt;&#xA;&lt;p&gt;一些自由软件开发者通过支援服务赚钱。1994年，Cygnus 有近50个员工，估计有大约百分之十五的员工从事自由软件开发︰对一间软件公司而言，这是个了不起的比例。&lt;/p&gt;&#xA;&lt;p&gt;九十年代，Intel、Motorola、Texas Instruments 和 Analog Devices 等公司联合赞助持续发展的GNU C语言编译器。现在大部份开发GCC的人工作还是受薪的开发者完成的。GNU的Ada语言编译器受美国空军赞助，之后成立专属公司延续过个项目。&lt;/p&gt;</description>
-    </item>
-  </channel>
-</rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Linux on 一塘</title><link>https://example.com/tags/linux/</link><description>Recent content in Linux on 一塘</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Thu, 15 Dec 2022 12:00:00 +0000</lastBuildDate><atom:link href="https://example.com/tags/linux/index.xml" rel="self" type="application/rss+xml"/><item><title>「转」Linux 内核精通</title><link>https://example.com/post/%E7%AE%80%E6%82%A6%E5%90%8C%E6%AD%A5md/%E8%82%9D%E4%B8%8B-50-%E4%B8%87%E5%AD%97%E7%9A%84linux-%E5%86%85%E6%A0%B8%E7%B2%BE%E9%80%9A%E7%AC%94%E8%AE%B0%E4%BD%A0%E7%9A%84%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86%E6%B0%B4%E5%B9%B3%E5%B0%86%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E5%85%A5%E9%AD%94%E5%BB%BA%E8%AE%AE%E6%94%B6%E8%97%8F/</link><pubDate>Thu, 15 Dec 2022 12:00:00 +0000</pubDate><guid>https://example.com/post/%E7%AE%80%E6%82%A6%E5%90%8C%E6%AD%A5md/%E8%82%9D%E4%B8%8B-50-%E4%B8%87%E5%AD%97%E7%9A%84linux-%E5%86%85%E6%A0%B8%E7%B2%BE%E9%80%9A%E7%AC%94%E8%AE%B0%E4%BD%A0%E7%9A%84%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86%E6%B0%B4%E5%B9%B3%E5%B0%86%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E5%85%A5%E9%AD%94%E5%BB%BA%E8%AE%AE%E6%94%B6%E8%97%8F/</guid><description>&lt;blockquote>
+&lt;p>本文由 &lt;a href="http://ksria.com/simpread/">简悦 SimpRead&lt;/a> 转码， 原文地址 &lt;a href="https://zhuanlan.zhihu.com/p/572266986">zhuanlan.zhihu.com&lt;/a>&lt;/p>&lt;/blockquote>
+&lt;h2 id="一为什么要学习-linux-内核">一、为什么要学习 Linux 内核&lt;/h2>
+&lt;!-- more -->
+&lt;p>大部分程序员可能永远没有机会开发 Linux 内核或者驱动 Linux，那么我们为什么还需要学习 Linux 内核呢？Linux 的源代码和架构都是开放的，我们可以学到很多操作系统的概念和实现原理。Linux 的设计哲学体系继承了 UNIX，现在整个设计体系相当稳定和简化，这是大部分服务器使用 Linux 的重要原因。&lt;/p>
+&lt;p>&lt;strong>那学习 Linux 内核的原因就在于此。&lt;/strong>&lt;/p>
+&lt;p>进一步了解内核的原理，有助于你更好地使用命令和程序设计，让你的面试和开发更上一层楼。但是不建议直接看源代码，因为 Linux 代码太大，容易丢失。&lt;/p>
+&lt;p>而最好的办法是，先了解一下 Linux 内核机制，知道基本的原理与流程。&lt;/p>
+&lt;p>不过，Linux 内核机制也非常复杂，而且其中互相关联。&lt;/p>
+&lt;p>
+
+
+
+
+
+&lt;div style="text-align: center;">
+&lt;img src="https://pic1.zhimg.com/v2-f34e4013f744ab349c160d1b3564f68c_r.jpg" 
+ alt="" 
+ 
+/>
+&lt;/div>&lt;/p>
+&lt;p>比如说，进程运行要分配内存，内存映射涉及文件的关联，文件的读写需要经过块设备，从文件中加载代码才能运行起来进程。这些知识点要反复对照，才能理清。&lt;/p>
+&lt;p>&lt;strong>但是一旦攻克！你会发现 Linux 这个复杂的系统开始透明起来。&lt;/strong>&lt;/p>
+&lt;h2 id="二如何学习-linux-内核">二、如何学习 Linux 内核？&lt;/h2>
+&lt;p>内核的知识就像下面的绳结一样，一环扣一环，我们要解开它们，就必须要先找到线头也就是内核中的函数接口。初学阶段，我们一般不深入的研究内核代码，会使用内核的接口函数就不错了。&lt;/p>
+&lt;p>下面提供了如何学习这些内核函数的方法，就像解绳子一样&lt;/p>
+&lt;p>&lt;strong>在我们学习 Linux 内核之前，我们首先需要掌握以下几点：&lt;/strong>&lt;/p>
+&lt;p>&lt;a href="https://zhuanlan.zhihu.com/p/440423464">(1) 如何学习内核，先了解 Linux 内核由哪些组成？&lt;/a>&lt;/p>
+&lt;p>&lt;a href="https://zhuanlan.zhihu.com/p/440423464">(2) 须知 Linux 内核源码（下载的链接 ）组织结构？&lt;/a>&lt;/p>
+&lt;p>(3) &lt;a href="https://zhuanlan.zhihu.com/p/440423464">重点需要学习地知识点有哪些？&lt;/a>&lt;/p>
+&lt;p>(4) &lt;a href="https://link.zhihu.com/?target=https%3A//docs.qq.com/doc/DTXFKZlZ4YmFYQWZS">最后依据我为大家提供的的学习资料，开启我们的 Linux 内核学习之旅。&lt;/a>&lt;/p>
+&lt;p>&lt;a href="https://zhuanlan.zhihu.com/p/437667448">(5) 全网最牛 Linux 内核 Makefile 系统文件详解 (纯文字代码)&lt;/a>&lt;/p>
+&lt;p>&lt;a href="https://zhuanlan.zhihu.com/p/436340295">(6) 全网最详细的 Intel CPU 体系结构分析 (内核源码)&lt;/a>&lt;/p></description></item><item><title>「转」九张图一览 Linux 性能工具 全景图</title><link>https://example.com/post/linux/linux_tools/</link><pubDate>Sun, 11 Dec 2022 12:00:00 +0000</pubDate><guid>https://example.com/post/linux/linux_tools/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
+&lt;p>当今时代，绝大多数企业的应用都是运行在 Linux 操作系统上，所以对应用进行性能诊断和性能优化时，离不开 Linux 的各种性能观测工具和性能优化工具。&lt;/p>
+&lt;p>笔者使用过的常见的 Linux 性能观测和性能优化工具有：&lt;/p>
+&lt;ul>
+&lt;li>top/uptime&lt;/li>
+&lt;li>ps/pstree&lt;/li>
+&lt;li>df/du/free/lsblk&lt;/li>
+&lt;li>ip/ifconfig/ping/telnet&lt;/li>
+&lt;li>route/dig/nslookup&lt;/li>
+&lt;li>lsof/netstat/ss&lt;/li>
+&lt;li>tcpdump/tshark/wireshark&lt;/li>
+&lt;li>netstat/vmstat/iostat/pidstat/dstat/mpstat&lt;/li>
+&lt;li>sar/sysctl/ethtool&lt;/li>
+&lt;/ul>
+&lt;p>最近在拜读国际著名的 LINUX 性能专家 Brendan Gregg 的个人博客和技术书籍，摘抄了如下九张图，一览 Linux 性能工具全景图，大家共勉！&lt;/p>
+&lt;!-- more -->
+&lt;h2 id="2-linux-性能工具全景图">&lt;strong>2. Linux 性能工具全景图&lt;/strong>&lt;/h2>
+&lt;ul>
+&lt;li>linux performance observability tools&lt;/li>
+&lt;/ul>
+&lt;p>
+
+
+
+
+ 
+
+
+&lt;div style="text-align: center;">
+&lt;img src="v2-2eadd97c53a3f20f255394c3d90ea914_r.jpg" 
+ alt="" 
+ 
+/>
+&lt;/div>&lt;/p>
+&lt;ul>
+&lt;li>linux static performance tools&lt;/li>
+&lt;/ul>
+&lt;p>
+
+
+
+
+ 
+
+
+&lt;div style="text-align: center;">
+&lt;img src="v2-20032bac53c856c5733259eece5c2f76_r.jpg" 
+ alt="" 
+ 
+/>
+&lt;/div>&lt;/p>
+&lt;ul>
+&lt;li>linux performance benchmark tools&lt;/li>
+&lt;/ul>
+&lt;p>
+
+
+
+
+ 
+
+
+&lt;div style="text-align: center;">
+&lt;img src="v2-de23423f2eb9deb5410b7128c933f9a9_r.jpg" 
+ alt="" 
+ 
+/>
+&lt;/div>&lt;/p>
+&lt;ul>
+&lt;li>linux performance tuning tools&lt;/li>
+&lt;/ul>
+&lt;p>
+
+
+
+
+ 
+
+
+&lt;div style="text-align: center;">
+&lt;img src="v2-cdf37de145763b762ba5af1a620f9686_r.jpg" 
+ alt="" 
+ 
+/>
+&lt;/div>&lt;/p>
+&lt;ul>
+&lt;li>linux performance observability: sar&lt;/li>
+&lt;/ul>
+&lt;p>
+
+
+
+
+ 
+
+
+&lt;div style="text-align: center;">
+&lt;img src="v2-eee71a6bf3865367741137da03031411_r.jpg" 
+ alt="" 
+ 
+/>
+&lt;/div>&lt;/p>
+&lt;ul>
+&lt;li>linux performance observability: perf-tools&lt;/li>
+&lt;/ul>
+&lt;p>
+
+
+
+
+ 
+
+
+&lt;div style="text-align: center;">
+&lt;img src="v2-1c0134fefbb04597db98ae455a40fad5_r.jpg" 
+ alt="" 
+ 
+/>
+&lt;/div>&lt;/p>
+&lt;ul>
+&lt;li>&lt;a href="https://www.zhihu.com/search?q=linux%20bcc&amp;amp;search_source=Entity&amp;amp;hybrid_search_source=Entity&amp;amp;hybrid_search_extra=%7B%22sourceType%22%3A%22answer%22%2C%22sourceId%22%3A2795830055%7D">linux bcc&lt;/a>/BPF Tracing tools&lt;/li>
+&lt;/ul>
+&lt;p>
+
+
+
+
+ 
+
+
+&lt;div style="text-align: center;">
+&lt;img src="v2-ffe70303f4d64828ca931d987b12a6d8_r.jpg" 
+ alt="" 
+ 
+/>
+&lt;/div>&lt;/p></description></item><item><title>linux代理的使用</title><link>https://example.com/post/linux/linux_proxy/</link><pubDate>Tue, 24 Jul 2018 22:00:00 +0000</pubDate><guid>https://example.com/post/linux/linux_proxy/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
+&lt;p>最近要下载一个在youtube上的数据库，用来训练神经网络。走国内通道下载比较慢。于是，我使用了vps代理方式下载，速度取决于你的机器连接vps的网速。本文的主要内容有，实现shadowsocks 代理 ，tsocks 代理工具使用，可组合使用的一些下载工具如wget 和axel等。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># 举个栗子&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$ tsocks wget -c https://www.dropbox.com/s/minpyv59crdifk9/datasets.zip
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>嗯嗯，这个速度还不错！&lt;/p>
+&lt;center>&lt;img src="linux_proxy/1565246896718.png" width="60%">
+&lt;/center>
+&lt;p>&lt;strong>声明&lt;/strong>：本文以科学研究为目的，请勿滥用。&lt;/p>
+&lt;!-- more -->
+&lt;h2 id="1-shadowsocks">1 Shadowsocks&lt;/h2>
+&lt;p>&lt;strong>Shadowsocks&lt;/strong>是一个轻量级socks5代理工具。在linux平台，我们可使用 python 提供的包管理工具 pip &lt;strong>安装 Shadowsocks&lt;/strong> ，如下。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># pip 安装 Shadowsocks&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$ pip install shadowsocks
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># 或者&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$ pip install git+https://github.com/shadowsocks/shadowsocks.git@master
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>pip安装完之后，可能要重启终端，我们就有ssserver和sslocal小工具了。下面配置server或者client。一般，server配置在国外的vps上，client配置在本地国内机器上。&lt;/p>
+&lt;p>PS：其他平台安装 参考 shadowsocks官方 &lt;a href="https://github.com/shadowsocks/shadowsocks/tree/master#install">install&lt;/a>&lt;/p>
+&lt;h3 id="11-配置-shadowsocks-server">1.1 配置 Shadowsocks server&lt;/h3>
+&lt;p>按下面的三步走，即可。&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>通过ssh连接到（Virtual Private Server）vps上，或者本地打开终端。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>新建一个&lt;strong>server_shadowsocks.json&lt;/strong>文件，内容如下：&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-json" data-lang="json">&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">&amp;#34;server&amp;#34;&lt;/span>:&lt;span style="color:#e6db74">&amp;#34;0.0.0.0&amp;#34;&lt;/span>,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">&amp;#34;server_port&amp;#34;&lt;/span>:&lt;span style="color:#ae81ff">443&lt;/span>,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">&amp;#34;local_address&amp;#34;&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;127.0.0.1&amp;#34;&lt;/span>,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">&amp;#34;local_port&amp;#34;&lt;/span>:&lt;span style="color:#ae81ff">1080&lt;/span>,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">&amp;#34;password&amp;#34;&lt;/span>:&lt;span style="color:#e6db74">&amp;#34;密码&amp;#34;&lt;/span>,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">&amp;#34;timeout&amp;#34;&lt;/span>:&lt;span style="color:#ae81ff">300&lt;/span>,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">&amp;#34;method&amp;#34;&lt;/span>:&lt;span style="color:#e6db74">&amp;#34;aes-256-cfb&amp;#34;&lt;/span>,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">&amp;#34;fast_open&amp;#34;&lt;/span>: &lt;span style="color:#66d9ef">false&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>执行&lt;code>ssserver -c server_shadowsocks.json&lt;/code>&lt;/li>
+&lt;/ul>
+&lt;p>说一点: 由于我们的下载任务是临时的，开个screen（终端复用工具）放在后台。当然你也可以设置为开机自启动，这里不再赘述。&lt;/p></description></item><item><title>Why Software Should Not Have Owners</title><link>https://example.com/post/why_gnu/</link><pubDate>Fri, 11 May 2018 12:00:00 +0000</pubDate><guid>https://example.com/post/why_gnu/</guid><description>&lt;p>&lt;a href="http://www.gnu.org/philosophy/why-free.html">Why Software Should Not Have Owners&lt;/a>
+为什么软件不应有主人
+作者︰&lt;a href="https://www.stallman.org/">Richard Stallman&lt;/a>&lt;/p>
+&lt;!-- more -->
+&lt;p>数字资讯科技令大众更容易复制和变更资料。然而不是所有人都希望这样。版权制度容许软件有「主人」。他们主要目的在于从公众夺取软件的潜在利益。他们希望独占这些软件的复制、更改权利。&lt;/p>
+&lt;p>版权制度随著印刷技术而发展——印刷是一种大量制作副本的技术。版权很适合这项技术，因为它只限制了大规模的复制。它并没有剥夺图书读者的自由。一般读者没有印刷机，他们只能用笔墨抄写作品，所以很少有读者因此而被控告。&lt;/p>
+&lt;p>数字科技比印刷机更灵活：当信息呈数字形式时，你能很容易把它跟别人分享。这种情况不太配合故有的版权制度，所以现在有越来越多日益严厉的措施用来加强软件版权。看看这些软件出版商协会（Software Publishers Association, SPA）的四种惯常说法：&lt;/p>
+&lt;ul>
+&lt;li>大肆宣传违反版权法去帮助朋友是错误的。&lt;/li>
+&lt;li>诱使大家告发违返规定的同事和同僚。&lt;/li>
+&lt;li>如果警察协助突击搜查公司和学校，那里的人们必须证明自己没有非法复制。&lt;/li>
+&lt;li>因软件出版商协会提出要求，美国政府起诉一些如麻省理工学院的 David LaMacchia的人，不是因为他非法软复制件，而只是因为破解复制工具，从而不能对用户非法复制进行检查。&lt;/li>
+&lt;/ul>
+&lt;p>这些惯常说法和前苏联曾用过的做法相似，在每一台影印机前都有一个守卫，以防止那些未经许可复印，同时个人只有秘密地复制信息，并像「秘密出版物」一样在手头传播。不同的是，苏联管制信息是政治原因，而美国则是为了经济利益。无论动机如何，我们都受到影响。不管什么原因，任何人企图阻止信息共享，都导致了相同的后果和同样的不便。&lt;/p>
+&lt;p>软件所有者用各种理由来控制我们如何使用资讯的权利︰&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>中伤
+软件所有者使用「盗窃」、「剽窃」这类带有污蔑的词语，或者「知识产权」、「损害」之类专业的术语，向公众暗示他们是合理的——其实，他们是将软件和真实物件混为一谈。
+我们对「拿取别人的物件」的概念 ，并不能直接套用在复制这件事，然而软件所有者却迫使我们必须接受他们的想法。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>凭空夸大
+软件所有者声称当用户复制他们的程序时，他们受到「伤害」或「经济损失」。但复制并不会对软件所有者造成直接的影响，也没有伤害到任何人。只有在使用复制者不愿意给软件所有者付费时，软件所有者才会受损失。
+很明显大多数这样的人不愿意购买这些程序，但是软件所有者会假定所有人都会购买，并以此来计算他们的「损失」。客气点说这就是夸大了专有软件的价值。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>法律
+软件所有者经常引用当今的法律和苛刻的刑罚来威胁我们。这暗示现今的法律反映了一个不容置疑的道德观念，同时怂恿我们视这些刑罚为正常及不能推卸。
+这些说词面对严谨的思维是站不住脚的，这做法只是打算利用了人的惯性思维。
+显然法律是不能决定错对的。美国人都应该知道，五十年代的黑人在许多州份坐在巴士前座是违法的；但只有种族主义者才会说他们是错误的。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>自然权利
+软件作者常常声称与自己编写的程序有一种特殊联系，因此他们宣称对这个程序的渴望和兴趣是高于世上任何人。（通常是公司持有软件版权，而不是作者，但是我们预期忽略这个差异。)
+对那些打算把「作者高于一切」推崇为一种道德的人，本人作为一个著名的软件开发者，只能说这是废话。
+但一般人有两个原因对自然权利的说法产生共鸣。
+第一个原因是将软件与现实事物过分地类比。当我做意大利面时，如果其他人也要吃，我一定会反感，因为那样的话，我就吃不上了。他的行为对我造成的损失，正如他得到的利益一样。我们中仅有一人可以吃意大利面，问题是谁来吃？我们两者之间最小的分歧也足以打破道德上的平衡。
+问题是︰你会否因为运行或修改一个我写的程序而直接影响到你，而对我只会产生一点间接影响？你是否复制我的软件给你的朋友，而对你们的影响远比对我的还要大？我不应有这样的权利去叫你不要这么做。任何人都不该有。
+这第二个原因就是，人们被告知作者的自然权利是社会约定俗成的准则。
+历史证明，相反的一方才是正确的。当年起草美国宪法时坚决驳回了关于作者自然权利的提议。这就是为什么宪法只是允许版权体系，而并不强制要求；所以说版权体制一定是临时的。宪法也说明版权体制的目的是促进发展，而不是奖励作者。版权确实给作者和出版社带来了更多收益，但这本来只是一种激励他们的手段而已。
+事实是我们的社会建立了削弱公众自然权利的版权制度。然而版权只有用于公益事业才是正当的。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>经济
+软件应该有主人的最终辩解理由是，这会提高软件产量。
+这个论据至少比以上的更切合主题。它立足于一个合理目标——满足软件用户的需求。以经验看来，人们因为满意的回报而生产更多，是很容易理解的。
+但是这个关于经济的论据有瑕疵：它基于这样一个假设，区别仅仅是我们要付多少钱的问题。它假设无论软件是否有其所有者，「软件产品」都是我们想要的。
+由于这个假设合乎我们处理真实物件的经验，所以人们很乐意接受。假设你付费与否都能得到一份一样的三明治，这样你付的费用就是唯一的分别。不管你是否购买，三明治有相同的味道和相同的营养，但你只能吃一次。不管你是否从所有者手中得到三明治，它都不能直接影响到你的金钱以外的任何事情。
+对任何真实物件，这都是正确的︰不管它是否有主人都不会直接影响它的本质和用途。
+如果程序有了主人，这将大大影响它的本质，和你对它的用途。不同之处不仅仅是钱的问题。软件该有主人的体制鼓励软件主人生产，但不一定是社会真正需要的。它导致的道德低落影响我们所有人。
+社会需要什么？社会需要对公民真实可用的信息──例如，人们可以解读、修补、使用和改进的程序，而不只是操作。但是软件主人往往会给我们一个不能研究和修改的黑盒子。&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;p>社会也需要自由。当程序有了主人，用户就失去了控制他们部分生活的自由。&lt;/p>
+&lt;p>总之社会需要鼓励公民们自主合作的精神。当软件主人告诉我们用这种自然的方式帮助旁人是剽窃行为时，那他们就是玷污我们的人格。&lt;/p>
+&lt;p>这正是我们提倡自由软件 事关自由，而并非价格的原因。&lt;/p>
+&lt;p>支持所有者的经济论据是错误的，但是经济问题确实存在。一些人出于荣誉、认同和博爱，而编写了有用的软件，但是如果我们希望有更多的软件，就需要筹集资金。&lt;/p>
+&lt;p>自由软件开发者自从八十年代尝试过许多寻求财源的方法，稍有小成。我们不需要让任何人致富，典型的收入，足以吸引人做很多比编程少满足感的工作。&lt;/p>
+&lt;p>多年以来，我一直靠改进自己编写的自由软件为生，直到获得研究经费。每次改进我都会添加到标準发佈版本，使得大众受益。客户为我付费，这样我就会优先完成他们需求，自己的变成次要。&lt;/p>
+&lt;p>一些自由软件开发者通过支援服务赚钱。1994年，Cygnus 有近50个员工，估计有大约百分之十五的员工从事自由软件开发︰对一间软件公司而言，这是个了不起的比例。&lt;/p>
+&lt;p>九十年代，Intel、Motorola、Texas Instruments 和 Analog Devices 等公司联合赞助持续发展的GNU C语言编译器。现在大部份开发GCC的人工作还是受薪的开发者完成的。GNU的Ada语言编译器受美国空军赞助，之后成立专属公司延续过个项目。&lt;/p></description></item></channel></rss>

@@ -1,19 +1,35 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-  <channel>
-    <title>NexT on 一塘</title>
-    <link>http://localhost:1313/tags/next/</link>
-    <description>Recent content in NexT on 一塘</description>
-    <generator>Hugo</generator>
-    <language>zh-cn</language>
-    <lastBuildDate>Thu, 22 Dec 2016 12:39:04 +0000</lastBuildDate>
-    <atom:link href="http://localhost:1313/tags/next/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>个人主页搭建</title>
-      <link>http://localhost:1313/post/build_blog/</link>
-      <pubDate>Thu, 22 Dec 2016 12:39:04 +0000</pubDate>
-      <guid>http://localhost:1313/post/build_blog/</guid>
-      <description>&lt;h2 id=&#34;前言&#34;&gt;前言&lt;/h2&gt;&#xA;&lt;p&gt;本文主要内容为博客搭建的记录与分享，我采用了Hexo博客框架，NexT主题和Gitment评论系统。本文中记录了我博客的安装流程和使用过程中的改进细节。&lt;/p&gt;&#xA;&lt;p&gt;对Next主题版本的一些说明：我使用的是&lt;code&gt;version: 5.1.0&lt;/code&gt;。而使用新版本的NexT v6 主题的同学，有些功能如gitment已经实现，可以直接使用V6。此V6版本对于图片的使用可能会出现问题。仅需看看我下面的2.2小节。&lt;/p&gt;&#xA;&lt;p&gt;有时间我会将我修改后的hexo Next theme 基于&lt;code&gt;version: 5.1.0&lt;/code&gt;主题，给个独立的git仓，放到github 上。&lt;/p&gt;&#xA;&lt;blockquote&gt;&#xA;&lt;p&gt;小技巧：在文章中可以使用&lt;code&gt;&amp;lt;!-- more --&amp;gt;&lt;/code&gt;手动进行截断，more上面部分将被放到主页上显示。此为Hexo 提供的方式。&lt;/p&gt;&lt;/blockquote&gt;&#xA;&lt;p&gt;下面就是用&lt;code&gt;&amp;lt;!-- more --&amp;gt;&lt;/code&gt;截断的～～&lt;/p&gt;&#xA;&lt;!-- more --&gt;&#xA;&lt;p&gt;在看安装教程的时候，发现怎么要涉及这么多东西，请大家不要担心，一步步来。同时也不用在意会不会nodejs，框架这些东西，人家已经帮我们把东西都写好了，我们做的就是改改配置文件，最多改改里面swig的模版的一些代码。最后，望大家见谅的是，我对js不太熟，有些地方不是很清楚。欢迎大家在下面评论，或者在github上开issue，共同讨论。&lt;/p&gt;&#xA;&lt;h2 id=&#34;1-安装&#34;&gt;1. 安装&lt;/h2&gt;&#xA;&lt;h3 id=&#34;11-简易安装使用&#34;&gt;1.1 简易安装使用&lt;/h3&gt;&#xA;&lt;p&gt;使用新版本的 &lt;code&gt;NexT v6&lt;/code&gt; 主题即可，有些功能如 &lt;code&gt;gitment&lt;/code&gt; 已经实现。对于图片的使用可能会出现问题。仅需看看我下面的2.2小节。我使用的是 &lt;code&gt;version: 5.1.0&lt;/code&gt; 。&lt;/p&gt;&#xA;&lt;h3 id=&#34;12-从头安装&#34;&gt;1.2 从头安装&lt;/h3&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;安装 nodejs，从nodejs 官网下载安装包 &lt;a href=&#34;https://nodejs.org/en/download/&#34;&gt;download page&lt;/a&gt;&lt;/li&gt;&#xA;&lt;li&gt;安装git客户端 &lt;a href=&#34;https://git-scm.com/&#34;&gt;git&lt;/a&gt;&lt;/li&gt;&#xA;&lt;li&gt;安装Hexo &lt;code&gt;npm install -g hexo-cli&lt;/code&gt;&#xA;&lt;a href=&#34;https://hexo.io/zh-cn/docs/&#34;&gt;hexo 中文安装文档&lt;/a&gt;&#xA;&lt;a href=&#34;https://hexo.io/zh-cn/&#34;&gt;Hexo中文网站&lt;/a&gt;&lt;/li&gt;&#xA;&lt;li&gt;安装NexT ，NexT是一个比较火的主题。&#xA;按官网教程NexT安装即可，官网安装和配置教程比较美滋滋。&#xA;&lt;a href=&#34;http://theme-next.iissnan.com/getting-started.html&#34;&gt;http://theme-next.iissnan.com/getting-started.html&lt;/a&gt;&#xA;NexT Github  &lt;a href=&#34;https://github.com/iissnan/hexo-theme-next&#34;&gt;https://github.com/iissnan/hexo-theme-next&lt;/a&gt;&#xA;另外，NexT开发者的博客（最近Next 变成组织了，祝贺）&lt;a href=&#34;http://notes.iissnan.com&#34;&gt;http://notes.iissnan.com&lt;/a&gt;&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;blockquote&gt;&#xA;&lt;p&gt;&lt;strong&gt;Ubuntu安装记录&lt;/strong&gt;&lt;/p&gt;&lt;/blockquote&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# for Ubuntu16.04&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;$ sudo apt install npm nodejs-legacy&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;$ sudo npm install hexo-cli -g&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;$ hexo init blog&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;$ cd blog&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;$ npm install&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;$ hexo server&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;ok，安装完的目录结构。&lt;/p&gt;</description>
-    </item>
-  </channel>
-</rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>NexT on 一塘</title><link>https://example.com/tags/next/</link><description>Recent content in NexT on 一塘</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Thu, 22 Dec 2016 12:39:04 +0000</lastBuildDate><atom:link href="https://example.com/tags/next/index.xml" rel="self" type="application/rss+xml"/><item><title>个人主页搭建</title><link>https://example.com/post/build_blog/</link><pubDate>Thu, 22 Dec 2016 12:39:04 +0000</pubDate><guid>https://example.com/post/build_blog/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
+&lt;p>本文主要内容为博客搭建的记录与分享，我采用了Hexo博客框架，NexT主题和Gitment评论系统。本文中记录了我博客的安装流程和使用过程中的改进细节。&lt;/p>
+&lt;p>对Next主题版本的一些说明：我使用的是&lt;code>version: 5.1.0&lt;/code>。而使用新版本的NexT v6 主题的同学，有些功能如gitment已经实现，可以直接使用V6。此V6版本对于图片的使用可能会出现问题。仅需看看我下面的2.2小节。&lt;/p>
+&lt;p>有时间我会将我修改后的hexo Next theme 基于&lt;code>version: 5.1.0&lt;/code>主题，给个独立的git仓，放到github 上。&lt;/p>
+&lt;blockquote>
+&lt;p>小技巧：在文章中可以使用&lt;code>&amp;lt;!-- more --&amp;gt;&lt;/code>手动进行截断，more上面部分将被放到主页上显示。此为Hexo 提供的方式。&lt;/p>&lt;/blockquote>
+&lt;p>下面就是用&lt;code>&amp;lt;!-- more --&amp;gt;&lt;/code>截断的～～&lt;/p>
+&lt;!-- more -->
+&lt;p>在看安装教程的时候，发现怎么要涉及这么多东西，请大家不要担心，一步步来。同时也不用在意会不会nodejs，框架这些东西，人家已经帮我们把东西都写好了，我们做的就是改改配置文件，最多改改里面swig的模版的一些代码。最后，望大家见谅的是，我对js不太熟，有些地方不是很清楚。欢迎大家在下面评论，或者在github上开issue，共同讨论。&lt;/p>
+&lt;h2 id="1-安装">1. 安装&lt;/h2>
+&lt;h3 id="11-简易安装使用">1.1 简易安装使用&lt;/h3>
+&lt;p>使用新版本的 &lt;code>NexT v6&lt;/code> 主题即可，有些功能如 &lt;code>gitment&lt;/code> 已经实现。对于图片的使用可能会出现问题。仅需看看我下面的2.2小节。我使用的是 &lt;code>version: 5.1.0&lt;/code> 。&lt;/p>
+&lt;h3 id="12-从头安装">1.2 从头安装&lt;/h3>
+&lt;ul>
+&lt;li>安装 nodejs，从nodejs 官网下载安装包 &lt;a href="https://nodejs.org/en/download/">download page&lt;/a>&lt;/li>
+&lt;li>安装git客户端 &lt;a href="https://git-scm.com/">git&lt;/a>&lt;/li>
+&lt;li>安装Hexo &lt;code>npm install -g hexo-cli&lt;/code>
+&lt;a href="https://hexo.io/zh-cn/docs/">hexo 中文安装文档&lt;/a>
+&lt;a href="https://hexo.io/zh-cn/">Hexo中文网站&lt;/a>&lt;/li>
+&lt;li>安装NexT ，NexT是一个比较火的主题。
+按官网教程NexT安装即可，官网安装和配置教程比较美滋滋。
+&lt;a href="http://theme-next.iissnan.com/getting-started.html">http://theme-next.iissnan.com/getting-started.html&lt;/a>
+NexT Github &lt;a href="https://github.com/iissnan/hexo-theme-next">https://github.com/iissnan/hexo-theme-next&lt;/a>
+另外，NexT开发者的博客（最近Next 变成组织了，祝贺）&lt;a href="http://notes.iissnan.com">http://notes.iissnan.com&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;blockquote>
+&lt;p>&lt;strong>Ubuntu安装记录&lt;/strong>&lt;/p>&lt;/blockquote>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># for Ubuntu16.04&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$ sudo apt install npm nodejs-legacy
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$ sudo npm install hexo-cli -g
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$ hexo init blog
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$ cd blog
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$ npm install
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$ hexo server
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>ok，安装完的目录结构。&lt;/p></description></item></channel></rss>

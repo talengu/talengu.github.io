@@ -1,19 +1,17 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-  <channel>
-    <title>游戏 on 一塘</title>
-    <link>http://localhost:1313/categories/%E6%B8%B8%E6%88%8F/</link>
-    <description>Recent content in 游戏 on 一塘</description>
-    <generator>Hugo</generator>
-    <language>zh-cn</language>
-    <lastBuildDate>Wed, 01 Sep 2021 12:00:00 +0000</lastBuildDate>
-    <atom:link href="http://localhost:1313/categories/%E6%B8%B8%E6%88%8F/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>2021 年科隆游戏展奖项提名名单</title>
-      <link>http://localhost:1313/post/2021games/</link>
-      <pubDate>Wed, 01 Sep 2021 12:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/post/2021games/</guid>
-      <description>&lt;h2 id=&#34;前言&#34;&gt;前言&lt;/h2&gt;&#xA;&lt;p&gt;帝国时代3，现在帝国4！&lt;br&gt;&#xA;2021 年科隆游戏展奖项提名名单正式公布&lt;/p&gt;&#xA;&lt;!-- more --&gt;&#xA;&lt;p&gt;8 月 23 日，2021 年科隆游戏展的奖项提名名单已经全部揭晓，本次直接涉及游戏的奖项有 21 个，其中获得提名的游戏分别为：&lt;/p&gt;&#xA;&lt;p&gt;最佳微软 Xbox 游戏：《艾尔登法环》（万代南梦宫娱乐）；《孤岛惊魂 6》（育碧）；《光环无限》（微软）&lt;/p&gt;&#xA;&lt;p&gt;最佳任天堂 Switch 游戏：《舞力全开 2022》（育碧）；《马里奥 + 疯狂兔子星耀之愿》 (育碧)&lt;/p&gt;&#xA;&lt;p&gt;最佳 PC 游戏：《帝国时代 4》(微软)；《艾尔登法环》（万代南梦宫娱乐）；《塞伯利亚之谜: 世界之前》 (Astragon Entertainment)&lt;/p&gt;&#xA;&lt;p&gt;最佳索尼 PlayStation 游戏：《艾尔登法环》（万代南梦宫娱乐）；《破晓传说》（万代南梦宫娱乐）；《黑相集：灰冥界》 (万代南梦宫娱乐)&lt;/p&gt;&#xA;&lt;p&gt;最佳动作冒险游戏：《艾尔登法环》（万代南梦宫娱乐）；《马里奥 + 疯狂兔子星耀之愿》 (育碧)；《塞伯利亚之谜: 世界之前》 (Astragon Entertainment)&lt;/p&gt;&#xA;&lt;p&gt;最佳动作游戏：《孤岛惊魂 6》（育碧）；《光环：无限》（微软）；《彩虹六号：异种》（育碧）&lt;/p&gt;&#xA;&lt;p&gt;最佳家庭游戏：《舞力全开 2022》（育碧）；《Run Prop, Run!》（PlayTogether Studio）；《Super Dungeon Maker》 (Rokaplay)&lt;/p&gt;&#xA;&lt;p&gt;最佳独立游戏：《Dorfromantik》（Toukana Interactive）；《Inua》（Arte France）；《Lost in Random》（EA）&lt;/p&gt;&#xA;&lt;p&gt;最佳角色扮演游戏：《艾尔登法环》（万代南梦宫娱乐）；《Encased》（科赫传媒）；《破晓传说》（万代南梦宫娱乐）&lt;/p&gt;&#xA;&lt;p&gt;最佳模拟游戏：《攀登者：天空是极限》(Art Games Studio)；《模拟农场 22》 (Astragon Entertainment)&lt;/p&gt;&#xA;&lt;p&gt;最佳体育游戏：《攀登者：天空是极限》(Art Games Studio)；《FIFA22》（EA）；《Riders Republic》（育碧）&lt;/p&gt;&#xA;&lt;p&gt;最佳策略游戏：《帝国时代 4》 (微软)；《英雄连 3》 (世嘉)；《马里奥 + 疯狂兔子星耀之愿》 (育碧)&lt;/p&gt;</description>
-    </item>
-  </channel>
-</rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>游戏 on 一塘</title><link>https://example.com/categories/%E6%B8%B8%E6%88%8F/</link><description>Recent content in 游戏 on 一塘</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Wed, 01 Sep 2021 12:00:00 +0000</lastBuildDate><atom:link href="https://example.com/categories/%E6%B8%B8%E6%88%8F/index.xml" rel="self" type="application/rss+xml"/><item><title>2021 年科隆游戏展奖项提名名单</title><link>https://example.com/post/2021games/</link><pubDate>Wed, 01 Sep 2021 12:00:00 +0000</pubDate><guid>https://example.com/post/2021games/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
+&lt;p>帝国时代3，现在帝国4！&lt;br>
+2021 年科隆游戏展奖项提名名单正式公布&lt;/p>
+&lt;!-- more -->
+&lt;p>8 月 23 日，2021 年科隆游戏展的奖项提名名单已经全部揭晓，本次直接涉及游戏的奖项有 21 个，其中获得提名的游戏分别为：&lt;/p>
+&lt;p>最佳微软 Xbox 游戏：《艾尔登法环》（万代南梦宫娱乐）；《孤岛惊魂 6》（育碧）；《光环无限》（微软）&lt;/p>
+&lt;p>最佳任天堂 Switch 游戏：《舞力全开 2022》（育碧）；《马里奥 + 疯狂兔子星耀之愿》 (育碧)&lt;/p>
+&lt;p>最佳 PC 游戏：《帝国时代 4》(微软)；《艾尔登法环》（万代南梦宫娱乐）；《塞伯利亚之谜: 世界之前》 (Astragon Entertainment)&lt;/p>
+&lt;p>最佳索尼 PlayStation 游戏：《艾尔登法环》（万代南梦宫娱乐）；《破晓传说》（万代南梦宫娱乐）；《黑相集：灰冥界》 (万代南梦宫娱乐)&lt;/p>
+&lt;p>最佳动作冒险游戏：《艾尔登法环》（万代南梦宫娱乐）；《马里奥 + 疯狂兔子星耀之愿》 (育碧)；《塞伯利亚之谜: 世界之前》 (Astragon Entertainment)&lt;/p>
+&lt;p>最佳动作游戏：《孤岛惊魂 6》（育碧）；《光环：无限》（微软）；《彩虹六号：异种》（育碧）&lt;/p>
+&lt;p>最佳家庭游戏：《舞力全开 2022》（育碧）；《Run Prop, Run!》（PlayTogether Studio）；《Super Dungeon Maker》 (Rokaplay)&lt;/p>
+&lt;p>最佳独立游戏：《Dorfromantik》（Toukana Interactive）；《Inua》（Arte France）；《Lost in Random》（EA）&lt;/p>
+&lt;p>最佳角色扮演游戏：《艾尔登法环》（万代南梦宫娱乐）；《Encased》（科赫传媒）；《破晓传说》（万代南梦宫娱乐）&lt;/p>
+&lt;p>最佳模拟游戏：《攀登者：天空是极限》(Art Games Studio)；《模拟农场 22》 (Astragon Entertainment)&lt;/p>
+&lt;p>最佳体育游戏：《攀登者：天空是极限》(Art Games Studio)；《FIFA22》（EA）；《Riders Republic》（育碧）&lt;/p>
+&lt;p>最佳策略游戏：《帝国时代 4》 (微软)；《英雄连 3》 (世嘉)；《马里奥 + 疯狂兔子星耀之愿》 (育碧)&lt;/p></description></item></channel></rss>

@@ -1,290 +1,181 @@
-<!DOCTYPE html>
-<html lang="zh-cn">
-  <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>「转」在 C/C&#43;&#43; 程序中打印当前函数调用栈 | 一塘</title>
-    <link rel="stylesheet" href="/css/style.css" />
-    <link rel="stylesheet" href="/css/fonts.css" />
-    
-<script>
-window.MathJax = {
-  tex: {
-    inlineMath: [['$', '$'], ['\\(', '\\)']],
-    displayMath: [['$$', '$$'], ['\\[', '\\]']]
-  },
-  options: {
-    skipHtmlTags: ['script','noscript','style','textarea','pre','code']
-  }
-};
-</script>
-<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-  </head>
-
-  <body>
-    <nav>
-    <ul class="menu">
-      
-      <li><a href="/about/">一塘</a></li>
-      
-      <li><a href="/post/">博客</a></li>
-      
-      <li><a href="/categories/">分类</a></li>
-      
-      <li><a href="/tags/">标签</a></li>
-      
-    </ul>
-    <hr/>
-    </nav>
-
-<div class="article-meta">
-<h1><span class="title">「转」在 C/C++ 程序中打印当前函数调用栈</span></h1>
-
-
-</div>
-
-<div class="post-stats" style="text-align: right;">
-   
-  2021/08/25
-  
-</div>
-
-
-
-
-<main>
-<h2 id="背景">背景</h2>
-<p>2011 年 6 月 11 日 <a href="http://www.wuzesheng.com/?author=2" title="由 小武哥 发布">小武哥</a></p>
-<p>前几天帮同事跟踪的一个程序莫名退出，没有 core dump(当然 ulimit 是打开的) 的问题。我们知道，正常情况下，如果程序因为某种异常条件退出的话，应该会产生 core dump，而如果程序正常退出的话，应该是直接或者间接的调用了 exit() 相关的函数。基于这个事实，我想到了这样一个办法，在程序开始时，通过系统提供的 atexit()，向系统注册一个回调函数，在程序调用 exit() 退出的时候，这个回调函数就会被调用，然后我们在回调函数中打印出当前的函数调用栈，由此便可以知道 exit() 是在哪里调用，从而上述问题便迎刃而解了。上述方法用来解决类似问题是非常行之有效的。在上面，我提到了在 “回调函数中打印出当前的函数调用栈”，相信细心的朋友应该注意到这个了，本文的主要内容就是详细介绍，如何在程序中打印中当前的函数调用栈。</p>
-<!-- more -->
-<p>我之前写过一篇题目为《<a href="http://www.wuzesheng.com/?p=1123">介绍几个关于 C/C++ 程序调试的函数</a>》的文章，看到这里，请读者朋友先看一下前面这篇，因为本文是以前面这篇文章为基础的。我正是用了 backtrace() 和 backtrace_symbols() 这两个函数实现的，下面是一个简单的例子，通过这个例子我们来介绍具体的方法：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;execinfo .h&gt;</span><span style="color:#75715e">
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;stdio .h&gt;</span><span style="color:#75715e">
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;stdlib .h&gt;</span><span style="color:#75715e">
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span> 
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">fun1</span>();
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">fun2</span>();
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">fun3</span>();
-</span></span><span style="display:flex;"><span> 
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">print_stacktrace</span>();
-</span></span><span style="display:flex;"><span> 
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">main</span>()
-</span></span><span style="display:flex;"><span>{
-</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">fun3</span>();
-</span></span><span style="display:flex;"><span>}
-</span></span><span style="display:flex;"><span> 
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">fun1</span>()
-</span></span><span style="display:flex;"><span>{
-</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">printf</span>(<span style="color:#e6db74">&#34;stackstrace begin:</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>);
-</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">print_stacktrace</span>();
-</span></span><span style="display:flex;"><span>}
-</span></span><span style="display:flex;"><span> 
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">fun2</span>()
-</span></span><span style="display:flex;"><span>{
-</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">fun1</span>();
-</span></span><span style="display:flex;"><span>}
-</span></span><span style="display:flex;"><span> 
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">fun3</span>()
-</span></span><span style="display:flex;"><span>{
-</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">fun2</span>();
-</span></span><span style="display:flex;"><span>}
-</span></span><span style="display:flex;"><span> 
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">print_stacktrace</span>()
-</span></span><span style="display:flex;"><span>{
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span> size <span style="color:#f92672">=</span> <span style="color:#ae81ff">16</span>;
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span> array[<span style="color:#ae81ff">16</span>];
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span> stack_num <span style="color:#f92672">=</span> <span style="color:#a6e22e">backtrace</span>(array, size);
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">char</span> <span style="color:#f92672">**</span> stacktrace <span style="color:#f92672">=</span> <span style="color:#a6e22e">backtrace_symbols</span>(array, stack_num);
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; i <span style="color:#f92672">&lt;</span> stack_num; <span style="color:#f92672">++</span>i)
-</span></span><span style="display:flex;"><span>    {
-</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">printf</span>(<span style="color:#e6db74">&#34;%s</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>, stacktrace[i]);
-</span></span><span style="display:flex;"><span>    }
-</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">free</span>(stacktrace);
-</span></span><span style="display:flex;"><span>}
-</span></span></code></pre></div><p>（说明：下面的介绍采用的环境是 ubuntu 11.04, x86_64, gcc-4.5.2）</p>
-<ol>
-<li>通过下面的方式编译运行：</li>
-</ol>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>wuzesheng@ubuntu:~/work/test$ gcc test.cc -o test1
-</span></span><span style="display:flex;"><span>wuzesheng@ubuntu:~/work/test$ ./test1
-</span></span><span style="display:flex;"><span>stackstrace begin:
-</span></span><span style="display:flex;"><span>./test1<span style="color:#f92672">()</span> <span style="color:#f92672">[</span>0x400645<span style="color:#f92672">]</span>
-</span></span><span style="display:flex;"><span>./test1<span style="color:#f92672">()</span> <span style="color:#f92672">[</span>0x400607<span style="color:#f92672">]</span>
-</span></span><span style="display:flex;"><span>./test1<span style="color:#f92672">()</span> <span style="color:#f92672">[</span>0x400612<span style="color:#f92672">]</span>
-</span></span><span style="display:flex;"><span>./test1<span style="color:#f92672">()</span> <span style="color:#f92672">[</span>0x40061d<span style="color:#f92672">]</span>
-</span></span><span style="display:flex;"><span>./test1<span style="color:#f92672">()</span> <span style="color:#f92672">[</span>0x4005ed<span style="color:#f92672">]</span>
-</span></span><span style="display:flex;"><span>/lib/x86_64-linux-gnu/libc.so.6<span style="color:#f92672">(</span>__libc_start_main+0xff<span style="color:#f92672">)</span> <span style="color:#f92672">[</span>0x7f5c59a91eff<span style="color:#f92672">]</span>
-</span></span><span style="display:flex;"><span>./test1<span style="color:#f92672">()</span> <span style="color:#f92672">[</span>0x400529<span style="color:#f92672">]</span>
-</span></span></code></pre></div><p>从上面的运行结果中，我们的确看到了函数的调用栈，但是都是 16 进制的地址，会有点小小的不爽。当然我们可以通过反汇编得到每个地址对应的函数，但这个还是有点麻烦了。不急，且听我慢慢道来，看第 2 步。</p>
-<ol start="2">
-<li>通过下面的方式编译运行：</li>
-</ol>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>wuzesheng@ubuntu:~/work/test$ gcc test.cc -rdynamic -o test2
-</span></span><span style="display:flex;"><span>wuzesheng@ubuntu:~/work/test$ ./test2
-</span></span><span style="display:flex;"><span>stackstrace begin:
-</span></span><span style="display:flex;"><span>./test2<span style="color:#f92672">(</span>_Z16print_stacktracev+0x26<span style="color:#f92672">)</span> <span style="color:#f92672">[</span>0x4008e5<span style="color:#f92672">]</span>
-</span></span><span style="display:flex;"><span>./test2<span style="color:#f92672">(</span>_Z4fun1v+0x13<span style="color:#f92672">)</span> <span style="color:#f92672">[</span>0x4008a7<span style="color:#f92672">]</span>
-</span></span><span style="display:flex;"><span>./test2<span style="color:#f92672">(</span>_Z4fun2v+0x9<span style="color:#f92672">)</span> <span style="color:#f92672">[</span>0x4008b2<span style="color:#f92672">]</span>
-</span></span><span style="display:flex;"><span>./test2<span style="color:#f92672">(</span>_Z4fun3v+0x9<span style="color:#f92672">)</span> <span style="color:#f92672">[</span>0x4008bd<span style="color:#f92672">]</span>
-</span></span><span style="display:flex;"><span>./test2<span style="color:#f92672">(</span>main+0x9<span style="color:#f92672">)</span> <span style="color:#f92672">[</span>0x40088d<span style="color:#f92672">]</span>
-</span></span><span style="display:flex;"><span>/lib/x86_64-linux-gnu/libc.so.6<span style="color:#f92672">(</span>__libc_start_main+0xff<span style="color:#f92672">)</span> <span style="color:#f92672">[</span>0x7f9370186eff<span style="color:#f92672">]</span>
-</span></span><span style="display:flex;"><span>./test2<span style="color:#f92672">()</span> <span style="color:#f92672">[</span>0x4007c9<span style="color:#f92672">]</span>
-</span></span></code></pre></div><p>这下终于可以看到函数的名字了，对比一下 2 和 1 的编译过程，2 比 1 多了一个 <strong>- rdynamic</strong> 的选项，让我们来看看这个选项是干什么的 (来自 gcc mannual 的说明):</p>
-<pre><code>```shell
+<!doctype html><html lang=zh-cn><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><title>「转」在 C/C++ 程序中打印当前函数调用栈 | 一塘</title>
+<link rel=stylesheet href=/css/style.css><link rel=stylesheet href=/css/fonts.css></head><body><nav><ul class=menu><li><a href=/about/>一塘</a></li><li><a href=/post/>博客</a></li><li><a href=/categories/>分类</a></li><li><a href=/tags/>标签</a></li></ul><hr></nav><div class=article-meta><h1><span class=title>「转」在 C/C++ 程序中打印当前函数调用栈</span></h1></div><div class=post-stats style=text-align:right>2021/08/25</div><main><h2 id=背景>背景</h2><p>2011 年 6 月 11 日 <a href="http://www.wuzesheng.com/?author=2" title="由 小武哥 发布">小武哥</a></p><p>前几天帮同事跟踪的一个程序莫名退出，没有 core dump(当然 ulimit 是打开的) 的问题。我们知道，正常情况下，如果程序因为某种异常条件退出的话，应该会产生 core dump，而如果程序正常退出的话，应该是直接或者间接的调用了 exit() 相关的函数。基于这个事实，我想到了这样一个办法，在程序开始时，通过系统提供的 atexit()，向系统注册一个回调函数，在程序调用 exit() 退出的时候，这个回调函数就会被调用，然后我们在回调函数中打印出当前的函数调用栈，由此便可以知道 exit() 是在哪里调用，从而上述问题便迎刃而解了。上述方法用来解决类似问题是非常行之有效的。在上面，我提到了在 “回调函数中打印出当前的函数调用栈”，相信细心的朋友应该注意到这个了，本文的主要内容就是详细介绍，如何在程序中打印中当前的函数调用栈。</p><p>我之前写过一篇题目为《<a href="http://www.wuzesheng.com/?p=1123">介绍几个关于 C/C++ 程序调试的函数</a>》的文章，看到这里，请读者朋友先看一下前面这篇，因为本文是以前面这篇文章为基础的。我正是用了 backtrace() 和 backtrace_symbols() 这两个函数实现的，下面是一个简单的例子，通过这个例子我们来介绍具体的方法：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=display:flex><span><span style=color:#75715e>#include</span> <span style=color:#75715e>&lt;execinfo .h&gt;</span><span style=color:#75715e>
+</span></span></span><span style=display:flex><span><span style=color:#75715e>#include</span> <span style=color:#75715e>&lt;stdio .h&gt;</span><span style=color:#75715e>
+</span></span></span><span style=display:flex><span><span style=color:#75715e>#include</span> <span style=color:#75715e>&lt;stdlib .h&gt;</span><span style=color:#75715e>
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span> 
+</span></span><span style=display:flex><span><span style=color:#66d9ef>void</span> <span style=color:#a6e22e>fun1</span>();
+</span></span><span style=display:flex><span><span style=color:#66d9ef>void</span> <span style=color:#a6e22e>fun2</span>();
+</span></span><span style=display:flex><span><span style=color:#66d9ef>void</span> <span style=color:#a6e22e>fun3</span>();
+</span></span><span style=display:flex><span> 
+</span></span><span style=display:flex><span><span style=color:#66d9ef>void</span> <span style=color:#a6e22e>print_stacktrace</span>();
+</span></span><span style=display:flex><span> 
+</span></span><span style=display:flex><span><span style=color:#66d9ef>int</span> <span style=color:#a6e22e>main</span>()
+</span></span><span style=display:flex><span>{
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>fun3</span>();
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span> 
+</span></span><span style=display:flex><span><span style=color:#66d9ef>void</span> <span style=color:#a6e22e>fun1</span>()
+</span></span><span style=display:flex><span>{
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>printf</span>(<span style=color:#e6db74>&#34;stackstrace begin:</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>);
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>print_stacktrace</span>();
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span> 
+</span></span><span style=display:flex><span><span style=color:#66d9ef>void</span> <span style=color:#a6e22e>fun2</span>()
+</span></span><span style=display:flex><span>{
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>fun1</span>();
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span> 
+</span></span><span style=display:flex><span><span style=color:#66d9ef>void</span> <span style=color:#a6e22e>fun3</span>()
+</span></span><span style=display:flex><span>{
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>fun2</span>();
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span> 
+</span></span><span style=display:flex><span><span style=color:#66d9ef>void</span> <span style=color:#a6e22e>print_stacktrace</span>()
+</span></span><span style=display:flex><span>{
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>int</span> size <span style=color:#f92672>=</span> <span style=color:#ae81ff>16</span>;
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>void</span> <span style=color:#f92672>*</span> array[<span style=color:#ae81ff>16</span>];
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>int</span> stack_num <span style=color:#f92672>=</span> <span style=color:#a6e22e>backtrace</span>(array, size);
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>char</span> <span style=color:#f92672>**</span> stacktrace <span style=color:#f92672>=</span> <span style=color:#a6e22e>backtrace_symbols</span>(array, stack_num);
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>for</span> (<span style=color:#66d9ef>int</span> i <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>; i <span style=color:#f92672>&lt;</span> stack_num; <span style=color:#f92672>++</span>i)
+</span></span><span style=display:flex><span>    {
+</span></span><span style=display:flex><span>        <span style=color:#a6e22e>printf</span>(<span style=color:#e6db74>&#34;%s</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>, stacktrace[i]);
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>free</span>(stacktrace);
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p>（说明：下面的介绍采用的环境是 ubuntu 11.04, x86_64, gcc-4.5.2）</p><ol><li>通过下面的方式编译运行：</li></ol><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>wuzesheng@ubuntu:~/work/test$ gcc test.cc -o test1
+</span></span><span style=display:flex><span>wuzesheng@ubuntu:~/work/test$ ./test1
+</span></span><span style=display:flex><span>stackstrace begin:
+</span></span><span style=display:flex><span>./test1<span style=color:#f92672>()</span> <span style=color:#f92672>[</span>0x400645<span style=color:#f92672>]</span>
+</span></span><span style=display:flex><span>./test1<span style=color:#f92672>()</span> <span style=color:#f92672>[</span>0x400607<span style=color:#f92672>]</span>
+</span></span><span style=display:flex><span>./test1<span style=color:#f92672>()</span> <span style=color:#f92672>[</span>0x400612<span style=color:#f92672>]</span>
+</span></span><span style=display:flex><span>./test1<span style=color:#f92672>()</span> <span style=color:#f92672>[</span>0x40061d<span style=color:#f92672>]</span>
+</span></span><span style=display:flex><span>./test1<span style=color:#f92672>()</span> <span style=color:#f92672>[</span>0x4005ed<span style=color:#f92672>]</span>
+</span></span><span style=display:flex><span>/lib/x86_64-linux-gnu/libc.so.6<span style=color:#f92672>(</span>__libc_start_main+0xff<span style=color:#f92672>)</span> <span style=color:#f92672>[</span>0x7f5c59a91eff<span style=color:#f92672>]</span>
+</span></span><span style=display:flex><span>./test1<span style=color:#f92672>()</span> <span style=color:#f92672>[</span>0x400529<span style=color:#f92672>]</span>
+</span></span></code></pre></div><p>从上面的运行结果中，我们的确看到了函数的调用栈，但是都是 16 进制的地址，会有点小小的不爽。当然我们可以通过反汇编得到每个地址对应的函数，但这个还是有点麻烦了。不急，且听我慢慢道来，看第 2 步。</p><ol start=2><li>通过下面的方式编译运行：</li></ol><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>wuzesheng@ubuntu:~/work/test$ gcc test.cc -rdynamic -o test2
+</span></span><span style=display:flex><span>wuzesheng@ubuntu:~/work/test$ ./test2
+</span></span><span style=display:flex><span>stackstrace begin:
+</span></span><span style=display:flex><span>./test2<span style=color:#f92672>(</span>_Z16print_stacktracev+0x26<span style=color:#f92672>)</span> <span style=color:#f92672>[</span>0x4008e5<span style=color:#f92672>]</span>
+</span></span><span style=display:flex><span>./test2<span style=color:#f92672>(</span>_Z4fun1v+0x13<span style=color:#f92672>)</span> <span style=color:#f92672>[</span>0x4008a7<span style=color:#f92672>]</span>
+</span></span><span style=display:flex><span>./test2<span style=color:#f92672>(</span>_Z4fun2v+0x9<span style=color:#f92672>)</span> <span style=color:#f92672>[</span>0x4008b2<span style=color:#f92672>]</span>
+</span></span><span style=display:flex><span>./test2<span style=color:#f92672>(</span>_Z4fun3v+0x9<span style=color:#f92672>)</span> <span style=color:#f92672>[</span>0x4008bd<span style=color:#f92672>]</span>
+</span></span><span style=display:flex><span>./test2<span style=color:#f92672>(</span>main+0x9<span style=color:#f92672>)</span> <span style=color:#f92672>[</span>0x40088d<span style=color:#f92672>]</span>
+</span></span><span style=display:flex><span>/lib/x86_64-linux-gnu/libc.so.6<span style=color:#f92672>(</span>__libc_start_main+0xff<span style=color:#f92672>)</span> <span style=color:#f92672>[</span>0x7f9370186eff<span style=color:#f92672>]</span>
+</span></span><span style=display:flex><span>./test2<span style=color:#f92672>()</span> <span style=color:#f92672>[</span>0x4007c9<span style=color:#f92672>]</span>
+</span></span></code></pre></div><p>这下终于可以看到函数的名字了，对比一下 2 和 1 的编译过程，2 比 1 多了一个 <strong>- rdynamic</strong> 的选项，让我们来看看这个选项是干什么的 (来自 gcc mannual 的说明):</p><pre><code>```shell
 -rdynamic
   Pass the flag -export-dynamic to the ELF linker, on targets that support it. This instructs the linker to add all symbols, not only used ones, to the dynamic symbol table. This option is needed for some uses of &quot;dlopen&quot; or to allow obtaining backtraces from within a program.
 ```
-</code></pre>
-<p>从上面的说明可以看出，它的主要作用是让链接器把所有的符号都加入到动态符号表中，这下明白了吧。不过这里还有一个问题，这里的函数名都是 mangle 过的，需要 demangle 才能看到原始的函数。关于 c++ 的 mangle/demangle 机制，不了解的朋友可以在搜索引擎上搜一下，我这里就不多就介绍了。这里介绍如何用命令来 demangle，通过 c++filt 命令便可以:</p>
-<pre><code>```shell
+</code></pre><p>从上面的说明可以看出，它的主要作用是让链接器把所有的符号都加入到动态符号表中，这下明白了吧。不过这里还有一个问题，这里的函数名都是 mangle 过的，需要 demangle 才能看到原始的函数。关于 c++ 的 mangle/demangle 机制，不了解的朋友可以在搜索引擎上搜一下，我这里就不多就介绍了。这里介绍如何用命令来 demangle，通过 c++filt 命令便可以:</p><pre><code>```shell
 wuzesheng@ubuntu:~/work/test$ c++filt &lt; &lt;&lt; &quot;_Z16print_stacktracev&quot;
 print_stacktrace()
 ```
-</code></pre>
-<p>写到这里，大部分工作就 ok 了。不过不知道大家有没有想过这样一个问题，同一个函数可以在代码中多个地方调用，如果我们只是知道函数，而不知道在哪里调用的，有时候还是不够方便，bingo，这个也是有办法的，可以通过 address2line 命令来完成，我们用第 2 步中编译出来的 test2 来做实验 (address2line 的 - f 选项可以打出函数名, -C 选项也可以 demangle)：</p>
-<pre><code>```shell
+</code></pre><p>写到这里，大部分工作就 ok 了。不过不知道大家有没有想过这样一个问题，同一个函数可以在代码中多个地方调用，如果我们只是知道函数，而不知道在哪里调用的，有时候还是不够方便，bingo，这个也是有办法的，可以通过 address2line 命令来完成，我们用第 2 步中编译出来的 test2 来做实验 (address2line 的 - f 选项可以打出函数名, -C 选项也可以 demangle)：</p><pre><code>```shell
 wuzesheng@ubuntu:~/work/test$ addr2line -a 0x4008a7 -e test2 -f
 0x00000000004008a7
 _Z4fun1v
 ??:0
 ```
-</code></pre>
-<p>Oh no，怎么打出来的位置信息是乱码呢？不急，且看我们的第 3 步。</p>
-<ol start="3">
-<li>
-<p>通过下面的方式编译运行：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>wuzesheng@ubuntu:~/work/test$ gcc test.cc -rdynamic -g -o test3
-</span></span><span style="display:flex;"><span>wuzesheng@ubuntu:~/work/test$ ./test3
-</span></span><span style="display:flex;"><span>stackstrace begin:
-</span></span><span style="display:flex;"><span>./test3<span style="color:#f92672">(</span>_Z16print_stacktracev+0x26<span style="color:#f92672">)</span> <span style="color:#f92672">[</span>0x4008e5<span style="color:#f92672">]</span>
-</span></span><span style="display:flex;"><span>./test3<span style="color:#f92672">(</span>_Z4fun1v+0x13<span style="color:#f92672">)</span> <span style="color:#f92672">[</span>0x4008a7<span style="color:#f92672">]</span>
-</span></span><span style="display:flex;"><span>./test3<span style="color:#f92672">(</span>_Z4fun2v+0x9<span style="color:#f92672">)</span> <span style="color:#f92672">[</span>0x4008b2<span style="color:#f92672">]</span>
-</span></span><span style="display:flex;"><span>./test3<span style="color:#f92672">(</span>_Z4fun3v+0x9<span style="color:#f92672">)</span> <span style="color:#f92672">[</span>0x4008bd<span style="color:#f92672">]</span>
-</span></span><span style="display:flex;"><span>./test3<span style="color:#f92672">(</span>main+0x9<span style="color:#f92672">)</span> <span style="color:#f92672">[</span>0x40088d<span style="color:#f92672">]</span>
-</span></span><span style="display:flex;"><span>/lib/x86_64-linux-gnu/libc.so.6<span style="color:#f92672">(</span>__libc_start_main+0xff<span style="color:#f92672">)</span> <span style="color:#f92672">[</span>0x7fa9558c1eff<span style="color:#f92672">]</span>
-</span></span><span style="display:flex;"><span>./test3<span style="color:#f92672">()</span> <span style="color:#f92672">[</span>0x4007c9<span style="color:#f92672">]</span>
-</span></span><span style="display:flex;"><span>wuzesheng@ubuntu:~/work/test$ addr2line -a 0x4008a7 -e test3 -f -C
-</span></span><span style="display:flex;"><span>0x00000000004008a7
-</span></span><span style="display:flex;"><span>fun1<span style="color:#f92672">()</span>
-</span></span><span style="display:flex;"><span>/home/wuzesheng/work/test/test.cc:20
-</span></span></code></pre></div></li>
-</ol>
-<p>看上面的结果，我们不仅得到了调用栈，而且可以得到每个函数的名字，以及被调用的位置，大功告成。在这里需要说明一下的是，第 3 步比第 2 步多了一个 - g 选项，-g 选项的主要作用是生成调试信息，位置信息就属于调试信息的范畴，经常用 gdb 的朋友相信不会对这个选项感到陌生。</p>
-<h3 id="在-cc-程序里打印调用栈信息">在 C/C++ 程序里打印调用栈信息</h3>
-<p>我们知道，GDB 的 backtrace 命令可以查看堆栈信息。但很多时候，GDB 根本用不上。比如说，在线上环境中可能没有 GDB，即使有，也不太可能让我们直接在上面调试。如果能让程序自己输出调用栈，那是最好不过了。本文介绍和调用椎栈相关的几个函数。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span>NAME
-</span></span><span style="display:flex;"><span>    backtrace, backtrace_symbols, backtrace_symbols_fd <span style="color:#f92672">-</span> support <span style="color:#66d9ef">for</span> application self<span style="color:#f92672">-</span>debugging
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>SYNOPSIS
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;execinfo.h&gt;</span><span style="color:#75715e">
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">backtrace</span>(<span style="color:#66d9ef">void</span> <span style="color:#f92672">**</span>buffer, <span style="color:#66d9ef">int</span> size);
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">char</span> <span style="color:#f92672">**</span><span style="color:#a6e22e">backtrace_symbols</span>(<span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span><span style="color:#66d9ef">const</span> <span style="color:#f92672">*</span>buffer, <span style="color:#66d9ef">int</span> size);
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">backtrace_symbols_fd</span>(<span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span><span style="color:#66d9ef">const</span> <span style="color:#f92672">*</span>buffer, <span style="color:#66d9ef">int</span> size, <span style="color:#66d9ef">int</span> fd);
-</span></span></code></pre></div><p>以上内容源自这几个函数的 man 手册。</p>
-<p>先简单介绍一下这几个函数的功能：
+</code></pre><p>Oh no，怎么打出来的位置信息是乱码呢？不急，且看我们的第 3 步。</p><ol start=3><li><p>通过下面的方式编译运行：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>wuzesheng@ubuntu:~/work/test$ gcc test.cc -rdynamic -g -o test3
+</span></span><span style=display:flex><span>wuzesheng@ubuntu:~/work/test$ ./test3
+</span></span><span style=display:flex><span>stackstrace begin:
+</span></span><span style=display:flex><span>./test3<span style=color:#f92672>(</span>_Z16print_stacktracev+0x26<span style=color:#f92672>)</span> <span style=color:#f92672>[</span>0x4008e5<span style=color:#f92672>]</span>
+</span></span><span style=display:flex><span>./test3<span style=color:#f92672>(</span>_Z4fun1v+0x13<span style=color:#f92672>)</span> <span style=color:#f92672>[</span>0x4008a7<span style=color:#f92672>]</span>
+</span></span><span style=display:flex><span>./test3<span style=color:#f92672>(</span>_Z4fun2v+0x9<span style=color:#f92672>)</span> <span style=color:#f92672>[</span>0x4008b2<span style=color:#f92672>]</span>
+</span></span><span style=display:flex><span>./test3<span style=color:#f92672>(</span>_Z4fun3v+0x9<span style=color:#f92672>)</span> <span style=color:#f92672>[</span>0x4008bd<span style=color:#f92672>]</span>
+</span></span><span style=display:flex><span>./test3<span style=color:#f92672>(</span>main+0x9<span style=color:#f92672>)</span> <span style=color:#f92672>[</span>0x40088d<span style=color:#f92672>]</span>
+</span></span><span style=display:flex><span>/lib/x86_64-linux-gnu/libc.so.6<span style=color:#f92672>(</span>__libc_start_main+0xff<span style=color:#f92672>)</span> <span style=color:#f92672>[</span>0x7fa9558c1eff<span style=color:#f92672>]</span>
+</span></span><span style=display:flex><span>./test3<span style=color:#f92672>()</span> <span style=color:#f92672>[</span>0x4007c9<span style=color:#f92672>]</span>
+</span></span><span style=display:flex><span>wuzesheng@ubuntu:~/work/test$ addr2line -a 0x4008a7 -e test3 -f -C
+</span></span><span style=display:flex><span>0x00000000004008a7
+</span></span><span style=display:flex><span>fun1<span style=color:#f92672>()</span>
+</span></span><span style=display:flex><span>/home/wuzesheng/work/test/test.cc:20
+</span></span></code></pre></div></li></ol><p>看上面的结果，我们不仅得到了调用栈，而且可以得到每个函数的名字，以及被调用的位置，大功告成。在这里需要说明一下的是，第 3 步比第 2 步多了一个 - g 选项，-g 选项的主要作用是生成调试信息，位置信息就属于调试信息的范畴，经常用 gdb 的朋友相信不会对这个选项感到陌生。</p><h3 id=在-cc-程序里打印调用栈信息>在 C/C++ 程序里打印调用栈信息</h3><p>我们知道，GDB 的 backtrace 命令可以查看堆栈信息。但很多时候，GDB 根本用不上。比如说，在线上环境中可能没有 GDB，即使有，也不太可能让我们直接在上面调试。如果能让程序自己输出调用栈，那是最好不过了。本文介绍和调用椎栈相关的几个函数。</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=display:flex><span>NAME
+</span></span><span style=display:flex><span>    backtrace, backtrace_symbols, backtrace_symbols_fd <span style=color:#f92672>-</span> support <span style=color:#66d9ef>for</span> application self<span style=color:#f92672>-</span>debugging
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>SYNOPSIS
+</span></span><span style=display:flex><span>    <span style=color:#75715e>#include</span> <span style=color:#75715e>&lt;execinfo.h&gt;</span><span style=color:#75715e>
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>    <span style=color:#66d9ef>int</span> <span style=color:#a6e22e>backtrace</span>(<span style=color:#66d9ef>void</span> <span style=color:#f92672>**</span>buffer, <span style=color:#66d9ef>int</span> size);
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>char</span> <span style=color:#f92672>**</span><span style=color:#a6e22e>backtrace_symbols</span>(<span style=color:#66d9ef>void</span> <span style=color:#f92672>*</span><span style=color:#66d9ef>const</span> <span style=color:#f92672>*</span>buffer, <span style=color:#66d9ef>int</span> size);
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>backtrace_symbols_fd</span>(<span style=color:#66d9ef>void</span> <span style=color:#f92672>*</span><span style=color:#66d9ef>const</span> <span style=color:#f92672>*</span>buffer, <span style=color:#66d9ef>int</span> size, <span style=color:#66d9ef>int</span> fd);
+</span></span></code></pre></div><p>以上内容源自这几个函数的 man 手册。</p><p>先简单介绍一下这几个函数的功能：
 <strong>backtrace</strong>：获取当前的调用栈信息，结果存储在 buffer 中，返回值为栈的深度，参数 size 限制栈的最大深度，即最大取 size 步的栈信息。
 <strong>backtrace_symbols</strong>：把 backtrace 获取的栈信息转化为字符串，以字符指针数组的形式返回，参数 size 限定转换的深度，一般用 backtrace 调用的返回值。
-<strong>backtrace_symbols_fd</strong>：它的功能和 backtrace_symbols 差不多，只不过它不把转换结果返回给调用方，而是写入 fd 指定的文件描述符。</p>
-<p>Man 手册里，给出了一个简单的实例，我们看一下：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span>    <span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;execinfo.h&gt;</span><span style="color:#75715e">
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;stdio.h&gt;</span><span style="color:#75715e">
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;stdlib.h&gt;</span><span style="color:#75715e">
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;unistd.h&gt;</span><span style="color:#75715e">
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#75715e">#define  SIZE 100 
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">myfunc3</span>(<span style="color:#66d9ef">void</span>)
-</span></span><span style="display:flex;"><span>    {
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">int</span> j, nptrs;
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">void</span> <span style="color:#f92672">*</span>buffer[<span style="color:#ae81ff">100</span>];
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">char</span> <span style="color:#f92672">**</span>strings;
-</span></span><span style="display:flex;"><span>        nptrs <span style="color:#f92672">=</span> <span style="color:#a6e22e">backtrace</span>(buffer, SIZE);
-</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">printf</span>(<span style="color:#e6db74">&#34;backtrace() returned %d addresses</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>, nptrs);
-</span></span><span style="display:flex;"><span>          
-</span></span><span style="display:flex;"><span>     <span style="color:#75715e">/* The call backtrace_symbols_fd(buffer, nptrs, STDOUT_FILENO)  
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e">      *  would produce similar output to the following: */</span>
-</span></span><span style="display:flex;"><span>            strings <span style="color:#f92672">=</span> <span style="color:#a6e22e">backtrace_symbols</span>(buffer, nptrs);
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (strings <span style="color:#f92672">==</span> NULL)
-</span></span><span style="display:flex;"><span>        {
-</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">perror</span>(<span style="color:#e6db74">&#34;backtrace_symbols&#34;</span>);
-</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">exit</span>(EXIT_FAILURE);
-</span></span><span style="display:flex;"><span>        } 
-</span></span><span style="display:flex;"><span>     
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">for</span> (j <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; j <span style="color:#f92672">&lt;</span> nptrs; j<span style="color:#f92672">++</span>)
-</span></span><span style="display:flex;"><span>        {
-</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">printf</span>(<span style="color:#e6db74">&#34;%s</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>, strings[j]);
-</span></span><span style="display:flex;"><span>        }
-</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">free</span>(strings);
-</span></span><span style="display:flex;"><span>    }
-</span></span><span style="display:flex;"><span>    
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">/* &#34;static&#34; means don&#39;t export the symbol... */</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">myfunc2</span>(<span style="color:#66d9ef">void</span>)
-</span></span><span style="display:flex;"><span>    {
-</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">myfunc3</span>();
-</span></span><span style="display:flex;"><span>    }
-</span></span><span style="display:flex;"><span>    
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">myfunc</span>(<span style="color:#66d9ef">int</span> ncalls)
-</span></span><span style="display:flex;"><span>    {
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (ncalls <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">1</span>)
-</span></span><span style="display:flex;"><span>        {
-</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">myfunc</span>(ncalls <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>);
-</span></span><span style="display:flex;"><span>        }
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">else</span>
-</span></span><span style="display:flex;"><span>        {
-</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">myfunc2</span>();
-</span></span><span style="display:flex;"><span>        }
-</span></span><span style="display:flex;"><span>    }
-</span></span><span style="display:flex;"><span>    
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">main</span>(<span style="color:#66d9ef">int</span> argc, <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>argv[])
-</span></span><span style="display:flex;"><span>    {
-</span></span><span style="display:flex;"><span>         
-</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">if</span>  (argc <span style="color:#f92672">!=</span> <span style="color:#ae81ff">2</span>)
-</span></span><span style="display:flex;"><span>        {
-</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">fprintf</span>(stderr, <span style="color:#e6db74">&#34;%s num-calls</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>, argv[<span style="color:#ae81ff">0</span>]);
-</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">exit</span>(EXIT_FAILURE);  
-</span></span><span style="display:flex;"><span>        }
-</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">myfunc</span>(<span style="color:#a6e22e">atoi</span>(argv[<span style="color:#ae81ff">1</span>]));
-</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">exit</span>(EXIT_SUCCESS);
-</span></span><span style="display:flex;"><span>    }
-</span></span></code></pre></div><p>编译:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span><span style="color:#75715e"># cc prog.c -o prog</span>
-</span></span></code></pre></div><p>运行：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span><span style="color:#75715e"># ./prog 0</span>
-</span></span><span style="display:flex;"><span>backtrace<span style="color:#f92672">()</span> returned <span style="color:#ae81ff">6</span> addresses
-</span></span><span style="display:flex;"><span>./prog<span style="color:#f92672">()</span> <span style="color:#f92672">[</span>0x80485a3<span style="color:#f92672">]</span>
-</span></span><span style="display:flex;"><span>./prog<span style="color:#f92672">()</span> <span style="color:#f92672">[</span>0x8048630<span style="color:#f92672">]</span>
-</span></span><span style="display:flex;"><span>./prog<span style="color:#f92672">()</span> <span style="color:#f92672">[</span>0x8048653<span style="color:#f92672">]</span>
-</span></span><span style="display:flex;"><span>./prog<span style="color:#f92672">()</span> <span style="color:#f92672">[</span>0x80486a7<span style="color:#f92672">]</span>
-</span></span></code></pre></div><p>这样，是输出了调用栈，不过只是以十六进制输出函数地址而已，可读性很差。仔细看下 man 手册，原来很简单，编译时加上个参数：</p>
-<p>重新编译：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span><span style="color:#75715e"># cc -rdynamic  prog.c -o prog</span>
-</span></span></code></pre></div><p>通过 gcc 手册，我们可以也解下参数的说明:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>-rdynamic
-</span></span><span style="display:flex;"><span>        Pass the flag -export-dynamic to the ELF linker, on targets that support it. This instructs the linker to add all symbols, not only used ones, to the dynamic symbol table. This option is needed <span style="color:#66d9ef">for</span> some uses of <span style="color:#e6db74">&#34;dlopen&#34;</span> or to allow obtaining backtraces from within a program.
-</span></span></code></pre></div><p>再执行：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span><span style="color:#75715e"># ./prog 0</span>
-</span></span><span style="display:flex;"><span>backtrace<span style="color:#f92672">()</span> returned <span style="color:#ae81ff">6</span> addresses
-</span></span><span style="display:flex;"><span>./prog<span style="color:#f92672">(</span>myfunc3+0x1f<span style="color:#f92672">)</span> <span style="color:#f92672">[</span>0x8048763<span style="color:#f92672">]</span>
-</span></span><span style="display:flex;"><span>./prog<span style="color:#f92672">()</span> <span style="color:#f92672">[</span>0x80487f0<span style="color:#f92672">]</span>
-</span></span><span style="display:flex;"><span>./prog<span style="color:#f92672">(</span>myfunc+0x21<span style="color:#f92672">)</span> <span style="color:#f92672">[</span>0x8048813<span style="color:#f92672">]</span>
-</span></span><span style="display:flex;"><span>./prog<span style="color:#f92672">(</span>main+0x52<span style="color:#f92672">)</span> <span style="color:#f92672">[</span>0x8048867<span style="color:#f92672">]</span>
-</span></span><span style="display:flex;"><span>/lib/libc.so.6<span style="color:#f92672">(</span>__libc_start_main+0xe6<span style="color:#f92672">)</span> <span style="color:#f92672">[</span>0xaf9cc6<span style="color:#f92672">]</span>
-</span></span><span style="display:flex;"><span>./prog<span style="color:#f92672">()</span> <span style="color:#f92672">[</span>0x80486b1<span style="color:#f92672">]</span>
-</span></span></code></pre></div><p>这回，可以看到函数名了。是不是很酷呢？把它封装到你的调试代码中吧。</p>
-
-</main>
-
-
-
-
-
-
-  <footer>
-  - END -
-  
-  <hr/>
-  © 2025 一塘
-  
-  </footer>
-  </body>
-</html>
-
+<strong>backtrace_symbols_fd</strong>：它的功能和 backtrace_symbols 差不多，只不过它不把转换结果返回给调用方，而是写入 fd 指定的文件描述符。</p><p>Man 手册里，给出了一个简单的实例，我们看一下：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=display:flex><span>    <span style=color:#75715e>#include</span> <span style=color:#75715e>&lt;execinfo.h&gt;</span><span style=color:#75715e>
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>    <span style=color:#75715e>#include</span> <span style=color:#75715e>&lt;stdio.h&gt;</span><span style=color:#75715e>
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>    <span style=color:#75715e>#include</span> <span style=color:#75715e>&lt;stdlib.h&gt;</span><span style=color:#75715e>
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>    <span style=color:#75715e>#include</span> <span style=color:#75715e>&lt;unistd.h&gt;</span><span style=color:#75715e>
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>    <span style=color:#75715e>#define  SIZE 100 
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>    
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>myfunc3</span>(<span style=color:#66d9ef>void</span>)
+</span></span><span style=display:flex><span>    {
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>int</span> j, nptrs;
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>void</span> <span style=color:#f92672>*</span>buffer[<span style=color:#ae81ff>100</span>];
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>char</span> <span style=color:#f92672>**</span>strings;
+</span></span><span style=display:flex><span>        nptrs <span style=color:#f92672>=</span> <span style=color:#a6e22e>backtrace</span>(buffer, SIZE);
+</span></span><span style=display:flex><span>        <span style=color:#a6e22e>printf</span>(<span style=color:#e6db74>&#34;backtrace() returned %d addresses</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>, nptrs);
+</span></span><span style=display:flex><span>          
+</span></span><span style=display:flex><span>     <span style=color:#75715e>/* The call backtrace_symbols_fd(buffer, nptrs, STDOUT_FILENO)  
+</span></span></span><span style=display:flex><span><span style=color:#75715e>      *  would produce similar output to the following: */</span>
+</span></span><span style=display:flex><span>            strings <span style=color:#f92672>=</span> <span style=color:#a6e22e>backtrace_symbols</span>(buffer, nptrs);
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>if</span> (strings <span style=color:#f92672>==</span> NULL)
+</span></span><span style=display:flex><span>        {
+</span></span><span style=display:flex><span>            <span style=color:#a6e22e>perror</span>(<span style=color:#e6db74>&#34;backtrace_symbols&#34;</span>);
+</span></span><span style=display:flex><span>            <span style=color:#a6e22e>exit</span>(EXIT_FAILURE);
+</span></span><span style=display:flex><span>        } 
+</span></span><span style=display:flex><span>     
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>for</span> (j <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>; j <span style=color:#f92672>&lt;</span> nptrs; j<span style=color:#f92672>++</span>)
+</span></span><span style=display:flex><span>        {
+</span></span><span style=display:flex><span>            <span style=color:#a6e22e>printf</span>(<span style=color:#e6db74>&#34;%s</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>, strings[j]);
+</span></span><span style=display:flex><span>        }
+</span></span><span style=display:flex><span>        <span style=color:#a6e22e>free</span>(strings);
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    <span style=color:#75715e>/* &#34;static&#34; means don&#39;t export the symbol... */</span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>static</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>myfunc2</span>(<span style=color:#66d9ef>void</span>)
+</span></span><span style=display:flex><span>    {
+</span></span><span style=display:flex><span>        <span style=color:#a6e22e>myfunc3</span>();
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>myfunc</span>(<span style=color:#66d9ef>int</span> ncalls)
+</span></span><span style=display:flex><span>    {
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>if</span> (ncalls <span style=color:#f92672>&gt;</span> <span style=color:#ae81ff>1</span>)
+</span></span><span style=display:flex><span>        {
+</span></span><span style=display:flex><span>            <span style=color:#a6e22e>myfunc</span>(ncalls <span style=color:#f92672>-</span> <span style=color:#ae81ff>1</span>);
+</span></span><span style=display:flex><span>        }
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>else</span>
+</span></span><span style=display:flex><span>        {
+</span></span><span style=display:flex><span>            <span style=color:#a6e22e>myfunc2</span>();
+</span></span><span style=display:flex><span>        }
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>int</span> <span style=color:#a6e22e>main</span>(<span style=color:#66d9ef>int</span> argc, <span style=color:#66d9ef>char</span> <span style=color:#f92672>*</span>argv[])
+</span></span><span style=display:flex><span>    {
+</span></span><span style=display:flex><span>         
+</span></span><span style=display:flex><span>      <span style=color:#66d9ef>if</span>  (argc <span style=color:#f92672>!=</span> <span style=color:#ae81ff>2</span>)
+</span></span><span style=display:flex><span>        {
+</span></span><span style=display:flex><span>            <span style=color:#a6e22e>fprintf</span>(stderr, <span style=color:#e6db74>&#34;%s num-calls</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>, argv[<span style=color:#ae81ff>0</span>]);
+</span></span><span style=display:flex><span>            <span style=color:#a6e22e>exit</span>(EXIT_FAILURE);  
+</span></span><span style=display:flex><span>        }
+</span></span><span style=display:flex><span>        <span style=color:#a6e22e>myfunc</span>(<span style=color:#a6e22e>atoi</span>(argv[<span style=color:#ae81ff>1</span>]));
+</span></span><span style=display:flex><span>        <span style=color:#a6e22e>exit</span>(EXIT_SUCCESS);
+</span></span><span style=display:flex><span>    }
+</span></span></code></pre></div><p>编译:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span><span style=color:#75715e># cc prog.c -o prog</span>
+</span></span></code></pre></div><p>运行：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span><span style=color:#75715e># ./prog 0</span>
+</span></span><span style=display:flex><span>backtrace<span style=color:#f92672>()</span> returned <span style=color:#ae81ff>6</span> addresses
+</span></span><span style=display:flex><span>./prog<span style=color:#f92672>()</span> <span style=color:#f92672>[</span>0x80485a3<span style=color:#f92672>]</span>
+</span></span><span style=display:flex><span>./prog<span style=color:#f92672>()</span> <span style=color:#f92672>[</span>0x8048630<span style=color:#f92672>]</span>
+</span></span><span style=display:flex><span>./prog<span style=color:#f92672>()</span> <span style=color:#f92672>[</span>0x8048653<span style=color:#f92672>]</span>
+</span></span><span style=display:flex><span>./prog<span style=color:#f92672>()</span> <span style=color:#f92672>[</span>0x80486a7<span style=color:#f92672>]</span>
+</span></span></code></pre></div><p>这样，是输出了调用栈，不过只是以十六进制输出函数地址而已，可读性很差。仔细看下 man 手册，原来很简单，编译时加上个参数：</p><p>重新编译：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span><span style=color:#75715e># cc -rdynamic  prog.c -o prog</span>
+</span></span></code></pre></div><p>通过 gcc 手册，我们可以也解下参数的说明:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>-rdynamic
+</span></span><span style=display:flex><span>        Pass the flag -export-dynamic to the ELF linker, on targets that support it. This instructs the linker to add all symbols, not only used ones, to the dynamic symbol table. This option is needed <span style=color:#66d9ef>for</span> some uses of <span style=color:#e6db74>&#34;dlopen&#34;</span> or to allow obtaining backtraces from within a program.
+</span></span></code></pre></div><p>再执行：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span><span style=color:#75715e># ./prog 0</span>
+</span></span><span style=display:flex><span>backtrace<span style=color:#f92672>()</span> returned <span style=color:#ae81ff>6</span> addresses
+</span></span><span style=display:flex><span>./prog<span style=color:#f92672>(</span>myfunc3+0x1f<span style=color:#f92672>)</span> <span style=color:#f92672>[</span>0x8048763<span style=color:#f92672>]</span>
+</span></span><span style=display:flex><span>./prog<span style=color:#f92672>()</span> <span style=color:#f92672>[</span>0x80487f0<span style=color:#f92672>]</span>
+</span></span><span style=display:flex><span>./prog<span style=color:#f92672>(</span>myfunc+0x21<span style=color:#f92672>)</span> <span style=color:#f92672>[</span>0x8048813<span style=color:#f92672>]</span>
+</span></span><span style=display:flex><span>./prog<span style=color:#f92672>(</span>main+0x52<span style=color:#f92672>)</span> <span style=color:#f92672>[</span>0x8048867<span style=color:#f92672>]</span>
+</span></span><span style=display:flex><span>/lib/libc.so.6<span style=color:#f92672>(</span>__libc_start_main+0xe6<span style=color:#f92672>)</span> <span style=color:#f92672>[</span>0xaf9cc6<span style=color:#f92672>]</span>
+</span></span><span style=display:flex><span>./prog<span style=color:#f92672>()</span> <span style=color:#f92672>[</span>0x80486b1<span style=color:#f92672>]</span>
+</span></span></code></pre></div><p>这回，可以看到函数名了。是不是很酷呢？把它封装到你的调试代码中吧。</p></main><footer>- END -<hr>© 2025 一塘</footer></body></html>
