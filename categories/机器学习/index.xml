@@ -30,7 +30,7 @@
 &lt;h2 id="四学习理论">四、学习理论&lt;/h2>
 &lt;img src="ML_summary/xuexililun.png" alt="xuexililun" style="zoom:67%;" />
 &lt;div align='center'> 图 学习理论&lt;/div>
-&lt;h3 id="41-正则化">4.1 &lt;a href="regulation_baysian.md">正则化&lt;/a>&lt;/h3>
+&lt;h3 id="41-正则化">4.1 &lt;a href="https://example.com/post/ai/regulation_baysian/">正则化&lt;/a>&lt;/h3>
 &lt;h2 id="五强化学习">五、强化学习&lt;/h2>
 &lt;h2 id="六参考与规划">六、参考与规划&lt;/h2>
 &lt;p>&lt;strong>目标&lt;/strong>
@@ -54,7 +54,7 @@
 &lt;li>总结，预告。&lt;/li>
 &lt;/ul></description></item><item><title>正则化「一」机器学习中的正则化</title><link>https://example.com/post/ai/regulation_baysian/</link><pubDate>Wed, 17 Jul 2019 12:00:00 +0000</pubDate><guid>https://example.com/post/ai/regulation_baysian/</guid><description>&lt;p>&lt;strong>前言&lt;/strong>
 本&lt;strong>正则化系列&lt;/strong>文章我们将讨论&lt;strong>正则化技术在机器学习和深度学习的应用&lt;/strong>。本文为该系列的第一篇，主要介绍&lt;strong>机器学习正则化的概念，原理和应用实例&lt;/strong>。&lt;/p>
-&lt;p>&lt;a href="https://en.wikipedia.org/wiki/Regularization_(mathematics)">正则化&lt;/a> 技术广泛应用在机器学习和深度学习算法中，本质作用是&lt;strong>防止过拟合、提高模型泛化能力&lt;/strong>。其中过拟合的简单理解就是训练的算法模型太过复杂，模型过分考虑了当前样本的结构。&lt;/p>
+&lt;p>&lt;a href="https://en.wikipedia.org/wiki/Regularization_%28mathematics%29">正则化&lt;/a> 技术广泛应用在机器学习和深度学习算法中，本质作用是&lt;strong>防止过拟合、提高模型泛化能力&lt;/strong>。其中过拟合的简单理解就是训练的算法模型太过复杂，模型过分考虑了当前样本的结构。&lt;/p>
 &lt;p>在早期的机器学习领域一般只是将范数惩罚叫做正则化技术，而在深度学习领域认为，能够显著减少方差，而不过度增加偏差的策略都可以认为是正则化技术。故&lt;strong>推广的正则化技术&lt;/strong>还有：扩增样本集、早停止、Dropout、集成学习、多任务学习、对抗训练、参数共享等。(具体见“花书 第七章 &lt;a href="http://www.deeplearningbook.org/contents/regularization.html">Regularization for Deep Learning&lt;/a>”），关于&lt;strong>深度学习正则化&lt;/strong>会在下一篇正则化文章中重点分析。&lt;/p>
 &lt;p>转载自：https://blog.csdn.net/BigData_Mining/article/details/81631249&lt;/p>
 &lt;!-- more -->
