@@ -1,0 +1,17 @@
+{{- $url := .Destination -}}
+{{- $text := .Text -}}
+{{- $page := .Page -}}
+
+{{- if strings.HasSuffix $url ".md" -}}
+
+  {{- /* 尝试解析为 Hugo 页面 */ -}}
+  {{- with site.GetPage $url -}}
+    <a href="{{ .RelPermalink }}">{{ $text }}</a>
+  {{- else -}}
+    {{- /* 找不到页面：当普通相对链接 */ -}}
+    <a href="{{ $url }}">{{ $text }}</a>
+  {{- end -}}
+
+{{- else -}}
+  <a href="{{ $url }}">{{ $text }}</a>
+{{- end -}}
