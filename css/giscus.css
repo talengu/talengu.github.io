@@ -1,0 +1,78 @@
+/* ==================================================
+   Giscus theme – xmin style
+   ================================================== */
+
+/* ---------- 浅色（默认） ---------- */
+:root {
+  --color-bg-primary: #ffffff;
+  --color-bg-secondary: #f8f8f8;
+
+  --color-text-primary: #000000;
+  --color-text-secondary: #555555;
+
+  --color-border-primary: #dddddd;
+  --color-border-secondary: #eeeeee;
+
+  --color-accent-fg: #005cc5;
+  --color-accent-emphasis: #005cc5;
+
+  --color-btn-bg: #f6f6f6;
+  --color-btn-border: #cccccc;
+}
+
+/* ---------- 暗色（系统自动） ---------- */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-bg-primary: #1e1e1e;
+    --color-bg-secondary: #2a2a2a;
+
+    --color-text-primary: #dddddd;
+    --color-text-secondary: #aaaaaa;
+
+    --color-border-primary: #444444;
+    --color-border-secondary: #333333;
+
+    --color-accent-fg: #9cdcfe;
+    --color-accent-emphasis: #9cdcfe;
+
+    --color-btn-bg: #2a2a2a;
+    --color-btn-border: #444444;
+  }
+}
+
+/* ==================================================
+   xmin 风格细节修正
+   ================================================== */
+
+/* 整体不“卡片化” */
+.gsc-comment,
+.gsc-comment-box,
+.gsc-reactions {
+  border-radius: 0;
+  box-shadow: none;
+}
+
+/* 评论输入框 */
+.gsc-comment-box-textarea {
+  font-family: inherit;
+  font-size: 1em;
+  line-height: 1.6;
+  border-radius: 0;
+}
+
+/* 按钮保持低存在感 */
+.gsc-comment-box-buttons button {
+  font-size: 0.9em;
+}
+
+/* 作者 / 时间弱化 */
+.gsc-comment-author,
+.gsc-comment-created-at {
+  font-size: 0.85em;
+  opacity: 0.7;
+}
+
+/* reaction 不抢正文 */
+.gsc-reactions {
+  opacity: 0.85;
+}

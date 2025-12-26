@@ -2,15 +2,29 @@
 框架和主题配置完成后，我只要关注markdown内容即可。&lt;/p>
 &lt;p>在这使用过程中，遇到过一次大规模的js投毒，那一次hexo 编译不出。
 hexo 和next 框架 变更实在是太快了，最近在github 的页面编译不出后，我修复无果，也懒得折腾了，在初步调研后，准备使用&lt;a href="https://gohugo.io">hugo&lt;/a>和&lt;a href="https://www.gohugothemes.com/theme/yihui-hugo-xmin/">Hugo Xmin&lt;/a>&lt;/p>
-&lt;p>安装 docker hugo&lt;/p>
-&lt;p>选择合适的docker镜像&lt;/p>
-&lt;p>&lt;a href="https://hub.docker.com/r/klakegg/hugo/tags?name=debian">https://hub.docker.com/r/klakegg/hugo/tags?name=debian&lt;/a>&lt;/p>
-&lt;h2 id="hugo-与-hugo-xmin">hugo 与 hugo-xmin&lt;/h2>
-&lt;p>&lt;a href="https://github.com/gohugoio/hugo/releases?page=3">https://github.com/gohugoio/hugo/releases?page=3&lt;/a>
-hugo v0.146.7&lt;/p>
-&lt;p>&lt;a href="https://github.com/yihui/hugo-xmin">https://github.com/yihui/hugo-xmin&lt;/a>
-c871e5665f5eceb919c8fdb284b73c7a07012646&lt;/p>
-&lt;h2 id="hugo">hugo&lt;/h2>
+&lt;p>使用的是 hugo 与 hugo-xmin&lt;/p>
+&lt;h2 id="hugo-安装">hugo 安装&lt;/h2>
+&lt;p>hugo 可以直接下载二进制文件 &lt;a href="https://github.com/gohugoio/hugo/releases?page=3">https://github.com/gohugoio/hugo/releases?page=3&lt;/a>&lt;/p>
+&lt;p>hugo v0.146.7&lt;/p>
+&lt;p>hugo-xmin 从git库中下载&lt;/p>
+&lt;p>&lt;a href="https://github.com/yihui/hugo-xmin">https://github.com/yihui/hugo-xmin&lt;/a>&lt;/p>
+&lt;p>c871e5665f5eceb919c8fdb284b73c7a07012646&lt;/p>
+&lt;p>我个人是mac，使用的是docker debian镜像，在它上面安装二进制文件&lt;/p>
+&lt;pre tabindex="0">&lt;code>docker pull --platform linux/arm64 debian:12-slim
+&lt;/code>&lt;/pre>&lt;pre tabindex="0">&lt;code>services:
+ hugo:
+ image: debian:12-slim
+ volumes:
+ - talengu.github.io:/blog
+ - blog/posts:/blog/content/post
+ working_dir: /blog
+ ports:
+ - 1313:1313
+ command: ./hugo_0.146.7_arm64 server --bind 0.0.0.0
+ stdin_open: true
+ tty: true
+&lt;/code>&lt;/pre>&lt;p>其他docker镜像可使用 &lt;a href="https://hub.docker.com/r/klakegg/hugo/tags?name=debian">klakegg/hugo&lt;/a>&lt;/p>
+&lt;h2 id="hugo-使用">hugo 使用&lt;/h2>
 &lt;p>./hugo server &amp;ndash;bind 0.0.0.0
 ./hugo build&lt;/p>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>cd public
@@ -20,4 +34,49 @@ c871e5665f5eceb919c8fdb284b73c7a07012646&lt;/p>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>git add .
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>git commit -m &lt;span style="color:#e6db74">&amp;#34;Deploy Hugo site&amp;#34;&lt;/span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>git push -f origin gh-pages
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item></channel></rss>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="分类布局">分类布局&lt;/h2>
+&lt;table>
+ &lt;thead>
+ &lt;tr>
+ &lt;th>&lt;strong>categories&lt;/strong>&lt;/th>
+ &lt;th>&lt;strong>放什么&lt;/strong>&lt;/th>
+ &lt;/tr>
+ &lt;/thead>
+ &lt;tbody>
+ &lt;tr>
+ &lt;td>linux&lt;/td>
+ &lt;td>内核、发行版、系统工具&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>network&lt;/td>
+ &lt;td>TCP/IP、抓包、协议&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>toolchain&lt;/td>
+ &lt;td>gcc / musl / cmake / build / rss工具&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>programming&lt;/td>
+ &lt;td>C / Python / 数据结构&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>ai&lt;/td>
+ &lt;td>LLM / CV / 实验记录&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>math&lt;/td>
+ &lt;td>概率 / 线代 / 算法&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>system&lt;/td>
+ &lt;td>性能 / 架构 / OS 设计&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>life&lt;/td>
+ &lt;td>旅行 / 阅读 / 随笔&lt;/td>
+ &lt;/tr>
+ &lt;/tbody>
+&lt;/table>
+&lt;h2 id="添加评论-使用-giscusapp">添加评论 使用 giscus.app&lt;/h2>
+&lt;p>按 giscus.app 官方进行操作即可
+&lt;a href="https://giscus.app/">https://giscus.app/&lt;/a>&lt;/p></description></item></channel></rss>
