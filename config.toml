@@ -3,11 +3,16 @@ languageCode = "zh-cn"
 title = "一塘"
 theme = "hugo-xmin"
 
+[outputs]
+home = ["HTML"]
+section = ["HTML","JSON"]   # 让每个 section 支持 JSON 输出
 
 [params]
   paginate = 10
 #  postAssetDir = false
-  footer = "&copy; 2025 一塘"
+  footer = "&copy; 2025"
+  footer_about = "一塘"
+  search = true
 
 # 显示文章大纲
 [markup]

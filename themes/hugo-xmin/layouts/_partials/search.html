@@ -1,0 +1,84 @@
+<li style="float:right; position:relative; margin-left:1em;">
+  <input type="text" id="search-box" placeholder="搜索文章..." 
+         style="padding:0.3em 0.6em; border-radius:4px; border:1px solid #ccc; width:150px; min-width:100px; max-width:250px;">
+  <ul id="search-results" 
+      style="position:absolute; top:100%; right:0; background:#fff; border:1px solid #ccc; 
+             max-height:300px; overflow-y:auto; display:none; z-index:1000; list-style:none; 
+             padding:0; margin:0; width:250px;"></ul>
+</li>
+
+<!-- CSS 可以放在 partial 里或单独引用 -->
+<style>
+/* css/search.css */
+
+/* 搜索结果通用样式 */
+#search-results li {
+  padding: 0.3em 0.5em;
+}
+#search-results li a {
+  text-decoration: none;
+  color: #007acc;
+}
+#search-results li:hover {
+  background-color: rgba(0,0,0,0.05);
+}
+
+/* 黑暗模式自动适配 */
+@media (prefers-color-scheme: dark) {
+  #search-results {
+    background-color: #1e1e1e;
+    color: #ddd;
+    border-color: #333;
+  }
+  #search-results li a {
+    color: #4fc3f7;
+  }
+  #search-results li:hover {
+    background-color: rgba(255,255,255,0.05);
+  }
+}
+
+/* 响应式 */
+@media (max-width: 600px) {
+  #search-box {
+    width: 100px;
+    max-width: 120px;
+  }
+  #search-results {
+    width: 200px;
+  }
+}
+</style>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.6.2/fuse.min.js"></script>
+<script>
+fetch('{{ "/post/index.json" | relURL }}')
+  .then(res => res.json())
+  .then(data => {
+    const fuse = new Fuse(data, {
+      keys: ["title", "categories", "tags", "summary", "content"],
+      threshold: 0.3
+    });
+
+    const input = document.getElementById('search-box');
+    const resultsEl = document.getElementById('search-results');
+
+    input.addEventListener('input', function() {
+      const query = this.value.trim();
+      if(!query) { resultsEl.style.display = 'none'; resultsEl.innerHTML=''; return; }
+
+      const results = fuse.search(query);
+      resultsEl.innerHTML = results.slice(0,10).map(r => 
+        `<li style="padding:0.3em 0.5em;"><a href="${r.item.permalink}" style="text-decoration:none;color:#007acc;">${r.item.title}</a></li>`
+      ).join('');
+      resultsEl.style.display = results.length ? 'block' : 'none';
+    });
+
+    // 点击空白处隐藏搜索结果
+    document.addEventListener('click', e => {
+      if(!input.contains(e.target) && !resultsEl.contains(e.target)) {
+        resultsEl.style.display = 'none';
+      }
+    });
+  });
+</script>

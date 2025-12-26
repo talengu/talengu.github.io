@@ -1,9 +1,15 @@
   <footer>
   {{ partial "foot_custom.html" . }}
-  {{ with .Site.Params.footer }}
+  
   <hr/>
+
+
+  <a href="{{ "about" | relURL }}" target="_blank" title="About">
+    {{ .Site.Params.footer_about }}</a>
+      {{ with .Site.Params.footer }}
   {{ replace . "{Year}" now.Year | markdownify }}
   {{ end }}
+  <a href="{{ "index.xml" | relURL }}" target="_blank" title="RSS"> RSS</a>
   </footer>
   </body>
 </html>

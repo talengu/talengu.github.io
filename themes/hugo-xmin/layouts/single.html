@@ -20,11 +20,6 @@
 {{ end }}
 {{ end }}
 
-
-<main>
-{{ .Content }}
-</main>
-
 {{ if .Params.math }}
 <script>
 window.MathJax = {
@@ -39,6 +34,30 @@ window.MathJax = {
 </script>
 <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 {{ end }}
+
+<main>
+{{ .Content }}
+</main>
+
+{{ if .Params.comments }}
+<script src="https://giscus.app/client.js"
+        data-repo="talengu/talengu.github.io"
+        data-repo-id="MDEwOlJlcG9zaXRvcnk5MTk0NjkxNQ=="
+        data-category="Blog"
+        data-category-id="DIC_kwDOBXr_o84C0Qpk"
+        data-mapping="pathname"
+        data-strict="0"
+        data-reactions-enabled="1"
+        data-emit-metadata="0"
+        data-input-position="bottom"
+        data-theme="{{ "css/giscus.css" | relURL }}"
+        data-lang="{{ .Params.lang | default "zh-CN" }}"
+        crossorigin="anonymous"
+        async>
+</script>
+{{ end }}
+
+<!-- data-theme="{{ "css/giscus.css" | relURL }}" -->
 
 {{ if .Params.toc }}
 {{ if .TableOfContents }}

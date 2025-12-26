@@ -1,0 +1,46 @@
+@media (prefers-color-scheme: dark) {
+
+  body {
+    background: #1e1e1e;
+    color: #ddd;
+  }
+
+  a {
+    color: #9cdcfe;
+  }
+
+  .article-meta, .menu a {
+    background: #2a2a2a;
+    color: #ddd;
+  }
+
+  hr {
+    color: #444;
+  }
+
+  pre {
+    border: 1px solid #444;
+    box-shadow: none;
+    background: #2d2d2d;
+    color: #ddd;
+  }
+
+  code {
+    background: #2a2a2a;
+    color: #ddd;
+  }
+
+  blockquote {
+    background: #2a2a2a;
+    border-left: 5px solid #555;
+  }
+
+  table {
+    border-top: 1px solid #555;
+    border-bottom: 1px solid #555;
+  }
+
+  thead, tfoot, tr:nth-child(even) {
+    background: #2a2a2a;
+  }
+}
