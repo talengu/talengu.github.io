@@ -2,7 +2,7 @@
 {{- range .Site.RegularPages -}}
   {{- $.Scratch.Add "pages" (dict 
       "title" .Title 
-      "permalink" .Permalink 
+      "permalink" .RelPermalink 
       "content" .Plain 
       "summary" .Summary 
       "categories" .Params.categories 

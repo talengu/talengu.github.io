@@ -9,43 +9,55 @@
 
 <!-- CSS 可以放在 partial 里或单独引用 -->
 <style>
-/* css/search.css */
+/* ===== 搜索结果基础样式 ===== */
 
-/* 搜索结果通用样式 */
-#search-results li {
-  padding: 0.3em 0.5em;
+.search-item {
+  padding: 0.4em 0.6em;
 }
-#search-results li a {
+
+.search-link {
+  display: block;
+  font-weight: 500;
   text-decoration: none;
   color: #007acc;
 }
-#search-results li:hover {
-  background-color: rgba(0,0,0,0.05);
+
+.search-snippet {
+  font-size: 0.85em;
+  color: #555;
+  margin-top: 0.2em;
+  line-height: 1.4;
 }
 
-/* 黑暗模式自动适配 */
+/* 高亮关键词 */
+.search-highlight {
+  background: rgba(255, 235, 59, 0.5);
+  padding: 0 0.15em;
+  border-radius: 3px;
+}
+
+/* hover 效果 */
+.search-item:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+/* ===== 🌙 自动深色模式 ===== */
 @media (prefers-color-scheme: dark) {
-  #search-results {
-    background-color: #1e1e1e;
-    color: #ddd;
-    border-color: #333;
-  }
-  #search-results li a {
+
+  .search-link {
     color: #4fc3f7;
   }
-  #search-results li:hover {
-    background-color: rgba(255,255,255,0.05);
-  }
-}
 
-/* 响应式 */
-@media (max-width: 600px) {
-  #search-box {
-    width: 100px;
-    max-width: 120px;
+  .search-snippet {
+    color: #aaa;
   }
-  #search-results {
-    width: 200px;
+
+  .search-item:hover {
+    background-color: rgba(104, 99, 99, 0.273);
+  }
+
+  .search-highlight {
+    background: rgba(255, 193, 7, 0.35);
   }
 }
 </style>
@@ -55,28 +67,68 @@
 fetch('{{ "/post/index.json" | relURL }}')
   .then(res => res.json())
   .then(data => {
+
     const fuse = new Fuse(data, {
-      keys: ["title", "categories", "tags", "summary", "content"],
-      threshold: 0.3
+      keys: [
+        { name: "title", weight: 2 },
+        { name: "summary", weight: 1 },
+        { name: "content", weight: 0.7 }
+      ],
+      threshold: 0.3,
+      ignoreLocation: true,
+      minMatchCharLength: 2
     });
 
     const input = document.getElementById('search-box');
     const resultsEl = document.getElementById('search-results');
 
-    input.addEventListener('input', function() {
+    function highlight(text, keyword) {
+      if (!text) return '';
+      const escaped = keyword.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      const regex = new RegExp(`(${escaped})`, 'gi');
+      return text.replace(regex, '<mark class="search-highlight">$1</mark>');
+    }
+
+    function excerpt(text, keyword, length = 80) {
+      const idx = text.toLowerCase().indexOf(keyword.toLowerCase());
+      if (idx === -1) return text.slice(0, length) + '…';
+
+      const start = Math.max(0, idx - length / 2);
+      const end = Math.min(text.length, idx + length / 2);
+      return '…' + text.slice(start, end) + '…';
+    }
+
+    input.addEventListener('input', function () {
       const query = this.value.trim();
-      if(!query) { resultsEl.style.display = 'none'; resultsEl.innerHTML=''; return; }
+      if (!query) {
+        resultsEl.style.display = 'none';
+        resultsEl.innerHTML = '';
+        return;
+      }
 
       const results = fuse.search(query);
-      resultsEl.innerHTML = results.slice(0,10).map(r => 
-        `<li style="padding:0.3em 0.5em;"><a href="${r.item.permalink}" style="text-decoration:none;color:#007acc;">${r.item.title}</a></li>`
-      ).join('');
+
+      resultsEl.innerHTML = results.slice(0, 8).map(r => {
+        const item = r.item;
+        const snippet = excerpt(item.content || item.summary || '', query);
+
+        return `
+          <li class="search-item">
+            <a href="${item.permalink}" class="search-link">
+              ${highlight(item.title, query)}
+            </a>
+            <div class="search-snippet">
+              ${highlight(snippet, query)}
+            </div>
+          </li>
+        `;
+      }).join('');
+
       resultsEl.style.display = results.length ? 'block' : 'none';
     });
 
-    // 点击空白处隐藏搜索结果
     document.addEventListener('click', e => {
-      if(!input.contains(e.target) && !resultsEl.contains(e.target)) {
+      if (!input.contains(e.target) && !resultsEl.contains(e.target)) {
         resultsEl.style.display = 'none';
       }
     });
