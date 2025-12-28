@@ -1,74 +1,104 @@
 <!doctype html><html lang=zh-cn><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><title>Tags | 一塘</title>
-<link rel=stylesheet href=/css/style.css><link rel=stylesheet href=/css/fonts.css><link rel=stylesheet href=/css/dark.css></head><body><nav><ul class=menu><li><a href=/about/>一塘</a></li><li><a href=/post/>博客</a></li><li><a href=/categories/>分类</a></li><li><a href=/tags/>标签</a></li><li style=float:right;position:relative;margin-left:1em><input type=text id=search-box placeholder=搜索文章... style="padding:.3em .6em;border-radius:4px;border:1px solid #ccc;width:150px;min-width:100px;max-width:250px"><ul id=search-results style="position:absolute;top:100%;right:0;background:#fff;border:1px solid #ccc;max-height:300px;overflow-y:auto;display:none;z-index:1000;list-style:none;padding:0;margin:0;width:250px"></ul></li><style>#search-results li{padding:.3em .5em}#search-results li a{text-decoration:none;color:#007acc}#search-results li:hover{background-color:rgba(0,0,0,5%)}@media(prefers-color-scheme:dark){#search-results{background-color:#1e1e1e;color:#ddd;border-color:#333}#search-results li a{color:#4fc3f7}#search-results li:hover{background-color:rgba(255,255,255,5%)}}@media(max-width:600px){#search-box{width:100px;max-width:120px}#search-results{width:200px}}</style><script src=https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.6.2/fuse.min.js></script><script>fetch("/post/index.json").then(e=>e.json()).then(e=>{const s=new Fuse(e,{keys:["title","categories","tags","summary","content"],threshold:.3}),n=document.getElementById("search-box"),t=document.getElementById("search-results");n.addEventListener("input",function(){const e=this.value.trim();if(!e){t.style.display="none",t.innerHTML="";return}const n=s.search(e);t.innerHTML=n.slice(0,10).map(e=>`<li style="padding:0.3em 0.5em;"><a href="${e.item.permalink}" style="text-decoration:none;color:#007acc;">${e.item.title}</a></li>`).join(""),t.style.display=n.length?"block":"none"}),document.addEventListener("click",e=>{!n.contains(e.target)&&!t.contains(e.target)&&(t.style.display="none")})})</script></ul><hr></nav><h1>Tags</h1><ul><li><span class=date>2025/12/22</span>
-<a href=/tags/hugo/>Hugo</a></li><li><span class=date>2025/12/15</span>
-<a href=/tags/%E6%9C%88%E5%BA%A6%E6%B1%87%E6%8A%A5/>月度汇报</a></li><li><span class=date>2025/04/27</span>
-<a href=/tags/%E5%93%88%E5%B8%8C/>哈希</a></li><li><span class=date>2024/12/31</span>
-<a href=/tags/%E5%B9%B4%E5%BA%A6%E6%B1%87%E6%8A%A5/>年度汇报</a></li><li><span class=date>2024/06/06</span>
-<a href=/tags/%E5%B7%A5%E5%85%B7/>工具</a></li><li><span class=date>2024/04/19</span>
-<a href=/tags/ai/>AI</a></li><li><span class=date>2024/01/23</span>
-<a href=/tags/%E6%95%85%E4%BA%8B/>故事</a></li><li><span class=date>2022/12/21</span>
-<a href=/tags/%E5%B7%A5%E5%85%B7/rss/>工具/Rss</a></li><li><span class=date>2022/12/15</span>
+<link rel=stylesheet href=/css/style.css><link rel=stylesheet href=/css/fonts.css><link rel=stylesheet href=/css/dark.css></head><body><nav><ul class=menu><li><a href=/about/>一塘</a></li><li><a href=/post/>博客</a></li><li><a href=/categories/>分类</a></li><li><a href=/tags/>标签</a></li><li style=float:right;position:relative;margin-left:1em><input type=text id=search-box placeholder=搜索文章... style="padding:.3em .6em;border-radius:4px;border:1px solid #ccc;width:150px;min-width:100px;max-width:250px"><ul id=search-results style="position:absolute;top:100%;right:0;background:#fff;border:1px solid #ccc;max-height:300px;overflow-y:auto;display:none;z-index:1000;list-style:none;padding:0;margin:0;width:250px"></ul></li><style>.search-item{padding:.4em .6em}.search-link{display:block;font-weight:500;text-decoration:none;color:#007acc}.search-snippet{font-size:.85em;color:#555;margin-top:.2em;line-height:1.4}.search-highlight{background:rgba(255,235,59,.5);padding:0 .15em;border-radius:3px}.search-item:hover{background-color:rgba(0,0,0,5%)}@media(prefers-color-scheme:dark){.search-link{color:#4fc3f7}.search-snippet{color:#aaa}.search-item:hover{background-color:rgba(104,99,99,.273)}.search-highlight{background:rgba(255,193,7,.35)}}</style><script src=https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.6.2/fuse.min.js></script><script>fetch("/post/index.json").then(e=>e.json()).then(e=>{const o=new Fuse(e,{keys:[{name:"title",weight:2},{name:"summary",weight:1},{name:"content",weight:.7}],threshold:.3,ignoreLocation:!0,minMatchCharLength:2}),n=document.getElementById("search-box"),t=document.getElementById("search-results");function s(e,t){if(!e)return"";const n=t.replace(/[.*+?^${}()|[\]\\]/g,"\\$&"),s=new RegExp(`(${n})`,"gi");return e.replace(s,'<mark class="search-highlight">$1</mark>')}function i(e,t,n=80){const s=e.toLowerCase().indexOf(t.toLowerCase());if(s===-1)return e.slice(0,n)+"…";const o=Math.max(0,s-n/2),i=Math.min(e.length,s+n/2);return"…"+e.slice(o,i)+"…"}n.addEventListener("input",function(){const e=this.value.trim();if(!e){t.style.display="none",t.innerHTML="";return}const n=o.search(e);t.innerHTML=n.slice(0,8).map(t=>{const n=t.item,o=i(n.content||n.summary||"",e);return`
+          <li class="search-item">
+            <a href="${n.permalink}" class="search-link">
+              ${s(n.title,e)}
+            </a>
+            <div class="search-snippet">
+              ${s(o,e)}
+            </div>
+          </li>
+        `}).join(""),t.style.display=n.length?"block":"none"}),document.addEventListener("click",e=>{!n.contains(e.target)&&!t.contains(e.target)&&(t.style.display="none")})})</script></ul><hr></nav><h1>Tags</h1><ul><li><span class=date>2025/12/22</span>
+<a href=/tags/hugo/>Hugo</a></li><li><span class=date>2025/12/22</span>
+<a href=/tags/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/>博客搭建</a></li><li><span class=date>2025/04/27</span>
+<a href=/tags/%E5%93%88%E5%B8%8C/>哈希</a></li><li><span class=date>2025/04/27</span>
+<a href=/tags/%E6%95%B0%E5%AD%A6/>数学</a></li><li><span class=date>2024/06/06</span>
+<a href=/tags/rss/>Rss</a></li><li><span class=date>2024/04/19</span>
+<a href=/tags/%E6%BC%94%E8%AE%B2/>演讲</a></li><li><span class=date>2024/04/19</span>
+<a href=/tags/%E7%99%BE%E5%BA%A6/>百度</a></li><li><span class=date>2024/01/23</span>
+<a href=/tags/%E8%81%8C%E5%9C%BA/>职场</a></li><li><span class=date>2024/01/23</span>
+<a href=/tags/%E8%99%9A%E6%9E%84%E6%95%85%E4%BA%8B/>虚构故事</a></li><li><span class=date>2024/01/23</span>
+<a href=/tags/%E8%BD%AC%E8%BD%BD/>转载</a></li><li><span class=date>2022/12/21</span>
+<a href=/tags/%E7%BF%BB%E8%AF%91/>翻译</a></li><li><span class=date>2022/12/15</span>
 <a href=/tags/c%E8%AF%AD%E8%A8%80/>C语言</a></li><li><span class=date>2022/12/15</span>
-<a href=/tags/linux/>Linux</a></li><li><span class=date>2022/12/08</span>
-<a href=/tags/%E7%BD%91%E7%BB%9C/>网络</a></li><li><span class=date>2022/12/04</span>
-<a href=/tags/conntrack/>Conntrack</a></li><li><span class=date>2022/07/06</span>
-<a href=/tags/bridge/>Bridge</a></li><li><span class=date>2022/07/06</span>
-<a href=/tags/netfilter/>Netfilter</a></li><li><span class=date>2022/07/01</span>
+<a href=/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/>数据结构</a></li><li><span class=date>2022/12/11</span>
+<a href=/tags/linux%E6%80%A7%E8%83%BD/>Linux性能</a></li><li><span class=date>2022/12/08</span>
+<a href=/tags/tcp/ip/>Tcp/Ip</a></li><li><span class=date>2022/12/08</span>
+<a href=/tags/%E4%B8%89%E5%B1%82%E8%B7%AF%E7%94%B1/>三层路由</a></li><li><span class=date>2022/12/04</span>
+<a href=/tags/%E8%BF%9E%E6%8E%A5%E8%B7%9F%E8%B8%AA/>连接跟踪</a></li><li><span class=date>2022/07/06</span>
+<a href=/tags/netfilter%E6%A1%86%E6%9E%B6/>Netfilter框架</a></li><li><span class=date>2022/07/06</span>
+<a href=/tags/%E4%BA%8C%E5%B1%82%E6%A1%A5/>二层桥</a></li><li><span class=date>2022/07/01</span>
 <a href=/tags/tcpdump/>Tcpdump</a></li><li><span class=date>2022/05/08</span>
 <a href=/tags/python/>Python</a></li><li><span class=date>2022/05/05</span>
-<a href=/tags/%E9%9A%A7%E9%81%93%E6%8A%80%E6%9C%AF/>隧道技术</a></li><li><span class=date>2022/04/15</span>
+<a href=/tags/gre/>Gre</a></li><li><span class=date>2022/05/05</span>
+<a href=/tags/%E9%9A%A7%E9%81%93/>隧道</a></li><li><span class=date>2022/04/15</span>
+<a href=/tags/%E6%97%B6%E9%97%B4/>时间</a></li><li><span class=date>2022/04/15</span>
 <a href=/tags/%E8%BD%AF%E4%BB%B6%E8%BF%90%E8%A1%8C/>软件运行</a></li><li><span class=date>2022/04/14</span>
 <a href=/tags/anki/>Anki</a></li><li><span class=date>2022/04/14</span>
-<a href=/tags/%E6%8A%80%E5%B7%A7/>技巧</a></li><li><span class=date>2022/04/01</span>
+<a href=/tags/%E6%8A%80%E5%B7%A7/>技巧</a></li><li><span class=date>2022/04/14</span>
+<a href=/tags/%E7%9F%A5%E8%AF%86%E7%AE%A1%E7%90%86/>知识管理</a></li><li><span class=date>2022/04/01</span>
 <a href=/tags/ubuntu/>Ubuntu</a></li><li><span class=date>2022/04/01</span>
 <a href=/tags/%E5%8E%86%E5%8F%B2/>历史</a></li><li><span class=date>2022/04/01</span>
-<a href=/tags/%E9%80%9A%E4%BF%A1/>通信</a></li><li><span class=date>2022/01/09</span>
-<a href=/tags/%E8%AE%B0%E5%BD%95%E7%89%87/>记录片</a></li><li><span class=date>2021/12/23</span>
-<a href=/tags/linux-kernel/>Linux Kernel</a></li><li><span class=date>2021/12/16</span>
+<a href=/tags/%E9%80%9A%E4%BF%A1/>通信</a></li><li><span class=date>2022/01/14</span>
+<a href=/tags/%E6%80%9D%E8%80%83/>思考</a></li><li><span class=date>2022/01/14</span>
+<a href=/tags/%E6%83%B3%E6%B3%95/>想法</a></li><li><span class=date>2022/01/09</span>
+<a href=/tags/%E5%BD%B1%E8%A7%86/>影视</a></li><li><span class=date>2022/01/09</span>
+<a href=/tags/%E7%BA%AA%E5%BD%95%E7%89%87/>纪录片</a></li><li><span class=date>2021/12/23</span>
+<a href=/tags/linux%E5%86%85%E6%A0%B8/>Linux内核</a></li><li><span class=date>2021/12/16</span>
+<a href=/tags/%E4%B9%A6%E7%B1%8D/>书籍</a></li><li><span class=date>2021/12/16</span>
 <a href=/tags/%E5%8F%A4%E7%B1%8D/>古籍</a></li><li><span class=date>2021/12/16</span>
 <a href=/tags/%E8%B5%84%E6%BA%90/>资源</a></li><li><span class=date>2021/12/02</span>
-<a href=/tags/linux-network/>Linux Network</a></li><li><span class=date>2021/09/01</span>
-<a href=/tags/%E6%97%A5%E5%B8%B8%E6%9D%82%E8%AE%B0/>日常杂记</a></li><li><span class=date>2021/04/02</span>
-<a href=/tags/%E6%95%B0%E5%AD%A6/>数学</a></li><li><span class=date>2021/04/02</span>
-<a href=/tags/%E6%95%B0%E5%AD%A6/%E5%B1%82%E6%AC%A1%E5%88%86%E6%9E%90%E6%B3%95/>数学/层次分析法</a></li><li><span class=date>2020/04/09</span>
-<a href=/tags/%E4%BA%BA%E7%89%A9/>人物</a></li><li><span class=date>2019/07/25</span>
-<a href=/tags/%E5%8D%9A%E5%AE%A2%E6%A8%A1%E7%89%88/>博客模版</a></li><li><span class=date>2019/07/23</span>
-<a href=/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/>人工智能</a></li><li><span class=date>2019/07/23</span>
+<a href=/tags/linux/>Linux</a></li><li><span class=date>2021/09/01</span>
+<a href=/tags/%E6%97%A5%E5%B8%B8%E6%9D%82%E8%AE%B0/>日常杂记</a></li><li><span class=date>2021/08/25</span>
+<a href=/tags/%E8%B0%83%E8%AF%95/>调试</a></li><li><span class=date>2021/04/02</span>
+<a href=/tags/%E5%B1%82%E6%AC%A1%E5%88%86%E6%9E%90%E6%B3%95/>层次分析法</a></li><li><span class=date>2020/04/09</span>
+<a href=/tags/%E4%BA%BA%E7%89%A9/>人物</a></li><li><span class=date>2020/04/09</span>
+<a href=/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA/>计算机</a></li><li><span class=date>2019/07/23</span>
 <a href=/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/>机器学习</a></li><li><span class=date>2019/07/21</span>
 <a href=/tags/%E5%BD%A2%E8%B1%A1%E7%BE%8E%E5%AD%A6/>《形象美学》</a></li><li><span class=date>2019/07/21</span>
-<a href=/tags/%E7%A4%BE%E4%BC%9A%E7%A7%91%E5%AD%A6/%E4%B8%AA%E4%BA%BA%E7%AE%A1%E7%90%86/>社会科学/个人管理</a></li><li><span class=date>2019/04/25</span>
-<a href=/tags/%E6%97%85%E6%B8%B8/%E9%87%8D%E5%BA%86/>旅游/重庆</a></li><li><span class=date>2019/04/25</span>
-<a href=/tags/%E6%B8%B8%E8%AE%B0/>游记</a></li><li><span class=date>2019/02/05</span>
+<a href=/tags/%E7%A4%BE%E4%BC%9A%E7%A7%91%E5%AD%A6/%E4%B8%AA%E4%BA%BA%E7%AE%A1%E7%90%86/>社会科学/个人管理</a></li><li><span class=date>2019/07/21</span>
+<a href=/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/>读书笔记</a></li><li><span class=date>2019/07/17</span>
+<a href=/tags/%E6%AD%A3%E5%88%99%E5%8C%96/>正则化</a></li><li><span class=date>2019/07/17</span>
+<a href=/tags/%E7%AE%97%E6%B3%95/>算法</a></li><li><span class=date>2019/04/25</span>
+<a href=/tags/%E6%97%85%E6%B8%B8/>旅游</a></li><li><span class=date>2019/04/25</span>
+<a href=/tags/%E9%87%8D%E5%BA%86/>重庆</a></li><li><span class=date>2019/02/05</span>
 <a href=/tags/%E4%BF%A1%E6%81%AF%E7%B1%BB/>信息类</a></li><li><span class=date>2019/02/05</span>
-<a href=/tags/%E6%96%87%E5%AD%A6/>文学</a></li><li><span class=date>2018/11/12</span>
+<a href=/tags/%E6%96%87%E5%AD%A6/>文学</a></li><li><span class=date>2019/02/05</span>
+<a href=/tags/%E8%AF%BB%E4%B9%A6/>读书</a></li><li><span class=date>2018/11/12</span>
 <a href=/tags/dlib/>Dlib</a></li><li><span class=date>2018/11/12</span>
-<a href=/tags/opencv/>OpenCV</a></li><li><span class=date>2018/11/05</span>
+<a href=/tags/opencv/>OpenCV</a></li><li><span class=date>2018/11/12</span>
+<a href=/tags/%E4%BA%BA%E8%84%B8%E6%A3%80%E6%B5%8B/>人脸检测</a></li><li><span class=date>2018/11/12</span>
+<a href=/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89/>计算机视觉</a></li><li><span class=date>2018/11/05</span>
 <a href=/tags/%E5%B8%8C%E8%85%8A%E7%BD%97%E9%A9%AC%E7%A5%9E%E8%AF%9D/>希腊罗马神话</a></li><li><span class=date>2018/11/05</span>
 <a href=/tags/%E8%AF%AD%E8%A8%80%E6%96%87%E5%8C%96/>语言文化</a></li><li><span class=date>2018/10/01</span>
 <a href=/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/>深度学习</a></li><li><span class=date>2018/07/24</span>
-<a href=/tags/proxy/>Proxy</a></li><li><span class=date>2018/07/12</span>
-<a href=/tags/bashrc/>Bashrc</a></li><li><span class=date>2018/07/12</span>
+<a href=/tags/proxy%E4%BB%A3%E7%90%86/>Proxy代理</a></li><li><span class=date>2018/07/24</span>
+<a href=/tags/%E5%B7%A5%E5%85%B7/>工具</a></li><li><span class=date>2018/07/12</span>
+<a href=/tags/bash/>Bash</a></li><li><span class=date>2018/07/12</span>
 <a href=/tags/tmux/>Tmux</a></li><li><span class=date>2018/07/12</span>
-<a href=/tags/vimrc/>Vimrc</a></li><li><span class=date>2018/05/11</span>
+<a href=/tags/vim/>Vim</a></li><li><span class=date>2018/05/11</span>
 <a href=/tags/gnu/>Gnu</a></li><li><span class=date>2018/05/11</span>
-<a href=/tags/os/>Os</a></li><li><span class=date>2018/05/11</span>
-<a href=/tags/%E5%BC%80%E6%BA%90/>开源</a></li><li><span class=date>2017/07/03</span>
+<a href=/tags/system/>System</a></li><li><span class=date>2017/07/03</span>
+<a href=/tags/jupyter/>Jupyter</a></li><li><span class=date>2017/07/03</span>
 <a href=/tags/%E7%AC%94%E8%AE%B0%E5%BA%94%E7%94%A8/>笔记应用</a></li><li><span class=date>2017/06/14</span>
-<a href=/tags/bootrecovery/>BootRecovery</a></li><li><span class=date>2017/05/22</span>
+<a href=/tags/%E5%BC%95%E5%AF%BC%E4%BF%AE%E5%A4%8D/>引导修复</a></li><li><span class=date>2017/05/22</span>
 <a href=/tags/%E5%B7%A5%E5%85%B7%E4%B9%A6/>工具书</a></li><li><span class=date>2017/05/14</span>
-<a href=/tags/%E7%BA%A2%E6%A5%BC%E6%A2%A6/>《红楼梦》</a></li><li><span class=date>2017/05/05</span>
-<a href=/tags/latex/>Latex</a></li><li><span class=date>2017/05/05</span>
-<a href=/tags/%E6%95%B0%E5%AD%A6/%E7%A9%BA%E9%97%B4%E8%A7%A3%E6%9E%90%E5%87%A0%E4%BD%95/>数学/空间解析几何</a></li><li><span class=date>2017/04/14</span>
+<a href=/tags/%E7%BA%A2%E6%A5%BC%E6%A2%A6/>《红楼梦》</a></li><li><span class=date>2017/05/14</span>
+<a href=/tags/%E6%95%85%E4%BA%8B/>故事</a></li><li><span class=date>2017/05/05</span>
+<a href=/tags/%E7%A9%BA%E9%97%B4%E8%A7%A3%E6%9E%90%E5%87%A0%E4%BD%95/>空间解析几何</a></li><li><span class=date>2017/04/14</span>
 <a href=/tags/%E8%8E%BA%E8%8E%BA%E4%BC%A0/>《莺莺传》</a></li><li><span class=date>2016/12/22</span>
 <a href=/tags/hexo/>Hexo</a></li><li><span class=date>2016/12/22</span>
 <a href=/tags/next/>NexT</a></li><li><span class=date>2016/04/14</span>
 <a href=/tags/srt%E6%96%87%E6%9C%AC%E6%A0%BC%E5%BC%8F%E5%AD%97%E5%B9%95/>SRT(文本格式字幕)</a></li><li><span class=date>2016/04/14</span>
-<a href=/tags/youtube%E5%AD%97%E5%B9%95%E5%90%88%E5%B9%B6/>YouTube字幕合并</a></li><li><span class=date>2015/06/14</span>
+<a href=/tags/youtube%E5%AD%97%E5%B9%95%E5%90%88%E5%B9%B6/>YouTube字幕合并</a></li><li><span class=date>2016/04/14</span>
+<a href=/tags/%E8%84%9A%E6%9C%AC/>脚本</a></li><li><span class=date>2015/06/14</span>
 <a href=/tags/%E6%95%B0%E5%AD%97%E4%BF%A1%E5%8F%B7%E5%A4%84%E7%90%86/>数字信号处理</a></li><li><span class=date>2015/06/14</span>
 <a href=/tags/%E6%BB%A4%E6%B3%A2%E5%99%A8/>滤波器</a></li><li><span class=date>2015/04/14</span>
 <a href=/tags/cmd/>Cmd</a></li><li><span class=date>2015/04/14</span>
 <a href=/tags/windows%E8%84%9A%E6%9C%AC/>Windows脚本</a></li><li><span class=date>2015/04/14</span>
 <a href=/tags/%E5%85%B1%E4%BA%ABwifi/>共享wifi</a></li><li><span class=date>2015/01/01</span>
-<a href=/tags/%E5%BA%8F%E8%A8%80/>序言</a></li></ul><footer>- END -<hr><a href=/about target=_blank title=About>一塘</a>
+<a href=/tags/%E5%8D%9A%E5%AE%A2/>博客</a></li><li><span class=date>2015/01/01</span>
+<a href=/tags/%E5%BA%8F%E8%A8%80/>序言</a></li><li><span class=date>2010/01/01</span>
+<a href=/tags/%E5%8D%9A%E5%AE%A2%E6%A8%A1%E7%89%88/>博客模版</a></li></ul><footer>- END -<hr><a href=/about target=_blank title=About>一塘</a>
 © 2025
 <a href=/index.xml target=_blank title=RSS>RSS</a></footer></body></html>

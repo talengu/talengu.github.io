@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>算法 on 一塘</title><link>https://example.com/tags/%E7%AE%97%E6%B3%95/</link><description>Recent content in 算法 on 一塘</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Wed, 17 Jul 2019 12:00:00 +0000</lastBuildDate><atom:link href="https://example.com/tags/%E7%AE%97%E6%B3%95/index.xml" rel="self" type="application/rss+xml"/><item><title>正则化「一」机器学习中的正则化</title><link>https://example.com/post/c3-ai/regulation-baysian/</link><pubDate>Wed, 17 Jul 2019 12:00:00 +0000</pubDate><guid>https://example.com/post/c3-ai/regulation-baysian/</guid><description>&lt;p>&lt;strong>前言&lt;/strong>
+本&lt;strong>正则化系列&lt;/strong>文章我们将讨论&lt;strong>正则化技术在机器学习和深度学习的应用&lt;/strong>。本文为该系列的第一篇，主要介绍&lt;strong>机器学习正则化的概念，原理和应用实例&lt;/strong>。&lt;/p>
+&lt;p>&lt;a href="https://en.wikipedia.org/wiki/Regularization_%28mathematics%29">正则化&lt;/a> 技术广泛应用在机器学习和深度学习算法中，本质作用是&lt;strong>防止过拟合、提高模型泛化能力&lt;/strong>。其中过拟合的简单理解就是训练的算法模型太过复杂，模型过分考虑了当前样本的结构。&lt;/p>
+&lt;p>在早期的机器学习领域一般只是将范数惩罚叫做正则化技术，而在深度学习领域认为，能够显著减少方差，而不过度增加偏差的策略都可以认为是正则化技术。故&lt;strong>推广的正则化技术&lt;/strong>还有：扩增样本集、早停止、Dropout、集成学习、多任务学习、对抗训练、参数共享等。(具体见“花书 第七章 &lt;a href="http://www.deeplearningbook.org/contents/regularization.html">Regularization for Deep Learning&lt;/a>”），关于&lt;strong>深度学习正则化&lt;/strong>会在下一篇正则化文章中重点分析。&lt;/p>
+&lt;p>转载自：https://blog.csdn.net/BigData_Mining/article/details/81631249&lt;/p>
+&lt;!-- more -->
+&lt;h2 id="1-多角度看机器学习正则化">1. 多角度看机器学习正则化&lt;/h2>
+&lt;p>&lt;strong>机器学习领域正则化&lt;/strong>可以从以下三个角度进行理解：&lt;/p>
+&lt;p>&lt;strong>(1)&lt;/strong> &lt;strong>正则化等价于结构风险最小化，其是通过在经验风险项后加上表示模型复杂度的正则化项或惩罚项，达到选择经验风险和模型复杂度都较小的模型目的&lt;/strong>。&lt;/p>
+&lt;p>​	&lt;strong>经验风险&lt;/strong>：机器学习中的风险是指模型与真实解之间的误差的积累，经验风险是指使用训练出来的模型进行预测或者分类，存在多大的误差，可以简单理解为训练误差，经验风险最小化即为训练误差最小。&lt;/p>
+&lt;p>​	&lt;strong>结构风险&lt;/strong>：结构风险定义为经验风险与置信风险(置信是指可信程度)的和，置信风险越大，模型推广能力越差。可以简单认为结构风险是经验风险后面多加了一项表示模型复杂度的函数项，从而可以同时控制模型训练误差和测试误差，结构风险最小化即为在保证模型分类精度(经验风险)的同时，降低模型复杂度，提高泛化能力。&lt;/p>
+&lt;p>​	&lt;strong>公式表达&lt;/strong>
+$$
+R(f)=\frac{1}{n}\sum_{i=1}^{n}L(y_i,f(x_i)) + \lambda \Omega (f)
+\tag{1}
+$$
+​		其中，$R(f)$表示结构风险，$L(y_i,f(x_i))$表示第 $i$ 个样本的经验风险，$\Omega(f)$是表征模型复杂度的正则项，$\lambda$ 是正则化参数。根据奥姆剃刀定律，“如无必要，勿增实体”，即认为相对简单的模型泛化能力更好。而模型泛化能力强、泛化误差小，即表示模型推广能力强，通俗理解就是在训练集中训练得到的优秀模型能够很好的适用于实际测试数据，而不仅仅是减少训练误差或者测试误差。泛化误差定义如下：
+$$
+E={Bias}^2(X) + {Var}(X) +{Noise}
+\tag{2}
+$$
+​		其中，$E$ 表示泛化误差，${Bias}$ 代表偏差，${Var}$ 代表方差， ${Noise}$ 代表噪声。&lt;/p>
+&lt;p>​	&lt;strong>关系图&lt;/strong>&lt;/p>
+&lt;p>
+
+
+
+
+ 
+
+
+&lt;div style="text-align: center;">
+&lt;img src="1563350068097.png" 
+ alt="1563350068097" 
+ 
+/>
+&lt;/div>&lt;/p>
+&lt;div align='center'> Fig 1. 泛化误差与偏差和方差的关系&lt;/div>
+​		从 Fig 1 可以看出，随着训练程度加深，模型复杂度会增加，偏差减少，方差增大，而泛化误差呈现U型变化。对于一个“好的系统”通常要求误差小，正则化的作用即为适当的控制模型复杂度，从而使得**泛化误差曲线**取最小值。
+&lt;p>&lt;strong>(2)&lt;/strong> &lt;strong>正则化等价于带约束的目标函数中的约束项&lt;/strong>&lt;/p>
+&lt;p>以平方误差损失和L2范数为例，优化问题的数学模型如下：
+$$
+J(\theta)=\sum_{i=1}^{n}(y_i-\theta^Tx_i)^2
+\tag{3}
+$$
+$$
+{s.t.}{|| \theta ||}_2^2 \leq C\\
+\tag{4}
+$$&lt;/p></description></item><item><title>怎样成为一名优秀的算法工程师</title><link>https://example.com/post/c3-ai/how-algorithm-engineer/</link><pubDate>Mon, 01 Oct 2018 12:00:00 +0000</pubDate><guid>https://example.com/post/c3-ai/how-algorithm-engineer/</guid><description>&lt;blockquote>
+&lt;p>转载 原创： AI学习与实践平台
+TODO: 看完里面的文章，对每篇文章做个总结，实验+文章。&lt;/p>&lt;/blockquote>
+&lt;h2 id="1-导言">1. 导言&lt;/h2>
+&lt;p>怎样成为一名优秀的算法工程师？这是很多从事人工智能学术研究和产品研发的同学都关心的一个问题。面对市场对人才的大量需求与供给的严重不足，以及高薪水的诱惑，越来越多的人开始学习这个方向的技术，或者打算向人工智能转型。市面上各种鱼龙混杂的培训班以及误导人的文章会把很多初学者带入歧途，浮躁的跟风将会让你最后收获甚微，根本达不到企业的用人要求。为了更好的帮助大家学习和成长，少走弯路，在今天的文章里，&lt;a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;amp;mid=2247485551&amp;amp;idx=2&amp;amp;sn=a6689528f10aedab3fce91857eec877b&amp;amp;chksm=fdb695f8cac11cee025ad6d8d77ed90f7169142d6b20b2f5a6945b58edd97c27225f4a2eba91&amp;amp;scene=21#wechat_redirect">SIGAI&lt;/a> 的作者以自己的亲身经历和思考，为大家写下对这一问题的理解与答案。&lt;/p>
+&lt;p>首先来看一个高度相关的问题：一个优秀的算法工程师必须具备哪些素质？我们给出的答案是这样的：&lt;/p>
+&lt;ul>
+&lt;li>数学知识&lt;/li>
+&lt;li>编程能力&lt;/li>
+&lt;li>机器学习与深度学习的知识&lt;/li>
+&lt;li>应用方向的知识&lt;/li>
+&lt;li>对自己所做的问题的思考和经验&lt;/li>
+&lt;/ul>
+&lt;p>除去教育背景，逻辑思维，学习能力，沟通能力等其他方面的因素，大多数公司在考察算法工程师的技术水平时都会考虑上面这几个因素。接下来我们将按照这几个方面进行展开，详细的说明如何学习这些方面的知识以及积累经验。&lt;/p>
+&lt;!-- more -->
+&lt;h2 id="2-数学知识">2. 数学知识&lt;/h2>
+&lt;p>与其他工作方向如app、服务器开发相比，以及与计算机科学的其他方向如网络，数据库，分布式计算等相比，人工智能尤其是机器学习属于数学知识密集的方向。在各种书籍，论文，算法中都充斥着大量的数学公式，这让很多打算入门的人或者开始学习的人感到明显的压力。首先我们考虑一个最核心的问题：机器学习和深度学习究竟需要哪些数学知识？在&lt;a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;amp;mid=2247485551&amp;amp;idx=2&amp;amp;sn=a6689528f10aedab3fce91857eec877b&amp;amp;chksm=fdb695f8cac11cee025ad6d8d77ed90f7169142d6b20b2f5a6945b58edd97c27225f4a2eba91&amp;amp;scene=21#wechat_redirect">SIGAI&lt;/a>之前的公众号文章“&lt;a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;amp;mid=2247483713&amp;amp;idx=1&amp;amp;sn=1e7c81381d16806ac73e15691fe17aec&amp;amp;chksm=fdb69cd6cac115c05f1f90b0407e3f8ae9be8719e454f908074ac0d079885b5c134e2d60fd64&amp;amp;scene=21#wechat_redirect">学好机器学习需要哪些数学知识&lt;/a>”里，我们已经给出了答案。先看下面这张表：&lt;/p>
+&lt;p>
+
+
+
+
+ 
+
+
+&lt;div style="text-align: center;">
+&lt;img src="clip_image003.gif" 
+ alt="EB5E93E91C3643F991C93D61F363373E.jpeg" 
+ 
+/>
+&lt;/div>&lt;/p>
+&lt;p>更多算法工程师的必读文章，请关注SIGAICN公众号&lt;/p>
+&lt;p>上面的表给出了各种典型的机器学习算法所用到的数学知识点。我们之前已经总结过，理解绝大多数算法和理论，有微积分/高等数学，线性代数，概率论，最优化方法的知识就够了。除流形学习需要简单的微分几何概念之外，深层次的数学知识如实变函数，泛函分析等主要用在一些基础理论结果的证明上，即使不能看懂证明过程，也不影响我们使用具体的机器学习算法。概率图模型、流形学习中基于图的模型会用到图论的一些基本知识，如果学习过离散数学或者数据结构，这些概念很容易理解。除此之外，某些算法会用到离散数学中的树的概念，但很容易理解。&lt;/p>
+&lt;h3 id="21-高等数学">2.1 高等数学&lt;/h3>
+&lt;p>如果你已经学过这些大学数学课，只要把所需的知识点复习一遍就够了。对于微积分，通俗易懂而又被广为采用的是同济版的高等数学：&lt;/p>
+&lt;p>
+
+
+
+
+ 
+
+
+&lt;div style="text-align: center;">
+&lt;img src="clip_image005.gif" 
+ alt="88F2EB8BDFE1448EBD2DF61848E355FD.jpeg" 
+ 
+/>
+&lt;/div>&lt;/p>
+&lt;p>在机器学习中主要用到了微分部分，积分用的非常少。具体的，用到了下面的概念：&lt;/p>
+&lt;ul>
+&lt;li>导数和偏导数的定义与计算方法，与函数性质的关系&lt;/li>
+&lt;li>梯度向量的定义&lt;/li>
+&lt;li>极值定理，可导函数在极值点处导数或梯度必须为0&lt;/li>
+&lt;li>雅克比矩阵，这是向量到向量映射函数的偏导数构成的矩阵，在求导推导中会用到&lt;/li>
+&lt;li>Hessian矩阵，这是2阶导数对多元函数的推广，与函数的极值有密切的联系&lt;/li>
+&lt;li>凸函数的定义与判断方法&lt;/li>
+&lt;li>泰勒展开公式&lt;/li>
+&lt;li>拉格朗日乘数法，用于求解带等式约束的极值问题&lt;/li>
+&lt;/ul>
+&lt;p>其中最核心的是多元函数的泰勒展开公式，根据它我们可以推导出梯度下降法，牛顿法，拟牛顿法等一系列最优化方法。&lt;/p>
+&lt;p>如果你想要深入的学习微积分，可以阅读数学系的教程，称为数学分析：&lt;/p>
+&lt;p>
+
+
+
+
+ 
+
+
+&lt;div style="text-align: center;">
+&lt;img src="clip_image007.gif" 
+ alt="DEB5F0D2FC584E0B96B263FE1D559AFF.jpeg" 
+ 
+/>
+&lt;/div>&lt;/p>
+&lt;p>与工科的高等数学偏重计算不同，它里面有大量的理论证明，对于锻炼数学思维非常有帮助。北大张筑生先生所著的数学分析可谓是国内这方面教材的精品。&lt;/p>
+&lt;h3 id="22-线性代数">2.2 线性代数&lt;/h3>
+&lt;p>下面来看线性代数，同样是同济版的教材：&lt;/p>
+&lt;p>
+
+
+
+
+ 
+
+
+&lt;div style="text-align: center;">
+&lt;img src="clip_image009.gif" 
+ alt="48D5E515A7144CE6A9CB78162F6ECAAF.jpeg" 
+ 
+/>
+&lt;/div>&lt;/p>
+&lt;p>如果想更全面系统的学习线性代数，可以看这本书：&lt;/p>
+&lt;p>
+
+
+
+
+ 
+
+
+&lt;div style="text-align: center;">
+&lt;img src="clip_image011.gif" 
+ alt="BF71AB68DB2B4D71AC8D2B3263C197E5.jpeg" 
+ 
+/>
+&lt;/div>&lt;/p>
+&lt;p>相比之下，线性代数用的更多。具体用到的知识点有：&lt;/p>
+&lt;ul>
+&lt;li>向量和它的各种运算，包括加法，减法，数乘，转置，内积&lt;/li>
+&lt;li>向量和矩阵的范数，L1范数和L2范数&lt;/li>
+&lt;li>矩阵和它的各种运算，包括加法，减法，乘法，数乘&lt;/li>
+&lt;li>逆矩阵的定义与性质&lt;/li>
+&lt;li>行列式的定义与计算方法&lt;/li>
+&lt;li>二次型的定义&lt;/li>
+&lt;li>矩阵的正定性&lt;/li>
+&lt;li>特征值与特征向量&lt;/li>
+&lt;li>奇异值分解&lt;/li>
+&lt;li>线性方程组的数值解&lt;/li>
+&lt;/ul>
+&lt;p>机器学习算法处理的数据一般都是向量、矩阵或者张量。经典的机器学习算法输入的数据都是特征向量，深度学习算法在处理图像时输入的2维的矩阵或者3维的张量。掌握这些概念是你理解机器学习和深度学习算法的基础。&lt;/p>
+&lt;h3 id="23-概率论">2.3 概率论&lt;/h3>
+&lt;p>概率论国内理工科专业使用最多的是浙大版的教材：&lt;/p>
+&lt;p>
+
+
+
+
+ 
+
+
+&lt;div style="text-align: center;">
+&lt;img src="clip_image013.gif" 
+ alt="91E918CF7ED84C7488BDDFFC7594E0D4.jpeg" 
+ 
+/>
+&lt;/div>&lt;/p></description></item></channel></rss>

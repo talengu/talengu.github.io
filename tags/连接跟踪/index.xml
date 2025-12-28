@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>连接跟踪 on 一塘</title><link>https://example.com/tags/%E8%BF%9E%E6%8E%A5%E8%B7%9F%E8%B8%AA/</link><description>Recent content in 连接跟踪 on 一塘</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Sun, 04 Dec 2022 12:00:00 +0000</lastBuildDate><atom:link href="https://example.com/tags/%E8%BF%9E%E6%8E%A5%E8%B7%9F%E8%B8%AA/index.xml" rel="self" type="application/rss+xml"/><item><title>「转」连接跟踪（conntrack）：原理、应用及 Linux 内核实现</title><link>https://example.com/post/c6-network/conntrack-linux/</link><pubDate>Sun, 04 Dec 2022 12:00:00 +0000</pubDate><guid>https://example.com/post/c6-network/conntrack-linux/</guid><description>&lt;h2 id="摘要">摘要&lt;/h2>
+&lt;p>本文介绍连接跟踪（connection tracking，conntrack，CT）的原理，应用，及其在 Linux 内核中的实现。&lt;/p>
+&lt;p>代码分析基于内核 &lt;code>4.19&lt;/code>。为使行文简洁，所贴代码只保留了核心逻辑，但都给出了代码 所在的源文件，如有需要请查阅。&lt;/p>
+&lt;p>水平有限，文中不免有错误之处，欢迎指正交流。&lt;/p>
+&lt;p>连接跟踪是许多网络应用的基础。例如，Kubernetes Service、ServiceMesh sidecar、 软件四层负载均衡器 LVS/IPVS、Docker network、OVS、iptables 主机防火墙等等，都依赖 连接跟踪功能。&lt;/p>
+&lt;!-- more -->
+&lt;h2 id="11-概念">1.1 概念&lt;/h2>
+&lt;p>连接跟踪，顾名思义，就是&lt;strong>跟踪（并记录）连接的状态&lt;/strong>。&lt;/p>
+&lt;p>
+
+
+
+
+ 
+
+
+&lt;div style="text-align: center;">
+&lt;img src="node-conntrack.png" 
+ alt="" 
+ 
+/>
+&lt;/div>&lt;/p>
+&lt;p>Fig 1.1. 连接跟踪及其内核位置示意图&lt;/p>
+&lt;p>例如，上图是一台 IP 地址为 &lt;code>10.1.1.2&lt;/code> 的 Linux 机器，我们能看到这台机器上有三条 连接：&lt;/p>
+&lt;ol>
+&lt;li>机器访问外部 HTTP 服务的连接（目的端口 80）&lt;/li>
+&lt;li>外部访问机器内 FTP 服务的连接（目的端口 21）&lt;/li>
+&lt;li>机器访问外部 DNS 服务的连接（目的端口 53）&lt;/li>
+&lt;/ol>
+&lt;p>连接跟踪所做的事情就是发现并跟踪这些连接的状态，具体包括：&lt;/p>
+&lt;ul>
+&lt;li>从数据包中提取&lt;strong>元组&lt;/strong>（tuple）信息，辨别&lt;strong>数据流&lt;/strong>（flow）和对应的&lt;strong>连接&lt;/strong>（connection）&lt;/li>
+&lt;li>为所有连接维护一个&lt;strong>状态数据库&lt;/strong>（conntrack table），例如连接的创建时间、发送 包数、发送字节数等等&lt;/li>
+&lt;li>回收过期的连接（GC）&lt;/li>
+&lt;li>为更上层的功能（例如 NAT）提供服务&lt;/li>
+&lt;/ul>
+&lt;p>需要注意的是，&lt;strong>连接跟踪中所说的“连接”，概念和 TCP/IP 协议中“面向连接”（ connection oriented）的 “连接” 并不完全相同&lt;/strong>，简单来说：&lt;/p>
+&lt;ul>
+&lt;li>TCP/IP 协议中，连接是一个四层（Layer 4）的概念。
+&lt;ul>
+&lt;li>TCP 是有连接的，或称面向连接的（connection oriented），发送出去的包都要求对端应答（ACK），并且有重传机制&lt;/li>
+&lt;li>UDP 是无连接的，发送的包无需对端应答，也没有重传机制&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>CT 中，一个元组（tuple）定义的一条数据流（flow ）就表示一条连接（connection）。
+&lt;ul>
+&lt;li>后面会看到 UDP 甚至是 &lt;strong>ICMP 这种三层协议在 CT 中也都是有连接记录的&lt;/strong>&lt;/li>
+&lt;li>但&lt;strong>不是所有协议都会被连接跟踪&lt;/strong>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;p>本文中用到 “连接” 一词时，大部分情况下指的都是后者，即 “连接跟踪” 中的“连接”。&lt;/p></description></item></channel></rss>

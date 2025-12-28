@@ -1,0 +1,104 @@
+<!doctype html><html lang=zh-cn><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><title>使用脚本将英文rss转成中文rss | 一塘</title>
+<link rel=stylesheet href=/css/style.css><link rel=stylesheet href=/css/fonts.css><link rel=stylesheet href=/css/dark.css></head><body><nav><ul class=menu><li><a href=/about/>一塘</a></li><li><a href=/post/>博客</a></li><li><a href=/categories/>分类</a></li><li><a href=/tags/>标签</a></li><li style=float:right;position:relative;margin-left:1em><input type=text id=search-box placeholder=搜索文章... style="padding:.3em .6em;border-radius:4px;border:1px solid #ccc;width:150px;min-width:100px;max-width:250px"><ul id=search-results style="position:absolute;top:100%;right:0;background:#fff;border:1px solid #ccc;max-height:300px;overflow-y:auto;display:none;z-index:1000;list-style:none;padding:0;margin:0;width:250px"></ul></li><style>.search-item{padding:.4em .6em}.search-link{display:block;font-weight:500;text-decoration:none;color:#007acc}.search-snippet{font-size:.85em;color:#555;margin-top:.2em;line-height:1.4}.search-highlight{background:rgba(255,235,59,.5);padding:0 .15em;border-radius:3px}.search-item:hover{background-color:rgba(0,0,0,5%)}@media(prefers-color-scheme:dark){.search-link{color:#4fc3f7}.search-snippet{color:#aaa}.search-item:hover{background-color:rgba(104,99,99,.273)}.search-highlight{background:rgba(255,193,7,.35)}}</style><script src=https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.6.2/fuse.min.js></script><script>fetch("/post/index.json").then(e=>e.json()).then(e=>{const o=new Fuse(e,{keys:[{name:"title",weight:2},{name:"summary",weight:1},{name:"content",weight:.7}],threshold:.3,ignoreLocation:!0,minMatchCharLength:2}),n=document.getElementById("search-box"),t=document.getElementById("search-results");function s(e,t){if(!e)return"";const n=t.replace(/[.*+?^${}()|[\]\\]/g,"\\$&"),s=new RegExp(`(${n})`,"gi");return e.replace(s,'<mark class="search-highlight">$1</mark>')}function i(e,t,n=80){const s=e.toLowerCase().indexOf(t.toLowerCase());if(s===-1)return e.slice(0,n)+"…";const o=Math.max(0,s-n/2),i=Math.min(e.length,s+n/2);return"…"+e.slice(o,i)+"…"}n.addEventListener("input",function(){const e=this.value.trim();if(!e){t.style.display="none",t.innerHTML="";return}const n=o.search(e);t.innerHTML=n.slice(0,8).map(t=>{const n=t.item,o=i(n.content||n.summary||"",e);return`
+          <li class="search-item">
+            <a href="${n.permalink}" class="search-link">
+              ${s(n.title,e)}
+            </a>
+            <div class="search-snippet">
+              ${s(o,e)}
+            </div>
+          </li>
+        `}).join(""),t.style.display=n.length?"block":"none"}),document.addEventListener("click",e=>{!n.contains(e.target)&&!t.contains(e.target)&&(t.style.display="none")})})</script></ul><hr></nav><div class=article-meta><h1><span class=title>使用脚本将英文rss转成中文rss</span></h1></div><div class=post-stats style=text-align:right>2022/05/08</div><main><h2 id=前言>前言</h2><p>本文中我们将英文rss 自动转成中文 rss供ttrss使用。（利用谷歌翻译）</p><p>方便在手机上进行阅读或者收听。</p><center><img src=rss_google_translate/20220508-22-28-27.png width=30%></center><h2 id=举例>举例</h2><p>国外有很多不错的rss源，比如:</p><ul><li><a href=http://www.mckinsey.com/insights/rss>McKinsey Insights & Publications</a><center><img src=rss_google_translate/20220508-22-18-23.png width=50%></li></ul></center>转成中文rss<center><img src=rss_google_translate/20220508-22-20-48.png width=50%></center><ul><li><p><a href=http://rss.acast.com/nature>Nature Podcast</a></p><center><img src=rss_google_translate/20220508-22-25-04.png width=50%></li></ul></center>转成中文rss<center><img src=rss_google_translate/20220508-22-26-36.png width=50%></center><h2 id=脚本>脚本</h2><p>使用 Translate 和 BeautifulSoup 项目</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span><span style=color:#75715e># coding:utf-8 </span>
+</span></span><span style=display:flex><span><span style=color:#f92672>from</span> pygtrans <span style=color:#f92672>import</span> Translate
+</span></span><span style=display:flex><span><span style=color:#f92672>from</span> bs4 <span style=color:#f92672>import</span> BeautifulSoup
+</span></span><span style=display:flex><span><span style=color:#75715e># pip 安装</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># pip install pygtrans BeautifulSoup -i https://pypi.org/simple</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># ref:https://zhuanlan.zhihu.com/p/390801784</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># ref:https://beautifulsoup.readthedocs.io/zh_CN/latest/</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># client = Translate()</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># text = client.translate(&#39;Google Translate&#39;)</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># print(text.translatedText)  # 谷歌翻译</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>import</span> sys
+</span></span><span style=display:flex><span><span style=color:#f92672>from</span> urllib <span style=color:#f92672>import</span> request
+</span></span><span style=display:flex><span><span style=color:#f92672>import</span> feedparser
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>args <span style=color:#f92672>=</span> sys<span style=color:#f92672>.</span>argv
+</span></span><span style=display:flex><span>URL<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;http://www.mckinsey.com/insights/rss&#34;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>BASE<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;/home/xxx/www/&#34;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>def</span> <span style=color:#a6e22e>tran</span>(url<span style=color:#f92672>=</span>URL,out_dir<span style=color:#f92672>=</span>BASE<span style=color:#f92672>+</span><span style=color:#e6db74>&#34;mckinsey_rss.xml&#34;</span>):
+</span></span><span style=display:flex><span>    GT <span style=color:#f92672>=</span> Translate()
+</span></span><span style=display:flex><span>    content<span style=color:#f92672>=</span> request<span style=color:#f92672>.</span>urlopen(url)<span style=color:#f92672>.</span>read()<span style=color:#f92672>.</span>decode(<span style=color:#e6db74>&#39;utf8&#39;</span>)
+</span></span><span style=display:flex><span>    <span style=color:#75715e># 变tag，以使用谷歌翻译</span>
+</span></span><span style=display:flex><span>    content<span style=color:#f92672>=</span>content<span style=color:#f92672>.</span>replace(<span style=color:#e6db74>&#39;title&gt;&#39;</span>, <span style=color:#e6db74>&#39;stitle&gt;&#39;</span>) <span style=color:#75715e>#谷歌翻译会将很多titile去掉，所以需要换一个tag</span>
+</span></span><span style=display:flex><span>    content<span style=color:#f92672>=</span>content<span style=color:#f92672>.</span>replace( <span style=color:#e6db74>&#39;&lt;pubDate&gt;&#39;</span>,<span style=color:#e6db74>&#39;&lt;pubDate&gt;&lt;span translate=&#34;no&#34;&gt;&#39;</span>) 
+</span></span><span style=display:flex><span>    <span style=color:#75715e># 谷歌翻译对&lt;span translate=&#34;no&#34;&gt; &lt;/span&gt; 不翻译。</span>
+</span></span><span style=display:flex><span>    content<span style=color:#f92672>=</span>content<span style=color:#f92672>.</span>replace( <span style=color:#e6db74>&#39;&lt;/pubDate&gt;&#39;</span>,<span style=color:#e6db74>&#39;&lt;/span&gt;&lt;/pubDate&gt;&#39;</span>)
+</span></span><span style=display:flex><span>    <span style=color:#75715e>#print(content)</span>
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    _text <span style=color:#f92672>=</span> GT<span style=color:#f92672>.</span>translate(content)
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>with</span> open(out_dir,<span style=color:#e6db74>&#39;w&#39;</span>,encoding<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;utf-8&#39;</span>) <span style=color:#66d9ef>as</span> f:
+</span></span><span style=display:flex><span>        c<span style=color:#f92672>=</span>_text<span style=color:#f92672>.</span>translatedText
+</span></span><span style=display:flex><span>        <span style=color:#75715e># 还原tag</span>
+</span></span><span style=display:flex><span>        c<span style=color:#f92672>=</span>c<span style=color:#f92672>.</span>replace(<span style=color:#e6db74>&#39;stitle&gt;&#39;</span>, <span style=color:#e6db74>&#39;title&gt;&#39;</span>)
+</span></span><span style=display:flex><span>        c<span style=color:#f92672>=</span>c<span style=color:#f92672>.</span>replace(<span style=color:#e6db74>&#39;&lt;span translate=&#34;no&#34;&gt;&#39;</span>, <span style=color:#e6db74>&#39;&#39;</span>)
+</span></span><span style=display:flex><span>        c<span style=color:#f92672>=</span>c<span style=color:#f92672>.</span>replace(<span style=color:#e6db74>&#39;&lt;/span&gt;&lt;/pubDate&gt;&#39;</span>, <span style=color:#e6db74>&#39;&lt;/pubDate&gt;&#39;</span>)
+</span></span><span style=display:flex><span>        
+</span></span><span style=display:flex><span>        
+</span></span><span style=display:flex><span>        f<span style=color:#f92672>.</span>write(c)
+</span></span><span style=display:flex><span>        <span style=color:#75715e>#f.write(content)</span>
+</span></span><span style=display:flex><span>    print(<span style=color:#e6db74>&#34;GT: &#34;</span><span style=color:#f92672>+</span> url <span style=color:#f92672>+</span><span style=color:#e6db74>&#34; &gt; &#34;</span><span style=color:#f92672>+</span> out_dir)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>if</span> len(args)<span style=color:#f92672>==</span><span style=color:#ae81ff>1</span>:
+</span></span><span style=display:flex><span>    tran()
+</span></span><span style=display:flex><span><span style=color:#66d9ef>else</span>:
+</span></span><span style=display:flex><span>    tran(args[<span style=color:#ae81ff>1</span>],args[<span style=color:#ae81ff>2</span>])
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>def</span> <span style=color:#a6e22e>tran_nature</span>(url<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;http://rss.acast.com/nature&#34;</span>,out_dir<span style=color:#f92672>=</span>BASE<span style=color:#f92672>+</span><span style=color:#e6db74>&#34;nature_rss.xml&#34;</span>):
+</span></span><span style=display:flex><span>    GT <span style=color:#f92672>=</span> Translate()
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    html_doc<span style=color:#f92672>=</span>request<span style=color:#f92672>.</span>urlopen(url)<span style=color:#f92672>.</span>read()<span style=color:#f92672>.</span>decode(<span style=color:#e6db74>&#39;utf8&#39;</span>)
+</span></span><span style=display:flex><span>    soup <span style=color:#f92672>=</span> BeautifulSoup(html_doc)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    items<span style=color:#f92672>=</span>soup<span style=color:#f92672>.</span>find_all(<span style=color:#e6db74>&#39;item&#39;</span>)
+</span></span><span style=display:flex><span>    <span style=color:#75715e># nature post内容太多，谷歌api翻译不了，去掉一些</span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>for</span> idx,e <span style=color:#f92672>in</span> enumerate(items):
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>if</span> idx <span style=color:#f92672>&gt;</span><span style=color:#ae81ff>8</span>:
+</span></span><span style=display:flex><span>                e<span style=color:#f92672>.</span>decompose()
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    content<span style=color:#f92672>=</span> str(soup)
+</span></span><span style=display:flex><span>    content<span style=color:#f92672>=</span>content<span style=color:#f92672>.</span>replace(<span style=color:#e6db74>&#39;title&gt;&#39;</span>, <span style=color:#e6db74>&#39;stitle&gt;&#39;</span>)
+</span></span><span style=display:flex><span>    content<span style=color:#f92672>=</span>content<span style=color:#f92672>.</span>replace( <span style=color:#e6db74>&#39;&lt;pubdate&gt;&#39;</span>,<span style=color:#e6db74>&#39;&lt;pubDate&gt;&lt;span translate=&#34;no&#34;&gt;&#39;</span>)
+</span></span><span style=display:flex><span>    content<span style=color:#f92672>=</span>content<span style=color:#f92672>.</span>replace( <span style=color:#e6db74>&#39;&lt;/pubdate&gt;&#39;</span>,<span style=color:#e6db74>&#39;&lt;/span&gt;&lt;/pubdate&gt;&#39;</span>)
+</span></span><span style=display:flex><span>    <span style=color:#75715e>#print(content)</span>
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    _text <span style=color:#f92672>=</span> GT<span style=color:#f92672>.</span>translate(content)
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>with</span> open(out_dir,<span style=color:#e6db74>&#39;w&#39;</span>,encoding<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;utf-8&#39;</span>) <span style=color:#66d9ef>as</span> f:
+</span></span><span style=display:flex><span>        c<span style=color:#f92672>=</span>_text<span style=color:#f92672>.</span>translatedText
+</span></span><span style=display:flex><span>        c<span style=color:#f92672>=</span>c<span style=color:#f92672>.</span>replace(<span style=color:#e6db74>&#39;stitle&gt;&#39;</span>, <span style=color:#e6db74>&#39;title&gt;&#39;</span>)
+</span></span><span style=display:flex><span>        c<span style=color:#f92672>=</span>c<span style=color:#f92672>.</span>replace(<span style=color:#e6db74>&#39;&lt;span translate=&#34;no&#34;&gt;&#39;</span>, <span style=color:#e6db74>&#39;&#39;</span>)
+</span></span><span style=display:flex><span>        c<span style=color:#f92672>=</span>c<span style=color:#f92672>.</span>replace(<span style=color:#e6db74>&#39;&lt;/span&gt;&lt;/pubdate&gt;&#39;</span>, <span style=color:#e6db74>&#39;&lt;/pubDate&gt;&#39;</span>) <span style=color:#75715e># 对于ttrss需要为pubDate才会识别正确</span>
+</span></span><span style=display:flex><span>        c<span style=color:#f92672>=</span>c<span style=color:#f92672>.</span>replace(<span style=color:#e6db74>&#39;&amp;gt&#39;</span>,<span style=color:#e6db74>&#39;&gt;&#39;</span>) <span style=color:#75715e># &amp;gt 会影响识别</span>
+</span></span><span style=display:flex><span>        
+</span></span><span style=display:flex><span>        
+</span></span><span style=display:flex><span>        f<span style=color:#f92672>.</span>write(c)
+</span></span><span style=display:flex><span>        <span style=color:#75715e>#f.write(content)</span>
+</span></span><span style=display:flex><span>    print(<span style=color:#e6db74>&#34;GT: &#34;</span><span style=color:#f92672>+</span> url <span style=color:#f92672>+</span><span style=color:#e6db74>&#34; &gt; &#34;</span><span style=color:#f92672>+</span> out_dir)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>tran_nature()
+</span></span></code></pre></div><h3 id=定时任务>定时任务</h3><blockquote><p>注意激活一下miniconda3 这个命令<code>source /home/xxx/miniconda3/bin/activate</code></p></blockquote><p>放到 <code>/etc/cron.daily/</code></p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e>#!/bin/bash
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>source /home/xxx/miniconda3/bin/activate
+</span></span><span style=display:flex><span>python /home/xxx/txxx.py
+</span></span></code></pre></div><h2 id=其他>其他</h2><ul><li><a href=https://blog.csdn.net/wokuailewozihao/article/details/82021709>利用Google翻译实现网站国际化——js插件</a></li></ul></main><script src=https://giscus.app/client.js data-repo=talengu/talengu.github.io data-repo-id="MDEwOlJlcG9zaXRvcnk5MTk0NjkxNQ==" data-category=Blog data-category-id=DIC_kwDOBXr_o84C0Qpk data-mapping=pathname data-strict=0 data-reactions-enabled=1 data-emit-metadata=0 data-input-position=bottom data-theme=/css/giscus.css data-lang=zh-CN crossorigin=anonymous async></script><footer>- END -<hr><a href=/about target=_blank title=About>一塘</a>
+© 2025
+<a href=/index.xml target=_blank title=RSS>RSS</a></footer></body></html>

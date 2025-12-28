@@ -1,4 +1,104 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>工具 on 一塘</title><link>https://example.com/categories/%E5%B7%A5%E5%85%B7/</link><description>Recent content in 工具 on 一塘</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Thu, 06 Jun 2024 12:00:00 +0000</lastBuildDate><atom:link href="https://example.com/categories/%E5%B7%A5%E5%85%B7/index.xml" rel="self" type="application/rss+xml"/><item><title>「转」基于 Readeck 搭建个人稍后读/书签服务</title><link>https://example.com/post/readeck_tips/</link><pubDate>Thu, 06 Jun 2024 12:00:00 +0000</pubDate><guid>https://example.com/post/readeck_tips/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>工具 on 一塘</title><link>https://example.com/categories/%E5%B7%A5%E5%85%B7/</link><description>Recent content in 工具 on 一塘</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Mon, 22 Dec 2025 12:39:04 +0000</lastBuildDate><atom:link href="https://example.com/categories/%E5%B7%A5%E5%85%B7/index.xml" rel="self" type="application/rss+xml"/><item><title>Hugo搭建</title><link>https://example.com/post/c7-toolchain/hugo_build/</link><pubDate>Mon, 22 Dec 2025 12:39:04 +0000</pubDate><guid>https://example.com/post/c7-toolchain/hugo_build/</guid><description>&lt;p>从2015年开始，我使用Hexo框架Next主题搭建，个人博客系统，正好十年。
+框架和主题配置完成后，我只要关注markdown内容即可。&lt;/p>
+&lt;p>在这使用过程中，遇到过一次大规模的js投毒，那一次hexo 编译不出。
+hexo 和next 框架 变更实在是太快了，最近在github 的页面编译不出后，我修复无果，也懒得折腾了，在初步调研后，准备使用&lt;a href="https://gohugo.io">hugo&lt;/a>和&lt;a href="https://www.gohugothemes.com/theme/yihui-hugo-xmin/">Hugo Xmin&lt;/a>&lt;/p>
+&lt;p>使用的是 hugo 与 hugo-xmin&lt;/p>
+&lt;h2 id="hugo-安装">hugo 安装&lt;/h2>
+&lt;p>hugo 可以直接下载二进制文件 &lt;a href="https://github.com/gohugoio/hugo/releases?page=3">https://github.com/gohugoio/hugo/releases?page=3&lt;/a>&lt;/p>
+&lt;p>hugo v0.146.7&lt;/p>
+&lt;p>hugo-xmin 从git库中下载&lt;/p>
+&lt;p>&lt;a href="https://github.com/yihui/hugo-xmin">https://github.com/yihui/hugo-xmin&lt;/a>&lt;/p>
+&lt;p>c871e5665f5eceb919c8fdb284b73c7a07012646&lt;/p>
+&lt;p>我个人是mac，使用的是docker debian镜像，在它上面安装二进制文件&lt;/p>
+&lt;pre tabindex="0">&lt;code>docker pull --platform linux/arm64 debian:12-slim
+&lt;/code>&lt;/pre>&lt;pre tabindex="0">&lt;code>services:
+ hugo:
+ image: debian:12-slim
+ volumes:
+ - talengu.github.io:/blog
+ - blog/posts:/blog/content/post
+ working_dir: /blog
+ ports:
+ - 1313:1313
+ command: ./hugo_0.146.7_arm64 server --bind 0.0.0.0
+ stdin_open: true
+ tty: true
+&lt;/code>&lt;/pre>&lt;p>其他docker镜像可使用 &lt;a href="https://hub.docker.com/r/klakegg/hugo/tags?name=debian">klakegg/hugo&lt;/a>&lt;/p>
+&lt;h2 id="hugo-使用">hugo 使用&lt;/h2>
+&lt;p>./hugo server &amp;ndash;bind 0.0.0.0
+./hugo build&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>cd public
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>git init
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>git remote add origin git@github.com:talengu/talengu.github.io.git
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>git checkout -b gh-pages
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>git add .
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>git commit -m &lt;span style="color:#e6db74">&amp;#34;Deploy Hugo site&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>git push -f origin gh-pages
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="分类布局">分类布局&lt;/h2>
+&lt;table>
+ &lt;thead>
+ &lt;tr>
+ &lt;th>&lt;strong>categories&lt;/strong>&lt;/th>
+ &lt;th>folder name&lt;/th>
+ &lt;th>&lt;strong>放什么&lt;/strong>&lt;/th>
+ &lt;/tr>
+ &lt;/thead>
+ &lt;tbody>
+ &lt;tr>
+ &lt;td>life&lt;/td>
+ &lt;td>c0-life&lt;/td>
+ &lt;td>旅行 / 阅读 / 随笔&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>math&lt;/td>
+ &lt;td>c1-math&lt;/td>
+ &lt;td>概率 / 线代 / 算法&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>robotics&lt;/td>
+ &lt;td>c2-robotics&lt;/td>
+ &lt;td>机器人&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>ai&lt;/td>
+ &lt;td>c3-ai&lt;/td>
+ &lt;td>LLM / CV / 实验记录&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>system&lt;/td>
+ &lt;td>c4-system&lt;/td>
+ &lt;td>性能 / 架构 / OS 设计&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>linux&lt;/td>
+ &lt;td>c5-linux&lt;/td>
+ &lt;td>内核、发行版、系统工具&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>network&lt;/td>
+ &lt;td>c6-network&lt;/td>
+ &lt;td>TCP/IP、抓包、协议&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>toolchain&lt;/td>
+ &lt;td>c7-toolchain&lt;/td>
+ &lt;td>gcc / musl / cmake / build / rss工具&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>programming&lt;/td>
+ &lt;td>c8-programming&lt;/td>
+ &lt;td>C / Python / 数据结构&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>&lt;/td>
+ &lt;td>&lt;/td>
+ &lt;td>&lt;/td>
+ &lt;/tr>
+ &lt;/tbody>
+&lt;/table>
+&lt;h2 id="添加评论-使用-giscusapp">添加评论 使用 giscus.app&lt;/h2>
+&lt;p>按 giscus.app 官方进行操作即可
+&lt;a href="https://giscus.app/">https://giscus.app/&lt;/a>&lt;/p></description></item><item><title>「转」基于 Readeck 搭建个人稍后读/书签服务</title><link>https://example.com/post/c7-toolchain/readeck_tips/</link><pubDate>Thu, 06 Jun 2024 12:00:00 +0000</pubDate><guid>https://example.com/post/c7-toolchain/readeck_tips/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
 &lt;blockquote>
 &lt;p>本文由 &lt;a href="http://ksria.com/simpread/">简悦 SimpRead&lt;/a> 转码， 原文地址 &lt;a href="https://sspai.com/post/89289">https://sspai.com/post/89289&lt;/a>&lt;/p>&lt;/blockquote>
 &lt;!-- more -->
@@ -45,7 +145,69 @@
  
 />
 &lt;/div>&lt;/p>
-&lt;p>接下来我们就打开 Portainer 来进行服务容器的部署，这里打开并登录 Portainer，然后从左侧边栏中点击 Stacks，然后点击页面右上角的 &lt;code>Add Stack&lt;/code>来添加。&lt;/p></description></item><item><title>rss统计 基于ttrss的PostgresQL数据库</title><link>https://example.com/post/rss_ttrss_statics/</link><pubDate>Sun, 08 May 2022 22:00:04 +0000</pubDate><guid>https://example.com/post/rss_ttrss_statics/</guid><description>&lt;p>&lt;strong>前言&lt;/strong>
+&lt;p>接下来我们就打开 Portainer 来进行服务容器的部署，这里打开并登录 Portainer，然后从左侧边栏中点击 Stacks，然后点击页面右上角的 &lt;code>Add Stack&lt;/code>来添加。&lt;/p></description></item><item><title>rss翻译github脚本</title><link>https://example.com/post/c7-toolchain/rss_translate/</link><pubDate>Wed, 21 Dec 2022 12:39:04 +0000</pubDate><guid>https://example.com/post/c7-toolchain/rss_translate/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
+&lt;p>自动翻译 rss，我利用github action开发了一下， 供大家玩乐。&lt;/p>
+&lt;p>比如将：
+ &lt;a href="http://www.mckinsey.com/insights/rss">http://www.mckinsey.com/insights/rss&lt;/a> -&amp;gt; &lt;a href="https://talengu.github.io/rss-translate/rss/mckinsey_rss.xml">mckinsey_rss.xml&lt;/a>
+ 
+
+
+
+
+
+ 
+
+
+&lt;div style="text-align: center;">
+&lt;img src="image-20230202020105514.png" 
+ alt="" 
+ 
+/>
+&lt;/div>&lt;/p>
+&lt;!-- more -->
+&lt;p>将需要翻译的rss 连接放到 &lt;a href="https://github.com/talengu/rss-translate/edit/main/test.ini">test.ini&lt;/a> 配置 ，并提交。&lt;/p>
+&lt;p>
+
+
+
+
+ 
+
+
+&lt;div style="text-align: center;">
+&lt;img src="image-20230202020439917.png" 
+ alt="" 
+ 
+/>
+&lt;/div>&lt;/p>
+&lt;ul>
+&lt;li>name：输出的xml名字&lt;/li>
+&lt;li>url：需要转换的url&lt;/li>
+&lt;li>max：输出xml 最大item数&lt;/li>
+&lt;li>action：设置语言转换，默认auto转中文。多语言支持 action = “auto”，这里可以换成多种语言，支持语言列表见 &lt;a href="https://pygtrans.readthedocs.io/zh_CN/latest/index.html">pygtrans&lt;/a> 如：action = &amp;ldquo;en-&amp;gt;zh-CN&amp;rdquo;&lt;/li>
+&lt;/ul>
+&lt;p>在 &lt;a href="https://talengu.github.io/rss-translate/">https://talengu.github.io/rss-translate/&lt;/a> 等待生成连接即可。&lt;/p>
+&lt;p>
+
+
+
+
+ 
+
+
+&lt;div style="text-align: center;">
+&lt;img src="image-20230202020620284.png" 
+ alt="" 
+ 
+/>
+&lt;/div>&lt;/p>
+&lt;p>注：&lt;/p>
+&lt;ul>
+&lt;li>需要github账号，修改配置文件。&lt;/li>
+&lt;li>更新周期为1天，且为随机时间点。通过github action实现，见 &lt;a href="https://github.com/talengu/rss-translate/blob/main/.github/cron_random.py">random.py&lt;/a>&lt;/li>
+&lt;li>多语言支持 action = “auto”，这里可以换成多种语言，支持语言列表见 &lt;a href="https://pygtrans.readthedocs.io/zh_CN/latest/index.html">pygtrans&lt;/a> 如：action = &amp;ldquo;en-&amp;gt;zh-CN&amp;rdquo;&lt;/li>
+&lt;/ul>
+&lt;p>欢迎大家使用！！！🐱&lt;/p></description></item><item><title>rss统计 基于ttrss的PostgresQL数据库</title><link>https://example.com/post/c7-toolchain/rss_ttrss_statics/</link><pubDate>Sun, 08 May 2022 22:00:04 +0000</pubDate><guid>https://example.com/post/c7-toolchain/rss_ttrss_statics/</guid><description>&lt;p>&lt;strong>前言&lt;/strong>
 统计ttrss的使用数据。&lt;/p>
 &lt;ul>
 &lt;li>月度mark文件分析 OK&lt;/li>
@@ -120,7 +282,7 @@
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>D&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;C:&lt;/span>&lt;span style="color:#ae81ff">\\&lt;/span>&lt;span style="color:#e6db74">Users&lt;/span>&lt;span style="color:#ae81ff">\\&lt;/span>&lt;span style="color:#e6db74">talen&lt;/span>&lt;span style="color:#ae81ff">\\&lt;/span>&lt;span style="color:#e6db74">Desktop&lt;/span>&lt;span style="color:#ae81ff">\\&lt;/span>&lt;span style="color:#e6db74">&amp;#34;&lt;/span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">with&lt;/span> open(D&lt;span style="color:#f92672">+&lt;/span>&lt;span style="color:#e6db74">&amp;#34;cc.md&amp;#34;&lt;/span>,&lt;span style="color:#e6db74">&amp;#39;w&amp;#39;&lt;/span>,encoding&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#e6db74">&amp;#39;utf-8&amp;#39;&lt;/span>) &lt;span style="color:#66d9ef">as&lt;/span> f:
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> f&lt;span style="color:#f92672">.&lt;/span>write(g_content)
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>使用脚本将英文rss转成中文rss</title><link>https://example.com/post/rss_google_translate/</link><pubDate>Sun, 08 May 2022 22:00:04 +0000</pubDate><guid>https://example.com/post/rss_google_translate/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>使用脚本将英文rss转成中文rss</title><link>https://example.com/post/c7-toolchain/rss_google_translate/</link><pubDate>Sun, 08 May 2022 22:00:04 +0000</pubDate><guid>https://example.com/post/c7-toolchain/rss_google_translate/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
 &lt;p>本文中我们将英文rss 自动转成中文 rss供ttrss使用。（利用谷歌翻译）&lt;/p>
 &lt;p>方便在手机上进行阅读或者收听。&lt;/p>
 &lt;center>&lt;img src="rss_google_translate/20220508-22-28-27.png" width="30%">
@@ -239,7 +401,158 @@
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>tran_nature()
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="定时任务">定时任务&lt;/h3>
 &lt;blockquote>
-&lt;p>注意激活一下miniconda3 这个命令&lt;code>source /home/xxx/miniconda3/bin/activate&lt;/code>&lt;/p></description></item><item><title>二零年RSS杂谈</title><link>https://example.com/post/rss_talk2020/</link><pubDate>Fri, 14 Jan 2022 01:02:57 +0000</pubDate><guid>https://example.com/post/rss_talk2020/</guid><description>&lt;p>2020年了，笔者还是使用RSS的原始人。RSS，Really Simple Syndication是一种信息聚合工具。在5G时代信息即将大爆炸之前，我来谈谈rss的杂七杂八吧。我们来打个赌，你不会看完这篇文章。&lt;/p>
+&lt;p>注意激活一下miniconda3 这个命令&lt;code>source /home/xxx/miniconda3/bin/activate&lt;/code>&lt;/p></description></item><item><title>本地安装rss</title><link>https://example.com/post/c7-toolchain/rss_local_install/</link><pubDate>Sat, 16 Apr 2022 12:39:04 +0000</pubDate><guid>https://example.com/post/c7-toolchain/rss_local_install/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
+&lt;p>在 “&lt;a href="https://zhuanlan.zhihu.com/p/149452085">二零年RSS杂谈&lt;/a>”中说到，我想建立一种信息的获取系统，免受广告和推荐算法的困扰。&lt;/p>
+&lt;p>我希望其的功能包括：&lt;/p>
+&lt;ul>
+&lt;li>多终端 Web、PC、 mobile的同步&lt;/li>
+&lt;li>全文获取能力&lt;/li>
+&lt;li>可自定义过滤规则&lt;/li>
+&lt;li>RSS源自定义&lt;/li>
+&lt;/ul>
+&lt;p>方案：&lt;/p>
+&lt;ul>
+&lt;li>RSS源 rsshub&lt;/li>
+&lt;li>RSS服务 ttrss&lt;/li>
+&lt;li>RSS电脑手机软件：Android的Readably、Feedme，mac的reeder等等。windows上我暂时没有发现，我用的是ttrss的web界面。&lt;/li>
+&lt;/ul>
+&lt;!-- more -->
+&lt;p>rsshub 是由 DIYgod 开发的开源RSS源生成工具，RSShub原始的网站可能不稳定，所以我选择了自己搭建。&lt;/p>
+&lt;p>ttrss 是一个rss源管理配置的工具，可获取全文，可自定义过滤规则。&lt;/p>
+&lt;p>本教程我们将完成在window电脑通过docker安装，ttrss与全文插件、rsshub的过程。&lt;/p>
+&lt;p>服务器的成本还是有点小贵的，我们可以在本地搭建整个服务，即利用docker安装这些服务，开机的时候记得启动这些服务。
+不爽点：&lt;/p>
+&lt;ul>
+&lt;li>需要后台开启docker服务，使得其自动更新信息&lt;/li>
+&lt;li>没有公网ip的情况下，无法全网连接服务&lt;/li>
+&lt;/ul>
+&lt;h2 id="最终ttrss界面">最终ttrss界面&lt;/h2>
+&lt;p>在这里我已经添加一些rss源了。&lt;/p>
+&lt;p>
+
+
+
+
+ 
+
+
+&lt;div style="text-align: center;">
+&lt;img src="image-20200626135803804.png" 
+ alt="image-20200626135803804" 
+ 
+/>
+&lt;/div>&lt;/p>
+&lt;h2 id="docker-windows安装">docker windows安装&lt;/h2>
+&lt;p>从&lt;a href="https://www.docker.com/products/docker-desktop">docker 官网&lt;/a> 下载windows版本安装。完成后，在图标区会有一个鲸鱼船。&lt;/p>
+&lt;p>
+
+
+
+
+ 
+
+
+&lt;div style="text-align: center;">
+&lt;img src="image-20200626141604658.png" 
+ alt="image-20200626141604658" 
+ 
+/>
+&lt;/div>&lt;/p>
+&lt;p>我们使用docker-compose 来进行下一步 网站服务的安装。将下面的资料保存到s&lt;code>docker-compose.yml&lt;/code> 然后利用docker-compose方法安装。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-yml" data-lang="yml">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">version&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;2&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">services&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">service.rsshub&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">image&lt;/span>: &lt;span style="color:#ae81ff">diygod/rsshub&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">container_name&lt;/span>: &lt;span style="color:#ae81ff">rsshub&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">ports&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> - &lt;span style="color:#e6db74">&amp;#34;1200:1200&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">volumes&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> - &lt;span style="color:#ae81ff">rsshub_data:/app/lib&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">restart&lt;/span>: &lt;span style="color:#ae81ff">always&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">service.rss&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">image&lt;/span>: &lt;span style="color:#ae81ff">wangqiru/ttrss:latest&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">container_name&lt;/span>: &lt;span style="color:#ae81ff">ttrss&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">ports&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> - &lt;span style="color:#ae81ff">8118&lt;/span>:&lt;span style="color:#ae81ff">80&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">environment&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> - &lt;span style="color:#ae81ff">SELF_URL_PATH=http://127.0.0.1:8118/&lt;/span> &lt;span style="color:#75715e"># please change to your own domain&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> - &lt;span style="color:#ae81ff">DB_HOST=database.postgres&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> - &lt;span style="color:#ae81ff">DB_PORT=5432&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> - &lt;span style="color:#ae81ff">DB_NAME=ttrss&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> - &lt;span style="color:#ae81ff">DB_USER=postgres&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> - &lt;span style="color:#ae81ff">DB_PASS=ttrss&lt;/span> &lt;span style="color:#75715e"># please change the password&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> - &lt;span style="color:#ae81ff">ENABLE_PLUGINS=auth_internal,fever&lt;/span> &lt;span style="color:#75715e"># auth_internal is required. Plugins enabled here will be enabled for all users as system plugins&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> - &lt;span style="color:#ae81ff">FEED_LOG_QUIET=true&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">stdin_open&lt;/span>: &lt;span style="color:#66d9ef">true&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">tty&lt;/span>: &lt;span style="color:#66d9ef">true&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">restart&lt;/span>: &lt;span style="color:#ae81ff">always&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">command&lt;/span>: &lt;span style="color:#ae81ff">sh -c &amp;#39;sh /wait-for.sh $$DB_HOST:$$DB_PORT -- php /configure-db.php &amp;amp;&amp;amp; exec s6-svscan /etc/s6/&amp;#39;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">database.postgres&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">image&lt;/span>: &lt;span style="color:#ae81ff">postgres:alpine&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">container_name&lt;/span>: &lt;span style="color:#ae81ff">postgres&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">environment&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> - &lt;span style="color:#ae81ff">POSTGRES_PASSWORD=ttrss&lt;/span> &lt;span style="color:#75715e"># please change the password&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">volumes&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> - &lt;span style="color:#ae81ff">postgres_data:/var/lib/postgresql/data&lt;/span> &lt;span style="color:#75715e"># persist postgres data to ~/postgres/data/ on the host&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">restart&lt;/span>: &lt;span style="color:#ae81ff">always&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">service.mercury&lt;/span>: &lt;span style="color:#75715e"># set Mercury Parser API endpoint to `service.mercury:3000` on TTRSS plugin setting page&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">image&lt;/span>: &lt;span style="color:#ae81ff">wangqiru/mercury-parser-api:latest&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">container_name&lt;/span>: &lt;span style="color:#ae81ff">mercury&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">ports&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> - &lt;span style="color:#ae81ff">3000&lt;/span>:&lt;span style="color:#ae81ff">3000&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">restart&lt;/span>: &lt;span style="color:#ae81ff">always&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">volumes&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">postgres_data&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">rsshub_data&lt;/span>:
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>
+
+
+
+
+ 
+
+
+&lt;div style="text-align: center;">
+&lt;img src="image-20200626140114783.png" 
+ alt="image-20200626140114783" 
+ 
+/>
+&lt;/div>&lt;/p></description></item><item><title>知识记忆软件anki的使用</title><link>https://example.com/post/c7-toolchain/anki_tips/</link><pubDate>Thu, 14 Apr 2022 12:39:04 +0000</pubDate><guid>https://example.com/post/c7-toolchain/anki_tips/</guid><description>&lt;h2 id="anki使用---自建-anki--server">anki使用 - 自建 anki server&lt;/h2>
+&lt;p>当初想设计好用的英语背诵软件，现在发现了anki人家功能全部实现，还要啥自行车。&lt;/p>
+&lt;p>我当时设计的单词勇士开源Android软件：
+&lt;a href="https://github.com/talengu/WordWarrior">https://github.com/talengu/WordWarrior&lt;/a>
+现在已弃坑。&lt;/p>
+&lt;p>我们当然选用docker compose 来安装，相当丝滑。&lt;/p>
+&lt;p>在使用Anki过程中，主要工作是制作卡组，我们可以只关心内容而不关心技术。&lt;/p>
+&lt;!-- more -->
+&lt;h2 id="docker-compose">docker compose&lt;/h2>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-yaml" data-lang="yaml">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># docker-compose.yml&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">version&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;2&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">services&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">service.anki&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">image&lt;/span>: &lt;span style="color:#ae81ff">kuklinistvan/anki-sync-server&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">container_name&lt;/span>: &lt;span style="color:#ae81ff">anki-container&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">ports&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> - &lt;span style="color:#ae81ff">8121&lt;/span>:&lt;span style="color:#ae81ff">27701&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">volumes&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> - &lt;span style="color:#ae81ff">~/anki-sync-server:/app/data&lt;/span> &lt;span style="color:#75715e"># anki data&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">restart&lt;/span>: &lt;span style="color:#ae81ff">always&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;pre tabindex="0">&lt;code>docker-compose up -d 
+&lt;/code>&lt;/pre>&lt;h3 id="登陆container">登陆container&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-shell" data-lang="shell">&lt;span style="display:flex;">&lt;span>docker exec -it anki-container /bin/sh
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>./ankisyncctl.py lsuser - list users
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>./ankisyncctl.py adduser &amp;lt;username&amp;gt; - add a new user
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>./ankisyncctl.py deluser &amp;lt;username&amp;gt; - delete a user
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>./ankisyncctl.py passwd &amp;lt;username&amp;gt; - change password of a user
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="客户端">客户端&lt;/h2>
+&lt;img src="anki_tips/image-20200424005627732.png" alt="image-20200424005627732" style="zoom:33%;" />
+&lt;h3 id="macwin-客户端">mac/win 客户端&lt;/h3>
+&lt;p>从官网下载 anki mac版本 2.1.21 (f1734a47) / Windows PC 客户端&lt;/p></description></item><item><title>二零年RSS杂谈</title><link>https://example.com/post/c0-life/talk-rss-2020/</link><pubDate>Fri, 14 Jan 2022 01:02:57 +0000</pubDate><guid>https://example.com/post/c0-life/talk-rss-2020/</guid><description>&lt;p>2020年了，笔者还是使用RSS的原始人。RSS，Really Simple Syndication是一种信息聚合工具。在5G时代信息即将大爆炸之前，我来谈谈rss的杂七杂八吧。我们来打个赌，你不会看完这篇文章。&lt;/p>
 &lt;!-- more -->
 &lt;p>软件的交互设计有很多心理学理论的应用。比如微信、QQ的三级页面设计，一般经过3次点击就能到达功能或设置。这符合认知原理，人认知记忆能力一般为3-5个的组合。日常生活中要记电话号码，可以3-4-4这样记。软件交互中还有利用人的习惯奖励机制的提醒红点的设计，吸引你去点击，获取红点消失的奖励。对我来说，较难控制住不受这些设计的影响。在《习惯的力量》一书了解到，直接逃离这些环境可有效解决控制不住的问题。比如工作的时候，把手机关进柜子，工作1个小时，然后再回复信息，当然重要电话还是要立即接的。&lt;/p>
 &lt;p>铺天盖地的广告，马路上，电视中，手机里，PC页面充斥着各种广告等等。大多数人可能养成了自动过滤的广告的习惯，然而我的情况是一直在用去广告的插件，并没有养成自动忽略广告的习惯。可怜兮兮，难道只有我是有广告洁癖的嘛？广告有点浪费生命。&lt;/p>
@@ -254,7 +567,7 @@
 &lt;p>看来all in one 势在必行，RSS被谷歌放弃后，很多网站傲娇地不提供RSS服务了，毕竟流量至上，钱要赚的，我一直想做一个这种爬的工具，但我不希望有大量使用爬，也就是我们还是要尊重网站的盈利以及持续发展的，这也是仅仅方便个人的信息处理，优化你的自动信息的处理，再也不用一个个打开网站，然后看信息看广告，还要被推荐不重用的信息。这也算我个人的想法。人在于折腾，于是我开始折腾ttrss rsshub等开源软件。&lt;/p>
 &lt;p>自由软件的好处，在于自由定制，参与发展，利益化会尽量变慢或者没有，方便的同时并不忘隐私保护。&lt;/p>
 &lt;p>我想说的是，&lt;strong>技术应当给人们带来自由和发展，而非接管人们的注意力，浪费宝贵的时间。&lt;/strong>&lt;/p>
-&lt;p>写在5G信息大爆发前，与大家共同反思与成长。&lt;/p></description></item><item><title>RSS跟踪github文件更新+某管子更新</title><link>https://example.com/post/rss_github_file/</link><pubDate>Sat, 24 Jul 2021 12:00:00 +0000</pubDate><guid>https://example.com/post/rss_github_file/</guid><description>&lt;p>&lt;strong>前言&lt;/strong>&lt;/p>
+&lt;p>写在5G信息大爆发前，与大家共同反思与成长。&lt;/p></description></item><item><title>RSS跟踪github文件更新+某管子更新</title><link>https://example.com/post/c7-toolchain/rss_github_file/</link><pubDate>Sat, 24 Jul 2021 12:00:00 +0000</pubDate><guid>https://example.com/post/c7-toolchain/rss_github_file/</guid><description>&lt;p>&lt;strong>前言&lt;/strong>&lt;/p>
 &lt;p>好久没有更新博客了。RSS这种形式的信息获取方式，似乎又流行起来。&lt;/p>
 &lt;!-- more -->
 &lt;h2 id="github文件更新">github文件更新&lt;/h2>
@@ -349,7 +662,99 @@
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">for&lt;/span> _d &lt;span style="color:#f92672">in&lt;/span> _now[:&lt;span style="color:#f92672">-&lt;/span>&lt;span style="color:#ae81ff">5&lt;/span>]:
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> os&lt;span style="color:#f92672">.&lt;/span>popen(&lt;span style="color:#e6db74">&amp;#34;rm -rf &lt;/span>&lt;span style="color:#e6db74">%s&lt;/span>&lt;span style="color:#e6db74">&amp;#34;&lt;/span>&lt;span style="color:#f92672">%&lt;/span>_d)
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>在linux亦可使用&lt;a href="https://www.runoob.com/w3cnote/linux-crontab-tasks.html">crontab&lt;/a>定时启动下载任务。在 &lt;code>/etc/cron.hourly/&lt;/code> 设置即可。&lt;/p></description></item><item><title>SRT中英文合并Python脚本</title><link>https://example.com/post/shells/youtube_src_combine/</link><pubDate>Thu, 14 Apr 2016 12:39:04 +0000</pubDate><guid>https://example.com/post/shells/youtube_src_combine/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>在linux亦可使用&lt;a href="https://www.runoob.com/w3cnote/linux-crontab-tasks.html">crontab&lt;/a>定时启动下载任务。在 &lt;code>/etc/cron.hourly/&lt;/code> 设置即可。&lt;/p></description></item><item><title>Jupyter notebook的配置</title><link>https://example.com/post/c7-toolchain/jupyter-notebook/</link><pubDate>Mon, 03 Jul 2017 16:00:04 +0000</pubDate><guid>https://example.com/post/c7-toolchain/jupyter-notebook/</guid><description>&lt;p>&lt;strong>前言&lt;/strong>
+本文介绍jupyter notebook的安装配置过程和实用技巧。
+&lt;a href="https://jupyter.readthedocs.io/en/latest/index.html">jupyter.readthedocs教程&lt;/a>&lt;/p>
+&lt;!-- more -->
+&lt;h2 id="1-安装与配置">1 安装与配置&lt;/h2>
+&lt;h3 id="11-安装-jupyter">1.1 安装 jupyter&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>conda install jupyter
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># pip install -i https://pypi.tuna.tsinghua.edu.cn/simple jupyter&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># pip install jupyter -y&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="12-修改配置文件">1.2 修改配置文件&lt;/h3>
+&lt;ul>
+&lt;li>生成配置文件&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-shell" data-lang="shell">&lt;span style="display:flex;">&lt;span>jupyter notebook --generate-config
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>vim ~/.jupyter/jupyter_notebook_config.py
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>修改配置文件内容&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-python" data-lang="python">&lt;span style="display:flex;">&lt;span>c&lt;span style="color:#f92672">.&lt;/span>NotebookApp&lt;span style="color:#f92672">.&lt;/span>ip &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">&amp;#39;0.0.0.0&amp;#39;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>c&lt;span style="color:#f92672">.&lt;/span>NotebookApp&lt;span style="color:#f92672">.&lt;/span>port &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#ae81ff">8018&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># 设置密码&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>c&lt;span style="color:#f92672">.&lt;/span>NotebookApp&lt;span style="color:#f92672">.&lt;/span>password &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">u&lt;/span>&lt;span style="color:#e6db74">&amp;#39;sha1:bcd259ccf...your hashed password here&amp;#39;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;blockquote>
+&lt;p>Tip: 利用ipython 生成密码&lt;/p>
+&lt;pre tabindex="0">&lt;code>In [1]: from IPython.lib import passwd
+In [2]: passwd()
+ Enter password:
+ Verify password:
+ Out[2]: &amp;#39;sha1:67xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&amp;#39;
+&lt;/code>&lt;/pre>&lt;/blockquote>
+&lt;p>我选用的是password密码登陆jupyter的方案，其他的密码登陆方案见 &lt;a href="https://zhuanlan.zhihu.com/p/23110830">link&lt;/a>&lt;/p>
+&lt;blockquote>
+&lt;p>新的方法
+from notebook.auth import passwd; passwd()&lt;/p>&lt;/blockquote>
+&lt;h3 id="安装-jupyter-lab">安装 jupyter-lab&lt;/h3>
+&lt;pre tabindex="0">&lt;code>jupyter-lab --generate-config
+
+vim ~/.jupyter/jupyter_lab_config.py
+
+# 允许局域网访问
+c.ServerApp.ip = &amp;#39;*&amp;#39;
+
+# 使用 生成密码from jupyter_server.auth import passwd; passwd()
+c.ServerApp.password = &amp;#39;&amp;#39;
+&lt;/code>&lt;/pre>&lt;h3 id="安装低版本jupyter">安装低版本jupyter&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>python3 -m venv xxx
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>IPython&lt;span style="color:#f92672">==&lt;/span>8.12.0
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>notebook&lt;span style="color:#f92672">==&lt;/span>6.4.12
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>jupyter-server&lt;span style="color:#f92672">==&lt;/span>1.13.4
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>traitlets&lt;span style="color:#f92672">==&lt;/span>5.9.0
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># 安装依赖插件&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>pip install jupyter_contrib_nbextensions jupyter_nbextensions_configurator
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># 激活扩展管理器&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>jupyter contrib nbextension install --user
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>jupyter nbextensions_configurator enable --user
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="13-安装插件管理">1.3 安装插件管理&lt;/h3>
+&lt;p>jupyter_contrib_nbextensions 为 jupyter notebook 扩展插件管理器，下面简称nbextensions。&lt;/p></description></item><item><title>个人主页搭建</title><link>https://example.com/post/c7-toolchain/build_blog/</link><pubDate>Thu, 22 Dec 2016 12:39:04 +0000</pubDate><guid>https://example.com/post/c7-toolchain/build_blog/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
+&lt;p>本文主要内容为博客搭建的记录与分享，我采用了Hexo博客框架，NexT主题和Gitment评论系统。本文中记录了我博客的安装流程和使用过程中的改进细节。&lt;/p>
+&lt;p>对Next主题版本的一些说明：我使用的是&lt;code>version: 5.1.0&lt;/code>。而使用新版本的NexT v6 主题的同学，有些功能如gitment已经实现，可以直接使用V6。此V6版本对于图片的使用可能会出现问题。仅需看看我下面的2.2小节。&lt;/p>
+&lt;p>有时间我会将我修改后的hexo Next theme 基于&lt;code>version: 5.1.0&lt;/code>主题，给个独立的git仓，放到github 上。&lt;/p>
+&lt;blockquote>
+&lt;p>小技巧：在文章中可以使用&lt;code>&amp;lt;!-- more --&amp;gt;&lt;/code>手动进行截断，more上面部分将被放到主页上显示。此为Hexo 提供的方式。&lt;/p>&lt;/blockquote>
+&lt;p>下面就是用&lt;code>&amp;lt;!-- more --&amp;gt;&lt;/code>截断的～～&lt;/p>
+&lt;!-- more -->
+&lt;p>在看安装教程的时候，发现怎么要涉及这么多东西，请大家不要担心，一步步来。同时也不用在意会不会nodejs，框架这些东西，人家已经帮我们把东西都写好了，我们做的就是改改配置文件，最多改改里面swig的模版的一些代码。最后，望大家见谅的是，我对js不太熟，有些地方不是很清楚。欢迎大家在下面评论，或者在github上开issue，共同讨论。&lt;/p>
+&lt;h2 id="1-安装">1. 安装&lt;/h2>
+&lt;h3 id="11-简易安装使用">1.1 简易安装使用&lt;/h3>
+&lt;p>使用新版本的 &lt;code>NexT v6&lt;/code> 主题即可，有些功能如 &lt;code>gitment&lt;/code> 已经实现。对于图片的使用可能会出现问题。仅需看看我下面的2.2小节。我使用的是 &lt;code>version: 5.1.0&lt;/code> 。&lt;/p>
+&lt;h3 id="12-从头安装">1.2 从头安装&lt;/h3>
+&lt;ul>
+&lt;li>安装 nodejs，从nodejs 官网下载安装包 &lt;a href="https://nodejs.org/en/download/">download page&lt;/a>&lt;/li>
+&lt;li>安装git客户端 &lt;a href="https://git-scm.com/">git&lt;/a>&lt;/li>
+&lt;li>安装Hexo &lt;code>npm install -g hexo-cli&lt;/code>
+&lt;a href="https://hexo.io/zh-cn/docs/">hexo 中文安装文档&lt;/a>
+&lt;a href="https://hexo.io/zh-cn/">Hexo中文网站&lt;/a>&lt;/li>
+&lt;li>安装NexT ，NexT是一个比较火的主题。
+按官网教程NexT安装即可，官网安装和配置教程比较美滋滋。
+&lt;a href="http://theme-next.iissnan.com/getting-started.html">http://theme-next.iissnan.com/getting-started.html&lt;/a>
+NexT Github &lt;a href="https://github.com/iissnan/hexo-theme-next">https://github.com/iissnan/hexo-theme-next&lt;/a>
+另外，NexT开发者的博客（最近Next 变成组织了，祝贺）&lt;a href="http://notes.iissnan.com">http://notes.iissnan.com&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;blockquote>
+&lt;p>&lt;strong>Ubuntu安装记录&lt;/strong>&lt;/p>&lt;/blockquote>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># for Ubuntu16.04&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$ sudo apt install npm nodejs-legacy
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$ sudo npm install hexo-cli -g
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$ hexo init blog
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$ cd blog
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$ npm install
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$ hexo server
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>ok，安装完的目录结构。&lt;/p></description></item><item><title>SRT中英文合并Python脚本</title><link>https://example.com/post/c7-toolchain/shells/youtube_src_combine/</link><pubDate>Thu, 14 Apr 2016 12:39:04 +0000</pubDate><guid>https://example.com/post/c7-toolchain/shells/youtube_src_combine/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
 &lt;p>从YouTube上看只有中文或英文分开的字幕，下载好视频，想要中英文字幕。可从 &lt;a href="http://mo.dbxdb.com/Yang/setting.html">Getting Youtube subtitles&lt;/a> 获取中或英文字幕，然后将其合并，即成中英文双字幕。下面是Python脚本。&lt;/p>
 &lt;!-- more -->
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-python" data-lang="python">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74">&amp;#39;&amp;#39;&amp;#39;
@@ -397,4 +802,94 @@
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> print(name)
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> name[&lt;span style="color:#f92672">-&lt;/span>&lt;span style="color:#ae81ff">6&lt;/span>:&lt;span style="color:#f92672">-&lt;/span>&lt;span style="color:#ae81ff">4&lt;/span>]&lt;span style="color:#f92672">==&lt;/span>&lt;span style="color:#e6db74">&amp;#39;zh&amp;#39;&lt;/span>:
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> hebing(name)
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item></channel></rss>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Windows笔记本开共享wifi</title><link>https://example.com/post/c7-toolchain/shells/windowns-share-wifi-cmd/</link><pubDate>Tue, 14 Apr 2015 12:39:04 +0000</pubDate><guid>https://example.com/post/c7-toolchain/shells/windowns-share-wifi-cmd/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
+&lt;p>网上有很多用笔记本设置无线热点的批处理，我中和了一下。复制下面代码到记事本，改后缀为bat就行了。其中，mssid和mkey可自定义&lt;/p>
+&lt;!-- more -->
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-shell" data-lang="shell">&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>@echo off
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>set mssid&lt;span style="color:#f92672">=&lt;/span>GOODGOOD
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>::网络名字
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>set mkey&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#ae81ff">123456789&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>::大于八位密码
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>echo ***********************************************
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>echo 打开承载网络 &lt;span style="color:#ae81ff">1&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>echo 关闭承载网络 &lt;span style="color:#ae81ff">2&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>echo 承载网络信息 &lt;span style="color:#ae81ff">3&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>echo 设置网络信息 set
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>echo 退出 e
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>echo （网络名字、密码可在源文件中改）
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>echo （请以管理员身份打开!!!）
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>echo ***********************************************
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>:start
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>set /p var&lt;span style="color:#f92672">=&lt;/span>请选择:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">if&lt;/span> %var%&lt;span style="color:#f92672">==&lt;/span>&lt;span style="color:#ae81ff">1&lt;/span> netsh wlan start hostednetwork &lt;span style="color:#f92672">&amp;amp;&amp;amp;&lt;/span> echo 网络名字:%mssid% 密码:%mkey% &lt;span style="color:#f92672">&amp;amp;&amp;amp;&lt;/span> GOTO start
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">if&lt;/span> %var%&lt;span style="color:#f92672">==&lt;/span>&lt;span style="color:#ae81ff">2&lt;/span> netsh wlan stop hostednetwork &lt;span style="color:#f92672">&amp;amp;&amp;amp;&lt;/span> GOTO start
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">if&lt;/span> %var%&lt;span style="color:#f92672">==&lt;/span>&lt;span style="color:#ae81ff">3&lt;/span> netsh wlan show hostednetwork &lt;span style="color:#f92672">&amp;amp;&amp;amp;&lt;/span> echo 网络名字:%mssid% 密码:%mkey% &lt;span style="color:#f92672">&amp;amp;&amp;amp;&lt;/span> GOTO start
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">if&lt;/span> %var%&lt;span style="color:#f92672">==&lt;/span>set netsh wlan set hostednetwork mode&lt;span style="color:#f92672">=&lt;/span>allow ssid&lt;span style="color:#f92672">=&lt;/span>%mssid% key&lt;span style="color:#f92672">=&lt;/span>%mkey% &lt;span style="color:#f92672">&amp;amp;&amp;amp;&lt;/span> echo 网络名字:%mssid% 密码:%mkey% &lt;span style="color:#f92672">&amp;amp;&amp;amp;&lt;/span> GOTO start
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">if&lt;/span> %var%&lt;span style="color:#f92672">==&lt;/span>e pause
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="播放声音">播放声音&lt;/h2>
+&lt;p>保存为&lt;code>播放声音.vbs&lt;/code>,可以播放声音&lt;/p></description></item><item><title>博客模版</title><link>https://example.com/post/template/</link><pubDate>Fri, 01 Jan 2010 12:00:00 +0000</pubDate><guid>https://example.com/post/template/</guid><description>&lt;p>文件head，设置标题、日期、分类、标签、评论、版权、是否使用公式，如下。&lt;/p>
+&lt;pre tabindex="0">&lt;code>---
+title: 模版文件
+date: 2019-07-25 12:00:00
+updated: 2019-07-25 12:00:00
+categories:
+ - 博客搭建
+ - 模版文件
+tags:
+ - Writing
+comments: true
+copyright: true
+math: true
+---
+&lt;/code>&lt;/pre>&lt;p>&lt;strong>摘要&lt;/strong>&lt;/p>
+&lt;p>本部分说明文章的写作意图。涉及的背景、主要内容、本文与其他文章关系等。&lt;/p>
+&lt;p>本文为Hexo博客模版文件，以Markdown语言书写。&lt;/p>
+&lt;pre tabindex="0">&lt;code>前言一般放到主页，可利用 &amp;lt;!-- more --&amp;gt; 隔断。
+&lt;/code>&lt;/pre>&lt;!-- more -->
+&lt;h2 id="1-构思与起草">1 构思与起草&lt;/h2>
+&lt;ul>
+&lt;li>对文章的阅读群体、写作意图和反馈（Audience Intention Response AIR）要有一个清楚的认识。照顾沟通对象的需要、你的意图（信息）以及希望的反馈。&lt;/li>
+&lt;li>在思维导图上，放上你需要的关键名词，然后依次在它基础上添加动词，在加上形容词。最后以一定顺序组织你将要阐述的信息。比如重要性排序，对比优势劣势，方案的不同层面，时间上逻辑上的因果性等等。&lt;/li>
+&lt;/ul>
+&lt;h2 id="2-主体内容">2 主体内容&lt;/h2>
+&lt;p>文章的主要内容，包括你对跟进过程或发现成果的描述，以数据、事实证据以及其他的信息支撑主要内容。在你的论说中，你应该把对客观事实的描述和写作者对事情的主管阐述区分开来。&lt;/p>
+&lt;p>当你在报告中对一个观点进行陈述的时候，你需要记住以下几点：&lt;/p>
+&lt;ul>
+&lt;li>清晰的呈现事实&lt;/li>
+&lt;li>有逻辑地提出论据&lt;/li>
+&lt;li>引用相关的语录、简明易懂的事实和例子来支持你的论点&lt;/li>
+&lt;li>给出支持或反对该行为的理由&lt;/li>
+&lt;li>始终围绕主要观点进行讨论&lt;/li>
+&lt;li>处理好重要的假设关系&lt;/li>
+&lt;li>区分说明（具体阐述）和论证（有理有据）&lt;/li>
+&lt;/ul>
+&lt;p>链接：https://talengu.github.io/&lt;/p>
+&lt;h3 id="21-图">2.1 图&lt;/h3>
+&lt;pre tabindex="0">&lt;code>![GDP](http://www.stats.gov.cn/sj/zxfb/202302/W020230228515999473627.png)
+&amp;lt;div align=&amp;#39;center&amp;#39;&amp;gt; &amp;lt;b&amp;gt;图1 2022年国内生产总值及其增速度&amp;lt;/b&amp;gt;&amp;lt;/div&amp;gt;
+&lt;/code>&lt;/pre>&lt;p>这两行代码生成下面的图和标题。&lt;/p>
+&lt;p>
+
+
+
+
+
+&lt;div style="text-align: center;">
+&lt;img src="http://www.stats.gov.cn/sj/zxfb/202302/W020230228515999473627.png" 
+ alt="GDP" 
+ 
+/>
+&lt;/div>图 1 展示的是2018-2022年的GDP和增长速度，来自&lt;sup id="fnref:1">&lt;a href="#fn:1" class="footnote-ref" role="doc-noteref">1&lt;/a>&lt;/sup>。图中数据反应出国内生产总值在2018-2022年度增长率存在波动但稳中向好的情况。&lt;/p>
+&lt;h3 id="22-表">2.2 表&lt;/h3>
+&lt;pre tabindex="0">&lt;code>&amp;lt;div align=&amp;#39;center&amp;#39;&amp;gt; &amp;lt;b&amp;gt;表1 2018年年末人口数及其构成&amp;lt;/b&amp;gt;&amp;lt;/div&amp;gt;
+
+| 指标 | 年末数（万人） | 比重（%） |
+| ---------- | -------------- | --------- |
+| 全国总人口 | 139538 | 100.0 |
+| 其中：城镇 | 83137 | 59.58 |
+| 乡村 | 56401 | 40.42 |
+&lt;/code>&lt;/pre>&lt;p>这两行代码生成下面的表和标题。&lt;/p></description></item></channel></rss>

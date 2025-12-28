@@ -1,0 +1,81 @@
+<!doctype html><html lang=zh-cn><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><title>c结构体对齐 | 一塘</title>
+<link rel=stylesheet href=/css/style.css><link rel=stylesheet href=/css/fonts.css><link rel=stylesheet href=/css/dark.css></head><body><nav><ul class=menu><li><a href=/about/>一塘</a></li><li><a href=/post/>博客</a></li><li><a href=/categories/>分类</a></li><li><a href=/tags/>标签</a></li><li style=float:right;position:relative;margin-left:1em><input type=text id=search-box placeholder=搜索文章... style="padding:.3em .6em;border-radius:4px;border:1px solid #ccc;width:150px;min-width:100px;max-width:250px"><ul id=search-results style="position:absolute;top:100%;right:0;background:#fff;border:1px solid #ccc;max-height:300px;overflow-y:auto;display:none;z-index:1000;list-style:none;padding:0;margin:0;width:250px"></ul></li><style>.search-item{padding:.4em .6em}.search-link{display:block;font-weight:500;text-decoration:none;color:#007acc}.search-snippet{font-size:.85em;color:#555;margin-top:.2em;line-height:1.4}.search-highlight{background:rgba(255,235,59,.5);padding:0 .15em;border-radius:3px}.search-item:hover{background-color:rgba(0,0,0,5%)}@media(prefers-color-scheme:dark){.search-link{color:#4fc3f7}.search-snippet{color:#aaa}.search-item:hover{background-color:rgba(104,99,99,.273)}.search-highlight{background:rgba(255,193,7,.35)}}</style><script src=https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.6.2/fuse.min.js></script><script>fetch("/post/index.json").then(e=>e.json()).then(e=>{const o=new Fuse(e,{keys:[{name:"title",weight:2},{name:"summary",weight:1},{name:"content",weight:.7}],threshold:.3,ignoreLocation:!0,minMatchCharLength:2}),n=document.getElementById("search-box"),t=document.getElementById("search-results");function s(e,t){if(!e)return"";const n=t.replace(/[.*+?^${}()|[\]\\]/g,"\\$&"),s=new RegExp(`(${n})`,"gi");return e.replace(s,'<mark class="search-highlight">$1</mark>')}function i(e,t,n=80){const s=e.toLowerCase().indexOf(t.toLowerCase());if(s===-1)return e.slice(0,n)+"…";const o=Math.max(0,s-n/2),i=Math.min(e.length,s+n/2);return"…"+e.slice(o,i)+"…"}n.addEventListener("input",function(){const e=this.value.trim();if(!e){t.style.display="none",t.innerHTML="";return}const n=o.search(e);t.innerHTML=n.slice(0,8).map(t=>{const n=t.item,o=i(n.content||n.summary||"",e);return`
+          <li class="search-item">
+            <a href="${n.permalink}" class="search-link">
+              ${s(n.title,e)}
+            </a>
+            <div class="search-snippet">
+              ${s(o,e)}
+            </div>
+          </li>
+        `}).join(""),t.style.display=n.length?"block":"none"}),document.addEventListener("click",e=>{!n.contains(e.target)&&!t.contains(e.target)&&(t.style.display="none")})})</script></ul><hr></nav><div class=article-meta><h1><span class=title>c结构体对齐</span></h1></div><div class=post-stats style=text-align:right>2022/12/15</div><main><h2 id=前言>前言</h2><p>c语言的字节对齐，机器的大小段模式的理解。</p><p>计算机存储的基础知识。</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=display:flex><span><span style=color:#75715e>#include</span> <span style=color:#75715e>&lt;stdio.h&gt;</span><span style=color:#75715e>
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#66d9ef>typedef</span> <span style=color:#66d9ef>struct</span> tm{
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>unsigned</span> <span style=color:#66d9ef>int</span> a;
+</span></span><span style=display:flex><span>}TM;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>typedef</span> <span style=color:#66d9ef>struct</span> hp{
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>char</span> a;
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>unsigned</span> <span style=color:#66d9ef>char</span> b;
+</span></span><span style=display:flex><span>	TM <span style=color:#f92672>*</span>t;
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>unsigned</span> <span style=color:#66d9ef>short</span> c;
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>unsigned</span> <span style=color:#66d9ef>long</span> d;
+</span></span><span style=display:flex><span>}HP;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>int</span> <span style=color:#a6e22e>main</span>(<span style=color:#66d9ef>int</span> argc, <span style=color:#66d9ef>char</span> <span style=color:#f92672>*</span>argv[])
+</span></span><span style=display:flex><span>{
+</span></span><span style=display:flex><span>	HP hp<span style=color:#f92672>=</span>{
+</span></span><span style=display:flex><span>		.a<span style=color:#f92672>=</span><span style=color:#ae81ff>0xa1</span>,
+</span></span><span style=display:flex><span>		.b<span style=color:#f92672>=</span><span style=color:#ae81ff>0xb1</span>,
+</span></span><span style=display:flex><span>		.c<span style=color:#f92672>=</span><span style=color:#ae81ff>0xc1c2</span>,
+</span></span><span style=display:flex><span>		.d<span style=color:#f92672>=</span><span style=color:#ae81ff>0x1</span>,
+</span></span><span style=display:flex><span>	};
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>unsigned</span> <span style=color:#66d9ef>char</span> <span style=color:#f92672>*</span>p<span style=color:#f92672>=&amp;</span>hp;
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>printf</span>(<span style=color:#e6db74>&#34;sizeof(HP) = %lu</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>,<span style=color:#66d9ef>sizeof</span>(HP) );	
+</span></span><span style=display:flex><span>	
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>for</span> (<span style=color:#66d9ef>unsigned</span> <span style=color:#66d9ef>long</span> i <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>; i <span style=color:#f92672>&lt;</span> <span style=color:#66d9ef>sizeof</span>(HP); <span style=color:#f92672>++</span>i) {
+</span></span><span style=display:flex><span>		<span style=color:#a6e22e>printf</span>(<span style=color:#e6db74>&#34;%02x &#34;</span>,p[i] );	
+</span></span><span style=display:flex><span>		<span style=color:#66d9ef>if</span>((i<span style=color:#f92672>+</span><span style=color:#ae81ff>1</span>)<span style=color:#f92672>%</span><span style=color:#ae81ff>8</span><span style=color:#f92672>==</span><span style=color:#ae81ff>0</span>)
+</span></span><span style=display:flex><span>			<span style=color:#a6e22e>printf</span>(<span style=color:#e6db74>&#34;</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>);
+</span></span><span style=display:flex><span>	}
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>unsigned</span> <span style=color:#66d9ef>int</span> d<span style=color:#f92672>=</span>hp.d;
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>printf</span>(<span style=color:#e6db74>&#34;%d&#34;</span>,d);
+</span></span><span style=display:flex><span>	
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>return</span> <span style=color:#ae81ff>0</span>;
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><pre tabindex=0><code>//OUT
+|| sizeof(HP) = 32
+|| a1 b1 00 00 00 00 00 00 
+|| 00 00 00 00 00 00 00 00 
+|| c2 c1 00 00 00 00 00 00 
+|| 01 00 00 00 00 00 00 00 
+|| 1
+</code></pre><h2 id=存储方式>存储方式</h2><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=display:flex><span>	HP hp<span style=color:#f92672>=</span>{
+</span></span><span style=display:flex><span>		.a<span style=color:#f92672>=</span><span style=color:#ae81ff>0xa1</span>,
+</span></span><span style=display:flex><span>		.b<span style=color:#f92672>=</span><span style=color:#ae81ff>0xb1</span>,
+</span></span><span style=display:flex><span>		.c<span style=color:#f92672>=</span><span style=color:#ae81ff>0xc1c2</span>,
+</span></span><span style=display:flex><span>		.d<span style=color:#f92672>=</span><span style=color:#ae81ff>0xd1d2d3d4</span>,<span style=color:#75715e>//&lt;-0x1
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>	};
+</span></span></code></pre></div><pre tabindex=0><code>//OUT
+|| sizeof(HP) = 32
+|| a1 b1 00 00 00 00 00 00 
+|| 00 00 00 00 00 00 00 00 
+|| c2 c1 00 00 00 00 00 00 
+|| d4 d3 d2 d1 00 00 00 00 
+|| 3520254932
+</code></pre><h2 id=字节对齐>字节对齐</h2><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=display:flex><span><span style=color:#75715e>//将 d 改为 d:1
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#66d9ef>typedef</span> <span style=color:#66d9ef>struct</span> hp{
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>char</span> a;
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>unsigned</span> <span style=color:#66d9ef>char</span> b;
+</span></span><span style=display:flex><span>	TM <span style=color:#f92672>*</span>t;
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>unsigned</span> <span style=color:#66d9ef>short</span> c;
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>unsigned</span> <span style=color:#66d9ef>long</span> d:<span style=color:#ae81ff>1</span>; <span style=color:#75715e>//&lt;--- unsigned long d;
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>}HP;
+</span></span></code></pre></div><pre tabindex=0><code>//OUT
+|| 1 warning generated.
+|| sizeof(HP) = 24
+|| a1 b1 00 00 00 00 00 00 
+|| 00 00 00 00 00 00 00 00 
+|| c2 c1 01 00 00 00 00 00 
+|| 1
+</code></pre><p>少占用了一个8字节。</p></main><script src=https://giscus.app/client.js data-repo=talengu/talengu.github.io data-repo-id="MDEwOlJlcG9zaXRvcnk5MTk0NjkxNQ==" data-category=Blog data-category-id=DIC_kwDOBXr_o84C0Qpk data-mapping=pathname data-strict=0 data-reactions-enabled=1 data-emit-metadata=0 data-input-position=bottom data-theme=/css/giscus.css data-lang=zh-CN crossorigin=anonymous async></script><footer>- END -<hr><a href=/about target=_blank title=About>一塘</a>
+© 2025
+<a href=/index.xml target=_blank title=RSS>RSS</a></footer></body></html>

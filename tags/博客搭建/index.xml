@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>博客搭建 on 一塘</title><link>https://example.com/tags/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/</link><description>Recent content in 博客搭建 on 一塘</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Mon, 22 Dec 2025 12:39:04 +0000</lastBuildDate><atom:link href="https://example.com/tags/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/index.xml" rel="self" type="application/rss+xml"/><item><title>Hugo搭建</title><link>https://example.com/post/c7-toolchain/hugo_build/</link><pubDate>Mon, 22 Dec 2025 12:39:04 +0000</pubDate><guid>https://example.com/post/c7-toolchain/hugo_build/</guid><description>&lt;p>从2015年开始，我使用Hexo框架Next主题搭建，个人博客系统，正好十年。
+框架和主题配置完成后，我只要关注markdown内容即可。&lt;/p>
+&lt;p>在这使用过程中，遇到过一次大规模的js投毒，那一次hexo 编译不出。
+hexo 和next 框架 变更实在是太快了，最近在github 的页面编译不出后，我修复无果，也懒得折腾了，在初步调研后，准备使用&lt;a href="https://gohugo.io">hugo&lt;/a>和&lt;a href="https://www.gohugothemes.com/theme/yihui-hugo-xmin/">Hugo Xmin&lt;/a>&lt;/p>
+&lt;p>使用的是 hugo 与 hugo-xmin&lt;/p>
+&lt;h2 id="hugo-安装">hugo 安装&lt;/h2>
+&lt;p>hugo 可以直接下载二进制文件 &lt;a href="https://github.com/gohugoio/hugo/releases?page=3">https://github.com/gohugoio/hugo/releases?page=3&lt;/a>&lt;/p>
+&lt;p>hugo v0.146.7&lt;/p>
+&lt;p>hugo-xmin 从git库中下载&lt;/p>
+&lt;p>&lt;a href="https://github.com/yihui/hugo-xmin">https://github.com/yihui/hugo-xmin&lt;/a>&lt;/p>
+&lt;p>c871e5665f5eceb919c8fdb284b73c7a07012646&lt;/p>
+&lt;p>我个人是mac，使用的是docker debian镜像，在它上面安装二进制文件&lt;/p>
+&lt;pre tabindex="0">&lt;code>docker pull --platform linux/arm64 debian:12-slim
+&lt;/code>&lt;/pre>&lt;pre tabindex="0">&lt;code>services:
+ hugo:
+ image: debian:12-slim
+ volumes:
+ - talengu.github.io:/blog
+ - blog/posts:/blog/content/post
+ working_dir: /blog
+ ports:
+ - 1313:1313
+ command: ./hugo_0.146.7_arm64 server --bind 0.0.0.0
+ stdin_open: true
+ tty: true
+&lt;/code>&lt;/pre>&lt;p>其他docker镜像可使用 &lt;a href="https://hub.docker.com/r/klakegg/hugo/tags?name=debian">klakegg/hugo&lt;/a>&lt;/p>
+&lt;h2 id="hugo-使用">hugo 使用&lt;/h2>
+&lt;p>./hugo server &amp;ndash;bind 0.0.0.0
+./hugo build&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>cd public
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>git init
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>git remote add origin git@github.com:talengu/talengu.github.io.git
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>git checkout -b gh-pages
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>git add .
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>git commit -m &lt;span style="color:#e6db74">&amp;#34;Deploy Hugo site&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>git push -f origin gh-pages
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="分类布局">分类布局&lt;/h2>
+&lt;table>
+ &lt;thead>
+ &lt;tr>
+ &lt;th>&lt;strong>categories&lt;/strong>&lt;/th>
+ &lt;th>folder name&lt;/th>
+ &lt;th>&lt;strong>放什么&lt;/strong>&lt;/th>
+ &lt;/tr>
+ &lt;/thead>
+ &lt;tbody>
+ &lt;tr>
+ &lt;td>life&lt;/td>
+ &lt;td>c0-life&lt;/td>
+ &lt;td>旅行 / 阅读 / 随笔&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>math&lt;/td>
+ &lt;td>c1-math&lt;/td>
+ &lt;td>概率 / 线代 / 算法&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>robotics&lt;/td>
+ &lt;td>c2-robotics&lt;/td>
+ &lt;td>机器人&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>ai&lt;/td>
+ &lt;td>c3-ai&lt;/td>
+ &lt;td>LLM / CV / 实验记录&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>system&lt;/td>
+ &lt;td>c4-system&lt;/td>
+ &lt;td>性能 / 架构 / OS 设计&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>linux&lt;/td>
+ &lt;td>c5-linux&lt;/td>
+ &lt;td>内核、发行版、系统工具&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>network&lt;/td>
+ &lt;td>c6-network&lt;/td>
+ &lt;td>TCP/IP、抓包、协议&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>toolchain&lt;/td>
+ &lt;td>c7-toolchain&lt;/td>
+ &lt;td>gcc / musl / cmake / build / rss工具&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>programming&lt;/td>
+ &lt;td>c8-programming&lt;/td>
+ &lt;td>C / Python / 数据结构&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>&lt;/td>
+ &lt;td>&lt;/td>
+ &lt;td>&lt;/td>
+ &lt;/tr>
+ &lt;/tbody>
+&lt;/table>
+&lt;h2 id="添加评论-使用-giscusapp">添加评论 使用 giscus.app&lt;/h2>
+&lt;p>按 giscus.app 官方进行操作即可
+&lt;a href="https://giscus.app/">https://giscus.app/&lt;/a>&lt;/p></description></item><item><title>个人主页搭建</title><link>https://example.com/post/c7-toolchain/build_blog/</link><pubDate>Thu, 22 Dec 2016 12:39:04 +0000</pubDate><guid>https://example.com/post/c7-toolchain/build_blog/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
+&lt;p>本文主要内容为博客搭建的记录与分享，我采用了Hexo博客框架，NexT主题和Gitment评论系统。本文中记录了我博客的安装流程和使用过程中的改进细节。&lt;/p>
+&lt;p>对Next主题版本的一些说明：我使用的是&lt;code>version: 5.1.0&lt;/code>。而使用新版本的NexT v6 主题的同学，有些功能如gitment已经实现，可以直接使用V6。此V6版本对于图片的使用可能会出现问题。仅需看看我下面的2.2小节。&lt;/p>
+&lt;p>有时间我会将我修改后的hexo Next theme 基于&lt;code>version: 5.1.0&lt;/code>主题，给个独立的git仓，放到github 上。&lt;/p>
+&lt;blockquote>
+&lt;p>小技巧：在文章中可以使用&lt;code>&amp;lt;!-- more --&amp;gt;&lt;/code>手动进行截断，more上面部分将被放到主页上显示。此为Hexo 提供的方式。&lt;/p>&lt;/blockquote>
+&lt;p>下面就是用&lt;code>&amp;lt;!-- more --&amp;gt;&lt;/code>截断的～～&lt;/p>
+&lt;!-- more -->
+&lt;p>在看安装教程的时候，发现怎么要涉及这么多东西，请大家不要担心，一步步来。同时也不用在意会不会nodejs，框架这些东西，人家已经帮我们把东西都写好了，我们做的就是改改配置文件，最多改改里面swig的模版的一些代码。最后，望大家见谅的是，我对js不太熟，有些地方不是很清楚。欢迎大家在下面评论，或者在github上开issue，共同讨论。&lt;/p>
+&lt;h2 id="1-安装">1. 安装&lt;/h2>
+&lt;h3 id="11-简易安装使用">1.1 简易安装使用&lt;/h3>
+&lt;p>使用新版本的 &lt;code>NexT v6&lt;/code> 主题即可，有些功能如 &lt;code>gitment&lt;/code> 已经实现。对于图片的使用可能会出现问题。仅需看看我下面的2.2小节。我使用的是 &lt;code>version: 5.1.0&lt;/code> 。&lt;/p>
+&lt;h3 id="12-从头安装">1.2 从头安装&lt;/h3>
+&lt;ul>
+&lt;li>安装 nodejs，从nodejs 官网下载安装包 &lt;a href="https://nodejs.org/en/download/">download page&lt;/a>&lt;/li>
+&lt;li>安装git客户端 &lt;a href="https://git-scm.com/">git&lt;/a>&lt;/li>
+&lt;li>安装Hexo &lt;code>npm install -g hexo-cli&lt;/code>
+&lt;a href="https://hexo.io/zh-cn/docs/">hexo 中文安装文档&lt;/a>
+&lt;a href="https://hexo.io/zh-cn/">Hexo中文网站&lt;/a>&lt;/li>
+&lt;li>安装NexT ，NexT是一个比较火的主题。
+按官网教程NexT安装即可，官网安装和配置教程比较美滋滋。
+&lt;a href="http://theme-next.iissnan.com/getting-started.html">http://theme-next.iissnan.com/getting-started.html&lt;/a>
+NexT Github &lt;a href="https://github.com/iissnan/hexo-theme-next">https://github.com/iissnan/hexo-theme-next&lt;/a>
+另外，NexT开发者的博客（最近Next 变成组织了，祝贺）&lt;a href="http://notes.iissnan.com">http://notes.iissnan.com&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;blockquote>
+&lt;p>&lt;strong>Ubuntu安装记录&lt;/strong>&lt;/p>&lt;/blockquote>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># for Ubuntu16.04&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$ sudo apt install npm nodejs-legacy
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$ sudo npm install hexo-cli -g
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$ hexo init blog
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$ cd blog
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$ npm install
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$ hexo server
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>ok，安装完的目录结构。&lt;/p></description></item></channel></rss>

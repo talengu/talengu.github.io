@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>博客 on 一塘</title><link>https://example.com/tags/%E5%8D%9A%E5%AE%A2/</link><description>Recent content in 博客 on 一塘</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Thu, 01 Jan 2015 00:00:00 +0000</lastBuildDate><atom:link href="https://example.com/tags/%E5%8D%9A%E5%AE%A2/index.xml" rel="self" type="application/rss+xml"/><item><title>序言</title><link>https://example.com/post/c0-life/about/</link><pubDate>Thu, 01 Jan 2015 00:00:00 +0000</pubDate><guid>https://example.com/post/c0-life/about/</guid><description>&lt;p>欢迎来到这里，送你个东西 ~&lt;/p>
+&lt;p>
+
+
+
+
+ 
+
+
+&lt;div style="text-align: center;">
+&lt;img src="london.jpeg" 
+ alt="london" 
+ 
+/>
+&lt;/div>&lt;/p>
+&lt;!-- more -->
+&lt;p>博客算是一种有趣的玩物，体现出一个人很多个性的东西。书籍基本都有个引人入胜的序，我想为我的博客也写个序，如能引人入胜那便是赚到了。开博明意，本博客主要记录学习工作中自然科学、人文社科的芝麻知识点，以及生活的休闲杂记。记忆这东西很神奇，莫名其妙地记住一些事，但也不知不觉丢了些东西。在互联网或者说移动互联网之前，人们的记事方式更多的是纸质的，学习也是按照课本一页页去掌握，如今竞争的压力，信息的爆炸，技术信息发布平台多样，信息短快乱，工作与学习所用的知识点越来越多，越来越细，碎片化地学习无法避免的。&lt;/p>
+&lt;p>如何去记录这些碎片的知识，整理归纳的方法论需求已经迫在眉睫。在Github上搭建一个带版本控制和评论功能的博客，我认为是个不错的想法。利用Markdown写文档比较方便，不需涉及很多格式设置的问题，风格想换就换，各个博客平台也支持这种语法格式。git对文本的版本控制比较舒服，我可以在多个终端进行编写，同步也方便，合并后利用hexo框架就可以发布。hexo的主题也比较多样，选用的Next主题有很多差价。Next主题在评论支持方面以前使用的是网易云跟帖，但这个功能网易关了，现在使用的Gitment，利用github的isuue功能的评论框架，现在仅支持github用户登录评论，但就用户面来说，我觉得够了，我写的这些博客主要是给自己看的。&lt;/p>
+&lt;p>对我博客的寄语。希望利用博客建立个人有效的知识体系，锻炼写文章的水平，留下生活中有趣的事物，同时传递出有趣的想法，有效的和各位大牛交流相关领域的经验，在互联网村里共同成长与进步。&lt;/p>
+&lt;p>&lt;a href="https://example.com/post/c7-toolchain/build_blog/">笔者的hexo搭建的过程&lt;/a>已废弃，当前使用hugo&lt;a href="c7-toolchain/hugo_build.md">hugo搭建&lt;/a>.&lt;/p>
+&lt;p>人是一棵会思考的芦苇，并有一个有趣的灵魂。&lt;/p>
+&lt;p>不忘初心，活波严谨。&lt;/p>
+&lt;h2 id="感谢">感谢&lt;/h2>
+&lt;p>The Internet And The World.&lt;/p>
+&lt;h2 id="联系方式">联系方式&lt;/h2>
+&lt;ul>
+&lt;li>
+&lt;p>QQmail: &lt;a href="mailto:tianchenggu@qq.com">tianchenggu@qq.com&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Gmail: &lt;a href="mailto:talenapp@gmail.com">talenapp@gmail.com&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Github as you know&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;p>简单·有效&lt;/p>
+&lt;p>Keep It Simple Stupid.&lt;/p>
+&lt;p>登高·望远&lt;/p>
+&lt;p>Standing on Shoulders of Giants.&lt;/p>
+&lt;p>Thank you !!!&lt;/p></description></item></channel></rss>

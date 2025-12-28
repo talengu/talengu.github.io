@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Ubuntu on 一塘</title><link>https://example.com/tags/ubuntu/</link><description>Recent content in Ubuntu on 一塘</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Fri, 01 Apr 2022 18:00:04 +0000</lastBuildDate><atom:link href="https://example.com/tags/ubuntu/index.xml" rel="self" type="application/rss+xml"/><item><title>Ubuntu完全教程</title><link>https://example.com/post/linux/ubuntu_tour/</link><pubDate>Fri, 01 Apr 2022 18:00:04 +0000</pubDate><guid>https://example.com/post/linux/ubuntu_tour/</guid><description>&lt;blockquote>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Ubuntu on 一塘</title><link>https://example.com/tags/ubuntu/</link><description>Recent content in Ubuntu on 一塘</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Fri, 01 Apr 2022 18:00:04 +0000</lastBuildDate><atom:link href="https://example.com/tags/ubuntu/index.xml" rel="self" type="application/rss+xml"/><item><title>「转」Ubuntu完全教程</title><link>https://example.com/post/c5-linux/linux/ubuntu-tour/</link><pubDate>Fri, 01 Apr 2022 18:00:04 +0000</pubDate><guid>https://example.com/post/c5-linux/linux/ubuntu-tour/</guid><description>&lt;blockquote>
 &lt;p>ref:&lt;a href="http://www.cnblogs.com/dutlei/archive/2012/11/20/2778327.html">Ubuntu完全教程，让你成为Ubuntu高手！&lt;/a>
 todo整理&lt;/p>&lt;/blockquote>
 &lt;h2 id="ubuntu的发音">Ubuntu的发音&lt;/h2>
@@ -16,32 +16,7 @@ todo整理&lt;/p>&lt;/blockquote>
 &lt;p>Ubuntu 完全基于 Linux 操作系统， 可以免费得到社区及专业机构的支持。庞大的社区是它成长的沃土，请向这片动人的热忱敞开心扉。&lt;/p>
 &lt;p>Ubuntu 社区恪守 Ubuntu 理念：自由！软件应是自由的，应尊重人类的自由意志，它与人类之间不应有任何隔膜。本地语种，功能限制，自主改进的权利……都不应成为使用的障碍或负担。&lt;/p>
 &lt;p>自由，让 Ubuntu 与传统的私有软件从根本上不同: 免费不能用来遮羞，您有权修正它，直到满意为止。&lt;/p>
-&lt;p>Ubuntu 适合桌面和服务器。当前 Ubuntu 发布版支持 PC (Intel x86), 64-bit PC (AMD64) 和 PowerPC (Apple iBook 和 Powerbook, G4 和 G5) 架构。&lt;/p></description></item><item><title>终端中bash、vim、tmux等的配置</title><link>https://example.com/post/linux/bash_bashrc/</link><pubDate>Thu, 12 Jul 2018 16:00:04 +0000</pubDate><guid>https://example.com/post/linux/bash_bashrc/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
-&lt;p>使用终端有一段时间了，现在主力的平台是Ubuntu16.04，本文对bash、vim、tmux配置的一些记录。&lt;/p>
-&lt;!-- more -->
-&lt;p>在&lt;code>cd ~&lt;/code>下建立talen_bashrc文件&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-shell" data-lang="shell">&lt;span style="display:flex;">&lt;span> HOME_BASHRC&lt;span style="color:#f92672">=&lt;/span>xxxx/talen_bashrc
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> alias vimbashrc&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#e6db74">&amp;#39;vim $HOME_BASHRC &amp;amp;&amp;amp; source $HOME_BASHRC&amp;#39;&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># files&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> alias countfiles&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#e6db74">&amp;#39;echo &amp;#34;total num: &amp;#34; &amp;amp;&amp;amp; ls | wc -l &amp;amp;&amp;amp; du -sh&amp;#39;&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> alias ll&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#e6db74">&amp;#39;ls -htrlF --time-style=&amp;#34;+%H:%M %Y/%m/%d&amp;#34;&amp;#39;&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> alias dum&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#e6db74">&amp;#39;du -a -d 1 -m |sort -nr&amp;#39;&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> alias dug&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#e6db74">&amp;#39;df -h /dev/sdbxxx &amp;amp;&amp;amp; du -BG -d 1 --time |sort -nr&amp;#39;&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> alias pi&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#e6db74">&amp;#39;pip install -i https://pypi.tuna.tsinghua.edu.cn/simple&amp;#39;&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> alias gpuwatch&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#e6db74">&amp;#39;watch -n 1 nvidia-smi&amp;#39;&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> alias gitm&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#e6db74">&amp;#39;git commit -m&amp;#39;&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> alias gits&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#e6db74">&amp;#39;git status -s&amp;#39;&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> export PYTHONPATH&lt;span style="color:#f92672">=&lt;/span>$PYTHONPATH:xxxxxxx
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># vimrc&lt;/span>
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> export MYVIMRC&lt;span style="color:#f92672">=&lt;/span>xxxx/.vim/.vimrc
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> export VIMINIT&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;let &amp;amp;rtp=&amp;#39;xxxx/.vim,&amp;#39; . &amp;amp;rtp
-&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74"> so &lt;/span>$MYVIMRC&lt;span style="color:#e6db74">&amp;#34;&lt;/span>
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>python环境使用的是anaconda（或者minicoonda）添加激活环境。
-在&lt;code>~/.bashrc&lt;/code>中加入&lt;/p></description></item><item><title>ubuntu引导修复</title><link>https://example.com/post/linux/boot_recovery/</link><pubDate>Wed, 14 Jun 2017 16:00:04 +0000</pubDate><guid>https://example.com/post/linux/boot_recovery/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
+&lt;p>Ubuntu 适合桌面和服务器。当前 Ubuntu 发布版支持 PC (Intel x86), 64-bit PC (AMD64) 和 PowerPC (Apple iBook 和 Powerbook, G4 和 G5) 架构。&lt;/p></description></item><item><title>Ubuntu引导修复</title><link>https://example.com/post/c5-linux/linux/boot-recovery/</link><pubDate>Wed, 14 Jun 2017 16:00:04 +0000</pubDate><guid>https://example.com/post/c5-linux/linux/boot-recovery/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
 &lt;p>本文记录修复ubuntu引导，并修改ubuntu盘的大小过程。
 参考：&lt;a href="http://www.cnblogs.com/jloveu/p/Ubuntu-partition-expansion-record.html">http://www.cnblogs.com/jloveu/p/Ubuntu-partition-expansion-record.html&lt;/a>
 工具：Ubuntu 的live U盘，带有gparted分区工具，和grub修复工具&lt;/p>
@@ -85,8 +60,7 @@ todo整理&lt;/p>&lt;/blockquote>
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="ubuntu下如何修复grub引导">Ubuntu下如何修复Grub引导&lt;/h2>
 &lt;p>&lt;a href="https://mp.weixin.qq.com/s/NDZPPA-0FhqSzRndQOhNEw">link&lt;/a>&lt;/p>
 &lt;p>本文以 Ubuntu Live CD 修复 Grub 引导为例，已在 /dev/sda3 安装 Fedora。&lt;/p>
-&lt;p>首先制作 Ubuntu 启动 USB&lt;/p></description></item><item><title>Ubuntu的优化与设置</title><link>https://example.com/post/linux/ubuntu/</link><pubDate>Mon, 22 May 2017 18:00:04 +0000</pubDate><guid>https://example.com/post/linux/ubuntu/</guid><description>&lt;h1>&lt;/h1>
-&lt;h2 id="前言">前言&lt;/h2>
+&lt;p>首先制作 Ubuntu 启动 USB&lt;/p></description></item><item><title>Ubuntu的优化与设置</title><link>https://example.com/post/c5-linux/linux/ubuntu-init/</link><pubDate>Mon, 22 May 2017 18:00:04 +0000</pubDate><guid>https://example.com/post/c5-linux/linux/ubuntu-init/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
 &lt;ul>
 &lt;li>
 &lt;h2 id="窗口颜色设置浅绿色">窗口颜色设置浅绿色&lt;/h2>

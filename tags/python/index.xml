@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Python on 一塘</title><link>https://example.com/tags/python/</link><description>Recent content in Python on 一塘</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Sun, 08 May 2022 22:00:04 +0000</lastBuildDate><atom:link href="https://example.com/tags/python/index.xml" rel="self" type="application/rss+xml"/><item><title>rss统计 基于ttrss的PostgresQL数据库</title><link>https://example.com/post/rss_ttrss_statics/</link><pubDate>Sun, 08 May 2022 22:00:04 +0000</pubDate><guid>https://example.com/post/rss_ttrss_statics/</guid><description>&lt;p>&lt;strong>前言&lt;/strong>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Python on 一塘</title><link>https://example.com/tags/python/</link><description>Recent content in Python on 一塘</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Sun, 08 May 2022 22:00:04 +0000</lastBuildDate><atom:link href="https://example.com/tags/python/index.xml" rel="self" type="application/rss+xml"/><item><title>rss统计 基于ttrss的PostgresQL数据库</title><link>https://example.com/post/c7-toolchain/rss_ttrss_statics/</link><pubDate>Sun, 08 May 2022 22:00:04 +0000</pubDate><guid>https://example.com/post/c7-toolchain/rss_ttrss_statics/</guid><description>&lt;p>&lt;strong>前言&lt;/strong>
 统计ttrss的使用数据。&lt;/p>
 &lt;ul>
 &lt;li>月度mark文件分析 OK&lt;/li>
@@ -73,7 +73,7 @@
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>D&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;C:&lt;/span>&lt;span style="color:#ae81ff">\\&lt;/span>&lt;span style="color:#e6db74">Users&lt;/span>&lt;span style="color:#ae81ff">\\&lt;/span>&lt;span style="color:#e6db74">talen&lt;/span>&lt;span style="color:#ae81ff">\\&lt;/span>&lt;span style="color:#e6db74">Desktop&lt;/span>&lt;span style="color:#ae81ff">\\&lt;/span>&lt;span style="color:#e6db74">&amp;#34;&lt;/span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">with&lt;/span> open(D&lt;span style="color:#f92672">+&lt;/span>&lt;span style="color:#e6db74">&amp;#34;cc.md&amp;#34;&lt;/span>,&lt;span style="color:#e6db74">&amp;#39;w&amp;#39;&lt;/span>,encoding&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#e6db74">&amp;#39;utf-8&amp;#39;&lt;/span>) &lt;span style="color:#66d9ef">as&lt;/span> f:
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> f&lt;span style="color:#f92672">.&lt;/span>write(g_content)
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>使用脚本将英文rss转成中文rss</title><link>https://example.com/post/rss_google_translate/</link><pubDate>Sun, 08 May 2022 22:00:04 +0000</pubDate><guid>https://example.com/post/rss_google_translate/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>使用脚本将英文rss转成中文rss</title><link>https://example.com/post/c7-toolchain/rss_google_translate/</link><pubDate>Sun, 08 May 2022 22:00:04 +0000</pubDate><guid>https://example.com/post/c7-toolchain/rss_google_translate/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
 &lt;p>本文中我们将英文rss 自动转成中文 rss供ttrss使用。（利用谷歌翻译）&lt;/p>
 &lt;p>方便在手机上进行阅读或者收听。&lt;/p>
 &lt;center>&lt;img src="rss_google_translate/20220508-22-28-27.png" width="30%">
@@ -192,7 +192,76 @@
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>tran_nature()
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="定时任务">定时任务&lt;/h3>
 &lt;blockquote>
-&lt;p>注意激活一下miniconda3 这个命令&lt;code>source /home/xxx/miniconda3/bin/activate&lt;/code>&lt;/p></description></item><item><title>Jupyter notebook的配置</title><link>https://example.com/post/linux/jupyter_notebook/</link><pubDate>Mon, 03 Jul 2017 16:00:04 +0000</pubDate><guid>https://example.com/post/linux/jupyter_notebook/</guid><description>&lt;p>&lt;strong>前言&lt;/strong>
+&lt;p>注意激活一下miniconda3 这个命令&lt;code>source /home/xxx/miniconda3/bin/activate&lt;/code>&lt;/p></description></item><item><title>选择困难者的福音？层次分析法</title><link>https://example.com/post/c1-math/ahp/</link><pubDate>Fri, 02 Apr 2021 12:00:00 +0000</pubDate><guid>https://example.com/post/c1-math/ahp/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
+&lt;p>日常生活中，我们面临很多的选择，选择自己最工作offer，选择买哪个牌子的手机，选择哪个地方旅行等等。这些选择难以定量的衡量，有很多不确定性。内心小纠结，我选择了这个，万一那个好呢，怎么办？请看层次分析法。&lt;/p>
+&lt;p>层次分析法(Analytic Hierarchy Process，简称 AHP)是对一些较为复杂、较为模糊的问题作出决策的简易方法，它特别适用于那些难于完全定量分析的问题。它是美国运筹学家 T. L. Saaty 教授于上世纪 70 年代初期提出的一种简便、灵活而又实用的多准则决策方法。&lt;/p>
+&lt;p>运用层次分析法建模，大体上可按下面四个步骤进行&lt;/p>
+&lt;ul>
+&lt;li>建立递阶层次结构模型&lt;/li>
+&lt;li>构造出各层次中的所有判断矩阵&lt;/li>
+&lt;li>层次单排序及一致性检验&lt;/li>
+&lt;li>层次总排序及一致性检验。（一般不用）&lt;/li>
+&lt;/ul>
+&lt;!-- more -->
+&lt;p>让我们从offer大佬的例子开始吧！&lt;/p>
+&lt;p>举个栗子，今年有位大学生，有三个offer，C1 C2 C3。&lt;/p>
+&lt;p>第一步，建立层次模型。&lt;/p>
+&lt;ul>
+&lt;li>目标层A：找工作的目标，自己满意程度。
+&lt;ul>
+&lt;li>这个程度怎么计算呢？比如工作1。&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>准则层B：研究课题、发展前途、待遇、同事情况、地理位置、单位名气等等。
+&lt;ul>
+&lt;li>尽量列全一点，不需要排列重要顺序。&lt;/li>
+&lt;li>小于等于9个，后面要两两拍脑袋给出相对的重要层度，给多了不得把脑袋拍疼了。&lt;/li>
+&lt;li>也可以有子准则层，比如待遇中的放假、工作环境等等，列出也小于9个。&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>方案层C：就是我们的offer&lt;/li>
+&lt;/ul>
+&lt;img src="math_AHP/image-20200406145535585.png" alt="image-20200406145535585" style="zoom:50%;" />
+&lt;h2 id="构造-a-b-之间判断矩阵">构造 A B 之间判断矩阵&lt;/h2>
+&lt;p>准则层B与目标A之间的关系。为了求出准则层中(B1-6) 对目标的重要层度的排序。比如对于该生工作满意度第一重要是待遇，然后是地点，其实该生自己也很模糊。就是固定A，然后求B中准则，对A重要性的排序。&lt;/p>
+&lt;h3 id="我们怎么对b中的准则们的重要排序呢">我们怎么对B中的准则们的重要排序呢？&lt;/h3>
+&lt;p>直接给每一个准则，0-1的评分，然后排序。经常会想，给完分之后，这个不合理呀要不我再给哪个准则加加分。所以这样的方法常常会因考虑不周全、顾此失彼而使决策者提出与他实际认为的重要性程度不相一致的数据。&lt;/p>
+&lt;p>我们可以将这个过程细化，我就比较两个准则对于目标的重要性，然后通过下面的矩阵方法，求出优先顺序。&lt;/p>
+&lt;p>还能通过一个一致性检验，来检验在你评分的过程中，有没有自相矛盾的地方，当然这种方法允许一些自相矛盾。反正评分的时候尊从内心拍脑袋就对了。&lt;/p>
+&lt;p>所以我们拿出一个B1 与 B2 对于目标的重要，想一想然后给出B2/B1，填入下面的表格中的(2,1)的位置。&lt;/p>
+&lt;p>整个矩阵i,j 与j，i 是取倒数的关系，所以只要做一半。&lt;/p>
+&lt;p>在找工作的目标下，准则i与j相对的重要性表示，B2/B1 的值。采用9个标度。而相比不重要刻度取倒数就可以了&lt;/p>
+&lt;table>
+ &lt;thead>
+ &lt;tr>
+ &lt;th>准则i比j的比较&lt;/th>
+ &lt;th>1&lt;/th>
+ &lt;th>2&lt;/th>
+ &lt;th>3&lt;/th>
+ &lt;th>4&lt;/th>
+ &lt;th>5&lt;/th>
+ &lt;th>6&lt;/th>
+ &lt;th>7&lt;/th>
+ &lt;th>8&lt;/th>
+ &lt;th>9&lt;/th>
+ &lt;/tr>
+ &lt;/thead>
+ &lt;tbody>
+ &lt;tr>
+ &lt;td>&lt;/td>
+ &lt;td>相同重要&lt;/td>
+ &lt;td>&lt;/td>
+ &lt;td>比较重要&lt;/td>
+ &lt;td>&lt;/td>
+ &lt;td>明显重要&lt;/td>
+ &lt;td>&lt;/td>
+ &lt;td>强烈重要&lt;/td>
+ &lt;td>&lt;/td>
+ &lt;td>极端重要&lt;/td>
+ &lt;/tr>
+ &lt;/tbody>
+&lt;/table>
+&lt;p>最后的两两相对重要表格&lt;/p></description></item><item><title>Jupyter notebook的配置</title><link>https://example.com/post/c7-toolchain/jupyter-notebook/</link><pubDate>Mon, 03 Jul 2017 16:00:04 +0000</pubDate><guid>https://example.com/post/c7-toolchain/jupyter-notebook/</guid><description>&lt;p>&lt;strong>前言&lt;/strong>
 本文介绍jupyter notebook的安装配置过程和实用技巧。
 &lt;a href="https://jupyter.readthedocs.io/en/latest/index.html">jupyter.readthedocs教程&lt;/a>&lt;/p>
 &lt;!-- more -->
@@ -250,7 +319,7 @@ c.ServerApp.password = &amp;#39;&amp;#39;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>jupyter contrib nbextension install --user
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>jupyter nbextensions_configurator enable --user
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="13-安装插件管理">1.3 安装插件管理&lt;/h3>
-&lt;p>jupyter_contrib_nbextensions 为 jupyter notebook 扩展插件管理器，下面简称nbextensions。&lt;/p></description></item><item><title>SRT中英文合并Python脚本</title><link>https://example.com/post/shells/youtube_src_combine/</link><pubDate>Thu, 14 Apr 2016 12:39:04 +0000</pubDate><guid>https://example.com/post/shells/youtube_src_combine/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
+&lt;p>jupyter_contrib_nbextensions 为 jupyter notebook 扩展插件管理器，下面简称nbextensions。&lt;/p></description></item><item><title>SRT中英文合并Python脚本</title><link>https://example.com/post/c7-toolchain/shells/youtube_src_combine/</link><pubDate>Thu, 14 Apr 2016 12:39:04 +0000</pubDate><guid>https://example.com/post/c7-toolchain/shells/youtube_src_combine/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
 &lt;p>从YouTube上看只有中文或英文分开的字幕，下载好视频，想要中英文字幕。可从 &lt;a href="http://mo.dbxdb.com/Yang/setting.html">Getting Youtube subtitles&lt;/a> 获取中或英文字幕，然后将其合并，即成中英文双字幕。下面是Python脚本。&lt;/p>
 &lt;!-- more -->
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-python" data-lang="python">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74">&amp;#39;&amp;#39;&amp;#39;

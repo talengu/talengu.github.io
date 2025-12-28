@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>网络 on 一塘</title><link>https://example.com/categories/%E7%BD%91%E7%BB%9C/</link><description>Recent content in 网络 on 一塘</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Thu, 08 Dec 2022 12:00:00 +0000</lastBuildDate><atom:link href="https://example.com/categories/%E7%BD%91%E7%BB%9C/index.xml" rel="self" type="application/rss+xml"/><item><title>tcp ip 协议族</title><link>https://example.com/post/c6-network/tcp_ip/</link><pubDate>Thu, 08 Dec 2022 12:00:00 +0000</pubDate><guid>https://example.com/post/c6-network/tcp_ip/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
+&lt;p>tcp ip 协议族&lt;/p>
+&lt;!-- more -->
+&lt;p>
+
+
+
+
+ 
+
+
+&lt;div style="text-align: center;">
+&lt;img src="tcp_ip.jpeg" 
+ alt="" 
+ 
+/>
+&lt;/div>&lt;/p></description></item><item><title>「转」连接跟踪（conntrack）：原理、应用及 Linux 内核实现</title><link>https://example.com/post/c6-network/conntrack-linux/</link><pubDate>Sun, 04 Dec 2022 12:00:00 +0000</pubDate><guid>https://example.com/post/c6-network/conntrack-linux/</guid><description>&lt;h2 id="摘要">摘要&lt;/h2>
+&lt;p>本文介绍连接跟踪（connection tracking，conntrack，CT）的原理，应用，及其在 Linux 内核中的实现。&lt;/p>
+&lt;p>代码分析基于内核 &lt;code>4.19&lt;/code>。为使行文简洁，所贴代码只保留了核心逻辑，但都给出了代码 所在的源文件，如有需要请查阅。&lt;/p>
+&lt;p>水平有限，文中不免有错误之处，欢迎指正交流。&lt;/p>
+&lt;p>连接跟踪是许多网络应用的基础。例如，Kubernetes Service、ServiceMesh sidecar、 软件四层负载均衡器 LVS/IPVS、Docker network、OVS、iptables 主机防火墙等等，都依赖 连接跟踪功能。&lt;/p>
+&lt;!-- more -->
+&lt;h2 id="11-概念">1.1 概念&lt;/h2>
+&lt;p>连接跟踪，顾名思义，就是&lt;strong>跟踪（并记录）连接的状态&lt;/strong>。&lt;/p>
+&lt;p>
+
+
+
+
+ 
+
+
+&lt;div style="text-align: center;">
+&lt;img src="node-conntrack.png" 
+ alt="" 
+ 
+/>
+&lt;/div>&lt;/p>
+&lt;p>Fig 1.1. 连接跟踪及其内核位置示意图&lt;/p>
+&lt;p>例如，上图是一台 IP 地址为 &lt;code>10.1.1.2&lt;/code> 的 Linux 机器，我们能看到这台机器上有三条 连接：&lt;/p>
+&lt;ol>
+&lt;li>机器访问外部 HTTP 服务的连接（目的端口 80）&lt;/li>
+&lt;li>外部访问机器内 FTP 服务的连接（目的端口 21）&lt;/li>
+&lt;li>机器访问外部 DNS 服务的连接（目的端口 53）&lt;/li>
+&lt;/ol>
+&lt;p>连接跟踪所做的事情就是发现并跟踪这些连接的状态，具体包括：&lt;/p>
+&lt;ul>
+&lt;li>从数据包中提取&lt;strong>元组&lt;/strong>（tuple）信息，辨别&lt;strong>数据流&lt;/strong>（flow）和对应的&lt;strong>连接&lt;/strong>（connection）&lt;/li>
+&lt;li>为所有连接维护一个&lt;strong>状态数据库&lt;/strong>（conntrack table），例如连接的创建时间、发送 包数、发送字节数等等&lt;/li>
+&lt;li>回收过期的连接（GC）&lt;/li>
+&lt;li>为更上层的功能（例如 NAT）提供服务&lt;/li>
+&lt;/ul>
+&lt;p>需要注意的是，&lt;strong>连接跟踪中所说的“连接”，概念和 TCP/IP 协议中“面向连接”（ connection oriented）的 “连接” 并不完全相同&lt;/strong>，简单来说：&lt;/p>
+&lt;ul>
+&lt;li>TCP/IP 协议中，连接是一个四层（Layer 4）的概念。
+&lt;ul>
+&lt;li>TCP 是有连接的，或称面向连接的（connection oriented），发送出去的包都要求对端应答（ACK），并且有重传机制&lt;/li>
+&lt;li>UDP 是无连接的，发送的包无需对端应答，也没有重传机制&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>CT 中，一个元组（tuple）定义的一条数据流（flow ）就表示一条连接（connection）。
+&lt;ul>
+&lt;li>后面会看到 UDP 甚至是 &lt;strong>ICMP 这种三层协议在 CT 中也都是有连接记录的&lt;/strong>&lt;/li>
+&lt;li>但&lt;strong>不是所有协议都会被连接跟踪&lt;/strong>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;p>本文中用到 “连接” 一词时，大部分情况下指的都是后者，即 “连接跟踪” 中的“连接”。&lt;/p></description></item><item><title>「转」GRE隧道测试</title><link>https://example.com/post/c6-network/gre-test/</link><pubDate>Thu, 05 May 2022 22:52:28 +0000</pubDate><guid>https://example.com/post/c6-network/gre-test/</guid><description>&lt;blockquote>
+&lt;p>本文由 &lt;a href="http://ksria.com/simpread/">简悦 SimpRead&lt;/a> 转码， 原文地址 &lt;a href="https://juejin.cn/post/6988645230987706398">juejin.cn&lt;/a>&lt;/p>&lt;/blockquote>
+&lt;p>
+
+
+
+
+ 
+
+
+&lt;div style="text-align: center;">
+&lt;img src="e31bac5bcb1347a59142486adaf94e30.jpg" 
+ alt="" 
+ 
+/>
+&lt;/div>&lt;/p>
+&lt;h2 id="0-前言">0. 前言&lt;/h2>
+&lt;p>在学习 ipsec 过程中，一般都会涉及到 ipsec 的局限性：ipsec 协议是一种点对点协议，不支持组播，也不能保护组播、广播报文。因此 ipsec 协议无法用于音视频会议等场合，此时通常的解决办法是采用 &lt;strong>GRE Over IPSec&lt;/strong> .&lt;/p>
+&lt;p>给出的解释是：GRE 协议可以封装组播、广播报文，但是无法对业务内容进行加密；而 ipsec 可以对报文进行加密，但是无法封装组播和广播报文。因此将两种协议结合，因而 GRE over IPSec 协议应运而生。 但是我找了很多资料 (其实没有多少)，都没有找到为什么 GRE 协议支持封装组播和广播报文，而 ipsec 不行；他们作为点对点协议，为什么 GRE 可以而 IPsec 不行呢？因为没有找到答案，所以不能证实自己的想法正确与否，于是通过搭建 GRE 隧道环境，学习 Linux 内核中 GRE 隧道的操作配置原则，希望能从中得到些许启发。&lt;/p>
+&lt;p>搭建 GRE 隧道环境实际上是很简单的，因为 Linux 内核已经支持了 GRE 隧道，因此直接在虚拟机 (ubuntu 和 CentOS) 里进行简单的配置即可完成操作。&lt;/p>
+&lt;!-- more -->
+&lt;p>
+
+
+
+
+ 
+
+
+&lt;div style="text-align: center;">
+&lt;img src="db260d2dc98445f9988f1c768ca3e744.jpg" 
+ alt="" 
+ 
+/>
+&lt;/div>&lt;/p>
+&lt;h2 id="1-linux-内核支持的隧道类型">1. Linux 内核支持的隧道类型&lt;/h2>
+&lt;p>目前 Linux 内核已经支持多种隧道类型，包括：IPIP 隧道，GRE 隧道，&amp;hellip; 。其余这几个我也没见过。当然除了这几种，还有 ipsec 协议，l2tp 协议，可以的是我目前都还没有用过，实在是暴殄天物，罪过罪过&lt;/p></description></item><item><title>爱立信的百年沉浮</title><link>https://example.com/post/c6-network/history-ericsson/</link><pubDate>Fri, 01 Apr 2022 12:39:04 +0000</pubDate><guid>https://example.com/post/c6-network/history-ericsson/</guid><description>&lt;blockquote>
+&lt;p>文章来源：&lt;br>
+鲜枣课堂（ID：xzclasscom）
+&lt;a href="https://mp.weixin.qq.com/s?__biz=MjM5NTY1MjY0MQ==&amp;amp;mid=2650814278&amp;amp;idx=1&amp;amp;sn=26083fed8d8dd76340e063fd42a59dea">原文&lt;/a>&lt;/p>&lt;/blockquote>
+&lt;p>19 世纪中叶，电报业务在欧洲大陆逐渐开始普及。&lt;/p>
+&lt;p>1853 年，北欧小国瑞典动用 “海盗基金”（不是海盗的钱，是政府用来打海盗的钱），架设了自己的第一条电报线路，从首都斯德哥尔摩到乌普萨拉。&lt;/p>
+&lt;p>为了确保负责这条线路的正常运营，瑞典政府还成立了自己的第一家电报公司，名字叫 Televerket。&lt;/p>
+&lt;p>当时，Televerket 公司急需大量的电报硬件设备。于是，乌普萨拉电报局的局长，&lt;strong>安东 · 亨里克 · 奥勒&lt;/strong>（Anton Henric Öller），决定创办一家公司，为 Televerket 生产、修理和改进电报机。&lt;/p>
+&lt;p>不久后，这家电气设备维修公司正式成立，名字叫奥勒公司（Öller &amp;amp; Co）。&lt;/p>
+&lt;p>
+
+
+
+
+ 
+
+
+&lt;div style="text-align: center;">
+&lt;img src="640.png" 
+ alt="" 
+ 
+/>
+&lt;/div>&lt;/p>
+&lt;center>&lt;div>安东 · 亨里克 · 奥勒，瑞典电信业的先驱&lt;/div>&lt;/center>
+&lt;p>奥勒公司名义上是一家公司，但实际上就是一个手工作坊，规模很小，只能靠 Televerket 公司的资助才能维持生存。&lt;/p>
+&lt;p>在奥勒公司的员工中，有一个勤奋的小伙子，当时专门负责维修电报设备以及其它机械设备。他的名字，叫做&lt;strong>拉什 · 玛格纳斯 · 爱立信&lt;/strong>（Lars Magnus Ericsson）。&lt;/p>
+&lt;p>
+
+
+
+
+ 
+
+
+&lt;div style="text-align: center;">
+&lt;img src="640-16487839499382.png" 
+ alt="" 
+ 
+/>
+&lt;/div>&lt;/p>
+&lt;center>&lt;div> 拉什 · 玛格纳斯 · 爱立信&lt;/div>&lt;/center>
+&lt;!-- more -->
+&lt;p>拉什 · 爱立信 1846 年 5 月 5 日出生于瑞典中部瓦姆兰省的一个小农场里。他的家庭条件贫困，自己在 9 个兄弟姐妹中排行第六。&lt;/p>
+&lt;p>11 岁时，由于父亲病逝，他不得不外出工作，养家糊口。这期间，他当过矿工，修过铁路，还在铁匠铺做了很长时间的学徒。&lt;/p>
+&lt;p>1867 年，拉什 · 爱立信终于攒够了路费，来到他梦寐以求的瑞典首都——斯德哥尔摩。经过一周的试用后，他成功加入了奥勒公司，成为一名修理工。&lt;/p>
+&lt;p>尽管这份工作的工资微薄，拉什 · 爱立信仍然感到十分满足。他后来回忆说：“（这份工作）足以满足我的需求，让我庆幸地看到生活比以往任何时候都更加光明，我心中第一次感受到了生活的快乐。”&lt;/p></description></item><item><title>「转」桥初始化（一）</title><link>https://example.com/post/c6-network/br_init/</link><pubDate>Thu, 02 Dec 2021 12:00:00 +0000</pubDate><guid>https://example.com/post/c6-network/br_init/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
+&lt;p>注：章节中的源代码，基于 linux 内核 4.7.4&lt;/p>
+&lt;p>网桥的背景到处都有，在这里就不浪费的时间说废话了。&lt;/p>
+&lt;p>桥接程序的初始化，桥接程序既可以集成在内核中，也可以编译成独立模块。初始化函数br_init和清理函数br_deinit的定义在/net/bridge/br.c中&lt;/p>
+&lt;p>在网桥设备初始化的时候，主要是做一些注册和初始化的操作。&lt;/p>
+&lt;h2 id="桥初始化">桥初始化&lt;/h2>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">static&lt;/span> &lt;span style="color:#66d9ef">int&lt;/span> __init &lt;span style="color:#a6e22e">br_init&lt;/span>(&lt;span style="color:#66d9ef">void&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">int&lt;/span> err;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e">/*注册协议生成树收包函数*/&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> err &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#a6e22e">stp_proto_register&lt;/span>(&lt;span style="color:#f92672">&amp;amp;&lt;/span>br_stp_proto);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> (err &lt;span style="color:#f92672">&amp;lt;&lt;/span> &lt;span style="color:#ae81ff">0&lt;/span>) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">pr_err&lt;/span>(&lt;span style="color:#e6db74">&amp;#34;bridge: can&amp;#39;t register sap for STP&lt;/span>&lt;span style="color:#ae81ff">\n&lt;/span>&lt;span style="color:#e6db74">&amp;#34;&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> err;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e">/*转发数据库初始化*/&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> err &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#a6e22e">br_fdb_init&lt;/span>();
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> (err)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">goto&lt;/span> err_out;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e">/*在/proc目录下生成任何与bridge相关的目录，如果我们想在/proc下生成bridge相关的子目录或子文件*/&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> err &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#a6e22e">register_pernet_subsys&lt;/span>(&lt;span style="color:#f92672">&amp;amp;&lt;/span>br_net_ops);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> (err)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">goto&lt;/span> err_out1;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e">/*目前好像没有什么实际作用，在内核中所注册的函数为空*/&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> err &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#a6e22e">br_nf_core_init&lt;/span>();
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> (err)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">goto&lt;/span> err_out2;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e">/*注册相关网络设备的事件通知连*/&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> err &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#a6e22e">register_netdevice_notifier&lt;/span>(&lt;span style="color:#f92672">&amp;amp;&lt;/span>br_device_notifier);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> (err)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">goto&lt;/span> err_out3;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e">/*注册通知连，主要针对桥转发表事件的相关信息*/&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> err &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#a6e22e">register_switchdev_notifier&lt;/span>(&lt;span style="color:#f92672">&amp;amp;&lt;/span>br_switchdev_notifier);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> (err)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">goto&lt;/span> err_out4;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e">/*进行netlink的初始化*/&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> err &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#a6e22e">br_netlink_init&lt;/span>();
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> (err)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">goto&lt;/span> err_out5;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e">/*用来处理ioctl命令的函数，比如添加和删除网桥*/&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">brioctl_set&lt;/span>(br_ioctl_deviceless_stub);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#if IS_ENABLED(CONFIG_ATM_LANE)
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span> br_fdb_test_addr_hook &lt;span style="color:#f92672">=&lt;/span> br_fdb_test_addr;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#endif
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span> &lt;span style="color:#66d9ef">return&lt;/span> &lt;span style="color:#ae81ff">0&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="具体的">具体的&lt;/h2>
+&lt;p>了解了桥初始化大致要做的事情后，我们再来看看这些初始化或者注册的事情到底干了些什么？&lt;/p></description></item></channel></rss>

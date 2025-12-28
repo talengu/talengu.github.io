@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>时间 on 一塘</title><link>https://example.com/tags/%E6%97%B6%E9%97%B4/</link><description>Recent content in 时间 on 一塘</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Fri, 15 Apr 2022 12:39:04 +0000</lastBuildDate><atom:link href="https://example.com/tags/%E6%97%B6%E9%97%B4/index.xml" rel="self" type="application/rss+xml"/><item><title>「转」window软件运行时间</title><link>https://example.com/post/c8-programming/soft_run_time/</link><pubDate>Fri, 15 Apr 2022 12:39:04 +0000</pubDate><guid>https://example.com/post/c8-programming/soft_run_time/</guid><description>&lt;h2 id="背景">背景&lt;/h2>
+&lt;p>对关注性能的程序开发人员而言，一个好的计时部件既是益友，也是良师。计时器既可以作为程序组件帮助程序员精确的控制程序进程，又是一件有力的调试武器，在有经验的程序员手里可以尽快的确定程序的性能瓶颈，或者对不同的算法作出有说服力的性能比较。&lt;/p>
+&lt;!-- more -->
+&lt;p>在Windows平台下，常用的计时器有两种，一种是&lt;code>timeGetTime&lt;/code>多媒体计时器，它可以提供毫秒级的计时。但这个精度对很多应用场合而言还是太粗糙了。另一种是&lt;code>QueryPerformanceCount&lt;/code>计数器，随系统的不同可以提供微秒级的计数。对于实时图形处理、多媒体数据流处理、或者实时系统构造的程序员，善用&lt;code>QueryPerformanceCount/QueryPerformanceFrequency&lt;/code>是一项基本功。&lt;/p>
+&lt;p>本文要介绍的，是另一种直接利用&lt;code>Pentium CPU&lt;/code>内部时间戳进行计时的高精度计时手段。以下讨论主要得益于&lt;code>《Windows图形编程》&lt;/code>一书，第15页－17页，有兴趣的读者可以直接参考该书。关于RDTSC指令的详细讨论，可以参考Intel产品手册。本文仅仅作抛砖之用。&lt;/p>
+&lt;p>在 &lt;code>Intel Pentium&lt;/code>以上级别的CPU中，有一个称为“时间戳（Time Stamp）”的部件，它以64位无符号整型数的格式，记录了自CPU上电以来所经过的时钟周期数。由于目前的CPU主频都非常高，因此这个部件可以达到纳秒级的计时精度。这个精确性是上述两种方法所无法比拟的。&lt;/p>
+&lt;p>在Pentium以上的CPU中，提供了一条机器指令RDTSC（Read Time Stamp Counter）来读取这个时间戳的数字，并将其保存在EDX:EAX寄存器对中。由于&lt;code>EDX:EAX&lt;/code>寄存器对恰好是Win32平台下C++语言保存函数返回值的寄存器，所以我们可以把这条指令看成是一个普通的函数调用。像这样：&lt;/p>
+&lt;pre tabindex="0">&lt;code> inline unsigned __int64 GetCycleCount() 
+ { 
+ __asm RDTSC 
+ } 
+&lt;/code>&lt;/pre>&lt;p>但是不行，因为RDTSC不被C++的内嵌汇编器直接支持，所以我们要用_emit伪指令直接嵌入该指令的机器码形式&lt;code>0X0F&lt;/code>、&lt;code>0X31&lt;/code>，如下：&lt;/p>
+&lt;pre tabindex="0">&lt;code> inline unsigned __int64 GetCycleCount() 
+ { 
+ __asm _emit 0x0F 
+ __asm _emit 0x31 
+ } 
+&lt;/code>&lt;/pre>&lt;p>以后在需要计数器的场合，可以像使用普通的Win32 API一样，调用两次GetCycleCount函数，比较两个返回值的差，像这样：&lt;/p>
+&lt;pre tabindex="0">&lt;code> unsigned long t; 
+ t = (unsigned long)GetCycleCount(); 
+ //Do Something time-intensive ... 
+ t -= (unsigned long)GetCycleCount(); 
+&lt;/code>&lt;/pre>&lt;p>&lt;code>《Windows图形编程》&lt;/code>第15页编写了一个类，把这个计数器封装起来。有兴趣的读者可以去参考那个类的代码。作者为了更精确的定时，做了一点小小的改进，把执行&lt;code>RDTSC&lt;/code>指令的时间，通过连续两次调用&lt;code>GetCycleCount&lt;/code>函数计算出来并保存了起来，以后每次计时结束后，都从实际得到的计数中减掉这一小段时间，以得到更准确的计时数字。但我个人觉得这一点点改进意义不大。在我的机器上实测，这条指令大概花掉了几十到100多个周期，在&lt;code>Celeron 800MHz&lt;/code>的机器上，这不过是十分之一微秒的时间。对大多数应用来说，这点时间完全可以忽略不计；而对那些确实要精确到纳秒数量级的应用来说，这个补偿也过于粗糙了。&lt;/p>
+&lt;p>这个方法的优点是：&lt;/p>
+&lt;ol>
+&lt;li>
+&lt;p>高精度。可以直接达到纳秒级的计时精度（在1GHz的CPU上每个时钟周期就是一纳秒），这是其他计时方法所难以企及的。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>成本低。&lt;code>timeGetTime&lt;/code>函数需要链接多媒体库 &lt;code>winmm.lib&lt;/code>，&lt;code>QueryPerformance*&lt;/code>函数根据MSDN的说明，需要硬件的支持（虽然我还没有见过不支持的机器）和KERNEL库的支持，所以二者都只能在Windows平台下使用（关于DOS平台下的高精度计时问题，可以参考&lt;code>《图形程序开发人员指南》&lt;/code>，里面有关于控制定时器8253的详细说明）。但&lt;code>RDTSC&lt;/code>指令是一条CPU指令，凡是i386平台下Pentium以上的机器均支持，甚至没有平台的限制（我相信i386版本UNIX和Linux下这个方法同样适用，但没有条件试验），而且函数调用的开销是最小的。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>具有和CPU主频直接对应的速率关系。一个计数相当于1/(CPU主频Hz数)秒，这样只要知道了CPU的主频，可以直接计算出时间。这和 &lt;code>QueryPerformanceCount&lt;/code>不同，后者需要通过&lt;code>QueryPerformanceFrequency&lt;/code>获取当前计数器每秒的计数次数才能换算成时间。&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;p>这个方法的缺点是：&lt;/p>
+&lt;ol>
+&lt;li>
+&lt;p>现有的C/C++编译器多数不直接支持使用RDTSC指令，需要用直接嵌入机器码的方式编程，比较麻烦。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>数据抖动比较厉害。其实对任何计量手段而言，精度和稳定性永远是一对矛盾。如果用低精度的&lt;code>timeGetTime&lt;/code>来计时，基本上每次计时的结果都是相同的；而&lt;code>RDTSC&lt;/code>指令每次结果都不一样，经常有几百甚至上千的差距。这是这种方法高精度本身固有的矛盾。&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;p>关于这个方法计时的最大长度，我们可以简单的用下列公式计算：&lt;/p>
+&lt;pre tabindex="0">&lt;code>自CPU上电以来的秒数 = RDTSC读出的周期数 / CPU主频速率（Hz） 
+&lt;/code>&lt;/pre>&lt;p>64位无符号整数所能表达的最大数字是&lt;code>1.8×10^19&lt;/code>，在我的&lt;code>Celeron 800&lt;/code>上可以计时大约700年（书中说可以在200MHz的Pentium上计时117年，这个数字不知道是怎么得出来的，与我的计算有出入）。无论如何，我们大可不必关心溢出的问题。&lt;/p></description></item></channel></rss>

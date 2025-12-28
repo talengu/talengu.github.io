@@ -1,0 +1,91 @@
+<!doctype html><html lang=zh-cn><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><title>「转」window软件运行时间 | 一塘</title>
+<link rel=stylesheet href=/css/style.css><link rel=stylesheet href=/css/fonts.css><link rel=stylesheet href=/css/dark.css></head><body><nav><ul class=menu><li><a href=/about/>一塘</a></li><li><a href=/post/>博客</a></li><li><a href=/categories/>分类</a></li><li><a href=/tags/>标签</a></li><li style=float:right;position:relative;margin-left:1em><input type=text id=search-box placeholder=搜索文章... style="padding:.3em .6em;border-radius:4px;border:1px solid #ccc;width:150px;min-width:100px;max-width:250px"><ul id=search-results style="position:absolute;top:100%;right:0;background:#fff;border:1px solid #ccc;max-height:300px;overflow-y:auto;display:none;z-index:1000;list-style:none;padding:0;margin:0;width:250px"></ul></li><style>.search-item{padding:.4em .6em}.search-link{display:block;font-weight:500;text-decoration:none;color:#007acc}.search-snippet{font-size:.85em;color:#555;margin-top:.2em;line-height:1.4}.search-highlight{background:rgba(255,235,59,.5);padding:0 .15em;border-radius:3px}.search-item:hover{background-color:rgba(0,0,0,5%)}@media(prefers-color-scheme:dark){.search-link{color:#4fc3f7}.search-snippet{color:#aaa}.search-item:hover{background-color:rgba(104,99,99,.273)}.search-highlight{background:rgba(255,193,7,.35)}}</style><script src=https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.6.2/fuse.min.js></script><script>fetch("/post/index.json").then(e=>e.json()).then(e=>{const o=new Fuse(e,{keys:[{name:"title",weight:2},{name:"summary",weight:1},{name:"content",weight:.7}],threshold:.3,ignoreLocation:!0,minMatchCharLength:2}),n=document.getElementById("search-box"),t=document.getElementById("search-results");function s(e,t){if(!e)return"";const n=t.replace(/[.*+?^${}()|[\]\\]/g,"\\$&"),s=new RegExp(`(${n})`,"gi");return e.replace(s,'<mark class="search-highlight">$1</mark>')}function i(e,t,n=80){const s=e.toLowerCase().indexOf(t.toLowerCase());if(s===-1)return e.slice(0,n)+"…";const o=Math.max(0,s-n/2),i=Math.min(e.length,s+n/2);return"…"+e.slice(o,i)+"…"}n.addEventListener("input",function(){const e=this.value.trim();if(!e){t.style.display="none",t.innerHTML="";return}const n=o.search(e);t.innerHTML=n.slice(0,8).map(t=>{const n=t.item,o=i(n.content||n.summary||"",e);return`
+          <li class="search-item">
+            <a href="${n.permalink}" class="search-link">
+              ${s(n.title,e)}
+            </a>
+            <div class="search-snippet">
+              ${s(o,e)}
+            </div>
+          </li>
+        `}).join(""),t.style.display=n.length?"block":"none"}),document.addEventListener("click",e=>{!n.contains(e.target)&&!t.contains(e.target)&&(t.style.display="none")})})</script></ul><hr></nav><div class=article-meta><h1><span class=title>「转」window软件运行时间</span></h1></div><div class=post-stats style=text-align:right>2022/04/15</div><main><h2 id=背景>背景</h2><p>对关注性能的程序开发人员而言，一个好的计时部件既是益友，也是良师。计时器既可以作为程序组件帮助程序员精确的控制程序进程，又是一件有力的调试武器，在有经验的程序员手里可以尽快的确定程序的性能瓶颈，或者对不同的算法作出有说服力的性能比较。</p><p>在Windows平台下，常用的计时器有两种，一种是<code>timeGetTime</code>多媒体计时器，它可以提供毫秒级的计时。但这个精度对很多应用场合而言还是太粗糙了。另一种是<code>QueryPerformanceCount</code>计数器，随系统的不同可以提供微秒级的计数。对于实时图形处理、多媒体数据流处理、或者实时系统构造的程序员，善用<code>QueryPerformanceCount/QueryPerformanceFrequency</code>是一项基本功。</p><p>本文要介绍的，是另一种直接利用<code>Pentium CPU</code>内部时间戳进行计时的高精度计时手段。以下讨论主要得益于<code>《Windows图形编程》</code>一书，第15页－17页，有兴趣的读者可以直接参考该书。关于RDTSC指令的详细讨论，可以参考Intel产品手册。本文仅仅作抛砖之用。</p><p>在 <code>Intel Pentium</code>以上级别的CPU中，有一个称为“时间戳（Time Stamp）”的部件，它以64位无符号整型数的格式，记录了自CPU上电以来所经过的时钟周期数。由于目前的CPU主频都非常高，因此这个部件可以达到纳秒级的计时精度。这个精确性是上述两种方法所无法比拟的。</p><p>在Pentium以上的CPU中，提供了一条机器指令RDTSC（Read Time Stamp Counter）来读取这个时间戳的数字，并将其保存在EDX:EAX寄存器对中。由于<code>EDX:EAX</code>寄存器对恰好是Win32平台下C++语言保存函数返回值的寄存器，所以我们可以把这条指令看成是一个普通的函数调用。像这样：</p><pre tabindex=0><code>  inline   unsigned   __int64   GetCycleCount()   
+  {   
+    __asm   RDTSC   
+  }   
+</code></pre><p>但是不行，因为RDTSC不被C++的内嵌汇编器直接支持，所以我们要用_emit伪指令直接嵌入该指令的机器码形式<code>0X0F</code>、<code>0X31</code>，如下：</p><pre tabindex=0><code>  inline   unsigned   __int64   GetCycleCount()   
+  {   
+    __asm   _emit   0x0F   
+    __asm   _emit   0x31   
+  }   
+</code></pre><p>以后在需要计数器的场合，可以像使用普通的Win32 API一样，调用两次GetCycleCount函数，比较两个返回值的差，像这样：</p><pre tabindex=0><code>  unsigned   long   t;   
+  t   =   (unsigned   long)GetCycleCount();   
+  //Do   Something   time-intensive   ...   
+  t   -=   (unsigned   long)GetCycleCount();   
+</code></pre><p><code>《Windows图形编程》</code>第15页编写了一个类，把这个计数器封装起来。有兴趣的读者可以去参考那个类的代码。作者为了更精确的定时，做了一点小小的改进，把执行<code>RDTSC</code>指令的时间，通过连续两次调用<code>GetCycleCount</code>函数计算出来并保存了起来，以后每次计时结束后，都从实际得到的计数中减掉这一小段时间，以得到更准确的计时数字。但我个人觉得这一点点改进意义不大。在我的机器上实测，这条指令大概花掉了几十到100多个周期，在<code>Celeron 800MHz</code>的机器上，这不过是十分之一微秒的时间。对大多数应用来说，这点时间完全可以忽略不计；而对那些确实要精确到纳秒数量级的应用来说，这个补偿也过于粗糙了。</p><p>这个方法的优点是：</p><ol><li><p>高精度。可以直接达到纳秒级的计时精度（在1GHz的CPU上每个时钟周期就是一纳秒），这是其他计时方法所难以企及的。</p></li><li><p>成本低。<code>timeGetTime</code>函数需要链接多媒体库 <code>winmm.lib</code>，<code>QueryPerformance*</code>函数根据MSDN的说明，需要硬件的支持（虽然我还没有见过不支持的机器）和KERNEL库的支持，所以二者都只能在Windows平台下使用（关于DOS平台下的高精度计时问题，可以参考<code>《图形程序开发人员指南》</code>，里面有关于控制定时器8253的详细说明）。但<code>RDTSC</code>指令是一条CPU指令，凡是i386平台下Pentium以上的机器均支持，甚至没有平台的限制（我相信i386版本UNIX和Linux下这个方法同样适用，但没有条件试验），而且函数调用的开销是最小的。</p></li><li><p>具有和CPU主频直接对应的速率关系。一个计数相当于1/(CPU主频Hz数)秒，这样只要知道了CPU的主频，可以直接计算出时间。这和 <code>QueryPerformanceCount</code>不同，后者需要通过<code>QueryPerformanceFrequency</code>获取当前计数器每秒的计数次数才能换算成时间。</p></li></ol><p>这个方法的缺点是：</p><ol><li><p>现有的C/C++编译器多数不直接支持使用RDTSC指令，需要用直接嵌入机器码的方式编程，比较麻烦。</p></li><li><p>数据抖动比较厉害。其实对任何计量手段而言，精度和稳定性永远是一对矛盾。如果用低精度的<code>timeGetTime</code>来计时，基本上每次计时的结果都是相同的；而<code>RDTSC</code>指令每次结果都不一样，经常有几百甚至上千的差距。这是这种方法高精度本身固有的矛盾。</p></li></ol><p>关于这个方法计时的最大长度，我们可以简单的用下列公式计算：</p><pre tabindex=0><code>自CPU上电以来的秒数   =   RDTSC读出的周期数   /   CPU主频速率（Hz）   
+</code></pre><p>64位无符号整数所能表达的最大数字是<code>1.8×10^19</code>，在我的<code>Celeron 800</code>上可以计时大约700年（书中说可以在200MHz的Pentium上计时117年，这个数字不知道是怎么得出来的，与我的计算有出入）。无论如何，我们大可不必关心溢出的问题。</p><p>下面是几个小例子，简要比较了三种计时方法的用法与精度</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=display:flex><span><span style=color:#75715e>//Timer1.cpp   使用了RDTSC指令的Timer类//KTimer类的定义可以参见《Windows图形编程》P15   
+</span></span></span><span style=display:flex><span><span style=color:#75715e>//编译行：CL Timer1.cpp   /link   USER32.lib   
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#75715e>#include</span>   <span style=color:#75715e>&lt;stdio.h&gt;   </span><span style=color:#75715e>
+</span></span></span><span style=display:flex><span><span style=color:#75715e>#include</span>   <span style=color:#75715e>&#34;KTimer.h&#34;   </span><span style=color:#75715e>
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#a6e22e>main</span>()   
+</span></span><span style=display:flex><span>{   
+</span></span><span style=display:flex><span> <span style=color:#66d9ef>unsigned</span>   t;   
+</span></span><span style=display:flex><span> KTimer   timer;   
+</span></span><span style=display:flex><span> timer.<span style=color:#a6e22e>Start</span>();   
+</span></span><span style=display:flex><span> <span style=color:#a6e22e>Sleep</span>(<span style=color:#ae81ff>1000</span>);   
+</span></span><span style=display:flex><span> t   <span style=color:#f92672>=</span>   timer.<span style=color:#a6e22e>Stop</span>();   
+</span></span><span style=display:flex><span> <span style=color:#a6e22e>printf</span>(<span style=color:#e6db74>&#34;Lasting   Time:   %d</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>,t);   
+</span></span><span style=display:flex><span>}   
+</span></span><span style=display:flex><span> 
+</span></span><span style=display:flex><span><span style=color:#75715e>//Timer2.cpp   使用了timeGetTime函数   
+</span></span></span><span style=display:flex><span><span style=color:#75715e>//需包含&lt;mmsys.h&gt;，但由于Windows头文件错综复杂的关系   
+</span></span></span><span style=display:flex><span><span style=color:#75715e>//简单包含&lt;windows.h&gt;比较偷懒：）   
+</span></span></span><span style=display:flex><span><span style=color:#75715e>//编译行：CL   timer2.cpp   /link   winmm.lib     
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#75715e>#include</span>   <span style=color:#75715e>&lt;windows.h&gt;   </span><span style=color:#75715e>
+</span></span></span><span style=display:flex><span><span style=color:#75715e>#include</span>   <span style=color:#75715e>&lt;stdio.h&gt;   </span><span style=color:#75715e>
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span> 
+</span></span><span style=display:flex><span><span style=color:#a6e22e>main</span>()   
+</span></span><span style=display:flex><span>{   
+</span></span><span style=display:flex><span> DWORD   t1,   t2;   
+</span></span><span style=display:flex><span> t1   <span style=color:#f92672>=</span>   <span style=color:#a6e22e>timeGetTime</span>();   
+</span></span><span style=display:flex><span> <span style=color:#a6e22e>Sleep</span>(<span style=color:#ae81ff>1000</span>);   
+</span></span><span style=display:flex><span> t2   <span style=color:#f92672>=</span>   <span style=color:#a6e22e>timeGetTime</span>();   
+</span></span><span style=display:flex><span> <span style=color:#a6e22e>printf</span>(<span style=color:#e6db74>&#34;Begin   Time:   %u</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>,   t1);   
+</span></span><span style=display:flex><span> <span style=color:#a6e22e>printf</span>(<span style=color:#e6db74>&#34;End   Time:   %u</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>,   t2);   
+</span></span><span style=display:flex><span> <span style=color:#a6e22e>printf</span>(<span style=color:#e6db74>&#34;Lasting   Time:   %u</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>,(t2<span style=color:#f92672>-</span>t1));   
+</span></span><span style=display:flex><span>}   
+</span></span><span style=display:flex><span> 
+</span></span><span style=display:flex><span><span style=color:#75715e>//Timer3.cpp   使用了QueryPerformanceCounter函数   
+</span></span></span><span style=display:flex><span><span style=color:#75715e>//编译行：CL   timer3.cpp   /link   KERNEl32.lib   
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#75715e>#include</span>   <span style=color:#75715e>&lt;windows.h&gt;   </span><span style=color:#75715e>
+</span></span></span><span style=display:flex><span><span style=color:#75715e>#include</span>   <span style=color:#75715e>&lt;stdio.h&gt;   </span><span style=color:#75715e>
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span> 
+</span></span><span style=display:flex><span><span style=color:#a6e22e>main</span>()   
+</span></span><span style=display:flex><span>{   
+</span></span><span style=display:flex><span> LARGE_INTEGER   t1,   t2,   tc;   
+</span></span><span style=display:flex><span> <span style=color:#a6e22e>QueryPerformanceFrequency</span>(<span style=color:#f92672>&amp;</span>tc);   
+</span></span><span style=display:flex><span> <span style=color:#a6e22e>printf</span>(<span style=color:#e6db74>&#34;Frequency:   %u</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>,   tc.QuadPart);   
+</span></span><span style=display:flex><span> <span style=color:#a6e22e>QueryPerformanceCounter</span>(<span style=color:#f92672>&amp;</span>t1);   
+</span></span><span style=display:flex><span> <span style=color:#a6e22e>Sleep</span>(<span style=color:#ae81ff>1000</span>);   
+</span></span><span style=display:flex><span> <span style=color:#a6e22e>QueryPerformanceCounter</span>(<span style=color:#f92672>&amp;</span>t2);   
+</span></span><span style=display:flex><span> <span style=color:#a6e22e>printf</span>(<span style=color:#e6db74>&#34;Begin   Time:   %u</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>,   t1.QuadPart);   
+</span></span><span style=display:flex><span> <span style=color:#a6e22e>printf</span>(<span style=color:#e6db74>&#34;End   Time:   %u</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>,   t2.QuadPart);   
+</span></span><span style=display:flex><span> <span style=color:#a6e22e>printf</span>(<span style=color:#e6db74>&#34;Lasting   Time:   %u</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>,(   t2.QuadPart<span style=color:#f92672>-</span>   t1.QuadPart));   
+</span></span><span style=display:flex><span>}   
+</span></span><span style=display:flex><span> 
+</span></span><span style=display:flex><span><span style=color:#75715e>////////////////////////////////////////////////   
+</span></span></span><span style=display:flex><span><span style=color:#75715e>//以上三个示例程序都是测试1秒钟休眠所耗费的时间   
+</span></span></span><span style=display:flex><span><span style=color:#75715e>//测试环境：Celeron   800MHz   /   256M   SDRAM       
+</span></span></span><span style=display:flex><span><span style=color:#75715e>//         Windows   2000   Professional   SP2   
+</span></span></span><span style=display:flex><span><span style=color:#75715e>//         Microsoft   Visual   C++   6.0   SP5   
+</span></span></span><span style=display:flex><span><span style=color:#75715e>////////////////////////////////////////////////   
+</span></span></span></code></pre></div><p>以下是Timer1的运行结果，使用的是高精度的<code>RDTSC</code>指令</p><pre tabindex=0><code>Lasting   Time:   804586872   
+</code></pre><p>以下是Timer2的运行结果，使用的是最粗糙的<code>timeGetTime API</code></p><pre tabindex=0><code>Begin   Time:   20254254   
+End   Time:   20255255   
+Lasting   Time:   1001
+</code></pre><p>以下是Timer3的运行结果，使用的是<code>QueryPerformanceCount API</code></p><pre tabindex=0><code>Frequency:   3579545   
+Begin   Time:   3804729124   
+End   Time:   3808298836   
+Lasting   Time:   3569712   
+</code></pre><p>古人说，触类旁通。从一本介绍图形编程的书上得到一个如此有用的实时处理知识，我感到非常高兴。有美不敢自专，希望大家和我一样喜欢这个轻便有效的计时器。</p></main><script src=https://giscus.app/client.js data-repo=talengu/talengu.github.io data-repo-id="MDEwOlJlcG9zaXRvcnk5MTk0NjkxNQ==" data-category=Blog data-category-id=DIC_kwDOBXr_o84C0Qpk data-mapping=pathname data-strict=0 data-reactions-enabled=1 data-emit-metadata=0 data-input-position=bottom data-theme=/css/giscus.css data-lang=zh-CN crossorigin=anonymous async></script><footer>- END -<hr><a href=/about target=_blank title=About>一塘</a>
+© 2025
+<a href=/index.xml target=_blank title=RSS>RSS</a></footer></body></html>

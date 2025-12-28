@@ -1,0 +1,590 @@
+<!doctype html><html lang=zh-cn><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><title>「转」Linux内核数据包bridge上转发流程 | 一塘</title>
+<link rel=stylesheet href=/css/style.css><link rel=stylesheet href=/css/fonts.css><link rel=stylesheet href=/css/dark.css></head><body><nav><ul class=menu><li><a href=/about/>一塘</a></li><li><a href=/post/>博客</a></li><li><a href=/categories/>分类</a></li><li><a href=/tags/>标签</a></li><li style=float:right;position:relative;margin-left:1em><input type=text id=search-box placeholder=搜索文章... style="padding:.3em .6em;border-radius:4px;border:1px solid #ccc;width:150px;min-width:100px;max-width:250px"><ul id=search-results style="position:absolute;top:100%;right:0;background:#fff;border:1px solid #ccc;max-height:300px;overflow-y:auto;display:none;z-index:1000;list-style:none;padding:0;margin:0;width:250px"></ul></li><style>.search-item{padding:.4em .6em}.search-link{display:block;font-weight:500;text-decoration:none;color:#007acc}.search-snippet{font-size:.85em;color:#555;margin-top:.2em;line-height:1.4}.search-highlight{background:rgba(255,235,59,.5);padding:0 .15em;border-radius:3px}.search-item:hover{background-color:rgba(0,0,0,5%)}@media(prefers-color-scheme:dark){.search-link{color:#4fc3f7}.search-snippet{color:#aaa}.search-item:hover{background-color:rgba(104,99,99,.273)}.search-highlight{background:rgba(255,193,7,.35)}}</style><script src=https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.6.2/fuse.min.js></script><script>fetch("/post/index.json").then(e=>e.json()).then(e=>{const o=new Fuse(e,{keys:[{name:"title",weight:2},{name:"summary",weight:1},{name:"content",weight:.7}],threshold:.3,ignoreLocation:!0,minMatchCharLength:2}),n=document.getElementById("search-box"),t=document.getElementById("search-results");function s(e,t){if(!e)return"";const n=t.replace(/[.*+?^${}()|[\]\\]/g,"\\$&"),s=new RegExp(`(${n})`,"gi");return e.replace(s,'<mark class="search-highlight">$1</mark>')}function i(e,t,n=80){const s=e.toLowerCase().indexOf(t.toLowerCase());if(s===-1)return e.slice(0,n)+"…";const o=Math.max(0,s-n/2),i=Math.min(e.length,s+n/2);return"…"+e.slice(o,i)+"…"}n.addEventListener("input",function(){const e=this.value.trim();if(!e){t.style.display="none",t.innerHTML="";return}const n=o.search(e);t.innerHTML=n.slice(0,8).map(t=>{const n=t.item,o=i(n.content||n.summary||"",e);return`
+          <li class="search-item">
+            <a href="${n.permalink}" class="search-link">
+              ${s(n.title,e)}
+            </a>
+            <div class="search-snippet">
+              ${s(o,e)}
+            </div>
+          </li>
+        `}).join(""),t.style.display=n.length?"block":"none"}),document.addEventListener("click",e=>{!n.contains(e.target)&&!t.contains(e.target)&&(t.style.display="none")})})</script></ul><hr></nav><div class=article-meta><h1><span class=title>「转」Linux内核数据包bridge上转发流程</span></h1></div><div class=post-stats style=text-align:right>2022/07/06</div><main><blockquote><p>原文地址 <a href=https://blog.csdn.net/hhhhhyyyyy8/article/details/102133863>blog.csdn.net</a>
+@hhhhhyyyyy8 @4.15.1</p></blockquote><h2 id=前言>前言</h2><p>linux 内核源代码变动怎么这么大，handle_bridge 函数居然没有了，本来接着准备以 3.9.1 分析的，但发现和后面的又变了，还是以 4.15.1 现在电脑上用的版本分析吧。</p><p><strong>linux kernel：4.15.1</strong></p><p>best of best [<a href=url>link</a>](<a href=https://upload.wikimedia.org/wikipedia/commons/3/37/Netfilter-packet-flow.svg>https://upload.wikimedia.org/wikipedia/commons/3/37/Netfilter-packet-flow.svg</a>)</p><p><div style=text-align:center><img src=Netfilter-packet-flow5.svg alt></div></p><p>先看三张图片</p><p><a href=https://blog.csdn.net/NW_NW_NW/article/details/76153027>IMG skb桥转发蓝图</a><div style=text-align:center><img src=20191005153149853.jpg alt></div></p><p><a href=https://blog.csdn.net/u012247418/article/details/90137663>IMG linux TCP/IP L2层数据包接收流程</a><div style=text-align:center><img src=t_70.png alt></div></p><p><a href=https://www.cnblogs.com/xuanxuanBOSS/p/11424290.html>IMG 浅析ebtables的概念和一些基本应用</a><div style=text-align:center><img src=netfilter.png alt></div></p><blockquote><p>tips: linux 内核版本不一样，流程函数会发生细微改变。</p></blockquote><h2 id=1-br_handle_frame>1. br_handle_frame()</h2><p>作用：</p><ol><li><p>对于需要转发的报文，调用 <code>NF_BR_PRE_ROUTING</code> 处钩子函数，结束后，进入 <code>br_handle_frame_finish()</code> 函数；</p></li><li><p>对于 STP 报文，调用 <code>NF_BR_LOCAL_IN</code> 处钩子函数，结束后，进入 <code>br_handle_local_finish()</code> 函数，在 <code>br_handle_local_finish()</code> 函数中会调用 <code>br_pass_frame_up()</code> 函数。</p></li></ol><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=display:flex><span><span style=color:#75715e>//linux/net/bridge/br_input.c
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#75715e>/*
+</span></span></span><span style=display:flex><span><span style=color:#75715e> * Return NULL if skb is handled
+</span></span></span><span style=display:flex><span><span style=color:#75715e> * note: already called with rcu_read_lock
+</span></span></span><span style=display:flex><span><span style=color:#75715e> */</span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>rx_handler_result_t</span> <span style=color:#a6e22e>br_handle_frame</span>(<span style=color:#66d9ef>struct</span> sk_buff <span style=color:#f92672>**</span>pskb)
+</span></span><span style=display:flex><span>{
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>struct</span> net_bridge_port <span style=color:#f92672>*</span>p;
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>struct</span> sk_buff <span style=color:#f92672>*</span>skb <span style=color:#f92672>=</span> <span style=color:#f92672>*</span>pskb;
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>const</span> <span style=color:#66d9ef>unsigned</span> <span style=color:#66d9ef>char</span> <span style=color:#f92672>*</span>dest <span style=color:#f92672>=</span> <span style=color:#a6e22e>eth_hdr</span>(skb)<span style=color:#f92672>-&gt;</span>h_dest;
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>br_should_route_hook_t</span> <span style=color:#f92672>*</span>rhook;
+</span></span><span style=display:flex><span> 
+</span></span><span style=display:flex><span>	<span style=color:#75715e>/*如果是环回地址，直接返回RX_HANDLER_PASS*/</span>
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>if</span> (<span style=color:#a6e22e>unlikely</span>(skb<span style=color:#f92672>-&gt;</span>pkt_type <span style=color:#f92672>==</span> PACKET_LOOPBACK))
+</span></span><span style=display:flex><span>		<span style=color:#66d9ef>return</span> RX_HANDLER_PASS;
+</span></span><span style=display:flex><span>	
+</span></span><span style=display:flex><span>	<span style=color:#75715e>/*判断源MAC地址是否是有效的地址，不是直接丢弃，源MAC地址不能是多播地址和全0地址*/</span>
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>if</span> (<span style=color:#f92672>!</span><span style=color:#a6e22e>is_valid_ether_addr</span>(<span style=color:#a6e22e>eth_hdr</span>(skb)<span style=color:#f92672>-&gt;</span>h_source))
+</span></span><span style=display:flex><span>		<span style=color:#66d9ef>goto</span> drop;
+</span></span><span style=display:flex><span>	<span style=color:#75715e>/*判断是否是共享数据包，若是则clone该数据包；若clone时分配内存出错，返回NULL*/</span>
+</span></span><span style=display:flex><span>	skb <span style=color:#f92672>=</span> <span style=color:#a6e22e>skb_share_check</span>(skb, GFP_ATOMIC);
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>if</span> (<span style=color:#f92672>!</span>skb)
+</span></span><span style=display:flex><span>		<span style=color:#66d9ef>return</span> RX_HANDLER_CONSUMED;
+</span></span><span style=display:flex><span> 
+</span></span><span style=display:flex><span>	<span style=color:#75715e>/*获取dev对应的网桥端口*/</span>
+</span></span><span style=display:flex><span>	p <span style=color:#f92672>=</span> <span style=color:#a6e22e>br_port_get_rcu</span>(skb<span style=color:#f92672>-&gt;</span>dev);
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>if</span> (p<span style=color:#f92672>-&gt;</span>flags <span style=color:#f92672>&amp;</span> BR_VLAN_TUNNEL) {
+</span></span><span style=display:flex><span>		<span style=color:#66d9ef>if</span> (<span style=color:#a6e22e>br_handle_ingress_vlan_tunnel</span>(skb, p,
+</span></span><span style=display:flex><span>						  <span style=color:#a6e22e>nbp_vlan_group_rcu</span>(p)))
+</span></span><span style=display:flex><span>			<span style=color:#66d9ef>goto</span> drop;
+</span></span><span style=display:flex><span>	}
+</span></span><span style=display:flex><span>	
+</span></span><span style=display:flex><span>	<span style=color:#75715e>/*特殊MAC地址处理*/</span>
+</span></span><span style=display:flex><span>	<span style=color:#75715e>//如果目的mac地址是本地链路地址link local reserved addr (01:80:c2:00:00:0X) STP报文
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>	<span style=color:#66d9ef>if</span> (<span style=color:#a6e22e>unlikely</span>(<span style=color:#a6e22e>is_link_local_ether_addr</span>(dest))) {
+</span></span><span style=display:flex><span>		u16 fwd_mask <span style=color:#f92672>=</span> p<span style=color:#f92672>-&gt;</span>br<span style=color:#f92672>-&gt;</span>group_fwd_mask_required;
+</span></span><span style=display:flex><span> 
+</span></span><span style=display:flex><span>		<span style=color:#75715e>/*
+</span></span></span><span style=display:flex><span><span style=color:#75715e>		 * See IEEE 802.1D Table 7-10 Reserved addresses
+</span></span></span><span style=display:flex><span><span style=color:#75715e>		 *
+</span></span></span><span style=display:flex><span><span style=color:#75715e>		 * Assignment		 		Value
+</span></span></span><span style=display:flex><span><span style=color:#75715e>		 * Bridge Group Address		01-80-C2-00-00-00
+</span></span></span><span style=display:flex><span><span style=color:#75715e>		 * (MAC Control) 802.3		01-80-C2-00-00-01
+</span></span></span><span style=display:flex><span><span style=color:#75715e>		 * (Link Aggregation) 802.3	01-80-C2-00-00-02
+</span></span></span><span style=display:flex><span><span style=color:#75715e>		 * 802.1X PAE address		01-80-C2-00-00-03
+</span></span></span><span style=display:flex><span><span style=color:#75715e>		 *
+</span></span></span><span style=display:flex><span><span style=color:#75715e>		 * 802.1AB LLDP 		01-80-C2-00-00-0E
+</span></span></span><span style=display:flex><span><span style=color:#75715e>		 *
+</span></span></span><span style=display:flex><span><span style=color:#75715e>		 * Others reserved for future standardization
+</span></span></span><span style=display:flex><span><span style=color:#75715e>		 */</span>
+</span></span><span style=display:flex><span>		fwd_mask <span style=color:#f92672>|=</span> p<span style=color:#f92672>-&gt;</span>group_fwd_mask;
+</span></span><span style=display:flex><span>		<span style=color:#66d9ef>switch</span> (dest[<span style=color:#ae81ff>5</span>]) {
+</span></span><span style=display:flex><span>		<span style=color:#66d9ef>case</span> <span style=color:#ae81ff>0x00</span><span style=color:#f92672>:</span>	<span style=color:#75715e>/* Bridge Group Address */</span>
+</span></span><span style=display:flex><span>			<span style=color:#75715e>/* If STP is turned off,
+</span></span></span><span style=display:flex><span><span style=color:#75715e>			   then must forward to keep loop detection */</span>
+</span></span><span style=display:flex><span>			<span style=color:#66d9ef>if</span> (p<span style=color:#f92672>-&gt;</span>br<span style=color:#f92672>-&gt;</span>stp_enabled <span style=color:#f92672>==</span> BR_NO_STP <span style=color:#f92672>||</span>
+</span></span><span style=display:flex><span>			    fwd_mask <span style=color:#f92672>&amp;</span> (<span style=color:#ae81ff>1u</span> <span style=color:#f92672>&lt;&lt;</span> dest[<span style=color:#ae81ff>5</span>]))
+</span></span><span style=display:flex><span>				<span style=color:#66d9ef>goto</span> forward;
+</span></span><span style=display:flex><span>			<span style=color:#f92672>*</span>pskb <span style=color:#f92672>=</span> skb;
+</span></span><span style=display:flex><span>			<span style=color:#a6e22e>__br_handle_local_finish</span>(skb);
+</span></span><span style=display:flex><span>			<span style=color:#66d9ef>return</span> RX_HANDLER_PASS;
+</span></span><span style=display:flex><span> 
+</span></span><span style=display:flex><span>		<span style=color:#66d9ef>case</span> <span style=color:#ae81ff>0x01</span><span style=color:#f92672>:</span>	<span style=color:#75715e>/* IEEE MAC (Pause) */</span>
+</span></span><span style=display:flex><span>			<span style=color:#66d9ef>goto</span> drop;
+</span></span><span style=display:flex><span> 
+</span></span><span style=display:flex><span>		<span style=color:#66d9ef>case</span> <span style=color:#ae81ff>0x0E</span><span style=color:#f92672>:</span>	<span style=color:#75715e>/* 802.1AB LLDP */</span>
+</span></span><span style=display:flex><span>			fwd_mask <span style=color:#f92672>|=</span> p<span style=color:#f92672>-&gt;</span>br<span style=color:#f92672>-&gt;</span>group_fwd_mask;
+</span></span><span style=display:flex><span>			<span style=color:#66d9ef>if</span> (fwd_mask <span style=color:#f92672>&amp;</span> (<span style=color:#ae81ff>1u</span> <span style=color:#f92672>&lt;&lt;</span> dest[<span style=color:#ae81ff>5</span>]))
+</span></span><span style=display:flex><span>				<span style=color:#66d9ef>goto</span> forward;
+</span></span><span style=display:flex><span>			<span style=color:#f92672>*</span>pskb <span style=color:#f92672>=</span> skb;
+</span></span><span style=display:flex><span>			<span style=color:#a6e22e>__br_handle_local_finish</span>(skb);
+</span></span><span style=display:flex><span>			<span style=color:#66d9ef>return</span> RX_HANDLER_PASS;
+</span></span><span style=display:flex><span> 
+</span></span><span style=display:flex><span>		<span style=color:#66d9ef>default</span><span style=color:#f92672>:</span>
+</span></span><span style=display:flex><span>			<span style=color:#75715e>/* Allow selective forwarding for most other protocols */</span>
+</span></span><span style=display:flex><span>			fwd_mask <span style=color:#f92672>|=</span> p<span style=color:#f92672>-&gt;</span>br<span style=color:#f92672>-&gt;</span>group_fwd_mask;
+</span></span><span style=display:flex><span>			<span style=color:#66d9ef>if</span> (fwd_mask <span style=color:#f92672>&amp;</span> (<span style=color:#ae81ff>1u</span> <span style=color:#f92672>&lt;&lt;</span> dest[<span style=color:#ae81ff>5</span>]))
+</span></span><span style=display:flex><span>				<span style=color:#66d9ef>goto</span> forward;
+</span></span><span style=display:flex><span>		}
+</span></span><span style=display:flex><span> 
+</span></span><span style=display:flex><span>		<span style=color:#75715e>/* Deliver packet to local host only */</span>
+</span></span><span style=display:flex><span>		<span style=color:#75715e>/*调用NF_BR_LOCAL_IN处钩子函数，结束后，进入br_handle_local_finish函数*/</span>
+</span></span><span style=display:flex><span>		<span style=color:#a6e22e>NF_HOOK</span>(NFPROTO_BRIDGE, NF_BR_LOCAL_IN, <span style=color:#a6e22e>dev_net</span>(skb<span style=color:#f92672>-&gt;</span>dev),
+</span></span><span style=display:flex><span>			NULL, skb, skb<span style=color:#f92672>-&gt;</span>dev, NULL, br_handle_local_finish);
+</span></span><span style=display:flex><span>		<span style=color:#66d9ef>return</span> RX_HANDLER_CONSUMED;
+</span></span><span style=display:flex><span>	}
+</span></span><span style=display:flex><span> 
+</span></span><span style=display:flex><span>forward:
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>switch</span> (p<span style=color:#f92672>-&gt;</span>state) {
+</span></span><span style=display:flex><span>	<span style=color:#75715e>//网桥端口处于转发状态
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>	<span style=color:#66d9ef>case</span> BR_STATE_FORWARDING:
+</span></span><span style=display:flex><span>		rhook <span style=color:#f92672>=</span> <span style=color:#a6e22e>rcu_dereference</span>(br_should_route_hook);
+</span></span><span style=display:flex><span>		<span style=color:#66d9ef>if</span> (rhook) {
+</span></span><span style=display:flex><span>			<span style=color:#66d9ef>if</span> ((<span style=color:#f92672>*</span>rhook)(skb)) {
+</span></span><span style=display:flex><span>				<span style=color:#f92672>*</span>pskb <span style=color:#f92672>=</span> skb;
+</span></span><span style=display:flex><span>				<span style=color:#66d9ef>return</span> RX_HANDLER_PASS;
+</span></span><span style=display:flex><span>			}
+</span></span><span style=display:flex><span>			dest <span style=color:#f92672>=</span> <span style=color:#a6e22e>eth_hdr</span>(skb)<span style=color:#f92672>-&gt;</span>h_dest;
+</span></span><span style=display:flex><span>		}
+</span></span><span style=display:flex><span>		<span style=color:#75715e>/* fall through */</span>
+</span></span><span style=display:flex><span>	<span style=color:#75715e>/*网桥端口处于学习状态，处于转发状态也会执行下面的代码，因为上面的case没有break。*/</span>
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>case</span> BR_STATE_LEARNING:
+</span></span><span style=display:flex><span>	<span style=color:#75715e>/*数据包目的MAC为网桥的Mac，发往本地的数据包*/</span>
+</span></span><span style=display:flex><span>		<span style=color:#66d9ef>if</span> (<span style=color:#a6e22e>ether_addr_equal</span>(p<span style=color:#f92672>-&gt;</span>br<span style=color:#f92672>-&gt;</span>dev<span style=color:#f92672>-&gt;</span>dev_addr, dest))
+</span></span><span style=display:flex><span>			skb<span style=color:#f92672>-&gt;</span>pkt_type <span style=color:#f92672>=</span> PACKET_HOST;
+</span></span><span style=display:flex><span>		<span style=color:#75715e>/*调用NF_BR_PRE_ROUTING处钩子函数，结束后进入br_handle_frame_finish函数*/</span>
+</span></span><span style=display:flex><span>		<span style=color:#a6e22e>NF_HOOK</span>(NFPROTO_BRIDGE, NF_BR_PRE_ROUTING,
+</span></span><span style=display:flex><span>			<span style=color:#a6e22e>dev_net</span>(skb<span style=color:#f92672>-&gt;</span>dev), NULL, skb, skb<span style=color:#f92672>-&gt;</span>dev, NULL,
+</span></span><span style=display:flex><span>			br_handle_frame_finish);
+</span></span><span style=display:flex><span>		<span style=color:#66d9ef>break</span>;
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>default</span><span style=color:#f92672>:</span>
+</span></span><span style=display:flex><span>drop:
+</span></span><span style=display:flex><span>		<span style=color:#a6e22e>kfree_skb</span>(skb);
+</span></span><span style=display:flex><span>	}
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>return</span> RX_HANDLER_CONSUMED;
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p>相关函数</p><h3 id=rx_handler_result_t-枚举类型><code>rx_handler_result_t</code> 枚举类型</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=display:flex><span><span style=color:#66d9ef>enum</span> rx_handler_result {
+</span></span><span style=display:flex><span>	RX_HANDLER_CONSUMED,
+</span></span><span style=display:flex><span>	RX_HANDLER_ANOTHER,
+</span></span><span style=display:flex><span>	RX_HANDLER_EXACT,
+</span></span><span style=display:flex><span>	RX_HANDLER_PASS,
+</span></span><span style=display:flex><span>};
+</span></span><span style=display:flex><span><span style=color:#66d9ef>typedef</span> <span style=color:#66d9ef>enum</span> rx_handler_result <span style=color:#66d9ef>rx_handler_result_t</span>;
+</span></span></code></pre></div><h3 id=is_valid_ether_addr><code>is_valid_ether_addr()</code></h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=display:flex><span> 
+</span></span><span style=display:flex><span><span style=color:#75715e>/**
+</span></span></span><span style=display:flex><span><span style=color:#75715e> * is_valid_ether_addr - Determine if the given Ethernet address is valid
+</span></span></span><span style=display:flex><span><span style=color:#75715e> * @addr: Pointer to a six-byte array containing the Ethernet address
+</span></span></span><span style=display:flex><span><span style=color:#75715e> *
+</span></span></span><span style=display:flex><span><span style=color:#75715e> * Check that the Ethernet address (MAC) is not 00:00:00:00:00:00, is not
+</span></span></span><span style=display:flex><span><span style=color:#75715e> * a multicast address, and is not FF:FF:FF:FF:FF:FF.
+</span></span></span><span style=display:flex><span><span style=color:#75715e> *
+</span></span></span><span style=display:flex><span><span style=color:#75715e> * Return true if the address is valid.
+</span></span></span><span style=display:flex><span><span style=color:#75715e> *
+</span></span></span><span style=display:flex><span><span style=color:#75715e> * Please note: addr must be aligned to u16.
+</span></span></span><span style=display:flex><span><span style=color:#75715e> */</span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>static</span> <span style=color:#66d9ef>inline</span> <span style=color:#66d9ef>bool</span> <span style=color:#a6e22e>is_valid_ether_addr</span>(<span style=color:#66d9ef>const</span> u8 <span style=color:#f92672>*</span>addr)
+</span></span><span style=display:flex><span>{
+</span></span><span style=display:flex><span>	<span style=color:#75715e>/* FF:FF:FF:FF:FF:FF is a multicast address so we don&#39;t need to
+</span></span></span><span style=display:flex><span><span style=color:#75715e>	 * explicitly check for it here. */</span>
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>return</span> <span style=color:#f92672>!</span><span style=color:#a6e22e>is_multicast_ether_addr</span>(addr) <span style=color:#f92672>&amp;&amp;</span> <span style=color:#f92672>!</span><span style=color:#a6e22e>is_zero_ether_addr</span>(addr);
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><h3 id=br_handle_local_finish><code>br_handle_local_finish()</code></h3><p><code>br_handle_local_finish()</code> 函数中调用 <code>br_pass_fame_up()</code> 函数。</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=display:flex><span> 
+</span></span><span style=display:flex><span><span style=color:#75715e>/* note: already called with rcu_read_lock */</span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>static</span> <span style=color:#66d9ef>int</span> <span style=color:#a6e22e>br_handle_local_finish</span>(<span style=color:#66d9ef>struct</span> net <span style=color:#f92672>*</span>net, <span style=color:#66d9ef>struct</span> sock <span style=color:#f92672>*</span>sk, <span style=color:#66d9ef>struct</span> sk_buff <span style=color:#f92672>*</span>skb)
+</span></span><span style=display:flex><span>{
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>struct</span> net_bridge_port <span style=color:#f92672>*</span>p <span style=color:#f92672>=</span> <span style=color:#a6e22e>br_port_get_rcu</span>(skb<span style=color:#f92672>-&gt;</span>dev);
+</span></span><span style=display:flex><span> 
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>__br_handle_local_finish</span>(skb);
+</span></span><span style=display:flex><span> 
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>BR_INPUT_SKB_CB</span>(skb)<span style=color:#f92672>-&gt;</span>brdev <span style=color:#f92672>=</span> p<span style=color:#f92672>-&gt;</span>br<span style=color:#f92672>-&gt;</span>dev;
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>br_pass_frame_up</span>(skb);
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>return</span> <span style=color:#ae81ff>0</span>;
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><h2 id=2-br_handle_frame_finish>2. br_handle_frame_finish()</h2><p>作用：</p><p>网桥设备是否处于混杂模式，如果是，则会发一份到本地进行处理</p><p>如果是广播包，则会进行广播洪泛，并会发一份到本地处理</p><p>如果是组播包，则根据组播表进行组播转发，并发一份数数包到本地处理</p><p>如果是单播包，发往本地的单播包则送到本地处理，在 fdb 表中可以找到转发表项的单播包则进行转发，未知单播包在广播域内进行洪泛</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=display:flex><span><span style=color:#75715e>//linux/net/bridge/br_input.c
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#75715e>/* note: already called with rcu_read_lock */</span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>int</span> <span style=color:#a6e22e>br_handle_frame_finish</span>(<span style=color:#66d9ef>struct</span> net <span style=color:#f92672>*</span>net, <span style=color:#66d9ef>struct</span> sock <span style=color:#f92672>*</span>sk, <span style=color:#66d9ef>struct</span> sk_buff <span style=color:#f92672>*</span>skb)
+</span></span><span style=display:flex><span>{
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>struct</span> net_bridge_port <span style=color:#f92672>*</span>p <span style=color:#f92672>=</span> <span style=color:#a6e22e>br_port_get_rcu</span>(skb<span style=color:#f92672>-&gt;</span>dev);
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>enum</span> br_pkt_type pkt_type <span style=color:#f92672>=</span> BR_PKT_UNICAST;
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>struct</span> net_bridge_fdb_entry <span style=color:#f92672>*</span>dst <span style=color:#f92672>=</span> NULL;
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>struct</span> net_bridge_mdb_entry <span style=color:#f92672>*</span>mdst;
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>bool</span> local_rcv, mcast_hit <span style=color:#f92672>=</span> false;
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>const</span> <span style=color:#66d9ef>unsigned</span> <span style=color:#66d9ef>char</span> <span style=color:#f92672>*</span>dest;
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>struct</span> net_bridge <span style=color:#f92672>*</span>br;
+</span></span><span style=display:flex><span>	u16 vid <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;
+</span></span><span style=display:flex><span>	
+</span></span><span style=display:flex><span>	<span style=color:#75715e>/*如果网桥端口不存在或者网桥端口状态为BR_STATE_DISABLED，则丢弃*/</span>
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>if</span> (<span style=color:#f92672>!</span>p <span style=color:#f92672>||</span> p<span style=color:#f92672>-&gt;</span>state <span style=color:#f92672>==</span> BR_STATE_DISABLED)
+</span></span><span style=display:flex><span>		<span style=color:#66d9ef>goto</span> drop;
+</span></span><span style=display:flex><span>	<span style=color:#75715e>/*判断是否允许进入桥内，如果没有开启VLAN则所有数据包都可以进入，
+</span></span></span><span style=display:flex><span><span style=color:#75715e>	如果开启了VLAN,则根据VLAN相应的规则，从桥上进行数据包转发。*/</span>
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>if</span> (<span style=color:#f92672>!</span><span style=color:#a6e22e>br_allowed_ingress</span>(p<span style=color:#f92672>-&gt;</span>br, <span style=color:#a6e22e>nbp_vlan_group_rcu</span>(p), skb, <span style=color:#f92672>&amp;</span>vid))
+</span></span><span style=display:flex><span>		<span style=color:#66d9ef>goto</span> out;
+</span></span><span style=display:flex><span> 
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>nbp_switchdev_frame_mark</span>(p, skb);
+</span></span><span style=display:flex><span> 
+</span></span><span style=display:flex><span>	<span style=color:#75715e>/* insert into forwarding database after filtering to avoid spoofing */</span>
+</span></span><span style=display:flex><span>	br <span style=color:#f92672>=</span> p<span style=color:#f92672>-&gt;</span>br;
+</span></span><span style=display:flex><span>	<span style=color:#75715e>/*如果网桥端口标志有BR_LEARNING,则更新fdb表。
+</span></span></span><span style=display:flex><span><span style=color:#75715e>    一般新建网桥端口p-&gt;flags=BR_LEARNING| BR_FLOOD | BR_MCAST_FLOOD | BR_BCAST_FLOOD*/</span>
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>if</span> (p<span style=color:#f92672>-&gt;</span>flags <span style=color:#f92672>&amp;</span> BR_LEARNING)
+</span></span><span style=display:flex><span>		<span style=color:#a6e22e>br_fdb_update</span>(br, p, <span style=color:#a6e22e>eth_hdr</span>(skb)<span style=color:#f92672>-&gt;</span>h_source, vid, false);
+</span></span><span style=display:flex><span>	
+</span></span><span style=display:flex><span>	<span style=color:#75715e>//发往本地数据包标记，!!的作用是转换为bool值
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>	local_rcv <span style=color:#f92672>=</span> <span style=color:#f92672>!!</span>(br<span style=color:#f92672>-&gt;</span>dev<span style=color:#f92672>-&gt;</span>flags <span style=color:#f92672>&amp;</span> IFF_PROMISC);
+</span></span><span style=display:flex><span>	dest <span style=color:#f92672>=</span> <span style=color:#a6e22e>eth_hdr</span>(skb)<span style=color:#f92672>-&gt;</span>h_dest;
+</span></span><span style=display:flex><span>	<span style=color:#75715e>/*目的地址为多播地址*/</span>
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>if</span> (<span style=color:#a6e22e>is_multicast_ether_addr</span>(dest)) {
+</span></span><span style=display:flex><span>		<span style=color:#75715e>/* by definition the broadcast is also a multicast address */</span>
+</span></span><span style=display:flex><span>		<span style=color:#75715e>/*如果目的地址是广播地址，将数据包也发往本地一份*/</span>
+</span></span><span style=display:flex><span>		<span style=color:#66d9ef>if</span> (<span style=color:#a6e22e>is_broadcast_ether_addr</span>(dest)) {
+</span></span><span style=display:flex><span>			pkt_type <span style=color:#f92672>=</span> BR_PKT_BROADCAST;
+</span></span><span style=display:flex><span>			local_rcv <span style=color:#f92672>=</span> true;
+</span></span><span style=display:flex><span>		} <span style=color:#66d9ef>else</span> {
+</span></span><span style=display:flex><span>			pkt_type <span style=color:#f92672>=</span> BR_PKT_MULTICAST;
+</span></span><span style=display:flex><span>			<span style=color:#75715e>//igmp snooping留给网桥子系统的外部接口函数，
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>			<span style=color:#75715e>//当网桥接收了igmp数据包后就会调用该函数进行后续处理
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>			<span style=color:#66d9ef>if</span> (<span style=color:#a6e22e>br_multicast_rcv</span>(br, p, skb, vid))
+</span></span><span style=display:flex><span>				<span style=color:#66d9ef>goto</span> drop;
+</span></span><span style=display:flex><span>		}
+</span></span><span style=display:flex><span>	}
+</span></span><span style=display:flex><span>	<span style=color:#75715e>//如果网桥端口状态此时还是BR_STATE_LEARNING,则丢弃。
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>	<span style=color:#66d9ef>if</span> (p<span style=color:#f92672>-&gt;</span>state <span style=color:#f92672>==</span> BR_STATE_LEARNING)
+</span></span><span style=display:flex><span>		<span style=color:#66d9ef>goto</span> drop;
+</span></span><span style=display:flex><span>	<span style=color:#75715e>//将网桥所属的net_device放入skb的私有数据中（struct br_input_skb_cb）
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>	<span style=color:#a6e22e>BR_INPUT_SKB_CB</span>(skb)<span style=color:#f92672>-&gt;</span>brdev <span style=color:#f92672>=</span> br<span style=color:#f92672>-&gt;</span>dev;
+</span></span><span style=display:flex><span> 
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>if</span> (<span style=color:#a6e22e>IS_ENABLED</span>(CONFIG_INET) <span style=color:#f92672>&amp;&amp;</span>
+</span></span><span style=display:flex><span>	    (skb<span style=color:#f92672>-&gt;</span>protocol <span style=color:#f92672>==</span> <span style=color:#a6e22e>htons</span>(ETH_P_ARP) <span style=color:#f92672>||</span>
+</span></span><span style=display:flex><span>	     skb<span style=color:#f92672>-&gt;</span>protocol <span style=color:#f92672>==</span> <span style=color:#a6e22e>htons</span>(ETH_P_RARP))) {
+</span></span><span style=display:flex><span>		<span style=color:#a6e22e>br_do_proxy_suppress_arp</span>(skb, br, vid, p);
+</span></span><span style=display:flex><span>	} <span style=color:#66d9ef>else</span> <span style=color:#66d9ef>if</span> (<span style=color:#a6e22e>IS_ENABLED</span>(CONFIG_IPV6) <span style=color:#f92672>&amp;&amp;</span>
+</span></span><span style=display:flex><span>		   skb<span style=color:#f92672>-&gt;</span>protocol <span style=color:#f92672>==</span> <span style=color:#a6e22e>htons</span>(ETH_P_IPV6) <span style=color:#f92672>&amp;&amp;</span>
+</span></span><span style=display:flex><span>		   br<span style=color:#f92672>-&gt;</span>neigh_suppress_enabled <span style=color:#f92672>&amp;&amp;</span>
+</span></span><span style=display:flex><span>		   <span style=color:#a6e22e>pskb_may_pull</span>(skb, <span style=color:#66d9ef>sizeof</span>(<span style=color:#66d9ef>struct</span> ipv6hdr) <span style=color:#f92672>+</span>
+</span></span><span style=display:flex><span>				 <span style=color:#66d9ef>sizeof</span>(<span style=color:#66d9ef>struct</span> nd_msg)) <span style=color:#f92672>&amp;&amp;</span>
+</span></span><span style=display:flex><span>		   <span style=color:#a6e22e>ipv6_hdr</span>(skb)<span style=color:#f92672>-&gt;</span>nexthdr <span style=color:#f92672>==</span> IPPROTO_ICMPV6) {
+</span></span><span style=display:flex><span>			<span style=color:#66d9ef>struct</span> nd_msg <span style=color:#f92672>*</span>msg, _msg;
+</span></span><span style=display:flex><span> 
+</span></span><span style=display:flex><span>			msg <span style=color:#f92672>=</span> <span style=color:#a6e22e>br_is_nd_neigh_msg</span>(skb, <span style=color:#f92672>&amp;</span>_msg);
+</span></span><span style=display:flex><span>			<span style=color:#66d9ef>if</span> (msg)
+</span></span><span style=display:flex><span>				<span style=color:#a6e22e>br_do_suppress_nd</span>(skb, br, vid, p, msg);
+</span></span><span style=display:flex><span>	}
+</span></span><span style=display:flex><span> 
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>switch</span> (pkt_type) {
+</span></span><span style=display:flex><span>	<span style=color:#75715e>//组播包
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>	<span style=color:#66d9ef>case</span> BR_PKT_MULTICAST:
+</span></span><span style=display:flex><span>		<span style=color:#75715e>//获取组播转发项，设置local_rcv为true，组播包也要发往本地一份。
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>		mdst <span style=color:#f92672>=</span> <span style=color:#a6e22e>br_mdb_get</span>(br, skb, vid);
+</span></span><span style=display:flex><span>		<span style=color:#66d9ef>if</span> ((mdst <span style=color:#f92672>||</span> <span style=color:#a6e22e>BR_INPUT_SKB_CB_MROUTERS_ONLY</span>(skb)) <span style=color:#f92672>&amp;&amp;</span>
+</span></span><span style=display:flex><span>		    <span style=color:#a6e22e>br_multicast_querier_exists</span>(br, <span style=color:#a6e22e>eth_hdr</span>(skb))) {
+</span></span><span style=display:flex><span>			<span style=color:#66d9ef>if</span> ((mdst <span style=color:#f92672>&amp;&amp;</span> mdst<span style=color:#f92672>-&gt;</span>host_joined) <span style=color:#f92672>||</span>
+</span></span><span style=display:flex><span>			    <span style=color:#a6e22e>br_multicast_is_router</span>(br)) {
+</span></span><span style=display:flex><span>				local_rcv <span style=color:#f92672>=</span> true;
+</span></span><span style=display:flex><span>				br<span style=color:#f92672>-&gt;</span>dev<span style=color:#f92672>-&gt;</span>stats.multicast<span style=color:#f92672>++</span>;
+</span></span><span style=display:flex><span>			}
+</span></span><span style=display:flex><span>			mcast_hit <span style=color:#f92672>=</span> true;
+</span></span><span style=display:flex><span>		} <span style=color:#66d9ef>else</span> {
+</span></span><span style=display:flex><span>			local_rcv <span style=color:#f92672>=</span> true;
+</span></span><span style=display:flex><span>			br<span style=color:#f92672>-&gt;</span>dev<span style=color:#f92672>-&gt;</span>stats.multicast<span style=color:#f92672>++</span>;
+</span></span><span style=display:flex><span>		}
+</span></span><span style=display:flex><span>		<span style=color:#66d9ef>break</span>;
+</span></span><span style=display:flex><span>	<span style=color:#75715e>//单播包
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>	<span style=color:#66d9ef>case</span> BR_PKT_UNICAST:
+</span></span><span style=display:flex><span>		<span style=color:#75715e>//根据目的MAC地址查找fdb表，看是否有对应的表项
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>		dst <span style=color:#f92672>=</span> <span style=color:#a6e22e>br_fdb_find_rcu</span>(br, dest, vid);
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>default</span><span style=color:#f92672>:</span>
+</span></span><span style=display:flex><span>		<span style=color:#66d9ef>break</span>;
+</span></span><span style=display:flex><span>	}
+</span></span><span style=display:flex><span>	
+</span></span><span style=display:flex><span>	<span style=color:#75715e>//如果找到目的MAC对应的表项
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>	<span style=color:#66d9ef>if</span> (dst) {
+</span></span><span style=display:flex><span>		<span style=color:#66d9ef>unsigned</span> <span style=color:#66d9ef>long</span> now <span style=color:#f92672>=</span> jiffies;
+</span></span><span style=display:flex><span>		<span style=color:#75715e>//送入上层处理
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>		<span style=color:#66d9ef>if</span> (dst<span style=color:#f92672>-&gt;</span>is_local)
+</span></span><span style=display:flex><span>			<span style=color:#66d9ef>return</span> <span style=color:#a6e22e>br_pass_frame_up</span>(skb);
+</span></span><span style=display:flex><span> 
+</span></span><span style=display:flex><span>		<span style=color:#66d9ef>if</span> (now <span style=color:#f92672>!=</span> dst<span style=color:#f92672>-&gt;</span>used)
+</span></span><span style=display:flex><span>			dst<span style=color:#f92672>-&gt;</span>used <span style=color:#f92672>=</span> now;
+</span></span><span style=display:flex><span>		<span style=color:#75715e>//根据fdb转发表项进行转发，若这里local_rcv 为1,（即端口处于混杂模式IFF_PROMISC），则会克隆一份再转发
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>		<span style=color:#75715e>//传入的第一个参数dst-&gt;dst 即为要转发的目的端口
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>		<span style=color:#a6e22e>br_forward</span>(dst<span style=color:#f92672>-&gt;</span>dst, skb, local_rcv, false);
+</span></span><span style=display:flex><span>	} <span style=color:#66d9ef>else</span> {
+</span></span><span style=display:flex><span>		<span style=color:#75715e>//进行广播或者组播洪泛
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>		<span style=color:#66d9ef>if</span> (<span style=color:#f92672>!</span>mcast_hit)
+</span></span><span style=display:flex><span>			<span style=color:#a6e22e>br_flood</span>(br, skb, pkt_type, local_rcv, false);
+</span></span><span style=display:flex><span>		<span style=color:#66d9ef>else</span>
+</span></span><span style=display:flex><span>			<span style=color:#a6e22e>br_multicast_flood</span>(mdst, skb, local_rcv, false);
+</span></span><span style=display:flex><span>	}
+</span></span><span style=display:flex><span>	<span style=color:#75715e>//local_rcv标记为1，送入上层处理。
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>	<span style=color:#66d9ef>if</span> (local_rcv)
+</span></span><span style=display:flex><span>		<span style=color:#66d9ef>return</span> <span style=color:#a6e22e>br_pass_frame_up</span>(skb);
+</span></span><span style=display:flex><span> 
+</span></span><span style=display:flex><span>out:
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>return</span> <span style=color:#ae81ff>0</span>;
+</span></span><span style=display:flex><span>drop:
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>kfree_skb</span>(skb);
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>goto</span> out;
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><h2 id=3br_pass_frame_up>3.br_pass_frame_up</h2><p>数据包的目的 MAC 是本地的单播报文，广播，组播和网桥处于混杂模式时，报文都会通过 br_pass_frame_up 函数交由上层处理。</p><p>作用：</p><p>调用 NF_BR_LOCAL_IN 处钩子函数，最后调用 br_netif_receive_skb 函数，绕一圈后，交友上层处理。</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=display:flex><span><span style=color:#75715e>//linux/net/bridge/br_input.c
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#66d9ef>static</span> <span style=color:#66d9ef>int</span> <span style=color:#a6e22e>br_pass_frame_up</span>(<span style=color:#66d9ef>struct</span> sk_buff <span style=color:#f92672>*</span>skb)
+</span></span><span style=display:flex><span>{
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>struct</span> net_device <span style=color:#f92672>*</span>indev, <span style=color:#f92672>*</span>brdev <span style=color:#f92672>=</span> <span style=color:#a6e22e>BR_INPUT_SKB_CB</span>(skb)<span style=color:#f92672>-&gt;</span>brdev;
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>struct</span> net_bridge <span style=color:#f92672>*</span>br <span style=color:#f92672>=</span> <span style=color:#a6e22e>netdev_priv</span>(brdev);
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>struct</span> net_bridge_vlan_group <span style=color:#f92672>*</span>vg;
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>struct</span> pcpu_sw_netstats <span style=color:#f92672>*</span>brstats <span style=color:#f92672>=</span> <span style=color:#a6e22e>this_cpu_ptr</span>(br<span style=color:#f92672>-&gt;</span>stats);
+</span></span><span style=display:flex><span>	
+</span></span><span style=display:flex><span>	<span style=color:#75715e>//统计网桥设备上的收包流量数据
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>	<span style=color:#a6e22e>u64_stats_update_begin</span>(<span style=color:#f92672>&amp;</span>brstats<span style=color:#f92672>-&gt;</span>syncp);
+</span></span><span style=display:flex><span>	brstats<span style=color:#f92672>-&gt;</span>rx_packets<span style=color:#f92672>++</span>;
+</span></span><span style=display:flex><span>	brstats<span style=color:#f92672>-&gt;</span>rx_bytes <span style=color:#f92672>+=</span> skb<span style=color:#f92672>-&gt;</span>len;
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>u64_stats_update_end</span>(<span style=color:#f92672>&amp;</span>brstats<span style=color:#f92672>-&gt;</span>syncp);
+</span></span><span style=display:flex><span>	
+</span></span><span style=display:flex><span>	<span style=color:#75715e>//获取网桥设备上的VLAN组
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>	vg <span style=color:#f92672>=</span> <span style=color:#a6e22e>br_vlan_group_rcu</span>(br);
+</span></span><span style=display:flex><span>	<span style=color:#75715e>/* Bridge is just like any other port.  Make sure the
+</span></span></span><span style=display:flex><span><span style=color:#75715e>	 * packet is allowed except in promisc modue when someone
+</span></span></span><span style=display:flex><span><span style=color:#75715e>	 * may be running packet capture.
+</span></span></span><span style=display:flex><span><span style=color:#75715e>	 */</span>
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>if</span> (<span style=color:#f92672>!</span>(brdev<span style=color:#f92672>-&gt;</span>flags <span style=color:#f92672>&amp;</span> IFF_PROMISC) <span style=color:#f92672>&amp;&amp;</span>
+</span></span><span style=display:flex><span>	    <span style=color:#f92672>!</span><span style=color:#a6e22e>br_allowed_egress</span>(vg, skb)) {
+</span></span><span style=display:flex><span>		<span style=color:#a6e22e>kfree_skb</span>(skb);
+</span></span><span style=display:flex><span>		<span style=color:#66d9ef>return</span> NET_RX_DROP;
+</span></span><span style=display:flex><span>	}
+</span></span><span style=display:flex><span>	
+</span></span><span style=display:flex><span>	<span style=color:#75715e>//记录数据包的收包网络设备
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>	indev <span style=color:#f92672>=</span> skb<span style=color:#f92672>-&gt;</span>dev;
+</span></span><span style=display:flex><span>	<span style=color:#75715e>//将数据包的收包设备改为网桥设备
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>	<span style=color:#75715e>//当再次进入__netif_receive_skb_core时就不会再次进入桥处理了，因为网桥上没有注册rx_handler 函数
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>	skb<span style=color:#f92672>-&gt;</span>dev <span style=color:#f92672>=</span> brdev;
+</span></span><span style=display:flex><span>	<span style=color:#75715e>//配置数据包vlan相关信息
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>	skb <span style=color:#f92672>=</span> <span style=color:#a6e22e>br_handle_vlan</span>(br, NULL, vg, skb);
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>if</span> (<span style=color:#f92672>!</span>skb)
+</span></span><span style=display:flex><span>		<span style=color:#66d9ef>return</span> NET_RX_DROP;
+</span></span><span style=display:flex><span>	<span style=color:#75715e>/* update the multicast stats if the packet is IGMP/MLD */</span>
+</span></span><span style=display:flex><span>	<span style=color:#75715e>//如果数据包是组播，更新组播数据包的统计信息
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>	<span style=color:#a6e22e>br_multicast_count</span>(br, NULL, skb, <span style=color:#a6e22e>br_multicast_igmp_type</span>(skb),
+</span></span><span style=display:flex><span>			   BR_MCAST_DIR_TX);
+</span></span><span style=display:flex><span>	
+</span></span><span style=display:flex><span>	<span style=color:#75715e>//调用NF_BR_LOCAL_IN处钩子函数，最后调用br_netif_receive_skb函数。
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>	<span style=color:#66d9ef>return</span> <span style=color:#a6e22e>NF_HOOK</span>(NFPROTO_BRIDGE, NF_BR_LOCAL_IN,
+</span></span><span style=display:flex><span>		       <span style=color:#a6e22e>dev_net</span>(indev), NULL, skb, indev, NULL,
+</span></span><span style=display:flex><span>		       br_netif_receive_skb);
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p>再次进入 netif_receive_skb，由于 skb-dev 被设置成了 bridge，而 bridge 设备的 rx_handler 函数是没有被设置的，所以就不会再次进入 bridge 逻辑，而直接进入了主机上层协议栈。</p><p>相关函数</p><h3 id=br_netif_receive_skb><code>br_netif_receive_skb()</code></h3><p>可以看到在 br_netif_receive_skb() 函数中调用了 netif_receive_skb() 函数。</p><pre tabindex=0><code> 
+static int
+br_netif_receive_skb(struct net *net, struct sock *sk, struct sk_buff *skb)
+{
+	br_drop_fake_rtable(skb);
+	return netif_receive_skb(skb);
+}
+</code></pre><h2 id=4-br_forward>4. br_forward()</h2><p>不是发往本地的数据包，但在 fdb 表中能找到对应的表项，则进行转发 br_forward()，若在 fdb 表中找不到对应表项就进行洪泛 br_blood().</p><p>作用：</p><p>主要是调用__br_forward() 转发报文</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=display:flex><span><span style=color:#75715e>//linux/net/bridge/br_forward.c
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#75715e>/**
+</span></span></span><span style=display:flex><span><span style=color:#75715e> * br_forward - forward a packet to a specific port
+</span></span></span><span style=display:flex><span><span style=color:#75715e> * @to: destination port
+</span></span></span><span style=display:flex><span><span style=color:#75715e> * @skb: packet being forwarded
+</span></span></span><span style=display:flex><span><span style=color:#75715e> * @local_rcv: packet will be received locally after forwarding
+</span></span></span><span style=display:flex><span><span style=color:#75715e> * @local_orig: packet is locally originated
+</span></span></span><span style=display:flex><span><span style=color:#75715e> *
+</span></span></span><span style=display:flex><span><span style=color:#75715e> * Should be called with rcu_read_lock.
+</span></span></span><span style=display:flex><span><span style=color:#75715e> */</span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>void</span> <span style=color:#a6e22e>br_forward</span>(<span style=color:#66d9ef>const</span> <span style=color:#66d9ef>struct</span> net_bridge_port <span style=color:#f92672>*</span>to,
+</span></span><span style=display:flex><span>		<span style=color:#66d9ef>struct</span> sk_buff <span style=color:#f92672>*</span>skb, <span style=color:#66d9ef>bool</span> local_rcv, <span style=color:#66d9ef>bool</span> local_orig)
+</span></span><span style=display:flex><span>{
+</span></span><span style=display:flex><span>	<span style=color:#75715e>//should_deliver测试是否应该将该包转发出去
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>	<span style=color:#66d9ef>if</span> (to <span style=color:#f92672>&amp;&amp;</span> <span style=color:#a6e22e>should_deliver</span>(to, skb)) {
+</span></span><span style=display:flex><span>		<span style=color:#75715e>//如果local_rcv为1，表明端口为混杂模式，先clone一份数据包再进行转发
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>		<span style=color:#66d9ef>if</span> (local_rcv)
+</span></span><span style=display:flex><span>			<span style=color:#a6e22e>deliver_clone</span>(to, skb, local_orig);
+</span></span><span style=display:flex><span>		<span style=color:#66d9ef>else</span>
+</span></span><span style=display:flex><span>			<span style=color:#a6e22e>__br_forward</span>(to, skb, local_orig);
+</span></span><span style=display:flex><span>		<span style=color:#66d9ef>return</span>;
+</span></span><span style=display:flex><span>	}
+</span></span><span style=display:flex><span> 
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>if</span> (<span style=color:#f92672>!</span>local_rcv)
+</span></span><span style=display:flex><span>		<span style=color:#a6e22e>kfree_skb</span>(skb);
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><h2 id=5-__br_forward>5. __br_forward()</h2><p>作用:</p><p>__br_forward() 函数根据数据包的来源（local_orig）分别进入不同的钩子点，如果数据包是从本地发出的，则进入 NF_BR_LOCAL_OUT，如果不是本地发出的，则进入 NF_BR_FORWARD 钩子，最后都进入 br_forward_finish() 函数。</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=display:flex><span><span style=color:#75715e>//linux/net/bridge/br_forward.c
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#66d9ef>static</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>__br_forward</span>(<span style=color:#66d9ef>const</span> <span style=color:#66d9ef>struct</span> net_bridge_port <span style=color:#f92672>*</span>to,
+</span></span><span style=display:flex><span>			 <span style=color:#66d9ef>struct</span> sk_buff <span style=color:#f92672>*</span>skb, <span style=color:#66d9ef>bool</span> local_orig)
+</span></span><span style=display:flex><span>{
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>struct</span> net_bridge_vlan_group <span style=color:#f92672>*</span>vg;
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>struct</span> net_device <span style=color:#f92672>*</span>indev;
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>struct</span> net <span style=color:#f92672>*</span>net;
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>int</span> br_hook;
+</span></span><span style=display:flex><span>	<span style=color:#75715e>//获取vlan组，这个组中有许多的vlanid，br_handle_vlan函数就是要在这个组中查找自己的vid
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>	vg <span style=color:#f92672>=</span> <span style=color:#a6e22e>nbp_vlan_group_rcu</span>(to);
+</span></span><span style=display:flex><span>	
+</span></span><span style=display:flex><span>	<span style=color:#75715e>//添加vlan的相关配置
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>	skb <span style=color:#f92672>=</span> <span style=color:#a6e22e>br_handle_vlan</span>(to<span style=color:#f92672>-&gt;</span>br, to, vg, skb);
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>if</span> (<span style=color:#f92672>!</span>skb)
+</span></span><span style=display:flex><span>		<span style=color:#66d9ef>return</span>;
+</span></span><span style=display:flex><span>	<span style=color:#75715e>//记录数据包的原始收包网络设备
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>	indev <span style=color:#f92672>=</span> skb<span style=color:#f92672>-&gt;</span>dev;
+</span></span><span style=display:flex><span>	
+</span></span><span style=display:flex><span>	<span style=color:#75715e>//将skb的dev修改为出口网络设备
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>	skb<span style=color:#f92672>-&gt;</span>dev <span style=color:#f92672>=</span> to<span style=color:#f92672>-&gt;</span>dev;
+</span></span><span style=display:flex><span>	<span style=color:#75715e>/*如果local_orig标志位(判断是否从本地发出的数据包)为false，就进入NF_BR_FORWARD钩子
+</span></span></span><span style=display:flex><span><span style=color:#75715e>	若为true，就进入NF_BR_LOCAL_OUT钩子点*/</span>
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>if</span> (<span style=color:#f92672>!</span>local_orig) {
+</span></span><span style=display:flex><span>		<span style=color:#66d9ef>if</span> (<span style=color:#a6e22e>skb_warn_if_lro</span>(skb)) {
+</span></span><span style=display:flex><span>			<span style=color:#a6e22e>kfree_skb</span>(skb);
+</span></span><span style=display:flex><span>			<span style=color:#66d9ef>return</span>;
+</span></span><span style=display:flex><span>		}
+</span></span><span style=display:flex><span>		<span style=color:#75715e>//不是本地发出的数据包，进入NF_BR_FORWARD
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>		br_hook <span style=color:#f92672>=</span> NF_BR_FORWARD;
+</span></span><span style=display:flex><span>		<span style=color:#a6e22e>skb_forward_csum</span>(skb);
+</span></span><span style=display:flex><span>		net <span style=color:#f92672>=</span> <span style=color:#a6e22e>dev_net</span>(indev);
+</span></span><span style=display:flex><span>	} <span style=color:#66d9ef>else</span> {
+</span></span><span style=display:flex><span>		<span style=color:#66d9ef>if</span> (<span style=color:#a6e22e>unlikely</span>(<span style=color:#a6e22e>netpoll_tx_running</span>(to<span style=color:#f92672>-&gt;</span>br<span style=color:#f92672>-&gt;</span>dev))) {
+</span></span><span style=display:flex><span>			<span style=color:#66d9ef>if</span> (<span style=color:#f92672>!</span><span style=color:#a6e22e>is_skb_forwardable</span>(skb<span style=color:#f92672>-&gt;</span>dev, skb)) {
+</span></span><span style=display:flex><span>				<span style=color:#a6e22e>kfree_skb</span>(skb);
+</span></span><span style=display:flex><span>			} <span style=color:#66d9ef>else</span> {
+</span></span><span style=display:flex><span>				<span style=color:#a6e22e>skb_push</span>(skb, ETH_HLEN);
+</span></span><span style=display:flex><span>				<span style=color:#a6e22e>br_netpoll_send_skb</span>(to, skb);
+</span></span><span style=display:flex><span>			}
+</span></span><span style=display:flex><span>			<span style=color:#66d9ef>return</span>;
+</span></span><span style=display:flex><span>		}
+</span></span><span style=display:flex><span>		<span style=color:#75715e>//若是本地发出的数据包，进入NF_BR_LOCAL_OUT处理
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>		br_hook <span style=color:#f92672>=</span> NF_BR_LOCAL_OUT;
+</span></span><span style=display:flex><span>		net <span style=color:#f92672>=</span> <span style=color:#a6e22e>dev_net</span>(skb<span style=color:#f92672>-&gt;</span>dev);
+</span></span><span style=display:flex><span>		indev <span style=color:#f92672>=</span> NULL;
+</span></span><span style=display:flex><span>	}
+</span></span><span style=display:flex><span>	
+</span></span><span style=display:flex><span>	<span style=color:#75715e>//进入钩子点，最后执行br_forward_finish函数。
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>	<span style=color:#a6e22e>NF_HOOK</span>(NFPROTO_BRIDGE, br_hook,
+</span></span><span style=display:flex><span>		net, NULL, skb, indev, skb<span style=color:#f92672>-&gt;</span>dev,
+</span></span><span style=display:flex><span>		br_forward_finish);
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><h2 id=6-br_forward_finish>6. br_forward_finish()</h2><p><code>br_forward_finish()</code> 函数比较简单，调用 <code>NF_BR_POST_ROUTING</code> 处的钩子函数，最后进入 <code>br_dev_queue_push_xmit</code> 函数。</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=display:flex><span><span style=color:#75715e>//linux/net/bridge/br_forward.c
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#66d9ef>int</span> <span style=color:#a6e22e>br_forward_finish</span>(<span style=color:#66d9ef>struct</span> net <span style=color:#f92672>*</span>net, <span style=color:#66d9ef>struct</span> sock <span style=color:#f92672>*</span>sk, <span style=color:#66d9ef>struct</span> sk_buff <span style=color:#f92672>*</span>skb)
+</span></span><span style=display:flex><span>{
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>return</span> <span style=color:#a6e22e>NF_HOOK</span>(NFPROTO_BRIDGE, NF_BR_POST_ROUTING,
+</span></span><span style=display:flex><span>		       net, sk, skb, NULL, skb<span style=color:#f92672>-&gt;</span>dev,
+</span></span><span style=display:flex><span>		       br_dev_queue_push_xmit);
+</span></span><span style=display:flex><span> 
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><h2 id=7-br_dev_queue_push_xmit>7. br_dev_queue_push_xmit</h2><p>在 <code>br_dev_queue_push_xmit()</code> 中，会先 <code>skb_push(skb,ETH,HLEN);</code> 将 data 指向二层头部，然后调用 <code>dev_queue_xmit()</code> 发送报文。</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=display:flex><span><span style=color:#75715e>//linux/net/bridge/br_forward.c
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#66d9ef>int</span> <span style=color:#a6e22e>br_dev_queue_push_xmit</span>(<span style=color:#66d9ef>struct</span> net <span style=color:#f92672>*</span>net, <span style=color:#66d9ef>struct</span> sock <span style=color:#f92672>*</span>sk, <span style=color:#66d9ef>struct</span> sk_buff <span style=color:#f92672>*</span>skb)
+</span></span><span style=display:flex><span>{
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>if</span> (<span style=color:#f92672>!</span><span style=color:#a6e22e>is_skb_forwardable</span>(skb<span style=color:#f92672>-&gt;</span>dev, skb))
+</span></span><span style=display:flex><span>		<span style=color:#66d9ef>goto</span> drop;
+</span></span><span style=display:flex><span> 
+</span></span><span style=display:flex><span>        <span style=color:#75715e>//注意这句操作
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>	<span style=color:#a6e22e>skb_push</span>(skb, ETH_HLEN);
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>br_drop_fake_rtable</span>(skb);
+</span></span><span style=display:flex><span> 
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>if</span> (skb<span style=color:#f92672>-&gt;</span>ip_summed <span style=color:#f92672>==</span> CHECKSUM_PARTIAL <span style=color:#f92672>&amp;&amp;</span>
+</span></span><span style=display:flex><span>	    (skb<span style=color:#f92672>-&gt;</span>protocol <span style=color:#f92672>==</span> <span style=color:#a6e22e>htons</span>(ETH_P_8021Q) <span style=color:#f92672>||</span>
+</span></span><span style=display:flex><span>	     skb<span style=color:#f92672>-&gt;</span>protocol <span style=color:#f92672>==</span> <span style=color:#a6e22e>htons</span>(ETH_P_8021AD))) {
+</span></span><span style=display:flex><span>		<span style=color:#66d9ef>int</span> depth;
+</span></span><span style=display:flex><span> 
+</span></span><span style=display:flex><span>		<span style=color:#66d9ef>if</span> (<span style=color:#f92672>!</span><span style=color:#a6e22e>__vlan_get_protocol</span>(skb, skb<span style=color:#f92672>-&gt;</span>protocol, <span style=color:#f92672>&amp;</span>depth))
+</span></span><span style=display:flex><span>			<span style=color:#66d9ef>goto</span> drop;
+</span></span><span style=display:flex><span> 
+</span></span><span style=display:flex><span>		<span style=color:#a6e22e>skb_set_network_header</span>(skb, depth);
+</span></span><span style=display:flex><span>	}
+</span></span><span style=display:flex><span> 
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>dev_queue_xmit</span>(skb);
+</span></span><span style=display:flex><span> 
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>return</span> <span style=color:#ae81ff>0</span>;
+</span></span><span style=display:flex><span> 
+</span></span><span style=display:flex><span>drop:
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>kfree_skb</span>(skb);
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>return</span> <span style=color:#ae81ff>0</span>;
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><h2 id=8-br_flood>8. br_flood</h2><p><code>br_flood()</code> 也是调用 <code>__br_forward()</code> 函数转发报文。</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=display:flex><span><span style=color:#75715e>//linux/net/bridge/br_forward.c
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#75715e>/* called under rcu_read_lock */</span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>void</span> <span style=color:#a6e22e>br_flood</span>(<span style=color:#66d9ef>struct</span> net_bridge <span style=color:#f92672>*</span>br, <span style=color:#66d9ef>struct</span> sk_buff <span style=color:#f92672>*</span>skb,
+</span></span><span style=display:flex><span>	      <span style=color:#66d9ef>enum</span> br_pkt_type pkt_type, <span style=color:#66d9ef>bool</span> local_rcv, <span style=color:#66d9ef>bool</span> local_orig)
+</span></span><span style=display:flex><span>{
+</span></span><span style=display:flex><span>	u8 igmp_type <span style=color:#f92672>=</span> <span style=color:#a6e22e>br_multicast_igmp_type</span>(skb);
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>struct</span> net_bridge_port <span style=color:#f92672>*</span>prev <span style=color:#f92672>=</span> NULL;
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>struct</span> net_bridge_port <span style=color:#f92672>*</span>p;
+</span></span><span style=display:flex><span> 
+</span></span><span style=display:flex><span>	<span style=color:#75715e>/*遍历网桥设备的port_list，取出所有的网桥端口*/</span>
+</span></span><span style=display:flex><span>	<span style=color:#a6e22e>list_for_each_entry_rcu</span>(p, <span style=color:#f92672>&amp;</span>br<span style=color:#f92672>-&gt;</span>port_list, list) 
+</span></span><span style=display:flex><span>        {
+</span></span><span style=display:flex><span>		<span style=color:#75715e>/* Do not flood unicast traffic to ports that turn it off, nor
+</span></span></span><span style=display:flex><span><span style=color:#75715e>		 * other traffic if flood off, except for traffic we originate
+</span></span></span><span style=display:flex><span><span style=color:#75715e>		 */</span>
+</span></span><span style=display:flex><span>		<span style=color:#66d9ef>switch</span> (pkt_type) 
+</span></span><span style=display:flex><span>                {
+</span></span><span style=display:flex><span>		<span style=color:#66d9ef>case</span> BR_PKT_UNICAST:
+</span></span><span style=display:flex><span>			<span style=color:#66d9ef>if</span> (<span style=color:#f92672>!</span>(p<span style=color:#f92672>-&gt;</span>flags <span style=color:#f92672>&amp;</span> BR_FLOOD))
+</span></span><span style=display:flex><span>				<span style=color:#66d9ef>continue</span>;
+</span></span><span style=display:flex><span>			<span style=color:#66d9ef>break</span>;
+</span></span><span style=display:flex><span>		<span style=color:#66d9ef>case</span> BR_PKT_MULTICAST:
+</span></span><span style=display:flex><span>			<span style=color:#66d9ef>if</span> (<span style=color:#f92672>!</span>(p<span style=color:#f92672>-&gt;</span>flags <span style=color:#f92672>&amp;</span> BR_MCAST_FLOOD) <span style=color:#f92672>&amp;&amp;</span> skb<span style=color:#f92672>-&gt;</span>dev <span style=color:#f92672>!=</span> br<span style=color:#f92672>-&gt;</span>dev)
+</span></span><span style=display:flex><span>				<span style=color:#66d9ef>continue</span>;
+</span></span><span style=display:flex><span>			<span style=color:#66d9ef>break</span>;
+</span></span><span style=display:flex><span>		<span style=color:#66d9ef>case</span> BR_PKT_BROADCAST:
+</span></span><span style=display:flex><span>			<span style=color:#66d9ef>if</span> (<span style=color:#f92672>!</span>(p<span style=color:#f92672>-&gt;</span>flags <span style=color:#f92672>&amp;</span> BR_BCAST_FLOOD) <span style=color:#f92672>&amp;&amp;</span> skb<span style=color:#f92672>-&gt;</span>dev <span style=color:#f92672>!=</span> br<span style=color:#f92672>-&gt;</span>dev)
+</span></span><span style=display:flex><span>				<span style=color:#66d9ef>continue</span>;
+</span></span><span style=display:flex><span>			<span style=color:#66d9ef>break</span>;
+</span></span><span style=display:flex><span>		}
+</span></span><span style=display:flex><span> 
+</span></span><span style=display:flex><span>		<span style=color:#75715e>/* Do not flood to ports that enable proxy ARP */</span>
+</span></span><span style=display:flex><span>                <span style=color:#75715e>/*代理arp*/</span>
+</span></span><span style=display:flex><span>		<span style=color:#66d9ef>if</span> (p<span style=color:#f92672>-&gt;</span>flags <span style=color:#f92672>&amp;</span> BR_PROXYARP)
+</span></span><span style=display:flex><span>			<span style=color:#66d9ef>continue</span>;
+</span></span><span style=display:flex><span>		<span style=color:#66d9ef>if</span> ((p<span style=color:#f92672>-&gt;</span>flags <span style=color:#f92672>&amp;</span> (BR_PROXYARP_WIFI <span style=color:#f92672>|</span> BR_NEIGH_SUPPRESS)) <span style=color:#f92672>&amp;&amp;</span>
+</span></span><span style=display:flex><span>		    <span style=color:#a6e22e>BR_INPUT_SKB_CB</span>(skb)<span style=color:#f92672>-&gt;</span>proxyarp_replied)
+</span></span><span style=display:flex><span>			<span style=color:#66d9ef>continue</span>;
+</span></span><span style=display:flex><span> 
+</span></span><span style=display:flex><span>		prev <span style=color:#f92672>=</span> <span style=color:#a6e22e>maybe_deliver</span>(prev, p, skb, local_orig);
+</span></span><span style=display:flex><span>		<span style=color:#66d9ef>if</span> (<span style=color:#a6e22e>IS_ERR</span>(prev))
+</span></span><span style=display:flex><span>			<span style=color:#66d9ef>goto</span> out;
+</span></span><span style=display:flex><span>		<span style=color:#66d9ef>if</span> (prev <span style=color:#f92672>==</span> p)
+</span></span><span style=display:flex><span>			<span style=color:#a6e22e>br_multicast_count</span>(p<span style=color:#f92672>-&gt;</span>br, p, skb, igmp_type,
+</span></span><span style=display:flex><span>					   BR_MCAST_DIR_TX);
+</span></span><span style=display:flex><span>	}
+</span></span><span style=display:flex><span> 
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>if</span> (<span style=color:#f92672>!</span>prev)
+</span></span><span style=display:flex><span>		<span style=color:#66d9ef>goto</span> out;
+</span></span><span style=display:flex><span> 
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>if</span> (local_rcv)
+</span></span><span style=display:flex><span>		<span style=color:#a6e22e>deliver_clone</span>(prev, skb, local_orig);
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>else</span>
+</span></span><span style=display:flex><span>		<span style=color:#a6e22e>__br_forward</span>(prev, skb, local_orig);
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>return</span>;
+</span></span><span style=display:flex><span> 
+</span></span><span style=display:flex><span>out:
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>if</span> (<span style=color:#f92672>!</span>local_rcv)
+</span></span><span style=display:flex><span>		<span style=color:#a6e22e>kfree_skb</span>(skb);
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><h2 id=9-br_mulicast_flood>9. br_mulicast_flood()</h2><hr><p>以后再分析，肚子饿了。</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=display:flex><span><span style=color:#75715e>//linux/net/bridge/br_forward.c
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#75715e>/* called with rcu_read_lock */</span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>void</span> <span style=color:#a6e22e>br_multicast_flood</span>(<span style=color:#66d9ef>struct</span> net_bridge_mdb_entry <span style=color:#f92672>*</span>mdst,
+</span></span><span style=display:flex><span>			<span style=color:#66d9ef>struct</span> sk_buff <span style=color:#f92672>*</span>skb,
+</span></span><span style=display:flex><span>			<span style=color:#66d9ef>bool</span> local_rcv, <span style=color:#66d9ef>bool</span> local_orig)
+</span></span><span style=display:flex><span>{
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>struct</span> net_device <span style=color:#f92672>*</span>dev <span style=color:#f92672>=</span> <span style=color:#a6e22e>BR_INPUT_SKB_CB</span>(skb)<span style=color:#f92672>-&gt;</span>brdev;
+</span></span><span style=display:flex><span>	u8 igmp_type <span style=color:#f92672>=</span> <span style=color:#a6e22e>br_multicast_igmp_type</span>(skb);
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>struct</span> net_bridge <span style=color:#f92672>*</span>br <span style=color:#f92672>=</span> <span style=color:#a6e22e>netdev_priv</span>(dev);
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>struct</span> net_bridge_port <span style=color:#f92672>*</span>prev <span style=color:#f92672>=</span> NULL;
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>struct</span> net_bridge_port_group <span style=color:#f92672>*</span>p;
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>struct</span> hlist_node <span style=color:#f92672>*</span>rp;
+</span></span><span style=display:flex><span> 
+</span></span><span style=display:flex><span>	rp <span style=color:#f92672>=</span> <span style=color:#a6e22e>rcu_dereference</span>(<span style=color:#a6e22e>hlist_first_rcu</span>(<span style=color:#f92672>&amp;</span>br<span style=color:#f92672>-&gt;</span>router_list));
+</span></span><span style=display:flex><span>	p <span style=color:#f92672>=</span> mdst <span style=color:#f92672>?</span> <span style=color:#a6e22e>rcu_dereference</span>(mdst<span style=color:#f92672>-&gt;</span>ports) <span style=color:#f92672>:</span> NULL;
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>while</span> (p <span style=color:#f92672>||</span> rp) {
+</span></span><span style=display:flex><span>		<span style=color:#66d9ef>struct</span> net_bridge_port <span style=color:#f92672>*</span>port, <span style=color:#f92672>*</span>lport, <span style=color:#f92672>*</span>rport;
+</span></span><span style=display:flex><span> 
+</span></span><span style=display:flex><span>		lport <span style=color:#f92672>=</span> p <span style=color:#f92672>?</span> p<span style=color:#f92672>-&gt;</span>port : NULL;
+</span></span><span style=display:flex><span>		rport <span style=color:#f92672>=</span> rp <span style=color:#f92672>?</span> <span style=color:#a6e22e>hlist_entry</span>(rp, <span style=color:#66d9ef>struct</span> net_bridge_port, rlist) <span style=color:#f92672>:</span>
+</span></span><span style=display:flex><span>			     NULL;
+</span></span><span style=display:flex><span> 
+</span></span><span style=display:flex><span>		<span style=color:#66d9ef>if</span> ((<span style=color:#66d9ef>unsigned</span> <span style=color:#66d9ef>long</span>)lport <span style=color:#f92672>&gt;</span> (<span style=color:#66d9ef>unsigned</span> <span style=color:#66d9ef>long</span>)rport) {
+</span></span><span style=display:flex><span>			port <span style=color:#f92672>=</span> lport;
+</span></span><span style=display:flex><span> 
+</span></span><span style=display:flex><span>			<span style=color:#66d9ef>if</span> (port<span style=color:#f92672>-&gt;</span>flags <span style=color:#f92672>&amp;</span> BR_MULTICAST_TO_UNICAST) {
+</span></span><span style=display:flex><span>				<span style=color:#a6e22e>maybe_deliver_addr</span>(lport, skb, p<span style=color:#f92672>-&gt;</span>eth_addr,
+</span></span><span style=display:flex><span>						   local_orig);
+</span></span><span style=display:flex><span>				<span style=color:#66d9ef>goto</span> delivered;
+</span></span><span style=display:flex><span>			}
+</span></span><span style=display:flex><span>		} <span style=color:#66d9ef>else</span> {
+</span></span><span style=display:flex><span>			port <span style=color:#f92672>=</span> rport;
+</span></span><span style=display:flex><span>		}
+</span></span><span style=display:flex><span> 
+</span></span><span style=display:flex><span>		prev <span style=color:#f92672>=</span> <span style=color:#a6e22e>maybe_deliver</span>(prev, port, skb, local_orig);
+</span></span><span style=display:flex><span>delivered:
+</span></span><span style=display:flex><span>		<span style=color:#66d9ef>if</span> (<span style=color:#a6e22e>IS_ERR</span>(prev))
+</span></span><span style=display:flex><span>			<span style=color:#66d9ef>goto</span> out;
+</span></span><span style=display:flex><span>		<span style=color:#66d9ef>if</span> (prev <span style=color:#f92672>==</span> port)
+</span></span><span style=display:flex><span>			<span style=color:#a6e22e>br_multicast_count</span>(port<span style=color:#f92672>-&gt;</span>br, port, skb, igmp_type,
+</span></span><span style=display:flex><span>					   BR_MCAST_DIR_TX);
+</span></span><span style=display:flex><span> 
+</span></span><span style=display:flex><span>		<span style=color:#66d9ef>if</span> ((<span style=color:#66d9ef>unsigned</span> <span style=color:#66d9ef>long</span>)lport <span style=color:#f92672>&gt;=</span> (<span style=color:#66d9ef>unsigned</span> <span style=color:#66d9ef>long</span>)port)
+</span></span><span style=display:flex><span>			p <span style=color:#f92672>=</span> <span style=color:#a6e22e>rcu_dereference</span>(p<span style=color:#f92672>-&gt;</span>next);
+</span></span><span style=display:flex><span>		<span style=color:#66d9ef>if</span> ((<span style=color:#66d9ef>unsigned</span> <span style=color:#66d9ef>long</span>)rport <span style=color:#f92672>&gt;=</span> (<span style=color:#66d9ef>unsigned</span> <span style=color:#66d9ef>long</span>)port)
+</span></span><span style=display:flex><span>			rp <span style=color:#f92672>=</span> <span style=color:#a6e22e>rcu_dereference</span>(<span style=color:#a6e22e>hlist_next_rcu</span>(rp));
+</span></span><span style=display:flex><span>	}
+</span></span><span style=display:flex><span> 
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>if</span> (<span style=color:#f92672>!</span>prev)
+</span></span><span style=display:flex><span>		<span style=color:#66d9ef>goto</span> out;
+</span></span><span style=display:flex><span> 
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>if</span> (local_rcv)
+</span></span><span style=display:flex><span>		<span style=color:#a6e22e>deliver_clone</span>(prev, skb, local_orig);
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>else</span>
+</span></span><span style=display:flex><span>		<span style=color:#a6e22e>__br_forward</span>(prev, skb, local_orig);
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>return</span>;
+</span></span><span style=display:flex><span> 
+</span></span><span style=display:flex><span>out:
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>if</span> (<span style=color:#f92672>!</span>local_rcv)
+</span></span><span style=display:flex><span>		<span style=color:#a6e22e>kfree_skb</span>(skb);
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><h2 id=参考>参考</h2><p><a href=http://ebtables.netfilter.org/br_fw_ia/br_fw_ia.html>ebtables/iptables interaction on a Linux-based bridge</a>
+@ebtables @2.4.x kernel</p><p><a href=https://blog.csdn.net/sxd2001/article/details/125031113>Iptables DNAT实现broadcast与unicast之间相互映射</a>
+@sxd2001 分析ebtables 的redirect 和 iptables 的redirect</p><p><a href=https://blog.csdn.net/Sophisticated_/article/details/87923362>Linux-4.20.8内核桥收包源码解析（七）&ndash;本地（br_pass_frame_up）or 转发（br_forward）</a>
+@lw_yang @Linux-4.20.8</p><p><a href=http://blog.chinaunix.net/uid-28541347-id-5750406.html>Linux 3.10 kernel bridge转发逻辑</a>
+@lvyilong316 @Linux 3.10 kernel</p><p><a href=https://blog.csdn.net/linyt/article/details/5191512>kernel 网桥代码分析</a>
+@海枫 @ 2.6.24.4</p><p><a href=https://blog.csdn.net/NW_NW_NW/article/details/76674232>桥数据包处理函数——br_handle_frame_finish（七）</a>
+@不留你的名字</p><p><a href=https://www.cnblogs.com/super-king/p/bridge_implement.html>Bridge实现</a>
+@SuperKing @linux 2.6.18</p><p><a href=https://www.cnblogs.com/ck1020/p/5894235.html>LInux下桥接模式详解三</a>
+@jack.chen @linux 3.10.1</p><p><a href=https://blog.csdn.net/one_clouder/article/details/52877737>协议栈报文接收之netif_receive_skb函数分析</a>
+@one_clouder @Linux4.1.12</p></main><script src=https://giscus.app/client.js data-repo=talengu/talengu.github.io data-repo-id="MDEwOlJlcG9zaXRvcnk5MTk0NjkxNQ==" data-category=Blog data-category-id=DIC_kwDOBXr_o84C0Qpk data-mapping=pathname data-strict=0 data-reactions-enabled=1 data-emit-metadata=0 data-input-position=bottom data-theme=/css/giscus.css data-lang=zh-CN crossorigin=anonymous async></script><footer>- END -<hr><a href=/about target=_blank title=About>一塘</a>
+© 2025
+<a href=/index.xml target=_blank title=RSS>RSS</a></footer></body></html>

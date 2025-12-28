@@ -1,0 +1,213 @@
+<!doctype html><html lang=zh-cn><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><title>Jupyter notebook的配置 | 一塘</title>
+<link rel=stylesheet href=/css/style.css><link rel=stylesheet href=/css/fonts.css><link rel=stylesheet href=/css/dark.css></head><body><nav><ul class=menu><li><a href=/about/>一塘</a></li><li><a href=/post/>博客</a></li><li><a href=/categories/>分类</a></li><li><a href=/tags/>标签</a></li><li style=float:right;position:relative;margin-left:1em><input type=text id=search-box placeholder=搜索文章... style="padding:.3em .6em;border-radius:4px;border:1px solid #ccc;width:150px;min-width:100px;max-width:250px"><ul id=search-results style="position:absolute;top:100%;right:0;background:#fff;border:1px solid #ccc;max-height:300px;overflow-y:auto;display:none;z-index:1000;list-style:none;padding:0;margin:0;width:250px"></ul></li><style>.search-item{padding:.4em .6em}.search-link{display:block;font-weight:500;text-decoration:none;color:#007acc}.search-snippet{font-size:.85em;color:#555;margin-top:.2em;line-height:1.4}.search-highlight{background:rgba(255,235,59,.5);padding:0 .15em;border-radius:3px}.search-item:hover{background-color:rgba(0,0,0,5%)}@media(prefers-color-scheme:dark){.search-link{color:#4fc3f7}.search-snippet{color:#aaa}.search-item:hover{background-color:rgba(104,99,99,.273)}.search-highlight{background:rgba(255,193,7,.35)}}</style><script src=https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.6.2/fuse.min.js></script><script>fetch("/post/index.json").then(e=>e.json()).then(e=>{const o=new Fuse(e,{keys:[{name:"title",weight:2},{name:"summary",weight:1},{name:"content",weight:.7}],threshold:.3,ignoreLocation:!0,minMatchCharLength:2}),n=document.getElementById("search-box"),t=document.getElementById("search-results");function s(e,t){if(!e)return"";const n=t.replace(/[.*+?^${}()|[\]\\]/g,"\\$&"),s=new RegExp(`(${n})`,"gi");return e.replace(s,'<mark class="search-highlight">$1</mark>')}function i(e,t,n=80){const s=e.toLowerCase().indexOf(t.toLowerCase());if(s===-1)return e.slice(0,n)+"…";const o=Math.max(0,s-n/2),i=Math.min(e.length,s+n/2);return"…"+e.slice(o,i)+"…"}n.addEventListener("input",function(){const e=this.value.trim();if(!e){t.style.display="none",t.innerHTML="";return}const n=o.search(e);t.innerHTML=n.slice(0,8).map(t=>{const n=t.item,o=i(n.content||n.summary||"",e);return`
+          <li class="search-item">
+            <a href="${n.permalink}" class="search-link">
+              ${s(n.title,e)}
+            </a>
+            <div class="search-snippet">
+              ${s(o,e)}
+            </div>
+          </li>
+        `}).join(""),t.style.display=n.length?"block":"none"}),document.addEventListener("click",e=>{!n.contains(e.target)&&!t.contains(e.target)&&(t.style.display="none")})})</script></ul><hr></nav><div class=article-meta><h1><span class=title>Jupyter notebook的配置</span></h1></div><div class=post-stats style=text-align:right>2017/07/03</div><main><p><strong>前言</strong>
+本文介绍jupyter notebook的安装配置过程和实用技巧。
+<a href=https://jupyter.readthedocs.io/en/latest/index.html>jupyter.readthedocs教程</a></p><h2 id=1-安装与配置>1 安装与配置</h2><h3 id=11-安装-jupyter>1.1 安装 jupyter</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>conda install jupyter
+</span></span><span style=display:flex><span><span style=color:#75715e># pip install -i https://pypi.tuna.tsinghua.edu.cn/simple jupyter</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># pip install jupyter -y</span>
+</span></span></code></pre></div><h3 id=12-修改配置文件>1.2 修改配置文件</h3><ul><li>生成配置文件</li></ul><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>jupyter notebook --generate-config
+</span></span><span style=display:flex><span>vim ~/.jupyter/jupyter_notebook_config.py
+</span></span></code></pre></div><ul><li>修改配置文件内容</li></ul><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span>c<span style=color:#f92672>.</span>NotebookApp<span style=color:#f92672>.</span>ip <span style=color:#f92672>=</span> <span style=color:#e6db74>&#39;0.0.0.0&#39;</span>
+</span></span><span style=display:flex><span>c<span style=color:#f92672>.</span>NotebookApp<span style=color:#f92672>.</span>port <span style=color:#f92672>=</span> <span style=color:#ae81ff>8018</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 设置密码</span>
+</span></span><span style=display:flex><span>c<span style=color:#f92672>.</span>NotebookApp<span style=color:#f92672>.</span>password <span style=color:#f92672>=</span> <span style=color:#e6db74>u</span><span style=color:#e6db74>&#39;sha1:bcd259ccf...your hashed password here&#39;</span>
+</span></span></code></pre></div><blockquote><p>Tip: 利用ipython 生成密码</p><pre tabindex=0><code>In [1]: from IPython.lib import passwd
+In [2]: passwd()
+  Enter password:
+  Verify password:
+  Out[2]: &#39;sha1:67xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&#39;
+</code></pre></blockquote><p>我选用的是password密码登陆jupyter的方案，其他的密码登陆方案见 <a href=https://zhuanlan.zhihu.com/p/23110830>link</a></p><blockquote><p>新的方法
+from notebook.auth import passwd; passwd()</p></blockquote><h3 id=安装-jupyter-lab>安装 jupyter-lab</h3><pre tabindex=0><code>jupyter-lab --generate-config
+
+vim ~/.jupyter/jupyter_lab_config.py
+
+# 允许局域网访问
+c.ServerApp.ip = &#39;*&#39;
+
+# 使用 生成密码from jupyter_server.auth import passwd; passwd()
+c.ServerApp.password = &#39;&#39;
+</code></pre><h3 id=安装低版本jupyter>安装低版本jupyter</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>python3 -m venv xxx
+</span></span><span style=display:flex><span>IPython<span style=color:#f92672>==</span>8.12.0
+</span></span><span style=display:flex><span>notebook<span style=color:#f92672>==</span>6.4.12
+</span></span><span style=display:flex><span>jupyter-server<span style=color:#f92672>==</span>1.13.4
+</span></span><span style=display:flex><span>traitlets<span style=color:#f92672>==</span>5.9.0
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 安装依赖插件</span>
+</span></span><span style=display:flex><span>pip install jupyter_contrib_nbextensions jupyter_nbextensions_configurator
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 激活扩展管理器</span>
+</span></span><span style=display:flex><span>jupyter contrib nbextension install --user
+</span></span><span style=display:flex><span>jupyter nbextensions_configurator enable --user
+</span></span></code></pre></div><h3 id=13-安装插件管理>1.3 安装插件管理</h3><p>jupyter_contrib_nbextensions 为 jupyter notebook 扩展插件管理器，下面简称nbextensions。</p><p>nbextensions的github <a href=https://github.com/ipython-contrib/jupyter_contrib_nbextensions>repo</a>
+nbextensions的教程<a href=https://jupyter-contrib-nbextensions.readthedocs.io/en/latest/>nbextensions_manual_readthedocs</a></p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># 用conda安装</span>
+</span></span><span style=display:flex><span>conda install jupyter
+</span></span><span style=display:flex><span>conda install -c conda-forge jupyter_contrib_nbextensions
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># pip安装</span>
+</span></span><span style=display:flex><span>pip install jupyter_contrib_nbextensions
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 使能</span>
+</span></span><span style=display:flex><span>jupyter contrib nbextension install
+</span></span></code></pre></div><p>我启用的一些插件</p><table><thead><tr><th>plugins</th><th></th><th></th></tr></thead><tbody><tr><td>Table of Contents (2)</td><td></td><td></td></tr><tr><td>Freeze</td><td>比较好的一个插件，可以用来冻住cell</td><td></td></tr><tr><td>nbTranslate</td><td>这个插件利用Google翻译cell很好用</td><td><a href=https://github.com/jfbercher/jupyter_nbTranslate/blob/master/languages.js>support languages</a></td></tr><tr><td>ExecuteTime</td><td>显示执行时间</td><td></td></tr><tr><td>Ruler</td><td>代码标尺</td><td></td></tr><tr><td>Autopep8</td><td>代码美化</td><td></td></tr><tr><td>Scratchpad</td><td>代码测试</td><td></td></tr></tbody></table><p>其他花样的配置</p><p><a href=https://zhuanlan.zhihu.com/p/74950682>https://zhuanlan.zhihu.com/p/74950682</a></p><h3 id=14-conda环境的设置>1.4 conda环境的设置</h3><p>jupyter使用Anaconda miniconda环境需要安装的组件。
+<a href=https://repo.anaconda.com>conda repo</a></p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span><span style=color:#75715e># 创建虚拟环境</span>
+</span></span><span style=display:flex><span>conda create -n env_name python<span style=color:#f92672>=</span>3.6
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># conda虚拟核组件 切换kernel</span>
+</span></span><span style=display:flex><span>conda install nb_conda_kernels
+</span></span></code></pre></div><h3 id=15-解决界面中英文混杂>1.5 解决界面中英文混杂</h3><img src=jupyter_notebook/image-20200413125705473.png alt=image-20200413125705473 style=zoom:50%><p>如图，jupyter 界面中中英文混杂，解决方法为将界面文字中文切换成英文。</p><p>原理：让jupyter就找不到他的中文配置文件夹。</p><p>找到notebook的汉化文件夹的路径，比如<code>~/miniconda3/lib/python3.6/site-packages/notebook/i18n/zh_CN</code>。将其重命名如加个下划线作为后缀<code>zh_CN_old</code>，重启jupyter就行了。</p><p>为了方便，我作了个脚本自动找<code>notebook/i18n/zh_CN</code>位置并改名此文件夹，如下。</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span><span style=color:#f92672>import</span> shutil
+</span></span><span style=display:flex><span><span style=color:#f92672>from</span> distutils.sysconfig <span style=color:#f92672>import</span> get_python_lib
+</span></span><span style=display:flex><span><span style=color:#75715e># 获取site-package包的位置</span>
+</span></span><span style=display:flex><span>path_zh<span style=color:#f92672>=</span>get_python_lib()<span style=color:#f92672>+</span><span style=color:#e6db74>&#39;/notebook/i18n/zh_CN&#39;</span>
+</span></span><span style=display:flex><span>path_zh_old<span style=color:#f92672>=</span>get_python_lib()<span style=color:#f92672>+</span><span style=color:#e6db74>&#39;/notebook/i18n/zh_CN_old&#39;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 将 notebook/i18n/zh_CN 改为 notebook/i18n/zh_CN_old</span>
+</span></span><span style=display:flex><span>shutil<span style=color:#f92672>.</span>move(path_zh,path_zh_old)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 返回中文</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># shutil.move(path_zh_old,path_zh)</span>
+</span></span></code></pre></div><p>重启jupyter就行了, 这样jupyter就找不到这个中文配置，返回中文改回去就行了<sup id=fnref:1><a href=#fn:1 class=footnote-ref role=doc-noteref>1</a></sup>。</p><h2 id=2-使用的技巧>2 使用的技巧</h2><h3 id=21-快捷键>2.1 快捷键</h3><hr><table><thead><tr><th>在非激活状态即是蓝颜色的边框</th><th>内容</th></tr></thead><tbody><tr><td>A</td><td>insert cell above</td></tr><tr><td>B</td><td>insert cell below</td></tr><tr><td>H</td><td>查看帮助</td></tr><tr><td>⌃↩(ctrl + enter)</td><td>run selected cells</td></tr></tbody></table><h3 id=22-显示图片-视频-音频>2.2 显示图片 视频 音频</h3><p>主要是画图、显示视频和音频的方法。</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span><span style=color:#75715e># 图片</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>%%</span>HTML
+</span></span><span style=display:flex><span><span style=color:#f92672>&lt;</span>img src<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;xxx.jpg&#34;</span>  alt<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;title&#34;</span> <span style=color:#f92672>/&gt;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 视频</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>%%</span>HTML
+</span></span><span style=display:flex><span><span style=color:#f92672>&lt;</span>video width<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;330&#34;</span> height<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;150&#34;</span> controls<span style=color:#f92672>&gt;</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>&lt;</span>source src<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;out_all.mp4&#34;</span> type<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;video/mp4&#34;</span><span style=color:#f92672>&gt;</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>&lt;/</span>video<span style=color:#f92672>&gt;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 语音</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>%%</span>HTML
+</span></span><span style=display:flex><span><span style=color:#f92672>&lt;</span>audio src<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;out.wav&#34;</span> controls<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;controls&#34;</span><span style=color:#f92672>&gt;</span>
+</span></span><span style=display:flex><span>Your browser does <span style=color:#f92672>not</span> support the audio element<span style=color:#f92672>.</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>&lt;/</span>audio<span style=color:#f92672>&gt;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># html t是html的字符串</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>from</span> IPython.core.display <span style=color:#f92672>import</span> HTML
+</span></span><span style=display:flex><span>HTML(str(t))
+</span></span></code></pre></div><h3 id=23-其他技巧>2.3 其他技巧</h3><h4 id=修复视频文件>修复视频文件</h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span><span style=color:#66d9ef>def</span> <span style=color:#a6e22e>fix_use_ffmpeg</span>(in_name, out_name,message<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;&#34;</span>):
+</span></span><span style=display:flex><span>    <span style=color:#f92672>import</span> os
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>if</span> os<span style=color:#f92672>.</span>path<span style=color:#f92672>.</span>isfile(out_name):
+</span></span><span style=display:flex><span>    os<span style=color:#f92672>.</span>remove(out_name)
+</span></span><span style=display:flex><span>    cmd <span style=color:#f92672>=</span> <span style=color:#e6db74>&#39;ffmpeg -i </span><span style=color:#e6db74>%s</span><span style=color:#e6db74> </span><span style=color:#e6db74>%s</span><span style=color:#e6db74>&#39;</span> <span style=color:#f92672>%</span> (in_name, out_name)
+</span></span><span style=display:flex><span>    log_lines <span style=color:#f92672>=</span> os<span style=color:#f92672>.</span>popen(cmd)<span style=color:#f92672>.</span>readlines()
+</span></span><span style=display:flex><span>    print(message,<span style=color:#e6db74>&#34;ok&#34;</span>)
+</span></span></code></pre></div><h4 id=加载自己的模块文件>加载自己的模块文件</h4><p>出于性能考虑，每个模块在每个解释器会话中只导入一遍。因此，如果你修改了你的模块，需要重启解释器；或者，如果你就是想交互式的测试这么一个模块，可以用 imp.reload() 重新加载，例如 <code>import imp; imp.reload(modulename)</code></p><h4 id=导出pdf支持中文>导出pdf支持中文</h4><p>Jupyter Notebook 输出PDF中文支持 <a href=https://www.jianshu.com/p/c3f660188766>link</a></p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>cd /usr/local/lib/python3.6/site-packages/nbconvert/templates/latex
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 在里面的模版中添加，前提是安装好了texlive</span>
+</span></span><span style=display:flex><span>% add
+</span></span><span style=display:flex><span><span style=color:#ae81ff>\u</span>sepackage<span style=color:#f92672>{</span>ctex<span style=color:#f92672>}</span>
+</span></span></code></pre></div><h4 id=ipynb2pdf>ipynb2pdf</h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span><span style=color:#75715e>#!/usr/bin/env python3</span>
+</span></span><span style=display:flex><span><span style=color:#e6db74>&#34;&#34;&#34;
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>Current version of Jupyter doesn&#39;t support pdf exporting when it comes to
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>russian language in the document. To fix this, current script has born.
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>It requires nbconvert as long as jupyter to be installed.
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>Author:     Sergey Ivanychev
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>Email:      sergeyivanychev@gmail.com
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>Revision:   1
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>&#34;&#34;&#34;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#f92672>import</span> sys
+</span></span><span style=display:flex><span><span style=color:#f92672>import</span> os
+</span></span><span style=display:flex><span><span style=color:#f92672>import</span> subprocess
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>FORMAT <span style=color:#f92672>=</span> <span style=color:#e6db74>&#34;.ipynb&#34;</span>
+</span></span><span style=display:flex><span><span style=color:#e6db74>&#34;&#34;&#34;
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>TODO:   What if user has ___o.tex in current folder?
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>&#34;&#34;&#34;</span>
+</span></span><span style=display:flex><span>TEMP_TEX <span style=color:#f92672>=</span> <span style=color:#e6db74>&#34;___o.tex&#34;</span>
+</span></span><span style=display:flex><span>TEMP_FOLDER <span style=color:#f92672>=</span> <span style=color:#e6db74>&#34;/tmp&#34;</span>
+</span></span><span style=display:flex><span>TRASH_EXTENSIONS <span style=color:#f92672>=</span> [<span style=color:#e6db74>&#34;.aux&#34;</span>, <span style=color:#e6db74>&#34;.out&#34;</span>, <span style=color:#e6db74>&#34;.log&#34;</span>]
+</span></span><span style=display:flex><span>OLD1 <span style=color:#f92672>=</span> <span style=color:#e6db74>r</span><span style=color:#e6db74>&#34;\usepackage[utf8x]</span><span style=color:#e6db74>{inputenc}</span><span style=color:#e6db74>&#34;</span>
+</span></span><span style=display:flex><span>NEW1 <span style=color:#f92672>=</span> <span style=color:#e6db74>r</span><span style=color:#e6db74>&#34;&#34;&#34;
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    \usepackage[utf8x]</span><span style=color:#e6db74>{inputenc}</span><span style=color:#e6db74>
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    \usepackage</span><span style=color:#e6db74>{ctex}</span><span style=color:#e6db74>
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>&#34;&#34;&#34;</span>
+</span></span><span style=display:flex><span>REPLACE <span style=color:#f92672>=</span> [(OLD1, NEW1)]
+</span></span><span style=display:flex><span>HELP <span style=color:#f92672>=</span> <span style=color:#e6db74>&#34;&#34;&#34;
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>This script is aimed at correctly converting .ipynb to .pdf files.
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>You may use it via
+</span></span></span><span style=display:flex><span><span style=color:#e6db74># ipynb2pdf Solution.ipynb
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>To get .pdf in the same directory
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>&#34;&#34;&#34;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>def</span> <span style=color:#a6e22e>check_args</span>(argv):
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>if</span> (len(argv) <span style=color:#f92672>&gt;</span> <span style=color:#ae81ff>2</span>):
+</span></span><span style=display:flex><span>        print(<span style=color:#e6db74>&#34;Please, type .ipynb filename as argument&#34;</span>)
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>return</span> <span style=color:#f92672>-</span><span style=color:#ae81ff>1</span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>if</span> (len(argv) <span style=color:#f92672>==</span> <span style=color:#ae81ff>1</span>):
+</span></span><span style=display:flex><span>        print(HELP)
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>return</span> <span style=color:#f92672>-</span><span style=color:#ae81ff>1</span>
+</span></span><span style=display:flex><span>    script, filename <span style=color:#f92672>=</span> argv
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>if</span> <span style=color:#f92672>not</span> is_ipynb(filename):
+</span></span><span style=display:flex><span>        print(<span style=color:#e6db74>&#34;Please, type .ipynb filename as argument&#34;</span>)
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>return</span> <span style=color:#f92672>-</span><span style=color:#ae81ff>1</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>def</span> <span style=color:#a6e22e>remove_extention</span>(string, extention):
+</span></span><span style=display:flex><span>    <span style=color:#e6db74>&#34;&#34;&#34;
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    Removes argumented extention from the end of the string
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    &#34;&#34;&#34;</span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>if</span> extention[<span style=color:#ae81ff>0</span>] <span style=color:#f92672>!=</span> <span style=color:#e6db74>&#39;.&#39;</span>:
+</span></span><span style=display:flex><span>        extention <span style=color:#f92672>=</span> <span style=color:#e6db74>&#34;.&#34;</span> <span style=color:#f92672>+</span> extention
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>if</span> string<span style=color:#f92672>.</span>endswith(extention):
+</span></span><span style=display:flex><span>        string <span style=color:#f92672>=</span> string[<span style=color:#ae81ff>0</span>:<span style=color:#f92672>-</span>len(extention)]
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>return</span> string
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>def</span> <span style=color:#a6e22e>is_ipynb</span>(filename):
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>if</span> <span style=color:#f92672>not</span> filename<span style=color:#f92672>.</span>endswith(<span style=color:#e6db74>&#34;.ipynb&#34;</span>):
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>return</span> <span style=color:#66d9ef>False</span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>return</span> <span style=color:#66d9ef>True</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>def</span> <span style=color:#a6e22e>tex2pdf</span>(filename, desired_name):
+</span></span><span style=display:flex><span>    <span style=color:#e6db74>&#34;&#34;&#34;
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    Converts filename (which is tex document) to desired_name (which is pdf)
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    leaving no trash in current folder
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    &#34;&#34;&#34;</span>
+</span></span><span style=display:flex><span>    base <span style=color:#f92672>=</span> remove_extention(filename, <span style=color:#e6db74>&#34;tex&#34;</span>)
+</span></span><span style=display:flex><span>    output <span style=color:#f92672>=</span> base <span style=color:#f92672>+</span> <span style=color:#e6db74>&#34;.pdf&#34;</span>
+</span></span><span style=display:flex><span>    ret <span style=color:#f92672>=</span> subprocess<span style=color:#f92672>.</span>call(<span style=color:#e6db74>&#34;xelatex </span><span style=color:#e6db74>%s</span><span style=color:#e6db74>&#34;</span> <span style=color:#f92672>%</span> filename , 
+</span></span><span style=display:flex><span>                                        shell<span style=color:#f92672>=</span><span style=color:#66d9ef>True</span>, stdout<span style=color:#f92672>=</span>subprocess<span style=color:#f92672>.</span>PIPE)
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>for</span> ext <span style=color:#f92672>in</span> TRASH_EXTENSIONS:
+</span></span><span style=display:flex><span>        os<span style=color:#f92672>.</span>unlink(base <span style=color:#f92672>+</span> ext)
+</span></span><span style=display:flex><span>    os<span style=color:#f92672>.</span>rename(output, desired_name)
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>return</span> ret
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>def</span> <span style=color:#a6e22e>main</span>(argv):
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>if</span> check_args(argv) <span style=color:#f92672>==</span> <span style=color:#f92672>-</span><span style=color:#ae81ff>1</span>:
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>return</span> <span style=color:#f92672>-</span><span style=color:#ae81ff>1</span>
+</span></span><span style=display:flex><span>    script, filename <span style=color:#f92672>=</span> argv
+</span></span><span style=display:flex><span>    ret <span style=color:#f92672>=</span> subprocess<span style=color:#f92672>.</span>call(<span style=color:#e6db74>&#34;jupyter nbconvert </span><span style=color:#e6db74>%s</span><span style=color:#e6db74> --to latex --output </span><span style=color:#e6db74>%s</span><span style=color:#e6db74>&#34;</span> <span style=color:#f92672>%</span>
+</span></span><span style=display:flex><span>                                            (filename, TEMP_TEX), shell<span style=color:#f92672>=</span><span style=color:#66d9ef>True</span>,
+</span></span><span style=display:flex><span>                                            stdout<span style=color:#f92672>=</span>subprocess<span style=color:#f92672>.</span>PIPE)
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>if</span> (ret <span style=color:#f92672>!=</span> <span style=color:#ae81ff>0</span>):
+</span></span><span style=display:flex><span>        print(<span style=color:#e6db74>&#34;ret = </span><span style=color:#e6db74>%d</span><span style=color:#e6db74>&#34;</span> <span style=color:#f92672>%</span> ret)
+</span></span><span style=display:flex><span>        os<span style=color:#f92672>.</span>unlink(TEMP_TEX)
+</span></span><span style=display:flex><span>        print(<span style=color:#e6db74>&#34;Converting to LaTeX failed. Return code: </span><span style=color:#e6db74>%d</span><span style=color:#e6db74>&#34;</span> <span style=color:#f92672>%</span> ret)
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>return</span> <span style=color:#f92672>-</span><span style=color:#ae81ff>1</span>
+</span></span><span style=display:flex><span>    tex_file <span style=color:#f92672>=</span> open(TEMP_TEX, <span style=color:#e6db74>&#34;r&#34;</span>)
+</span></span><span style=display:flex><span>    tex <span style=color:#f92672>=</span> tex_file<span style=color:#f92672>.</span>read()
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>for</span> old, new <span style=color:#f92672>in</span> REPLACE:
+</span></span><span style=display:flex><span>        tex <span style=color:#f92672>=</span> tex<span style=color:#f92672>.</span>replace(old, new)
+</span></span><span style=display:flex><span>    tex_file<span style=color:#f92672>.</span>close()
+</span></span><span style=display:flex><span>    os<span style=color:#f92672>.</span>unlink(TEMP_TEX)
+</span></span><span style=display:flex><span>    tex_file <span style=color:#f92672>=</span> open(TEMP_TEX, <span style=color:#e6db74>&#34;w+&#34;</span>)
+</span></span><span style=display:flex><span>    tex_file<span style=color:#f92672>.</span>write(tex)
+</span></span><span style=display:flex><span>    tex_file<span style=color:#f92672>.</span>close()
+</span></span><span style=display:flex><span>    ret <span style=color:#f92672>=</span> tex2pdf(TEMP_TEX, remove_extention(filename, <span style=color:#e6db74>&#34;.ipynb&#34;</span>) <span style=color:#f92672>+</span> <span style=color:#e6db74>&#34;.pdf&#34;</span>)
+</span></span><span style=display:flex><span>    tex_file<span style=color:#f92672>.</span>close()
+</span></span><span style=display:flex><span>    os<span style=color:#f92672>.</span>unlink(TEMP_TEX)
+</span></span><span style=display:flex><span>    print(remove_extention(filename, <span style=color:#e6db74>&#34;.ipynb&#34;</span>) <span style=color:#f92672>+</span> <span style=color:#e6db74>&#34;.pdf - DONE&#34;</span>)
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>return</span> <span style=color:#ae81ff>0</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>if</span> __name__ <span style=color:#f92672>==</span> <span style=color:#e6db74>&#34;__main__&#34;</span>:
+</span></span><span style=display:flex><span>    exit(main(sys<span style=color:#f92672>.</span>argv))
+</span></span></code></pre></div><div class=footnotes role=doc-endnotes><hr><ol><li id=fn:1><p><a href=https://www.zhihu.com/question/302814218/answer/1029684239>https://www.zhihu.com/question/302814218/answer/1029684239</a>&#160;<a href=#fnref:1 class=footnote-backref role=doc-backlink>&#8617;&#xfe0e;</a></p></li></ol></div></main><script src=https://giscus.app/client.js data-repo=talengu/talengu.github.io data-repo-id="MDEwOlJlcG9zaXRvcnk5MTk0NjkxNQ==" data-category=Blog data-category-id=DIC_kwDOBXr_o84C0Qpk data-mapping=pathname data-strict=0 data-reactions-enabled=1 data-emit-metadata=0 data-input-position=bottom data-theme=/css/giscus.css data-lang=zh-CN crossorigin=anonymous async></script><footer>- END -<hr><a href=/about target=_blank title=About>一塘</a>
+© 2025
+<a href=/index.xml target=_blank title=RSS>RSS</a></footer></body></html>

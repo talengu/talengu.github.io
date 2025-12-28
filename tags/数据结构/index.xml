@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>数据结构 on 一塘</title><link>https://example.com/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/</link><description>Recent content in 数据结构 on 一塘</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Thu, 15 Dec 2022 12:00:00 +0000</lastBuildDate><atom:link href="https://example.com/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/index.xml" rel="self" type="application/rss+xml"/><item><title>c结构体对齐</title><link>https://example.com/post/c8-programming/c_struct/</link><pubDate>Thu, 15 Dec 2022 12:00:00 +0000</pubDate><guid>https://example.com/post/c8-programming/c_struct/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
+&lt;p>c语言的字节对齐，机器的大小段模式的理解。&lt;/p>
+&lt;p>计算机存储的基础知识。&lt;/p>
+&lt;!-- more -->
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#include&lt;/span> &lt;span style="color:#75715e">&amp;lt;stdio.h&amp;gt;&lt;/span>&lt;span style="color:#75715e">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>&lt;span style="color:#66d9ef">typedef&lt;/span> &lt;span style="color:#66d9ef">struct&lt;/span> tm{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	&lt;span style="color:#66d9ef">unsigned&lt;/span> &lt;span style="color:#66d9ef">int&lt;/span> a;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}TM;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">typedef&lt;/span> &lt;span style="color:#66d9ef">struct&lt;/span> hp{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	&lt;span style="color:#66d9ef">char&lt;/span> a;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	&lt;span style="color:#66d9ef">unsigned&lt;/span> &lt;span style="color:#66d9ef">char&lt;/span> b;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	TM &lt;span style="color:#f92672">*&lt;/span>t;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	&lt;span style="color:#66d9ef">unsigned&lt;/span> &lt;span style="color:#66d9ef">short&lt;/span> c;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	&lt;span style="color:#66d9ef">unsigned&lt;/span> &lt;span style="color:#66d9ef">long&lt;/span> d;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}HP;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">int&lt;/span> &lt;span style="color:#a6e22e">main&lt;/span>(&lt;span style="color:#66d9ef">int&lt;/span> argc, &lt;span style="color:#66d9ef">char&lt;/span> &lt;span style="color:#f92672">*&lt;/span>argv[])
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	HP hp&lt;span style="color:#f92672">=&lt;/span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>		.a&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#ae81ff">0xa1&lt;/span>,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>		.b&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#ae81ff">0xb1&lt;/span>,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>		.c&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#ae81ff">0xc1c2&lt;/span>,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>		.d&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#ae81ff">0x1&lt;/span>,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	};
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	&lt;span style="color:#66d9ef">unsigned&lt;/span> &lt;span style="color:#66d9ef">char&lt;/span> &lt;span style="color:#f92672">*&lt;/span>p&lt;span style="color:#f92672">=&amp;amp;&lt;/span>hp;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	&lt;span style="color:#a6e22e">printf&lt;/span>(&lt;span style="color:#e6db74">&amp;#34;sizeof(HP) = %lu&lt;/span>&lt;span style="color:#ae81ff">\n&lt;/span>&lt;span style="color:#e6db74">&amp;#34;&lt;/span>,&lt;span style="color:#66d9ef">sizeof&lt;/span>(HP) );	
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	&lt;span style="color:#66d9ef">for&lt;/span> (&lt;span style="color:#66d9ef">unsigned&lt;/span> &lt;span style="color:#66d9ef">long&lt;/span> i &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#ae81ff">0&lt;/span>; i &lt;span style="color:#f92672">&amp;lt;&lt;/span> &lt;span style="color:#66d9ef">sizeof&lt;/span>(HP); &lt;span style="color:#f92672">++&lt;/span>i) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>		&lt;span style="color:#a6e22e">printf&lt;/span>(&lt;span style="color:#e6db74">&amp;#34;%02x &amp;#34;&lt;/span>,p[i] );	
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>		&lt;span style="color:#66d9ef">if&lt;/span>((i&lt;span style="color:#f92672">+&lt;/span>&lt;span style="color:#ae81ff">1&lt;/span>)&lt;span style="color:#f92672">%&lt;/span>&lt;span style="color:#ae81ff">8&lt;/span>&lt;span style="color:#f92672">==&lt;/span>&lt;span style="color:#ae81ff">0&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>			&lt;span style="color:#a6e22e">printf&lt;/span>(&lt;span style="color:#e6db74">&amp;#34;&lt;/span>&lt;span style="color:#ae81ff">\n&lt;/span>&lt;span style="color:#e6db74">&amp;#34;&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	&lt;span style="color:#66d9ef">unsigned&lt;/span> &lt;span style="color:#66d9ef">int&lt;/span> d&lt;span style="color:#f92672">=&lt;/span>hp.d;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	&lt;span style="color:#a6e22e">printf&lt;/span>(&lt;span style="color:#e6db74">&amp;#34;%d&amp;#34;&lt;/span>,d);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	&lt;span style="color:#66d9ef">return&lt;/span> &lt;span style="color:#ae81ff">0&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;pre tabindex="0">&lt;code>//OUT
+|| sizeof(HP) = 32
+|| a1 b1 00 00 00 00 00 00 
+|| 00 00 00 00 00 00 00 00 
+|| c2 c1 00 00 00 00 00 00 
+|| 01 00 00 00 00 00 00 00 
+|| 1
+&lt;/code>&lt;/pre>&lt;h2 id="存储方式">存储方式&lt;/h2>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>	HP hp&lt;span style="color:#f92672">=&lt;/span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>		.a&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#ae81ff">0xa1&lt;/span>,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>		.b&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#ae81ff">0xb1&lt;/span>,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>		.c&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#ae81ff">0xc1c2&lt;/span>,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>		.d&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#ae81ff">0xd1d2d3d4&lt;/span>,&lt;span style="color:#75715e">//&amp;lt;-0x1
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>	};
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;pre tabindex="0">&lt;code>//OUT
+|| sizeof(HP) = 32
+|| a1 b1 00 00 00 00 00 00 
+|| 00 00 00 00 00 00 00 00 
+|| c2 c1 00 00 00 00 00 00 
+|| d4 d3 d2 d1 00 00 00 00 
+|| 3520254932
+&lt;/code>&lt;/pre>&lt;h2 id="字节对齐">字节对齐&lt;/h2>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">//将 d 改为 d:1
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>&lt;span style="color:#66d9ef">typedef&lt;/span> &lt;span style="color:#66d9ef">struct&lt;/span> hp{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	&lt;span style="color:#66d9ef">char&lt;/span> a;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	&lt;span style="color:#66d9ef">unsigned&lt;/span> &lt;span style="color:#66d9ef">char&lt;/span> b;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	TM &lt;span style="color:#f92672">*&lt;/span>t;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	&lt;span style="color:#66d9ef">unsigned&lt;/span> &lt;span style="color:#66d9ef">short&lt;/span> c;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	&lt;span style="color:#66d9ef">unsigned&lt;/span> &lt;span style="color:#66d9ef">long&lt;/span> d:&lt;span style="color:#ae81ff">1&lt;/span>; &lt;span style="color:#75715e">//&amp;lt;--- unsigned long d;
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>}HP;
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;pre tabindex="0">&lt;code>//OUT
+|| 1 warning generated.
+|| sizeof(HP) = 24
+|| a1 b1 00 00 00 00 00 00 
+|| 00 00 00 00 00 00 00 00 
+|| c2 c1 01 00 00 00 00 00 
+|| 1
+&lt;/code>&lt;/pre>&lt;p>少占用了一个8字节。&lt;/p></description></item></channel></rss>

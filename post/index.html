@@ -1,66 +1,67 @@
 <!doctype html><html lang=zh-cn><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><title>Posts | 一塘</title>
-<link rel=stylesheet href=/css/style.css><link rel=stylesheet href=/css/fonts.css><link rel=stylesheet href=/css/dark.css></head><body><nav><ul class=menu><li><a href=/about/>一塘</a></li><li><a href=/post/>博客</a></li><li><a href=/categories/>分类</a></li><li><a href=/tags/>标签</a></li><li style=float:right;position:relative;margin-left:1em><input type=text id=search-box placeholder=搜索文章... style="padding:.3em .6em;border-radius:4px;border:1px solid #ccc;width:150px;min-width:100px;max-width:250px"><ul id=search-results style="position:absolute;top:100%;right:0;background:#fff;border:1px solid #ccc;max-height:300px;overflow-y:auto;display:none;z-index:1000;list-style:none;padding:0;margin:0;width:250px"></ul></li><style>#search-results li{padding:.3em .5em}#search-results li a{text-decoration:none;color:#007acc}#search-results li:hover{background-color:rgba(0,0,0,5%)}@media(prefers-color-scheme:dark){#search-results{background-color:#1e1e1e;color:#ddd;border-color:#333}#search-results li a{color:#4fc3f7}#search-results li:hover{background-color:rgba(255,255,255,5%)}}@media(max-width:600px){#search-box{width:100px;max-width:120px}#search-results{width:200px}}</style><script src=https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.6.2/fuse.min.js></script><script>fetch("/post/index.json").then(e=>e.json()).then(e=>{const s=new Fuse(e,{keys:["title","categories","tags","summary","content"],threshold:.3}),n=document.getElementById("search-box"),t=document.getElementById("search-results");n.addEventListener("input",function(){const e=this.value.trim();if(!e){t.style.display="none",t.innerHTML="";return}const n=s.search(e);t.innerHTML=n.slice(0,10).map(e=>`<li style="padding:0.3em 0.5em;"><a href="${e.item.permalink}" style="text-decoration:none;color:#007acc;">${e.item.title}</a></li>`).join(""),t.style.display=n.length?"block":"none"}),document.addEventListener("click",e=>{!n.contains(e.target)&&!t.contains(e.target)&&(t.style.display="none")})})</script></ul><hr></nav><h1>Posts</h1><ul><li><span class=date>2025/12/22</span>
-<a href=/post/hugo_build/>hugo搭建</a></li><li><span class=date>2025/12/15</span>
-<a href=/post/test/202512/>「202512月度汇报」auto report</a></li><li><span class=date>2025/06/15</span>
-<a href=/post/test/202506/>「202506月度汇报」auto report</a></li><li><span class=date>2025/04/27</span>
-<a href=/post/hash_tables_news/>「转」本科生反驳 40 年前的猜想，发明新型哈希表</a></li><li><span class=date>2025/02/15</span>
-<a href=/post/test/202502/>「202502月度汇报」auto report</a></li><li><span class=date>2025/01/15</span>
-<a href=/post/test/202501/>「202501月度汇报」auto report</a></li><li><span class=date>2024/12/31</span>
-<a href=/post/test/2024/>「2024年度汇报」ttrss</a></li><li><span class=date>2024/06/06</span>
-<a href=/post/readeck_tips/>「转」基于 Readeck 搭建个人稍后读/书签服务</a></li><li><span class=date>2024/04/19</span>
-<a href=/post/ai/%E4%BA%BA%E4%BA%BA%E9%83%BD%E6%98%AF%E5%BC%80%E5%8F%91%E8%80%85/>人人都是开发者「转」</a></li><li><span class=date>2024/01/23</span>
-<a href=/post/readings/caiyuanzengxiao/>裁员增笑「转」</a></li><li><span class=date>2023/12/31</span>
-<a href=/post/test/2023/>「2023年度汇报」ttrss</a></li><li><span class=date>2022/12/31</span>
-<a href=/post/test/2022/>「2022年度汇报」ttrss</a></li><li><span class=date>2022/12/21</span>
-<a href=/post/rss_translate/>rss翻译github脚本</a></li><li><span class=date>2022/12/15</span>
-<a href=/post/%E7%AE%80%E6%82%A6%E5%90%8C%E6%AD%A5md/%E8%82%9D%E4%B8%8B-50-%E4%B8%87%E5%AD%97%E7%9A%84linux-%E5%86%85%E6%A0%B8%E7%B2%BE%E9%80%9A%E7%AC%94%E8%AE%B0%E4%BD%A0%E7%9A%84%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86%E6%B0%B4%E5%B9%B3%E5%B0%86%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E5%85%A5%E9%AD%94%E5%BB%BA%E8%AE%AE%E6%94%B6%E8%97%8F/>「转」Linux 内核精通</a></li><li><span class=date>2022/12/15</span>
-<a href=/post/c_struct/>c结构体对齐</a></li><li><span class=date>2022/12/11</span>
-<a href=/post/linux/linux_tools/>「转」九张图一览 Linux 性能工具 全景图</a></li><li><span class=date>2022/12/08</span>
-<a href=/post/linux_network/tcp_ip/>tcp ip 协议族</a></li><li><span class=date>2022/12/04</span>
-<a href=/post/linux_network/conntrack_linux/>「转」连接跟踪（conntrack）：原理、应用及 Linux 内核实现</a></li><li><span class=date>2022/07/06</span>
-<a href=/post/linux/linux_bridge_forward/>「转」Linux内核数据包bridge上转发流程</a></li><li><span class=date>2022/07/01</span>
-<a href=/post/linux/how_tcpdump/>「转」tcpdump是在哪儿抓到的包？</a></li><li><span class=date>2022/05/08</span>
-<a href=/post/rss_ttrss_statics/>rss统计 基于ttrss的PostgresQL数据库</a></li><li><span class=date>2022/05/08</span>
-<a href=/post/rss_google_translate/>使用脚本将英文rss转成中文rss</a></li><li><span class=date>2022/05/05</span>
-<a href=/post/linux/gre_test/>「转」GRE隧道测试</a></li><li><span class=date>2022/04/16</span>
-<a href=/post/rss_local_install/>本地安装rss</a></li><li><span class=date>2022/04/15</span>
-<a href=/post/soft_run_time/>「转」window软件运行时间</a></li><li><span class=date>2022/04/14</span>
-<a href=/post/anki_tips/>知识记忆软件anki的使用</a></li><li><span class=date>2022/04/01</span>
-<a href=/post/linux/ubuntu_tour/>Ubuntu完全教程</a></li><li><span class=date>2022/04/01</span>
-<a href=/post/history_ericsson/>爱立信的百年沉浮</a></li><li><span class=date>2022/01/14</span>
-<a href=/post/rss_talk2020/>二零年RSS杂谈</a></li><li><span class=date>2022/01/09</span>
-<a href=/post/14peak/>征服14座高峰：凡事皆有可能</a></li><li><span class=date>2021/12/23</span>
-<a href=/post/linux/linux_in_one/>「转」一文看懂Linux内核！Linux内核架构和工作原理详解</a></li><li><span class=date>2021/12/16</span>
-<a href=/post/readings/zhonghuaguji/>「转」《中华古籍资源库》中国国家图书馆</a></li><li><span class=date>2021/12/02</span>
-<a href=/post/linux_network/br_init/>「转」桥初始化（一）</a></li><li><span class=date>2021/09/01</span>
-<a href=/post/2021games/>2021 年科隆游戏展奖项提名名单</a></li><li><span class=date>2021/08/25</span>
-<a href=/post/c_debug/>「转」在 C/C++ 程序中打印当前函数调用栈</a></li><li><span class=date>2021/07/24</span>
-<a href=/post/rss_github_file/>RSS跟踪github文件更新+某管子更新</a></li><li><span class=date>2021/04/02</span>
-<a href=/post/math/math_ahp/>选择困难者的福音？层次分析法</a></li><li><span class=date>2020/04/09</span>
-<a href=/post/cs_fonters/>地表最强大的还有这 14 位程序员</a></li><li><span class=date>2019/07/25</span>
-<a href=/post/template/>博客模版</a></li><li><span class=date>2019/07/23</span>
-<a href=/post/ai/ml_summary/>机器学习系列</a></li><li><span class=date>2019/07/21</span>
-<a href=/post/readings/xingxiangmeixue/>《形象美学》摘录笔记</a></li><li><span class=date>2019/07/17</span>
-<a href=/post/ai/regulation_baysian/>正则化「一」机器学习中的正则化</a></li><li><span class=date>2019/04/25</span>
-<a href=/post/trips/chongqing/>这哈儿是重庆</a></li><li><span class=date>2019/02/05</span>
-<a href=/post/readings/nobel_maodun_literature/>茅盾文学奖、诺贝尔文学奖</a></li><li><span class=date>2018/11/12</span>
-<a href=/post/cv/facedetectioncomparison/>[译] Face Detection – OpenCV, Dlib and Deep Learning ( C++ / Python )</a></li><li><span class=date>2018/11/05</span>
-<a href=/post/readings/gods_stories/>希腊罗马神话</a></li><li><span class=date>2018/10/01</span>
-<a href=/post/ai/how_algorithm_engineer/>怎样成为一名优秀的算法工程师</a></li><li><span class=date>2018/07/24</span>
-<a href=/post/linux/linux_proxy/>linux代理的使用</a></li><li><span class=date>2018/07/12</span>
-<a href=/post/linux/bash_bashrc/>终端中bash、vim、tmux等的配置</a></li><li><span class=date>2018/05/11</span>
-<a href=/post/why_gnu/>Why Software Should Not Have Owners</a></li><li><span class=date>2017/07/03</span>
-<a href=/post/linux/jupyter_notebook/>Jupyter notebook的配置</a></li><li><span class=date>2017/06/14</span>
-<a href=/post/linux/boot_recovery/>ubuntu引导修复</a></li><li><span class=date>2017/05/22</span>
-<a href=/post/math/math_handbook/>现代数学手册</a></li><li><span class=date>2017/05/22</span>
-<a href=/post/linux/ubuntu/>Ubuntu的优化与设置</a></li><li><span class=date>2017/05/14</span>
-<a href=/post/readings/hongloumeng/>红楼梦与我</a></li><li><span class=date>2017/05/05</span>
-<a href=/post/math/math_q1/>为什么正好经过这个空隙？</a></li><li><span class=date>2017/04/14</span>
-<a href=/post/readings/yingyingzhuan/>「转」琉璃易碎，人言易坠——关于《莺莺传》的叙事</a></li><li><span class=date>2016/12/22</span>
-<a href=/post/build_blog/>个人主页搭建</a></li><li><span class=date>2016/04/14</span>
-<a href=/post/shells/youtube_src_combine/>SRT中英文合并Python脚本</a></li><li><span class=date>2015/06/14</span>
-<a href=/post/dsp/dsp_filter/>DSP滤波程序</a></li><li><span class=date>2015/04/14</span>
-<a href=/post/shells/share_win_wifi/>Windows笔记本开共享wifi</a></li><li><span class=date>2015/01/01</span>
-<a href=/post/about/>序言</a></li></ul><footer>- END -<hr><a href=/about target=_blank title=About>一塘</a>
+<link rel=stylesheet href=/css/style.css><link rel=stylesheet href=/css/fonts.css><link rel=stylesheet href=/css/dark.css></head><body><nav><ul class=menu><li><a href=/about/>一塘</a></li><li><a href=/post/>博客</a></li><li><a href=/categories/>分类</a></li><li><a href=/tags/>标签</a></li><li style=float:right;position:relative;margin-left:1em><input type=text id=search-box placeholder=搜索文章... style="padding:.3em .6em;border-radius:4px;border:1px solid #ccc;width:150px;min-width:100px;max-width:250px"><ul id=search-results style="position:absolute;top:100%;right:0;background:#fff;border:1px solid #ccc;max-height:300px;overflow-y:auto;display:none;z-index:1000;list-style:none;padding:0;margin:0;width:250px"></ul></li><style>.search-item{padding:.4em .6em}.search-link{display:block;font-weight:500;text-decoration:none;color:#007acc}.search-snippet{font-size:.85em;color:#555;margin-top:.2em;line-height:1.4}.search-highlight{background:rgba(255,235,59,.5);padding:0 .15em;border-radius:3px}.search-item:hover{background-color:rgba(0,0,0,5%)}@media(prefers-color-scheme:dark){.search-link{color:#4fc3f7}.search-snippet{color:#aaa}.search-item:hover{background-color:rgba(104,99,99,.273)}.search-highlight{background:rgba(255,193,7,.35)}}</style><script src=https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.6.2/fuse.min.js></script><script>fetch("/post/index.json").then(e=>e.json()).then(e=>{const o=new Fuse(e,{keys:[{name:"title",weight:2},{name:"summary",weight:1},{name:"content",weight:.7}],threshold:.3,ignoreLocation:!0,minMatchCharLength:2}),n=document.getElementById("search-box"),t=document.getElementById("search-results");function s(e,t){if(!e)return"";const n=t.replace(/[.*+?^${}()|[\]\\]/g,"\\$&"),s=new RegExp(`(${n})`,"gi");return e.replace(s,'<mark class="search-highlight">$1</mark>')}function i(e,t,n=80){const s=e.toLowerCase().indexOf(t.toLowerCase());if(s===-1)return e.slice(0,n)+"…";const o=Math.max(0,s-n/2),i=Math.min(e.length,s+n/2);return"…"+e.slice(o,i)+"…"}n.addEventListener("input",function(){const e=this.value.trim();if(!e){t.style.display="none",t.innerHTML="";return}const n=o.search(e);t.innerHTML=n.slice(0,8).map(t=>{const n=t.item,o=i(n.content||n.summary||"",e);return`
+          <li class="search-item">
+            <a href="${n.permalink}" class="search-link">
+              ${s(n.title,e)}
+            </a>
+            <div class="search-snippet">
+              ${s(o,e)}
+            </div>
+          </li>
+        `}).join(""),t.style.display=n.length?"block":"none"}),document.addEventListener("click",e=>{!n.contains(e.target)&&!t.contains(e.target)&&(t.style.display="none")})})</script></ul><hr></nav><h1>Posts</h1><ul><li><span class=date>2025/12/22</span>
+<a href=/post/c7-toolchain/hugo_build/>Hugo搭建</a></li><li><span class=date>2025/04/27</span>
+<a href=/post/c8-programming/hash_tables_news/>「转」本科生反驳 40 年前的猜想，发明新型哈希表</a></li><li><span class=date>2024/06/06</span>
+<a href=/post/c7-toolchain/readeck_tips/>「转」基于 Readeck 搭建个人稍后读/书签服务</a></li><li><span class=date>2024/04/19</span>
+<a href=/post/c3-ai/everyone-developer/>人人都是开发者「转」</a></li><li><span class=date>2024/01/23</span>
+<a href=/post/c0-life/readings/caiyuanzengxiao/>「转」裁员增笑</a></li><li><span class=date>2022/12/21</span>
+<a href=/post/c7-toolchain/rss_translate/>rss翻译github脚本</a></li><li><span class=date>2022/12/15</span>
+<a href=/post/c8-programming/c_struct/>c结构体对齐</a></li><li><span class=date>2022/12/11</span>
+<a href=/post/c5-linux/linux/linux_tools/>「转」九张图一览 Linux 性能工具 全景图</a></li><li><span class=date>2022/12/08</span>
+<a href=/post/c6-network/tcp_ip/>tcp ip 协议族</a></li><li><span class=date>2022/12/04</span>
+<a href=/post/c6-network/conntrack-linux/>「转」连接跟踪（conntrack）：原理、应用及 Linux 内核实现</a></li><li><span class=date>2022/07/06</span>
+<a href=/post/c5-linux/linux/linux-bridge-forward/>「转」Linux内核数据包bridge上转发流程</a></li><li><span class=date>2022/07/01</span>
+<a href=/post/c5-linux/linux/how-tcpdump/>「转」tcpdump是在哪儿抓到的包？</a></li><li><span class=date>2022/05/08</span>
+<a href=/post/c7-toolchain/rss_ttrss_statics/>rss统计 基于ttrss的PostgresQL数据库</a></li><li><span class=date>2022/05/08</span>
+<a href=/post/c7-toolchain/rss_google_translate/>使用脚本将英文rss转成中文rss</a></li><li><span class=date>2022/05/05</span>
+<a href=/post/c6-network/gre-test/>「转」GRE隧道测试</a></li><li><span class=date>2022/04/16</span>
+<a href=/post/c7-toolchain/rss_local_install/>本地安装rss</a></li><li><span class=date>2022/04/15</span>
+<a href=/post/c8-programming/soft_run_time/>「转」window软件运行时间</a></li><li><span class=date>2022/04/14</span>
+<a href=/post/c7-toolchain/anki_tips/>知识记忆软件anki的使用</a></li><li><span class=date>2022/04/01</span>
+<a href=/post/c5-linux/linux/ubuntu-tour/>「转」Ubuntu完全教程</a></li><li><span class=date>2022/04/01</span>
+<a href=/post/c6-network/history-ericsson/>爱立信的百年沉浮</a></li><li><span class=date>2022/01/14</span>
+<a href=/post/c0-life/talk-rss-2020/>二零年RSS杂谈</a></li><li><span class=date>2022/01/09</span>
+<a href=/post/c0-life/trips/14peak/>征服14座高峰：凡事皆有可能</a></li><li><span class=date>2021/12/23</span>
+<a href=/post/c5-linux/linux/linux-in-one/>「转」一文看懂Linux内核！Linux内核架构和工作原理详解</a></li><li><span class=date>2021/12/16</span>
+<a href=/post/c0-life/readings/zhonghuaguji/>「转」《中华古籍资源库》中国国家图书馆</a></li><li><span class=date>2021/12/02</span>
+<a href=/post/c6-network/br_init/>「转」桥初始化（一）</a></li><li><span class=date>2021/09/01</span>
+<a href=/post/c0-life/games/2021games/>2021 年科隆游戏展奖项提名名单</a></li><li><span class=date>2021/08/25</span>
+<a href=/post/c8-programming/c_debug/>「转」在 C/C++ 程序中打印当前函数调用栈</a></li><li><span class=date>2021/07/24</span>
+<a href=/post/c7-toolchain/rss_github_file/>RSS跟踪github文件更新+某管子更新</a></li><li><span class=date>2021/04/02</span>
+<a href=/post/c1-math/ahp/>选择困难者的福音？层次分析法</a></li><li><span class=date>2020/04/09</span>
+<a href=/post/c8-programming/cs_fonters/>地表最强大的还有这 14 位程序员</a></li><li><span class=date>2019/07/23</span>
+<a href=/post/c3-ai/machine-leanring-summary/>机器学习系列</a></li><li><span class=date>2019/07/21</span>
+<a href=/post/c0-life/readings/xingxiangmeixue/>《形象美学》摘录笔记</a></li><li><span class=date>2019/07/17</span>
+<a href=/post/c3-ai/regulation-baysian/>正则化「一」机器学习中的正则化</a></li><li><span class=date>2019/04/25</span>
+<a href=/post/c0-life/trips/chongqing/>这哈儿是重庆</a></li><li><span class=date>2019/02/05</span>
+<a href=/post/c0-life/readings/nobel-maodun-literature/>茅盾文学奖、诺贝尔文学奖</a></li><li><span class=date>2018/11/12</span>
+<a href=/post/c2-robotics/cv/facedetectioncomparison/>[译] Face Detection – OpenCV, Dlib and Deep Learning ( C++ / Python )</a></li><li><span class=date>2018/11/05</span>
+<a href=/post/c0-life/readings/gods_stories/>希腊罗马神话</a></li><li><span class=date>2018/10/01</span>
+<a href=/post/c3-ai/how-algorithm-engineer/>怎样成为一名优秀的算法工程师</a></li><li><span class=date>2018/07/24</span>
+<a href=/post/c5-linux/linux/linux-proxy/>linux代理的使用</a></li><li><span class=date>2018/07/12</span>
+<a href=/post/c5-linux/linux/bash-bashrc/>终端中bash、vim、tmux等的配置</a></li><li><span class=date>2018/05/11</span>
+<a href=/post/c5-linux/why-gnu/>Why Software Should Not Have Owners</a></li><li><span class=date>2017/07/03</span>
+<a href=/post/c7-toolchain/jupyter-notebook/>Jupyter notebook的配置</a></li><li><span class=date>2017/06/14</span>
+<a href=/post/c5-linux/linux/boot-recovery/>Ubuntu引导修复</a></li><li><span class=date>2017/05/22</span>
+<a href=/post/c1-math/math-handbook/>现代数学手册</a></li><li><span class=date>2017/05/22</span>
+<a href=/post/c5-linux/linux/ubuntu-init/>Ubuntu的优化与设置</a></li><li><span class=date>2017/05/14</span>
+<a href=/post/c0-life/readings/hongloumeng/>红楼梦与我</a></li><li><span class=date>2017/05/05</span>
+<a href=/post/c1-math/why-the-gap-forms-a-hyperbola/>为什么正好经过这个空隙？</a></li><li><span class=date>2017/04/14</span>
+<a href=/post/c0-life/readings/yingyingzhuan/>「转」琉璃易碎，人言易坠——关于《莺莺传》的叙事</a></li><li><span class=date>2016/12/22</span>
+<a href=/post/c7-toolchain/build_blog/>个人主页搭建</a></li><li><span class=date>2016/04/14</span>
+<a href=/post/c7-toolchain/shells/youtube_src_combine/>SRT中英文合并Python脚本</a></li><li><span class=date>2015/06/14</span>
+<a href=/post/c2-robotics/dsp/dsp_filter/>DSP滤波程序</a></li><li><span class=date>2015/04/14</span>
+<a href=/post/c7-toolchain/shells/windowns-share-wifi-cmd/>Windows笔记本开共享wifi</a></li><li><span class=date>2015/01/01</span>
+<a href=/post/c0-life/about/>序言</a></li><li><span class=date>2010/01/01</span>
+<a href=/post/template/>博客模版</a></li></ul><footer>- END -<hr><a href=/about target=_blank title=About>一塘</a>
 © 2025
 <a href=/index.xml target=_blank title=RSS>RSS</a></footer></body></html>

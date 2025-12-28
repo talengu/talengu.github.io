@@ -1,63 +1,122 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>编程 on 一塘</title><link>https://example.com/categories/%E7%BC%96%E7%A8%8B/</link><description>Recent content in 编程 on 一塘</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Fri, 19 Apr 2024 12:00:00 +0000</lastBuildDate><atom:link href="https://example.com/categories/%E7%BC%96%E7%A8%8B/index.xml" rel="self" type="application/rss+xml"/><item><title>人人都是开发者「转」</title><link>https://example.com/post/ai/%E4%BA%BA%E4%BA%BA%E9%83%BD%E6%98%AF%E5%BC%80%E5%8F%91%E8%80%85/</link><pubDate>Fri, 19 Apr 2024 12:00:00 +0000</pubDate><guid>https://example.com/post/ai/%E4%BA%BA%E4%BA%BA%E9%83%BD%E6%98%AF%E5%BC%80%E5%8F%91%E8%80%85/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
-&lt;p>“自然语言会成为下一代的编程语言，人人都能成为开发者。”&lt;/p>
-&lt;p>4月16日，Create 2024百度AI开发者大会在深圳召开，百度创始人、董事长兼首席执行官李彦宏发表了《人人都是开发者》的主题演讲，描述了一个不再局限于编码技能的世界，而是以自然语言为媒介，人人都能参与创造的时代。&lt;/p>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>编程 on 一塘</title><link>https://example.com/categories/%E7%BC%96%E7%A8%8B/</link><description>Recent content in 编程 on 一塘</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Sun, 27 Apr 2025 12:00:00 +0000</lastBuildDate><atom:link href="https://example.com/categories/%E7%BC%96%E7%A8%8B/index.xml" rel="self" type="application/rss+xml"/><item><title>「转」本科生反驳 40 年前的猜想，发明新型哈希表</title><link>https://example.com/post/c8-programming/hash_tables_news/</link><pubDate>Sun, 27 Apr 2025 12:00:00 +0000</pubDate><guid>https://example.com/post/c8-programming/hash_tables_news/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
+&lt;blockquote>
+&lt;p>本文原文发表于《广达杂志》（Quanta Magazine）。&lt;/p>&lt;/blockquote>
+&lt;p>&lt;a href="https://www.quantamagazine.org/undergraduate-upends-a-40-year-old-data-science-conjecture-20250210/">&lt;em>本文&lt;/em>&lt;/a>原文_发表于 &lt;a href="https://www.quantamagazine.org/">《广达杂志》（Quanta Magazine&lt;/a>）。_&lt;/p>
+&lt;p>2021 年秋天的某个时候，罗格斯大学 （Rutgers University） 的本科生安德鲁·克拉皮文 （Andrew Krapivin） 遇到了一篇改变他生活的论文。当时，克拉皮文并没有多想。但两年后，当他终于抽出时间阅读这篇论文时（用他的话说，“只是为了好玩”），他的努力将导致对计算机科学中广泛使用的工具的重新思考。&lt;/p>
+ &lt;!-- more -->
+&lt;p>该论文的标题“&lt;a href="https://arxiv.org/abs/2111.12800">Tiny Pointers&lt;/a>”指的是箭头状实体，可以将您引导至计算机内存中的一条信息或元素。Krapivin 很快就想出了一种潜在的方法来进一步缩小指针，从而减少它们消耗的内存。但是，为了实现这一点，他需要一种更好的方法来组织指针将指向的数据。&lt;/p>
+&lt;p>他转向了一种称为哈希表的常用数据存储方法。但在修补过程中，Krapivin 意识到他发明了一种新型的哈希表，这种表的运行速度比预期的要快 — 查找特定元素所需的时间和步骤更少。&lt;/p>
+&lt;p>“Tiny Pointers”论文的合著者、Krapivin 在罗格斯大学的前教授 &lt;a href="https://engineering.nyu.edu/faculty/martin-farach-colton">Martín Farach-Colton&lt;/a> 最初对 Krapivin 的新设计持怀疑态度。哈希表是所有计算机科学中研究最深入的数据结构之一;这个预告听起来好得令人难以置信。但为了保险起见，他请了一位经常合作的人（也是《Tiny Pointers》的合著者），卡内基梅隆大学的&lt;a href="https://csd.cmu.edu/people/faculty/william-kuszmaul">威廉·库斯莫尔（William Kuszmaul&lt;/a>）来看看他学生的发明。库斯莫尔有不同的反应。“你不只是想出了一个很酷的哈希表，”他记得对 Krapivin 说。“你居然彻底抹杀了一个 40 年前的猜想！”&lt;/p>
+&lt;p>
+
+
+
+
+ 
+
+
+&lt;div style="text-align: center;">
+&lt;img src="4540c60338f01ec8cccbe2f8baa9f536_MD5.jpg" 
+ alt="" 
+ 
+/>
+&lt;/div>&lt;/p>
+&lt;p>Andrew Krapivin 没有打算这样做，它颠覆了围绕哈希表的常见思维，哈希表是计算机科学中研究得最多的工具之一。&lt;/p>
+&lt;p>照片：Phillip Ammon for Quanta Magazine&lt;/p>
+&lt;p>Krapivin（现在是剑桥大学的研究生）、Farach-Colton（现在在纽约大学）和 Kuszmaul 在 &lt;a href="https://arxiv.org/abs/2501.02305">2025 年 1 月&lt;/a>的一篇论文中一起证明，这种新的哈希表确实可以比人们认为的更快地找到元素。他们这样做，就反驳了一个长期以来被认为是正确的猜想。&lt;/p>
+&lt;p>“这是一篇重要的论文，”纽约市康奈尔理工学院的&lt;a href="https://ajhconway.com/">亚历克斯·康威（Alex Conway&lt;/a>）说。“哈希表是我们拥有的最古老的数据结构之一。而且它们仍然是最有效的数据存储方式之一。然而，他说，关于它们如何运作仍然存在悬而未决的问题。“这篇论文以令人惊讶的方式回答了其中的几个问题。”&lt;/p>
+&lt;p>哈希表在计算中无处不在，部分原因是它们的简单性和易用性。它们旨在允许用户执行三项作：“查询”（搜索）元素、删除元素或将元素插入空槽。第一个哈希表可以追溯到 1950 年代初，从那时起，计算机科学家一直在研究和使用它们。除其他外，研究人员希望弄清楚其中一些作的速度限制。例如，新的搜索或插入可能有多快？&lt;/p>
+&lt;p>
+
+
+
+
+ 
+
+
+&lt;div style="text-align: center;">
+&lt;img src="94be07a640f87d1921f3057b2e88b1c4_MD5.jpg" 
+ alt="" 
+ 
+/>
+&lt;/div>&lt;/p>
+&lt;p>Martín Farach-Colton 帮助 Krapivin 证明他的新哈希表与一个长期存在的猜想相矛盾。&lt;/p>
+&lt;p>摄影：Andrew Farach-Colton&lt;/p>
+&lt;p>答案通常取决于在哈希表中查找空位所需的时间。反过来，这通常取决于哈希表的填充程度。充实度可以用总体百分比来描述——这个表格是 50%，那个表格是 90%——但研究人员经常处理更完整的表格。因此，他们可能会使用一个由 &lt;em>x&lt;/em> 表示的整数来指定哈希表接近 100% 满的程度。如果 &lt;em>x&lt;/em> 为 100，则表已满 99%。如果 &lt;em>x&lt;/em> 为 1,000，则表已满 99.9%。这种填充度度量提供了一种便捷的方法来评估执行查询或插入等作需要多长时间。&lt;/p></description></item><item><title>c结构体对齐</title><link>https://example.com/post/c8-programming/c_struct/</link><pubDate>Thu, 15 Dec 2022 12:00:00 +0000</pubDate><guid>https://example.com/post/c8-programming/c_struct/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
+&lt;p>c语言的字节对齐，机器的大小段模式的理解。&lt;/p>
+&lt;p>计算机存储的基础知识。&lt;/p>
 &lt;!-- more -->
-&lt;h2 id="演讲稿">演讲稿&lt;/h2>
-&lt;p>大家好，欢迎参加Create 2024百度AI开发者大会，这是Create大会首次在粤港澳大湾区举办。今天现场来了5000多位开发者和科技爱好者。&lt;/p>
-&lt;p>过去这一年，我跟很多创业者、开发者交流，感觉大家都处在一种“FOMO”状态，也就是Fear of Missing Out，既兴奋、又害怕错过。确实，大模型和生成式AI，将彻底改变开发者这个群体。&lt;/p>
-&lt;p>过去，开发者用代码改变世界；未来，自然语言将成为新的通用编程语言，你只要会说话，就可以成为一名开发者，用自己的创造力改变世界。&lt;/p>
-&lt;p>这一天并不遥远，我们看到，因为有了强大的基础大模型，有了很多低门槛，甚至零门槛的开发工具，开发者的生产力大大提高了。&lt;/p>
-&lt;p>比如，基于文心大模型的智能代码助手Comate，不仅支持100多种语言和所有主流IDE平台，可以推荐代码、生成代码注释、查找代码缺陷、给出优化方案，还可以深度解读代码库、关联私域知识生成新的代码。上岗一年多，Comate已经走入了喜马拉雅、三菱电梯、软通动力等上万家企业，生成的代码采纳率达到了46%，百度每天新增的代码中，已经有27%是由Comate生成的。&lt;/p>
-&lt;p>今天，你不会写代码，也可以做出一个AI应用；不用编程，也可以做出一个智能体。AI正在掀起一场创造力革命，未来开发应用就像拍个短视频一样简单，人人都是开发者，人人都是创造者。&lt;/p>
-&lt;p>作为一家技术公司，百度的角色定位，就是尽可能地为大家提供所需的开发工具，不断提升整个社会的创造力。具体来说，我们提供1个强大的基础模型系列，就是文心大模型系列，这包括旗舰版的ERNIE3.5， ERNIE4.0， 也包括轻量版的ERNIE Speed、Lite、Tiny等等。&lt;/p>
-&lt;p>我们还提供基于大模型来开发各种应用的工具，包括智能体开发工具AgentBuilder，AI原生应用开发工具AppBuilder，以及各种尺寸的模型定制工具ModelBuilder。这三个工具，都代表了先进生产力。下面，我会给大家一一展示。&lt;/p>
-&lt;h2 id="文心一言用户超2亿文心大模型40工具版发布">文心一言用户超2亿，文心大模型4.0工具版发布&lt;/h2>
-&lt;p>首先讲一下，文心一言和文心大模型的最新进展：&lt;/p>
-&lt;p>文心一言从去年3月16日发布，到今天是一年零一个月的时间。我们的用户数突破了2亿，API日均调用量也突破了2亿，服务的客户数达到了8.5万，利用千帆平台开发的AI原生应用数超过了19万。&lt;/p>
-&lt;p>我们看看，大家都在用文心一言做什么？&lt;/p>
-&lt;p>视频中的真人真事只是冰山一角。我们可以看到，文心一言正在改变更多人的工作和生活。&lt;/p>
-&lt;p>支撑文心一言的基座模型，就是文心大模型。过去一年，它经历了从3.0版本到3.5，再到4.0版本的进化。文心4.0在理解、生成、逻辑、记忆四大能力方面，均达到了业界领军水平。&lt;/p>
-&lt;p>近几个月来，文心大模型在代码生成、代码解释、代码优化等通用能力方面实现了进一步的显著提升，达到国际领先水平。&lt;/p>
-&lt;p>今天，我们正式发布文心大模型4.0的工具版，现在，大家可以在工具版上，体验代码解释器功能，通过自然语言交互，就能实现对复杂数据和文件的处理与分析，还可以生成图表或文件，能够快速洞察数据中的特点、分析变化趋势、为后续的决策提供高效精准的支撑。&lt;/p>
-&lt;p>文心大模型已经成为了中国最领先、应用最广泛的AI基础模型。&lt;/p>
-&lt;p>不仅如此，相比一年前，文心大模型的算法训练效率提升到了原来的5.1倍，周均训练有效率达到98.8%，推理性能提升了105倍，推理的成本降到了原来的1%。&lt;/p>
-&lt;p>也就是说，客户原来一天调用1万次，同样成本现在可以调用100万次。媒体可能不会因为成本下降99%而兴奋。但是企业也好，开发者也好，一旦用起来，最关注的就是效果和成本。&lt;/p>
-&lt;p>我们能在提升性能的同时，把推理成本降到1%，正是因为百度在芯片、框架、模型、应用这四层架构上有着全栈的布局，通过端到端优化，不断地把成本打下来，让更多人都可以高效、低价地用大模型来做AI应用。&lt;/p>
-&lt;p>毫无疑问，大模型相关的话题，在2024年依然会很热，各类技术突破还会不断涌现。媒体也会继续热衷于用“震撼发布”“史诗级更新”这样的标题进行渲染。但我想强调的是，大模型本身并不直接创造价值，基于大模型开发出来的AI应用才能满足真实的市场需求。&lt;/p>
-&lt;h2 id="分享开发ai原生应用的具体思路和工具踩了无数的坑交了高昂学费">分享开发AI原生应用的具体思路和工具：“踩了无数的坑，交了高昂学费”&lt;/h2>
-&lt;p>今天我想跟大家分享的是一些基于大模型开发AI原生应用的具体思路和工具。这是我们百度根据过去一年的实践，踩了无数的坑，交了高昂的学费换来的。&lt;/p>
-&lt;p>第一是MoE。未来大型的AI原生应用基本都是MoE架构，这里所说的MoE不是一般的学术概念，而是大小模型的混用，不依赖一个模型来解决所有问题。但什么时候调用小模型、什么时候调用大模型、什么时候不调用模型，这都是有技术含量的，要针对应用的不同场景做匹配。&lt;/p>
-&lt;p>第二是小模型。小模型推理成本低，响应速度快，在一些特定场景中，经过SFT精调后的小模型，它的使用效果可以媲美大模型。这就是我们发布Speed，Lite、Tiny三个轻量模型的原因。我们通过大模型，压缩蒸馏出来一个基础模型，然后再用数据去训练，这比从头开始训小模型，效果要好很多，比基于开源模型训出来的模型效果更好，速度更快，成本更低。&lt;/p>
-&lt;p>第三是智能体。智能体是当下很热的一个话题，随着智能体能力的提升，会不断催生出大量新的应用。智能体机制，包括理解、规划、反思和进化，它让机器像人一样思考和行动，可以自主完成复杂任务，在环境中持续学习、实现自我迭代和进化。在一些复杂系统中，我们还可以让不同的智能体互动，相互协作，更高质量地完成任务。这些智能体能力，我们已经开发出来了，并且向开发者全面开放。&lt;/p>
-&lt;p>在MoE、小模型、智能体这三个方向上，百度都已经给大家做好了“开箱即用”的工具。下面，我就给大家介绍三种不同的工具，分别是：智能体开发工具AgentBuilder、AI原生应用开发工具AppBuilder、各种尺寸的模型定制工具ModelBuilder。&lt;/p>
-&lt;h2 id="智能体开发工具agentbuilder">智能体开发工具AgentBuilder&lt;/h2>
-&lt;p>首先是智能体开发工具AgentBuilder。智能体可能是未来离每个人最近、最主流的大模型使用方式，基于强大的基础模型，智能体可以批量生成，应用在各种各样的场景。&lt;/p>
-&lt;p>百度刚刚升级了文心智能体平台。截至目前，已经有3万多个智能体被创建、5万多名开发者和上万家企业入驻。我们的目标是，让每个人、每个组织都成为智能体的开发者，打造国内最完整的智能体生态。&lt;/p>
-&lt;p>那如何实现这个目标呢？就是给大家提供零门槛的智能体开发工具AgentBuilder。&lt;/p>
-&lt;p>下面我们就先以“新加坡旅游局”为例一起看看，一个智能体是如何做出来的。&lt;/p>
-&lt;p>首先，我们打开文心智能体平台，创建页面有着零代码、低代码两种模式，新手可以直接选择“零代码模式”，用自然语言，几句话就能创建一个智能体。&lt;/p>
-&lt;p>我们先给智能体起名叫“新加坡旅游局”，然后在设定里写明需要打造旅游方案、解答问题，提供酒店门票预订服务，这些设定都是用来指导智能体的，告诉它都能做什么。&lt;/p>
-&lt;p>如果只需要基础智能体，平台会自动完成填写。但我们希望“新加坡旅游局”是一个专业的智能体，所以要进行高级配置。我可以把新加坡百科词条和官网链接都添加到知识库里，让它每天更新。然后添加一些工具，如酒店查询、景点门票购买等，增强它的服务能力。目前我们已经跟携程合作，提供了酒店、景点、票务等旅游服务工具。这样，一个新加坡旅游局的智能体就做好了，可以进一步预览、调优。&lt;/p>
-&lt;p>现在打开百度APP，搜索“什么时候去新加坡人最少”，因为大家出去旅游都想避开人潮。智能体会综合多个来源的信息，生成一个答案，“1-3月人最少”。我们还可以点击智能体，和它进一步互动，比如去新加坡旅游的注意事项，推荐新加坡排名前三的酒店，还能让它直接预订新加坡环球影城的门票，一站式解决需求，大大节省了用户时间。&lt;/p>
-&lt;p>除了新加坡之外，大连、沈阳等文旅类智能体也都在文心智能体平台上线，还有知识类、创作类、学习类、娱乐类等各式各样的智能体，这些都是用AgentBuilder做出来的。&lt;/p>
-&lt;p>去年文心一言刚发布的时候，我就说过，文心一言会影响到每一家公司。因为它强大的自然语言理解能力、表达能力、推理能力，可以使任何一个公司都离自己的客户更近。&lt;/p>
-&lt;p>今天，每一个商家、每一个客户，都能在百度拥有专属的智能体。整个过程完全不需要编程，通过类似提示词的信息输入，和简单的几步操作调优，就能迅速生成一个智能体，成为7X24小时在线的金牌业务员。&lt;/p>
-&lt;p>我们来看一下，一个商家智能体是怎么做出来的。&lt;/p>
-&lt;p>启德教育是家知名教育企业，在全国有60多家分支机构，还有很多海外分公司，覆盖国家广，对接待的话术要求很高。如何能全天24小时回复客户的咨询，并且提高接待水平、降低经营成本呢？&lt;/p>
-&lt;p>启德教育利用百度的AgentBuilder，打造了专属的智能体。&lt;/p>
-&lt;p>我们来看看，如何打造一个具备基本能力的智能体。很简单，在平台上填写智能体的头像、名称、经营业务范围和欢迎语，再设置一些需要用户提供的信息，比如年龄、学历。5分钟、零门槛，一个智能体就做好了。&lt;/p>
-&lt;p>启德教育还希望这个智能体是个懂业务、懂学生的留学顾问。它可以针对学生的不同情况，比如想去美国还是澳洲、是硕士还是学士、雅思和托福考了多少分等等，做出专业分析，给出精准回答。我们可以通过添加知识、角色、工具这几大模块，来打造一个更高级的智能体。&lt;/p>
-&lt;p>在知识模块中，上传私域知识，让平台实时解析，自动生成对话语料；在角色模块，把一些不在经营范围内的留学国家，增加到过滤方案中，可以提高用户线索的有效率；在工具模块，加入预约到店等服务。通过这样几步简单操作，一个拥有专业能力的启德教育智能体就做好了。&lt;/p>
-&lt;p>现在，我们来搜索“澳洲留学申请条件”，可以看到智能体快速给出了需要的语言能力、专业选择等七大必备条件，还给能出相应的留学咨询方案，对各种难题都有问必答、有求必应。&lt;/p>
-&lt;p>启德教育智能体非常的受欢迎，上线第一周，就成功分发了155万次，与用户交互了5.8万次，线索转化量直线增长、有效线索的转化成本明显降低，经营效率大幅提升。&lt;/p>
-&lt;p>下面，我再给大家介绍一个家居行业的智能体。&lt;/p>
-&lt;p>索菲亚是专注全屋定制的家居品牌。就像刚刚展示的，它也可以通过填写极其简单的信息，创建出一个基础的商家智能体。但对于家居行业，消费者的线下体验更重要，所以索菲亚希望能在线上打造出一个金牌销售，还原线下的接待体验。&lt;/p>
-&lt;p>因此在进一步的设置中，它在角色模块，选择了数字人作为展示方式，然后给数字人选取了合适的背景和声音，并且结合平台的智能解析能力，自动总结了一套销售话术。最终打造出一位温柔亲切、话术专业的金牌销售，她能24小时满足用户的各种需求，提供高水准的服务体验。&lt;/p>
-&lt;p>当百度搜索用户有装修诉求时，索菲亚智能体会利用文心大模型的能力，优先给出问题的答案。除此之外，她还会主动与客户确认具体需求，如装修类型、预算等，并推荐附近的线下门店。&lt;/p>
-&lt;p>索菲亚商家智能体上线以来，有效线索成本下降了30%。也就是说，它获得一个有效客户，如果过去的成本是100块，现在只需要70块了。&lt;/p>
-&lt;p>目前，已有超过1万个百度的客户拥有了商家智能体，涵盖了教育培训、房产家居、机械设备、商务服务等超过30个行业。&lt;/p>
-&lt;p>上面，通过三个Demo，我展示了开发者和商家，如何利用AgentBuilder，制作不同行业智能体的过程。&lt;/p>
-&lt;p>现在，制作一个智能体，真的就是分分钟的事。但问题来了！如果没流量、没分发、找不到、没人用，那么开发者和商家就没有收益，没有收益就没有动力。怎么解决这个痛点呢？&lt;/p></description></item><item><title>「转」window软件运行时间</title><link>https://example.com/post/soft_run_time/</link><pubDate>Fri, 15 Apr 2022 12:39:04 +0000</pubDate><guid>https://example.com/post/soft_run_time/</guid><description>&lt;h2 id="背景">背景&lt;/h2>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#include&lt;/span> &lt;span style="color:#75715e">&amp;lt;stdio.h&amp;gt;&lt;/span>&lt;span style="color:#75715e">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>&lt;span style="color:#66d9ef">typedef&lt;/span> &lt;span style="color:#66d9ef">struct&lt;/span> tm{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	&lt;span style="color:#66d9ef">unsigned&lt;/span> &lt;span style="color:#66d9ef">int&lt;/span> a;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}TM;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">typedef&lt;/span> &lt;span style="color:#66d9ef">struct&lt;/span> hp{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	&lt;span style="color:#66d9ef">char&lt;/span> a;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	&lt;span style="color:#66d9ef">unsigned&lt;/span> &lt;span style="color:#66d9ef">char&lt;/span> b;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	TM &lt;span style="color:#f92672">*&lt;/span>t;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	&lt;span style="color:#66d9ef">unsigned&lt;/span> &lt;span style="color:#66d9ef">short&lt;/span> c;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	&lt;span style="color:#66d9ef">unsigned&lt;/span> &lt;span style="color:#66d9ef">long&lt;/span> d;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}HP;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">int&lt;/span> &lt;span style="color:#a6e22e">main&lt;/span>(&lt;span style="color:#66d9ef">int&lt;/span> argc, &lt;span style="color:#66d9ef">char&lt;/span> &lt;span style="color:#f92672">*&lt;/span>argv[])
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	HP hp&lt;span style="color:#f92672">=&lt;/span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>		.a&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#ae81ff">0xa1&lt;/span>,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>		.b&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#ae81ff">0xb1&lt;/span>,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>		.c&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#ae81ff">0xc1c2&lt;/span>,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>		.d&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#ae81ff">0x1&lt;/span>,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	};
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	&lt;span style="color:#66d9ef">unsigned&lt;/span> &lt;span style="color:#66d9ef">char&lt;/span> &lt;span style="color:#f92672">*&lt;/span>p&lt;span style="color:#f92672">=&amp;amp;&lt;/span>hp;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	&lt;span style="color:#a6e22e">printf&lt;/span>(&lt;span style="color:#e6db74">&amp;#34;sizeof(HP) = %lu&lt;/span>&lt;span style="color:#ae81ff">\n&lt;/span>&lt;span style="color:#e6db74">&amp;#34;&lt;/span>,&lt;span style="color:#66d9ef">sizeof&lt;/span>(HP) );	
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	&lt;span style="color:#66d9ef">for&lt;/span> (&lt;span style="color:#66d9ef">unsigned&lt;/span> &lt;span style="color:#66d9ef">long&lt;/span> i &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#ae81ff">0&lt;/span>; i &lt;span style="color:#f92672">&amp;lt;&lt;/span> &lt;span style="color:#66d9ef">sizeof&lt;/span>(HP); &lt;span style="color:#f92672">++&lt;/span>i) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>		&lt;span style="color:#a6e22e">printf&lt;/span>(&lt;span style="color:#e6db74">&amp;#34;%02x &amp;#34;&lt;/span>,p[i] );	
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>		&lt;span style="color:#66d9ef">if&lt;/span>((i&lt;span style="color:#f92672">+&lt;/span>&lt;span style="color:#ae81ff">1&lt;/span>)&lt;span style="color:#f92672">%&lt;/span>&lt;span style="color:#ae81ff">8&lt;/span>&lt;span style="color:#f92672">==&lt;/span>&lt;span style="color:#ae81ff">0&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>			&lt;span style="color:#a6e22e">printf&lt;/span>(&lt;span style="color:#e6db74">&amp;#34;&lt;/span>&lt;span style="color:#ae81ff">\n&lt;/span>&lt;span style="color:#e6db74">&amp;#34;&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	&lt;span style="color:#66d9ef">unsigned&lt;/span> &lt;span style="color:#66d9ef">int&lt;/span> d&lt;span style="color:#f92672">=&lt;/span>hp.d;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	&lt;span style="color:#a6e22e">printf&lt;/span>(&lt;span style="color:#e6db74">&amp;#34;%d&amp;#34;&lt;/span>,d);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	&lt;span style="color:#66d9ef">return&lt;/span> &lt;span style="color:#ae81ff">0&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;pre tabindex="0">&lt;code>//OUT
+|| sizeof(HP) = 32
+|| a1 b1 00 00 00 00 00 00 
+|| 00 00 00 00 00 00 00 00 
+|| c2 c1 00 00 00 00 00 00 
+|| 01 00 00 00 00 00 00 00 
+|| 1
+&lt;/code>&lt;/pre>&lt;h2 id="存储方式">存储方式&lt;/h2>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>	HP hp&lt;span style="color:#f92672">=&lt;/span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>		.a&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#ae81ff">0xa1&lt;/span>,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>		.b&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#ae81ff">0xb1&lt;/span>,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>		.c&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#ae81ff">0xc1c2&lt;/span>,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>		.d&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#ae81ff">0xd1d2d3d4&lt;/span>,&lt;span style="color:#75715e">//&amp;lt;-0x1
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>	};
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;pre tabindex="0">&lt;code>//OUT
+|| sizeof(HP) = 32
+|| a1 b1 00 00 00 00 00 00 
+|| 00 00 00 00 00 00 00 00 
+|| c2 c1 00 00 00 00 00 00 
+|| d4 d3 d2 d1 00 00 00 00 
+|| 3520254932
+&lt;/code>&lt;/pre>&lt;h2 id="字节对齐">字节对齐&lt;/h2>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">//将 d 改为 d:1
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>&lt;span style="color:#66d9ef">typedef&lt;/span> &lt;span style="color:#66d9ef">struct&lt;/span> hp{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	&lt;span style="color:#66d9ef">char&lt;/span> a;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	&lt;span style="color:#66d9ef">unsigned&lt;/span> &lt;span style="color:#66d9ef">char&lt;/span> b;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	TM &lt;span style="color:#f92672">*&lt;/span>t;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	&lt;span style="color:#66d9ef">unsigned&lt;/span> &lt;span style="color:#66d9ef">short&lt;/span> c;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	&lt;span style="color:#66d9ef">unsigned&lt;/span> &lt;span style="color:#66d9ef">long&lt;/span> d:&lt;span style="color:#ae81ff">1&lt;/span>; &lt;span style="color:#75715e">//&amp;lt;--- unsigned long d;
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>}HP;
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;pre tabindex="0">&lt;code>//OUT
+|| 1 warning generated.
+|| sizeof(HP) = 24
+|| a1 b1 00 00 00 00 00 00 
+|| 00 00 00 00 00 00 00 00 
+|| c2 c1 01 00 00 00 00 00 
+|| 1
+&lt;/code>&lt;/pre>&lt;p>少占用了一个8字节。&lt;/p></description></item><item><title>「转」window软件运行时间</title><link>https://example.com/post/c8-programming/soft_run_time/</link><pubDate>Fri, 15 Apr 2022 12:39:04 +0000</pubDate><guid>https://example.com/post/c8-programming/soft_run_time/</guid><description>&lt;h2 id="背景">背景&lt;/h2>
 &lt;p>对关注性能的程序开发人员而言，一个好的计时部件既是益友，也是良师。计时器既可以作为程序组件帮助程序员精确的控制程序进程，又是一件有力的调试武器，在有经验的程序员手里可以尽快的确定程序的性能瓶颈，或者对不同的算法作出有说服力的性能比较。&lt;/p>
 &lt;!-- more -->
 &lt;p>在Windows平台下，常用的计时器有两种，一种是&lt;code>timeGetTime&lt;/code>多媒体计时器，它可以提供毫秒级的计时。但这个精度对很多应用场合而言还是太粗糙了。另一种是&lt;code>QueryPerformanceCount&lt;/code>计数器，随系统的不同可以提供微秒级的计数。对于实时图形处理、多媒体数据流处理、或者实时系统构造的程序员，善用&lt;code>QueryPerformanceCount/QueryPerformanceFrequency&lt;/code>是一项基本功。&lt;/p>
@@ -103,4 +162,69 @@
 &lt;/ol>
 &lt;p>关于这个方法计时的最大长度，我们可以简单的用下列公式计算：&lt;/p>
 &lt;pre tabindex="0">&lt;code>自CPU上电以来的秒数 = RDTSC读出的周期数 / CPU主频速率（Hz） 
-&lt;/code>&lt;/pre>&lt;p>64位无符号整数所能表达的最大数字是&lt;code>1.8×10^19&lt;/code>，在我的&lt;code>Celeron 800&lt;/code>上可以计时大约700年（书中说可以在200MHz的Pentium上计时117年，这个数字不知道是怎么得出来的，与我的计算有出入）。无论如何，我们大可不必关心溢出的问题。&lt;/p></description></item></channel></rss>
+&lt;/code>&lt;/pre>&lt;p>64位无符号整数所能表达的最大数字是&lt;code>1.8×10^19&lt;/code>，在我的&lt;code>Celeron 800&lt;/code>上可以计时大约700年（书中说可以在200MHz的Pentium上计时117年，这个数字不知道是怎么得出来的，与我的计算有出入）。无论如何，我们大可不必关心溢出的问题。&lt;/p></description></item><item><title>「转」在 C/C++ 程序中打印当前函数调用栈</title><link>https://example.com/post/c8-programming/c_debug/</link><pubDate>Wed, 25 Aug 2021 23:18:52 +0000</pubDate><guid>https://example.com/post/c8-programming/c_debug/</guid><description>&lt;h2 id="背景">背景&lt;/h2>
+&lt;p>2011 年 6 月 11 日 &lt;a href="http://www.wuzesheng.com/?author=2">小武哥&lt;/a>&lt;/p>
+&lt;p>前几天帮同事跟踪的一个程序莫名退出，没有 core dump(当然 ulimit 是打开的) 的问题。我们知道，正常情况下，如果程序因为某种异常条件退出的话，应该会产生 core dump，而如果程序正常退出的话，应该是直接或者间接的调用了 exit() 相关的函数。基于这个事实，我想到了这样一个办法，在程序开始时，通过系统提供的 atexit()，向系统注册一个回调函数，在程序调用 exit() 退出的时候，这个回调函数就会被调用，然后我们在回调函数中打印出当前的函数调用栈，由此便可以知道 exit() 是在哪里调用，从而上述问题便迎刃而解了。上述方法用来解决类似问题是非常行之有效的。在上面，我提到了在 “回调函数中打印出当前的函数调用栈”，相信细心的朋友应该注意到这个了，本文的主要内容就是详细介绍，如何在程序中打印中当前的函数调用栈。&lt;/p>
+&lt;!-- more -->
+&lt;p>我之前写过一篇题目为《&lt;a href="http://www.wuzesheng.com/?p=1123">介绍几个关于 C/C++ 程序调试的函数&lt;/a>》的文章，看到这里，请读者朋友先看一下前面这篇，因为本文是以前面这篇文章为基础的。我正是用了 backtrace() 和 backtrace_symbols() 这两个函数实现的，下面是一个简单的例子，通过这个例子我们来介绍具体的方法：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#include&lt;/span> &lt;span style="color:#75715e">&amp;lt;execinfo .h&amp;gt;&lt;/span>&lt;span style="color:#75715e">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#include&lt;/span> &lt;span style="color:#75715e">&amp;lt;stdio .h&amp;gt;&lt;/span>&lt;span style="color:#75715e">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#include&lt;/span> &lt;span style="color:#75715e">&amp;lt;stdlib .h&amp;gt;&lt;/span>&lt;span style="color:#75715e">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span> 
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">void&lt;/span> &lt;span style="color:#a6e22e">fun1&lt;/span>();
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">void&lt;/span> &lt;span style="color:#a6e22e">fun2&lt;/span>();
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">void&lt;/span> &lt;span style="color:#a6e22e">fun3&lt;/span>();
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">void&lt;/span> &lt;span style="color:#a6e22e">print_stacktrace&lt;/span>();
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">int&lt;/span> &lt;span style="color:#a6e22e">main&lt;/span>()
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">fun3&lt;/span>();
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">void&lt;/span> &lt;span style="color:#a6e22e">fun1&lt;/span>()
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">printf&lt;/span>(&lt;span style="color:#e6db74">&amp;#34;stackstrace begin:&lt;/span>&lt;span style="color:#ae81ff">\n&lt;/span>&lt;span style="color:#e6db74">&amp;#34;&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">print_stacktrace&lt;/span>();
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">void&lt;/span> &lt;span style="color:#a6e22e">fun2&lt;/span>()
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">fun1&lt;/span>();
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">void&lt;/span> &lt;span style="color:#a6e22e">fun3&lt;/span>()
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">fun2&lt;/span>();
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">void&lt;/span> &lt;span style="color:#a6e22e">print_stacktrace&lt;/span>()
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">int&lt;/span> size &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#ae81ff">16&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">void&lt;/span> &lt;span style="color:#f92672">*&lt;/span> array[&lt;span style="color:#ae81ff">16&lt;/span>];
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">int&lt;/span> stack_num &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#a6e22e">backtrace&lt;/span>(array, size);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">char&lt;/span> &lt;span style="color:#f92672">**&lt;/span> stacktrace &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#a6e22e">backtrace_symbols&lt;/span>(array, stack_num);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">for&lt;/span> (&lt;span style="color:#66d9ef">int&lt;/span> i &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#ae81ff">0&lt;/span>; i &lt;span style="color:#f92672">&amp;lt;&lt;/span> stack_num; &lt;span style="color:#f92672">++&lt;/span>i)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">printf&lt;/span>(&lt;span style="color:#e6db74">&amp;#34;%s&lt;/span>&lt;span style="color:#ae81ff">\n&lt;/span>&lt;span style="color:#e6db74">&amp;#34;&lt;/span>, stacktrace[i]);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">free&lt;/span>(stacktrace);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>（说明：下面的介绍采用的环境是 ubuntu 11.04, x86_64, gcc-4.5.2）&lt;/p></description></item><item><title>地表最强大的还有这 14 位程序员</title><link>https://example.com/post/c8-programming/cs_fonters/</link><pubDate>Thu, 09 Apr 2020 12:39:04 +0000</pubDate><guid>https://example.com/post/c8-programming/cs_fonters/</guid><description>&lt;p>原标题：除了 Linus，地表最强大的还有这 14 位程序员，速来膜拜！&lt;/p>
+&lt;p>导语：IT world 曾经做过一次调查，这个世界上最强大的 15 位程序员，到底是？&lt;/p>
+&lt;blockquote>
+&lt;p>文 / IT world&lt;/p>&lt;/blockquote>
+&lt;blockquote>
+&lt;p>译 / 优达菌&lt;/p>
+&lt;p>转自 / 优达学城 2018&lt;/p>
+&lt;p>原文地址 &lt;a href="https://www.sohu.com/a/223302790_700886">https://www.sohu.com/a/223302790_700886&lt;/a>&lt;/p>&lt;/blockquote>
+&lt;p>当和技术基友谈论起 “谁是世界上最顶级的程序员” 的话题时，总是分分钟能引发骂战，优秀的程序员太多了，要评出最优秀的，貌似真的不容易。&lt;/p>
+&lt;p>IT world 曾经就做过一次调查，当说到谁是世界上健在且最顶级的程序员时，这 15 个人的名字总是能浮现出来，是公认的还是有争议的，是真 · 大神还是伪 · 大神？一起来看看吧~&lt;/p>
+&lt;img src="cs_fonters/3e28c4606b644378b652dc9c3716da02.jpeg" style="zoom:33%;" />
+&lt;!-- more -->
+&lt;h2 id="margaret-hamilton">Margaret Hamilton&lt;/h2>
+&lt;img src="cs_fonters/264f0ac3e2254ea8b1f91eac42632e1c.jpeg" style="zoom:33%;" />
+&lt;p>作为 15 位上榜者中唯一女性，玛格丽特被誉为是 “&lt;strong>阿波罗飞行控制软件背后的大脑&lt;/strong>”。&lt;/p>
+&lt;p>作为查尔斯 · 斯塔克 · 德雷珀实验室（Charles Stark Draper Laboratory）软件工程部的老大，她组建了一个团队，负责设计和制造阿波罗舰载飞行控制器软件和空间实验室。&lt;/p>
+&lt;p>基于这段经历，她开发了通用系统语言（Universal Systems Language）和开发先于事实（ Development Before the Fact）的范例，首先提出异步软件、优先调度和高可信度的软件设计理念。“软件工程（ software engineering）” 这个名字，公认是由她首先发明的。&lt;/p>
+&lt;p>1986 年，玛格丽特获得了奥古斯塔 · 埃达 · 洛夫莱斯奖，2003 年获得 NASA 卓越太空行动奖。&lt;/p></description></item></channel></rss>

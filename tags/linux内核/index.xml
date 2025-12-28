@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Linux内核 on 一塘</title><link>https://example.com/tags/linux%E5%86%85%E6%A0%B8/</link><description>Recent content in Linux内核 on 一塘</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Thu, 23 Dec 2021 22:45:31 +0000</lastBuildDate><atom:link href="https://example.com/tags/linux%E5%86%85%E6%A0%B8/index.xml" rel="self" type="application/rss+xml"/><item><title>「转」一文看懂Linux内核！Linux内核架构和工作原理详解</title><link>https://example.com/post/c5-linux/linux/linux-in-one/</link><pubDate>Thu, 23 Dec 2021 22:45:31 +0000</pubDate><guid>https://example.com/post/c5-linux/linux/linux-in-one/</guid><description>&lt;p>全文导读&lt;/p>
+&lt;ul>
+&lt;li>&lt;a href="">Linux 内核预备工作&lt;/a>&lt;/li>
+&lt;li>&lt;a href="">Linux 内核体系结构简析&lt;/a>&lt;/li>
+&lt;li>&lt;a href="">Linux 体系结构和内核结构区别&lt;/a>&lt;/li>
+&lt;li>&lt;a href="">Linux 驱动的 platform 机制&lt;/a>&lt;/li>
+&lt;li>&lt;a href="">Linux 内核体系结构&lt;/a>&lt;/li>
+&lt;li>&lt;a href="">内核模块&lt;/a>&lt;/li>
+&lt;li>&lt;a href="">Linux 内核学习经验总结&lt;/a>&lt;/li>
+&lt;li>&lt;a href="">结尾&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;!-- more -->
+&lt;h2 id="linux-内核预备工作">Linux 内核预备工作&lt;/h2>
+&lt;p>理解 Linux 内核最好预备的知识点：&lt;/p>
+&lt;p>懂 C 语言&lt;br>
+懂一点操作系统的知识&lt;br>
+熟悉少量相关算法&lt;br>
+懂计算机体系结构&lt;/p>
+&lt;p>Linux 内核的特点：&lt;/p>
+&lt;p>结合了 unix 操作系统的一些基础概念&lt;/p>
+&lt;img src="linux_in_one/174749211_2_20191103041018392.jpeg" alt="174749211_2_20191103041018392" style="zoom:50%;" />
+&lt;img src="linux_in_one/174749211_3_20191103041018455.jpeg" alt="174749211_3_20191103041018455" style="zoom:60%;" />
+&lt;p>Linux 内核的任务：&lt;/p>
+&lt;ol>
+&lt;li>
+&lt;p>从技术层面讲，内核是硬件与软件之间的一个中间层。作用是将应用层序的请求传递给硬件，并充当底层驱动程序，对系统中的各种设备和组件进行寻址。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>从应用程序的层面讲，应用程序与硬件没有联系，只与内核有联系，内核是应用程序知道的层次中的最底层。在实际工作中内核抽象了相关细节。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>内核是一个资源管理程序。负责将可用的共享资源 (CPU 时间、磁盘空间、网络连接等) 分配得到各个系统进程。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>内核就像一个库，提供了一组面向系统的命令。系统调用对于应用程序来说，就像调用普通函数一样。&lt;br>
+内核实现策略：&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>微内核。最基本的功能由中央内核（微内核）实现。所有其他的功能都委托给一些独立进程，这些进程通过明确定义的通信接口与中心内核通信。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>宏内核。内核的所有代码，包括子系统（如内存管理、文件管理、设备驱动程序）都打包到一个文件中。内核中的每一个函数都可以访问到内核中所有其他部分。目前支持模块的动态装卸 (裁剪)。Linux 内核就是基于这个策略实现的。&lt;br>
+哪些地方用到了内核机制？&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>进程（在 cpu 的虚拟内存中分配地址空间，各个进程的地址空间完全独立; 同时执行的进程数最多不超过 cpu 数目）之间进行通   信，需要使用特定的内核机制。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>进程间切换 (同时执行的进程数最多不超过 cpu 数目)，也需要用到内核机制。&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;p>进程切换也需要像 FreeRTOS 任务切换一样保存状态，并将进程置于闲置状态 / 恢复状态。&lt;/p>
+&lt;ol start="3">
+&lt;li>
+&lt;p>进程的调度。确认哪个进程运行多长的时间。&lt;br>
+Linux 进程&lt;/p></description></item></channel></rss>

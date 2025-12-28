@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Hugo on 一塘</title><link>https://example.com/tags/hugo/</link><description>Recent content in Hugo on 一塘</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Mon, 22 Dec 2025 12:39:04 +0000</lastBuildDate><atom:link href="https://example.com/tags/hugo/index.xml" rel="self" type="application/rss+xml"/><item><title>hugo搭建</title><link>https://example.com/post/hugo_build/</link><pubDate>Mon, 22 Dec 2025 12:39:04 +0000</pubDate><guid>https://example.com/post/hugo_build/</guid><description>&lt;p>从2015年开始，我使用Hexo框架Next主题搭建，个人博客系统，正好十年。
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Hugo on 一塘</title><link>https://example.com/tags/hugo/</link><description>Recent content in Hugo on 一塘</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Mon, 22 Dec 2025 12:39:04 +0000</lastBuildDate><atom:link href="https://example.com/tags/hugo/index.xml" rel="self" type="application/rss+xml"/><item><title>Hugo搭建</title><link>https://example.com/post/c7-toolchain/hugo_build/</link><pubDate>Mon, 22 Dec 2025 12:39:04 +0000</pubDate><guid>https://example.com/post/c7-toolchain/hugo_build/</guid><description>&lt;p>从2015年开始，我使用Hexo框架Next主题搭建，个人博客系统，正好十年。
 框架和主题配置完成后，我只要关注markdown内容即可。&lt;/p>
 &lt;p>在这使用过程中，遇到过一次大规模的js投毒，那一次hexo 编译不出。
 hexo 和next 框架 变更实在是太快了，最近在github 的页面编译不出后，我修复无果，也懒得折腾了，在初步调研后，准备使用&lt;a href="https://gohugo.io">hugo&lt;/a>和&lt;a href="https://www.gohugothemes.com/theme/yihui-hugo-xmin/">Hugo Xmin&lt;/a>&lt;/p>
@@ -39,41 +39,60 @@ hexo 和next 框架 变更实在是太快了，最近在github 的页面编译�
  &lt;thead>
  &lt;tr>
  &lt;th>&lt;strong>categories&lt;/strong>&lt;/th>
+ &lt;th>folder name&lt;/th>
  &lt;th>&lt;strong>放什么&lt;/strong>&lt;/th>
  &lt;/tr>
  &lt;/thead>
  &lt;tbody>
  &lt;tr>
+ &lt;td>life&lt;/td>
+ &lt;td>c0-life&lt;/td>
+ &lt;td>旅行 / 阅读 / 随笔&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>math&lt;/td>
+ &lt;td>c1-math&lt;/td>
+ &lt;td>概率 / 线代 / 算法&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>robotics&lt;/td>
+ &lt;td>c2-robotics&lt;/td>
+ &lt;td>机器人&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>ai&lt;/td>
+ &lt;td>c3-ai&lt;/td>
+ &lt;td>LLM / CV / 实验记录&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>system&lt;/td>
+ &lt;td>c4-system&lt;/td>
+ &lt;td>性能 / 架构 / OS 设计&lt;/td>
+ &lt;/tr>
+ &lt;tr>
  &lt;td>linux&lt;/td>
+ &lt;td>c5-linux&lt;/td>
  &lt;td>内核、发行版、系统工具&lt;/td>
  &lt;/tr>
  &lt;tr>
  &lt;td>network&lt;/td>
+ &lt;td>c6-network&lt;/td>
  &lt;td>TCP/IP、抓包、协议&lt;/td>
  &lt;/tr>
  &lt;tr>
  &lt;td>toolchain&lt;/td>
+ &lt;td>c7-toolchain&lt;/td>
  &lt;td>gcc / musl / cmake / build / rss工具&lt;/td>
  &lt;/tr>
  &lt;tr>
  &lt;td>programming&lt;/td>
+ &lt;td>c8-programming&lt;/td>
  &lt;td>C / Python / 数据结构&lt;/td>
  &lt;/tr>
  &lt;tr>
- &lt;td>ai&lt;/td>
- &lt;td>LLM / CV / 实验记录&lt;/td>
- &lt;/tr>
- &lt;tr>
- &lt;td>math&lt;/td>
- &lt;td>概率 / 线代 / 算法&lt;/td>
- &lt;/tr>
- &lt;tr>
- &lt;td>system&lt;/td>
- &lt;td>性能 / 架构 / OS 设计&lt;/td>
- &lt;/tr>
- &lt;tr>
- &lt;td>life&lt;/td>
- &lt;td>旅行 / 阅读 / 随笔&lt;/td>
+ &lt;td>&lt;/td>
+ &lt;td>&lt;/td>
+ &lt;td>&lt;/td>
  &lt;/tr>
  &lt;/tbody>
 &lt;/table>

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>空间解析几何 on 一塘</title><link>https://example.com/tags/%E7%A9%BA%E9%97%B4%E8%A7%A3%E6%9E%90%E5%87%A0%E4%BD%95/</link><description>Recent content in 空间解析几何 on 一塘</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Fri, 05 May 2017 16:00:04 +0000</lastBuildDate><atom:link href="https://example.com/tags/%E7%A9%BA%E9%97%B4%E8%A7%A3%E6%9E%90%E5%87%A0%E4%BD%95/index.xml" rel="self" type="application/rss+xml"/><item><title>为什么正好经过这个空隙？</title><link>https://example.com/post/c1-math/why-the-gap-forms-a-hyperbola/</link><pubDate>Fri, 05 May 2017 16:00:04 +0000</pubDate><guid>https://example.com/post/c1-math/why-the-gap-forms-a-hyperbola/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
+&lt;p>偶然看到的一个问题，如图1，为什么正好经过这个空隙？我们用空间解析几何来解一下吧。&lt;/p>
+&lt;p>
+
+
+
+
+ 
+
+
+&lt;div style="text-align: center;">
+&lt;img src="math_q1_show.gif" 
+ alt="动图" 
+ 
+/>
+&lt;/div>&lt;/p>
+&lt;div align='center'> 图1 为什么会经过这个空隙？&lt;/div>
+&lt;!-- more -->
+&lt;h2 id="解答">解答&lt;/h2>
+&lt;p>如图2，建立空间直角坐标系$xyz$，原点记为 $O$ ， $P$ 点为水平杆与斜杆的交点， $Q$ 点为垂直杆与水平杆的交点， 将斜杆标记为 $L$ 。&lt;/p>
+&lt;p>
+
+
+
+
+ 
+
+
+&lt;div style="text-align: center;">
+&lt;img src="v2-80ac80b8031d5782412f4f4ef4e22a1a_b.jpeg" 
+ alt="img" 
+ 
+/>
+&lt;/div>&lt;/p>
+&lt;div align='center'> 图2 建立空间直角坐标系&lt;/div>
+&lt;p>设 $OQ=q$ ， $QP=r$ 。$Q$ 点坐标为 $(0, 0, q)$ 。&lt;/p>
+&lt;p>设水平杆 $QP$ 绕 $z$ 轴以 $\omega, rad/s$ 的角速度旋转，并设从开始旋转到现在的时长为 $t$ 秒， 则 $P$ 点坐标为 $(r\cos{\omega t}, r\sin{\omega t}, q)$ 。&lt;/p>
+&lt;p>由 $Q$、$P$ 两点坐标得：&lt;/p>
+&lt;p>$$
+\overrightarrow{OQ}=(0, 0, q) \qquad \overrightarrow{QP}=(r\cos{\omega t}, r\sin{\omega t}, 0) \tag{1}
+$$&lt;/p>
+&lt;p>设 $L$ 的方向向量 $\overrightarrow{S}=(a, b, c) $，由 $L$ 的方向向量 $\overrightarrow{S}$ 和 $P$ 点得，得斜杆 $L$ 代表的直线方程：
+$$
+\frac{x-r\cos{\omega t}}{a}=\frac{y-r\sin{\omega t}}{b}=\frac{z-q}{c} \tag{2}
+$$&lt;/p></description></item></channel></rss>
