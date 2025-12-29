@@ -10,10 +10,13 @@
   {{ $pages := .Pages }}
   {{ if .IsHome }}{{ $pages = .Site.RegularPages }}{{ end }}
   {{ range (where $pages "Section" "!=" "") }}
+  {{/* 对 post 类型文章排除标题含「转」，其他 section 保留 */}}
+    {{ if or (ne .Section "post") (and (eq .Section "post") (not (strings.Contains .Title "「转」"))) }}
   <li>
     <span class="date">{{ .Date.Format "2006/01/02" }}</span>
     <a href="{{ .RelPermalink }}">{{ .Title | markdownify }}</a>
   </li>
+  {{ end }}
   {{ end }}
 </ul>
 
