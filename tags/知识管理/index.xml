@@ -1,4 +1,370 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>知识管理 on 一塘</title><link>https://example.com/tags/%E7%9F%A5%E8%AF%86%E7%AE%A1%E7%90%86/</link><description>Recent content in 知识管理 on 一塘</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Thu, 14 Apr 2022 12:39:04 +0000</lastBuildDate><atom:link href="https://example.com/tags/%E7%9F%A5%E8%AF%86%E7%AE%A1%E7%90%86/index.xml" rel="self" type="application/rss+xml"/><item><title>知识记忆软件anki的使用</title><link>https://example.com/post/c7-toolchain/anki_tips/</link><pubDate>Thu, 14 Apr 2022 12:39:04 +0000</pubDate><guid>https://example.com/post/c7-toolchain/anki_tips/</guid><description>&lt;h2 id="anki使用---自建-anki--server">anki使用 - 自建 anki server&lt;/h2>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>知识管理 on 一塘</title><link>https://example.com/tags/%E7%9F%A5%E8%AF%86%E7%AE%A1%E7%90%86/</link><description>Recent content in 知识管理 on 一塘</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Thu, 06 Jun 2024 12:00:00 +0000</lastBuildDate><atom:link href="https://example.com/tags/%E7%9F%A5%E8%AF%86%E7%AE%A1%E7%90%86/index.xml" rel="self" type="application/rss+xml"/><item><title>「转」基于 Readeck 搭建个人稍后读/书签服务</title><link>https://example.com/post/c7-toolchain/readeck-tips/</link><pubDate>Thu, 06 Jun 2024 12:00:00 +0000</pubDate><guid>https://example.com/post/c7-toolchain/readeck-tips/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
+&lt;blockquote>
+&lt;p>本文由 &lt;a href="http://ksria.com/simpread/">简悦 SimpRead&lt;/a> 转码， 原文地址 &lt;a href="https://sspai.com/post/89289">https://sspai.com/post/89289&lt;/a>&lt;/p>&lt;/blockquote>
+&lt;!-- more -->
+&lt;hr>
+&lt;p>作为喜欢阅读互联网长文的「上世代互联网遗老」，我一直保持着一个和现在互联网快消时代格格不入的爱好：偏爱长内容，这包括了我喜欢观看哪些具有丰富知识内容的长视频，收听播客节目以及阅读长篇的文章。尤其是长篇文章，往往是在我在碎片化的时间浏览公众号或者 RSS 订阅时，然后就会把这篇长文发到我的稍后读应用或者推送到我的 Kindle 邮箱中，等晚上做到书桌前仔细深度阅读。&lt;/p>
+&lt;p>因此我一直都非常留意各家的稍后读 / 书签服务，从最早的 instapaper、Pocket 到后来使用 Kindle 的邮箱推送等都有尝试，只不过在国内这个互联网环境中难免会遇到网络访问稳定性的问题——毕竟这几种稍后读服务都来自国外开发商，经常会遇到发送微信公众号文章后重排版出错的情况，就更别提数据保留的安全性问题了。&lt;/p>
+&lt;p>既然我已经在家中部署了 NAS，秉承「将数据保留在自己手上」的宗旨，我决定将稍后读 / 书签服务也进行自部署。而考虑到我实际的使用情况，我自部署的稍后读 / 书签服务需要满足以下几点：&lt;/p>
+&lt;ul>
+&lt;li>支持自部署，且部署方式容易。&lt;/li>
+&lt;li>可以在手机端 / 桌面端进行进行阅读。&lt;/li>
+&lt;li>可以在不同的平台将文章 / 网页发送到稍后读服务中。&lt;/li>
+&lt;li>解析处理网页内容的速度要很快。&lt;/li>
+&lt;/ul>
+&lt;p>而满足以上要求的就剩下了这款名为 Readeck 稍后读 / 书签服务。&lt;/p>
+&lt;h3 id="安装-readeck-服务端">&lt;strong>安装 Readeck 服务端&lt;/strong>&lt;/h3>
+&lt;p>和其他自部署的服务一样，作为一款自部署优先服务，Readeck 官方直接就提供了 Docker 的部署方式，当然考虑到我自己家中的 NAS 是群晖的 DS218+，官方 Docker 套件本身功能比较弱，因此我还额外使用 Portainer 这个可视化的容器部署工具来进行部署，这样做的另一个好处就是，即便你的 NAS 不是群晖，只要支持容器，也可以采用类似的办法做部署。&lt;/p>
+&lt;p>我这里依旧以群晖为参照，首先打开群晖的 File Station 中的 docker 目录，在目录下创建一个新文件夹并将其命名为 readeck（全部是小写字母）。&lt;/p>
+&lt;p>
+
+
+
+
+ 
+
+
+&lt;div style="text-align: center;">
+&lt;img src="069e4eb7887479dbd9965fe66592d07f_MD5.png" 
+ alt="" 
+ 
+ style="width:80%;" 
+/>
+&lt;/div>&lt;/p>
+&lt;p>然后在新创建的这个&lt;code>readeck&lt;/code> 文件夹里面，在分别创建&lt;code>data&lt;/code>以及&lt;code>db&lt;/code>两个文件夹。这两个文件夹后面用来存储服务中所产生的数据。&lt;/p>
+&lt;p>
+
+
+
+
+ 
+
+
+&lt;div style="text-align: center;">
+&lt;img src="ba30f253cffcfa148f50a3034285873c_MD5.png" 
+ alt="" 
+ 
+ style="width:80%;" 
+/>
+&lt;/div>&lt;/p>
+&lt;p>接下来我们就打开 Portainer 来进行服务容器的部署，这里打开并登录 Portainer，然后从左侧边栏中点击 Stacks，然后点击页面右上角的 &lt;code>Add Stack&lt;/code>来添加。&lt;/p></description></item><item><title>rss统计 基于ttrss的PostgresQL数据库</title><link>https://example.com/post/c7-toolchain/rss-ttrss-statics/</link><pubDate>Sun, 08 May 2022 22:00:04 +0000</pubDate><guid>https://example.com/post/c7-toolchain/rss-ttrss-statics/</guid><description>&lt;p>&lt;strong>前言&lt;/strong>
+统计ttrss的使用数据。&lt;/p>
+&lt;ul>
+&lt;li>月度mark文件分析 OK&lt;/li>
+&lt;/ul>
+&lt;p>TODO：&lt;/p>
+&lt;ul>
+&lt;li>全年阅读报告 doing&lt;/li>
+&lt;/ul>
+&lt;!-- more -->
+&lt;h2 id="按月保存mark的内容">按月保存mark的内容&lt;/h2>
+&lt;p>账号 密码 和你docker文件里面的一致。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-python" data-lang="python">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># 按月来保存&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">import&lt;/span> html2text
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># psycopg2 head&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">import&lt;/span> psycopg2
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># pip3 install psycopg2-binary&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># ref:https://blog.csdn.net/Haiqiang1995/article/details/89069791&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">def&lt;/span> &lt;span style="color:#a6e22e">get_from_dataset&lt;/span>(cmd_sql):
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> conn &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#66d9ef">None&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">try&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e"># read database configuration&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> params &lt;span style="color:#f92672">=&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#e6db74">&amp;#39;host&amp;#39;&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;?????&amp;#34;&lt;/span>,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#e6db74">&amp;#39;user&amp;#39;&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;????&amp;#34;&lt;/span>,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#e6db74">&amp;#39;password&amp;#39;&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;????&amp;#34;&lt;/span>,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#e6db74">&amp;#39;dbname&amp;#39;&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;ttrss&amp;#34;&lt;/span>,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#e6db74">&amp;#39;port&amp;#39;&lt;/span>: &lt;span style="color:#960050;background-color:#1e0010">??&lt;/span>&lt;span style="color:#ae81ff">00&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e"># connect to the PostgresQL database&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> conn &lt;span style="color:#f92672">=&lt;/span> psycopg2&lt;span style="color:#f92672">.&lt;/span>connect(&lt;span style="color:#f92672">**&lt;/span>params)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e"># create a new cursor object&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> cur &lt;span style="color:#f92672">=&lt;/span> conn&lt;span style="color:#f92672">.&lt;/span>cursor()
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e"># execute the SELECT statement&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> print(cmd_sql)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> cur&lt;span style="color:#f92672">.&lt;/span>execute(cmd_sql)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> blob &lt;span style="color:#f92672">=&lt;/span> cur&lt;span style="color:#f92672">.&lt;/span>fetchall()
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e"># blob = cur.fetchone()&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e">#open(path_to_dir + str(blob[0]) + &amp;#39;.jpg&amp;#39;, &amp;#39;wb&amp;#39;).write(blob[1])&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e"># close the communication with the PostgresQL database&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> cur&lt;span style="color:#f92672">.&lt;/span>close()
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">except&lt;/span> (&lt;span style="color:#a6e22e">Exception&lt;/span>, psycopg2&lt;span style="color:#f92672">.&lt;/span>DatabaseError) &lt;span style="color:#66d9ef">as&lt;/span> error:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> print(error)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">finally&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> conn &lt;span style="color:#f92672">is&lt;/span> &lt;span style="color:#f92672">not&lt;/span> &lt;span style="color:#66d9ef">None&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> conn&lt;span style="color:#f92672">.&lt;/span>close()
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> print(&lt;span style="color:#e6db74">&amp;#34;get_from_dataset success&amp;#34;&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> blob
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>_s&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;ref_id,feed_id,last_read,last_marked&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>cmd_sql&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;SELECT &lt;/span>&lt;span style="color:#e6db74">%s&lt;/span>&lt;span style="color:#e6db74"> FROM public.ttrss_user_entries Where marked=TRUE AND last_marked BETWEEN &amp;#39;2022-04-01&amp;#39; And &amp;#39;2022-5-01&amp;#39;&amp;#34;&lt;/span> &lt;span style="color:#f92672">%&lt;/span> _s
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># 可以自己改日期&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>g_content&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">for&lt;/span> _e &lt;span style="color:#f92672">in&lt;/span> sorted(get_from_dataset(cmd_sql),key&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#66d9ef">lambda&lt;/span> x:x[&lt;span style="color:#ae81ff">3&lt;/span>]):
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> [ref_id,feed_id,last_read,last_marked] &lt;span style="color:#f92672">=&lt;/span> _e
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> _s&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;id,title,link,updated,content&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> cmd_sql&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;SELECT &lt;/span>&lt;span style="color:#e6db74">%s&lt;/span>&lt;span style="color:#e6db74"> FROM public.ttrss_entries WHERE id = &lt;/span>&lt;span style="color:#e6db74">%s&lt;/span>&lt;span style="color:#e6db74">&amp;#34;&lt;/span> &lt;span style="color:#f92672">%&lt;/span> (_s,ref_id)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> [id,title,link,updated,content] &lt;span style="color:#f92672">=&lt;/span>get_from_dataset(cmd_sql)[&lt;span style="color:#ae81ff">0&lt;/span>]
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> g_content &lt;span style="color:#f92672">+=&lt;/span> &lt;span style="color:#e6db74">&amp;#34;# [&lt;/span>&lt;span style="color:#e6db74">%s&lt;/span>&lt;span style="color:#e6db74">](&lt;/span>&lt;span style="color:#e6db74">%s&lt;/span>&lt;span style="color:#e6db74">)&lt;/span>&lt;span style="color:#ae81ff">\n&lt;/span>&lt;span style="color:#e6db74">&amp;#34;&lt;/span>&lt;span style="color:#f92672">%&lt;/span>(title,link)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> g_content &lt;span style="color:#f92672">+=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;pubdata:&lt;/span>&lt;span style="color:#e6db74">%s&lt;/span>&lt;span style="color:#ae81ff">\n&lt;/span>&lt;span style="color:#e6db74">&amp;#34;&lt;/span>&lt;span style="color:#f92672">%&lt;/span>str(updated)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> g_content &lt;span style="color:#f92672">+=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;markdate:&lt;/span>&lt;span style="color:#e6db74">%s&lt;/span>&lt;span style="color:#ae81ff">\n&lt;/span>&lt;span style="color:#e6db74">&amp;#34;&lt;/span>&lt;span style="color:#f92672">%&lt;/span>str(last_marked)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> g_content&lt;span style="color:#f92672">+=&lt;/span>html2text&lt;span style="color:#f92672">.&lt;/span>html2text(content)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> g_content&lt;span style="color:#f92672">+=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;&lt;/span>&lt;span style="color:#ae81ff">\n\n&lt;/span>&lt;span style="color:#e6db74">&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>D&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;C:&lt;/span>&lt;span style="color:#ae81ff">\\&lt;/span>&lt;span style="color:#e6db74">Users&lt;/span>&lt;span style="color:#ae81ff">\\&lt;/span>&lt;span style="color:#e6db74">talen&lt;/span>&lt;span style="color:#ae81ff">\\&lt;/span>&lt;span style="color:#e6db74">Desktop&lt;/span>&lt;span style="color:#ae81ff">\\&lt;/span>&lt;span style="color:#e6db74">&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">with&lt;/span> open(D&lt;span style="color:#f92672">+&lt;/span>&lt;span style="color:#e6db74">&amp;#34;cc.md&amp;#34;&lt;/span>,&lt;span style="color:#e6db74">&amp;#39;w&amp;#39;&lt;/span>,encoding&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#e6db74">&amp;#39;utf-8&amp;#39;&lt;/span>) &lt;span style="color:#66d9ef">as&lt;/span> f:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> f&lt;span style="color:#f92672">.&lt;/span>write(g_content)
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>使用脚本将英文rss转成中文rss</title><link>https://example.com/post/c7-toolchain/rss-google-translate/</link><pubDate>Sun, 08 May 2022 22:00:04 +0000</pubDate><guid>https://example.com/post/c7-toolchain/rss-google-translate/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
+&lt;p>本文中我们将英文rss 自动转成中文 rss供ttrss使用。（利用谷歌翻译）&lt;/p>
+&lt;p>方便在手机上进行阅读或者收听。&lt;/p>
+&lt;center>&lt;img src="rss-google-translate/20220508-22-28-27.png" width="30%">
+&lt;/center>
+&lt;!-- more -->
+&lt;h2 id="举例">举例&lt;/h2>
+&lt;p>国外有很多不错的rss源，比如:&lt;/p>
+&lt;ul>
+&lt;li>&lt;a href="http://www.mckinsey.com/insights/rss">McKinsey Insights &amp;amp; Publications&lt;/a>
+ &lt;center>&lt;img src="rss-google-translate/20220508-22-18-23.png" width="50%">
+&lt;/li>
+&lt;/ul>
+&lt;/center>
+ 转成中文rss
+ &lt;center>&lt;img src="rss-google-translate/20220508-22-20-48.png" width="50%">
+&lt;/center>
+&lt;ul>
+&lt;li>
+&lt;p>&lt;a href="http://rss.acast.com/nature">Nature Podcast&lt;/a>&lt;/p>
+ &lt;center>&lt;img src="rss-google-translate/20220508-22-25-04.png" width="50%">
+&lt;/li>
+&lt;/ul>
+&lt;/center>
+ 转成中文rss
+ &lt;center>&lt;img src="rss-google-translate/20220508-22-26-36.png" width="50%">
+&lt;/center>
+&lt;h2 id="脚本">脚本&lt;/h2>
+&lt;p>使用 Translate 和 BeautifulSoup 项目&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-python" data-lang="python">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># coding:utf-8 &lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">from&lt;/span> pygtrans &lt;span style="color:#f92672">import&lt;/span> Translate
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">from&lt;/span> bs4 &lt;span style="color:#f92672">import&lt;/span> BeautifulSoup
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># pip 安装&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># pip install pygtrans BeautifulSoup -i https://pypi.org/simple&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># ref:https://zhuanlan.zhihu.com/p/390801784&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># ref:https://beautifulsoup.readthedocs.io/zh_CN/latest/&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># client = Translate()&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># text = client.translate(&amp;#39;Google Translate&amp;#39;)&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># print(text.translatedText) # 谷歌翻译&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">import&lt;/span> sys
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">from&lt;/span> urllib &lt;span style="color:#f92672">import&lt;/span> request
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">import&lt;/span> feedparser
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>args &lt;span style="color:#f92672">=&lt;/span> sys&lt;span style="color:#f92672">.&lt;/span>argv
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>URL&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;http://www.mckinsey.com/insights/rss&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>BASE&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;/home/xxx/www/&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">def&lt;/span> &lt;span style="color:#a6e22e">tran&lt;/span>(url&lt;span style="color:#f92672">=&lt;/span>URL,out_dir&lt;span style="color:#f92672">=&lt;/span>BASE&lt;span style="color:#f92672">+&lt;/span>&lt;span style="color:#e6db74">&amp;#34;mckinsey_rss.xml&amp;#34;&lt;/span>):
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> GT &lt;span style="color:#f92672">=&lt;/span> Translate()
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> content&lt;span style="color:#f92672">=&lt;/span> request&lt;span style="color:#f92672">.&lt;/span>urlopen(url)&lt;span style="color:#f92672">.&lt;/span>read()&lt;span style="color:#f92672">.&lt;/span>decode(&lt;span style="color:#e6db74">&amp;#39;utf8&amp;#39;&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e"># 变tag，以使用谷歌翻译&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> content&lt;span style="color:#f92672">=&lt;/span>content&lt;span style="color:#f92672">.&lt;/span>replace(&lt;span style="color:#e6db74">&amp;#39;title&amp;gt;&amp;#39;&lt;/span>, &lt;span style="color:#e6db74">&amp;#39;stitle&amp;gt;&amp;#39;&lt;/span>) &lt;span style="color:#75715e">#谷歌翻译会将很多titile去掉，所以需要换一个tag&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> content&lt;span style="color:#f92672">=&lt;/span>content&lt;span style="color:#f92672">.&lt;/span>replace( &lt;span style="color:#e6db74">&amp;#39;&amp;lt;pubDate&amp;gt;&amp;#39;&lt;/span>,&lt;span style="color:#e6db74">&amp;#39;&amp;lt;pubDate&amp;gt;&amp;lt;span translate=&amp;#34;no&amp;#34;&amp;gt;&amp;#39;&lt;/span>) 
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e"># 谷歌翻译对&amp;lt;span translate=&amp;#34;no&amp;#34;&amp;gt; &amp;lt;/span&amp;gt; 不翻译。&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> content&lt;span style="color:#f92672">=&lt;/span>content&lt;span style="color:#f92672">.&lt;/span>replace( &lt;span style="color:#e6db74">&amp;#39;&amp;lt;/pubDate&amp;gt;&amp;#39;&lt;/span>,&lt;span style="color:#e6db74">&amp;#39;&amp;lt;/span&amp;gt;&amp;lt;/pubDate&amp;gt;&amp;#39;&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e">#print(content)&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> _text &lt;span style="color:#f92672">=&lt;/span> GT&lt;span style="color:#f92672">.&lt;/span>translate(content)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">with&lt;/span> open(out_dir,&lt;span style="color:#e6db74">&amp;#39;w&amp;#39;&lt;/span>,encoding&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#e6db74">&amp;#39;utf-8&amp;#39;&lt;/span>) &lt;span style="color:#66d9ef">as&lt;/span> f:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> c&lt;span style="color:#f92672">=&lt;/span>_text&lt;span style="color:#f92672">.&lt;/span>translatedText
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e"># 还原tag&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> c&lt;span style="color:#f92672">=&lt;/span>c&lt;span style="color:#f92672">.&lt;/span>replace(&lt;span style="color:#e6db74">&amp;#39;stitle&amp;gt;&amp;#39;&lt;/span>, &lt;span style="color:#e6db74">&amp;#39;title&amp;gt;&amp;#39;&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> c&lt;span style="color:#f92672">=&lt;/span>c&lt;span style="color:#f92672">.&lt;/span>replace(&lt;span style="color:#e6db74">&amp;#39;&amp;lt;span translate=&amp;#34;no&amp;#34;&amp;gt;&amp;#39;&lt;/span>, &lt;span style="color:#e6db74">&amp;#39;&amp;#39;&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> c&lt;span style="color:#f92672">=&lt;/span>c&lt;span style="color:#f92672">.&lt;/span>replace(&lt;span style="color:#e6db74">&amp;#39;&amp;lt;/span&amp;gt;&amp;lt;/pubDate&amp;gt;&amp;#39;&lt;/span>, &lt;span style="color:#e6db74">&amp;#39;&amp;lt;/pubDate&amp;gt;&amp;#39;&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> f&lt;span style="color:#f92672">.&lt;/span>write(c)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e">#f.write(content)&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> print(&lt;span style="color:#e6db74">&amp;#34;GT: &amp;#34;&lt;/span>&lt;span style="color:#f92672">+&lt;/span> url &lt;span style="color:#f92672">+&lt;/span>&lt;span style="color:#e6db74">&amp;#34; &amp;gt; &amp;#34;&lt;/span>&lt;span style="color:#f92672">+&lt;/span> out_dir)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">if&lt;/span> len(args)&lt;span style="color:#f92672">==&lt;/span>&lt;span style="color:#ae81ff">1&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> tran()
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">else&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> tran(args[&lt;span style="color:#ae81ff">1&lt;/span>],args[&lt;span style="color:#ae81ff">2&lt;/span>])
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">def&lt;/span> &lt;span style="color:#a6e22e">tran_nature&lt;/span>(url&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;http://rss.acast.com/nature&amp;#34;&lt;/span>,out_dir&lt;span style="color:#f92672">=&lt;/span>BASE&lt;span style="color:#f92672">+&lt;/span>&lt;span style="color:#e6db74">&amp;#34;nature_rss.xml&amp;#34;&lt;/span>):
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> GT &lt;span style="color:#f92672">=&lt;/span> Translate()
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> html_doc&lt;span style="color:#f92672">=&lt;/span>request&lt;span style="color:#f92672">.&lt;/span>urlopen(url)&lt;span style="color:#f92672">.&lt;/span>read()&lt;span style="color:#f92672">.&lt;/span>decode(&lt;span style="color:#e6db74">&amp;#39;utf8&amp;#39;&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> soup &lt;span style="color:#f92672">=&lt;/span> BeautifulSoup(html_doc)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> items&lt;span style="color:#f92672">=&lt;/span>soup&lt;span style="color:#f92672">.&lt;/span>find_all(&lt;span style="color:#e6db74">&amp;#39;item&amp;#39;&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e"># nature post内容太多，谷歌api翻译不了，去掉一些&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">for&lt;/span> idx,e &lt;span style="color:#f92672">in&lt;/span> enumerate(items):
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> idx &lt;span style="color:#f92672">&amp;gt;&lt;/span>&lt;span style="color:#ae81ff">8&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> e&lt;span style="color:#f92672">.&lt;/span>decompose()
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> content&lt;span style="color:#f92672">=&lt;/span> str(soup)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> content&lt;span style="color:#f92672">=&lt;/span>content&lt;span style="color:#f92672">.&lt;/span>replace(&lt;span style="color:#e6db74">&amp;#39;title&amp;gt;&amp;#39;&lt;/span>, &lt;span style="color:#e6db74">&amp;#39;stitle&amp;gt;&amp;#39;&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> content&lt;span style="color:#f92672">=&lt;/span>content&lt;span style="color:#f92672">.&lt;/span>replace( &lt;span style="color:#e6db74">&amp;#39;&amp;lt;pubdate&amp;gt;&amp;#39;&lt;/span>,&lt;span style="color:#e6db74">&amp;#39;&amp;lt;pubDate&amp;gt;&amp;lt;span translate=&amp;#34;no&amp;#34;&amp;gt;&amp;#39;&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> content&lt;span style="color:#f92672">=&lt;/span>content&lt;span style="color:#f92672">.&lt;/span>replace( &lt;span style="color:#e6db74">&amp;#39;&amp;lt;/pubdate&amp;gt;&amp;#39;&lt;/span>,&lt;span style="color:#e6db74">&amp;#39;&amp;lt;/span&amp;gt;&amp;lt;/pubdate&amp;gt;&amp;#39;&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e">#print(content)&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> _text &lt;span style="color:#f92672">=&lt;/span> GT&lt;span style="color:#f92672">.&lt;/span>translate(content)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">with&lt;/span> open(out_dir,&lt;span style="color:#e6db74">&amp;#39;w&amp;#39;&lt;/span>,encoding&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#e6db74">&amp;#39;utf-8&amp;#39;&lt;/span>) &lt;span style="color:#66d9ef">as&lt;/span> f:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> c&lt;span style="color:#f92672">=&lt;/span>_text&lt;span style="color:#f92672">.&lt;/span>translatedText
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> c&lt;span style="color:#f92672">=&lt;/span>c&lt;span style="color:#f92672">.&lt;/span>replace(&lt;span style="color:#e6db74">&amp;#39;stitle&amp;gt;&amp;#39;&lt;/span>, &lt;span style="color:#e6db74">&amp;#39;title&amp;gt;&amp;#39;&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> c&lt;span style="color:#f92672">=&lt;/span>c&lt;span style="color:#f92672">.&lt;/span>replace(&lt;span style="color:#e6db74">&amp;#39;&amp;lt;span translate=&amp;#34;no&amp;#34;&amp;gt;&amp;#39;&lt;/span>, &lt;span style="color:#e6db74">&amp;#39;&amp;#39;&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> c&lt;span style="color:#f92672">=&lt;/span>c&lt;span style="color:#f92672">.&lt;/span>replace(&lt;span style="color:#e6db74">&amp;#39;&amp;lt;/span&amp;gt;&amp;lt;/pubdate&amp;gt;&amp;#39;&lt;/span>, &lt;span style="color:#e6db74">&amp;#39;&amp;lt;/pubDate&amp;gt;&amp;#39;&lt;/span>) &lt;span style="color:#75715e"># 对于ttrss需要为pubDate才会识别正确&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> c&lt;span style="color:#f92672">=&lt;/span>c&lt;span style="color:#f92672">.&lt;/span>replace(&lt;span style="color:#e6db74">&amp;#39;&amp;amp;gt&amp;#39;&lt;/span>,&lt;span style="color:#e6db74">&amp;#39;&amp;gt;&amp;#39;&lt;/span>) &lt;span style="color:#75715e"># &amp;amp;gt 会影响识别&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> f&lt;span style="color:#f92672">.&lt;/span>write(c)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e">#f.write(content)&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> print(&lt;span style="color:#e6db74">&amp;#34;GT: &amp;#34;&lt;/span>&lt;span style="color:#f92672">+&lt;/span> url &lt;span style="color:#f92672">+&lt;/span>&lt;span style="color:#e6db74">&amp;#34; &amp;gt; &amp;#34;&lt;/span>&lt;span style="color:#f92672">+&lt;/span> out_dir)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>tran_nature()
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="定时任务">定时任务&lt;/h3>
+&lt;blockquote>
+&lt;p>注意激活一下miniconda3 这个命令&lt;code>source /home/xxx/miniconda3/bin/activate&lt;/code>&lt;/p></description></item><item><title>本地安装rss</title><link>https://example.com/post/c7-toolchain/rss-local-install/</link><pubDate>Sat, 16 Apr 2022 12:39:04 +0000</pubDate><guid>https://example.com/post/c7-toolchain/rss-local-install/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
+&lt;p>在 “&lt;a href="c0-life/talk-rss-2020.md">二零年RSS杂谈&lt;/a>”中说到，我想建立一种信息的获取系统，免受广告和推荐算法的困扰。&lt;/p>
+&lt;p>我希望其的功能包括：&lt;/p>
+&lt;ul>
+&lt;li>多终端 Web、PC、 mobile的同步&lt;/li>
+&lt;li>全文获取能力&lt;/li>
+&lt;li>可自定义过滤规则&lt;/li>
+&lt;li>RSS源自定义&lt;/li>
+&lt;/ul>
+&lt;p>方案：&lt;/p>
+&lt;ul>
+&lt;li>RSS源 rsshub&lt;/li>
+&lt;li>RSS服务 ttrss&lt;/li>
+&lt;li>RSS电脑手机软件：Android的Readably、Feedme，mac的reeder等等。windows上我暂时没有发现，我用的是ttrss的web界面。&lt;/li>
+&lt;/ul>
+&lt;!-- more -->
+&lt;p>rsshub 是由 DIYgod 开发的开源RSS源生成工具，RSShub原始的网站可能不稳定，所以我选择了自己搭建。&lt;/p>
+&lt;p>ttrss 是一个rss源管理配置的工具，可获取全文，可自定义过滤规则。&lt;/p>
+&lt;p>本教程我们将完成在window电脑通过docker安装，ttrss与全文插件、rsshub的过程。&lt;/p>
+&lt;p>服务器的成本还是有点小贵的，我们可以在本地搭建整个服务，即利用docker安装这些服务，开机的时候记得启动这些服务。
+不爽点：&lt;/p>
+&lt;ul>
+&lt;li>需要后台开启docker服务，使得其自动更新信息&lt;/li>
+&lt;li>没有公网ip的情况下，无法全网连接服务&lt;/li>
+&lt;/ul>
+&lt;h2 id="最终ttrss界面">最终ttrss界面&lt;/h2>
+&lt;p>在这里我已经添加一些rss源了。&lt;/p>
+&lt;p>
+
+
+
+
+ 
+
+
+&lt;div style="text-align: center;">
+&lt;img src="image-20200626135803804.png" 
+ alt="image-20200626135803804" 
+ 
+ style="width:80%;" 
+/>
+&lt;/div>&lt;/p>
+&lt;h2 id="docker-windows安装">docker windows安装&lt;/h2>
+&lt;p>从&lt;a href="https://www.docker.com/products/docker-desktop">docker 官网&lt;/a> 下载windows版本安装。完成后，在图标区会有一个鲸鱼船。&lt;/p>
+&lt;p>
+
+
+
+
+ 
+
+
+&lt;div style="text-align: center;">
+&lt;img src="image-20200626141604658.png" 
+ alt="image-20200626141604658" 
+ 
+ style="width:80%;" 
+/>
+&lt;/div>&lt;/p>
+&lt;p>我们使用docker-compose 来进行下一步 网站服务的安装。将下面的资料保存到s&lt;code>docker-compose.yml&lt;/code> 然后利用docker-compose方法安装。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-yml" data-lang="yml">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">version&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;2&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">services&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">service.rsshub&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">image&lt;/span>: &lt;span style="color:#ae81ff">diygod/rsshub&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">container_name&lt;/span>: &lt;span style="color:#ae81ff">rsshub&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">ports&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> - &lt;span style="color:#e6db74">&amp;#34;1200:1200&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">volumes&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> - &lt;span style="color:#ae81ff">rsshub_data:/app/lib&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">restart&lt;/span>: &lt;span style="color:#ae81ff">always&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">service.rss&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">image&lt;/span>: &lt;span style="color:#ae81ff">wangqiru/ttrss:latest&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">container_name&lt;/span>: &lt;span style="color:#ae81ff">ttrss&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">ports&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> - &lt;span style="color:#ae81ff">8118&lt;/span>:&lt;span style="color:#ae81ff">80&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">environment&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> - &lt;span style="color:#ae81ff">SELF_URL_PATH=http://127.0.0.1:8118/&lt;/span> &lt;span style="color:#75715e"># please change to your own domain&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> - &lt;span style="color:#ae81ff">DB_HOST=database.postgres&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> - &lt;span style="color:#ae81ff">DB_PORT=5432&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> - &lt;span style="color:#ae81ff">DB_NAME=ttrss&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> - &lt;span style="color:#ae81ff">DB_USER=postgres&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> - &lt;span style="color:#ae81ff">DB_PASS=ttrss&lt;/span> &lt;span style="color:#75715e"># please change the password&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> - &lt;span style="color:#ae81ff">ENABLE_PLUGINS=auth_internal,fever&lt;/span> &lt;span style="color:#75715e"># auth_internal is required. Plugins enabled here will be enabled for all users as system plugins&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> - &lt;span style="color:#ae81ff">FEED_LOG_QUIET=true&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">stdin_open&lt;/span>: &lt;span style="color:#66d9ef">true&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">tty&lt;/span>: &lt;span style="color:#66d9ef">true&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">restart&lt;/span>: &lt;span style="color:#ae81ff">always&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">command&lt;/span>: &lt;span style="color:#ae81ff">sh -c &amp;#39;sh /wait-for.sh $$DB_HOST:$$DB_PORT -- php /configure-db.php &amp;amp;&amp;amp; exec s6-svscan /etc/s6/&amp;#39;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">database.postgres&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">image&lt;/span>: &lt;span style="color:#ae81ff">postgres:alpine&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">container_name&lt;/span>: &lt;span style="color:#ae81ff">postgres&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">environment&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> - &lt;span style="color:#ae81ff">POSTGRES_PASSWORD=ttrss&lt;/span> &lt;span style="color:#75715e"># please change the password&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">volumes&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> - &lt;span style="color:#ae81ff">postgres_data:/var/lib/postgresql/data&lt;/span> &lt;span style="color:#75715e"># persist postgres data to ~/postgres/data/ on the host&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">restart&lt;/span>: &lt;span style="color:#ae81ff">always&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">service.mercury&lt;/span>: &lt;span style="color:#75715e"># set Mercury Parser API endpoint to `service.mercury:3000` on TTRSS plugin setting page&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">image&lt;/span>: &lt;span style="color:#ae81ff">wangqiru/mercury-parser-api:latest&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">container_name&lt;/span>: &lt;span style="color:#ae81ff">mercury&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">ports&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> - &lt;span style="color:#ae81ff">3000&lt;/span>:&lt;span style="color:#ae81ff">3000&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">restart&lt;/span>: &lt;span style="color:#ae81ff">always&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">volumes&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">postgres_data&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">rsshub_data&lt;/span>:
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>
+
+
+
+
+ 
+
+
+&lt;div style="text-align: center;">
+&lt;img src="image-20200626140114783.png" 
+ alt="image-20200626140114783" 
+ 
+ style="width:80%;" 
+/>
+&lt;/div>&lt;/p></description></item><item><title>知识记忆软件anki的使用</title><link>https://example.com/post/c7-toolchain/anki-tips/</link><pubDate>Thu, 14 Apr 2022 12:39:04 +0000</pubDate><guid>https://example.com/post/c7-toolchain/anki-tips/</guid><description>&lt;h2 id="anki使用---自建-anki--server">anki使用 - 自建 anki server&lt;/h2>
 &lt;p>当初想设计好用的英语背诵软件，现在发现了anki人家功能全部实现，还要啥自行车。&lt;/p>
 &lt;p>我当时设计的单词勇士开源Android软件：
 &lt;a href="https://github.com/talengu/WordWarrior">https://github.com/talengu/WordWarrior&lt;/a>
@@ -27,6 +393,136 @@
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>./ankisyncctl.py deluser &amp;lt;username&amp;gt; - delete a user
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>./ankisyncctl.py passwd &amp;lt;username&amp;gt; - change password of a user
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="客户端">客户端&lt;/h2>
-&lt;img src="anki_tips/image-20200424005627732.png" alt="image-20200424005627732" style="zoom:33%;" />
+&lt;img src="anki-tips/image-20200424005627732.png" alt="image-20200424005627732" style="zoom:33%;" />
 &lt;h3 id="macwin-客户端">mac/win 客户端&lt;/h3>
-&lt;p>从官网下载 anki mac版本 2.1.21 (f1734a47) / Windows PC 客户端&lt;/p></description></item></channel></rss>
+&lt;p>从官网下载 anki mac版本 2.1.21 (f1734a47) / Windows PC 客户端&lt;/p></description></item><item><title>RSS跟踪github文件更新+某管子更新</title><link>https://example.com/post/c7-toolchain/rss-github-file/</link><pubDate>Sat, 24 Jul 2021 12:00:00 +0000</pubDate><guid>https://example.com/post/c7-toolchain/rss-github-file/</guid><description>&lt;p>&lt;strong>前言&lt;/strong>&lt;/p>
+&lt;p>好久没有更新博客了。RSS这种形式的信息获取方式，似乎又流行起来。&lt;/p>
+&lt;!-- more -->
+&lt;h2 id="github文件更新">github文件更新&lt;/h2>
+&lt;p>github上面有很多不错的资源。我的流程是：github readme文件更新-&amp;gt;svn下载对应文件-&amp;gt;生成rss文件。&lt;/p>
+&lt;p>这里为什么要这么复杂，因为github仓库更新多了好多不需要的rss信息，而且github文件下载比较慢。&lt;/p>
+&lt;p>最后效果，获取《经济学人》和《纽约客》的更新～&lt;/p>
+&lt;p>
+
+
+
+
+ 
+
+
+&lt;div style="text-align: center;">
+&lt;img src="rss_result.png" 
+ alt="image-20210724005152399" 
+ 
+ style="width:80%;" 
+/>
+&lt;/div>&lt;/p>
+&lt;h3 id="下载脚本">下载脚本&lt;/h3>
+&lt;p>解析readme中的地址，自动下载，并生成rss源。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-python" data-lang="python">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># -*- coding: utf-8 -*-&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># /etc/cron.hour &lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">from&lt;/span> urllib &lt;span style="color:#f92672">import&lt;/span> request
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">import&lt;/span> datetime
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">from&lt;/span> rfeed &lt;span style="color:#f92672">import&lt;/span> &lt;span style="color:#f92672">*&lt;/span> &lt;span style="color:#75715e"># 为生成rss.xml的库&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">import&lt;/span> re
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">import&lt;/span> os
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">from&lt;/span> glob &lt;span style="color:#f92672">import&lt;/span> glob
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>URL&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;https://raw.githubusercontent.com/hehonghui/the-economist-ebooks/master/README.md&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>BASE_URL&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;http://your_vps_host/download/&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>SVN_BASE_URL&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;https://github.com/hehonghui/the-economist-ebooks/trunk/&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>s&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;&amp;#34;&amp;#34;
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74">* [经济学人 - 周刊, 点击这里下载最新一期](01_economist/te_2021.02.27) , 每周五十一点更新
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74">* [纽约客 - 周刊, 点击这里下载最新一期](02_new_yorker/2021.03.01) , 每周六上午更新
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74">* [卫报 - 每周两期](09_guardian/), 每周三、周日更新
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74">&amp;#34;&amp;#34;&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>s &lt;span style="color:#f92672">=&lt;/span> request&lt;span style="color:#f92672">.&lt;/span>urlopen(URL)&lt;span style="color:#f92672">.&lt;/span>read()&lt;span style="color:#f92672">.&lt;/span>decode(&lt;span style="color:#e6db74">&amp;#39;utf8&amp;#39;&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>res&lt;span style="color:#f92672">=&lt;/span> re&lt;span style="color:#f92672">.&lt;/span>findall(&lt;span style="color:#e6db74">r&lt;/span>&lt;span style="color:#e6db74">&amp;#34;\[.+\]\((0.+)\)&amp;#34;&lt;/span>,s)[&lt;span style="color:#ae81ff">0&lt;/span>:&lt;span style="color:#ae81ff">2&lt;/span>]
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># generate xml&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>res_list&lt;span style="color:#f92672">=&lt;/span>[]
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">for&lt;/span> item &lt;span style="color:#f92672">in&lt;/span> res:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	res_list&lt;span style="color:#f92672">+=&lt;/span>sorted(glob(item&lt;span style="color:#f92672">.&lt;/span>split(&lt;span style="color:#e6db74">&amp;#39;/&amp;#39;&lt;/span>)[&lt;span style="color:#ae81ff">0&lt;/span>]&lt;span style="color:#f92672">+&lt;/span>&lt;span style="color:#e6db74">&amp;#34;/*&amp;#34;&lt;/span>))
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>item_list&lt;span style="color:#f92672">=&lt;/span>[]
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>print(item_list)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">for&lt;/span> item &lt;span style="color:#f92672">in&lt;/span> res_list:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> _one &lt;span style="color:#f92672">=&lt;/span> Item(
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>			title &lt;span style="color:#f92672">=&lt;/span> item[&lt;span style="color:#ae81ff">3&lt;/span>:],
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> link &lt;span style="color:#f92672">=&lt;/span> BASE_URL&lt;span style="color:#f92672">+&lt;/span>item,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>		description &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">&amp;#39;pdf etc. &amp;lt;a href=&amp;#34;&lt;/span>&lt;span style="color:#e6db74">%s&lt;/span>&lt;span style="color:#e6db74">&amp;#34;&amp;gt;link&amp;lt;/a&amp;gt; &amp;#39;&lt;/span>&lt;span style="color:#f92672">%&lt;/span> (BASE_URL&lt;span style="color:#f92672">+&lt;/span>item),
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> author &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">&amp;#34;hehonghui&amp;#34;&lt;/span>,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> guid &lt;span style="color:#f92672">=&lt;/span> Guid(BASE_URL&lt;span style="color:#f92672">+&lt;/span>item),
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> pubDate &lt;span style="color:#f92672">=&lt;/span> datetime&lt;span style="color:#f92672">.&lt;/span>datetime(&lt;span style="color:#ae81ff">2020&lt;/span>, &lt;span style="color:#ae81ff">1&lt;/span>, &lt;span style="color:#ae81ff">1&lt;/span>, &lt;span style="color:#ae81ff">4&lt;/span>, &lt;span style="color:#ae81ff">0&lt;/span>)) &lt;span style="color:#75715e"># year, month, date, hh, mm, ss&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> item_list&lt;span style="color:#f92672">+=&lt;/span>[_one]
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>feed &lt;span style="color:#f92672">=&lt;/span> Feed(
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> title &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">&amp;#34;经济学人+纽约客更新&amp;#34;&lt;/span>,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> link &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">&amp;#34;https://www.xxxxx.biz/atom/updated.xml&amp;#34;&lt;/span>,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> description &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">&amp;#34;更新经济学人，纽约客&amp;#34;&lt;/span>,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> language &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">&amp;#34;en-US&amp;#34;&lt;/span>,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> lastBuildDate &lt;span style="color:#f92672">=&lt;/span> datetime&lt;span style="color:#f92672">.&lt;/span>datetime&lt;span style="color:#f92672">.&lt;/span>now(),
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> items &lt;span style="color:#f92672">=&lt;/span> item_list)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">def&lt;/span> &lt;span style="color:#a6e22e">save_to_file&lt;/span>(file_name, contents):
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> fh &lt;span style="color:#f92672">=&lt;/span> open(file_name, &lt;span style="color:#e6db74">&amp;#39;w&amp;#39;&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> fh&lt;span style="color:#f92672">.&lt;/span>write(contents)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> fh&lt;span style="color:#f92672">.&lt;/span>close()
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>save_to_file(&lt;span style="color:#e6db74">&amp;#39;test.xml&amp;#39;&lt;/span>, feed&lt;span style="color:#f92672">.&lt;/span>rss())
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># start downing &lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">for&lt;/span> item &lt;span style="color:#f92672">in&lt;/span> res:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> item &lt;span style="color:#f92672">not&lt;/span> &lt;span style="color:#f92672">in&lt;/span> res_list:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	 print(&lt;span style="color:#e6db74">&amp;#34;downing &lt;/span>&lt;span style="color:#e6db74">%s&lt;/span>&lt;span style="color:#e6db74">&amp;#34;&lt;/span>&lt;span style="color:#f92672">%&lt;/span>item)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	 os&lt;span style="color:#f92672">.&lt;/span>popen(&lt;span style="color:#e6db74">&amp;#34;svn checkout &lt;/span>&lt;span style="color:#e6db74">%s&lt;/span>&lt;span style="color:#e6db74"> &lt;/span>&lt;span style="color:#e6db74">%s&lt;/span>&lt;span style="color:#e6db74">&amp;#34;&lt;/span>&lt;span style="color:#f92672">%&lt;/span>(SVN_BASE_URL&lt;span style="color:#f92672">+&lt;/span>item,item))
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> _now&lt;span style="color:#f92672">=&lt;/span>sorted(glob(item&lt;span style="color:#f92672">.&lt;/span>split(&lt;span style="color:#e6db74">&amp;#39;/&amp;#39;&lt;/span>)[&lt;span style="color:#ae81ff">0&lt;/span>]&lt;span style="color:#f92672">+&lt;/span>&lt;span style="color:#e6db74">&amp;#34;/*&amp;#34;&lt;/span>))
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> print(_now)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> len(_now)&lt;span style="color:#f92672">&amp;gt;=&lt;/span>&lt;span style="color:#ae81ff">5&lt;/span>: &lt;span style="color:#75715e"># 最多5个，免得服务器下载过多。&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">for&lt;/span> _d &lt;span style="color:#f92672">in&lt;/span> _now[:&lt;span style="color:#f92672">-&lt;/span>&lt;span style="color:#ae81ff">5&lt;/span>]:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> os&lt;span style="color:#f92672">.&lt;/span>popen(&lt;span style="color:#e6db74">&amp;#34;rm -rf &lt;/span>&lt;span style="color:#e6db74">%s&lt;/span>&lt;span style="color:#e6db74">&amp;#34;&lt;/span>&lt;span style="color:#f92672">%&lt;/span>_d)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>在linux亦可使用&lt;a href="https://www.runoob.com/w3cnote/linux-crontab-tasks.html">crontab&lt;/a>定时启动下载任务。在 &lt;code>/etc/cron.hourly/&lt;/code> 设置即可。&lt;/p></description></item><item><title>hexo个人主页搭建</title><link>https://example.com/post/c7-toolchain/hexo-blog/</link><pubDate>Thu, 22 Dec 2016 12:39:04 +0000</pubDate><guid>https://example.com/post/c7-toolchain/hexo-blog/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
+&lt;p>本文主要内容为博客搭建的记录与分享，我采用了Hexo博客框架，NexT主题和Gitment评论系统。本文中记录了我博客的安装流程和使用过程中的改进细节。&lt;/p>
+&lt;p>对Next主题版本的一些说明：我使用的是&lt;code>version: 5.1.0&lt;/code>。而使用新版本的NexT v6 主题的同学，有些功能如gitment已经实现，可以直接使用V6。此V6版本对于图片的使用可能会出现问题。仅需看看我下面的2.2小节。&lt;/p>
+&lt;p>有时间我会将我修改后的hexo Next theme 基于&lt;code>version: 5.1.0&lt;/code>主题，给个独立的git仓，放到github 上。&lt;/p>
+&lt;blockquote>
+&lt;p>小技巧：在文章中可以使用&lt;code>&amp;lt;!-- more --&amp;gt;&lt;/code>手动进行截断，more上面部分将被放到主页上显示。此为Hexo 提供的方式。&lt;/p>&lt;/blockquote>
+&lt;p>下面就是用&lt;code>&amp;lt;!-- more --&amp;gt;&lt;/code>截断的～～&lt;/p>
+&lt;!-- more -->
+&lt;p>在看安装教程的时候，发现怎么要涉及这么多东西，请大家不要担心，一步步来。同时也不用在意会不会nodejs，框架这些东西，人家已经帮我们把东西都写好了，我们做的就是改改配置文件，最多改改里面swig的模版的一些代码。最后，望大家见谅的是，我对js不太熟，有些地方不是很清楚。欢迎大家在下面评论，或者在github上开issue，共同讨论。&lt;/p>
+&lt;h2 id="1-安装">1. 安装&lt;/h2>
+&lt;h3 id="11-简易安装使用">1.1 简易安装使用&lt;/h3>
+&lt;p>使用新版本的 &lt;code>NexT v6&lt;/code> 主题即可，有些功能如 &lt;code>gitment&lt;/code> 已经实现。对于图片的使用可能会出现问题。仅需看看我下面的2.2小节。我使用的是 &lt;code>version: 5.1.0&lt;/code> 。&lt;/p>
+&lt;h3 id="12-从头安装">1.2 从头安装&lt;/h3>
+&lt;ul>
+&lt;li>安装 nodejs，从nodejs 官网下载安装包 &lt;a href="https://nodejs.org/en/download/">download page&lt;/a>&lt;/li>
+&lt;li>安装git客户端 &lt;a href="https://git-scm.com/">git&lt;/a>&lt;/li>
+&lt;li>安装Hexo &lt;code>npm install -g hexo-cli&lt;/code>
+&lt;a href="https://hexo.io/zh-cn/docs/">hexo 中文安装文档&lt;/a>
+&lt;a href="https://hexo.io/zh-cn/">Hexo中文网站&lt;/a>&lt;/li>
+&lt;li>安装NexT ，NexT是一个比较火的主题。
+按官网教程NexT安装即可，官网安装和配置教程比较美滋滋。
+&lt;a href="http://theme-next.iissnan.com/getting-started.html">http://theme-next.iissnan.com/getting-started.html&lt;/a>
+NexT Github &lt;a href="https://github.com/iissnan/hexo-theme-next">https://github.com/iissnan/hexo-theme-next&lt;/a>
+另外，NexT开发者的博客（最近Next 变成组织了，祝贺）&lt;a href="http://notes.iissnan.com">http://notes.iissnan.com&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;blockquote>
+&lt;p>&lt;strong>Ubuntu安装记录&lt;/strong>&lt;/p>&lt;/blockquote>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># for Ubuntu16.04&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$ sudo apt install npm nodejs-legacy
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$ sudo npm install hexo-cli -g
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$ hexo init blog
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$ cd blog
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$ npm install
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$ hexo server
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>ok，安装完的目录结构。&lt;/p></description></item></channel></rss>

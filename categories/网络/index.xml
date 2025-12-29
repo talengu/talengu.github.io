@@ -13,8 +13,9 @@
 &lt;img src="tcp-ip-all.jpeg" 
  alt="" 
  
+ style="width:80%;" 
 />
-&lt;/div>&lt;/p></description></item><item><title>「转」连接跟踪（conntrack）：原理、应用及 Linux 内核实现</title><link>https://example.com/post/c6-network/conntrack-linux/</link><pubDate>Sun, 04 Dec 2022 12:00:00 +0000</pubDate><guid>https://example.com/post/c6-network/conntrack-linux/</guid><description>&lt;h2 id="摘要">摘要&lt;/h2>
+&lt;/div>&lt;/p></description></item><item><title>「转」连接跟踪（conntrack）：原理、应用及 Linux 内核实现</title><link>https://example.com/post/c6-network/conntrack/</link><pubDate>Sun, 04 Dec 2022 12:00:00 +0000</pubDate><guid>https://example.com/post/c6-network/conntrack/</guid><description>&lt;h2 id="摘要">摘要&lt;/h2>
 &lt;p>本文介绍连接跟踪（connection tracking，conntrack，CT）的原理，应用，及其在 Linux 内核中的实现。&lt;/p>
 &lt;p>代码分析基于内核 &lt;code>4.19&lt;/code>。为使行文简洁，所贴代码只保留了核心逻辑，但都给出了代码 所在的源文件，如有需要请查阅。&lt;/p>
 &lt;p>水平有限，文中不免有错误之处，欢迎指正交流。&lt;/p>
@@ -34,6 +35,7 @@
 &lt;img src="node-conntrack.png" 
  alt="" 
  
+ style="width:80%;" 
 />
 &lt;/div>&lt;/p>
 &lt;p>Fig 1.1. 连接跟踪及其内核位置示意图&lt;/p>
@@ -79,6 +81,7 @@
 &lt;img src="e31bac5bcb1347a59142486adaf94e30.jpg" 
  alt="" 
  
+ style="width:80%;" 
 />
 &lt;/div>&lt;/p>
 &lt;h2 id="0-前言">0. 前言&lt;/h2>
@@ -98,10 +101,11 @@
 &lt;img src="db260d2dc98445f9988f1c768ca3e744.jpg" 
  alt="" 
  
+ style="width:80%;" 
 />
 &lt;/div>&lt;/p>
 &lt;h2 id="1-linux-内核支持的隧道类型">1. Linux 内核支持的隧道类型&lt;/h2>
-&lt;p>目前 Linux 内核已经支持多种隧道类型，包括：IPIP 隧道，GRE 隧道，&amp;hellip; 。其余这几个我也没见过。当然除了这几种，还有 ipsec 协议，l2tp 协议，可以的是我目前都还没有用过，实在是暴殄天物，罪过罪过&lt;/p></description></item><item><title>爱立信的百年沉浮</title><link>https://example.com/post/c6-network/history-ericsson/</link><pubDate>Fri, 01 Apr 2022 12:39:04 +0000</pubDate><guid>https://example.com/post/c6-network/history-ericsson/</guid><description>&lt;blockquote>
+&lt;p>目前 Linux 内核已经支持多种隧道类型，包括：IPIP 隧道，GRE 隧道，&amp;hellip; 。其余这几个我也没见过。当然除了这几种，还有 ipsec 协议，l2tp 协议，可以的是我目前都还没有用过，实在是暴殄天物，罪过罪过&lt;/p></description></item><item><title>「转」爱立信的百年沉浮</title><link>https://example.com/post/c6-network/history-ericsson/</link><pubDate>Fri, 01 Apr 2022 12:39:04 +0000</pubDate><guid>https://example.com/post/c6-network/history-ericsson/</guid><description>&lt;blockquote>
 &lt;p>文章来源：&lt;br>
 鲜枣课堂（ID：xzclasscom）
 &lt;a href="https://mp.weixin.qq.com/s?__biz=MjM5NTY1MjY0MQ==&amp;amp;mid=2650814278&amp;amp;idx=1&amp;amp;sn=26083fed8d8dd76340e063fd42a59dea">原文&lt;/a>&lt;/p>&lt;/blockquote>
@@ -122,6 +126,7 @@
 &lt;img src="640.png" 
  alt="" 
  
+ style="width:80%;" 
 />
 &lt;/div>&lt;/p>
 &lt;center>&lt;div>安东 · 亨里克 · 奥勒，瑞典电信业的先驱&lt;/div>&lt;/center>
@@ -139,6 +144,7 @@
 &lt;img src="640-16487839499382.png" 
  alt="" 
  
+ style="width:80%;" 
 />
 &lt;/div>&lt;/p>
 &lt;center>&lt;div> 拉什 · 玛格纳斯 · 爱立信&lt;/div>&lt;/center>

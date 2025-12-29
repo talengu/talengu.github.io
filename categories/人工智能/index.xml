@@ -74,6 +74,7 @@
 &lt;img src="1564034058070.png" 
  alt="1564034058070" 
  
+ style="width:80%;" 
 />
 &lt;/div>&lt;/p>
 &lt;div align='center'> 图1 机器学习知识框架&lt;/div>
@@ -146,6 +147,7 @@ $$
 &lt;img src="1563350068097.png" 
  alt="1563350068097" 
  
+ style="width:80%;" 
 />
 &lt;/div>&lt;/p>
 &lt;div align='center'> Fig 1. 泛化误差与偏差和方差的关系&lt;/div>
@@ -159,7 +161,7 @@ $$
 $$
 {s.t.}{|| \theta ||}_2^2 \leq C\\
 \tag{4}
-$$&lt;/p></description></item><item><title>怎样成为一名优秀的算法工程师</title><link>https://example.com/post/c3-ai/how-algorithm-engineer/</link><pubDate>Mon, 01 Oct 2018 12:00:00 +0000</pubDate><guid>https://example.com/post/c3-ai/how-algorithm-engineer/</guid><description>&lt;blockquote>
+$$&lt;/p></description></item><item><title>「转」怎样成为一名优秀的算法工程师</title><link>https://example.com/post/c3-ai/how-algorithm-engineer/</link><pubDate>Mon, 01 Oct 2018 12:00:00 +0000</pubDate><guid>https://example.com/post/c3-ai/how-algorithm-engineer/</guid><description>&lt;blockquote>
 &lt;p>转载 原创： AI学习与实践平台
 TODO: 看完里面的文章，对每篇文章做个总结，实验+文章。&lt;/p>&lt;/blockquote>
 &lt;h2 id="1-导言">1. 导言&lt;/h2>
@@ -188,6 +190,7 @@ TODO: 看完里面的文章，对每篇文章做个总结，实验+文章。&lt;
 &lt;img src="clip_image003.gif" 
  alt="EB5E93E91C3643F991C93D61F363373E.jpeg" 
  
+ style="width:80%;" 
 />
 &lt;/div>&lt;/p>
 &lt;p>更多算法工程师的必读文章，请关注SIGAICN公众号&lt;/p>
@@ -206,6 +209,7 @@ TODO: 看完里面的文章，对每篇文章做个总结，实验+文章。&lt;
 &lt;img src="clip_image005.gif" 
  alt="88F2EB8BDFE1448EBD2DF61848E355FD.jpeg" 
  
+ style="width:80%;" 
 />
 &lt;/div>&lt;/p>
 &lt;p>在机器学习中主要用到了微分部分，积分用的非常少。具体的，用到了下面的概念：&lt;/p>
@@ -233,6 +237,7 @@ TODO: 看完里面的文章，对每篇文章做个总结，实验+文章。&lt;
 &lt;img src="clip_image007.gif" 
  alt="DEB5F0D2FC584E0B96B263FE1D559AFF.jpeg" 
  
+ style="width:80%;" 
 />
 &lt;/div>&lt;/p>
 &lt;p>与工科的高等数学偏重计算不同，它里面有大量的理论证明，对于锻炼数学思维非常有帮助。北大张筑生先生所著的数学分析可谓是国内这方面教材的精品。&lt;/p>
@@ -250,6 +255,7 @@ TODO: 看完里面的文章，对每篇文章做个总结，实验+文章。&lt;
 &lt;img src="clip_image009.gif" 
  alt="48D5E515A7144CE6A9CB78162F6ECAAF.jpeg" 
  
+ style="width:80%;" 
 />
 &lt;/div>&lt;/p>
 &lt;p>如果想更全面系统的学习线性代数，可以看这本书：&lt;/p>
@@ -265,6 +271,7 @@ TODO: 看完里面的文章，对每篇文章做个总结，实验+文章。&lt;
 &lt;img src="clip_image011.gif" 
  alt="BF71AB68DB2B4D71AC8D2B3263C197E5.jpeg" 
  
+ style="width:80%;" 
 />
 &lt;/div>&lt;/p>
 &lt;p>相比之下，线性代数用的更多。具体用到的知识点有：&lt;/p>
@@ -295,5 +302,6 @@ TODO: 看完里面的文章，对每篇文章做个总结，实验+文章。&lt;
 &lt;img src="clip_image013.gif" 
  alt="91E918CF7ED84C7488BDDFFC7594E0D4.jpeg" 
  
+ style="width:80%;" 
 />
 &lt;/div>&lt;/p></description></item></channel></rss>

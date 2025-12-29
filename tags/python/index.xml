@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Python on 一塘</title><link>https://example.com/tags/python/</link><description>Recent content in Python on 一塘</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Sun, 08 May 2022 22:00:04 +0000</lastBuildDate><atom:link href="https://example.com/tags/python/index.xml" rel="self" type="application/rss+xml"/><item><title>rss统计 基于ttrss的PostgresQL数据库</title><link>https://example.com/post/c7-toolchain/rss_ttrss_statics/</link><pubDate>Sun, 08 May 2022 22:00:04 +0000</pubDate><guid>https://example.com/post/c7-toolchain/rss_ttrss_statics/</guid><description>&lt;p>&lt;strong>前言&lt;/strong>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Python on 一塘</title><link>https://example.com/tags/python/</link><description>Recent content in Python on 一塘</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Sun, 08 May 2022 22:00:04 +0000</lastBuildDate><atom:link href="https://example.com/tags/python/index.xml" rel="self" type="application/rss+xml"/><item><title>rss统计 基于ttrss的PostgresQL数据库</title><link>https://example.com/post/c7-toolchain/rss-ttrss-statics/</link><pubDate>Sun, 08 May 2022 22:00:04 +0000</pubDate><guid>https://example.com/post/c7-toolchain/rss-ttrss-statics/</guid><description>&lt;p>&lt;strong>前言&lt;/strong>
 统计ttrss的使用数据。&lt;/p>
 &lt;ul>
 &lt;li>月度mark文件分析 OK&lt;/li>
@@ -73,32 +73,32 @@
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>D&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;C:&lt;/span>&lt;span style="color:#ae81ff">\\&lt;/span>&lt;span style="color:#e6db74">Users&lt;/span>&lt;span style="color:#ae81ff">\\&lt;/span>&lt;span style="color:#e6db74">talen&lt;/span>&lt;span style="color:#ae81ff">\\&lt;/span>&lt;span style="color:#e6db74">Desktop&lt;/span>&lt;span style="color:#ae81ff">\\&lt;/span>&lt;span style="color:#e6db74">&amp;#34;&lt;/span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">with&lt;/span> open(D&lt;span style="color:#f92672">+&lt;/span>&lt;span style="color:#e6db74">&amp;#34;cc.md&amp;#34;&lt;/span>,&lt;span style="color:#e6db74">&amp;#39;w&amp;#39;&lt;/span>,encoding&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#e6db74">&amp;#39;utf-8&amp;#39;&lt;/span>) &lt;span style="color:#66d9ef">as&lt;/span> f:
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> f&lt;span style="color:#f92672">.&lt;/span>write(g_content)
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>使用脚本将英文rss转成中文rss</title><link>https://example.com/post/c7-toolchain/rss_google_translate/</link><pubDate>Sun, 08 May 2022 22:00:04 +0000</pubDate><guid>https://example.com/post/c7-toolchain/rss_google_translate/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>使用脚本将英文rss转成中文rss</title><link>https://example.com/post/c7-toolchain/rss-google-translate/</link><pubDate>Sun, 08 May 2022 22:00:04 +0000</pubDate><guid>https://example.com/post/c7-toolchain/rss-google-translate/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
 &lt;p>本文中我们将英文rss 自动转成中文 rss供ttrss使用。（利用谷歌翻译）&lt;/p>
 &lt;p>方便在手机上进行阅读或者收听。&lt;/p>
-&lt;center>&lt;img src="rss_google_translate/20220508-22-28-27.png" width="30%">
+&lt;center>&lt;img src="rss-google-translate/20220508-22-28-27.png" width="30%">
 &lt;/center>
 &lt;!-- more -->
 &lt;h2 id="举例">举例&lt;/h2>
 &lt;p>国外有很多不错的rss源，比如:&lt;/p>
 &lt;ul>
 &lt;li>&lt;a href="http://www.mckinsey.com/insights/rss">McKinsey Insights &amp;amp; Publications&lt;/a>
- &lt;center>&lt;img src="rss_google_translate/20220508-22-18-23.png" width="50%">
+ &lt;center>&lt;img src="rss-google-translate/20220508-22-18-23.png" width="50%">
 &lt;/li>
 &lt;/ul>
 &lt;/center>
  转成中文rss
- &lt;center>&lt;img src="rss_google_translate/20220508-22-20-48.png" width="50%">
+ &lt;center>&lt;img src="rss-google-translate/20220508-22-20-48.png" width="50%">
 &lt;/center>
 &lt;ul>
 &lt;li>
 &lt;p>&lt;a href="http://rss.acast.com/nature">Nature Podcast&lt;/a>&lt;/p>
- &lt;center>&lt;img src="rss_google_translate/20220508-22-25-04.png" width="50%">
+ &lt;center>&lt;img src="rss-google-translate/20220508-22-25-04.png" width="50%">
 &lt;/li>
 &lt;/ul>
 &lt;/center>
  转成中文rss
- &lt;center>&lt;img src="rss_google_translate/20220508-22-26-36.png" width="50%">
+ &lt;center>&lt;img src="rss-google-translate/20220508-22-26-36.png" width="50%">
 &lt;/center>
 &lt;h2 id="脚本">脚本&lt;/h2>
 &lt;p>使用 Translate 和 BeautifulSoup 项目&lt;/p>
@@ -192,7 +192,103 @@
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>tran_nature()
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="定时任务">定时任务&lt;/h3>
 &lt;blockquote>
-&lt;p>注意激活一下miniconda3 这个命令&lt;code>source /home/xxx/miniconda3/bin/activate&lt;/code>&lt;/p></description></item><item><title>选择困难者的福音？层次分析法</title><link>https://example.com/post/c1-math/ahp/</link><pubDate>Fri, 02 Apr 2021 12:00:00 +0000</pubDate><guid>https://example.com/post/c1-math/ahp/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
+&lt;p>注意激活一下miniconda3 这个命令&lt;code>source /home/xxx/miniconda3/bin/activate&lt;/code>&lt;/p></description></item><item><title>RSS跟踪github文件更新+某管子更新</title><link>https://example.com/post/c7-toolchain/rss-github-file/</link><pubDate>Sat, 24 Jul 2021 12:00:00 +0000</pubDate><guid>https://example.com/post/c7-toolchain/rss-github-file/</guid><description>&lt;p>&lt;strong>前言&lt;/strong>&lt;/p>
+&lt;p>好久没有更新博客了。RSS这种形式的信息获取方式，似乎又流行起来。&lt;/p>
+&lt;!-- more -->
+&lt;h2 id="github文件更新">github文件更新&lt;/h2>
+&lt;p>github上面有很多不错的资源。我的流程是：github readme文件更新-&amp;gt;svn下载对应文件-&amp;gt;生成rss文件。&lt;/p>
+&lt;p>这里为什么要这么复杂，因为github仓库更新多了好多不需要的rss信息，而且github文件下载比较慢。&lt;/p>
+&lt;p>最后效果，获取《经济学人》和《纽约客》的更新～&lt;/p>
+&lt;p>
+
+
+
+
+ 
+
+
+&lt;div style="text-align: center;">
+&lt;img src="rss_result.png" 
+ alt="image-20210724005152399" 
+ 
+ style="width:80%;" 
+/>
+&lt;/div>&lt;/p>
+&lt;h3 id="下载脚本">下载脚本&lt;/h3>
+&lt;p>解析readme中的地址，自动下载，并生成rss源。&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-python" data-lang="python">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># -*- coding: utf-8 -*-&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># /etc/cron.hour &lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">from&lt;/span> urllib &lt;span style="color:#f92672">import&lt;/span> request
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">import&lt;/span> datetime
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">from&lt;/span> rfeed &lt;span style="color:#f92672">import&lt;/span> &lt;span style="color:#f92672">*&lt;/span> &lt;span style="color:#75715e"># 为生成rss.xml的库&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">import&lt;/span> re
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">import&lt;/span> os
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">from&lt;/span> glob &lt;span style="color:#f92672">import&lt;/span> glob
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>URL&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;https://raw.githubusercontent.com/hehonghui/the-economist-ebooks/master/README.md&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>BASE_URL&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;http://your_vps_host/download/&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>SVN_BASE_URL&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;https://github.com/hehonghui/the-economist-ebooks/trunk/&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>s&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;&amp;#34;&amp;#34;
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74">* [经济学人 - 周刊, 点击这里下载最新一期](01_economist/te_2021.02.27) , 每周五十一点更新
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74">* [纽约客 - 周刊, 点击这里下载最新一期](02_new_yorker/2021.03.01) , 每周六上午更新
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74">* [卫报 - 每周两期](09_guardian/), 每周三、周日更新
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74">&amp;#34;&amp;#34;&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>s &lt;span style="color:#f92672">=&lt;/span> request&lt;span style="color:#f92672">.&lt;/span>urlopen(URL)&lt;span style="color:#f92672">.&lt;/span>read()&lt;span style="color:#f92672">.&lt;/span>decode(&lt;span style="color:#e6db74">&amp;#39;utf8&amp;#39;&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>res&lt;span style="color:#f92672">=&lt;/span> re&lt;span style="color:#f92672">.&lt;/span>findall(&lt;span style="color:#e6db74">r&lt;/span>&lt;span style="color:#e6db74">&amp;#34;\[.+\]\((0.+)\)&amp;#34;&lt;/span>,s)[&lt;span style="color:#ae81ff">0&lt;/span>:&lt;span style="color:#ae81ff">2&lt;/span>]
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># generate xml&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>res_list&lt;span style="color:#f92672">=&lt;/span>[]
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">for&lt;/span> item &lt;span style="color:#f92672">in&lt;/span> res:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	res_list&lt;span style="color:#f92672">+=&lt;/span>sorted(glob(item&lt;span style="color:#f92672">.&lt;/span>split(&lt;span style="color:#e6db74">&amp;#39;/&amp;#39;&lt;/span>)[&lt;span style="color:#ae81ff">0&lt;/span>]&lt;span style="color:#f92672">+&lt;/span>&lt;span style="color:#e6db74">&amp;#34;/*&amp;#34;&lt;/span>))
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>item_list&lt;span style="color:#f92672">=&lt;/span>[]
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>print(item_list)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">for&lt;/span> item &lt;span style="color:#f92672">in&lt;/span> res_list:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> _one &lt;span style="color:#f92672">=&lt;/span> Item(
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>			title &lt;span style="color:#f92672">=&lt;/span> item[&lt;span style="color:#ae81ff">3&lt;/span>:],
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> link &lt;span style="color:#f92672">=&lt;/span> BASE_URL&lt;span style="color:#f92672">+&lt;/span>item,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>		description &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">&amp;#39;pdf etc. &amp;lt;a href=&amp;#34;&lt;/span>&lt;span style="color:#e6db74">%s&lt;/span>&lt;span style="color:#e6db74">&amp;#34;&amp;gt;link&amp;lt;/a&amp;gt; &amp;#39;&lt;/span>&lt;span style="color:#f92672">%&lt;/span> (BASE_URL&lt;span style="color:#f92672">+&lt;/span>item),
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> author &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">&amp;#34;hehonghui&amp;#34;&lt;/span>,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> guid &lt;span style="color:#f92672">=&lt;/span> Guid(BASE_URL&lt;span style="color:#f92672">+&lt;/span>item),
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> pubDate &lt;span style="color:#f92672">=&lt;/span> datetime&lt;span style="color:#f92672">.&lt;/span>datetime(&lt;span style="color:#ae81ff">2020&lt;/span>, &lt;span style="color:#ae81ff">1&lt;/span>, &lt;span style="color:#ae81ff">1&lt;/span>, &lt;span style="color:#ae81ff">4&lt;/span>, &lt;span style="color:#ae81ff">0&lt;/span>)) &lt;span style="color:#75715e"># year, month, date, hh, mm, ss&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> item_list&lt;span style="color:#f92672">+=&lt;/span>[_one]
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>feed &lt;span style="color:#f92672">=&lt;/span> Feed(
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> title &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">&amp;#34;经济学人+纽约客更新&amp;#34;&lt;/span>,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> link &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">&amp;#34;https://www.xxxxx.biz/atom/updated.xml&amp;#34;&lt;/span>,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> description &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">&amp;#34;更新经济学人，纽约客&amp;#34;&lt;/span>,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> language &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">&amp;#34;en-US&amp;#34;&lt;/span>,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> lastBuildDate &lt;span style="color:#f92672">=&lt;/span> datetime&lt;span style="color:#f92672">.&lt;/span>datetime&lt;span style="color:#f92672">.&lt;/span>now(),
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> items &lt;span style="color:#f92672">=&lt;/span> item_list)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">def&lt;/span> &lt;span style="color:#a6e22e">save_to_file&lt;/span>(file_name, contents):
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> fh &lt;span style="color:#f92672">=&lt;/span> open(file_name, &lt;span style="color:#e6db74">&amp;#39;w&amp;#39;&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> fh&lt;span style="color:#f92672">.&lt;/span>write(contents)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> fh&lt;span style="color:#f92672">.&lt;/span>close()
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>save_to_file(&lt;span style="color:#e6db74">&amp;#39;test.xml&amp;#39;&lt;/span>, feed&lt;span style="color:#f92672">.&lt;/span>rss())
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># start downing &lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">for&lt;/span> item &lt;span style="color:#f92672">in&lt;/span> res:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> item &lt;span style="color:#f92672">not&lt;/span> &lt;span style="color:#f92672">in&lt;/span> res_list:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	 print(&lt;span style="color:#e6db74">&amp;#34;downing &lt;/span>&lt;span style="color:#e6db74">%s&lt;/span>&lt;span style="color:#e6db74">&amp;#34;&lt;/span>&lt;span style="color:#f92672">%&lt;/span>item)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	 os&lt;span style="color:#f92672">.&lt;/span>popen(&lt;span style="color:#e6db74">&amp;#34;svn checkout &lt;/span>&lt;span style="color:#e6db74">%s&lt;/span>&lt;span style="color:#e6db74"> &lt;/span>&lt;span style="color:#e6db74">%s&lt;/span>&lt;span style="color:#e6db74">&amp;#34;&lt;/span>&lt;span style="color:#f92672">%&lt;/span>(SVN_BASE_URL&lt;span style="color:#f92672">+&lt;/span>item,item))
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> _now&lt;span style="color:#f92672">=&lt;/span>sorted(glob(item&lt;span style="color:#f92672">.&lt;/span>split(&lt;span style="color:#e6db74">&amp;#39;/&amp;#39;&lt;/span>)[&lt;span style="color:#ae81ff">0&lt;/span>]&lt;span style="color:#f92672">+&lt;/span>&lt;span style="color:#e6db74">&amp;#34;/*&amp;#34;&lt;/span>))
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> print(_now)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> len(_now)&lt;span style="color:#f92672">&amp;gt;=&lt;/span>&lt;span style="color:#ae81ff">5&lt;/span>: &lt;span style="color:#75715e"># 最多5个，免得服务器下载过多。&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">for&lt;/span> _d &lt;span style="color:#f92672">in&lt;/span> _now[:&lt;span style="color:#f92672">-&lt;/span>&lt;span style="color:#ae81ff">5&lt;/span>]:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> os&lt;span style="color:#f92672">.&lt;/span>popen(&lt;span style="color:#e6db74">&amp;#34;rm -rf &lt;/span>&lt;span style="color:#e6db74">%s&lt;/span>&lt;span style="color:#e6db74">&amp;#34;&lt;/span>&lt;span style="color:#f92672">%&lt;/span>_d)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>在linux亦可使用&lt;a href="https://www.runoob.com/w3cnote/linux-crontab-tasks.html">crontab&lt;/a>定时启动下载任务。在 &lt;code>/etc/cron.hourly/&lt;/code> 设置即可。&lt;/p></description></item><item><title>选择困难者的福音？层次分析法</title><link>https://example.com/post/c1-math/ahp/</link><pubDate>Fri, 02 Apr 2021 12:00:00 +0000</pubDate><guid>https://example.com/post/c1-math/ahp/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
 &lt;p>日常生活中，我们面临很多的选择，选择自己最工作offer，选择买哪个牌子的手机，选择哪个地方旅行等等。这些选择难以定量的衡量，有很多不确定性。内心小纠结，我选择了这个，万一那个好呢，怎么办？请看层次分析法。&lt;/p>
 &lt;p>层次分析法(Analytic Hierarchy Process，简称 AHP)是对一些较为复杂、较为模糊的问题作出决策的简易方法，它特别适用于那些难于完全定量分析的问题。它是美国运筹学家 T. L. Saaty 教授于上世纪 70 年代初期提出的一种简便、灵活而又实用的多准则决策方法。&lt;/p>
 &lt;p>运用层次分析法建模，大体上可按下面四个步骤进行&lt;/p>
@@ -221,7 +317,21 @@
 &lt;/li>
 &lt;li>方案层C：就是我们的offer&lt;/li>
 &lt;/ul>
-&lt;img src="math_AHP/image-20200406145535585.png" alt="image-20200406145535585" style="zoom:50%;" />
+&lt;p>
+
+
+
+
+ 
+
+
+&lt;div style="text-align: center;">
+&lt;img src="image-20200406145535585.png" 
+ alt="" 
+ 
+ style="width:80%;" 
+/>
+&lt;/div>&lt;/p>
 &lt;h2 id="构造-a-b-之间判断矩阵">构造 A B 之间判断矩阵&lt;/h2>
 &lt;p>准则层B与目标A之间的关系。为了求出准则层中(B1-6) 对目标的重要层度的排序。比如对于该生工作满意度第一重要是待遇，然后是地点，其实该生自己也很模糊。就是固定A，然后求B中准则，对A重要性的排序。&lt;/p>
 &lt;h3 id="我们怎么对b中的准则们的重要排序呢">我们怎么对B中的准则们的重要排序呢？&lt;/h3>
@@ -319,7 +429,7 @@ c.ServerApp.password = &amp;#39;&amp;#39;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>jupyter contrib nbextension install --user
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>jupyter nbextensions_configurator enable --user
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="13-安装插件管理">1.3 安装插件管理&lt;/h3>
-&lt;p>jupyter_contrib_nbextensions 为 jupyter notebook 扩展插件管理器，下面简称nbextensions。&lt;/p></description></item><item><title>SRT中英文合并Python脚本</title><link>https://example.com/post/c7-toolchain/shells/youtube_src_combine/</link><pubDate>Thu, 14 Apr 2016 12:39:04 +0000</pubDate><guid>https://example.com/post/c7-toolchain/shells/youtube_src_combine/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
+&lt;p>jupyter_contrib_nbextensions 为 jupyter notebook 扩展插件管理器，下面简称nbextensions。&lt;/p></description></item><item><title>SRT中英文合并Python脚本</title><link>https://example.com/post/c7-toolchain/python-youtube-src-combine/</link><pubDate>Thu, 14 Apr 2016 12:39:04 +0000</pubDate><guid>https://example.com/post/c7-toolchain/python-youtube-src-combine/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
 &lt;p>从YouTube上看只有中文或英文分开的字幕，下载好视频，想要中英文字幕。可从 &lt;a href="http://mo.dbxdb.com/Yang/setting.html">Getting Youtube subtitles&lt;/a> 获取中或英文字幕，然后将其合并，即成中英文双字幕。下面是Python脚本。&lt;/p>
 &lt;!-- more -->
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-python" data-lang="python">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74">&amp;#39;&amp;#39;&amp;#39;

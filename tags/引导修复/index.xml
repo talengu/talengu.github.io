@@ -33,6 +33,7 @@
 &lt;img src="boot_file.png" 
  alt="GRUB修改" 
  
+ style="width:80%;" 
 />
 &lt;/div>&lt;/p>
 &lt;h2 id="去除多余grub启动项直接">去除多余GRUB启动项（直接）&lt;/h2>

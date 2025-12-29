@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>字幕 on 一塘</title><link>https://example.com/tags/%E5%AD%97%E5%B9%95/</link><description>Recent content in 字幕 on 一塘</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Thu, 14 Apr 2016 12:39:04 +0000</lastBuildDate><atom:link href="https://example.com/tags/%E5%AD%97%E5%B9%95/index.xml" rel="self" type="application/rss+xml"/><item><title>SRT中英文合并Python脚本</title><link>https://example.com/post/c7-toolchain/python-youtube-src-combine/</link><pubDate>Thu, 14 Apr 2016 12:39:04 +0000</pubDate><guid>https://example.com/post/c7-toolchain/python-youtube-src-combine/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
+&lt;p>从YouTube上看只有中文或英文分开的字幕，下载好视频，想要中英文字幕。可从 &lt;a href="http://mo.dbxdb.com/Yang/setting.html">Getting Youtube subtitles&lt;/a> 获取中或英文字幕，然后将其合并，即成中英文双字幕。下面是Python脚本。&lt;/p>
+&lt;!-- more -->
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-python" data-lang="python">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74">&amp;#39;&amp;#39;&amp;#39;
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74">本脚本完成了中英文srt合并的功能
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74">&amp;#39;&amp;#39;&amp;#39;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">import&lt;/span> os
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">def&lt;/span> &lt;span style="color:#a6e22e">srt2lis&lt;/span>(name):
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> lines &lt;span style="color:#f92672">=&lt;/span> open(&lt;span style="color:#e6db74">&amp;#39;srt/&amp;#39;&lt;/span>&lt;span style="color:#f92672">+&lt;/span>name, &lt;span style="color:#e6db74">&amp;#39;r&amp;#39;&lt;/span>, encoding&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#e6db74">&amp;#39;utf-8&amp;#39;&lt;/span>)&lt;span style="color:#f92672">.&lt;/span>readlines()
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> lis &lt;span style="color:#f92672">=&lt;/span> []
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> tmp &lt;span style="color:#f92672">=&lt;/span> []
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">for&lt;/span> i, line &lt;span style="color:#f92672">in&lt;/span> enumerate(lines):
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e"># 以\n 结尾的一个时间点&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> line &lt;span style="color:#f92672">==&lt;/span> &lt;span style="color:#e6db74">&amp;#39;&lt;/span>&lt;span style="color:#ae81ff">\n&lt;/span>&lt;span style="color:#e6db74">&amp;#39;&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> lis&lt;span style="color:#f92672">.&lt;/span>append(tmp)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> tmp &lt;span style="color:#f92672">=&lt;/span> []
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">else&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> tmp&lt;span style="color:#f92672">.&lt;/span>append(line)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> lis
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">def&lt;/span> &lt;span style="color:#a6e22e">hebing&lt;/span>(name_zh):
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> name_en &lt;span style="color:#f92672">=&lt;/span> name_zh[:&lt;span style="color:#f92672">-&lt;/span>&lt;span style="color:#ae81ff">7&lt;/span>] &lt;span style="color:#f92672">+&lt;/span> &lt;span style="color:#e6db74">&amp;#39;.srt&amp;#39;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> out_name&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#e6db74">&amp;#39;out/&amp;#39;&lt;/span>&lt;span style="color:#f92672">+&lt;/span>name_en
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> f&lt;span style="color:#f92672">=&lt;/span>open(out_name,&lt;span style="color:#e6db74">&amp;#39;w&amp;#39;&lt;/span>,encoding&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#e6db74">&amp;#39;utf-8&amp;#39;&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> lis_en&lt;span style="color:#f92672">=&lt;/span>srt2lis(name_en)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> lis_zh&lt;span style="color:#f92672">=&lt;/span>srt2lis(name_zh)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">for&lt;/span> i,item &lt;span style="color:#f92672">in&lt;/span> enumerate(lis_en):
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> print(item[&lt;span style="color:#ae81ff">0&lt;/span>])
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> f&lt;span style="color:#f92672">.&lt;/span>write(item[&lt;span style="color:#ae81ff">0&lt;/span>])
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> f&lt;span style="color:#f92672">.&lt;/span>write(item[&lt;span style="color:#ae81ff">1&lt;/span>])
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">for&lt;/span> line &lt;span style="color:#f92672">in&lt;/span> lis_zh[i][&lt;span style="color:#ae81ff">2&lt;/span>:]:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> f&lt;span style="color:#f92672">.&lt;/span>write(line)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">for&lt;/span> line &lt;span style="color:#f92672">in&lt;/span> item[&lt;span style="color:#ae81ff">2&lt;/span>:]:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> f&lt;span style="color:#f92672">.&lt;/span>write(line)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> f&lt;span style="color:#f92672">.&lt;/span>write(&lt;span style="color:#e6db74">&amp;#39;&lt;/span>&lt;span style="color:#ae81ff">\n&lt;/span>&lt;span style="color:#e6db74">&amp;#39;&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> f&lt;span style="color:#f92672">.&lt;/span>close()
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>flis&lt;span style="color:#f92672">=&lt;/span>os&lt;span style="color:#f92672">.&lt;/span>listdir(&lt;span style="color:#e6db74">&amp;#39;srt/&amp;#39;&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">if&lt;/span> &lt;span style="color:#f92672">not&lt;/span> os&lt;span style="color:#f92672">.&lt;/span>path&lt;span style="color:#f92672">.&lt;/span>exists(&lt;span style="color:#e6db74">&amp;#39;out&amp;#39;&lt;/span>):
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> os&lt;span style="color:#f92672">.&lt;/span>mkdir(&lt;span style="color:#e6db74">&amp;#39;out&amp;#39;&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">for&lt;/span> name &lt;span style="color:#f92672">in&lt;/span> flis:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> print(name)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> name[&lt;span style="color:#f92672">-&lt;/span>&lt;span style="color:#ae81ff">6&lt;/span>:&lt;span style="color:#f92672">-&lt;/span>&lt;span style="color:#ae81ff">4&lt;/span>]&lt;span style="color:#f92672">==&lt;/span>&lt;span style="color:#e6db74">&amp;#39;zh&amp;#39;&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> hebing(name)
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item></channel></rss>

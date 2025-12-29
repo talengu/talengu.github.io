@@ -17,6 +17,7 @@
 &lt;img src="Netfilter-packet-flow5.svg" 
  alt="" 
  
+ style="width:80%;" 
 />
 &lt;/div>&lt;/p>
 &lt;p>先看三张图片&lt;/p>
@@ -33,6 +34,7 @@
 &lt;img src="20191005153149853.jpg" 
  alt="" 
  
+ style="width:80%;" 
 />
 &lt;/div>&lt;/p>
 &lt;p>&lt;a href="https://blog.csdn.net/u012247418/article/details/90137663">IMG linux TCP/IP L2层数据包接收流程&lt;/a>
@@ -48,6 +50,7 @@
 &lt;img src="t_70.png" 
  alt="" 
  
+ style="width:80%;" 
 />
 &lt;/div>&lt;/p>
 &lt;p>&lt;a href="https://www.cnblogs.com/xuanxuanBOSS/p/11424290.html">IMG 浅析ebtables的概念和一些基本应用&lt;/a>
@@ -63,6 +66,7 @@
 &lt;img src="netfilter.png" 
  alt="" 
  
+ style="width:80%;" 
 />
 &lt;/div>&lt;/p>
 &lt;blockquote>

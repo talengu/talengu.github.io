@@ -27,7 +27,21 @@
 &lt;/li>
 &lt;li>方案层C：就是我们的offer&lt;/li>
 &lt;/ul>
-&lt;img src="math_AHP/image-20200406145535585.png" alt="image-20200406145535585" style="zoom:50%;" />
+&lt;p>
+
+
+
+
+ 
+
+
+&lt;div style="text-align: center;">
+&lt;img src="image-20200406145535585.png" 
+ alt="" 
+ 
+ style="width:80%;" 
+/>
+&lt;/div>&lt;/p>
 &lt;h2 id="构造-a-b-之间判断矩阵">构造 A B 之间判断矩阵&lt;/h2>
 &lt;p>准则层B与目标A之间的关系。为了求出准则层中(B1-6) 对目标的重要层度的排序。比如对于该生工作满意度第一重要是待遇，然后是地点，其实该生自己也很模糊。就是固定A，然后求B中准则，对A重要性的排序。&lt;/p>
 &lt;h3 id="我们怎么对b中的准则们的重要排序呢">我们怎么对B中的准则们的重要排序呢？&lt;/h3>

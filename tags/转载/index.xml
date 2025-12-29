@@ -149,6 +149,7 @@ Ribo 的股票也有下降，公司传出裁员风波。
 &lt;img src="v2-2eadd97c53a3f20f255394c3d90ea914_r.jpg" 
  alt="" 
  
+ style="width:80%;" 
 />
 &lt;/div>&lt;/p>
 &lt;ul>
@@ -166,6 +167,7 @@ Ribo 的股票也有下降，公司传出裁员风波。
 &lt;img src="v2-20032bac53c856c5733259eece5c2f76_r.jpg" 
  alt="" 
  
+ style="width:80%;" 
 />
 &lt;/div>&lt;/p>
 &lt;ul>
@@ -183,6 +185,7 @@ Ribo 的股票也有下降，公司传出裁员风波。
 &lt;img src="v2-de23423f2eb9deb5410b7128c933f9a9_r.jpg" 
  alt="" 
  
+ style="width:80%;" 
 />
 &lt;/div>&lt;/p>
 &lt;ul>
@@ -200,6 +203,7 @@ Ribo 的股票也有下降，公司传出裁员风波。
 &lt;img src="v2-cdf37de145763b762ba5af1a620f9686_r.jpg" 
  alt="" 
  
+ style="width:80%;" 
 />
 &lt;/div>&lt;/p>
 &lt;ul>
@@ -217,6 +221,7 @@ Ribo 的股票也有下降，公司传出裁员风波。
 &lt;img src="v2-eee71a6bf3865367741137da03031411_r.jpg" 
  alt="" 
  
+ style="width:80%;" 
 />
 &lt;/div>&lt;/p>
 &lt;ul>
@@ -234,6 +239,7 @@ Ribo 的股票也有下降，公司传出裁员风波。
 &lt;img src="v2-1c0134fefbb04597db98ae455a40fad5_r.jpg" 
  alt="" 
  
+ style="width:80%;" 
 />
 &lt;/div>&lt;/p>
 &lt;ul>
@@ -251,6 +257,7 @@ Ribo 的股票也有下降，公司传出裁员风波。
 &lt;img src="v2-ffe70303f4d64828ca931d987b12a6d8_r.jpg" 
  alt="" 
  
+ style="width:80%;" 
 />
 &lt;/div>&lt;/p></description></item><item><title>「转」tcpdump是在哪儿抓到的包？</title><link>https://example.com/post/c5-linux/linux/how-tcpdump/</link><pubDate>Fri, 01 Jul 2022 16:00:04 +0000</pubDate><guid>https://example.com/post/c5-linux/linux/how-tcpdump/</guid><description>&lt;blockquote>
 &lt;p>原文地址 &lt;a href="https://cloud.tencent.com/developer/article/1879646">cloud.tencent.com&lt;/a>&lt;/p>&lt;/blockquote>
@@ -270,6 +277,7 @@ Ribo 的股票也有下降，公司传出裁员风波。
 &lt;img src="1620.png" 
  alt="" 
  
+ style="width:80%;" 
 />
 &lt;/div>&lt;/p>
 &lt;p>内核网络协议栈示意图&lt;/p>
@@ -291,6 +299,7 @@ Ribo 的股票也有下降，公司传出裁员风波。
 &lt;img src="e31bac5bcb1347a59142486adaf94e30.jpg" 
  alt="" 
  
+ style="width:80%;" 
 />
 &lt;/div>&lt;/p>
 &lt;h2 id="0-前言">0. 前言&lt;/h2>
@@ -310,10 +319,57 @@ Ribo 的股票也有下降，公司传出裁员风波。
 &lt;img src="db260d2dc98445f9988f1c768ca3e744.jpg" 
  alt="" 
  
+ style="width:80%;" 
 />
 &lt;/div>&lt;/p>
 &lt;h2 id="1-linux-内核支持的隧道类型">1. Linux 内核支持的隧道类型&lt;/h2>
-&lt;p>目前 Linux 内核已经支持多种隧道类型，包括：IPIP 隧道，GRE 隧道，&amp;hellip; 。其余这几个我也没见过。当然除了这几种，还有 ipsec 协议，l2tp 协议，可以的是我目前都还没有用过，实在是暴殄天物，罪过罪过&lt;/p></description></item><item><title>「转」Ubuntu完全教程</title><link>https://example.com/post/c5-linux/linux/ubuntu-tour/</link><pubDate>Fri, 01 Apr 2022 18:00:04 +0000</pubDate><guid>https://example.com/post/c5-linux/linux/ubuntu-tour/</guid><description>&lt;blockquote>
+&lt;p>目前 Linux 内核已经支持多种隧道类型，包括：IPIP 隧道，GRE 隧道，&amp;hellip; 。其余这几个我也没见过。当然除了这几种，还有 ipsec 协议，l2tp 协议，可以的是我目前都还没有用过，实在是暴殄天物，罪过罪过&lt;/p></description></item><item><title>「转」window软件运行时间</title><link>https://example.com/post/c8-programming/soft-run-time/</link><pubDate>Fri, 15 Apr 2022 12:39:04 +0000</pubDate><guid>https://example.com/post/c8-programming/soft-run-time/</guid><description>&lt;h2 id="背景">背景&lt;/h2>
+&lt;p>对关注性能的程序开发人员而言，一个好的计时部件既是益友，也是良师。计时器既可以作为程序组件帮助程序员精确的控制程序进程，又是一件有力的调试武器，在有经验的程序员手里可以尽快的确定程序的性能瓶颈，或者对不同的算法作出有说服力的性能比较。&lt;/p>
+&lt;!-- more -->
+&lt;p>在Windows平台下，常用的计时器有两种，一种是&lt;code>timeGetTime&lt;/code>多媒体计时器，它可以提供毫秒级的计时。但这个精度对很多应用场合而言还是太粗糙了。另一种是&lt;code>QueryPerformanceCount&lt;/code>计数器，随系统的不同可以提供微秒级的计数。对于实时图形处理、多媒体数据流处理、或者实时系统构造的程序员，善用&lt;code>QueryPerformanceCount/QueryPerformanceFrequency&lt;/code>是一项基本功。&lt;/p>
+&lt;p>本文要介绍的，是另一种直接利用&lt;code>Pentium CPU&lt;/code>内部时间戳进行计时的高精度计时手段。以下讨论主要得益于&lt;code>《Windows图形编程》&lt;/code>一书，第15页－17页，有兴趣的读者可以直接参考该书。关于RDTSC指令的详细讨论，可以参考Intel产品手册。本文仅仅作抛砖之用。&lt;/p>
+&lt;p>在 &lt;code>Intel Pentium&lt;/code>以上级别的CPU中，有一个称为“时间戳（Time Stamp）”的部件，它以64位无符号整型数的格式，记录了自CPU上电以来所经过的时钟周期数。由于目前的CPU主频都非常高，因此这个部件可以达到纳秒级的计时精度。这个精确性是上述两种方法所无法比拟的。&lt;/p>
+&lt;p>在Pentium以上的CPU中，提供了一条机器指令RDTSC（Read Time Stamp Counter）来读取这个时间戳的数字，并将其保存在EDX:EAX寄存器对中。由于&lt;code>EDX:EAX&lt;/code>寄存器对恰好是Win32平台下C++语言保存函数返回值的寄存器，所以我们可以把这条指令看成是一个普通的函数调用。像这样：&lt;/p>
+&lt;pre tabindex="0">&lt;code> inline unsigned __int64 GetCycleCount() 
+ { 
+ __asm RDTSC 
+ } 
+&lt;/code>&lt;/pre>&lt;p>但是不行，因为RDTSC不被C++的内嵌汇编器直接支持，所以我们要用_emit伪指令直接嵌入该指令的机器码形式&lt;code>0X0F&lt;/code>、&lt;code>0X31&lt;/code>，如下：&lt;/p>
+&lt;pre tabindex="0">&lt;code> inline unsigned __int64 GetCycleCount() 
+ { 
+ __asm _emit 0x0F 
+ __asm _emit 0x31 
+ } 
+&lt;/code>&lt;/pre>&lt;p>以后在需要计数器的场合，可以像使用普通的Win32 API一样，调用两次GetCycleCount函数，比较两个返回值的差，像这样：&lt;/p>
+&lt;pre tabindex="0">&lt;code> unsigned long t; 
+ t = (unsigned long)GetCycleCount(); 
+ //Do Something time-intensive ... 
+ t -= (unsigned long)GetCycleCount(); 
+&lt;/code>&lt;/pre>&lt;p>&lt;code>《Windows图形编程》&lt;/code>第15页编写了一个类，把这个计数器封装起来。有兴趣的读者可以去参考那个类的代码。作者为了更精确的定时，做了一点小小的改进，把执行&lt;code>RDTSC&lt;/code>指令的时间，通过连续两次调用&lt;code>GetCycleCount&lt;/code>函数计算出来并保存了起来，以后每次计时结束后，都从实际得到的计数中减掉这一小段时间，以得到更准确的计时数字。但我个人觉得这一点点改进意义不大。在我的机器上实测，这条指令大概花掉了几十到100多个周期，在&lt;code>Celeron 800MHz&lt;/code>的机器上，这不过是十分之一微秒的时间。对大多数应用来说，这点时间完全可以忽略不计；而对那些确实要精确到纳秒数量级的应用来说，这个补偿也过于粗糙了。&lt;/p>
+&lt;p>这个方法的优点是：&lt;/p>
+&lt;ol>
+&lt;li>
+&lt;p>高精度。可以直接达到纳秒级的计时精度（在1GHz的CPU上每个时钟周期就是一纳秒），这是其他计时方法所难以企及的。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>成本低。&lt;code>timeGetTime&lt;/code>函数需要链接多媒体库 &lt;code>winmm.lib&lt;/code>，&lt;code>QueryPerformance*&lt;/code>函数根据MSDN的说明，需要硬件的支持（虽然我还没有见过不支持的机器）和KERNEL库的支持，所以二者都只能在Windows平台下使用（关于DOS平台下的高精度计时问题，可以参考&lt;code>《图形程序开发人员指南》&lt;/code>，里面有关于控制定时器8253的详细说明）。但&lt;code>RDTSC&lt;/code>指令是一条CPU指令，凡是i386平台下Pentium以上的机器均支持，甚至没有平台的限制（我相信i386版本UNIX和Linux下这个方法同样适用，但没有条件试验），而且函数调用的开销是最小的。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>具有和CPU主频直接对应的速率关系。一个计数相当于1/(CPU主频Hz数)秒，这样只要知道了CPU的主频，可以直接计算出时间。这和 &lt;code>QueryPerformanceCount&lt;/code>不同，后者需要通过&lt;code>QueryPerformanceFrequency&lt;/code>获取当前计数器每秒的计数次数才能换算成时间。&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;p>这个方法的缺点是：&lt;/p>
+&lt;ol>
+&lt;li>
+&lt;p>现有的C/C++编译器多数不直接支持使用RDTSC指令，需要用直接嵌入机器码的方式编程，比较麻烦。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>数据抖动比较厉害。其实对任何计量手段而言，精度和稳定性永远是一对矛盾。如果用低精度的&lt;code>timeGetTime&lt;/code>来计时，基本上每次计时的结果都是相同的；而&lt;code>RDTSC&lt;/code>指令每次结果都不一样，经常有几百甚至上千的差距。这是这种方法高精度本身固有的矛盾。&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;p>关于这个方法计时的最大长度，我们可以简单的用下列公式计算：&lt;/p>
+&lt;pre tabindex="0">&lt;code>自CPU上电以来的秒数 = RDTSC读出的周期数 / CPU主频速率（Hz） 
+&lt;/code>&lt;/pre>&lt;p>64位无符号整数所能表达的最大数字是&lt;code>1.8×10^19&lt;/code>，在我的&lt;code>Celeron 800&lt;/code>上可以计时大约700年（书中说可以在200MHz的Pentium上计时117年，这个数字不知道是怎么得出来的，与我的计算有出入）。无论如何，我们大可不必关心溢出的问题。&lt;/p></description></item><item><title>「转」Ubuntu完全教程</title><link>https://example.com/post/c5-linux/linux/ubuntu-tour/</link><pubDate>Fri, 01 Apr 2022 18:00:04 +0000</pubDate><guid>https://example.com/post/c5-linux/linux/ubuntu-tour/</guid><description>&lt;blockquote>
 &lt;p>ref:&lt;a href="http://www.cnblogs.com/dutlei/archive/2012/11/20/2778327.html">Ubuntu完全教程，让你成为Ubuntu高手！&lt;/a>
 todo整理&lt;/p>&lt;/blockquote>
 &lt;h2 id="ubuntu的发音">Ubuntu的发音&lt;/h2>
@@ -331,7 +387,54 @@ todo整理&lt;/p>&lt;/blockquote>
 &lt;p>Ubuntu 完全基于 Linux 操作系统， 可以免费得到社区及专业机构的支持。庞大的社区是它成长的沃土，请向这片动人的热忱敞开心扉。&lt;/p>
 &lt;p>Ubuntu 社区恪守 Ubuntu 理念：自由！软件应是自由的，应尊重人类的自由意志，它与人类之间不应有任何隔膜。本地语种，功能限制，自主改进的权利……都不应成为使用的障碍或负担。&lt;/p>
 &lt;p>自由，让 Ubuntu 与传统的私有软件从根本上不同: 免费不能用来遮羞，您有权修正它，直到满意为止。&lt;/p>
-&lt;p>Ubuntu 适合桌面和服务器。当前 Ubuntu 发布版支持 PC (Intel x86), 64-bit PC (AMD64) 和 PowerPC (Apple iBook 和 Powerbook, G4 和 G5) 架构。&lt;/p></description></item><item><title>「转」一文看懂Linux内核！Linux内核架构和工作原理详解</title><link>https://example.com/post/c5-linux/linux/linux-in-one/</link><pubDate>Thu, 23 Dec 2021 22:45:31 +0000</pubDate><guid>https://example.com/post/c5-linux/linux/linux-in-one/</guid><description>&lt;p>全文导读&lt;/p>
+&lt;p>Ubuntu 适合桌面和服务器。当前 Ubuntu 发布版支持 PC (Intel x86), 64-bit PC (AMD64) 和 PowerPC (Apple iBook 和 Powerbook, G4 和 G5) 架构。&lt;/p></description></item><item><title>「转」爱立信的百年沉浮</title><link>https://example.com/post/c6-network/history-ericsson/</link><pubDate>Fri, 01 Apr 2022 12:39:04 +0000</pubDate><guid>https://example.com/post/c6-network/history-ericsson/</guid><description>&lt;blockquote>
+&lt;p>文章来源：&lt;br>
+鲜枣课堂（ID：xzclasscom）
+&lt;a href="https://mp.weixin.qq.com/s?__biz=MjM5NTY1MjY0MQ==&amp;amp;mid=2650814278&amp;amp;idx=1&amp;amp;sn=26083fed8d8dd76340e063fd42a59dea">原文&lt;/a>&lt;/p>&lt;/blockquote>
+&lt;p>19 世纪中叶，电报业务在欧洲大陆逐渐开始普及。&lt;/p>
+&lt;p>1853 年，北欧小国瑞典动用 “海盗基金”（不是海盗的钱，是政府用来打海盗的钱），架设了自己的第一条电报线路，从首都斯德哥尔摩到乌普萨拉。&lt;/p>
+&lt;p>为了确保负责这条线路的正常运营，瑞典政府还成立了自己的第一家电报公司，名字叫 Televerket。&lt;/p>
+&lt;p>当时，Televerket 公司急需大量的电报硬件设备。于是，乌普萨拉电报局的局长，&lt;strong>安东 · 亨里克 · 奥勒&lt;/strong>（Anton Henric Öller），决定创办一家公司，为 Televerket 生产、修理和改进电报机。&lt;/p>
+&lt;p>不久后，这家电气设备维修公司正式成立，名字叫奥勒公司（Öller &amp;amp; Co）。&lt;/p>
+&lt;p>
+
+
+
+
+ 
+
+
+&lt;div style="text-align: center;">
+&lt;img src="640.png" 
+ alt="" 
+ 
+ style="width:80%;" 
+/>
+&lt;/div>&lt;/p>
+&lt;center>&lt;div>安东 · 亨里克 · 奥勒，瑞典电信业的先驱&lt;/div>&lt;/center>
+&lt;p>奥勒公司名义上是一家公司，但实际上就是一个手工作坊，规模很小，只能靠 Televerket 公司的资助才能维持生存。&lt;/p>
+&lt;p>在奥勒公司的员工中，有一个勤奋的小伙子，当时专门负责维修电报设备以及其它机械设备。他的名字，叫做&lt;strong>拉什 · 玛格纳斯 · 爱立信&lt;/strong>（Lars Magnus Ericsson）。&lt;/p>
+&lt;p>
+
+
+
+
+ 
+
+
+&lt;div style="text-align: center;">
+&lt;img src="640-16487839499382.png" 
+ alt="" 
+ 
+ style="width:80%;" 
+/>
+&lt;/div>&lt;/p>
+&lt;center>&lt;div> 拉什 · 玛格纳斯 · 爱立信&lt;/div>&lt;/center>
+&lt;!-- more -->
+&lt;p>拉什 · 爱立信 1846 年 5 月 5 日出生于瑞典中部瓦姆兰省的一个小农场里。他的家庭条件贫困，自己在 9 个兄弟姐妹中排行第六。&lt;/p>
+&lt;p>11 岁时，由于父亲病逝，他不得不外出工作，养家糊口。这期间，他当过矿工，修过铁路，还在铁匠铺做了很长时间的学徒。&lt;/p>
+&lt;p>1867 年，拉什 · 爱立信终于攒够了路费，来到他梦寐以求的瑞典首都——斯德哥尔摩。经过一周的试用后，他成功加入了奥勒公司，成为一名修理工。&lt;/p>
+&lt;p>尽管这份工作的工资微薄，拉什 · 爱立信仍然感到十分满足。他后来回忆说：“（这份工作）足以满足我的需求，让我庆幸地看到生活比以往任何时候都更加光明，我心中第一次感受到了生活的快乐。”&lt;/p></description></item><item><title>「转」一文看懂Linux内核！Linux内核架构和工作原理详解</title><link>https://example.com/post/c5-linux/linux/linux-in-one/</link><pubDate>Thu, 23 Dec 2021 22:45:31 +0000</pubDate><guid>https://example.com/post/c5-linux/linux/linux-in-one/</guid><description>&lt;p>全文导读&lt;/p>
 &lt;ul>
 &lt;li>&lt;a href="">Linux 内核预备工作&lt;/a>&lt;/li>
 &lt;li>&lt;a href="">Linux 内核体系结构简析&lt;/a>&lt;/li>
@@ -386,7 +489,40 @@ todo整理&lt;/p>&lt;/blockquote>
 &lt;ol start="3">
 &lt;li>
 &lt;p>进程的调度。确认哪个进程运行多长的时间。&lt;br>
-Linux 进程&lt;/p></description></item><item><title>「转」「译」Face Detection – OpenCV, Dlib and Deep Learning ( C++ / Python )</title><link>https://example.com/post/c2-robotics/cv/facedetectioncomparison/</link><pubDate>Mon, 12 Nov 2018 18:00:00 +0000</pubDate><guid>https://example.com/post/c2-robotics/cv/facedetectioncomparison/</guid><description>&lt;p>&lt;strong>前言&lt;/strong>
+Linux 进程&lt;/p></description></item><item><title>2021 年科隆游戏展奖项提名名单</title><link>https://example.com/post/c0-life/games/2021games/</link><pubDate>Wed, 01 Sep 2021 12:00:00 +0000</pubDate><guid>https://example.com/post/c0-life/games/2021games/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
+&lt;p>帝国时代3，现在帝国4！&lt;br>
+2021 年科隆游戏展奖项提名名单正式公布&lt;/p>
+&lt;!-- more -->
+&lt;p>8 月 23 日，2021 年科隆游戏展的奖项提名名单已经全部揭晓，本次直接涉及游戏的奖项有 21 个，其中获得提名的游戏分别为：&lt;/p>
+&lt;p>最佳微软 Xbox 游戏：《艾尔登法环》（万代南梦宫娱乐）；《孤岛惊魂 6》（育碧）；《光环无限》（微软）&lt;/p>
+&lt;p>最佳任天堂 Switch 游戏：《舞力全开 2022》（育碧）；《马里奥 + 疯狂兔子星耀之愿》 (育碧)&lt;/p>
+&lt;p>最佳 PC 游戏：《帝国时代 4》(微软)；《艾尔登法环》（万代南梦宫娱乐）；《塞伯利亚之谜: 世界之前》 (Astragon Entertainment)&lt;/p>
+&lt;p>最佳索尼 PlayStation 游戏：《艾尔登法环》（万代南梦宫娱乐）；《破晓传说》（万代南梦宫娱乐）；《黑相集：灰冥界》 (万代南梦宫娱乐)&lt;/p>
+&lt;p>最佳动作冒险游戏：《艾尔登法环》（万代南梦宫娱乐）；《马里奥 + 疯狂兔子星耀之愿》 (育碧)；《塞伯利亚之谜: 世界之前》 (Astragon Entertainment)&lt;/p>
+&lt;p>最佳动作游戏：《孤岛惊魂 6》（育碧）；《光环：无限》（微软）；《彩虹六号：异种》（育碧）&lt;/p>
+&lt;p>最佳家庭游戏：《舞力全开 2022》（育碧）；《Run Prop, Run!》（PlayTogether Studio）；《Super Dungeon Maker》 (Rokaplay)&lt;/p>
+&lt;p>最佳独立游戏：《Dorfromantik》（Toukana Interactive）；《Inua》（Arte France）；《Lost in Random》（EA）&lt;/p>
+&lt;p>最佳角色扮演游戏：《艾尔登法环》（万代南梦宫娱乐）；《Encased》（科赫传媒）；《破晓传说》（万代南梦宫娱乐）&lt;/p>
+&lt;p>最佳模拟游戏：《攀登者：天空是极限》(Art Games Studio)；《模拟农场 22》 (Astragon Entertainment)&lt;/p>
+&lt;p>最佳体育游戏：《攀登者：天空是极限》(Art Games Studio)；《FIFA22》（EA）；《Riders Republic》（育碧）&lt;/p>
+&lt;p>最佳策略游戏：《帝国时代 4》 (微软)；《英雄连 3》 (世嘉)；《马里奥 + 疯狂兔子星耀之愿》 (育碧)&lt;/p></description></item><item><title>「转」地表最强大的还有这 14 位程序员</title><link>https://example.com/post/c8-programming/cs-fonters/</link><pubDate>Thu, 09 Apr 2020 12:39:04 +0000</pubDate><guid>https://example.com/post/c8-programming/cs-fonters/</guid><description>&lt;p>原标题：除了 Linus，地表最强大的还有这 14 位程序员，速来膜拜！&lt;/p>
+&lt;p>导语：IT world 曾经做过一次调查，这个世界上最强大的 15 位程序员，到底是？&lt;/p>
+&lt;blockquote>
+&lt;p>文 / IT world&lt;/p>&lt;/blockquote>
+&lt;blockquote>
+&lt;p>译 / 优达菌&lt;/p>
+&lt;p>转自 / 优达学城 2018&lt;/p>
+&lt;p>原文地址 &lt;a href="https://www.sohu.com/a/223302790_700886">https://www.sohu.com/a/223302790_700886&lt;/a>&lt;/p>&lt;/blockquote>
+&lt;p>当和技术基友谈论起 “谁是世界上最顶级的程序员” 的话题时，总是分分钟能引发骂战，优秀的程序员太多了，要评出最优秀的，貌似真的不容易。&lt;/p>
+&lt;p>IT world 曾经就做过一次调查，当说到谁是世界上健在且最顶级的程序员时，这 15 个人的名字总是能浮现出来，是公认的还是有争议的，是真 · 大神还是伪 · 大神？一起来看看吧~&lt;/p>
+&lt;img src="cs-fonters/3e28c4606b644378b652dc9c3716da02.jpeg" style="zoom:33%;" />
+&lt;!-- more -->
+&lt;h2 id="margaret-hamilton">Margaret Hamilton&lt;/h2>
+&lt;img src="cs-fonters/264f0ac3e2254ea8b1f91eac42632e1c.jpeg" style="zoom:33%;" />
+&lt;p>作为 15 位上榜者中唯一女性，玛格丽特被誉为是 “&lt;strong>阿波罗飞行控制软件背后的大脑&lt;/strong>”。&lt;/p>
+&lt;p>作为查尔斯 · 斯塔克 · 德雷珀实验室（Charles Stark Draper Laboratory）软件工程部的老大，她组建了一个团队，负责设计和制造阿波罗舰载飞行控制器软件和空间实验室。&lt;/p>
+&lt;p>基于这段经历，她开发了通用系统语言（Universal Systems Language）和开发先于事实（ Development Before the Fact）的范例，首先提出异步软件、优先调度和高可信度的软件设计理念。“软件工程（ software engineering）” 这个名字，公认是由她首先发明的。&lt;/p>
+&lt;p>1986 年，玛格丽特获得了奥古斯塔 · 埃达 · 洛夫莱斯奖，2003 年获得 NASA 卓越太空行动奖。&lt;/p></description></item><item><title>「转」「译」Face Detection – OpenCV, Dlib and Deep Learning ( C++ / Python )</title><link>https://example.com/post/c2-robotics/cv/face-detection-comparison/</link><pubDate>Mon, 12 Nov 2018 18:00:00 +0000</pubDate><guid>https://example.com/post/c2-robotics/cv/face-detection-comparison/</guid><description>&lt;p>&lt;strong>前言&lt;/strong>
 本文为翻译文章。原文地址 &lt;a href="https://www.learnopencv.com/face-detection-opencv-dlib-and-deep-learning-c-python/">https://www.learnopencv.com/face-detection-opencv-dlib-and-deep-learning-c-python/&lt;/a>&lt;/p>
 &lt;p>在这篇文章中，作者讨论使用了OpenCV或Dlib的多种人脸检测的代码，并给出性能分析。作者使用的 Face Detector 包括以下四个，后面分别给出 c++ 和 python 实现。&lt;/p>
 &lt;ol>
@@ -424,4 +560,147 @@ Linux 进程&lt;/p></description></item><item><title>「转」「译」Face Dete
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">int&lt;/span> x2 &lt;span style="color:#f92672">=&lt;/span> faces[i].x &lt;span style="color:#f92672">+&lt;/span> faces[i].width;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">int&lt;/span> y2 &lt;span style="color:#f92672">=&lt;/span> faces[i].y &lt;span style="color:#f92672">+&lt;/span> faces[i].height;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>对图片灰度变化（grayscale）后，再应用 haar cascade 特征，输出是脸的list。list中每个item有四个element 分别为 top-left corner的(x, y) 、检测出来脸的大小(width, height) 。&lt;/p></description></item></channel></rss>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>对图片灰度变化（grayscale）后，再应用 haar cascade 特征，输出是脸的list。list中每个item有四个element 分别为 top-left corner的(x, y) 、检测出来脸的大小(width, height) 。&lt;/p></description></item><item><title>「转」怎样成为一名优秀的算法工程师</title><link>https://example.com/post/c3-ai/how-algorithm-engineer/</link><pubDate>Mon, 01 Oct 2018 12:00:00 +0000</pubDate><guid>https://example.com/post/c3-ai/how-algorithm-engineer/</guid><description>&lt;blockquote>
+&lt;p>转载 原创： AI学习与实践平台
+TODO: 看完里面的文章，对每篇文章做个总结，实验+文章。&lt;/p>&lt;/blockquote>
+&lt;h2 id="1-导言">1. 导言&lt;/h2>
+&lt;p>怎样成为一名优秀的算法工程师？这是很多从事人工智能学术研究和产品研发的同学都关心的一个问题。面对市场对人才的大量需求与供给的严重不足，以及高薪水的诱惑，越来越多的人开始学习这个方向的技术，或者打算向人工智能转型。市面上各种鱼龙混杂的培训班以及误导人的文章会把很多初学者带入歧途，浮躁的跟风将会让你最后收获甚微，根本达不到企业的用人要求。为了更好的帮助大家学习和成长，少走弯路，在今天的文章里，&lt;a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;amp;mid=2247485551&amp;amp;idx=2&amp;amp;sn=a6689528f10aedab3fce91857eec877b&amp;amp;chksm=fdb695f8cac11cee025ad6d8d77ed90f7169142d6b20b2f5a6945b58edd97c27225f4a2eba91&amp;amp;scene=21#wechat_redirect">SIGAI&lt;/a> 的作者以自己的亲身经历和思考，为大家写下对这一问题的理解与答案。&lt;/p>
+&lt;p>首先来看一个高度相关的问题：一个优秀的算法工程师必须具备哪些素质？我们给出的答案是这样的：&lt;/p>
+&lt;ul>
+&lt;li>数学知识&lt;/li>
+&lt;li>编程能力&lt;/li>
+&lt;li>机器学习与深度学习的知识&lt;/li>
+&lt;li>应用方向的知识&lt;/li>
+&lt;li>对自己所做的问题的思考和经验&lt;/li>
+&lt;/ul>
+&lt;p>除去教育背景，逻辑思维，学习能力，沟通能力等其他方面的因素，大多数公司在考察算法工程师的技术水平时都会考虑上面这几个因素。接下来我们将按照这几个方面进行展开，详细的说明如何学习这些方面的知识以及积累经验。&lt;/p>
+&lt;!-- more -->
+&lt;h2 id="2-数学知识">2. 数学知识&lt;/h2>
+&lt;p>与其他工作方向如app、服务器开发相比，以及与计算机科学的其他方向如网络，数据库，分布式计算等相比，人工智能尤其是机器学习属于数学知识密集的方向。在各种书籍，论文，算法中都充斥着大量的数学公式，这让很多打算入门的人或者开始学习的人感到明显的压力。首先我们考虑一个最核心的问题：机器学习和深度学习究竟需要哪些数学知识？在&lt;a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;amp;mid=2247485551&amp;amp;idx=2&amp;amp;sn=a6689528f10aedab3fce91857eec877b&amp;amp;chksm=fdb695f8cac11cee025ad6d8d77ed90f7169142d6b20b2f5a6945b58edd97c27225f4a2eba91&amp;amp;scene=21#wechat_redirect">SIGAI&lt;/a>之前的公众号文章“&lt;a href="http://mp.weixin.qq.com/s?__biz=MzU4MjQ3MDkwNA==&amp;amp;mid=2247483713&amp;amp;idx=1&amp;amp;sn=1e7c81381d16806ac73e15691fe17aec&amp;amp;chksm=fdb69cd6cac115c05f1f90b0407e3f8ae9be8719e454f908074ac0d079885b5c134e2d60fd64&amp;amp;scene=21#wechat_redirect">学好机器学习需要哪些数学知识&lt;/a>”里，我们已经给出了答案。先看下面这张表：&lt;/p>
+&lt;p>
+
+
+
+
+ 
+
+
+&lt;div style="text-align: center;">
+&lt;img src="clip_image003.gif" 
+ alt="EB5E93E91C3643F991C93D61F363373E.jpeg" 
+ 
+ style="width:80%;" 
+/>
+&lt;/div>&lt;/p>
+&lt;p>更多算法工程师的必读文章，请关注SIGAICN公众号&lt;/p>
+&lt;p>上面的表给出了各种典型的机器学习算法所用到的数学知识点。我们之前已经总结过，理解绝大多数算法和理论，有微积分/高等数学，线性代数，概率论，最优化方法的知识就够了。除流形学习需要简单的微分几何概念之外，深层次的数学知识如实变函数，泛函分析等主要用在一些基础理论结果的证明上，即使不能看懂证明过程，也不影响我们使用具体的机器学习算法。概率图模型、流形学习中基于图的模型会用到图论的一些基本知识，如果学习过离散数学或者数据结构，这些概念很容易理解。除此之外，某些算法会用到离散数学中的树的概念，但很容易理解。&lt;/p>
+&lt;h3 id="21-高等数学">2.1 高等数学&lt;/h3>
+&lt;p>如果你已经学过这些大学数学课，只要把所需的知识点复习一遍就够了。对于微积分，通俗易懂而又被广为采用的是同济版的高等数学：&lt;/p>
+&lt;p>
+
+
+
+
+ 
+
+
+&lt;div style="text-align: center;">
+&lt;img src="clip_image005.gif" 
+ alt="88F2EB8BDFE1448EBD2DF61848E355FD.jpeg" 
+ 
+ style="width:80%;" 
+/>
+&lt;/div>&lt;/p>
+&lt;p>在机器学习中主要用到了微分部分，积分用的非常少。具体的，用到了下面的概念：&lt;/p>
+&lt;ul>
+&lt;li>导数和偏导数的定义与计算方法，与函数性质的关系&lt;/li>
+&lt;li>梯度向量的定义&lt;/li>
+&lt;li>极值定理，可导函数在极值点处导数或梯度必须为0&lt;/li>
+&lt;li>雅克比矩阵，这是向量到向量映射函数的偏导数构成的矩阵，在求导推导中会用到&lt;/li>
+&lt;li>Hessian矩阵，这是2阶导数对多元函数的推广，与函数的极值有密切的联系&lt;/li>
+&lt;li>凸函数的定义与判断方法&lt;/li>
+&lt;li>泰勒展开公式&lt;/li>
+&lt;li>拉格朗日乘数法，用于求解带等式约束的极值问题&lt;/li>
+&lt;/ul>
+&lt;p>其中最核心的是多元函数的泰勒展开公式，根据它我们可以推导出梯度下降法，牛顿法，拟牛顿法等一系列最优化方法。&lt;/p>
+&lt;p>如果你想要深入的学习微积分，可以阅读数学系的教程，称为数学分析：&lt;/p>
+&lt;p>
+
+
+
+
+ 
+
+
+&lt;div style="text-align: center;">
+&lt;img src="clip_image007.gif" 
+ alt="DEB5F0D2FC584E0B96B263FE1D559AFF.jpeg" 
+ 
+ style="width:80%;" 
+/>
+&lt;/div>&lt;/p>
+&lt;p>与工科的高等数学偏重计算不同，它里面有大量的理论证明，对于锻炼数学思维非常有帮助。北大张筑生先生所著的数学分析可谓是国内这方面教材的精品。&lt;/p>
+&lt;h3 id="22-线性代数">2.2 线性代数&lt;/h3>
+&lt;p>下面来看线性代数，同样是同济版的教材：&lt;/p>
+&lt;p>
+
+
+
+
+ 
+
+
+&lt;div style="text-align: center;">
+&lt;img src="clip_image009.gif" 
+ alt="48D5E515A7144CE6A9CB78162F6ECAAF.jpeg" 
+ 
+ style="width:80%;" 
+/>
+&lt;/div>&lt;/p>
+&lt;p>如果想更全面系统的学习线性代数，可以看这本书：&lt;/p>
+&lt;p>
+
+
+
+
+ 
+
+
+&lt;div style="text-align: center;">
+&lt;img src="clip_image011.gif" 
+ alt="BF71AB68DB2B4D71AC8D2B3263C197E5.jpeg" 
+ 
+ style="width:80%;" 
+/>
+&lt;/div>&lt;/p>
+&lt;p>相比之下，线性代数用的更多。具体用到的知识点有：&lt;/p>
+&lt;ul>
+&lt;li>向量和它的各种运算，包括加法，减法，数乘，转置，内积&lt;/li>
+&lt;li>向量和矩阵的范数，L1范数和L2范数&lt;/li>
+&lt;li>矩阵和它的各种运算，包括加法，减法，乘法，数乘&lt;/li>
+&lt;li>逆矩阵的定义与性质&lt;/li>
+&lt;li>行列式的定义与计算方法&lt;/li>
+&lt;li>二次型的定义&lt;/li>
+&lt;li>矩阵的正定性&lt;/li>
+&lt;li>特征值与特征向量&lt;/li>
+&lt;li>奇异值分解&lt;/li>
+&lt;li>线性方程组的数值解&lt;/li>
+&lt;/ul>
+&lt;p>机器学习算法处理的数据一般都是向量、矩阵或者张量。经典的机器学习算法输入的数据都是特征向量，深度学习算法在处理图像时输入的2维的矩阵或者3维的张量。掌握这些概念是你理解机器学习和深度学习算法的基础。&lt;/p>
+&lt;h3 id="23-概率论">2.3 概率论&lt;/h3>
+&lt;p>概率论国内理工科专业使用最多的是浙大版的教材：&lt;/p>
+&lt;p>
+
+
+
+
+ 
+
+
+&lt;div style="text-align: center;">
+&lt;img src="clip_image013.gif" 
+ alt="91E918CF7ED84C7488BDDFFC7594E0D4.jpeg" 
+ 
+ style="width:80%;" 
+/>
+&lt;/div>&lt;/p></description></item></channel></rss>

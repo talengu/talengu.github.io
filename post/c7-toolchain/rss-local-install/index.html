@@ -1,0 +1,63 @@
+<!doctype html><html lang=zh-cn><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><title>本地安装rss | 一塘</title>
+<link rel=stylesheet href=/css/style.css><link rel=stylesheet href=/css/fonts.css><link rel=stylesheet href=/css/dark.css></head><body><nav><ul class=menu><li><a href=/about/>一塘</a></li><li><a href=/post/>博客</a></li><li><a href=/categories/>分类</a></li><li><a href=/tags/>标签</a></li><li style=float:right;position:relative;margin-left:1em><input type=text id=search-box placeholder=搜索文章... style="padding:.3em .6em;border-radius:4px;border:1px solid #ccc;width:150px;min-width:100px;max-width:250px"><ul id=search-results style="position:absolute;top:100%;right:0;background:#fff;border:1px solid #ccc;max-height:300px;overflow-y:auto;display:none;z-index:1000;list-style:none;padding:0;margin:0;width:250px"></ul></li><style>.search-item{padding:.4em .6em}.search-link{display:block;font-weight:500;text-decoration:none;color:#007acc}.search-snippet{font-size:.85em;color:#555;margin-top:.2em;line-height:1.4}.search-highlight{background:rgba(255,235,59,.5);padding:0 .15em;border-radius:3px}.search-item:hover{background-color:rgba(0,0,0,5%)}@media(prefers-color-scheme:dark){.search-link{color:#4fc3f7}.search-snippet{color:#aaa}.search-item:hover{background-color:rgba(104,99,99,.273)}.search-highlight{background:rgba(255,193,7,.35)}}</style><script src=https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.6.2/fuse.min.js></script><script>fetch("/post/index.json").then(e=>e.json()).then(e=>{const o=new Fuse(e,{keys:[{name:"title",weight:2},{name:"summary",weight:1},{name:"content",weight:.7}],threshold:.3,ignoreLocation:!0,minMatchCharLength:2}),n=document.getElementById("search-box"),t=document.getElementById("search-results");function s(e,t){if(!e)return"";const n=t.replace(/[.*+?^${}()|[\]\\]/g,"\\$&"),s=new RegExp(`(${n})`,"gi");return e.replace(s,'<mark class="search-highlight">$1</mark>')}function i(e,t,n=80){const s=e.toLowerCase().indexOf(t.toLowerCase());if(s===-1)return e.slice(0,n)+"…";const o=Math.max(0,s-n/2),i=Math.min(e.length,s+n/2);return"…"+e.slice(o,i)+"…"}n.addEventListener("input",function(){const e=this.value.trim();if(!e){t.style.display="none",t.innerHTML="";return}const n=o.search(e);t.innerHTML=n.slice(0,8).map(t=>{const n=t.item,o=i(n.content||n.summary||"",e);return`
+          <li class="search-item">
+            <a href="${n.permalink}" class="search-link">
+              ${s(n.title,e)}
+            </a>
+            <div class="search-snippet">
+              ${s(o,e)}
+            </div>
+          </li>
+        `}).join(""),t.style.display=n.length?"block":"none"}),document.addEventListener("click",e=>{!n.contains(e.target)&&!t.contains(e.target)&&(t.style.display="none")})})</script></ul><hr></nav><div class=article-meta><h1><span class=title>本地安装rss</span></h1></div><div class=post-stats style=text-align:right>2022/04/16</div><main><h2 id=前言>前言</h2><p>在 “<a href=c0-life/talk-rss-2020.md>二零年RSS杂谈</a>”中说到，我想建立一种信息的获取系统，免受广告和推荐算法的困扰。</p><p>我希望其的功能包括：</p><ul><li>多终端 Web、PC、 mobile的同步</li><li>全文获取能力</li><li>可自定义过滤规则</li><li>RSS源自定义</li></ul><p>方案：</p><ul><li>RSS源 rsshub</li><li>RSS服务 ttrss</li><li>RSS电脑手机软件：Android的Readably、Feedme，mac的reeder等等。windows上我暂时没有发现，我用的是ttrss的web界面。</li></ul><p>rsshub 是由 DIYgod 开发的开源RSS源生成工具，RSShub原始的网站可能不稳定，所以我选择了自己搭建。</p><p>ttrss 是一个rss源管理配置的工具，可获取全文，可自定义过滤规则。</p><p>本教程我们将完成在window电脑通过docker安装，ttrss与全文插件、rsshub的过程。</p><p>服务器的成本还是有点小贵的，我们可以在本地搭建整个服务，即利用docker安装这些服务，开机的时候记得启动这些服务。
+不爽点：</p><ul><li>需要后台开启docker服务，使得其自动更新信息</li><li>没有公网ip的情况下，无法全网连接服务</li></ul><h2 id=最终ttrss界面>最终ttrss界面</h2><p>在这里我已经添加一些rss源了。</p><p><div style=text-align:center><img src=image-20200626135803804.png alt=image-20200626135803804 style=width:80%></div></p><h2 id=docker-windows安装>docker windows安装</h2><p>从<a href=https://www.docker.com/products/docker-desktop>docker 官网</a> 下载windows版本安装。完成后，在图标区会有一个鲸鱼船。</p><p><div style=text-align:center><img src=image-20200626141604658.png alt=image-20200626141604658 style=width:80%></div></p><p>我们使用docker-compose 来进行下一步 网站服务的安装。将下面的资料保存到s<code>docker-compose.yml</code> 然后利用docker-compose方法安装。</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yml data-lang=yml><span style=display:flex><span><span style=color:#f92672>version</span>: <span style=color:#e6db74>&#34;2&#34;</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>services</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>service.rsshub</span>:
+</span></span><span style=display:flex><span>    <span style=color:#f92672>image</span>: <span style=color:#ae81ff>diygod/rsshub</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>container_name</span>: <span style=color:#ae81ff>rsshub</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>ports</span>:
+</span></span><span style=display:flex><span>      - <span style=color:#e6db74>&#34;1200:1200&#34;</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>volumes</span>:
+</span></span><span style=display:flex><span>      - <span style=color:#ae81ff>rsshub_data:/app/lib</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>restart</span>: <span style=color:#ae81ff>always</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>service.rss</span>:
+</span></span><span style=display:flex><span>    <span style=color:#f92672>image</span>: <span style=color:#ae81ff>wangqiru/ttrss:latest</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>container_name</span>: <span style=color:#ae81ff>ttrss</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>ports</span>:
+</span></span><span style=display:flex><span>      - <span style=color:#ae81ff>8118</span>:<span style=color:#ae81ff>80</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>environment</span>:
+</span></span><span style=display:flex><span>      - <span style=color:#ae81ff>SELF_URL_PATH=http://127.0.0.1:8118/</span> <span style=color:#75715e># please change to your own domain</span>
+</span></span><span style=display:flex><span>      - <span style=color:#ae81ff>DB_HOST=database.postgres</span>
+</span></span><span style=display:flex><span>      - <span style=color:#ae81ff>DB_PORT=5432</span>
+</span></span><span style=display:flex><span>      - <span style=color:#ae81ff>DB_NAME=ttrss</span>
+</span></span><span style=display:flex><span>      - <span style=color:#ae81ff>DB_USER=postgres</span>
+</span></span><span style=display:flex><span>      - <span style=color:#ae81ff>DB_PASS=ttrss</span> <span style=color:#75715e># please change the password</span>
+</span></span><span style=display:flex><span>      - <span style=color:#ae81ff>ENABLE_PLUGINS=auth_internal,fever</span> <span style=color:#75715e># auth_internal is required. Plugins enabled here will be enabled for all users as system plugins</span>
+</span></span><span style=display:flex><span>      - <span style=color:#ae81ff>FEED_LOG_QUIET=true</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>stdin_open</span>: <span style=color:#66d9ef>true</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>tty</span>: <span style=color:#66d9ef>true</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>restart</span>: <span style=color:#ae81ff>always</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>command</span>: <span style=color:#ae81ff>sh -c &#39;sh /wait-for.sh $$DB_HOST:$$DB_PORT -- php /configure-db.php &amp;&amp; exec s6-svscan /etc/s6/&#39;</span>
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  <span style=color:#f92672>database.postgres</span>:
+</span></span><span style=display:flex><span>    <span style=color:#f92672>image</span>: <span style=color:#ae81ff>postgres:alpine</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>container_name</span>: <span style=color:#ae81ff>postgres</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>environment</span>:
+</span></span><span style=display:flex><span>      - <span style=color:#ae81ff>POSTGRES_PASSWORD=ttrss</span> <span style=color:#75715e># please change the password</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>volumes</span>:
+</span></span><span style=display:flex><span>      - <span style=color:#ae81ff>postgres_data:/var/lib/postgresql/data</span> <span style=color:#75715e># persist postgres data to ~/postgres/data/ on the host</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>restart</span>: <span style=color:#ae81ff>always</span>
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  <span style=color:#f92672>service.mercury</span>: <span style=color:#75715e># set Mercury Parser API endpoint to `service.mercury:3000` on TTRSS plugin setting page</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>image</span>: <span style=color:#ae81ff>wangqiru/mercury-parser-api:latest</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>container_name</span>: <span style=color:#ae81ff>mercury</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>ports</span>:
+</span></span><span style=display:flex><span>      - <span style=color:#ae81ff>3000</span>:<span style=color:#ae81ff>3000</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>restart</span>: <span style=color:#ae81ff>always</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#f92672>volumes</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>postgres_data</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>rsshub_data</span>:
+</span></span></code></pre></div><p><div style=text-align:center><img src=image-20200626140114783.png alt=image-20200626140114783 style=width:80%></div></p><p>在地址栏输入<code>cmd</code>，我们就可以打开cmd界面了，然后运行<code>docker-compose up -d</code> ，就可以自动安装全部内容了。</p><p><div style=text-align:center><img src=image-20200626134626593.png alt=image-20200626134626593 style=width:80%></div></p><p>在地址栏输入<code>cmd</code> 然后回车，我们就能进入cmd界面，然后使用docker-compose，进行安装，网速好的话，安装很快。</p><p><div style=text-align:center><img src=image-20200626140147402.png alt=image-20200626140147402 style=width:80%></div></p><p>安装完毕我们就可以使用了，下面是其资源占用情况。</p><table><thead><tr><th></th><th>内容</th><th>占用内存空间（M）</th></tr></thead><tbody><tr><td>mercury</td><td>全文获取ttrss插件</td><td>66.8</td></tr><tr><td>postgres</td><td>ttrss数据库</td><td>6.8</td></tr><tr><td>ttrss</td><td>ttrss工具</td><td>30.2</td></tr><tr><td>rsshub</td><td>rsshub各种b站源等等</td><td>142.4</td></tr><tr><td></td><td></td><td>246.2</td></tr></tbody></table><p><div style=text-align:center><img src=image-20200626140407183.png alt=image-20200626140407183 style=width:80%></div></p><p>打开 <a href=http://127.0.0.1:8118/>http://127.0.0.1:8118/</a></p><p>默认账户：admin 密码：password，请第一时间更改。</p><p><div style=text-align:center><img src=image-20200626143320968.png alt=image-20200626143320968 style=width:80%></div></p><h2 id=在chrome安装-rsshub-radar>在chrome安装 rsshub radar</h2><p><div style=text-align:center><img src=image-20200626144233385.png alt=image-20200626144233385 style=width:80%></div></p><p>并设置到本机的rsshub地址，ttrss地址，如上。</p><p><div style=text-align:center><img src=image-20200626144330350.png alt=image-20200626144330350 style=width:80%></div></p><p>打开bilibili up主的主页就能订阅了，订阅到ttrss。</p><p>这里有问题。需要解决。</p><p><div style=text-align:center><img src=image-20200626145153354.png alt=image-20200626145153354 style=width:80%></div></p><p>本次安装教程到此结束，下期我们介绍全文获取功能，手机app的联动，即ttrss的设置问题</p></main><script src=https://giscus.app/client.js data-repo=talengu/talengu.github.io data-repo-id="MDEwOlJlcG9zaXRvcnk5MTk0NjkxNQ==" data-category=Blog data-category-id=DIC_kwDOBXr_o84C0Qpk data-mapping=pathname data-strict=0 data-reactions-enabled=1 data-emit-metadata=0 data-input-position=bottom data-theme=/css/giscus.css data-lang=zh-CN crossorigin=anonymous async></script><footer>- END -<hr><a href=/about target=_blank title=About>一塘</a>
+© 2025
+<a href=/index.xml target=_blank title=RSS>RSS</a></footer></body></html>

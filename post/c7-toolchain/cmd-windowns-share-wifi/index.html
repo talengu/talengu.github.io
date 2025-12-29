@@ -1,0 +1,39 @@
+<!doctype html><html lang=zh-cn><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><title>Windows笔记本开共享wifi | 一塘</title>
+<link rel=stylesheet href=/css/style.css><link rel=stylesheet href=/css/fonts.css><link rel=stylesheet href=/css/dark.css></head><body><nav><ul class=menu><li><a href=/about/>一塘</a></li><li><a href=/post/>博客</a></li><li><a href=/categories/>分类</a></li><li><a href=/tags/>标签</a></li><li style=float:right;position:relative;margin-left:1em><input type=text id=search-box placeholder=搜索文章... style="padding:.3em .6em;border-radius:4px;border:1px solid #ccc;width:150px;min-width:100px;max-width:250px"><ul id=search-results style="position:absolute;top:100%;right:0;background:#fff;border:1px solid #ccc;max-height:300px;overflow-y:auto;display:none;z-index:1000;list-style:none;padding:0;margin:0;width:250px"></ul></li><style>.search-item{padding:.4em .6em}.search-link{display:block;font-weight:500;text-decoration:none;color:#007acc}.search-snippet{font-size:.85em;color:#555;margin-top:.2em;line-height:1.4}.search-highlight{background:rgba(255,235,59,.5);padding:0 .15em;border-radius:3px}.search-item:hover{background-color:rgba(0,0,0,5%)}@media(prefers-color-scheme:dark){.search-link{color:#4fc3f7}.search-snippet{color:#aaa}.search-item:hover{background-color:rgba(104,99,99,.273)}.search-highlight{background:rgba(255,193,7,.35)}}</style><script src=https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.6.2/fuse.min.js></script><script>fetch("/post/index.json").then(e=>e.json()).then(e=>{const o=new Fuse(e,{keys:[{name:"title",weight:2},{name:"summary",weight:1},{name:"content",weight:.7}],threshold:.3,ignoreLocation:!0,minMatchCharLength:2}),n=document.getElementById("search-box"),t=document.getElementById("search-results");function s(e,t){if(!e)return"";const n=t.replace(/[.*+?^${}()|[\]\\]/g,"\\$&"),s=new RegExp(`(${n})`,"gi");return e.replace(s,'<mark class="search-highlight">$1</mark>')}function i(e,t,n=80){const s=e.toLowerCase().indexOf(t.toLowerCase());if(s===-1)return e.slice(0,n)+"…";const o=Math.max(0,s-n/2),i=Math.min(e.length,s+n/2);return"…"+e.slice(o,i)+"…"}n.addEventListener("input",function(){const e=this.value.trim();if(!e){t.style.display="none",t.innerHTML="";return}const n=o.search(e);t.innerHTML=n.slice(0,8).map(t=>{const n=t.item,o=i(n.content||n.summary||"",e);return`
+          <li class="search-item">
+            <a href="${n.permalink}" class="search-link">
+              ${s(n.title,e)}
+            </a>
+            <div class="search-snippet">
+              ${s(o,e)}
+            </div>
+          </li>
+        `}).join(""),t.style.display=n.length?"block":"none"}),document.addEventListener("click",e=>{!n.contains(e.target)&&!t.contains(e.target)&&(t.style.display="none")})})</script></ul><hr></nav><div class=article-meta><h1><span class=title>Windows笔记本开共享wifi</span></h1></div><div class=post-stats style=text-align:right>2015/04/14</div><main><h2 id=前言>前言</h2><p>网上有很多用笔记本设置无线热点的批处理，我中和了一下。复制下面代码到记事本，改后缀为bat就行了。其中，mssid和mkey可自定义</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>
+</span></span><span style=display:flex><span>@echo off
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>set mssid<span style=color:#f92672>=</span>GOODGOOD
+</span></span><span style=display:flex><span>::网络名字
+</span></span><span style=display:flex><span>set mkey<span style=color:#f92672>=</span><span style=color:#ae81ff>123456789</span>
+</span></span><span style=display:flex><span>::大于八位密码
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>echo ***********************************************
+</span></span><span style=display:flex><span>echo              打开承载网络  <span style=color:#ae81ff>1</span>
+</span></span><span style=display:flex><span>echo              关闭承载网络  <span style=color:#ae81ff>2</span>
+</span></span><span style=display:flex><span>echo              承载网络信息  <span style=color:#ae81ff>3</span>
+</span></span><span style=display:flex><span>echo              设置网络信息  set
+</span></span><span style=display:flex><span>echo              退出          e
+</span></span><span style=display:flex><span>echo        （网络名字、密码可在源文件中改）
+</span></span><span style=display:flex><span>echo           （请以管理员身份打开!!!）
+</span></span><span style=display:flex><span>echo ***********************************************
+</span></span><span style=display:flex><span>:start
+</span></span><span style=display:flex><span>set /p var<span style=color:#f92672>=</span>请选择:
+</span></span><span style=display:flex><span><span style=color:#66d9ef>if</span> %var%<span style=color:#f92672>==</span><span style=color:#ae81ff>1</span> netsh wlan start hostednetwork <span style=color:#f92672>&amp;&amp;</span> echo 网络名字:%mssid% 密码:%mkey% <span style=color:#f92672>&amp;&amp;</span> GOTO start
+</span></span><span style=display:flex><span><span style=color:#66d9ef>if</span> %var%<span style=color:#f92672>==</span><span style=color:#ae81ff>2</span> netsh wlan stop hostednetwork <span style=color:#f92672>&amp;&amp;</span> GOTO start
+</span></span><span style=display:flex><span><span style=color:#66d9ef>if</span> %var%<span style=color:#f92672>==</span><span style=color:#ae81ff>3</span> netsh wlan show hostednetwork <span style=color:#f92672>&amp;&amp;</span> echo 网络名字:%mssid% 密码:%mkey% <span style=color:#f92672>&amp;&amp;</span> GOTO start
+</span></span><span style=display:flex><span><span style=color:#66d9ef>if</span> %var%<span style=color:#f92672>==</span>set netsh wlan set hostednetwork mode<span style=color:#f92672>=</span>allow ssid<span style=color:#f92672>=</span>%mssid% key<span style=color:#f92672>=</span>%mkey% <span style=color:#f92672>&amp;&amp;</span> echo 网络名字:%mssid% 密码:%mkey% <span style=color:#f92672>&amp;&amp;</span> GOTO start
+</span></span><span style=display:flex><span><span style=color:#66d9ef>if</span> %var%<span style=color:#f92672>==</span>e pause
+</span></span></code></pre></div><h2 id=播放声音>播放声音</h2><p>保存为<code>播放声音.vbs</code>,可以播放声音</p><pre tabindex=0><code>CreateObject(&#34;SAPI.SpVoice&#34;).Speak &#34;hello world&#34;
+</code></pre></main><script src=https://giscus.app/client.js data-repo=talengu/talengu.github.io data-repo-id="MDEwOlJlcG9zaXRvcnk5MTk0NjkxNQ==" data-category=Blog data-category-id=DIC_kwDOBXr_o84C0Qpk data-mapping=pathname data-strict=0 data-reactions-enabled=1 data-emit-metadata=0 data-input-position=bottom data-theme=/css/giscus.css data-lang=zh-CN crossorigin=anonymous async></script><footer>- END -<hr><a href=/about target=_blank title=About>一塘</a>
+© 2025
+<a href=/index.xml target=_blank title=RSS>RSS</a></footer></body></html>
