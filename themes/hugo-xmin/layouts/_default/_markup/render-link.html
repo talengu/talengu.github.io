@@ -1,7 +1,7 @@
 {{- $url := .Destination -}}
 {{- $text := .Text -}}
 {{- $page := .Page -}}
-
+<!-- 修复本地markdown自引用 -->
 {{- if strings.HasSuffix $url ".md" -}}
 
   {{- /* 尝试解析为 Hugo 页面 */ -}}
