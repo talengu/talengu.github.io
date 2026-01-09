@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>知识管理 on 一塘</title><link>https://example.com/tags/%E7%9F%A5%E8%AF%86%E7%AE%A1%E7%90%86/</link><description>Recent content in 知识管理 on 一塘</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Thu, 06 Jun 2024 12:00:00 +0000</lastBuildDate><atom:link href="https://example.com/tags/%E7%9F%A5%E8%AF%86%E7%AE%A1%E7%90%86/index.xml" rel="self" type="application/rss+xml"/><item><title>「转」基于 Readeck 搭建个人稍后读/书签服务</title><link>https://example.com/post/c7-toolchain/readeck-tips/</link><pubDate>Thu, 06 Jun 2024 12:00:00 +0000</pubDate><guid>https://example.com/post/c7-toolchain/readeck-tips/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>知识管理 on 一塘</title><link>https://talengu.github.io/tags/%E7%9F%A5%E8%AF%86%E7%AE%A1%E7%90%86/</link><description>Recent content in 知识管理 on 一塘</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Thu, 06 Jun 2024 12:00:00 +0000</lastBuildDate><atom:link href="https://talengu.github.io/tags/%E7%9F%A5%E8%AF%86%E7%AE%A1%E7%90%86/index.xml" rel="self" type="application/rss+xml"/><item><title>「转」基于 Readeck 搭建个人稍后读/书签服务</title><link>https://talengu.github.io/post/c7-toolchain/readeck-tips/</link><pubDate>Thu, 06 Jun 2024 12:00:00 +0000</pubDate><guid>https://talengu.github.io/post/c7-toolchain/readeck-tips/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
 &lt;blockquote>
 &lt;p>本文由 &lt;a href="http://ksria.com/simpread/">简悦 SimpRead&lt;/a> 转码， 原文地址 &lt;a href="https://sspai.com/post/89289">https://sspai.com/post/89289&lt;/a>&lt;/p>&lt;/blockquote>
 &lt;!-- more -->
@@ -47,7 +47,7 @@
  style="width:80%;" 
 />
 &lt;/div>&lt;/p>
-&lt;p>接下来我们就打开 Portainer 来进行服务容器的部署，这里打开并登录 Portainer，然后从左侧边栏中点击 Stacks，然后点击页面右上角的 &lt;code>Add Stack&lt;/code>来添加。&lt;/p></description></item><item><title>rss统计 基于ttrss的PostgresQL数据库</title><link>https://example.com/post/c7-toolchain/rss-ttrss-statics/</link><pubDate>Sun, 08 May 2022 22:00:04 +0000</pubDate><guid>https://example.com/post/c7-toolchain/rss-ttrss-statics/</guid><description>&lt;p>&lt;strong>前言&lt;/strong>
+&lt;p>接下来我们就打开 Portainer 来进行服务容器的部署，这里打开并登录 Portainer，然后从左侧边栏中点击 Stacks，然后点击页面右上角的 &lt;code>Add Stack&lt;/code>来添加。&lt;/p></description></item><item><title>rss统计 基于ttrss的PostgresQL数据库</title><link>https://talengu.github.io/post/c7-toolchain/rss-ttrss-statics/</link><pubDate>Sun, 08 May 2022 22:00:04 +0000</pubDate><guid>https://talengu.github.io/post/c7-toolchain/rss-ttrss-statics/</guid><description>&lt;p>&lt;strong>前言&lt;/strong>
 统计ttrss的使用数据。&lt;/p>
 &lt;ul>
 &lt;li>月度mark文件分析 OK&lt;/li>
@@ -122,7 +122,7 @@
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>D&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;C:&lt;/span>&lt;span style="color:#ae81ff">\\&lt;/span>&lt;span style="color:#e6db74">Users&lt;/span>&lt;span style="color:#ae81ff">\\&lt;/span>&lt;span style="color:#e6db74">talen&lt;/span>&lt;span style="color:#ae81ff">\\&lt;/span>&lt;span style="color:#e6db74">Desktop&lt;/span>&lt;span style="color:#ae81ff">\\&lt;/span>&lt;span style="color:#e6db74">&amp;#34;&lt;/span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">with&lt;/span> open(D&lt;span style="color:#f92672">+&lt;/span>&lt;span style="color:#e6db74">&amp;#34;cc.md&amp;#34;&lt;/span>,&lt;span style="color:#e6db74">&amp;#39;w&amp;#39;&lt;/span>,encoding&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#e6db74">&amp;#39;utf-8&amp;#39;&lt;/span>) &lt;span style="color:#66d9ef">as&lt;/span> f:
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> f&lt;span style="color:#f92672">.&lt;/span>write(g_content)
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>使用脚本将英文rss转成中文rss</title><link>https://example.com/post/c7-toolchain/rss-google-translate/</link><pubDate>Sun, 08 May 2022 22:00:04 +0000</pubDate><guid>https://example.com/post/c7-toolchain/rss-google-translate/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>使用脚本将英文rss转成中文rss</title><link>https://talengu.github.io/post/c7-toolchain/rss-google-translate/</link><pubDate>Sun, 08 May 2022 22:00:04 +0000</pubDate><guid>https://talengu.github.io/post/c7-toolchain/rss-google-translate/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
 &lt;p>本文中我们将英文rss 自动转成中文 rss供ttrss使用。（利用谷歌翻译）&lt;/p>
 &lt;p>方便在手机上进行阅读或者收听。&lt;/p>
 &lt;center>&lt;img src="rss-google-translate/20220508-22-28-27.png" width="30%">
@@ -241,7 +241,7 @@
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>tran_nature()
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="定时任务">定时任务&lt;/h3>
 &lt;blockquote>
-&lt;p>注意激活一下miniconda3 这个命令&lt;code>source /home/xxx/miniconda3/bin/activate&lt;/code>&lt;/p></description></item><item><title>本地安装rss</title><link>https://example.com/post/c7-toolchain/rss-local-install/</link><pubDate>Sat, 16 Apr 2022 12:39:04 +0000</pubDate><guid>https://example.com/post/c7-toolchain/rss-local-install/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
+&lt;p>注意激活一下miniconda3 这个命令&lt;code>source /home/xxx/miniconda3/bin/activate&lt;/code>&lt;/p></description></item><item><title>本地安装rss</title><link>https://talengu.github.io/post/c7-toolchain/rss-local-install/</link><pubDate>Sat, 16 Apr 2022 12:39:04 +0000</pubDate><guid>https://talengu.github.io/post/c7-toolchain/rss-local-install/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
 &lt;p>在 “&lt;a href="c0-life/talk-rss-2020.md">二零年RSS杂谈&lt;/a>”中说到，我想建立一种信息的获取系统，免受广告和推荐算法的困扰。&lt;/p>
 &lt;p>我希望其的功能包括：&lt;/p>
 &lt;ul>
@@ -364,7 +364,7 @@
  
  style="width:80%;" 
 />
-&lt;/div>&lt;/p></description></item><item><title>知识记忆软件anki的使用</title><link>https://example.com/post/c7-toolchain/anki-tips/</link><pubDate>Thu, 14 Apr 2022 12:39:04 +0000</pubDate><guid>https://example.com/post/c7-toolchain/anki-tips/</guid><description>&lt;h2 id="anki使用---自建-anki--server">anki使用 - 自建 anki server&lt;/h2>
+&lt;/div>&lt;/p></description></item><item><title>知识记忆软件anki的使用</title><link>https://talengu.github.io/post/c7-toolchain/anki-tips/</link><pubDate>Thu, 14 Apr 2022 12:39:04 +0000</pubDate><guid>https://talengu.github.io/post/c7-toolchain/anki-tips/</guid><description>&lt;h2 id="anki使用---自建-anki--server">anki使用 - 自建 anki server&lt;/h2>
 &lt;p>当初想设计好用的英语背诵软件，现在发现了anki人家功能全部实现，还要啥自行车。&lt;/p>
 &lt;p>我当时设计的单词勇士开源Android软件：
 &lt;a href="https://github.com/talengu/WordWarrior">https://github.com/talengu/WordWarrior&lt;/a>
@@ -395,7 +395,7 @@
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="客户端">客户端&lt;/h2>
 &lt;img src="anki-tips/image-20200424005627732.png" alt="image-20200424005627732" style="zoom:33%;" />
 &lt;h3 id="macwin-客户端">mac/win 客户端&lt;/h3>
-&lt;p>从官网下载 anki mac版本 2.1.21 (f1734a47) / Windows PC 客户端&lt;/p></description></item><item><title>RSS跟踪github文件更新+某管子更新</title><link>https://example.com/post/c7-toolchain/rss-github-file/</link><pubDate>Sat, 24 Jul 2021 12:00:00 +0000</pubDate><guid>https://example.com/post/c7-toolchain/rss-github-file/</guid><description>&lt;p>&lt;strong>前言&lt;/strong>&lt;/p>
+&lt;p>从官网下载 anki mac版本 2.1.21 (f1734a47) / Windows PC 客户端&lt;/p></description></item><item><title>RSS跟踪github文件更新+某管子更新</title><link>https://talengu.github.io/post/c7-toolchain/rss-github-file/</link><pubDate>Sat, 24 Jul 2021 12:00:00 +0000</pubDate><guid>https://talengu.github.io/post/c7-toolchain/rss-github-file/</guid><description>&lt;p>&lt;strong>前言&lt;/strong>&lt;/p>
 &lt;p>好久没有更新博客了。RSS这种形式的信息获取方式，似乎又流行起来。&lt;/p>
 &lt;!-- more -->
 &lt;h2 id="github文件更新">github文件更新&lt;/h2>
@@ -491,7 +491,7 @@
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">for&lt;/span> _d &lt;span style="color:#f92672">in&lt;/span> _now[:&lt;span style="color:#f92672">-&lt;/span>&lt;span style="color:#ae81ff">5&lt;/span>]:
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> os&lt;span style="color:#f92672">.&lt;/span>popen(&lt;span style="color:#e6db74">&amp;#34;rm -rf &lt;/span>&lt;span style="color:#e6db74">%s&lt;/span>&lt;span style="color:#e6db74">&amp;#34;&lt;/span>&lt;span style="color:#f92672">%&lt;/span>_d)
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>在linux亦可使用&lt;a href="https://www.runoob.com/w3cnote/linux-crontab-tasks.html">crontab&lt;/a>定时启动下载任务。在 &lt;code>/etc/cron.hourly/&lt;/code> 设置即可。&lt;/p></description></item><item><title>hexo个人主页搭建</title><link>https://example.com/post/c7-toolchain/hexo-blog/</link><pubDate>Thu, 22 Dec 2016 12:39:04 +0000</pubDate><guid>https://example.com/post/c7-toolchain/hexo-blog/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>在linux亦可使用&lt;a href="https://www.runoob.com/w3cnote/linux-crontab-tasks.html">crontab&lt;/a>定时启动下载任务。在 &lt;code>/etc/cron.hourly/&lt;/code> 设置即可。&lt;/p></description></item><item><title>hexo个人主页搭建</title><link>https://talengu.github.io/post/c7-toolchain/hexo-blog/</link><pubDate>Thu, 22 Dec 2016 12:39:04 +0000</pubDate><guid>https://talengu.github.io/post/c7-toolchain/hexo-blog/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
 &lt;p>本文主要内容为博客搭建的记录与分享，我采用了Hexo博客框架，NexT主题和Gitment评论系统。本文中记录了我博客的安装流程和使用过程中的改进细节。&lt;/p>
 &lt;p>对Next主题版本的一些说明：我使用的是&lt;code>version: 5.1.0&lt;/code>。而使用新版本的NexT v6 主题的同学，有些功能如gitment已经实现，可以直接使用V6。此V6版本对于图片的使用可能会出现问题。仅需看看我下面的2.2小节。&lt;/p>
 &lt;p>有时间我会将我修改后的hexo Next theme 基于&lt;code>version: 5.1.0&lt;/code>主题，给个独立的git仓，放到github 上。&lt;/p>

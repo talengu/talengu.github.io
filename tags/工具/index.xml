@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>工具 on 一塘</title><link>https://example.com/tags/%E5%B7%A5%E5%85%B7/</link><description>Recent content in 工具 on 一塘</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Tue, 24 Jul 2018 22:00:00 +0000</lastBuildDate><atom:link href="https://example.com/tags/%E5%B7%A5%E5%85%B7/index.xml" rel="self" type="application/rss+xml"/><item><title>linux代理的使用</title><link>https://example.com/post/c5-linux/linux/linux-proxy/</link><pubDate>Tue, 24 Jul 2018 22:00:00 +0000</pubDate><guid>https://example.com/post/c5-linux/linux/linux-proxy/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>工具 on 一塘</title><link>https://talengu.github.io/tags/%E5%B7%A5%E5%85%B7/</link><description>Recent content in 工具 on 一塘</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Tue, 24 Jul 2018 22:00:00 +0000</lastBuildDate><atom:link href="https://talengu.github.io/tags/%E5%B7%A5%E5%85%B7/index.xml" rel="self" type="application/rss+xml"/><item><title>linux代理的使用</title><link>https://talengu.github.io/post/c5-linux/linux/linux-proxy/</link><pubDate>Tue, 24 Jul 2018 22:00:00 +0000</pubDate><guid>https://talengu.github.io/post/c5-linux/linux/linux-proxy/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
 &lt;p>最近要下载一个在youtube上的数据库，用来训练神经网络。走国内通道下载比较慢。于是，我使用了vps代理方式下载，速度取决于你的机器连接vps的网速。本文的主要内容有，实现shadowsocks 代理 ，tsocks 代理工具使用，可组合使用的一些下载工具如wget 和axel等。&lt;/p>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># 举个栗子&lt;/span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$ tsocks wget -c https://www.dropbox.com/s/minpyv59crdifk9/datasets.zip
@@ -39,7 +39,7 @@
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
 &lt;li>执行&lt;code>ssserver -c server_shadowsocks.json&lt;/code>&lt;/li>
 &lt;/ul>
-&lt;p>说一点: 由于我们的下载任务是临时的，开个screen（终端复用工具）放在后台。当然你也可以设置为开机自启动，这里不再赘述。&lt;/p></description></item><item><title>博客模版</title><link>https://example.com/post/template/</link><pubDate>Fri, 01 Jan 2010 12:00:00 +0000</pubDate><guid>https://example.com/post/template/</guid><description>&lt;p>文件head，设置标题、日期、分类、标签、评论、版权、是否使用公式，如下。&lt;/p>
+&lt;p>说一点: 由于我们的下载任务是临时的，开个screen（终端复用工具）放在后台。当然你也可以设置为开机自启动，这里不再赘述。&lt;/p></description></item><item><title>博客模版</title><link>https://talengu.github.io/post/template/</link><pubDate>Fri, 01 Jan 2010 12:00:00 +0000</pubDate><guid>https://talengu.github.io/post/template/</guid><description>&lt;p>文件head，设置标题、日期、分类、标签、评论、版权、是否使用公式，如下。&lt;/p>
 &lt;pre tabindex="0">&lt;code>---
 title: 模版文件
 date: 2019-07-25 12:00:00

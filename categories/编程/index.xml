@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>编程 on 一塘</title><link>https://example.com/categories/%E7%BC%96%E7%A8%8B/</link><description>Recent content in 编程 on 一塘</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Sun, 27 Apr 2025 12:00:00 +0000</lastBuildDate><atom:link href="https://example.com/categories/%E7%BC%96%E7%A8%8B/index.xml" rel="self" type="application/rss+xml"/><item><title>「转」本科生反驳 40 年前的猜想，发明新型哈希表</title><link>https://example.com/post/c8-programming/hash-tables-news/</link><pubDate>Sun, 27 Apr 2025 12:00:00 +0000</pubDate><guid>https://example.com/post/c8-programming/hash-tables-news/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>编程 on 一塘</title><link>https://talengu.github.io/categories/%E7%BC%96%E7%A8%8B/</link><description>Recent content in 编程 on 一塘</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Sun, 27 Apr 2025 12:00:00 +0000</lastBuildDate><atom:link href="https://talengu.github.io/categories/%E7%BC%96%E7%A8%8B/index.xml" rel="self" type="application/rss+xml"/><item><title>「转」本科生反驳 40 年前的猜想，发明新型哈希表</title><link>https://talengu.github.io/post/c8-programming/hash-tables-news/</link><pubDate>Sun, 27 Apr 2025 12:00:00 +0000</pubDate><guid>https://talengu.github.io/post/c8-programming/hash-tables-news/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
 &lt;blockquote>
 &lt;p>本文原文发表于《广达杂志》（Quanta Magazine）。&lt;/p>&lt;/blockquote>
 &lt;p>&lt;a href="https://www.quantamagazine.org/undergraduate-upends-a-40-year-old-data-science-conjecture-20250210/">&lt;em>本文&lt;/em>&lt;/a>原文_发表于 &lt;a href="https://www.quantamagazine.org/">《广达杂志》（Quanta Magazine&lt;/a>）。_&lt;/p>
@@ -44,7 +44,7 @@
 &lt;/div>&lt;/p>
 &lt;p>Martín Farach-Colton 帮助 Krapivin 证明他的新哈希表与一个长期存在的猜想相矛盾。&lt;/p>
 &lt;p>摄影：Andrew Farach-Colton&lt;/p>
-&lt;p>答案通常取决于在哈希表中查找空位所需的时间。反过来，这通常取决于哈希表的填充程度。充实度可以用总体百分比来描述——这个表格是 50%，那个表格是 90%——但研究人员经常处理更完整的表格。因此，他们可能会使用一个由 &lt;em>x&lt;/em> 表示的整数来指定哈希表接近 100% 满的程度。如果 &lt;em>x&lt;/em> 为 100，则表已满 99%。如果 &lt;em>x&lt;/em> 为 1,000，则表已满 99.9%。这种填充度度量提供了一种便捷的方法来评估执行查询或插入等作需要多长时间。&lt;/p></description></item><item><title>c结构体对齐</title><link>https://example.com/post/c8-programming/c-struct/</link><pubDate>Thu, 15 Dec 2022 12:00:00 +0000</pubDate><guid>https://example.com/post/c8-programming/c-struct/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
+&lt;p>答案通常取决于在哈希表中查找空位所需的时间。反过来，这通常取决于哈希表的填充程度。充实度可以用总体百分比来描述——这个表格是 50%，那个表格是 90%——但研究人员经常处理更完整的表格。因此，他们可能会使用一个由 &lt;em>x&lt;/em> 表示的整数来指定哈希表接近 100% 满的程度。如果 &lt;em>x&lt;/em> 为 100，则表已满 99%。如果 &lt;em>x&lt;/em> 为 1,000，则表已满 99.9%。这种填充度度量提供了一种便捷的方法来评估执行查询或插入等作需要多长时间。&lt;/p></description></item><item><title>c结构体对齐</title><link>https://talengu.github.io/post/c8-programming/c-struct/</link><pubDate>Thu, 15 Dec 2022 12:00:00 +0000</pubDate><guid>https://talengu.github.io/post/c8-programming/c-struct/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
 &lt;p>c语言的字节对齐，机器的大小段模式的理解。&lt;/p>
 &lt;p>计算机存储的基础知识。&lt;/p>
 &lt;!-- more -->
@@ -118,7 +118,7 @@
 || 00 00 00 00 00 00 00 00 
 || c2 c1 01 00 00 00 00 00 
 || 1
-&lt;/code>&lt;/pre>&lt;p>少占用了一个8字节。&lt;/p></description></item><item><title>「转」window软件运行时间</title><link>https://example.com/post/c8-programming/soft-run-time/</link><pubDate>Fri, 15 Apr 2022 12:39:04 +0000</pubDate><guid>https://example.com/post/c8-programming/soft-run-time/</guid><description>&lt;h2 id="背景">背景&lt;/h2>
+&lt;/code>&lt;/pre>&lt;p>少占用了一个8字节。&lt;/p></description></item><item><title>「转」window软件运行时间</title><link>https://talengu.github.io/post/c8-programming/soft-run-time/</link><pubDate>Fri, 15 Apr 2022 12:39:04 +0000</pubDate><guid>https://talengu.github.io/post/c8-programming/soft-run-time/</guid><description>&lt;h2 id="背景">背景&lt;/h2>
 &lt;p>对关注性能的程序开发人员而言，一个好的计时部件既是益友，也是良师。计时器既可以作为程序组件帮助程序员精确的控制程序进程，又是一件有力的调试武器，在有经验的程序员手里可以尽快的确定程序的性能瓶颈，或者对不同的算法作出有说服力的性能比较。&lt;/p>
 &lt;!-- more -->
 &lt;p>在Windows平台下，常用的计时器有两种，一种是&lt;code>timeGetTime&lt;/code>多媒体计时器，它可以提供毫秒级的计时。但这个精度对很多应用场合而言还是太粗糙了。另一种是&lt;code>QueryPerformanceCount&lt;/code>计数器，随系统的不同可以提供微秒级的计数。对于实时图形处理、多媒体数据流处理、或者实时系统构造的程序员，善用&lt;code>QueryPerformanceCount/QueryPerformanceFrequency&lt;/code>是一项基本功。&lt;/p>
@@ -164,7 +164,7 @@
 &lt;/ol>
 &lt;p>关于这个方法计时的最大长度，我们可以简单的用下列公式计算：&lt;/p>
 &lt;pre tabindex="0">&lt;code>自CPU上电以来的秒数 = RDTSC读出的周期数 / CPU主频速率（Hz） 
-&lt;/code>&lt;/pre>&lt;p>64位无符号整数所能表达的最大数字是&lt;code>1.8×10^19&lt;/code>，在我的&lt;code>Celeron 800&lt;/code>上可以计时大约700年（书中说可以在200MHz的Pentium上计时117年，这个数字不知道是怎么得出来的，与我的计算有出入）。无论如何，我们大可不必关心溢出的问题。&lt;/p></description></item><item><title>「转」在 C/C++ 程序中打印当前函数调用栈</title><link>https://example.com/post/c8-programming/c-debug/</link><pubDate>Wed, 25 Aug 2021 23:18:52 +0000</pubDate><guid>https://example.com/post/c8-programming/c-debug/</guid><description>&lt;h2 id="背景">背景&lt;/h2>
+&lt;/code>&lt;/pre>&lt;p>64位无符号整数所能表达的最大数字是&lt;code>1.8×10^19&lt;/code>，在我的&lt;code>Celeron 800&lt;/code>上可以计时大约700年（书中说可以在200MHz的Pentium上计时117年，这个数字不知道是怎么得出来的，与我的计算有出入）。无论如何，我们大可不必关心溢出的问题。&lt;/p></description></item><item><title>「转」在 C/C++ 程序中打印当前函数调用栈</title><link>https://talengu.github.io/post/c8-programming/c-debug/</link><pubDate>Wed, 25 Aug 2021 23:18:52 +0000</pubDate><guid>https://talengu.github.io/post/c8-programming/c-debug/</guid><description>&lt;h2 id="背景">背景&lt;/h2>
 &lt;p>2011 年 6 月 11 日 &lt;a href="http://www.wuzesheng.com/?author=2">小武哥&lt;/a>&lt;/p>
 &lt;p>前几天帮同事跟踪的一个程序莫名退出，没有 core dump(当然 ulimit 是打开的) 的问题。我们知道，正常情况下，如果程序因为某种异常条件退出的话，应该会产生 core dump，而如果程序正常退出的话，应该是直接或者间接的调用了 exit() 相关的函数。基于这个事实，我想到了这样一个办法，在程序开始时，通过系统提供的 atexit()，向系统注册一个回调函数，在程序调用 exit() 退出的时候，这个回调函数就会被调用，然后我们在回调函数中打印出当前的函数调用栈，由此便可以知道 exit() 是在哪里调用，从而上述问题便迎刃而解了。上述方法用来解决类似问题是非常行之有效的。在上面，我提到了在 “回调函数中打印出当前的函数调用栈”，相信细心的朋友应该注意到这个了，本文的主要内容就是详细介绍，如何在程序中打印中当前的函数调用栈。&lt;/p>
 &lt;!-- more -->
@@ -212,7 +212,7 @@
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">free&lt;/span>(stacktrace);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>（说明：下面的介绍采用的环境是 ubuntu 11.04, x86_64, gcc-4.5.2）&lt;/p></description></item><item><title>「转」地表最强大的还有这 14 位程序员</title><link>https://example.com/post/c8-programming/cs-fonters/</link><pubDate>Thu, 09 Apr 2020 12:39:04 +0000</pubDate><guid>https://example.com/post/c8-programming/cs-fonters/</guid><description>&lt;p>原标题：除了 Linus，地表最强大的还有这 14 位程序员，速来膜拜！&lt;/p>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>（说明：下面的介绍采用的环境是 ubuntu 11.04, x86_64, gcc-4.5.2）&lt;/p></description></item><item><title>「转」地表最强大的还有这 14 位程序员</title><link>https://talengu.github.io/post/c8-programming/cs-fonters/</link><pubDate>Thu, 09 Apr 2020 12:39:04 +0000</pubDate><guid>https://talengu.github.io/post/c8-programming/cs-fonters/</guid><description>&lt;p>原标题：除了 Linus，地表最强大的还有这 14 位程序员，速来膜拜！&lt;/p>
 &lt;p>导语：IT world 曾经做过一次调查，这个世界上最强大的 15 位程序员，到底是？&lt;/p>
 &lt;blockquote>
 &lt;p>文 / IT world&lt;/p>&lt;/blockquote>

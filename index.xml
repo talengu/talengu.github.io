@@ -1,16 +1,30 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>一塘</title><link>https://example.com/</link><description>Recent content on 一塘</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Mon, 22 Dec 2025 12:39:04 +0000</lastBuildDate><atom:link href="https://example.com/index.xml" rel="self" type="application/rss+xml"/><item><title>hugo搭建</title><link>https://example.com/post/hugo_build/</link><pubDate>Mon, 22 Dec 2025 12:39:04 +0000</pubDate><guid>https://example.com/post/hugo_build/</guid><description>&lt;p>从2015年开始，我使用Hexo框架Next主题搭建，个人博客系统，正好十年。
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>一塘</title><link>https://talengu.github.io/</link><description>Recent content on 一塘</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Mon, 22 Dec 2025 12:39:04 +0000</lastBuildDate><atom:link href="https://talengu.github.io/index.xml" rel="self" type="application/rss+xml"/><item><title>Hugo搭建</title><link>https://talengu.github.io/post/c7-toolchain/hugo-build/</link><pubDate>Mon, 22 Dec 2025 12:39:04 +0000</pubDate><guid>https://talengu.github.io/post/c7-toolchain/hugo-build/</guid><description>&lt;p>从2015年开始，我使用Hexo框架Next主题搭建，个人博客系统，正好十年。
 框架和主题配置完成后，我只要关注markdown内容即可。&lt;/p>
 &lt;p>在这使用过程中，遇到过一次大规模的js投毒，那一次hexo 编译不出。
 hexo 和next 框架 变更实在是太快了，最近在github 的页面编译不出后，我修复无果，也懒得折腾了，在初步调研后，准备使用&lt;a href="https://gohugo.io">hugo&lt;/a>和&lt;a href="https://www.gohugothemes.com/theme/yihui-hugo-xmin/">Hugo Xmin&lt;/a>&lt;/p>
-&lt;p>安装 docker hugo&lt;/p>
-&lt;p>选择合适的docker镜像&lt;/p>
-&lt;p>&lt;a href="https://hub.docker.com/r/klakegg/hugo/tags?name=debian">https://hub.docker.com/r/klakegg/hugo/tags?name=debian&lt;/a>&lt;/p>
-&lt;h2 id="hugo-与-hugo-xmin">hugo 与 hugo-xmin&lt;/h2>
-&lt;p>&lt;a href="https://github.com/gohugoio/hugo/releases?page=3">https://github.com/gohugoio/hugo/releases?page=3&lt;/a>
-hugo v0.146.7&lt;/p>
-&lt;p>&lt;a href="https://github.com/yihui/hugo-xmin">https://github.com/yihui/hugo-xmin&lt;/a>
-c871e5665f5eceb919c8fdb284b73c7a07012646&lt;/p>
-&lt;h2 id="hugo">hugo&lt;/h2>
+&lt;p>使用的是 hugo 与 hugo-xmin&lt;/p>
+&lt;h2 id="hugo-安装">hugo 安装&lt;/h2>
+&lt;p>hugo 可以直接下载二进制文件 &lt;a href="https://github.com/gohugoio/hugo/releases?page=3">https://github.com/gohugoio/hugo/releases?page=3&lt;/a>&lt;/p>
+&lt;p>hugo v0.146.7&lt;/p>
+&lt;p>hugo-xmin 从git库中下载&lt;/p>
+&lt;p>&lt;a href="https://github.com/yihui/hugo-xmin">https://github.com/yihui/hugo-xmin&lt;/a>&lt;/p>
+&lt;p>c871e5665f5eceb919c8fdb284b73c7a07012646&lt;/p>
+&lt;p>我个人是mac，使用的是docker debian镜像，在它上面安装二进制文件&lt;/p>
+&lt;pre tabindex="0">&lt;code>docker pull --platform linux/arm64 debian:12-slim
+&lt;/code>&lt;/pre>&lt;pre tabindex="0">&lt;code>services:
+ hugo:
+ image: debian:12-slim
+ volumes:
+ - talengu.github.io:/blog
+ - blog/posts:/blog/content/post
+ working_dir: /blog
+ ports:
+ - 1313:1313
+ command: ./hugo_0.146.7_arm64 server --bind 0.0.0.0
+ stdin_open: true
+ tty: true
+&lt;/code>&lt;/pre>&lt;p>其他docker镜像可使用 &lt;a href="https://hub.docker.com/r/klakegg/hugo/tags?name=debian">klakegg/hugo&lt;/a>&lt;/p>
+&lt;h2 id="hugo-使用">hugo 使用&lt;/h2>
 &lt;p>./hugo server &amp;ndash;bind 0.0.0.0
 ./hugo build&lt;/p>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>cd public
@@ -20,20 +34,71 @@ c871e5665f5eceb919c8fdb284b73c7a07012646&lt;/p>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>git add .
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>git commit -m &lt;span style="color:#e6db74">&amp;#34;Deploy Hugo site&amp;#34;&lt;/span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>git push -f origin gh-pages
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>「202506月度汇报」auto report</title><link>https://example.com/post/test/202506/</link><pubDate>Sun, 15 Jun 2025 16:00:04 +0000</pubDate><guid>https://example.com/post/test/202506/</guid><description>&lt;p>✅ : 0 📅 : 0 🔖 : 0
-ttrss标记个数: 2&lt;/p>
-&lt;!-- more -->
-&lt;h2 id="-统计---0---0---0">=&amp;gt; 统计 ✅ : 0 📅 : 0 🔖 : 0&lt;/h2>
-&lt;h3 id="--0">✅ : 0&lt;/h3>
-&lt;h3 id="--0-1">📅 : 0&lt;/h3>
-&lt;h3 id="--0-2">🔖 : 0&lt;/h3>
-&lt;h2 id="-ttrss标记个数-2">=&amp;gt; ttrss标记个数: 2&lt;/h2>
-&lt;h3 id="开源虚拟机-virtualbox-72-beta1-版发布新增-arm-架构支持可在-arm-设备上虚拟-windows-11-arm">&lt;a href="https://www.appinn.com/virtualbox-7-2-beta/">开源虚拟机 VirtualBox 7.2 Beta1 版发布，新增 ARM 架构支持。可在 ARM 设备上虚拟 Windows 11 ARM&lt;/a>&lt;/h3>
-&lt;p>pubdata:2025-05-30 04:26:02
-markdate:2025-06-02 02:59:34.649869&lt;/p>
-&lt;h3 id="heading">&lt;a href="https://www.v2ex.com/t/1135785#reply2">[问与答] macOS 虚拟显示器： DeskPad&lt;/a>&lt;/h3>
-&lt;p>pubdata:2025-06-02 02:54:55
-markdate:2025-06-03 00:38:28.371644&lt;/p></description></item><item><title>「转」本科生反驳 40 年前的猜想，发明新型哈希表</title><link>https://example.com/post/hash_tables_news/</link><pubDate>Sun, 27 Apr 2025 12:00:00 +0000</pubDate><guid>https://example.com/post/hash_tables_news/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="分类布局">分类布局&lt;/h2>
+&lt;table>
+ &lt;thead>
+ &lt;tr>
+ &lt;th>&lt;strong>categories&lt;/strong>&lt;/th>
+ &lt;th>folder name&lt;/th>
+ &lt;th>&lt;strong>放什么&lt;/strong>&lt;/th>
+ &lt;/tr>
+ &lt;/thead>
+ &lt;tbody>
+ &lt;tr>
+ &lt;td>life&lt;/td>
+ &lt;td>c0-life&lt;/td>
+ &lt;td>旅行 / 阅读 / 随笔&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>math&lt;/td>
+ &lt;td>c1-math&lt;/td>
+ &lt;td>概率 / 线代 / 算法&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>robotics&lt;/td>
+ &lt;td>c2-robotics&lt;/td>
+ &lt;td>机器人&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>ai&lt;/td>
+ &lt;td>c3-ai&lt;/td>
+ &lt;td>LLM / CV / 实验记录&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>system&lt;/td>
+ &lt;td>c4-system&lt;/td>
+ &lt;td>性能 / 架构 / OS 设计&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>linux&lt;/td>
+ &lt;td>c5-linux&lt;/td>
+ &lt;td>内核、发行版、系统工具&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>network&lt;/td>
+ &lt;td>c6-network&lt;/td>
+ &lt;td>TCP/IP、抓包、协议&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>toolchain&lt;/td>
+ &lt;td>c7-toolchain&lt;/td>
+ &lt;td>gcc / musl / cmake / build / rss工具&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>programming&lt;/td>
+ &lt;td>c8-programming&lt;/td>
+ &lt;td>C / Python / 数据结构&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>&lt;/td>
+ &lt;td>&lt;/td>
+ &lt;td>&lt;/td>
+ &lt;/tr>
+ &lt;/tbody>
+&lt;/table>
+&lt;h2 id="添加评论-使用-giscusapp">添加评论 使用 giscus.app&lt;/h2>
+&lt;p>按 giscus.app 官方进行操作即可
+&lt;a href="https://giscus.app/">https://giscus.app/&lt;/a>&lt;/p></description></item><item><title>「转」本科生反驳 40 年前的猜想，发明新型哈希表</title><link>https://talengu.github.io/post/c8-programming/hash-tables-news/</link><pubDate>Sun, 27 Apr 2025 12:00:00 +0000</pubDate><guid>https://talengu.github.io/post/c8-programming/hash-tables-news/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
 &lt;blockquote>
 &lt;p>本文原文发表于《广达杂志》（Quanta Magazine）。&lt;/p>&lt;/blockquote>
 &lt;p>&lt;a href="https://www.quantamagazine.org/undergraduate-upends-a-40-year-old-data-science-conjecture-20250210/">&lt;em>本文&lt;/em>&lt;/a>原文_发表于 &lt;a href="https://www.quantamagazine.org/">《广达杂志》（Quanta Magazine&lt;/a>）。_&lt;/p>
@@ -54,6 +119,7 @@ markdate:2025-06-03 00:38:28.371644&lt;/p></description></item><item><title>「�
 &lt;img src="4540c60338f01ec8cccbe2f8baa9f536_MD5.jpg" 
  alt="" 
  
+ style="width:80%;" 
 />
 &lt;/div>&lt;/p>
 &lt;p>Andrew Krapivin 没有打算这样做，它颠覆了围绕哈希表的常见思维，哈希表是计算机科学中研究得最多的工具之一。&lt;/p>
@@ -73,75 +139,12 @@ markdate:2025-06-03 00:38:28.371644&lt;/p></description></item><item><title>「�
 &lt;img src="94be07a640f87d1921f3057b2e88b1c4_MD5.jpg" 
  alt="" 
  
+ style="width:80%;" 
 />
 &lt;/div>&lt;/p>
 &lt;p>Martín Farach-Colton 帮助 Krapivin 证明他的新哈希表与一个长期存在的猜想相矛盾。&lt;/p>
 &lt;p>摄影：Andrew Farach-Colton&lt;/p>
-&lt;p>答案通常取决于在哈希表中查找空位所需的时间。反过来，这通常取决于哈希表的填充程度。充实度可以用总体百分比来描述——这个表格是 50%，那个表格是 90%——但研究人员经常处理更完整的表格。因此，他们可能会使用一个由 &lt;em>x&lt;/em> 表示的整数来指定哈希表接近 100% 满的程度。如果 &lt;em>x&lt;/em> 为 100，则表已满 99%。如果 &lt;em>x&lt;/em> 为 1,000，则表已满 99.9%。这种填充度度量提供了一种便捷的方法来评估执行查询或插入等作需要多长时间。&lt;/p></description></item><item><title>「202502月度汇报」auto report</title><link>https://example.com/post/test/202502/</link><pubDate>Sat, 15 Feb 2025 16:00:04 +0000</pubDate><guid>https://example.com/post/test/202502/</guid><description>&lt;p>✅ : 0 📅 : 0 🔖 : 0
-ttrss标记个数: 3&lt;/p>
-&lt;!-- more -->
-&lt;h2 id="-统计---0---0---0">=&amp;gt; 统计 ✅ : 0 📅 : 0 🔖 : 0&lt;/h2>
-&lt;h3 id="--0">✅ : 0&lt;/h3>
-&lt;h3 id="--0-1">📅 : 0&lt;/h3>
-&lt;h3 id="--0-2">🔖 : 0&lt;/h3>
-&lt;h2 id="-ttrss标记个数-3">=&amp;gt; ttrss标记个数: 3&lt;/h2>
-&lt;h3 id="此时此刻用免费的-cursor-使用免费的-deepseek-r1-模型">&lt;a href="https://www.appinn.com/cursor-deepseek-ri/">此时此刻，用免费的 Cursor 使用免费的 DeepSeek-R1 模型&lt;/a>&lt;/h3>
-&lt;p>pubdata:2025-02-03 12:36:43
-markdate:2025-02-04 13:30:11.821415&lt;/p>
-&lt;h3 id="目前可用的-deepseek-r1-模型-api-服务商2025年2月">&lt;a href="https://www.appinn.com/deepseek-api-service/">目前可用的 DeepSeek R1 模型 API 服务商(2025年2月)&lt;/a>&lt;/h3>
-&lt;p>pubdata:2025-02-14 04:20:08
-markdate:2025-02-17 00:30:00.562267&lt;/p>
-&lt;h3 id="使用wireguard内网穿透">&lt;a href="https://pengtech.net/network/Internal_network_penetration.html">使用WireGuard内网穿透&lt;/a>&lt;/h3>
-&lt;p>pubdata:2024-08-26 10:29:22
-markdate:2025-02-22 17:32:42.166654&lt;/p></description></item><item><title>「202501月度汇报」auto report</title><link>https://example.com/post/test/202501/</link><pubDate>Wed, 15 Jan 2025 16:00:04 +0000</pubDate><guid>https://example.com/post/test/202501/</guid><description>&lt;p>✅ : 0 📅 : 0 🔖 : 0
-ttrss标记个数: 4&lt;/p>
-&lt;!-- more -->
-&lt;h2 id="-统计---0---0---0">=&amp;gt; 统计 ✅ : 0 📅 : 0 🔖 : 0&lt;/h2>
-&lt;h3 id="--0">✅ : 0&lt;/h3>
-&lt;h3 id="--0-1">📅 : 0&lt;/h3>
-&lt;h3 id="--0-2">🔖 : 0&lt;/h3>
-&lt;h2 id="-ttrss标记个数-4">=&amp;gt; ttrss标记个数: 4&lt;/h2>
-&lt;h3 id="被雪覆盖的长城中国--view-stockalamy-stock-photo">&lt;a href="https://www.bing.com/search?q=%E4%B8%AD%E5%9B%BD%E9%95%BF%E5%9F%8E&amp;amp;form=hpcapt&amp;amp;mkt=zh-cn">被雪覆盖的长城，中国 (© View Stock/Alamy Stock Photo)&lt;/a>&lt;/h3>
-&lt;p>pubdata:2025-01-07 16:02:38
-markdate:2025-01-08 00:19:53.208160&lt;/p>
-&lt;h3 id="mashups--复活-yahoo-pipes过滤组合转换-rsscsv">&lt;a href="https://www.appinn.com/mashups-alternative-yahoo-pipes/">Mashups – 复活 Yahoo! Pipes，过滤、组合、转换 RSS、CSV&lt;/a>&lt;/h3>
-&lt;p>pubdata:2025-01-08 13:15:41
-markdate:2025-01-11 04:07:48.727884&lt;/p>
-&lt;h3 id="privtracker--开源的私人-bt-tracker-服务器地址超大文件分享的又一个选择">&lt;a href="https://www.appinn.com/privtracker/">PrivTracker – 开源的私人 BT Tracker 服务器地址：超大文件分享的又一个选择&lt;/a>&lt;/h3>
-&lt;p>pubdata:2025-01-12 08:05:23
-markdate:2025-01-14 06:34:05.331254&lt;/p>
-&lt;h3 id="wine-100-发布在-macoslinuxandroid-上运行-windows-程序游戏">&lt;a href="https://www.appinn.com/wine-10-0/">Wine 10.0 发布，在 macOS、Linux、Android 上运行 Windows 程序、游戏&lt;/a>&lt;/h3>
-&lt;p>pubdata:2025-01-23 09:13:05
-markdate:2025-01-24 07:41:33.722685&lt;/p></description></item><item><title>「2024年度汇报」ttrss</title><link>https://example.com/post/test/2024/</link><pubDate>Tue, 31 Dec 2024 16:00:04 +0000</pubDate><guid>https://example.com/post/test/2024/</guid><description>&lt;p>年度汇报，记录一下过去一年的工作和生活。&lt;/p>
-&lt;!-- more -->
-&lt;h3 id="qwerty-learner--目的不纯的在线打字练习工具英语日语德语phthoncaigojava">&lt;a href="https://www.appinn.com/qwerty-learner/">Qwerty Learner – 目的不纯的在线打字练习工具：英语、日语、德语，Phthon、C++、AI、Go、Java&lt;/a>&lt;/h3>
-&lt;p>pubdata:2024-01-01 09:14:41
-markdate:2024-01-02 01:15:24.539920&lt;/p>
-&lt;h3 id="不读可以先收藏2023-少数派年度高分内容合订本">&lt;a href="https://sspai.com/post/85521">不读可以先收藏：2023 少数派年度高分内容「合订本」&lt;/a>&lt;/h3>
-&lt;p>pubdata:2024-01-02 08:00:00
-markdate:2024-01-03 10:58:04.320889&lt;/p>
-&lt;h3 id="截图贴图工具-pixpin-新增截图历史记录回溯可找回之前的截图以及之前的截图区域">&lt;a href="https://www.appinn.com/pixpin-records/">截图/贴图工具 PixPin 新增截图历史记录回溯，可找回之前的截图，以及之前的截图区域&lt;/a>&lt;/h3>
-&lt;p>pubdata:2024-01-03 06:42:53
-markdate:2024-01-03 10:59:12.193054&lt;/p>
-&lt;h3 id="如何入门硬件开发一个软件开发者的边学边做手记">&lt;a href="https://sspai.com/post/85507">如何入门硬件开发？一个软件开发者的边学边做手记&lt;/a>&lt;/h3>
-&lt;p>pubdata:2024-01-03 07:09:18
-markdate:2024-01-05 03:45:06.274531&lt;/p>
-&lt;h3 id="gomusic--导出网易云音乐qq-音乐歌单可导入apple-musicyoutube-musicspotify">&lt;a href="https://www.appinn.com/bistutu-gomusic/">GoMusic – 导出网易云音乐、QQ 音乐歌单｜可导入Apple Music、Youtube Music、Spotify&lt;/a>&lt;/h3>
-&lt;p>pubdata:2024-01-05 07:38:17
-markdate:2024-01-06 05:41:20.316453&lt;/p>
-&lt;h3 id="treefm--收听世界各地的森林之音39-座森林的真实录音">&lt;a href="https://www.appinn.com/tree-fm/">Tree.FM – 收听世界各地的森林之音｜39 座森林的真实录音&lt;/a>&lt;/h3>
-&lt;p>pubdata:2024-01-14 12:10:08
-markdate:2024-01-16 03:03:22.817200&lt;/p>
-&lt;h3 id="stranslate--免费的划词翻译工具支持-deepl还拥有-ocr-文字识别与翻译功能">&lt;a href="https://www.appinn.com/stranslate/">STranslate – 免费的划词翻译工具，支持 DeepL｜还拥有 OCR 文字识别与翻译功能&lt;/a>&lt;/h3>
-&lt;p>pubdata:2024-01-15 12:00:21
-markdate:2024-01-16 23:58:44.646513&lt;/p>
-&lt;h3 id="7-taskbar-numberer--为-windows-任务栏添加数字快捷键适合语音识别与快捷键用户">&lt;a href="https://www.appinn.com/7-taskbar-numberer/">7+ Taskbar Numberer – 为 Windows 任务栏添加数字快捷键，适合语音识别与快捷键用户&lt;/a>&lt;/h3>
-&lt;p>pubdata:2024-01-22 07:15:11
-markdate:2024-01-23 01:13:09.112519&lt;/p>
-&lt;h2 id="-ttrss标记个数-7">=&amp;gt; ttrss标记个数: 7&lt;/h2>
-&lt;h3 id="如何为-apple-id-和-icloud-资料搬家我的迁移经历以及经验分享">&lt;a href="https://sspai.com/post/85912">如何为 Apple ID 和 iCloud 资料「搬家」：我的迁移经历以及经验分享&lt;/a>&lt;/h3>
-&lt;p>pubdata:2024-01-25 07:20:39
-markdate:2024-02-02 01:22:14.364972&lt;/p></description></item><item><title>「转」基于 Readeck 搭建个人稍后读/书签服务</title><link>https://example.com/post/readeck_tips/</link><pubDate>Thu, 06 Jun 2024 12:00:00 +0000</pubDate><guid>https://example.com/post/readeck_tips/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
+&lt;p>答案通常取决于在哈希表中查找空位所需的时间。反过来，这通常取决于哈希表的填充程度。充实度可以用总体百分比来描述——这个表格是 50%，那个表格是 90%——但研究人员经常处理更完整的表格。因此，他们可能会使用一个由 &lt;em>x&lt;/em> 表示的整数来指定哈希表接近 100% 满的程度。如果 &lt;em>x&lt;/em> 为 100，则表已满 99%。如果 &lt;em>x&lt;/em> 为 1,000，则表已满 99.9%。这种填充度度量提供了一种便捷的方法来评估执行查询或插入等作需要多长时间。&lt;/p></description></item><item><title>「转」基于 Readeck 搭建个人稍后读/书签服务</title><link>https://talengu.github.io/post/c7-toolchain/readeck-tips/</link><pubDate>Thu, 06 Jun 2024 12:00:00 +0000</pubDate><guid>https://talengu.github.io/post/c7-toolchain/readeck-tips/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
 &lt;blockquote>
 &lt;p>本文由 &lt;a href="http://ksria.com/simpread/">简悦 SimpRead&lt;/a> 转码， 原文地址 &lt;a href="https://sspai.com/post/89289">https://sspai.com/post/89289&lt;/a>&lt;/p>&lt;/blockquote>
 &lt;!-- more -->
@@ -171,6 +174,7 @@ markdate:2024-02-02 01:22:14.364972&lt;/p></description></item><item><title>「�
 &lt;img src="069e4eb7887479dbd9965fe66592d07f_MD5.png" 
  alt="" 
  
+ style="width:80%;" 
 />
 &lt;/div>&lt;/p>
 &lt;p>然后在新创建的这个&lt;code>readeck&lt;/code> 文件夹里面，在分别创建&lt;code>data&lt;/code>以及&lt;code>db&lt;/code>两个文件夹。这两个文件夹后面用来存储服务中所产生的数据。&lt;/p>
@@ -186,9 +190,10 @@ markdate:2024-02-02 01:22:14.364972&lt;/p></description></item><item><title>「�
 &lt;img src="ba30f253cffcfa148f50a3034285873c_MD5.png" 
  alt="" 
  
+ style="width:80%;" 
 />
 &lt;/div>&lt;/p>
-&lt;p>接下来我们就打开 Portainer 来进行服务容器的部署，这里打开并登录 Portainer，然后从左侧边栏中点击 Stacks，然后点击页面右上角的 &lt;code>Add Stack&lt;/code>来添加。&lt;/p></description></item><item><title>人人都是开发者「转」</title><link>https://example.com/post/ai/%E4%BA%BA%E4%BA%BA%E9%83%BD%E6%98%AF%E5%BC%80%E5%8F%91%E8%80%85/</link><pubDate>Fri, 19 Apr 2024 12:00:00 +0000</pubDate><guid>https://example.com/post/ai/%E4%BA%BA%E4%BA%BA%E9%83%BD%E6%98%AF%E5%BC%80%E5%8F%91%E8%80%85/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
+&lt;p>接下来我们就打开 Portainer 来进行服务容器的部署，这里打开并登录 Portainer，然后从左侧边栏中点击 Stacks，然后点击页面右上角的 &lt;code>Add Stack&lt;/code>来添加。&lt;/p></description></item><item><title>「转」人人都是开发者</title><link>https://talengu.github.io/post/c3-ai/everyone-developer/</link><pubDate>Fri, 19 Apr 2024 12:00:00 +0000</pubDate><guid>https://talengu.github.io/post/c3-ai/everyone-developer/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
 &lt;p>“自然语言会成为下一代的编程语言，人人都能成为开发者。”&lt;/p>
 &lt;p>4月16日，Create 2024百度AI开发者大会在深圳召开，百度创始人、董事长兼首席执行官李彦宏发表了《人人都是开发者》的主题演讲，描述了一个不再局限于编码技能的世界，而是以自然语言为媒介，人人都能参与创造的时代。&lt;/p>
 &lt;!-- more -->
@@ -247,7 +252,7 @@ markdate:2024-02-02 01:22:14.364972&lt;/p></description></item><item><title>「�
 &lt;p>索菲亚商家智能体上线以来，有效线索成本下降了30%。也就是说，它获得一个有效客户，如果过去的成本是100块，现在只需要70块了。&lt;/p>
 &lt;p>目前，已有超过1万个百度的客户拥有了商家智能体，涵盖了教育培训、房产家居、机械设备、商务服务等超过30个行业。&lt;/p>
 &lt;p>上面，通过三个Demo，我展示了开发者和商家，如何利用AgentBuilder，制作不同行业智能体的过程。&lt;/p>
-&lt;p>现在，制作一个智能体，真的就是分分钟的事。但问题来了！如果没流量、没分发、找不到、没人用，那么开发者和商家就没有收益，没有收益就没有动力。怎么解决这个痛点呢？&lt;/p></description></item><item><title>裁员增笑「转」</title><link>https://example.com/post/readings/caiyuanzengxiao/</link><pubDate>Tue, 23 Jan 2024 12:00:00 +0000</pubDate><guid>https://example.com/post/readings/caiyuanzengxiao/</guid><description>&lt;p>我被公司裁了。
+&lt;p>现在，制作一个智能体，真的就是分分钟的事。但问题来了！如果没流量、没分发、找不到、没人用，那么开发者和商家就没有收益，没有收益就没有动力。怎么解决这个痛点呢？&lt;/p></description></item><item><title>「转」裁员增笑</title><link>https://talengu.github.io/post/c0-life/readings/caiyuanzengxiao/</link><pubDate>Tue, 23 Jan 2024 12:00:00 +0000</pubDate><guid>https://talengu.github.io/post/c0-life/readings/caiyuanzengxiao/</guid><description>&lt;p>我被公司裁了。
 我一手搭建起核心项目的底层框架，总算熬出头时，公司把我裁了。
 CEO 当着全公司的面落井下石，羞辱我是滥竽充数。
 他不知道，核心代码的故障只有我能修。
@@ -307,103 +312,7 @@ Ribo 的股票也有下降，公司传出裁员风波。
 「我也算是跟黎工共事过，实在痛心。」
 「但是公司不养闲人!」
 「要是黎工走了，公司业务照常运转，大家就能发现是谁只拿工资不干活了!」
-他越说声音越大，幸灾乐祸地斜眼瞟我。&lt;/p></description></item><item><title>「2023年度汇报」ttrss</title><link>https://example.com/post/test/2023/</link><pubDate>Sun, 31 Dec 2023 16:00:04 +0000</pubDate><guid>https://example.com/post/test/2023/</guid><description>&lt;p>年度汇报，记录一下过去一年的工作和生活。&lt;/p>
-&lt;!-- more -->
-&lt;h2 id="跳进框框你的-markdown-链接可以更整洁">🔖&lt;a href="https://sspai.com/post/77513">跳进框框，你的 Markdown 链接可以更整洁&lt;/a>&lt;/h2>
-&lt;p>pubdata:2022-12-29 03:30:14
-markdate:2023-01-03 01:17:10.436779&lt;/p>
-&lt;h2 id="关于流感和疫苗你需要知道哪些信息">🔖&lt;a href="https://sspai.com/post/76945">关于流感和疫苗，你需要知道哪些信息？&lt;/a>&lt;/h2>
-&lt;p>pubdata:2022-11-23 06:38:28
-markdate:2023-01-03 13:52:56.586627&lt;/p>
-&lt;h2 id="一日一技--两种方法让-windows-10-也能运行-android-应用">🔖&lt;a href="https://sspai.com/post/77582">一日一技 | 两种方法让 Windows 10 也能运行 Android 应用&lt;/a>&lt;/h2>
-&lt;p>pubdata:2023-01-03 06:30:00
-markdate:2023-01-04 10:20:53.166720&lt;/p>
-&lt;h2 id="沉浸式翻译--支持-pdfepub网页可同时显示原文与译文的双语翻译工具">🔖&lt;a href="https://www.appinn.com/immersive-translate/">沉浸式翻译 – 支持 PDF、EPUB、网页，可同时显示原文与译文的双语翻译工具[Chrome/Firefox/油猴脚本]&lt;/a>&lt;/h2>
-&lt;p>pubdata:2023-02-06 09:28:53
-markdate:2023-02-08 04:38:07.828863&lt;/p>
-&lt;h2 id="--25">🔖 : 25&lt;/h2>
-&lt;p>🔖latex 工具
--&amp;gt;&lt;a href="C%e6%97%a5%e5%b8%b8/2023-02.md">C日常/2023-02.md&lt;/a>&lt;br>
-🔖 tcp
--&amp;gt;&lt;a href="C%e6%97%a5%e5%b8%b8/2023-02.md">C日常/2023-02.md&lt;/a>&lt;br>
-🔖 操作系统
--&amp;gt;&lt;a href="C%e6%97%a5%e5%b8%b8/2023-02.md">C日常/2023-02.md&lt;/a>&lt;br>
-🔖 python 通道符支持
--&amp;gt;&lt;a href="C%e6%97%a5%e5%b8%b8/2023-02.md">C日常/2023-02.md&lt;/a>&lt;br>
-🔖 互联网行业知识地图
--&amp;gt;&lt;a href="C%e6%97%a5%e5%b8%b8/2023-02.md">C日常/2023-02.md&lt;/a>&lt;br>
-🔖 &lt;a href="https://zhuanlan.zhihu.com/p/607142856?utm_id=0">万字讲解你写的代码是如何跑起来的？&lt;/a>
--&amp;gt;&lt;a href="C%e6%97%a5%e5%b8%b8/2023-02.md">C日常/2023-02.md&lt;/a>&lt;br>
-🔖 linux内核
--&amp;gt;&lt;a href="C%e6%97%a5%e5%b8%b8/2023-02.md">C日常/2023-02.md&lt;/a>&lt;br>
-🔖web 历史工具
--&amp;gt;&lt;a href="C%e6%97%a5%e5%b8%b8/2023-02.md">C日常/2023-02.md&lt;/a>&lt;br>
-🔖windows git 大小写
--&amp;gt;&lt;a href="C%e6%97%a5%e5%b8%b8/2023-02.md">C日常/2023-02.md&lt;/a>&lt;br>
-🔖 &lt;a href="https://sspai.com/post/77513">在 Markdown 中使用引用式链接和脚注 - 少数派&lt;/a>
--&amp;gt;&lt;a href="C%e6%97%a5%e5%b8%b8/2023-02.md">C日常/2023-02.md&lt;/a>&lt;br>
-🔖 &lt;a href="https://view.inews.qq.com/k/20211230A04GGY00?web_channel=wap&amp;amp;openApp=false&amp;amp;f=newdc">不写一行代码，轻松将米家智能家居接入 Apple HomeKit&lt;/a>
--&amp;gt;&lt;a href="C%e6%97%a5%e5%b8%b8/2023-02.md">C日常/2023-02.md&lt;/a>&lt;br>
-🔖 &lt;a href="https://post.m.smzdm.com/p/amm5dn84/">小白从零开始：一台安卓手机安装homeassistant将米家设备接入苹果homekit_软件应用_什么值得买&lt;/a>
--&amp;gt;&lt;a href="C%e6%97%a5%e5%b8%b8/2023-02.md">C日常/2023-02.md&lt;/a>&lt;br>
-🔖 &lt;a href="https://zhuanlan.zhihu.com/p/596895232">build a simple dateset&lt;/a>
--&amp;gt;&lt;a href="C%e6%97%a5%e5%b8%b8/2023-02.md">C日常/2023-02.md&lt;/a>&lt;br>
-🔖冰雪暴
--&amp;gt;&lt;a href="C%e6%97%a5%e5%b8%b8/2022-W43.md">C日常/2022-W43.md&lt;/a>&lt;br>
-🔖 &lt;a href="https://sspai.com/post/77513">在 Markdown 中使用引用式链接和脚注 - 少数派&lt;/a>
--&amp;gt;&lt;a href="C%e6%97%a5%e5%b8%b8/2023-01.md">C日常/2023-01.md&lt;/a>&lt;br>
-🔖 &lt;a href="https://view.inews.qq.com/k/20211230A04GGY00?web_channel=wap&amp;amp;openApp=false&amp;amp;f=newdc">不写一行代码，轻松将米家智能家居接入 Apple HomeKit&lt;/a>
--&amp;gt;&lt;a href="C%e6%97%a5%e5%b8%b8/2023-01.md">C日常/2023-01.md&lt;/a>&lt;br>
-🔖 &lt;a href="https://post.m.smzdm.com/p/amm5dn84/">小白从零开始：一台安卓手机安装homeassistant将米家设备接入苹果homekit_软件应用_什么值得买&lt;/a>
--&amp;gt;&lt;a href="C%e6%97%a5%e5%b8%b8/2023-01.md">C日常/2023-01.md&lt;/a>&lt;br>
-🔖 &lt;a href="https://zhuanlan.zhihu.com/p/596895232">build a simple dateset&lt;/a>
--&amp;gt;&lt;a href="C%e6%97%a5%e5%b8%b8/2023-01.md">C日常/2023-01.md&lt;/a>&lt;br>
-🔖 http与https的区别
--&amp;gt;&lt;a href="C%e6%97%a5%e5%b8%b8/2023-01.md">C日常/2023-01.md&lt;/a>&lt;br>
-🔖 http 3
--&amp;gt;&lt;a href="C%e6%97%a5%e5%b8%b8/2023-01.md">C日常/2023-01.md&lt;/a>&lt;br>
-🔖 &lt;a href="https://ffmpeg.guide/">FFmpeg.guide&lt;/a>
--&amp;gt;&lt;a href="C%e6%97%a5%e5%b8%b8/2023-01.md">C日常/2023-01.md&lt;/a>&lt;br>
-🔖&lt;a href="https://mlu-explain.github.io/">机器学习概念的可视化解释&lt;/a>
--&amp;gt;&lt;a href="C%e6%97%a5%e5%b8%b8/2023-01.md">C日常/2023-01.md&lt;/a>&lt;br>
-🔖 &lt;a href="https://ppwwyyxx.com/blog/2023/Terminal-Escape-Sequences/">Some Useful Terminal Escape Sequences&lt;/a>
--&amp;gt;&lt;a href="C%e6%97%a5%e5%b8%b8/2023-01.md">C日常/2023-01.md&lt;/a>&lt;br>
-🔖 &lt;a href="https://sspai.com/post/77815">换种方式刷朋友圈——微信朋友圈数据分析 - 少数派&lt;/a>
--&amp;gt;&lt;a href="C%e6%97%a5%e5%b8%b8/2023-01.md">C日常/2023-01.md&lt;/a>&lt;br>
-🔖操作系统学习
--&amp;gt;&lt;a href="C%e6%97%a5%e5%b8%b8/2023-01.md">C日常/2023-01.md&lt;/a>&lt;/p></description></item><item><title>「2022年度汇报」ttrss</title><link>https://example.com/post/test/2022/</link><pubDate>Sat, 31 Dec 2022 16:00:04 +0000</pubDate><guid>https://example.com/post/test/2022/</guid><description>&lt;p>年度汇报，记录一下过去一年的工作和生活。&lt;/p>
-&lt;!-- more -->
-&lt;h1 id="202207月度汇报">202207月度汇报&lt;/h1>
-&lt;h2 id="bgmi--自动追番的工具同步最新番剧数据追番日历自动下载适合所有追番懒人">🔖&lt;a href="https://www.appinn.com/bgmi/">BGmi – 自动追番的工具：同步最新番剧数据、追番日历、自动下载，适合所有追番懒人&lt;/a>&lt;/h2>
-&lt;p>pubdata:2022-06-30 02:48:00
-markdate:2022-07-01 06:32:58.020141&lt;/p>
-&lt;h2 id="老牌截图工具-picpick-更新新增录屏功能支持-mp4gif-格式">🔖&lt;a href="https://www.appinn.com/picpick-6-2/">老牌截图工具 PicPick 更新，新增录屏功能，支持 MP4/GIF 格式&lt;/a>&lt;/h2>
-&lt;p>pubdata:2022-06-29 07:19:19
-markdate:2022-07-02 04:11:20.453414&lt;/p>
-&lt;h2 id="白板与笔记融合我的四个氢图使用场景">🔖&lt;a href="https://sspai.com/post/73246">白板与笔记融合：我的四个氢图使用场景&lt;/a>&lt;/h2>
-&lt;p>pubdata:2022-06-30 03:30:02
-markdate:2022-07-03 01:08:35.583781&lt;/p>
-&lt;h2 id="跨时空圆桌伟大创作者们如何安排日常生活">🔖&lt;a href="https://sspai.com/post/73779">跨时空圆桌：伟大创作者们如何安排日常生活&lt;/a>&lt;/h2>
-&lt;p>pubdata:2022-06-15 09:30:00
-markdate:2022-07-03 01:50:35.971655&lt;/p>
-&lt;h2 id="typing-learner--硬核单词记忆从电影台词筛选生词边追美剧边学英语用户直喊好家伙">🔖&lt;a href="https://www.appinn.com/typing-learner/">Typing Learner – 硬核单词记忆：从电影台词筛选生词，边追美剧边学英语，用户直喊「好家伙！」[Windows/macOS]&lt;/a>&lt;/h2>
-&lt;p>pubdata:2022-07-03 04:07:39
-markdate:2022-07-04 05:06:58.902152&lt;/p>
-&lt;h2 id="创建自己的第一个-power-automate-工作流从此繁琐操作是路人">🔖&lt;a href="https://sspai.com/post/73710">创建自己的第一个 Power Automate 工作流，从此繁琐操作是路人&lt;/a>&lt;/h2>
-&lt;p>pubdata:2022-07-05 10:44:47
-markdate:2022-07-06 11:29:55.648077&lt;/p>
-&lt;h2 id="为-wsl-配置这些新功能不用虚拟机也能体验完整-linux">🔖&lt;a href="https://sspai.com/post/74167">为 WSL 配置这些新功能，不用虚拟机也能体验完整 Linux&lt;/a>&lt;/h2>
-&lt;p>pubdata:2022-07-08 03:30:00
-markdate:2022-07-09 03:08:43.747852&lt;/p>
-&lt;h2 id="当飞盘成为人类的玩具我们该如何参与这场游戏">🔖&lt;a href="https://sspai.com/post/73505">当飞盘成为人类的玩具，我们该如何参与这场游戏&lt;/a>&lt;/h2>
-&lt;p>pubdata:2022-06-06 08:00:00
-markdate:2022-07-10 01:36:40.114938&lt;/p>
-&lt;h2 id="走进小众但不冷门的房车世界">🔖&lt;a href="https://sspai.com/post/74043">走进小众但不冷门的房车世界&lt;/a>&lt;/h2>
-&lt;p>pubdata:2022-07-01 08:04:43
-markdate:2022-07-10 02:09:34.733003&lt;/p>
-&lt;h2 id="从盲目崇拜到理性使用谈谈我眼中的双向链接">🔖&lt;a href="https://sspai.com/post/73407">从盲目崇拜到理性使用，谈谈我眼中的「双向链接」&lt;/a>&lt;/h2>
-&lt;p>pubdata:2022-05-27 06:31:27
-markdate:2022-07-11 14:31:37.724795&lt;/p></description></item><item><title>rss翻译github脚本</title><link>https://example.com/post/rss_translate/</link><pubDate>Wed, 21 Dec 2022 12:39:04 +0000</pubDate><guid>https://example.com/post/rss_translate/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
+他越说声音越大，幸灾乐祸地斜眼瞟我。&lt;/p></description></item><item><title>rss翻译github脚本</title><link>https://talengu.github.io/post/c7-toolchain/rss_translate/</link><pubDate>Wed, 21 Dec 2022 12:39:04 +0000</pubDate><guid>https://talengu.github.io/post/c7-toolchain/rss_translate/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
 &lt;p>自动翻译 rss，我利用github action开发了一下， 供大家玩乐。&lt;/p>
 &lt;p>比如将：
  &lt;a href="http://www.mckinsey.com/insights/rss">http://www.mckinsey.com/insights/rss&lt;/a> -&amp;gt; &lt;a href="https://talengu.github.io/rss-translate/rss/mckinsey_rss.xml">mckinsey_rss.xml&lt;/a>
@@ -420,6 +329,7 @@ markdate:2022-07-11 14:31:37.724795&lt;/p></description></item><item><title>rss�
 &lt;img src="image-20230202020105514.png" 
  alt="" 
  
+ style="width:80%;" 
 />
 &lt;/div>&lt;/p>
 &lt;!-- more -->
@@ -436,6 +346,7 @@ markdate:2022-07-11 14:31:37.724795&lt;/p></description></item><item><title>rss�
 &lt;img src="image-20230202020439917.png" 
  alt="" 
  
+ style="width:80%;" 
 />
 &lt;/div>&lt;/p>
 &lt;ul>
@@ -457,6 +368,7 @@ markdate:2022-07-11 14:31:37.724795&lt;/p></description></item><item><title>rss�
 &lt;img src="image-20230202020620284.png" 
  alt="" 
  
+ style="width:80%;" 
 />
 &lt;/div>&lt;/p>
 &lt;p>注：&lt;/p>
@@ -465,39 +377,7 @@ markdate:2022-07-11 14:31:37.724795&lt;/p></description></item><item><title>rss�
 &lt;li>更新周期为1天，且为随机时间点。通过github action实现，见 &lt;a href="https://github.com/talengu/rss-translate/blob/main/.github/cron_random.py">random.py&lt;/a>&lt;/li>
 &lt;li>多语言支持 action = “auto”，这里可以换成多种语言，支持语言列表见 &lt;a href="https://pygtrans.readthedocs.io/zh_CN/latest/index.html">pygtrans&lt;/a> 如：action = &amp;ldquo;en-&amp;gt;zh-CN&amp;rdquo;&lt;/li>
 &lt;/ul>
-&lt;p>欢迎大家使用！！！🐱&lt;/p></description></item><item><title>「转」Linux 内核精通</title><link>https://example.com/post/%E7%AE%80%E6%82%A6%E5%90%8C%E6%AD%A5md/%E8%82%9D%E4%B8%8B-50-%E4%B8%87%E5%AD%97%E7%9A%84linux-%E5%86%85%E6%A0%B8%E7%B2%BE%E9%80%9A%E7%AC%94%E8%AE%B0%E4%BD%A0%E7%9A%84%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86%E6%B0%B4%E5%B9%B3%E5%B0%86%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E5%85%A5%E9%AD%94%E5%BB%BA%E8%AE%AE%E6%94%B6%E8%97%8F/</link><pubDate>Thu, 15 Dec 2022 12:00:00 +0000</pubDate><guid>https://example.com/post/%E7%AE%80%E6%82%A6%E5%90%8C%E6%AD%A5md/%E8%82%9D%E4%B8%8B-50-%E4%B8%87%E5%AD%97%E7%9A%84linux-%E5%86%85%E6%A0%B8%E7%B2%BE%E9%80%9A%E7%AC%94%E8%AE%B0%E4%BD%A0%E7%9A%84%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86%E6%B0%B4%E5%B9%B3%E5%B0%86%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E5%85%A5%E9%AD%94%E5%BB%BA%E8%AE%AE%E6%94%B6%E8%97%8F/</guid><description>&lt;blockquote>
-&lt;p>本文由 &lt;a href="http://ksria.com/simpread/">简悦 SimpRead&lt;/a> 转码， 原文地址 &lt;a href="https://zhuanlan.zhihu.com/p/572266986">zhuanlan.zhihu.com&lt;/a>&lt;/p>&lt;/blockquote>
-&lt;h2 id="一为什么要学习-linux-内核">一、为什么要学习 Linux 内核&lt;/h2>
-&lt;!-- more -->
-&lt;p>大部分程序员可能永远没有机会开发 Linux 内核或者驱动 Linux，那么我们为什么还需要学习 Linux 内核呢？Linux 的源代码和架构都是开放的，我们可以学到很多操作系统的概念和实现原理。Linux 的设计哲学体系继承了 UNIX，现在整个设计体系相当稳定和简化，这是大部分服务器使用 Linux 的重要原因。&lt;/p>
-&lt;p>&lt;strong>那学习 Linux 内核的原因就在于此。&lt;/strong>&lt;/p>
-&lt;p>进一步了解内核的原理，有助于你更好地使用命令和程序设计，让你的面试和开发更上一层楼。但是不建议直接看源代码，因为 Linux 代码太大，容易丢失。&lt;/p>
-&lt;p>而最好的办法是，先了解一下 Linux 内核机制，知道基本的原理与流程。&lt;/p>
-&lt;p>不过，Linux 内核机制也非常复杂，而且其中互相关联。&lt;/p>
-&lt;p>
-
-
-
-
-
-&lt;div style="text-align: center;">
-&lt;img src="https://pic1.zhimg.com/v2-f34e4013f744ab349c160d1b3564f68c_r.jpg" 
- alt="" 
- 
-/>
-&lt;/div>&lt;/p>
-&lt;p>比如说，进程运行要分配内存，内存映射涉及文件的关联，文件的读写需要经过块设备，从文件中加载代码才能运行起来进程。这些知识点要反复对照，才能理清。&lt;/p>
-&lt;p>&lt;strong>但是一旦攻克！你会发现 Linux 这个复杂的系统开始透明起来。&lt;/strong>&lt;/p>
-&lt;h2 id="二如何学习-linux-内核">二、如何学习 Linux 内核？&lt;/h2>
-&lt;p>内核的知识就像下面的绳结一样，一环扣一环，我们要解开它们，就必须要先找到线头也就是内核中的函数接口。初学阶段，我们一般不深入的研究内核代码，会使用内核的接口函数就不错了。&lt;/p>
-&lt;p>下面提供了如何学习这些内核函数的方法，就像解绳子一样&lt;/p>
-&lt;p>&lt;strong>在我们学习 Linux 内核之前，我们首先需要掌握以下几点：&lt;/strong>&lt;/p>
-&lt;p>&lt;a href="https://zhuanlan.zhihu.com/p/440423464">(1) 如何学习内核，先了解 Linux 内核由哪些组成？&lt;/a>&lt;/p>
-&lt;p>&lt;a href="https://zhuanlan.zhihu.com/p/440423464">(2) 须知 Linux 内核源码（下载的链接 ）组织结构？&lt;/a>&lt;/p>
-&lt;p>(3) &lt;a href="https://zhuanlan.zhihu.com/p/440423464">重点需要学习地知识点有哪些？&lt;/a>&lt;/p>
-&lt;p>(4) &lt;a href="https://link.zhihu.com/?target=https%3A//docs.qq.com/doc/DTXFKZlZ4YmFYQWZS">最后依据我为大家提供的的学习资料，开启我们的 Linux 内核学习之旅。&lt;/a>&lt;/p>
-&lt;p>&lt;a href="https://zhuanlan.zhihu.com/p/437667448">(5) 全网最牛 Linux 内核 Makefile 系统文件详解 (纯文字代码)&lt;/a>&lt;/p>
-&lt;p>&lt;a href="https://zhuanlan.zhihu.com/p/436340295">(6) 全网最详细的 Intel CPU 体系结构分析 (内核源码)&lt;/a>&lt;/p></description></item><item><title>c结构体对齐</title><link>https://example.com/post/c_struct/</link><pubDate>Thu, 15 Dec 2022 12:00:00 +0000</pubDate><guid>https://example.com/post/c_struct/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
+&lt;p>欢迎大家使用！！！🐱&lt;/p></description></item><item><title>c结构体对齐</title><link>https://talengu.github.io/post/c8-programming/c-struct/</link><pubDate>Thu, 15 Dec 2022 12:00:00 +0000</pubDate><guid>https://talengu.github.io/post/c8-programming/c-struct/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
 &lt;p>c语言的字节对齐，机器的大小段模式的理解。&lt;/p>
 &lt;p>计算机存储的基础知识。&lt;/p>
 &lt;!-- more -->
@@ -571,7 +451,7 @@ markdate:2022-07-11 14:31:37.724795&lt;/p></description></item><item><title>rss�
 || 00 00 00 00 00 00 00 00 
 || c2 c1 01 00 00 00 00 00 
 || 1
-&lt;/code>&lt;/pre>&lt;p>少占用了一个8字节。&lt;/p></description></item><item><title>「转」九张图一览 Linux 性能工具 全景图</title><link>https://example.com/post/linux/linux_tools/</link><pubDate>Sun, 11 Dec 2022 12:00:00 +0000</pubDate><guid>https://example.com/post/linux/linux_tools/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
+&lt;/code>&lt;/pre>&lt;p>少占用了一个8字节。&lt;/p></description></item><item><title>「转」九张图一览 Linux 性能工具 全景图</title><link>https://talengu.github.io/post/c5-linux/linux/linux_tools/</link><pubDate>Sun, 11 Dec 2022 12:00:00 +0000</pubDate><guid>https://talengu.github.io/post/c5-linux/linux/linux_tools/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
 &lt;p>当今时代，绝大多数企业的应用都是运行在 Linux 操作系统上，所以对应用进行性能诊断和性能优化时，离不开 Linux 的各种性能观测工具和性能优化工具。&lt;/p>
 &lt;p>笔者使用过的常见的 Linux 性能观测和性能优化工具有：&lt;/p>
 &lt;ul>
@@ -603,6 +483,7 @@ markdate:2022-07-11 14:31:37.724795&lt;/p></description></item><item><title>rss�
 &lt;img src="v2-2eadd97c53a3f20f255394c3d90ea914_r.jpg" 
  alt="" 
  
+ style="width:80%;" 
 />
 &lt;/div>&lt;/p>
 &lt;ul>
@@ -620,6 +501,7 @@ markdate:2022-07-11 14:31:37.724795&lt;/p></description></item><item><title>rss�
 &lt;img src="v2-20032bac53c856c5733259eece5c2f76_r.jpg" 
  alt="" 
  
+ style="width:80%;" 
 />
 &lt;/div>&lt;/p>
 &lt;ul>
@@ -637,6 +519,7 @@ markdate:2022-07-11 14:31:37.724795&lt;/p></description></item><item><title>rss�
 &lt;img src="v2-de23423f2eb9deb5410b7128c933f9a9_r.jpg" 
  alt="" 
  
+ style="width:80%;" 
 />
 &lt;/div>&lt;/p>
 &lt;ul>
@@ -654,6 +537,7 @@ markdate:2022-07-11 14:31:37.724795&lt;/p></description></item><item><title>rss�
 &lt;img src="v2-cdf37de145763b762ba5af1a620f9686_r.jpg" 
  alt="" 
  
+ style="width:80%;" 
 />
 &lt;/div>&lt;/p>
 &lt;ul>
@@ -671,6 +555,7 @@ markdate:2022-07-11 14:31:37.724795&lt;/p></description></item><item><title>rss�
 &lt;img src="v2-eee71a6bf3865367741137da03031411_r.jpg" 
  alt="" 
  
+ style="width:80%;" 
 />
 &lt;/div>&lt;/p>
 &lt;ul>
@@ -688,6 +573,7 @@ markdate:2022-07-11 14:31:37.724795&lt;/p></description></item><item><title>rss�
 &lt;img src="v2-1c0134fefbb04597db98ae455a40fad5_r.jpg" 
  alt="" 
  
+ style="width:80%;" 
 />
 &lt;/div>&lt;/p>
 &lt;ul>
@@ -705,8 +591,9 @@ markdate:2022-07-11 14:31:37.724795&lt;/p></description></item><item><title>rss�
 &lt;img src="v2-ffe70303f4d64828ca931d987b12a6d8_r.jpg" 
  alt="" 
  
+ style="width:80%;" 
 />
-&lt;/div>&lt;/p></description></item><item><title>tcp ip 协议族</title><link>https://example.com/post/linux_network/tcp_ip/</link><pubDate>Thu, 08 Dec 2022 12:00:00 +0000</pubDate><guid>https://example.com/post/linux_network/tcp_ip/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
+&lt;/div>&lt;/p></description></item><item><title>tcp ip 协议族</title><link>https://talengu.github.io/post/c6-network/tcp-ip/</link><pubDate>Thu, 08 Dec 2022 12:00:00 +0000</pubDate><guid>https://talengu.github.io/post/c6-network/tcp-ip/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
 &lt;p>tcp ip 协议族&lt;/p>
 &lt;!-- more -->
 &lt;p>
@@ -718,11 +605,12 @@ markdate:2022-07-11 14:31:37.724795&lt;/p></description></item><item><title>rss�
 
 
 &lt;div style="text-align: center;">
-&lt;img src="tcp_ip.jpeg" 
+&lt;img src="tcp-ip-all.jpeg" 
  alt="" 
  
+ style="width:80%;" 
 />
-&lt;/div>&lt;/p></description></item><item><title>「转」连接跟踪（conntrack）：原理、应用及 Linux 内核实现</title><link>https://example.com/post/linux_network/conntrack_linux/</link><pubDate>Sun, 04 Dec 2022 12:00:00 +0000</pubDate><guid>https://example.com/post/linux_network/conntrack_linux/</guid><description>&lt;h2 id="摘要">摘要&lt;/h2>
+&lt;/div>&lt;/p></description></item><item><title>「转」连接跟踪（conntrack）：原理、应用及 Linux 内核实现</title><link>https://talengu.github.io/post/c6-network/conntrack/</link><pubDate>Sun, 04 Dec 2022 12:00:00 +0000</pubDate><guid>https://talengu.github.io/post/c6-network/conntrack/</guid><description>&lt;h2 id="摘要">摘要&lt;/h2>
 &lt;p>本文介绍连接跟踪（connection tracking，conntrack，CT）的原理，应用，及其在 Linux 内核中的实现。&lt;/p>
 &lt;p>代码分析基于内核 &lt;code>4.19&lt;/code>。为使行文简洁，所贴代码只保留了核心逻辑，但都给出了代码 所在的源文件，如有需要请查阅。&lt;/p>
 &lt;p>水平有限，文中不免有错误之处，欢迎指正交流。&lt;/p>
@@ -742,6 +630,7 @@ markdate:2022-07-11 14:31:37.724795&lt;/p></description></item><item><title>rss�
 &lt;img src="node-conntrack.png" 
  alt="" 
  
+ style="width:80%;" 
 />
 &lt;/div>&lt;/p>
 &lt;p>Fig 1.1. 连接跟踪及其内核位置示意图&lt;/p>
@@ -773,7 +662,7 @@ markdate:2022-07-11 14:31:37.724795&lt;/p></description></item><item><title>rss�
 &lt;/ul>
 &lt;/li>
 &lt;/ul>
-&lt;p>本文中用到 “连接” 一词时，大部分情况下指的都是后者，即 “连接跟踪” 中的“连接”。&lt;/p></description></item><item><title>「转」Linux内核数据包bridge上转发流程</title><link>https://example.com/post/linux/linux_bridge_forward/</link><pubDate>Wed, 06 Jul 2022 16:00:04 +0000</pubDate><guid>https://example.com/post/linux/linux_bridge_forward/</guid><description>&lt;blockquote>
+&lt;p>本文中用到 “连接” 一词时，大部分情况下指的都是后者，即 “连接跟踪” 中的“连接”。&lt;/p></description></item><item><title>「转」Linux内核数据包bridge上转发流程</title><link>https://talengu.github.io/post/c5-linux/linux/linux-bridge-forward/</link><pubDate>Wed, 06 Jul 2022 16:00:04 +0000</pubDate><guid>https://talengu.github.io/post/c5-linux/linux/linux-bridge-forward/</guid><description>&lt;blockquote>
 &lt;p>原文地址 &lt;a href="https://blog.csdn.net/hhhhhyyyyy8/article/details/102133863">blog.csdn.net&lt;/a>
 @hhhhhyyyyy8 @4.15.1&lt;/p>&lt;/blockquote>
 &lt;h2 id="前言">前言&lt;/h2>
@@ -792,6 +681,7 @@ markdate:2022-07-11 14:31:37.724795&lt;/p></description></item><item><title>rss�
 &lt;img src="Netfilter-packet-flow5.svg" 
  alt="" 
  
+ style="width:80%;" 
 />
 &lt;/div>&lt;/p>
 &lt;p>先看三张图片&lt;/p>
@@ -808,6 +698,7 @@ markdate:2022-07-11 14:31:37.724795&lt;/p></description></item><item><title>rss�
 &lt;img src="20191005153149853.jpg" 
  alt="" 
  
+ style="width:80%;" 
 />
 &lt;/div>&lt;/p>
 &lt;p>&lt;a href="https://blog.csdn.net/u012247418/article/details/90137663">IMG linux TCP/IP L2层数据包接收流程&lt;/a>
@@ -823,6 +714,7 @@ markdate:2022-07-11 14:31:37.724795&lt;/p></description></item><item><title>rss�
 &lt;img src="t_70.png" 
  alt="" 
  
+ style="width:80%;" 
 />
 &lt;/div>&lt;/p>
 &lt;p>&lt;a href="https://www.cnblogs.com/xuanxuanBOSS/p/11424290.html">IMG 浅析ebtables的概念和一些基本应用&lt;/a>
@@ -838,6 +730,7 @@ markdate:2022-07-11 14:31:37.724795&lt;/p></description></item><item><title>rss�
 &lt;img src="netfilter.png" 
  alt="" 
  
+ style="width:80%;" 
 />
 &lt;/div>&lt;/p>
 &lt;blockquote>
@@ -969,7 +862,7 @@ markdate:2022-07-11 14:31:37.724795&lt;/p></description></item><item><title>rss�
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	}
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	&lt;span style="color:#66d9ef">return&lt;/span> RX_HANDLER_CONSUMED;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>相关函数&lt;/p></description></item><item><title>「转」tcpdump是在哪儿抓到的包？</title><link>https://example.com/post/linux/how_tcpdump/</link><pubDate>Fri, 01 Jul 2022 16:00:04 +0000</pubDate><guid>https://example.com/post/linux/how_tcpdump/</guid><description>&lt;blockquote>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>相关函数&lt;/p></description></item><item><title>「转」tcpdump是在哪儿抓到的包？</title><link>https://talengu.github.io/post/c5-linux/linux/how-tcpdump/</link><pubDate>Fri, 01 Jul 2022 16:00:04 +0000</pubDate><guid>https://talengu.github.io/post/c5-linux/linux/how-tcpdump/</guid><description>&lt;blockquote>
 &lt;p>原文地址 &lt;a href="https://cloud.tencent.com/developer/article/1879646">cloud.tencent.com&lt;/a>&lt;/p>&lt;/blockquote>
 &lt;blockquote>
 &lt;p>最近使用 tcpdump 的时候突然想到这个问题。因为我之前只存在一些一知半解的认识：比如直接镜像了网卡的包、在数据包进入内核前就获取了。但这些认识真的正确么？针对&amp;hellip;&lt;/p>&lt;/blockquote>
@@ -987,6 +880,7 @@ markdate:2022-07-11 14:31:37.724795&lt;/p></description></item><item><title>rss�
 &lt;img src="1620.png" 
  alt="" 
  
+ style="width:80%;" 
 />
 &lt;/div>&lt;/p>
 &lt;p>内核网络协议栈示意图&lt;/p>
@@ -994,7 +888,7 @@ markdate:2022-07-11 14:31:37.724795&lt;/p></description></item><item><title>rss�
 &lt;p>先来看看，普通的套接字的收包路径在内核中是怎么样。&lt;/p>
 &lt;p>以最常见的以太网网卡，当网卡接口接收到了一个帧，那么接受者知道它一定包含了一个 Ethernet 报头。封包在协议栈向上传递过程中，一定会在报头中包含一个字段，指出下一阶段的处理应该使用哪一个协议。 以太网卡拥有特定的 MAC 地址，在监听数据帧的时候，当看到帧的目的 MAC 地址与自己的地址或者链路层广播地址（FF:FF:FF:FF:FF:FF）相匹配，就会通过 DMA 把该帧读取到内存中的 ring buffer。&lt;/p>
 &lt;p>当一个数据帧被写入到内存后，将产生一个硬件中断请求，以通知 CPU 收到了数据包。操作系统为了减少硬中断产生的次数，会采用一个软中断 (softirq) 唤醒 NAPI 子系统。这样会产生一个单独的线程，调用网卡驱动注册的 poll 方法收包，同时禁止网卡产生新的硬中断，这样的效果便是一次中断可以接收多个包。一旦软终端代码判断有 softirq 处于 pending 状态，便会调用软终端处理函数 net_rx_action。&lt;/p>
-&lt;p>中断处理函数会在处理循环中调用 NAPI poll 来接收数据包。poll 方法会分配一个 sk_buff 数据结构（include/linux/skbuff.h），表示该数据包的内核视图。然后将数据从缓冲区提取到新建的 sk_buff 中，并对其中的 protocol 字段做初始化，该字段用以识别特定的协议。之后这个字段会被 netif_receive_skb 内核函数查询，用来确定该执行哪个函数来处理三层的封包。字段涉及协议的值都列在了 include/uapi/linux/if_ether.h 中，名字形如 ETH_P_XXX，比如 ip 协议为 ETH_P_IP。而有一种特殊情况，单一封包可以传递给多个处理函数，这就是 tcpdump 等网络嗅探应用会用到的 ETH_P_ALL。&lt;/p></description></item><item><title>rss统计 基于ttrss的PostgresQL数据库</title><link>https://example.com/post/rss_ttrss_statics/</link><pubDate>Sun, 08 May 2022 22:00:04 +0000</pubDate><guid>https://example.com/post/rss_ttrss_statics/</guid><description>&lt;p>&lt;strong>前言&lt;/strong>
+&lt;p>中断处理函数会在处理循环中调用 NAPI poll 来接收数据包。poll 方法会分配一个 sk_buff 数据结构（include/linux/skbuff.h），表示该数据包的内核视图。然后将数据从缓冲区提取到新建的 sk_buff 中，并对其中的 protocol 字段做初始化，该字段用以识别特定的协议。之后这个字段会被 netif_receive_skb 内核函数查询，用来确定该执行哪个函数来处理三层的封包。字段涉及协议的值都列在了 include/uapi/linux/if_ether.h 中，名字形如 ETH_P_XXX，比如 ip 协议为 ETH_P_IP。而有一种特殊情况，单一封包可以传递给多个处理函数，这就是 tcpdump 等网络嗅探应用会用到的 ETH_P_ALL。&lt;/p></description></item><item><title>rss统计 基于ttrss的PostgresQL数据库</title><link>https://talengu.github.io/post/c7-toolchain/rss-ttrss-statics/</link><pubDate>Sun, 08 May 2022 22:00:04 +0000</pubDate><guid>https://talengu.github.io/post/c7-toolchain/rss-ttrss-statics/</guid><description>&lt;p>&lt;strong>前言&lt;/strong>
 统计ttrss的使用数据。&lt;/p>
 &lt;ul>
 &lt;li>月度mark文件分析 OK&lt;/li>
@@ -1069,32 +963,32 @@ markdate:2022-07-11 14:31:37.724795&lt;/p></description></item><item><title>rss�
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>D&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;C:&lt;/span>&lt;span style="color:#ae81ff">\\&lt;/span>&lt;span style="color:#e6db74">Users&lt;/span>&lt;span style="color:#ae81ff">\\&lt;/span>&lt;span style="color:#e6db74">talen&lt;/span>&lt;span style="color:#ae81ff">\\&lt;/span>&lt;span style="color:#e6db74">Desktop&lt;/span>&lt;span style="color:#ae81ff">\\&lt;/span>&lt;span style="color:#e6db74">&amp;#34;&lt;/span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">with&lt;/span> open(D&lt;span style="color:#f92672">+&lt;/span>&lt;span style="color:#e6db74">&amp;#34;cc.md&amp;#34;&lt;/span>,&lt;span style="color:#e6db74">&amp;#39;w&amp;#39;&lt;/span>,encoding&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#e6db74">&amp;#39;utf-8&amp;#39;&lt;/span>) &lt;span style="color:#66d9ef">as&lt;/span> f:
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> f&lt;span style="color:#f92672">.&lt;/span>write(g_content)
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>使用脚本将英文rss转成中文rss</title><link>https://example.com/post/rss_google_translate/</link><pubDate>Sun, 08 May 2022 22:00:04 +0000</pubDate><guid>https://example.com/post/rss_google_translate/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>使用脚本将英文rss转成中文rss</title><link>https://talengu.github.io/post/c7-toolchain/rss-google-translate/</link><pubDate>Sun, 08 May 2022 22:00:04 +0000</pubDate><guid>https://talengu.github.io/post/c7-toolchain/rss-google-translate/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
 &lt;p>本文中我们将英文rss 自动转成中文 rss供ttrss使用。（利用谷歌翻译）&lt;/p>
 &lt;p>方便在手机上进行阅读或者收听。&lt;/p>
-&lt;center>&lt;img src="rss_google_translate/20220508-22-28-27.png" width="30%">
+&lt;center>&lt;img src="rss-google-translate/20220508-22-28-27.png" width="30%">
 &lt;/center>
 &lt;!-- more -->
 &lt;h2 id="举例">举例&lt;/h2>
 &lt;p>国外有很多不错的rss源，比如:&lt;/p>
 &lt;ul>
 &lt;li>&lt;a href="http://www.mckinsey.com/insights/rss">McKinsey Insights &amp;amp; Publications&lt;/a>
- &lt;center>&lt;img src="rss_google_translate/20220508-22-18-23.png" width="50%">
+ &lt;center>&lt;img src="rss-google-translate/20220508-22-18-23.png" width="50%">
 &lt;/li>
 &lt;/ul>
 &lt;/center>
  转成中文rss
- &lt;center>&lt;img src="rss_google_translate/20220508-22-20-48.png" width="50%">
+ &lt;center>&lt;img src="rss-google-translate/20220508-22-20-48.png" width="50%">
 &lt;/center>
 &lt;ul>
 &lt;li>
 &lt;p>&lt;a href="http://rss.acast.com/nature">Nature Podcast&lt;/a>&lt;/p>
- &lt;center>&lt;img src="rss_google_translate/20220508-22-25-04.png" width="50%">
+ &lt;center>&lt;img src="rss-google-translate/20220508-22-25-04.png" width="50%">
 &lt;/li>
 &lt;/ul>
 &lt;/center>
  转成中文rss
- &lt;center>&lt;img src="rss_google_translate/20220508-22-26-36.png" width="50%">
+ &lt;center>&lt;img src="rss-google-translate/20220508-22-26-36.png" width="50%">
 &lt;/center>
 &lt;h2 id="脚本">脚本&lt;/h2>
 &lt;p>使用 Translate 和 BeautifulSoup 项目&lt;/p>
@@ -1188,7 +1082,7 @@ markdate:2022-07-11 14:31:37.724795&lt;/p></description></item><item><title>rss�
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>tran_nature()
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="定时任务">定时任务&lt;/h3>
 &lt;blockquote>
-&lt;p>注意激活一下miniconda3 这个命令&lt;code>source /home/xxx/miniconda3/bin/activate&lt;/code>&lt;/p></description></item><item><title>「转」GRE隧道测试</title><link>https://example.com/post/linux/gre_test/</link><pubDate>Thu, 05 May 2022 22:52:28 +0000</pubDate><guid>https://example.com/post/linux/gre_test/</guid><description>&lt;blockquote>
+&lt;p>注意激活一下miniconda3 这个命令&lt;code>source /home/xxx/miniconda3/bin/activate&lt;/code>&lt;/p></description></item><item><title>「转」GRE隧道测试</title><link>https://talengu.github.io/post/c6-network/gre-test/</link><pubDate>Thu, 05 May 2022 22:52:28 +0000</pubDate><guid>https://talengu.github.io/post/c6-network/gre-test/</guid><description>&lt;blockquote>
 &lt;p>本文由 &lt;a href="http://ksria.com/simpread/">简悦 SimpRead&lt;/a> 转码， 原文地址 &lt;a href="https://juejin.cn/post/6988645230987706398">juejin.cn&lt;/a>&lt;/p>&lt;/blockquote>
 &lt;p>
 
@@ -1202,6 +1096,7 @@ markdate:2022-07-11 14:31:37.724795&lt;/p></description></item><item><title>rss�
 &lt;img src="e31bac5bcb1347a59142486adaf94e30.jpg" 
  alt="" 
  
+ style="width:80%;" 
 />
 &lt;/div>&lt;/p>
 &lt;h2 id="0-前言">0. 前言&lt;/h2>
@@ -1221,11 +1116,12 @@ markdate:2022-07-11 14:31:37.724795&lt;/p></description></item><item><title>rss�
 &lt;img src="db260d2dc98445f9988f1c768ca3e744.jpg" 
  alt="" 
  
+ style="width:80%;" 
 />
 &lt;/div>&lt;/p>
 &lt;h2 id="1-linux-内核支持的隧道类型">1. Linux 内核支持的隧道类型&lt;/h2>
-&lt;p>目前 Linux 内核已经支持多种隧道类型，包括：IPIP 隧道，GRE 隧道，&amp;hellip; 。其余这几个我也没见过。当然除了这几种，还有 ipsec 协议，l2tp 协议，可以的是我目前都还没有用过，实在是暴殄天物，罪过罪过&lt;/p></description></item><item><title>本地安装rss</title><link>https://example.com/post/rss_local_install/</link><pubDate>Sat, 16 Apr 2022 12:39:04 +0000</pubDate><guid>https://example.com/post/rss_local_install/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
-&lt;p>在 “&lt;a href="https://zhuanlan.zhihu.com/p/149452085">二零年RSS杂谈&lt;/a>”中说到，我想建立一种信息的获取系统，免受广告和推荐算法的困扰。&lt;/p>
+&lt;p>目前 Linux 内核已经支持多种隧道类型，包括：IPIP 隧道，GRE 隧道，&amp;hellip; 。其余这几个我也没见过。当然除了这几种，还有 ipsec 协议，l2tp 协议，可以的是我目前都还没有用过，实在是暴殄天物，罪过罪过&lt;/p></description></item><item><title>本地安装rss</title><link>https://talengu.github.io/post/c7-toolchain/rss-local-install/</link><pubDate>Sat, 16 Apr 2022 12:39:04 +0000</pubDate><guid>https://talengu.github.io/post/c7-toolchain/rss-local-install/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
+&lt;p>在 “&lt;a href="c0-life/talk-rss-2020.md">二零年RSS杂谈&lt;/a>”中说到，我想建立一种信息的获取系统，免受广告和推荐算法的困扰。&lt;/p>
 &lt;p>我希望其的功能包括：&lt;/p>
 &lt;ul>
 &lt;li>多终端 Web、PC、 mobile的同步&lt;/li>
@@ -1263,6 +1159,7 @@ markdate:2022-07-11 14:31:37.724795&lt;/p></description></item><item><title>rss�
 &lt;img src="image-20200626135803804.png" 
  alt="image-20200626135803804" 
  
+ style="width:80%;" 
 />
 &lt;/div>&lt;/p>
 &lt;h2 id="docker-windows安装">docker windows安装&lt;/h2>
@@ -1279,6 +1176,7 @@ markdate:2022-07-11 14:31:37.724795&lt;/p></description></item><item><title>rss�
 &lt;img src="image-20200626141604658.png" 
  alt="image-20200626141604658" 
  
+ style="width:80%;" 
 />
 &lt;/div>&lt;/p>
 &lt;p>我们使用docker-compose 来进行下一步 网站服务的安装。将下面的资料保存到s&lt;code>docker-compose.yml&lt;/code> 然后利用docker-compose方法安装。&lt;/p>
@@ -1343,8 +1241,9 @@ markdate:2022-07-11 14:31:37.724795&lt;/p></description></item><item><title>rss�
 &lt;img src="image-20200626140114783.png" 
  alt="image-20200626140114783" 
  
+ style="width:80%;" 
 />
-&lt;/div>&lt;/p></description></item><item><title>「转」window软件运行时间</title><link>https://example.com/post/soft_run_time/</link><pubDate>Fri, 15 Apr 2022 12:39:04 +0000</pubDate><guid>https://example.com/post/soft_run_time/</guid><description>&lt;h2 id="背景">背景&lt;/h2>
+&lt;/div>&lt;/p></description></item><item><title>「转」window软件运行时间</title><link>https://talengu.github.io/post/c8-programming/soft-run-time/</link><pubDate>Fri, 15 Apr 2022 12:39:04 +0000</pubDate><guid>https://talengu.github.io/post/c8-programming/soft-run-time/</guid><description>&lt;h2 id="背景">背景&lt;/h2>
 &lt;p>对关注性能的程序开发人员而言，一个好的计时部件既是益友，也是良师。计时器既可以作为程序组件帮助程序员精确的控制程序进程，又是一件有力的调试武器，在有经验的程序员手里可以尽快的确定程序的性能瓶颈，或者对不同的算法作出有说服力的性能比较。&lt;/p>
 &lt;!-- more -->
 &lt;p>在Windows平台下，常用的计时器有两种，一种是&lt;code>timeGetTime&lt;/code>多媒体计时器，它可以提供毫秒级的计时。但这个精度对很多应用场合而言还是太粗糙了。另一种是&lt;code>QueryPerformanceCount&lt;/code>计数器，随系统的不同可以提供微秒级的计数。对于实时图形处理、多媒体数据流处理、或者实时系统构造的程序员，善用&lt;code>QueryPerformanceCount/QueryPerformanceFrequency&lt;/code>是一项基本功。&lt;/p>
@@ -1390,7 +1289,7 @@ markdate:2022-07-11 14:31:37.724795&lt;/p></description></item><item><title>rss�
 &lt;/ol>
 &lt;p>关于这个方法计时的最大长度，我们可以简单的用下列公式计算：&lt;/p>
 &lt;pre tabindex="0">&lt;code>自CPU上电以来的秒数 = RDTSC读出的周期数 / CPU主频速率（Hz） 
-&lt;/code>&lt;/pre>&lt;p>64位无符号整数所能表达的最大数字是&lt;code>1.8×10^19&lt;/code>，在我的&lt;code>Celeron 800&lt;/code>上可以计时大约700年（书中说可以在200MHz的Pentium上计时117年，这个数字不知道是怎么得出来的，与我的计算有出入）。无论如何，我们大可不必关心溢出的问题。&lt;/p></description></item><item><title>知识记忆软件anki的使用</title><link>https://example.com/post/anki_tips/</link><pubDate>Thu, 14 Apr 2022 12:39:04 +0000</pubDate><guid>https://example.com/post/anki_tips/</guid><description>&lt;h2 id="anki使用---自建-anki--server">anki使用 - 自建 anki server&lt;/h2>
+&lt;/code>&lt;/pre>&lt;p>64位无符号整数所能表达的最大数字是&lt;code>1.8×10^19&lt;/code>，在我的&lt;code>Celeron 800&lt;/code>上可以计时大约700年（书中说可以在200MHz的Pentium上计时117年，这个数字不知道是怎么得出来的，与我的计算有出入）。无论如何，我们大可不必关心溢出的问题。&lt;/p></description></item><item><title>知识记忆软件anki的使用</title><link>https://talengu.github.io/post/c7-toolchain/anki-tips/</link><pubDate>Thu, 14 Apr 2022 12:39:04 +0000</pubDate><guid>https://talengu.github.io/post/c7-toolchain/anki-tips/</guid><description>&lt;h2 id="anki使用---自建-anki--server">anki使用 - 自建 anki server&lt;/h2>
 &lt;p>当初想设计好用的英语背诵软件，现在发现了anki人家功能全部实现，还要啥自行车。&lt;/p>
 &lt;p>我当时设计的单词勇士开源Android软件：
 &lt;a href="https://github.com/talengu/WordWarrior">https://github.com/talengu/WordWarrior&lt;/a>
@@ -1419,9 +1318,9 @@ markdate:2022-07-11 14:31:37.724795&lt;/p></description></item><item><title>rss�
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>./ankisyncctl.py deluser &amp;lt;username&amp;gt; - delete a user
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>./ankisyncctl.py passwd &amp;lt;username&amp;gt; - change password of a user
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="客户端">客户端&lt;/h2>
-&lt;img src="anki_tips/image-20200424005627732.png" alt="image-20200424005627732" style="zoom:33%;" />
+&lt;img src="anki-tips/image-20200424005627732.png" alt="image-20200424005627732" style="zoom:33%;" />
 &lt;h3 id="macwin-客户端">mac/win 客户端&lt;/h3>
-&lt;p>从官网下载 anki mac版本 2.1.21 (f1734a47) / Windows PC 客户端&lt;/p></description></item><item><title>Ubuntu完全教程</title><link>https://example.com/post/linux/ubuntu_tour/</link><pubDate>Fri, 01 Apr 2022 18:00:04 +0000</pubDate><guid>https://example.com/post/linux/ubuntu_tour/</guid><description>&lt;blockquote>
+&lt;p>从官网下载 anki mac版本 2.1.21 (f1734a47) / Windows PC 客户端&lt;/p></description></item><item><title>「转」Ubuntu完全教程</title><link>https://talengu.github.io/post/c5-linux/linux/ubuntu-tour/</link><pubDate>Fri, 01 Apr 2022 18:00:04 +0000</pubDate><guid>https://talengu.github.io/post/c5-linux/linux/ubuntu-tour/</guid><description>&lt;blockquote>
 &lt;p>ref:&lt;a href="http://www.cnblogs.com/dutlei/archive/2012/11/20/2778327.html">Ubuntu完全教程，让你成为Ubuntu高手！&lt;/a>
 todo整理&lt;/p>&lt;/blockquote>
 &lt;h2 id="ubuntu的发音">Ubuntu的发音&lt;/h2>
@@ -1439,7 +1338,7 @@ todo整理&lt;/p>&lt;/blockquote>
 &lt;p>Ubuntu 完全基于 Linux 操作系统， 可以免费得到社区及专业机构的支持。庞大的社区是它成长的沃土，请向这片动人的热忱敞开心扉。&lt;/p>
 &lt;p>Ubuntu 社区恪守 Ubuntu 理念：自由！软件应是自由的，应尊重人类的自由意志，它与人类之间不应有任何隔膜。本地语种，功能限制，自主改进的权利……都不应成为使用的障碍或负担。&lt;/p>
 &lt;p>自由，让 Ubuntu 与传统的私有软件从根本上不同: 免费不能用来遮羞，您有权修正它，直到满意为止。&lt;/p>
-&lt;p>Ubuntu 适合桌面和服务器。当前 Ubuntu 发布版支持 PC (Intel x86), 64-bit PC (AMD64) 和 PowerPC (Apple iBook 和 Powerbook, G4 和 G5) 架构。&lt;/p></description></item><item><title>爱立信的百年沉浮</title><link>https://example.com/post/history_ericsson/</link><pubDate>Fri, 01 Apr 2022 12:39:04 +0000</pubDate><guid>https://example.com/post/history_ericsson/</guid><description>&lt;blockquote>
+&lt;p>Ubuntu 适合桌面和服务器。当前 Ubuntu 发布版支持 PC (Intel x86), 64-bit PC (AMD64) 和 PowerPC (Apple iBook 和 Powerbook, G4 和 G5) 架构。&lt;/p></description></item><item><title>「转」爱立信的百年沉浮</title><link>https://talengu.github.io/post/c6-network/history-ericsson/</link><pubDate>Fri, 01 Apr 2022 12:39:04 +0000</pubDate><guid>https://talengu.github.io/post/c6-network/history-ericsson/</guid><description>&lt;blockquote>
 &lt;p>文章来源：&lt;br>
 鲜枣课堂（ID：xzclasscom）
 &lt;a href="https://mp.weixin.qq.com/s?__biz=MjM5NTY1MjY0MQ==&amp;amp;mid=2650814278&amp;amp;idx=1&amp;amp;sn=26083fed8d8dd76340e063fd42a59dea">原文&lt;/a>&lt;/p>&lt;/blockquote>
@@ -1460,6 +1359,7 @@ todo整理&lt;/p>&lt;/blockquote>
 &lt;img src="640.png" 
  alt="" 
  
+ style="width:80%;" 
 />
 &lt;/div>&lt;/p>
 &lt;center>&lt;div>安东 · 亨里克 · 奥勒，瑞典电信业的先驱&lt;/div>&lt;/center>
@@ -1477,6 +1377,7 @@ todo整理&lt;/p>&lt;/blockquote>
 &lt;img src="640-16487839499382.png" 
  alt="" 
  
+ style="width:80%;" 
 />
 &lt;/div>&lt;/p>
 &lt;center>&lt;div> 拉什 · 玛格纳斯 · 爱立信&lt;/div>&lt;/center>
@@ -1484,7 +1385,7 @@ todo整理&lt;/p>&lt;/blockquote>
 &lt;p>拉什 · 爱立信 1846 年 5 月 5 日出生于瑞典中部瓦姆兰省的一个小农场里。他的家庭条件贫困，自己在 9 个兄弟姐妹中排行第六。&lt;/p>
 &lt;p>11 岁时，由于父亲病逝，他不得不外出工作，养家糊口。这期间，他当过矿工，修过铁路，还在铁匠铺做了很长时间的学徒。&lt;/p>
 &lt;p>1867 年，拉什 · 爱立信终于攒够了路费，来到他梦寐以求的瑞典首都——斯德哥尔摩。经过一周的试用后，他成功加入了奥勒公司，成为一名修理工。&lt;/p>
-&lt;p>尽管这份工作的工资微薄，拉什 · 爱立信仍然感到十分满足。他后来回忆说：“（这份工作）足以满足我的需求，让我庆幸地看到生活比以往任何时候都更加光明，我心中第一次感受到了生活的快乐。”&lt;/p></description></item><item><title>二零年RSS杂谈</title><link>https://example.com/post/rss_talk2020/</link><pubDate>Fri, 14 Jan 2022 01:02:57 +0000</pubDate><guid>https://example.com/post/rss_talk2020/</guid><description>&lt;p>2020年了，笔者还是使用RSS的原始人。RSS，Really Simple Syndication是一种信息聚合工具。在5G时代信息即将大爆炸之前，我来谈谈rss的杂七杂八吧。我们来打个赌，你不会看完这篇文章。&lt;/p>
+&lt;p>尽管这份工作的工资微薄，拉什 · 爱立信仍然感到十分满足。他后来回忆说：“（这份工作）足以满足我的需求，让我庆幸地看到生活比以往任何时候都更加光明，我心中第一次感受到了生活的快乐。”&lt;/p></description></item><item><title>二零年RSS杂谈</title><link>https://talengu.github.io/post/c0-life/talk-rss-2020/</link><pubDate>Fri, 14 Jan 2022 01:02:57 +0000</pubDate><guid>https://talengu.github.io/post/c0-life/talk-rss-2020/</guid><description>&lt;p>2020年了，笔者还是使用RSS的原始人。RSS，Really Simple Syndication是一种信息聚合工具。在5G时代信息即将大爆炸之前，我来谈谈rss的杂七杂八吧。我们来打个赌，你不会看完这篇文章。&lt;/p>
 &lt;!-- more -->
 &lt;p>软件的交互设计有很多心理学理论的应用。比如微信、QQ的三级页面设计，一般经过3次点击就能到达功能或设置。这符合认知原理，人认知记忆能力一般为3-5个的组合。日常生活中要记电话号码，可以3-4-4这样记。软件交互中还有利用人的习惯奖励机制的提醒红点的设计，吸引你去点击，获取红点消失的奖励。对我来说，较难控制住不受这些设计的影响。在《习惯的力量》一书了解到，直接逃离这些环境可有效解决控制不住的问题。比如工作的时候，把手机关进柜子，工作1个小时，然后再回复信息，当然重要电话还是要立即接的。&lt;/p>
 &lt;p>铺天盖地的广告，马路上，电视中，手机里，PC页面充斥着各种广告等等。大多数人可能养成了自动过滤的广告的习惯，然而我的情况是一直在用去广告的插件，并没有养成自动忽略广告的习惯。可怜兮兮，难道只有我是有广告洁癖的嘛？广告有点浪费生命。&lt;/p>
@@ -1499,7 +1400,7 @@ todo整理&lt;/p>&lt;/blockquote>
 &lt;p>看来all in one 势在必行，RSS被谷歌放弃后，很多网站傲娇地不提供RSS服务了，毕竟流量至上，钱要赚的，我一直想做一个这种爬的工具，但我不希望有大量使用爬，也就是我们还是要尊重网站的盈利以及持续发展的，这也是仅仅方便个人的信息处理，优化你的自动信息的处理，再也不用一个个打开网站，然后看信息看广告，还要被推荐不重用的信息。这也算我个人的想法。人在于折腾，于是我开始折腾ttrss rsshub等开源软件。&lt;/p>
 &lt;p>自由软件的好处，在于自由定制，参与发展，利益化会尽量变慢或者没有，方便的同时并不忘隐私保护。&lt;/p>
 &lt;p>我想说的是，&lt;strong>技术应当给人们带来自由和发展，而非接管人们的注意力，浪费宝贵的时间。&lt;/strong>&lt;/p>
-&lt;p>写在5G信息大爆发前，与大家共同反思与成长。&lt;/p></description></item><item><title>征服14座高峰：凡事皆有可能</title><link>https://example.com/post/14peak/</link><pubDate>Sun, 09 Jan 2022 16:49:44 +0000</pubDate><guid>https://example.com/post/14peak/</guid><description>&lt;h2 id="简介">简介&lt;/h2>
+&lt;p>写在5G信息大爆发前，与大家共同反思与成长。&lt;/p></description></item><item><title>征服14座高峰：凡事皆有可能</title><link>https://talengu.github.io/post/c0-life/trips/14peak/</link><pubDate>Sun, 09 Jan 2022 16:49:44 +0000</pubDate><guid>https://talengu.github.io/post/c0-life/trips/14peak/</guid><description>&lt;h2 id="简介">简介&lt;/h2>
 &lt;p>14 Peaks: Nothing Is Impossible (2021)&lt;/p>
 &lt;p>无畏的尼泊尔登山运动员尼姆斯·普贾开始了一项看似不可能完成的任务：在7个月内登顶全球14座8000米高峰。（2019年度完成的Possible plan）&lt;/p>
 &lt;p>最近，我看完了该记录片，摘录了些语句，鼓励自己不断进取，征服人生的一座座高峰，追寻梦想，不忘初心！&lt;/p>
@@ -1515,6 +1416,7 @@ todo整理&lt;/p>&lt;/blockquote>
 &lt;img src="2022-01-09-16-49-12.png" 
  alt="" 
  
+ style="width:80%;" 
 />
 &lt;/div>&lt;/p>
 &lt;!-- more -->
@@ -1531,6 +1433,7 @@ todo整理&lt;/p>&lt;/blockquote>
 &lt;img src="2022-01-09-17-20-35.JPG" 
  alt="" 
  
+ style="width:80%;" 
 />
 &lt;/div>&lt;/p>
 &lt;h2 id="不忘初心">不忘初心&lt;/h2>
@@ -1546,10 +1449,11 @@ todo整理&lt;/p>&lt;/blockquote>
 &lt;img src="20220109_hello.JPG" 
  alt="" 
  
+ style="width:80%;" 
 />
 &lt;/div>&lt;/p>
 &lt;h2 id="最后">最后&lt;/h2>
-&lt;p>山不向我走来，我便向他走去！&lt;/p></description></item><item><title>「转」一文看懂Linux内核！Linux内核架构和工作原理详解</title><link>https://example.com/post/linux/linux_in_one/</link><pubDate>Thu, 23 Dec 2021 22:45:31 +0000</pubDate><guid>https://example.com/post/linux/linux_in_one/</guid><description>&lt;p>全文导读&lt;/p>
+&lt;p>山不向我走来，我便向他走去！&lt;/p></description></item><item><title>「转」一文看懂Linux内核！Linux内核架构和工作原理详解</title><link>https://talengu.github.io/post/c5-linux/linux/linux-in-one/</link><pubDate>Thu, 23 Dec 2021 22:45:31 +0000</pubDate><guid>https://talengu.github.io/post/c5-linux/linux/linux-in-one/</guid><description>&lt;p>全文导读&lt;/p>
 &lt;ul>
 &lt;li>&lt;a href="">Linux 内核预备工作&lt;/a>&lt;/li>
 &lt;li>&lt;a href="">Linux 内核体系结构简析&lt;/a>&lt;/li>
@@ -1604,7 +1508,7 @@ todo整理&lt;/p>&lt;/blockquote>
 &lt;ol start="3">
 &lt;li>
 &lt;p>进程的调度。确认哪个进程运行多长的时间。&lt;br>
-Linux 进程&lt;/p></description></item><item><title>「转」《中华古籍资源库》中国国家图书馆</title><link>https://example.com/post/readings/zhonghuaguji/</link><pubDate>Thu, 16 Dec 2021 22:45:31 +0000</pubDate><guid>https://example.com/post/readings/zhonghuaguji/</guid><description>&lt;h2 id="简介">简介&lt;/h2>
+Linux 进程&lt;/p></description></item><item><title>「转」《中华古籍资源库》中国国家图书馆</title><link>https://talengu.github.io/post/c0-life/readings/zhonghuaguji/</link><pubDate>Thu, 16 Dec 2021 22:45:31 +0000</pubDate><guid>https://talengu.github.io/post/c0-life/readings/zhonghuaguji/</guid><description>&lt;h2 id="简介">简介&lt;/h2>
 &lt;p>“中华古籍资源库”是“中华古籍保护计划”的重要成果。2016年9月28日，“中华古籍资源库”正式开通运行，陆续发布国家图书馆藏善本和普通古籍、法国国家图书馆藏敦煌遗书、天津图书馆藏普通古籍、日本永青文库捐赠汉籍、云南省图书馆善本古籍、芷兰斋藏稿抄校本等古籍影像资源，总量超过3.3万部。&lt;/p>
 &lt;p>《中华古籍资源库》！！！&lt;br>
 网址：http://www.nlc.cn/pcab/zy/zhgj_zyk/&lt;br>
@@ -1701,7 +1605,7 @@ Linux 进程&lt;/p></description></item><item><title>「转」《中华古籍资
 &lt;p>中华寻根网
 中华寻根网是国家图书馆与澳门基金会开展的文化合作项目，是以提供姓氏源流和家谱资源服务为核心、方便海内外华人寻根问祖活动的网络平台。“中华寻根网”目前提供500多个姓氏源流、2000多部家谱和6000种其他文献的阅览，以及自建家谱，交流联谊的互动服务。&lt;/p>
 &lt;/li>
-&lt;/ul></description></item><item><title>「转」桥初始化（一）</title><link>https://example.com/post/linux_network/br_init/</link><pubDate>Thu, 02 Dec 2021 12:00:00 +0000</pubDate><guid>https://example.com/post/linux_network/br_init/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
+&lt;/ul></description></item><item><title>「转」桥初始化（一）</title><link>https://talengu.github.io/post/c6-network/br_init/</link><pubDate>Thu, 02 Dec 2021 12:00:00 +0000</pubDate><guid>https://talengu.github.io/post/c6-network/br_init/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
 &lt;p>注：章节中的源代码，基于 linux 内核 4.7.4&lt;/p>
 &lt;p>网桥的背景到处都有，在这里就不浪费的时间说废话了。&lt;/p>
 &lt;p>桥接程序的初始化，桥接程序既可以集成在内核中，也可以编译成独立模块。初始化函数br_init和清理函数br_deinit的定义在/net/bridge/br.c中&lt;/p>
@@ -1751,7 +1655,7 @@ Linux 进程&lt;/p></description></item><item><title>「转」《中华古籍资
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span> &lt;span style="color:#66d9ef">return&lt;/span> &lt;span style="color:#ae81ff">0&lt;/span>;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="具体的">具体的&lt;/h2>
-&lt;p>了解了桥初始化大致要做的事情后，我们再来看看这些初始化或者注册的事情到底干了些什么？&lt;/p></description></item><item><title>2021 年科隆游戏展奖项提名名单</title><link>https://example.com/post/2021games/</link><pubDate>Wed, 01 Sep 2021 12:00:00 +0000</pubDate><guid>https://example.com/post/2021games/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
+&lt;p>了解了桥初始化大致要做的事情后，我们再来看看这些初始化或者注册的事情到底干了些什么？&lt;/p></description></item><item><title>2021 年科隆游戏展奖项提名名单</title><link>https://talengu.github.io/post/c0-life/games/2021games/</link><pubDate>Wed, 01 Sep 2021 12:00:00 +0000</pubDate><guid>https://talengu.github.io/post/c0-life/games/2021games/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
 &lt;p>帝国时代3，现在帝国4！&lt;br>
 2021 年科隆游戏展奖项提名名单正式公布&lt;/p>
 &lt;!-- more -->
@@ -1767,7 +1671,7 @@ Linux 进程&lt;/p></description></item><item><title>「转」《中华古籍资
 &lt;p>最佳角色扮演游戏：《艾尔登法环》（万代南梦宫娱乐）；《Encased》（科赫传媒）；《破晓传说》（万代南梦宫娱乐）&lt;/p>
 &lt;p>最佳模拟游戏：《攀登者：天空是极限》(Art Games Studio)；《模拟农场 22》 (Astragon Entertainment)&lt;/p>
 &lt;p>最佳体育游戏：《攀登者：天空是极限》(Art Games Studio)；《FIFA22》（EA）；《Riders Republic》（育碧）&lt;/p>
-&lt;p>最佳策略游戏：《帝国时代 4》 (微软)；《英雄连 3》 (世嘉)；《马里奥 + 疯狂兔子星耀之愿》 (育碧)&lt;/p></description></item><item><title>「转」在 C/C++ 程序中打印当前函数调用栈</title><link>https://example.com/post/c_debug/</link><pubDate>Wed, 25 Aug 2021 23:18:52 +0000</pubDate><guid>https://example.com/post/c_debug/</guid><description>&lt;h2 id="背景">背景&lt;/h2>
+&lt;p>最佳策略游戏：《帝国时代 4》 (微软)；《英雄连 3》 (世嘉)；《马里奥 + 疯狂兔子星耀之愿》 (育碧)&lt;/p></description></item><item><title>「转」在 C/C++ 程序中打印当前函数调用栈</title><link>https://talengu.github.io/post/c8-programming/c-debug/</link><pubDate>Wed, 25 Aug 2021 23:18:52 +0000</pubDate><guid>https://talengu.github.io/post/c8-programming/c-debug/</guid><description>&lt;h2 id="背景">背景&lt;/h2>
 &lt;p>2011 年 6 月 11 日 &lt;a href="http://www.wuzesheng.com/?author=2">小武哥&lt;/a>&lt;/p>
 &lt;p>前几天帮同事跟踪的一个程序莫名退出，没有 core dump(当然 ulimit 是打开的) 的问题。我们知道，正常情况下，如果程序因为某种异常条件退出的话，应该会产生 core dump，而如果程序正常退出的话，应该是直接或者间接的调用了 exit() 相关的函数。基于这个事实，我想到了这样一个办法，在程序开始时，通过系统提供的 atexit()，向系统注册一个回调函数，在程序调用 exit() 退出的时候，这个回调函数就会被调用，然后我们在回调函数中打印出当前的函数调用栈，由此便可以知道 exit() 是在哪里调用，从而上述问题便迎刃而解了。上述方法用来解决类似问题是非常行之有效的。在上面，我提到了在 “回调函数中打印出当前的函数调用栈”，相信细心的朋友应该注意到这个了，本文的主要内容就是详细介绍，如何在程序中打印中当前的函数调用栈。&lt;/p>
 &lt;!-- more -->
@@ -1815,7 +1719,7 @@ Linux 进程&lt;/p></description></item><item><title>「转」《中华古籍资
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">free&lt;/span>(stacktrace);
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>（说明：下面的介绍采用的环境是 ubuntu 11.04, x86_64, gcc-4.5.2）&lt;/p></description></item><item><title>RSS跟踪github文件更新+某管子更新</title><link>https://example.com/post/rss_github_file/</link><pubDate>Sat, 24 Jul 2021 12:00:00 +0000</pubDate><guid>https://example.com/post/rss_github_file/</guid><description>&lt;p>&lt;strong>前言&lt;/strong>&lt;/p>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>（说明：下面的介绍采用的环境是 ubuntu 11.04, x86_64, gcc-4.5.2）&lt;/p></description></item><item><title>RSS跟踪github文件更新+某管子更新</title><link>https://talengu.github.io/post/c7-toolchain/rss-github-file/</link><pubDate>Sat, 24 Jul 2021 12:00:00 +0000</pubDate><guid>https://talengu.github.io/post/c7-toolchain/rss-github-file/</guid><description>&lt;p>&lt;strong>前言&lt;/strong>&lt;/p>
 &lt;p>好久没有更新博客了。RSS这种形式的信息获取方式，似乎又流行起来。&lt;/p>
 &lt;!-- more -->
 &lt;h2 id="github文件更新">github文件更新&lt;/h2>
@@ -1834,6 +1738,7 @@ Linux 进程&lt;/p></description></item><item><title>「转」《中华古籍资
 &lt;img src="rss_result.png" 
  alt="image-20210724005152399" 
  
+ style="width:80%;" 
 />
 &lt;/div>&lt;/p>
 &lt;h3 id="下载脚本">下载脚本&lt;/h3>
@@ -1910,7 +1815,7 @@ Linux 进程&lt;/p></description></item><item><title>「转」《中华古籍资
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">for&lt;/span> _d &lt;span style="color:#f92672">in&lt;/span> _now[:&lt;span style="color:#f92672">-&lt;/span>&lt;span style="color:#ae81ff">5&lt;/span>]:
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> os&lt;span style="color:#f92672">.&lt;/span>popen(&lt;span style="color:#e6db74">&amp;#34;rm -rf &lt;/span>&lt;span style="color:#e6db74">%s&lt;/span>&lt;span style="color:#e6db74">&amp;#34;&lt;/span>&lt;span style="color:#f92672">%&lt;/span>_d)
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>在linux亦可使用&lt;a href="https://www.runoob.com/w3cnote/linux-crontab-tasks.html">crontab&lt;/a>定时启动下载任务。在 &lt;code>/etc/cron.hourly/&lt;/code> 设置即可。&lt;/p></description></item><item><title>选择困难者的福音？层次分析法</title><link>https://example.com/post/math/math_ahp/</link><pubDate>Fri, 02 Apr 2021 12:00:00 +0000</pubDate><guid>https://example.com/post/math/math_ahp/</guid><description>&lt;h2 id="摘要">摘要&lt;/h2>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>在linux亦可使用&lt;a href="https://www.runoob.com/w3cnote/linux-crontab-tasks.html">crontab&lt;/a>定时启动下载任务。在 &lt;code>/etc/cron.hourly/&lt;/code> 设置即可。&lt;/p></description></item><item><title>选择困难者的福音？层次分析法</title><link>https://talengu.github.io/post/c1-math/ahp/</link><pubDate>Fri, 02 Apr 2021 12:00:00 +0000</pubDate><guid>https://talengu.github.io/post/c1-math/ahp/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
 &lt;p>日常生活中，我们面临很多的选择，选择自己最工作offer，选择买哪个牌子的手机，选择哪个地方旅行等等。这些选择难以定量的衡量，有很多不确定性。内心小纠结，我选择了这个，万一那个好呢，怎么办？请看层次分析法。&lt;/p>
 &lt;p>层次分析法(Analytic Hierarchy Process，简称 AHP)是对一些较为复杂、较为模糊的问题作出决策的简易方法，它特别适用于那些难于完全定量分析的问题。它是美国运筹学家 T. L. Saaty 教授于上世纪 70 年代初期提出的一种简便、灵活而又实用的多准则决策方法。&lt;/p>
 &lt;p>运用层次分析法建模，大体上可按下面四个步骤进行&lt;/p>
@@ -1939,7 +1844,21 @@ Linux 进程&lt;/p></description></item><item><title>「转」《中华古籍资
 &lt;/li>
 &lt;li>方案层C：就是我们的offer&lt;/li>
 &lt;/ul>
-&lt;img src="math_AHP/image-20200406145535585.png" alt="image-20200406145535585" style="zoom:50%;" />
+&lt;p>
+
+
+
+
+ 
+
+
+&lt;div style="text-align: center;">
+&lt;img src="image-20200406145535585.png" 
+ alt="" 
+ 
+ style="width:80%;" 
+/>
+&lt;/div>&lt;/p>
 &lt;h2 id="构造-a-b-之间判断矩阵">构造 A B 之间判断矩阵&lt;/h2>
 &lt;p>准则层B与目标A之间的关系。为了求出准则层中(B1-6) 对目标的重要层度的排序。比如对于该生工作满意度第一重要是待遇，然后是地点，其实该生自己也很模糊。就是固定A，然后求B中准则，对A重要性的排序。&lt;/p>
 &lt;h3 id="我们怎么对b中的准则们的重要排序呢">我们怎么对B中的准则们的重要排序呢？&lt;/h3>
@@ -1979,7 +1898,7 @@ Linux 进程&lt;/p></description></item><item><title>「转」《中华古籍资
  &lt;/tr>
  &lt;/tbody>
 &lt;/table>
-&lt;p>最后的两两相对重要表格&lt;/p></description></item><item><title>地表最强大的还有这 14 位程序员</title><link>https://example.com/post/cs_fonters/</link><pubDate>Thu, 09 Apr 2020 12:39:04 +0000</pubDate><guid>https://example.com/post/cs_fonters/</guid><description>&lt;p>原标题：除了 Linus，地表最强大的还有这 14 位程序员，速来膜拜！&lt;/p>
+&lt;p>最后的两两相对重要表格&lt;/p></description></item><item><title>「转」地表最强大的还有这 14 位程序员</title><link>https://talengu.github.io/post/c8-programming/cs-fonters/</link><pubDate>Thu, 09 Apr 2020 12:39:04 +0000</pubDate><guid>https://talengu.github.io/post/c8-programming/cs-fonters/</guid><description>&lt;p>原标题：除了 Linus，地表最强大的还有这 14 位程序员，速来膜拜！&lt;/p>
 &lt;p>导语：IT world 曾经做过一次调查，这个世界上最强大的 15 位程序员，到底是？&lt;/p>
 &lt;blockquote>
 &lt;p>文 / IT world&lt;/p>&lt;/blockquote>
@@ -1989,75 +1908,14 @@ Linux 进程&lt;/p></description></item><item><title>「转」《中华古籍资
 &lt;p>原文地址 &lt;a href="https://www.sohu.com/a/223302790_700886">https://www.sohu.com/a/223302790_700886&lt;/a>&lt;/p>&lt;/blockquote>
 &lt;p>当和技术基友谈论起 “谁是世界上最顶级的程序员” 的话题时，总是分分钟能引发骂战，优秀的程序员太多了，要评出最优秀的，貌似真的不容易。&lt;/p>
 &lt;p>IT world 曾经就做过一次调查，当说到谁是世界上健在且最顶级的程序员时，这 15 个人的名字总是能浮现出来，是公认的还是有争议的，是真 · 大神还是伪 · 大神？一起来看看吧~&lt;/p>
-&lt;img src="cs_fonters/3e28c4606b644378b652dc9c3716da02.jpeg" style="zoom:33%;" />
+&lt;img src="cs-fonters/3e28c4606b644378b652dc9c3716da02.jpeg" style="zoom:33%;" />
 &lt;!-- more -->
 &lt;h2 id="margaret-hamilton">Margaret Hamilton&lt;/h2>
-&lt;img src="cs_fonters/264f0ac3e2254ea8b1f91eac42632e1c.jpeg" style="zoom:33%;" />
+&lt;img src="cs-fonters/264f0ac3e2254ea8b1f91eac42632e1c.jpeg" style="zoom:33%;" />
 &lt;p>作为 15 位上榜者中唯一女性，玛格丽特被誉为是 “&lt;strong>阿波罗飞行控制软件背后的大脑&lt;/strong>”。&lt;/p>
 &lt;p>作为查尔斯 · 斯塔克 · 德雷珀实验室（Charles Stark Draper Laboratory）软件工程部的老大，她组建了一个团队，负责设计和制造阿波罗舰载飞行控制器软件和空间实验室。&lt;/p>
 &lt;p>基于这段经历，她开发了通用系统语言（Universal Systems Language）和开发先于事实（ Development Before the Fact）的范例，首先提出异步软件、优先调度和高可信度的软件设计理念。“软件工程（ software engineering）” 这个名字，公认是由她首先发明的。&lt;/p>
-&lt;p>1986 年，玛格丽特获得了奥古斯塔 · 埃达 · 洛夫莱斯奖，2003 年获得 NASA 卓越太空行动奖。&lt;/p></description></item><item><title>博客模版</title><link>https://example.com/post/template/</link><pubDate>Thu, 25 Jul 2019 12:00:00 +0000</pubDate><guid>https://example.com/post/template/</guid><description>&lt;p>文件head，设置标题、日期、分类、标签、评论、版权、是否使用公式，如下。&lt;/p>
-&lt;pre tabindex="0">&lt;code>---
-title: 模版文件
-date: 2019-07-25 12:00:00
-updated: 2019-07-25 12:00:00
-categories:
- - 博客搭建
- - 模版文件
-tags:
- - Writing
-comments: true
-copyright: true
-math: true
----
-&lt;/code>&lt;/pre>&lt;p>&lt;strong>摘要&lt;/strong>&lt;/p>
-&lt;p>本部分说明文章的写作意图。涉及的背景、主要内容、本文与其他文章关系等。&lt;/p>
-&lt;p>本文为Hexo博客模版文件，以Markdown语言书写。&lt;/p>
-&lt;pre tabindex="0">&lt;code>前言一般放到主页，可利用 &amp;lt;!-- more --&amp;gt; 隔断。
-&lt;/code>&lt;/pre>&lt;!-- more -->
-&lt;h2 id="1-构思与起草">1 构思与起草&lt;/h2>
-&lt;ul>
-&lt;li>对文章的阅读群体、写作意图和反馈（Audience Intention Response AIR）要有一个清楚的认识。照顾沟通对象的需要、你的意图（信息）以及希望的反馈。&lt;/li>
-&lt;li>在思维导图上，放上你需要的关键名词，然后依次在它基础上添加动词，在加上形容词。最后以一定顺序组织你将要阐述的信息。比如重要性排序，对比优势劣势，方案的不同层面，时间上逻辑上的因果性等等。&lt;/li>
-&lt;/ul>
-&lt;h2 id="2-主体内容">2 主体内容&lt;/h2>
-&lt;p>文章的主要内容，包括你对跟进过程或发现成果的描述，以数据、事实证据以及其他的信息支撑主要内容。在你的论说中，你应该把对客观事实的描述和写作者对事情的主管阐述区分开来。&lt;/p>
-&lt;p>当你在报告中对一个观点进行陈述的时候，你需要记住以下几点：&lt;/p>
-&lt;ul>
-&lt;li>清晰的呈现事实&lt;/li>
-&lt;li>有逻辑地提出论据&lt;/li>
-&lt;li>引用相关的语录、简明易懂的事实和例子来支持你的论点&lt;/li>
-&lt;li>给出支持或反对该行为的理由&lt;/li>
-&lt;li>始终围绕主要观点进行讨论&lt;/li>
-&lt;li>处理好重要的假设关系&lt;/li>
-&lt;li>区分说明（具体阐述）和论证（有理有据）&lt;/li>
-&lt;/ul>
-&lt;p>链接：https://talengu.github.io/&lt;/p>
-&lt;h3 id="21-图">2.1 图&lt;/h3>
-&lt;pre tabindex="0">&lt;code>![GDP](http://www.stats.gov.cn/sj/zxfb/202302/W020230228515999473627.png)
-&amp;lt;div align=&amp;#39;center&amp;#39;&amp;gt; &amp;lt;b&amp;gt;图1 2022年国内生产总值及其增速度&amp;lt;/b&amp;gt;&amp;lt;/div&amp;gt;
-&lt;/code>&lt;/pre>&lt;p>这两行代码生成下面的图和标题。&lt;/p>
-&lt;p>
-
-
-
-
-
-&lt;div style="text-align: center;">
-&lt;img src="http://www.stats.gov.cn/sj/zxfb/202302/W020230228515999473627.png" 
- alt="GDP" 
- 
-/>
-&lt;/div>图 1 展示的是2018-2022年的GDP和增长速度，来自&lt;sup id="fnref:1">&lt;a href="#fn:1" class="footnote-ref" role="doc-noteref">1&lt;/a>&lt;/sup>。图中数据反应出国内生产总值在2018-2022年度增长率存在波动但稳中向好的情况。&lt;/p>
-&lt;h3 id="22-表">2.2 表&lt;/h3>
-&lt;pre tabindex="0">&lt;code>&amp;lt;div align=&amp;#39;center&amp;#39;&amp;gt; &amp;lt;b&amp;gt;表1 2018年年末人口数及其构成&amp;lt;/b&amp;gt;&amp;lt;/div&amp;gt;
-
-| 指标 | 年末数（万人） | 比重（%） |
-| ---------- | -------------- | --------- |
-| 全国总人口 | 139538 | 100.0 |
-| 其中：城镇 | 83137 | 59.58 |
-| 乡村 | 56401 | 40.42 |
-&lt;/code>&lt;/pre>&lt;p>这两行代码生成下面的表和标题。&lt;/p></description></item><item><title>机器学习系列</title><link>https://example.com/post/ai/ml_summary/</link><pubDate>Tue, 23 Jul 2019 12:00:00 +0000</pubDate><guid>https://example.com/post/ai/ml_summary/</guid><description>&lt;p>&lt;strong>前言&lt;/strong>&lt;/p>
+&lt;p>1986 年，玛格丽特获得了奥古斯塔 · 埃达 · 洛夫莱斯奖，2003 年获得 NASA 卓越太空行动奖。&lt;/p></description></item><item><title>机器学习系列</title><link>https://talengu.github.io/post/c3-ai/machine-leanring-summary/</link><pubDate>Tue, 23 Jul 2019 12:00:00 +0000</pubDate><guid>https://talengu.github.io/post/c3-ai/machine-leanring-summary/</guid><description>&lt;p>&lt;strong>前言&lt;/strong>&lt;/p>
 &lt;p>路漫漫其修远兮，吾将上下而求索。2013年，大二接触人工智能课，讲逻辑推理，专家系统等等，神经网络只是一部分，打开当时老师的ppt，还能看到BP等算法。接着在2015年，上了模式识别课程，有一些启发式算法，KNN K-means等算法，同时神经网络也已经有了 GoogLeNet 等深层网络，热门的GAN网络也在2014年被提出。后面，机遇巧合，本科毕业时选了人工智能的坑，直到3年后的现在算是明白了一点。接下来的三年的目标还是 &lt;a href="https://talengu.github.io/public/2018/10/01/AI/how_algorithm_engineer/">成为一名优秀的算法工程师&lt;/a>。&lt;/p>
 &lt;p>回望入坑 &lt;strong>机器学习&lt;/strong>，没有系统地整理过相关知识。于是想着手整理一份自己笔记系列。本文为序。&lt;/p>
 &lt;blockquote>
@@ -2074,6 +1932,7 @@ math: true
 &lt;img src="1564034058070.png" 
  alt="1564034058070" 
  
+ style="width:80%;" 
 />
 &lt;/div>&lt;/p>
 &lt;div align='center'> 图1 机器学习知识框架&lt;/div>
@@ -2089,7 +1948,7 @@ math: true
 &lt;h2 id="四学习理论">四、学习理论&lt;/h2>
 &lt;img src="ML_summary/xuexililun.png" alt="xuexililun" style="zoom:67%;" />
 &lt;div align='center'> 图 学习理论&lt;/div>
-&lt;h3 id="41-正则化">4.1 &lt;a href="https://example.com/post/ai/regulation_baysian/">正则化&lt;/a>&lt;/h3>
+&lt;h3 id="41-正则化">4.1 &lt;a href="regulation_baysian.md">正则化&lt;/a>&lt;/h3>
 &lt;h2 id="五强化学习">五、强化学习&lt;/h2>
 &lt;h2 id="六参考与规划">六、参考与规划&lt;/h2>
 &lt;p>&lt;strong>目标&lt;/strong>
@@ -2111,7 +1970,7 @@ math: true
 &lt;li>案例分析&lt;/li>
 &lt;li>利用python写出代码，先用scilearn写。&lt;/li>
 &lt;li>总结，预告。&lt;/li>
-&lt;/ul></description></item><item><title>《形象美学》摘录笔记</title><link>https://example.com/post/readings/xingxiangmeixue/</link><pubDate>Sun, 21 Jul 2019 12:00:00 +0000</pubDate><guid>https://example.com/post/readings/xingxiangmeixue/</guid><description>&lt;p>&lt;strong>前言&lt;/strong>&lt;/p>
+&lt;/ul></description></item><item><title>《形象美学》摘录笔记</title><link>https://talengu.github.io/post/c0-life/readings/xingxiangmeixue/</link><pubDate>Sun, 21 Jul 2019 12:00:00 +0000</pubDate><guid>https://talengu.github.io/post/c0-life/readings/xingxiangmeixue/</guid><description>&lt;p>&lt;strong>前言&lt;/strong>&lt;/p>
 &lt;p>
 
 
@@ -2124,6 +1983,7 @@ math: true
 &lt;img src="book_cover.png" 
  alt="book_cover" 
  
+ style="width:80%;" 
 />
 &lt;/div>&lt;/p>
 &lt;p>&lt;a href="https://book.douban.com/subject/30434860/">《形象美学》&lt;/a>这本书是我偶然间看到的，本人很少买衣服，自认为衣品极差，被老妈诟病。以前的观点是多买，买一些品牌好的。每当要去买衣服的时候（计划一年两次），总是有很多困扰。图书馆看到此书，恰合我意，翻阅全书，或许有望提高衣品，提升人生品味了，哈哈哈。&lt;/p>
@@ -2250,7 +2110,7 @@ math: true
  &lt;/tr>
  &lt;/tbody>
 &lt;/table>
-&lt;p>&lt;strong>面料档次&lt;/strong>&lt;/p></description></item><item><title>正则化「一」机器学习中的正则化</title><link>https://example.com/post/ai/regulation_baysian/</link><pubDate>Wed, 17 Jul 2019 12:00:00 +0000</pubDate><guid>https://example.com/post/ai/regulation_baysian/</guid><description>&lt;p>&lt;strong>前言&lt;/strong>
+&lt;p>&lt;strong>面料档次&lt;/strong>&lt;/p></description></item><item><title>正则化「一」机器学习中的正则化</title><link>https://talengu.github.io/post/c3-ai/regulation-baysian/</link><pubDate>Wed, 17 Jul 2019 12:00:00 +0000</pubDate><guid>https://talengu.github.io/post/c3-ai/regulation-baysian/</guid><description>&lt;p>&lt;strong>前言&lt;/strong>
 本&lt;strong>正则化系列&lt;/strong>文章我们将讨论&lt;strong>正则化技术在机器学习和深度学习的应用&lt;/strong>。本文为该系列的第一篇，主要介绍&lt;strong>机器学习正则化的概念，原理和应用实例&lt;/strong>。&lt;/p>
 &lt;p>&lt;a href="https://en.wikipedia.org/wiki/Regularization_%28mathematics%29">正则化&lt;/a> 技术广泛应用在机器学习和深度学习算法中，本质作用是&lt;strong>防止过拟合、提高模型泛化能力&lt;/strong>。其中过拟合的简单理解就是训练的算法模型太过复杂，模型过分考虑了当前样本的结构。&lt;/p>
 &lt;p>在早期的机器学习领域一般只是将范数惩罚叫做正则化技术，而在深度学习领域认为，能够显著减少方差，而不过度增加偏差的策略都可以认为是正则化技术。故&lt;strong>推广的正则化技术&lt;/strong>还有：扩增样本集、早停止、Dropout、集成学习、多任务学习、对抗训练、参数共享等。(具体见“花书 第七章 &lt;a href="http://www.deeplearningbook.org/contents/regularization.html">Regularization for Deep Learning&lt;/a>”），关于&lt;strong>深度学习正则化&lt;/strong>会在下一篇正则化文章中重点分析。&lt;/p>
@@ -2285,6 +2145,7 @@ $$
 &lt;img src="1563350068097.png" 
  alt="1563350068097" 
  
+ style="width:80%;" 
 />
 &lt;/div>&lt;/p>
 &lt;div align='center'> Fig 1. 泛化误差与偏差和方差的关系&lt;/div>
@@ -2298,7 +2159,7 @@ $$
 $$
 {s.t.}{|| \theta ||}_2^2 \leq C\\
 \tag{4}
-$$&lt;/p></description></item><item><title>这哈儿是重庆</title><link>https://example.com/post/trips/chongqing/</link><pubDate>Thu, 25 Apr 2019 12:00:00 +0000</pubDate><guid>https://example.com/post/trips/chongqing/</guid><description>&lt;p>重庆，旅游纪实。20190422 - 20190424&lt;/p>
+$$&lt;/p></description></item><item><title>这哈儿是重庆</title><link>https://talengu.github.io/post/c0-life/trips/chongqing/</link><pubDate>Thu, 25 Apr 2019 12:00:00 +0000</pubDate><guid>https://talengu.github.io/post/c0-life/trips/chongqing/</guid><description>&lt;p>重庆，旅游纪实。20190422 - 20190424&lt;/p>
 &lt;!-- more -->
 &lt;h2 id="四月二十二">四月二十二&lt;/h2>
 &lt;p>
@@ -2313,6 +2174,7 @@ $$&lt;/p></description></item><item><title>这哈儿是重庆</title><link>https
 &lt;img src="tiankongzhicheng.jpg" 
  alt="tiankongzhicheng" 
  
+ style="width:80%;" 
 />
 &lt;/div>&lt;/p>
 &lt;div align='center'> &lt;b>天空之城旅店的临江阳台&lt;/b>&lt;/div>
@@ -2331,6 +2193,7 @@ $$&lt;/p></description></item><item><title>这哈儿是重庆</title><link>https
 &lt;img src="guojiang1.jpeg" 
  alt="guojiang1" 
  
+ style="width:80%;" 
 />
 &lt;/div>&lt;/p>
 &lt;div align='center'> &lt;b>排队2小时，乘过江索道&lt;/b>&lt;/div>
@@ -2346,6 +2209,7 @@ $$&lt;/p></description></item><item><title>这哈儿是重庆</title><link>https
 &lt;img src="goujiang2.jpeg" 
  alt="goujiang2" 
  
+ style="width:80%;" 
 />
 &lt;/div>&lt;/p>
 &lt;div align='center'> &lt;b>过江索道，晃晃悠悠在路上&lt;/b>&lt;/div>
@@ -2362,6 +2226,7 @@ $$&lt;/p></description></item><item><title>这哈儿是重庆</title><link>https
 &lt;img src="eling.jpg" 
  alt="eling" 
  
+ style="width:80%;" 
 />
 &lt;/div>&lt;/p>
 &lt;div align='center'> &lt;b>鹅岭公园有个塔，从塔上望去&lt;/b>&lt;/div>
@@ -2378,6 +2243,7 @@ $$&lt;/p></description></item><item><title>这哈儿是重庆</title><link>https
 &lt;img src="yejing.jpg" 
  alt="yejing" 
  
+ style="width:80%;" 
 />
 &lt;/div>&lt;/p>
 &lt;div align='center'> &lt;b>南山一棵松&lt;/b>&lt;/div>
@@ -2394,11 +2260,12 @@ $$&lt;/p></description></item><item><title>这哈儿是重庆</title><link>https
 &lt;img src="caotianmen.jpg" 
  alt="caotianmen" 
  
+ style="width:80%;" 
 />
 &lt;/div>&lt;/p>
 &lt;div align='center'> &lt;b>朝天门码头，水清黄分明&lt;/b>&lt;/div>
 &lt;p>今天也是懒懒起床，吃了个早饭，豆浆是放在那种果冻的包装袋里。今天差不多，就准备看看朝天门，然后回成都。去朝天门还是比较奇怪，随着百度地图导航走，到了一个商城里面，从地面进去是商城的8楼，下了电梯，走了一个商品批发的地方，然后向朝天门赶，今天太阳超级满足，比较热。岸边停了好多游船。到了朝天门，水分了两个颜色，黄的长江，清的嘉陵江。休息一刻，搭了公交车，沿着长江岸跑，居然到了李子坝，然后地铁转到重庆北火车站，这一趟重庆算是画上了一个句号。&lt;/p>
-&lt;p>『转载』，请联系博主。&lt;/p></description></item><item><title>茅盾文学奖、诺贝尔文学奖</title><link>https://example.com/post/readings/nobel_maodun_literature/</link><pubDate>Tue, 05 Feb 2019 16:00:04 +0000</pubDate><guid>https://example.com/post/readings/nobel_maodun_literature/</guid><description>&lt;p>&lt;strong>前言&lt;/strong>
+&lt;p>『转载』，请联系博主。&lt;/p></description></item><item><title>「转」茅盾文学奖、诺贝尔文学奖</title><link>https://talengu.github.io/post/c0-life/readings/nobel-maodun-literature/</link><pubDate>Tue, 05 Feb 2019 16:00:04 +0000</pubDate><guid>https://talengu.github.io/post/c0-life/readings/nobel-maodun-literature/</guid><description>&lt;p>&lt;strong>前言&lt;/strong>
 世界和民族的优秀作品。
 漫漫长路，读书成长。&lt;/p>
 &lt;h2 id="茅盾文学奖">茅盾文学奖&lt;/h2>
@@ -2515,7 +2382,7 @@ $$&lt;/p></description></item><item><title>这哈儿是重庆</title><link>https
  &lt;/tr>
  &lt;/tbody>
 &lt;/table>
-&lt;p>&lt;strong>第七届茅盾文学奖获奖篇目 (2003—2006)&lt;/strong>&lt;/p></description></item><item><title>[译] Face Detection – OpenCV, Dlib and Deep Learning ( C++ / Python )</title><link>https://example.com/post/cv/facedetectioncomparison/</link><pubDate>Mon, 12 Nov 2018 18:00:00 +0000</pubDate><guid>https://example.com/post/cv/facedetectioncomparison/</guid><description>&lt;p>&lt;strong>前言&lt;/strong>
+&lt;p>&lt;strong>第七届茅盾文学奖获奖篇目 (2003—2006)&lt;/strong>&lt;/p></description></item><item><title>「转」「译」Face Detection – OpenCV, Dlib and Deep Learning ( C++ / Python )</title><link>https://talengu.github.io/post/c2-robotics/cv/face-detection-comparison/</link><pubDate>Mon, 12 Nov 2018 18:00:00 +0000</pubDate><guid>https://talengu.github.io/post/c2-robotics/cv/face-detection-comparison/</guid><description>&lt;p>&lt;strong>前言&lt;/strong>
 本文为翻译文章。原文地址 &lt;a href="https://www.learnopencv.com/face-detection-opencv-dlib-and-deep-learning-c-python/">https://www.learnopencv.com/face-detection-opencv-dlib-and-deep-learning-c-python/&lt;/a>&lt;/p>
 &lt;p>在这篇文章中，作者讨论使用了OpenCV或Dlib的多种人脸检测的代码，并给出性能分析。作者使用的 Face Detector 包括以下四个，后面分别给出 c++ 和 python 实现。&lt;/p>
 &lt;ol>
@@ -2553,7 +2420,7 @@ $$&lt;/p></description></item><item><title>这哈儿是重庆</title><link>https
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">int&lt;/span> x2 &lt;span style="color:#f92672">=&lt;/span> faces[i].x &lt;span style="color:#f92672">+&lt;/span> faces[i].width;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">int&lt;/span> y2 &lt;span style="color:#f92672">=&lt;/span> faces[i].y &lt;span style="color:#f92672">+&lt;/span> faces[i].height;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>对图片灰度变化（grayscale）后，再应用 haar cascade 特征，输出是脸的list。list中每个item有四个element 分别为 top-left corner的(x, y) 、检测出来脸的大小(width, height) 。&lt;/p></description></item><item><title>希腊罗马神话</title><link>https://example.com/post/readings/gods_stories/</link><pubDate>Mon, 05 Nov 2018 16:00:04 +0000</pubDate><guid>https://example.com/post/readings/gods_stories/</guid><description>&lt;p>&lt;strong>前言&lt;/strong>&lt;/p>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>对图片灰度变化（grayscale）后，再应用 haar cascade 特征，输出是脸的list。list中每个item有四个element 分别为 top-left corner的(x, y) 、检测出来脸的大小(width, height) 。&lt;/p></description></item><item><title>希腊罗马神话</title><link>https://talengu.github.io/post/c0-life/readings/gods_stories/</link><pubDate>Mon, 05 Nov 2018 16:00:04 +0000</pubDate><guid>https://talengu.github.io/post/c0-life/readings/gods_stories/</guid><description>&lt;p>&lt;strong>前言&lt;/strong>&lt;/p>
 &lt;p>在我电的图书馆的还书柜子里面偶然所得，一本叫《希腊罗马神话对英语语言文化的影响》吕海平 著 江苏大学初版社，然后莫名的想研究一下，发现挺不错的。&lt;/p>
 &lt;!-- more -->
 &lt;p>古希腊罗马的神的关系还是比较乱的，尤其是jupiter 或者zeus的奥林匹斯神系。从上古的神系，总共有三代。&lt;/p>
@@ -2569,8 +2436,9 @@ $$&lt;/p></description></item><item><title>这哈儿是重庆</title><link>https
 &lt;img src="http://www.veritablehokum.com/wp-content/uploads/2018/08/Roman-God-Family-Tree.jpg" 
  alt="" 
  
+ style="width:80%;" 
 />
-&lt;/div>&lt;/p></description></item><item><title>怎样成为一名优秀的算法工程师</title><link>https://example.com/post/ai/how_algorithm_engineer/</link><pubDate>Mon, 01 Oct 2018 12:00:00 +0000</pubDate><guid>https://example.com/post/ai/how_algorithm_engineer/</guid><description>&lt;blockquote>
+&lt;/div>&lt;/p></description></item><item><title>「转」怎样成为一名优秀的算法工程师</title><link>https://talengu.github.io/post/c3-ai/how-algorithm-engineer/</link><pubDate>Mon, 01 Oct 2018 12:00:00 +0000</pubDate><guid>https://talengu.github.io/post/c3-ai/how-algorithm-engineer/</guid><description>&lt;blockquote>
 &lt;p>转载 原创： AI学习与实践平台
 TODO: 看完里面的文章，对每篇文章做个总结，实验+文章。&lt;/p>&lt;/blockquote>
 &lt;h2 id="1-导言">1. 导言&lt;/h2>
@@ -2599,6 +2467,7 @@ TODO: 看完里面的文章，对每篇文章做个总结，实验+文章。&lt;
 &lt;img src="clip_image003.gif" 
  alt="EB5E93E91C3643F991C93D61F363373E.jpeg" 
  
+ style="width:80%;" 
 />
 &lt;/div>&lt;/p>
 &lt;p>更多算法工程师的必读文章，请关注SIGAICN公众号&lt;/p>
@@ -2617,6 +2486,7 @@ TODO: 看完里面的文章，对每篇文章做个总结，实验+文章。&lt;
 &lt;img src="clip_image005.gif" 
  alt="88F2EB8BDFE1448EBD2DF61848E355FD.jpeg" 
  
+ style="width:80%;" 
 />
 &lt;/div>&lt;/p>
 &lt;p>在机器学习中主要用到了微分部分，积分用的非常少。具体的，用到了下面的概念：&lt;/p>
@@ -2644,6 +2514,7 @@ TODO: 看完里面的文章，对每篇文章做个总结，实验+文章。&lt;
 &lt;img src="clip_image007.gif" 
  alt="DEB5F0D2FC584E0B96B263FE1D559AFF.jpeg" 
  
+ style="width:80%;" 
 />
 &lt;/div>&lt;/p>
 &lt;p>与工科的高等数学偏重计算不同，它里面有大量的理论证明，对于锻炼数学思维非常有帮助。北大张筑生先生所著的数学分析可谓是国内这方面教材的精品。&lt;/p>
@@ -2661,6 +2532,7 @@ TODO: 看完里面的文章，对每篇文章做个总结，实验+文章。&lt;
 &lt;img src="clip_image009.gif" 
  alt="48D5E515A7144CE6A9CB78162F6ECAAF.jpeg" 
  
+ style="width:80%;" 
 />
 &lt;/div>&lt;/p>
 &lt;p>如果想更全面系统的学习线性代数，可以看这本书：&lt;/p>
@@ -2676,6 +2548,7 @@ TODO: 看完里面的文章，对每篇文章做个总结，实验+文章。&lt;
 &lt;img src="clip_image011.gif" 
  alt="BF71AB68DB2B4D71AC8D2B3263C197E5.jpeg" 
  
+ style="width:80%;" 
 />
 &lt;/div>&lt;/p>
 &lt;p>相比之下，线性代数用的更多。具体用到的知识点有：&lt;/p>
@@ -2706,8 +2579,9 @@ TODO: 看完里面的文章，对每篇文章做个总结，实验+文章。&lt;
 &lt;img src="clip_image013.gif" 
  alt="91E918CF7ED84C7488BDDFFC7594E0D4.jpeg" 
  
+ style="width:80%;" 
 />
-&lt;/div>&lt;/p></description></item><item><title>linux代理的使用</title><link>https://example.com/post/linux/linux_proxy/</link><pubDate>Tue, 24 Jul 2018 22:00:00 +0000</pubDate><guid>https://example.com/post/linux/linux_proxy/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
+&lt;/div>&lt;/p></description></item><item><title>linux代理的使用</title><link>https://talengu.github.io/post/c5-linux/linux/linux-proxy/</link><pubDate>Tue, 24 Jul 2018 22:00:00 +0000</pubDate><guid>https://talengu.github.io/post/c5-linux/linux/linux-proxy/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
 &lt;p>最近要下载一个在youtube上的数据库，用来训练神经网络。走国内通道下载比较慢。于是，我使用了vps代理方式下载，速度取决于你的机器连接vps的网速。本文的主要内容有，实现shadowsocks 代理 ，tsocks 代理工具使用，可组合使用的一些下载工具如wget 和axel等。&lt;/p>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># 举个栗子&lt;/span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$ tsocks wget -c https://www.dropbox.com/s/minpyv59crdifk9/datasets.zip
@@ -2748,7 +2622,7 @@ TODO: 看完里面的文章，对每篇文章做个总结，实验+文章。&lt;
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
 &lt;li>执行&lt;code>ssserver -c server_shadowsocks.json&lt;/code>&lt;/li>
 &lt;/ul>
-&lt;p>说一点: 由于我们的下载任务是临时的，开个screen（终端复用工具）放在后台。当然你也可以设置为开机自启动，这里不再赘述。&lt;/p></description></item><item><title>终端中bash、vim、tmux等的配置</title><link>https://example.com/post/linux/bash_bashrc/</link><pubDate>Thu, 12 Jul 2018 16:00:04 +0000</pubDate><guid>https://example.com/post/linux/bash_bashrc/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
+&lt;p>说一点: 由于我们的下载任务是临时的，开个screen（终端复用工具）放在后台。当然你也可以设置为开机自启动，这里不再赘述。&lt;/p></description></item><item><title>终端中bash、vim、tmux等的配置</title><link>https://talengu.github.io/post/c5-linux/linux/bash-bashrc/</link><pubDate>Thu, 12 Jul 2018 16:00:04 +0000</pubDate><guid>https://talengu.github.io/post/c5-linux/linux/bash-bashrc/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
 &lt;p>使用终端有一段时间了，现在主力的平台是Ubuntu16.04，本文对bash、vim、tmux配置的一些记录。&lt;/p>
 &lt;!-- more -->
 &lt;p>在&lt;code>cd ~&lt;/code>下建立talen_bashrc文件&lt;/p>
@@ -2773,7 +2647,7 @@ TODO: 看完里面的文章，对每篇文章做个总结，实验+文章。&lt;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> export VIMINIT&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;let &amp;amp;rtp=&amp;#39;xxxx/.vim,&amp;#39; . &amp;amp;rtp
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74"> so &lt;/span>$MYVIMRC&lt;span style="color:#e6db74">&amp;#34;&lt;/span>
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>python环境使用的是anaconda（或者minicoonda）添加激活环境。
-在&lt;code>~/.bashrc&lt;/code>中加入&lt;/p></description></item><item><title>Why Software Should Not Have Owners</title><link>https://example.com/post/why_gnu/</link><pubDate>Fri, 11 May 2018 12:00:00 +0000</pubDate><guid>https://example.com/post/why_gnu/</guid><description>&lt;p>&lt;a href="http://www.gnu.org/philosophy/why-free.html">Why Software Should Not Have Owners&lt;/a>
+在&lt;code>~/.bashrc&lt;/code>中加入&lt;/p></description></item><item><title>Why Software Should Not Have Owners</title><link>https://talengu.github.io/post/c5-linux/why-gnu/</link><pubDate>Fri, 11 May 2018 12:00:00 +0000</pubDate><guid>https://talengu.github.io/post/c5-linux/why-gnu/</guid><description>&lt;p>&lt;a href="http://www.gnu.org/philosophy/why-free.html">Why Software Should Not Have Owners&lt;/a>
 为什么软件不应有主人
 作者︰&lt;a href="https://www.stallman.org/">Richard Stallman&lt;/a>&lt;/p>
 &lt;!-- more -->
@@ -2834,7 +2708,7 @@ TODO: 看完里面的文章，对每篇文章做个总结，实验+文章。&lt;
 &lt;p>自由软件开发者自从八十年代尝试过许多寻求财源的方法，稍有小成。我们不需要让任何人致富，典型的收入，足以吸引人做很多比编程少满足感的工作。&lt;/p>
 &lt;p>多年以来，我一直靠改进自己编写的自由软件为生，直到获得研究经费。每次改进我都会添加到标準发佈版本，使得大众受益。客户为我付费，这样我就会优先完成他们需求，自己的变成次要。&lt;/p>
 &lt;p>一些自由软件开发者通过支援服务赚钱。1994年，Cygnus 有近50个员工，估计有大约百分之十五的员工从事自由软件开发︰对一间软件公司而言，这是个了不起的比例。&lt;/p>
-&lt;p>九十年代，Intel、Motorola、Texas Instruments 和 Analog Devices 等公司联合赞助持续发展的GNU C语言编译器。现在大部份开发GCC的人工作还是受薪的开发者完成的。GNU的Ada语言编译器受美国空军赞助，之后成立专属公司延续过个项目。&lt;/p></description></item><item><title>Jupyter notebook的配置</title><link>https://example.com/post/linux/jupyter_notebook/</link><pubDate>Mon, 03 Jul 2017 16:00:04 +0000</pubDate><guid>https://example.com/post/linux/jupyter_notebook/</guid><description>&lt;p>&lt;strong>前言&lt;/strong>
+&lt;p>九十年代，Intel、Motorola、Texas Instruments 和 Analog Devices 等公司联合赞助持续发展的GNU C语言编译器。现在大部份开发GCC的人工作还是受薪的开发者完成的。GNU的Ada语言编译器受美国空军赞助，之后成立专属公司延续过个项目。&lt;/p></description></item><item><title>Jupyter notebook的配置</title><link>https://talengu.github.io/post/c7-toolchain/jupyter-notebook/</link><pubDate>Mon, 03 Jul 2017 16:00:04 +0000</pubDate><guid>https://talengu.github.io/post/c7-toolchain/jupyter-notebook/</guid><description>&lt;p>&lt;strong>前言&lt;/strong>
 本文介绍jupyter notebook的安装配置过程和实用技巧。
 &lt;a href="https://jupyter.readthedocs.io/en/latest/index.html">jupyter.readthedocs教程&lt;/a>&lt;/p>
 &lt;!-- more -->
@@ -2892,7 +2766,7 @@ c.ServerApp.password = &amp;#39;&amp;#39;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>jupyter contrib nbextension install --user
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>jupyter nbextensions_configurator enable --user
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="13-安装插件管理">1.3 安装插件管理&lt;/h3>
-&lt;p>jupyter_contrib_nbextensions 为 jupyter notebook 扩展插件管理器，下面简称nbextensions。&lt;/p></description></item><item><title>ubuntu引导修复</title><link>https://example.com/post/linux/boot_recovery/</link><pubDate>Wed, 14 Jun 2017 16:00:04 +0000</pubDate><guid>https://example.com/post/linux/boot_recovery/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
+&lt;p>jupyter_contrib_nbextensions 为 jupyter notebook 扩展插件管理器，下面简称nbextensions。&lt;/p></description></item><item><title>Ubuntu引导修复</title><link>https://talengu.github.io/post/c5-linux/linux/boot-recovery/</link><pubDate>Wed, 14 Jun 2017 16:00:04 +0000</pubDate><guid>https://talengu.github.io/post/c5-linux/linux/boot-recovery/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
 &lt;p>本文记录修复ubuntu引导，并修改ubuntu盘的大小过程。
 参考：&lt;a href="http://www.cnblogs.com/jloveu/p/Ubuntu-partition-expansion-record.html">http://www.cnblogs.com/jloveu/p/Ubuntu-partition-expansion-record.html&lt;/a>
 工具：Ubuntu 的live U盘，带有gparted分区工具，和grub修复工具&lt;/p>
@@ -2927,6 +2801,7 @@ c.ServerApp.password = &amp;#39;&amp;#39;
 &lt;img src="boot_file.png" 
  alt="GRUB修改" 
  
+ style="width:80%;" 
 />
 &lt;/div>&lt;/p>
 &lt;h2 id="去除多余grub启动项直接">去除多余GRUB启动项（直接）&lt;/h2>
@@ -2936,13 +2811,12 @@ c.ServerApp.password = &amp;#39;&amp;#39;
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="ubuntu下如何修复grub引导">Ubuntu下如何修复Grub引导&lt;/h2>
 &lt;p>&lt;a href="https://mp.weixin.qq.com/s/NDZPPA-0FhqSzRndQOhNEw">link&lt;/a>&lt;/p>
 &lt;p>本文以 Ubuntu Live CD 修复 Grub 引导为例，已在 /dev/sda3 安装 Fedora。&lt;/p>
-&lt;p>首先制作 Ubuntu 启动 USB&lt;/p></description></item><item><title>现代数学手册</title><link>https://example.com/post/math/math_handbook/</link><pubDate>Mon, 22 May 2017 22:00:04 +0000</pubDate><guid>https://example.com/post/math/math_handbook/</guid><description>&lt;img src="math_handbook/Screen Shot 2020-03-06 at 13.24.51.png" alt="Screen Shot 2020-03-06 at 13.24.51" style="zoom:33%;" />
-&lt;img src="math_handbook/Screen Shot 2020-03-06 at 13.24.27.png" alt="Screen Shot 2020-03-06 at 13.24.27" style="zoom: 33%;" />
-&lt;img src="math_handbook/Screen Shot 2020-03-06 at 13.22.44.png" alt="Screen Shot 2020-03-06 at 13.22.44" style="zoom:33%;" />
-&lt;img src="math_handbook/Screen Shot 2020-03-06 at 13.23.48.png" alt="Screen Shot 2020-03-06 at 13.23.48" style="zoom:33%;" />
-&lt;img src="math_handbook/Screen Shot 2020-03-06 at 13.23.57.png" alt="Screen Shot 2020-03-06 at 13.23.57" style="zoom:33%;" />
-&lt;p>百度云链接: &lt;a href="https://pan.baidu.com/s/1AwNZNoMLgJcJ5X0G0fpC5w">https://pan.baidu.com/s/1AwNZNoMLgJcJ5X0G0fpC5w&lt;/a> 提取码: pb1n&lt;/p></description></item><item><title>Ubuntu的优化与设置</title><link>https://example.com/post/linux/ubuntu/</link><pubDate>Mon, 22 May 2017 18:00:04 +0000</pubDate><guid>https://example.com/post/linux/ubuntu/</guid><description>&lt;h1>&lt;/h1>
-&lt;h2 id="前言">前言&lt;/h2>
+&lt;p>首先制作 Ubuntu 启动 USB&lt;/p></description></item><item><title>现代数学手册</title><link>https://talengu.github.io/post/c1-math/math-handbook/</link><pubDate>Mon, 22 May 2017 22:00:04 +0000</pubDate><guid>https://talengu.github.io/post/c1-math/math-handbook/</guid><description>&lt;img src="math-handbook/Screen Shot 2020-03-06 at 13.24.51.png" alt="Screen Shot 2020-03-06 at 13.24.51" style="zoom:33%;" />
+&lt;img src="math-handbook/Screen Shot 2020-03-06 at 13.24.27.png" alt="Screen Shot 2020-03-06 at 13.24.27" style="zoom: 33%;" />
+&lt;img src="math-handbook/Screen Shot 2020-03-06 at 13.22.44.png" alt="Screen Shot 2020-03-06 at 13.22.44" style="zoom:33%;" />
+&lt;img src="math-handbook/Screen Shot 2020-03-06 at 13.23.48.png" alt="Screen Shot 2020-03-06 at 13.23.48" style="zoom:33%;" />
+&lt;img src="math-handbook/Screen Shot 2020-03-06 at 13.23.57.png" alt="Screen Shot 2020-03-06 at 13.23.57" style="zoom:33%;" />
+&lt;p>百度云链接: &lt;a href="https://pan.baidu.com/s/1AwNZNoMLgJcJ5X0G0fpC5w">https://pan.baidu.com/s/1AwNZNoMLgJcJ5X0G0fpC5w&lt;/a> 提取码: pb1n&lt;/p></description></item><item><title>Ubuntu的优化与设置</title><link>https://talengu.github.io/post/c5-linux/linux/ubuntu-init/</link><pubDate>Mon, 22 May 2017 18:00:04 +0000</pubDate><guid>https://talengu.github.io/post/c5-linux/linux/ubuntu-init/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
 &lt;ul>
 &lt;li>
 &lt;h2 id="窗口颜色设置浅绿色">窗口颜色设置浅绿色&lt;/h2>
@@ -3023,7 +2897,7 @@ c.ServerApp.password = &amp;#39;&amp;#39;
 &lt;/li>
 &lt;/ul>
 &lt;h3 id="设备使用率指示">设备使用率指示&lt;/h3>
-&lt;p>&lt;a href="https://github.com/fossfreedom/indicator-sysmonitor">https://github.com/fossfreedom/indicator-sysmonitor&lt;/a>&lt;/p></description></item><item><title>红楼梦与我</title><link>https://example.com/post/readings/hongloumeng/</link><pubDate>Sun, 14 May 2017 12:39:04 +0000</pubDate><guid>https://example.com/post/readings/hongloumeng/</guid><description>&lt;p>红楼梦是我国四大名著之一，主要内容是贾府的兴衰和宝黛的悲剧爱情。电视剧红楼梦2010版，我是从八月开始看的，看完到现在，也有小一个月了。在网上大家对这版电视剧褒贬不一。与我来说，我是喜欢这部剧的，不能说拍得很好，但这部剧却勾起了我读书与写字的兴趣。于是乎，做了一篇随笔，以记录我的一些感触。&lt;/p>
+&lt;p>&lt;a href="https://github.com/fossfreedom/indicator-sysmonitor">https://github.com/fossfreedom/indicator-sysmonitor&lt;/a>&lt;/p></description></item><item><title>红楼梦与我</title><link>https://talengu.github.io/post/c0-life/readings/hongloumeng/</link><pubDate>Sun, 14 May 2017 12:39:04 +0000</pubDate><guid>https://talengu.github.io/post/c0-life/readings/hongloumeng/</guid><description>&lt;p>红楼梦是我国四大名著之一，主要内容是贾府的兴衰和宝黛的悲剧爱情。电视剧红楼梦2010版，我是从八月开始看的，看完到现在，也有小一个月了。在网上大家对这版电视剧褒贬不一。与我来说，我是喜欢这部剧的，不能说拍得很好，但这部剧却勾起了我读书与写字的兴趣。于是乎，做了一篇随笔，以记录我的一些感触。&lt;/p>
 &lt;!-- more -->
 &lt;p>我记得最早是小学，我们还是顾着打玻璃珠和丢沙包的年纪，学校旁边的小书店里，也都是七龙珠，哆啦A梦，柯南的小人书，老师们讲到四大名著，顺带提了下红楼梦，其他没印象了。我们学习最多的是中文的拼音和书写，作文都是打油，日记也闹了不少笑话。后来上初中，有一次寒假附加作业是阅读红楼梦，我虽毫无兴趣，但还是硬着头皮，去新华书店，试看红楼梦。120章的红楼，厚得连看下去的勇气也没有。略看了几下，最后，做了一个红楼梦不好看的论断，也就放在那边了。那时有老版的红楼梦电视剧播映，打开电视偶尔会遇见，但是立马换台，央视的西游记与情深深雨蒙蒙，湖南电视台的还珠格格，也是欣赏了好几遍。再者，有动画片谁有兴趣去看这些什么破剧，关于书本，最多也就是看看汤姆索亚历险记。&lt;/p>
 &lt;p>再后来，去启中读书，学习上比较紧张，再加上理科班的非文学氛围，对这些文学的东西更不感冒。尽管偶尔也会入耳一些其中的人物，比如林妹妹，刘姥姥，也是不用大脑耳朵直接过滤。当时，大伙是杂志，读者，青年文摘读得比较多，班上一本，全班查阅，杂志文章篇幅较小，读起很顺很舒服。期间，与红楼的唯一一次接触是，高中教科书上有刘姥姥进大观园的章节，翻了一遍，当时，感叹人物好多，理不出人物关系，完全放弃看完红楼的欲望。以为姥姥是贾府的姥姥，猩猩然想着以后可以说看过一段红楼，红楼也比较贵不如多买几本读者，积累作文素材。不知什么时候，班上网络小说之风随着mp4和智能手机的普及而吹起，我也用MP4刷完了一两部网络小说，感觉都是一个套路，主角都是绝处逢生，越来越无敌，也就不敢兴趣了。&lt;/p>
@@ -3046,8 +2920,8 @@ c.ServerApp.password = &amp;#39;&amp;#39;
 &lt;/ul>
 &lt;p>以上是我的一点点感悟。&lt;/p>
 &lt;p>只是，我与红楼梦，还差80章书页，希望还能有计划地读完。&lt;/p>
-&lt;p>2016年于成电&lt;/p></description></item><item><title>为什么正好经过这个空隙？</title><link>https://example.com/post/math/math_q1/</link><pubDate>Fri, 05 May 2017 16:00:04 +0000</pubDate><guid>https://example.com/post/math/math_q1/</guid><description>&lt;p>&lt;strong>前言&lt;/strong>
-偶然看到的一个问题，如图1，为什么正好经过这个空隙？我们用空间解析几何来解一下吧。&lt;/p>
+&lt;p>2016年于成电&lt;/p></description></item><item><title>为什么正好经过这个空隙？</title><link>https://talengu.github.io/post/c1-math/why-the-gap-forms-a-hyperbola/</link><pubDate>Fri, 05 May 2017 16:00:04 +0000</pubDate><guid>https://talengu.github.io/post/c1-math/why-the-gap-forms-a-hyperbola/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
+&lt;p>偶然看到的一个问题，如图1，为什么正好经过这个空隙？我们用空间解析几何来解一下吧。&lt;/p>
 &lt;p>
 
 
@@ -3060,11 +2934,12 @@ c.ServerApp.password = &amp;#39;&amp;#39;
 &lt;img src="math_q1_show.gif" 
  alt="动图" 
  
+ style="width:80%;" 
 />
 &lt;/div>&lt;/p>
 &lt;div align='center'> 图1 为什么会经过这个空隙？&lt;/div>
 &lt;!-- more -->
-&lt;p>&lt;strong>解答&lt;/strong>&lt;/p>
+&lt;h2 id="解答">解答&lt;/h2>
 &lt;p>如图2，建立空间直角坐标系$xyz$，原点记为 $O$ ， $P$ 点为水平杆与斜杆的交点， $Q$ 点为垂直杆与水平杆的交点， 将斜杆标记为 $L$ 。&lt;/p>
 &lt;p>
 
@@ -3078,6 +2953,7 @@ c.ServerApp.password = &amp;#39;&amp;#39;
 &lt;img src="v2-80ac80b8031d5782412f4f4ef4e22a1a_b.jpeg" 
  alt="img" 
  
+ style="width:80%;" 
 />
 &lt;/div>&lt;/p>
 &lt;div align='center'> 图2 建立空间直角坐标系&lt;/div>
@@ -3090,7 +2966,7 @@ $$&lt;/p>
 &lt;p>设 $L$ 的方向向量 $\overrightarrow{S}=(a, b, c) $，由 $L$ 的方向向量 $\overrightarrow{S}$ 和 $P$ 点得，得斜杆 $L$ 代表的直线方程：
 $$
 \frac{x-r\cos{\omega t}}{a}=\frac{y-r\sin{\omega t}}{b}=\frac{z-q}{c} \tag{2}
-$$&lt;/p></description></item><item><title>「转」琉璃易碎，人言易坠——关于《莺莺传》的叙事</title><link>https://example.com/post/readings/yingyingzhuan/</link><pubDate>Fri, 14 Apr 2017 12:39:04 +0000</pubDate><guid>https://example.com/post/readings/yingyingzhuan/</guid><description>&lt;blockquote>
+$$&lt;/p></description></item><item><title>「转」琉璃易碎，人言易坠——关于《莺莺传》的叙事</title><link>https://talengu.github.io/post/c0-life/readings/yingyingzhuan/</link><pubDate>Fri, 14 Apr 2017 12:39:04 +0000</pubDate><guid>https://talengu.github.io/post/c0-life/readings/yingyingzhuan/</guid><description>&lt;blockquote>
 &lt;p>《西厢记》的书评:『琉璃易碎，人言易坠——关于《莺莺传》的叙事』转载
 …全文:&lt;a href="https://www.douban.com/doubanapp/dispatch?uri=/review/1200691/">(豆瓣link)&lt;/a>&lt;/p>&lt;/blockquote>
 &lt;p>“半欲天明半未明，醉闻花气睡闻莺。 狌儿撼起钟声动，二十年来晓寺情。 ”男人四十的元微之写着酸酸的诗，回忆年少风流。假如我是元微之，我一定会这般写道：天空尚未亮透，微微透着点光，远处传来钟声，让我的思绪一下子回忆到二十年前，也是这样的一个早晨，在那所古寺的西厢，那个散发着鲜花一样香气的女子，用鸟儿般宛转的声音在我耳边低语：“钟声响了，想来我也该回去了。”那声音一直萦绕在耳边，十年、二十年、也许一辈子在我在记忆深处响起……。&lt;/p>
@@ -3136,7 +3012,7 @@ $$&lt;/p></description></item><item><title>「转」琉璃易碎，人言易坠�
 &lt;p>或许不该过分指责元稹，他也不过是为了功名奔波的庸人，这个世界原本就是为庸人所设的。太过恩爱的情侣总是不容于世：苏东坡与王弗已是“十年生死两茫茫”了；陆游和唐婉儿只能“一怀愁绪，几年离索”；刘克庄在哀叹“旧日风烟草树，而今总断人肠”；冒辟疆和董小宛“一生清福,九年占尽,九年折尽矣”；还有纳兰性德，感慨着“被酒莫惊春睡重，睹书消得泼茶香，当时只道是寻常”。但是起码他们是能真心相爱的，就算不能“执子之手，与子偕老”，起码也是“骨化形销而丹诚不泯”，却可怜了单纯的莺莺，一个人用余生去背负全部的思念、悔恨和指摘。&lt;/p>
 &lt;p>史籍上再没有关于莺莺以后生活的记载，或许她一生坎坷，慢慢地消磨了纯真善良，成了世间常见的庸俗势利的妇人。但哪怕是这样，我依然相信在她心底的最幽深隐蔽的角落、最柔嫩脆弱的地方，记忆会像一把锯齿慢慢地来回剧着那根最纤细的神经，午夜梦回的时候，依然会为贞元十六年的那个男子泪流满面。&lt;/p>
 &lt;p>我怕我鄙薄的文字无法完美地译出那女子悲伤的文字，且让我们再细细读一读那信的原文,体会一下她的心情吧：&lt;/p>
-&lt;p>捧览来问，抚爱过深。儿女之情，悲喜交集。兼惠花胜一合、口脂五寸，致耀首膏唇之饰。虽荷殊恩，谁复为容？睹物增怀，但积悲叹耳。伏承使于京中就业，进修之道，固在便安。但恨僻陋之人，永以遐弃。命也如此，知复何言！自去秋已来，常忽忽如有所失。于喧哗之下，或勉为语笑，闲宵自处，无不泪零。乃至梦寐之间，亦多感咽离忧之思。绸缪缱绻，暂若寻常，幽会未终，惊魂已断。虽半衾如暖，而思之甚遥。一昨拜辞，倏逾旧岁。长安行乐之地，触绪牵情。何幸不忘幽微，眷念无斁，鄙薄之志，无以奉酬。至于终始之盟，则固不忒。鄙昔中表相因，或同宴处。婢仆见诱，遂致私诚。儿女之心，不能自固。君子有援琴之挑，鄙人无投梭之拒。及荐寝席，义盛意深。愚陋之情，永谓终托。岂期既见君子，而不能定情，致有自献之羞，不复明侍巾帻。没身永恨，含叹何言！倘仁人用心，俯遂幽眇，虽死之日，犹生之年。如或达士略情，舍小从大，以先配为丑行，以要盟为可欺，则当骨化形销，丹诚不泯，因风委露，犹托清尘。存没之诚，言尽于此。临纸呜咽，情不能申。千万珍重，珍重千万！玉环一枚，是儿婴年所弄，寄充君子下体所佩。玉取其坚润不渝，环取其终始不绝。兼乱丝一绚、文竹茶碾子一枚。此数物不足见珍，意者欲君子如玉之真，弊志如环不解。泪痕在竹，愁绪萦丝，因物达情，永以为好耳。心迩身遐，拜会无期。幽愤所钟，千里神合。千万珍重！春风多厉，强饭为嘉。慎言自保，无以鄙为深念。&lt;/p></description></item><item><title>个人主页搭建</title><link>https://example.com/post/build_blog/</link><pubDate>Thu, 22 Dec 2016 12:39:04 +0000</pubDate><guid>https://example.com/post/build_blog/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
+&lt;p>捧览来问，抚爱过深。儿女之情，悲喜交集。兼惠花胜一合、口脂五寸，致耀首膏唇之饰。虽荷殊恩，谁复为容？睹物增怀，但积悲叹耳。伏承使于京中就业，进修之道，固在便安。但恨僻陋之人，永以遐弃。命也如此，知复何言！自去秋已来，常忽忽如有所失。于喧哗之下，或勉为语笑，闲宵自处，无不泪零。乃至梦寐之间，亦多感咽离忧之思。绸缪缱绻，暂若寻常，幽会未终，惊魂已断。虽半衾如暖，而思之甚遥。一昨拜辞，倏逾旧岁。长安行乐之地，触绪牵情。何幸不忘幽微，眷念无斁，鄙薄之志，无以奉酬。至于终始之盟，则固不忒。鄙昔中表相因，或同宴处。婢仆见诱，遂致私诚。儿女之心，不能自固。君子有援琴之挑，鄙人无投梭之拒。及荐寝席，义盛意深。愚陋之情，永谓终托。岂期既见君子，而不能定情，致有自献之羞，不复明侍巾帻。没身永恨，含叹何言！倘仁人用心，俯遂幽眇，虽死之日，犹生之年。如或达士略情，舍小从大，以先配为丑行，以要盟为可欺，则当骨化形销，丹诚不泯，因风委露，犹托清尘。存没之诚，言尽于此。临纸呜咽，情不能申。千万珍重，珍重千万！玉环一枚，是儿婴年所弄，寄充君子下体所佩。玉取其坚润不渝，环取其终始不绝。兼乱丝一绚、文竹茶碾子一枚。此数物不足见珍，意者欲君子如玉之真，弊志如环不解。泪痕在竹，愁绪萦丝，因物达情，永以为好耳。心迩身遐，拜会无期。幽愤所钟，千里神合。千万珍重！春风多厉，强饭为嘉。慎言自保，无以鄙为深念。&lt;/p></description></item><item><title>hexo个人主页搭建</title><link>https://talengu.github.io/post/c7-toolchain/hexo-blog/</link><pubDate>Thu, 22 Dec 2016 12:39:04 +0000</pubDate><guid>https://talengu.github.io/post/c7-toolchain/hexo-blog/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
 &lt;p>本文主要内容为博客搭建的记录与分享，我采用了Hexo博客框架，NexT主题和Gitment评论系统。本文中记录了我博客的安装流程和使用过程中的改进细节。&lt;/p>
 &lt;p>对Next主题版本的一些说明：我使用的是&lt;code>version: 5.1.0&lt;/code>。而使用新版本的NexT v6 主题的同学，有些功能如gitment已经实现，可以直接使用V6。此V6版本对于图片的使用可能会出现问题。仅需看看我下面的2.2小节。&lt;/p>
 &lt;p>有时间我会将我修改后的hexo Next theme 基于&lt;code>version: 5.1.0&lt;/code>主题，给个独立的git仓，放到github 上。&lt;/p>
@@ -3170,7 +3046,7 @@ NexT Github &lt;a href="https://github.com/iissnan/hexo-theme-next">https://gith
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$ cd blog
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$ npm install
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$ hexo server
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>ok，安装完的目录结构。&lt;/p></description></item><item><title>SRT中英文合并Python脚本</title><link>https://example.com/post/shells/youtube_src_combine/</link><pubDate>Thu, 14 Apr 2016 12:39:04 +0000</pubDate><guid>https://example.com/post/shells/youtube_src_combine/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>ok，安装完的目录结构。&lt;/p></description></item><item><title>SRT中英文合并Python脚本</title><link>https://talengu.github.io/post/c7-toolchain/python-youtube-src-combine/</link><pubDate>Thu, 14 Apr 2016 12:39:04 +0000</pubDate><guid>https://talengu.github.io/post/c7-toolchain/python-youtube-src-combine/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
 &lt;p>从YouTube上看只有中文或英文分开的字幕，下载好视频，想要中英文字幕。可从 &lt;a href="http://mo.dbxdb.com/Yang/setting.html">Getting Youtube subtitles&lt;/a> 获取中或英文字幕，然后将其合并，即成中英文双字幕。下面是Python脚本。&lt;/p>
 &lt;!-- more -->
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-python" data-lang="python">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74">&amp;#39;&amp;#39;&amp;#39;
@@ -3218,7 +3094,7 @@ NexT Github &lt;a href="https://github.com/iissnan/hexo-theme-next">https://gith
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> print(name)
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> name[&lt;span style="color:#f92672">-&lt;/span>&lt;span style="color:#ae81ff">6&lt;/span>:&lt;span style="color:#f92672">-&lt;/span>&lt;span style="color:#ae81ff">4&lt;/span>]&lt;span style="color:#f92672">==&lt;/span>&lt;span style="color:#e6db74">&amp;#39;zh&amp;#39;&lt;/span>:
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> hebing(name)
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>DSP滤波程序</title><link>https://example.com/post/dsp/dsp_filter/</link><pubDate>Sun, 14 Jun 2015 12:39:04 +0000</pubDate><guid>https://example.com/post/dsp/dsp_filter/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>DSP滤波程序</title><link>https://talengu.github.io/post/c2-robotics/dsp/dsp-filter/</link><pubDate>Sun, 14 Jun 2015 12:39:04 +0000</pubDate><guid>https://talengu.github.io/post/c2-robotics/dsp/dsp-filter/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
 &lt;p>通过matlab对数字信号进行滤波器的设计后，我们要将设计好的参数放到嵌入式系统中进行滤波。本文就是一个滤波程序。&lt;/p>
 &lt;!-- more -->
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#include&lt;/span> &lt;span style="color:#75715e">&amp;lt;stdio.h&amp;gt;&lt;/span>&lt;span style="color:#75715e">
@@ -3320,7 +3196,7 @@ NexT Github &lt;a href="https://github.com/iissnan/hexo-theme-next">https://gith
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">getchar&lt;/span>();
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> &lt;span style="color:#ae81ff">0&lt;/span>;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Windows笔记本开共享wifi</title><link>https://example.com/post/shells/share_win_wifi/</link><pubDate>Tue, 14 Apr 2015 12:39:04 +0000</pubDate><guid>https://example.com/post/shells/share_win_wifi/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Windows笔记本开共享wifi</title><link>https://talengu.github.io/post/c7-toolchain/cmd-windowns-share-wifi/</link><pubDate>Tue, 14 Apr 2015 12:39:04 +0000</pubDate><guid>https://talengu.github.io/post/c7-toolchain/cmd-windowns-share-wifi/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
 &lt;p>网上有很多用笔记本设置无线热点的批处理，我中和了一下。复制下面代码到记事本，改后缀为bat就行了。其中，mssid和mkey可自定义&lt;/p>
 &lt;!-- more -->
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-shell" data-lang="shell">&lt;span style="display:flex;">&lt;span>
@@ -3349,7 +3225,7 @@ NexT Github &lt;a href="https://github.com/iissnan/hexo-theme-next">https://gith
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">if&lt;/span> %var%&lt;span style="color:#f92672">==&lt;/span>set netsh wlan set hostednetwork mode&lt;span style="color:#f92672">=&lt;/span>allow ssid&lt;span style="color:#f92672">=&lt;/span>%mssid% key&lt;span style="color:#f92672">=&lt;/span>%mkey% &lt;span style="color:#f92672">&amp;amp;&amp;amp;&lt;/span> echo 网络名字:%mssid% 密码:%mkey% &lt;span style="color:#f92672">&amp;amp;&amp;amp;&lt;/span> GOTO start
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">if&lt;/span> %var%&lt;span style="color:#f92672">==&lt;/span>e pause
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="播放声音">播放声音&lt;/h2>
-&lt;p>保存为&lt;code>播放声音.vbs&lt;/code>,可以播放声音&lt;/p></description></item><item><title>序言</title><link>https://example.com/post/about/</link><pubDate>Thu, 01 Jan 2015 00:00:00 +0000</pubDate><guid>https://example.com/post/about/</guid><description>&lt;p>欢迎来到这里，送你个东西 ~&lt;/p>
+&lt;p>保存为&lt;code>播放声音.vbs&lt;/code>,可以播放声音&lt;/p></description></item><item><title>序言</title><link>https://talengu.github.io/post/c0-life/about/</link><pubDate>Thu, 01 Jan 2015 00:00:00 +0000</pubDate><guid>https://talengu.github.io/post/c0-life/about/</guid><description>&lt;p>欢迎来到这里，送你个东西 ~&lt;/p>
 &lt;p>
 
 
@@ -3362,17 +3238,18 @@ NexT Github &lt;a href="https://github.com/iissnan/hexo-theme-next">https://gith
 &lt;img src="london.jpeg" 
  alt="london" 
  
+ style="width:80%;" 
 />
 &lt;/div>&lt;/p>
 &lt;!-- more -->
 &lt;p>博客算是一种有趣的玩物，体现出一个人很多个性的东西。书籍基本都有个引人入胜的序，我想为我的博客也写个序，如能引人入胜那便是赚到了。开博明意，本博客主要记录学习工作中自然科学、人文社科的芝麻知识点，以及生活的休闲杂记。记忆这东西很神奇，莫名其妙地记住一些事，但也不知不觉丢了些东西。在互联网或者说移动互联网之前，人们的记事方式更多的是纸质的，学习也是按照课本一页页去掌握，如今竞争的压力，信息的爆炸，技术信息发布平台多样，信息短快乱，工作与学习所用的知识点越来越多，越来越细，碎片化地学习无法避免的。&lt;/p>
 &lt;p>如何去记录这些碎片的知识，整理归纳的方法论需求已经迫在眉睫。在Github上搭建一个带版本控制和评论功能的博客，我认为是个不错的想法。利用Markdown写文档比较方便，不需涉及很多格式设置的问题，风格想换就换，各个博客平台也支持这种语法格式。git对文本的版本控制比较舒服，我可以在多个终端进行编写，同步也方便，合并后利用hexo框架就可以发布。hexo的主题也比较多样，选用的Next主题有很多差价。Next主题在评论支持方面以前使用的是网易云跟帖，但这个功能网易关了，现在使用的Gitment，利用github的isuue功能的评论框架，现在仅支持github用户登录评论，但就用户面来说，我觉得够了，我写的这些博客主要是给自己看的。&lt;/p>
 &lt;p>对我博客的寄语。希望利用博客建立个人有效的知识体系，锻炼写文章的水平，留下生活中有趣的事物，同时传递出有趣的想法，有效的和各位大牛交流相关领域的经验，在互联网村里共同成长与进步。&lt;/p>
-&lt;p>&lt;a href="https://example.com/post/build_blog/">笔者的hexo搭建的过程&lt;/a>&lt;/p>
+&lt;p>&lt;a href="../c7-toolchain/hexo-blog.md">笔者的hexo搭建的过程&lt;/a>已废弃，当前使用hugo&lt;a href="../c7-toolchain/hugo-build.md">hugo搭建&lt;/a>.&lt;/p>
 &lt;p>人是一棵会思考的芦苇，并有一个有趣的灵魂。&lt;/p>
 &lt;p>不忘初心，活波严谨。&lt;/p>
-&lt;p>&lt;strong>感谢&lt;/strong>
-The Internet And The World.&lt;/p>
+&lt;h2 id="感谢">感谢&lt;/h2>
+&lt;p>The Internet And The World.&lt;/p>
 &lt;h2 id="联系方式">联系方式&lt;/h2>
 &lt;ul>
 &lt;li>
@@ -3382,10 +3259,73 @@ The Internet And The World.&lt;/p>
 &lt;p>Gmail: &lt;a href="mailto:talenapp@gmail.com">talenapp@gmail.com&lt;/a>&lt;/p>
 &lt;/li>
 &lt;li>
-&lt;p>wechat QR&lt;/p>
-&lt;img src="About/WechatIMG151.jpeg" alt="WechatIMG151" style="zoom:50%;" />
+&lt;p>Github as you know&lt;/p>
 &lt;/li>
 &lt;/ul>
+&lt;p>简单·有效&lt;/p>
 &lt;p>Keep It Simple Stupid.&lt;/p>
-&lt;p>Standing on Shoulders of Giants.
-Thank you !!!&lt;/p></description></item><item><title>Hello Hugo</title><link>https://example.com/about/</link><pubDate>Mon, 01 Jan 1900 00:00:00 +0000</pubDate><guid>https://example.com/about/</guid><description>&lt;p>This is first page&lt;/p></description></item></channel></rss>
+&lt;p>登高·望远&lt;/p>
+&lt;p>Standing on Shoulders of Giants.&lt;/p>
+&lt;p>Thank you !!!&lt;/p></description></item><item><title>博客模版</title><link>https://talengu.github.io/post/template/</link><pubDate>Fri, 01 Jan 2010 12:00:00 +0000</pubDate><guid>https://talengu.github.io/post/template/</guid><description>&lt;p>文件head，设置标题、日期、分类、标签、评论、版权、是否使用公式，如下。&lt;/p>
+&lt;pre tabindex="0">&lt;code>---
+title: 模版文件
+date: 2019-07-25 12:00:00
+updated: 2019-07-25 12:00:00
+categories:
+ - 博客搭建
+ - 模版文件
+tags:
+ - Writing
+comments: true
+copyright: true
+math: true
+---
+&lt;/code>&lt;/pre>&lt;p>&lt;strong>摘要&lt;/strong>&lt;/p>
+&lt;p>本部分说明文章的写作意图。涉及的背景、主要内容、本文与其他文章关系等。&lt;/p>
+&lt;p>本文为Hexo博客模版文件，以Markdown语言书写。&lt;/p>
+&lt;pre tabindex="0">&lt;code>前言一般放到主页，可利用 &amp;lt;!-- more --&amp;gt; 隔断。
+&lt;/code>&lt;/pre>&lt;!-- more -->
+&lt;h2 id="1-构思与起草">1 构思与起草&lt;/h2>
+&lt;ul>
+&lt;li>对文章的阅读群体、写作意图和反馈（Audience Intention Response AIR）要有一个清楚的认识。照顾沟通对象的需要、你的意图（信息）以及希望的反馈。&lt;/li>
+&lt;li>在思维导图上，放上你需要的关键名词，然后依次在它基础上添加动词，在加上形容词。最后以一定顺序组织你将要阐述的信息。比如重要性排序，对比优势劣势，方案的不同层面，时间上逻辑上的因果性等等。&lt;/li>
+&lt;/ul>
+&lt;h2 id="2-主体内容">2 主体内容&lt;/h2>
+&lt;p>文章的主要内容，包括你对跟进过程或发现成果的描述，以数据、事实证据以及其他的信息支撑主要内容。在你的论说中，你应该把对客观事实的描述和写作者对事情的主管阐述区分开来。&lt;/p>
+&lt;p>当你在报告中对一个观点进行陈述的时候，你需要记住以下几点：&lt;/p>
+&lt;ul>
+&lt;li>清晰的呈现事实&lt;/li>
+&lt;li>有逻辑地提出论据&lt;/li>
+&lt;li>引用相关的语录、简明易懂的事实和例子来支持你的论点&lt;/li>
+&lt;li>给出支持或反对该行为的理由&lt;/li>
+&lt;li>始终围绕主要观点进行讨论&lt;/li>
+&lt;li>处理好重要的假设关系&lt;/li>
+&lt;li>区分说明（具体阐述）和论证（有理有据）&lt;/li>
+&lt;/ul>
+&lt;p>链接：https://talengu.github.io/&lt;/p>
+&lt;h3 id="21-图">2.1 图&lt;/h3>
+&lt;pre tabindex="0">&lt;code>![GDP](http://www.stats.gov.cn/sj/zxfb/202302/W020230228515999473627.png)
+&amp;lt;div align=&amp;#39;center&amp;#39;&amp;gt; &amp;lt;b&amp;gt;图1 2022年国内生产总值及其增速度&amp;lt;/b&amp;gt;&amp;lt;/div&amp;gt;
+&lt;/code>&lt;/pre>&lt;p>这两行代码生成下面的图和标题。&lt;/p>
+&lt;p>
+
+
+
+
+
+&lt;div style="text-align: center;">
+&lt;img src="http://www.stats.gov.cn/sj/zxfb/202302/W020230228515999473627.png" 
+ alt="GDP" 
+ 
+ style="width:80%;" 
+/>
+&lt;/div>图 1 展示的是2018-2022年的GDP和增长速度，来自&lt;sup id="fnref:1">&lt;a href="#fn:1" class="footnote-ref" role="doc-noteref">1&lt;/a>&lt;/sup>。图中数据反应出国内生产总值在2018-2022年度增长率存在波动但稳中向好的情况。&lt;/p>
+&lt;h3 id="22-表">2.2 表&lt;/h3>
+&lt;pre tabindex="0">&lt;code>&amp;lt;div align=&amp;#39;center&amp;#39;&amp;gt; &amp;lt;b&amp;gt;表1 2018年年末人口数及其构成&amp;lt;/b&amp;gt;&amp;lt;/div&amp;gt;
+
+| 指标 | 年末数（万人） | 比重（%） |
+| ---------- | -------------- | --------- |
+| 全国总人口 | 139538 | 100.0 |
+| 其中：城镇 | 83137 | 59.58 |
+| 乡村 | 56401 | 40.42 |
+&lt;/code>&lt;/pre>&lt;p>这两行代码生成下面的表和标题。&lt;/p></description></item><item><title>Hello Hugo</title><link>https://talengu.github.io/about/</link><pubDate>Mon, 01 Jan 1900 00:00:00 +0000</pubDate><guid>https://talengu.github.io/about/</guid><description>&lt;p>This is first page&lt;/p></description></item></channel></rss>

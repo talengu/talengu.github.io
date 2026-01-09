@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Python on 一塘</title><link>https://example.com/tags/python/</link><description>Recent content in Python on 一塘</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Sun, 08 May 2022 22:00:04 +0000</lastBuildDate><atom:link href="https://example.com/tags/python/index.xml" rel="self" type="application/rss+xml"/><item><title>rss统计 基于ttrss的PostgresQL数据库</title><link>https://example.com/post/c7-toolchain/rss-ttrss-statics/</link><pubDate>Sun, 08 May 2022 22:00:04 +0000</pubDate><guid>https://example.com/post/c7-toolchain/rss-ttrss-statics/</guid><description>&lt;p>&lt;strong>前言&lt;/strong>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Python on 一塘</title><link>https://talengu.github.io/tags/python/</link><description>Recent content in Python on 一塘</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Sun, 08 May 2022 22:00:04 +0000</lastBuildDate><atom:link href="https://talengu.github.io/tags/python/index.xml" rel="self" type="application/rss+xml"/><item><title>rss统计 基于ttrss的PostgresQL数据库</title><link>https://talengu.github.io/post/c7-toolchain/rss-ttrss-statics/</link><pubDate>Sun, 08 May 2022 22:00:04 +0000</pubDate><guid>https://talengu.github.io/post/c7-toolchain/rss-ttrss-statics/</guid><description>&lt;p>&lt;strong>前言&lt;/strong>
 统计ttrss的使用数据。&lt;/p>
 &lt;ul>
 &lt;li>月度mark文件分析 OK&lt;/li>
@@ -73,7 +73,7 @@
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>D&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;C:&lt;/span>&lt;span style="color:#ae81ff">\\&lt;/span>&lt;span style="color:#e6db74">Users&lt;/span>&lt;span style="color:#ae81ff">\\&lt;/span>&lt;span style="color:#e6db74">talen&lt;/span>&lt;span style="color:#ae81ff">\\&lt;/span>&lt;span style="color:#e6db74">Desktop&lt;/span>&lt;span style="color:#ae81ff">\\&lt;/span>&lt;span style="color:#e6db74">&amp;#34;&lt;/span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">with&lt;/span> open(D&lt;span style="color:#f92672">+&lt;/span>&lt;span style="color:#e6db74">&amp;#34;cc.md&amp;#34;&lt;/span>,&lt;span style="color:#e6db74">&amp;#39;w&amp;#39;&lt;/span>,encoding&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#e6db74">&amp;#39;utf-8&amp;#39;&lt;/span>) &lt;span style="color:#66d9ef">as&lt;/span> f:
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> f&lt;span style="color:#f92672">.&lt;/span>write(g_content)
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>使用脚本将英文rss转成中文rss</title><link>https://example.com/post/c7-toolchain/rss-google-translate/</link><pubDate>Sun, 08 May 2022 22:00:04 +0000</pubDate><guid>https://example.com/post/c7-toolchain/rss-google-translate/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>使用脚本将英文rss转成中文rss</title><link>https://talengu.github.io/post/c7-toolchain/rss-google-translate/</link><pubDate>Sun, 08 May 2022 22:00:04 +0000</pubDate><guid>https://talengu.github.io/post/c7-toolchain/rss-google-translate/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
 &lt;p>本文中我们将英文rss 自动转成中文 rss供ttrss使用。（利用谷歌翻译）&lt;/p>
 &lt;p>方便在手机上进行阅读或者收听。&lt;/p>
 &lt;center>&lt;img src="rss-google-translate/20220508-22-28-27.png" width="30%">
@@ -192,7 +192,7 @@
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>tran_nature()
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="定时任务">定时任务&lt;/h3>
 &lt;blockquote>
-&lt;p>注意激活一下miniconda3 这个命令&lt;code>source /home/xxx/miniconda3/bin/activate&lt;/code>&lt;/p></description></item><item><title>RSS跟踪github文件更新+某管子更新</title><link>https://example.com/post/c7-toolchain/rss-github-file/</link><pubDate>Sat, 24 Jul 2021 12:00:00 +0000</pubDate><guid>https://example.com/post/c7-toolchain/rss-github-file/</guid><description>&lt;p>&lt;strong>前言&lt;/strong>&lt;/p>
+&lt;p>注意激活一下miniconda3 这个命令&lt;code>source /home/xxx/miniconda3/bin/activate&lt;/code>&lt;/p></description></item><item><title>RSS跟踪github文件更新+某管子更新</title><link>https://talengu.github.io/post/c7-toolchain/rss-github-file/</link><pubDate>Sat, 24 Jul 2021 12:00:00 +0000</pubDate><guid>https://talengu.github.io/post/c7-toolchain/rss-github-file/</guid><description>&lt;p>&lt;strong>前言&lt;/strong>&lt;/p>
 &lt;p>好久没有更新博客了。RSS这种形式的信息获取方式，似乎又流行起来。&lt;/p>
 &lt;!-- more -->
 &lt;h2 id="github文件更新">github文件更新&lt;/h2>
@@ -288,7 +288,7 @@
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">for&lt;/span> _d &lt;span style="color:#f92672">in&lt;/span> _now[:&lt;span style="color:#f92672">-&lt;/span>&lt;span style="color:#ae81ff">5&lt;/span>]:
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> os&lt;span style="color:#f92672">.&lt;/span>popen(&lt;span style="color:#e6db74">&amp;#34;rm -rf &lt;/span>&lt;span style="color:#e6db74">%s&lt;/span>&lt;span style="color:#e6db74">&amp;#34;&lt;/span>&lt;span style="color:#f92672">%&lt;/span>_d)
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>在linux亦可使用&lt;a href="https://www.runoob.com/w3cnote/linux-crontab-tasks.html">crontab&lt;/a>定时启动下载任务。在 &lt;code>/etc/cron.hourly/&lt;/code> 设置即可。&lt;/p></description></item><item><title>选择困难者的福音？层次分析法</title><link>https://example.com/post/c1-math/ahp/</link><pubDate>Fri, 02 Apr 2021 12:00:00 +0000</pubDate><guid>https://example.com/post/c1-math/ahp/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>在linux亦可使用&lt;a href="https://www.runoob.com/w3cnote/linux-crontab-tasks.html">crontab&lt;/a>定时启动下载任务。在 &lt;code>/etc/cron.hourly/&lt;/code> 设置即可。&lt;/p></description></item><item><title>选择困难者的福音？层次分析法</title><link>https://talengu.github.io/post/c1-math/ahp/</link><pubDate>Fri, 02 Apr 2021 12:00:00 +0000</pubDate><guid>https://talengu.github.io/post/c1-math/ahp/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
 &lt;p>日常生活中，我们面临很多的选择，选择自己最工作offer，选择买哪个牌子的手机，选择哪个地方旅行等等。这些选择难以定量的衡量，有很多不确定性。内心小纠结，我选择了这个，万一那个好呢，怎么办？请看层次分析法。&lt;/p>
 &lt;p>层次分析法(Analytic Hierarchy Process，简称 AHP)是对一些较为复杂、较为模糊的问题作出决策的简易方法，它特别适用于那些难于完全定量分析的问题。它是美国运筹学家 T. L. Saaty 教授于上世纪 70 年代初期提出的一种简便、灵活而又实用的多准则决策方法。&lt;/p>
 &lt;p>运用层次分析法建模，大体上可按下面四个步骤进行&lt;/p>
@@ -371,7 +371,7 @@
  &lt;/tr>
  &lt;/tbody>
 &lt;/table>
-&lt;p>最后的两两相对重要表格&lt;/p></description></item><item><title>Jupyter notebook的配置</title><link>https://example.com/post/c7-toolchain/jupyter-notebook/</link><pubDate>Mon, 03 Jul 2017 16:00:04 +0000</pubDate><guid>https://example.com/post/c7-toolchain/jupyter-notebook/</guid><description>&lt;p>&lt;strong>前言&lt;/strong>
+&lt;p>最后的两两相对重要表格&lt;/p></description></item><item><title>Jupyter notebook的配置</title><link>https://talengu.github.io/post/c7-toolchain/jupyter-notebook/</link><pubDate>Mon, 03 Jul 2017 16:00:04 +0000</pubDate><guid>https://talengu.github.io/post/c7-toolchain/jupyter-notebook/</guid><description>&lt;p>&lt;strong>前言&lt;/strong>
 本文介绍jupyter notebook的安装配置过程和实用技巧。
 &lt;a href="https://jupyter.readthedocs.io/en/latest/index.html">jupyter.readthedocs教程&lt;/a>&lt;/p>
 &lt;!-- more -->
@@ -429,7 +429,7 @@ c.ServerApp.password = &amp;#39;&amp;#39;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>jupyter contrib nbextension install --user
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>jupyter nbextensions_configurator enable --user
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="13-安装插件管理">1.3 安装插件管理&lt;/h3>
-&lt;p>jupyter_contrib_nbextensions 为 jupyter notebook 扩展插件管理器，下面简称nbextensions。&lt;/p></description></item><item><title>SRT中英文合并Python脚本</title><link>https://example.com/post/c7-toolchain/python-youtube-src-combine/</link><pubDate>Thu, 14 Apr 2016 12:39:04 +0000</pubDate><guid>https://example.com/post/c7-toolchain/python-youtube-src-combine/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
+&lt;p>jupyter_contrib_nbextensions 为 jupyter notebook 扩展插件管理器，下面简称nbextensions。&lt;/p></description></item><item><title>SRT中英文合并Python脚本</title><link>https://talengu.github.io/post/c7-toolchain/python-youtube-src-combine/</link><pubDate>Thu, 14 Apr 2016 12:39:04 +0000</pubDate><guid>https://talengu.github.io/post/c7-toolchain/python-youtube-src-combine/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
 &lt;p>从YouTube上看只有中文或英文分开的字幕，下载好视频，想要中英文字幕。可从 &lt;a href="http://mo.dbxdb.com/Yang/setting.html">Getting Youtube subtitles&lt;/a> 获取中或英文字幕，然后将其合并，即成中英文双字幕。下面是Python脚本。&lt;/p>
 &lt;!-- more -->
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-python" data-lang="python">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74">&amp;#39;&amp;#39;&amp;#39;

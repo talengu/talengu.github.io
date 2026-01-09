@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>工具 on 一塘</title><link>https://example.com/categories/%E5%B7%A5%E5%85%B7/</link><description>Recent content in 工具 on 一塘</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Mon, 22 Dec 2025 12:39:04 +0000</lastBuildDate><atom:link href="https://example.com/categories/%E5%B7%A5%E5%85%B7/index.xml" rel="self" type="application/rss+xml"/><item><title>Hugo搭建</title><link>https://example.com/post/c7-toolchain/hugo-build/</link><pubDate>Mon, 22 Dec 2025 12:39:04 +0000</pubDate><guid>https://example.com/post/c7-toolchain/hugo-build/</guid><description>&lt;p>从2015年开始，我使用Hexo框架Next主题搭建，个人博客系统，正好十年。
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>工具 on 一塘</title><link>https://talengu.github.io/categories/%E5%B7%A5%E5%85%B7/</link><description>Recent content in 工具 on 一塘</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Mon, 22 Dec 2025 12:39:04 +0000</lastBuildDate><atom:link href="https://talengu.github.io/categories/%E5%B7%A5%E5%85%B7/index.xml" rel="self" type="application/rss+xml"/><item><title>Hugo搭建</title><link>https://talengu.github.io/post/c7-toolchain/hugo-build/</link><pubDate>Mon, 22 Dec 2025 12:39:04 +0000</pubDate><guid>https://talengu.github.io/post/c7-toolchain/hugo-build/</guid><description>&lt;p>从2015年开始，我使用Hexo框架Next主题搭建，个人博客系统，正好十年。
 框架和主题配置完成后，我只要关注markdown内容即可。&lt;/p>
 &lt;p>在这使用过程中，遇到过一次大规模的js投毒，那一次hexo 编译不出。
 hexo 和next 框架 变更实在是太快了，最近在github 的页面编译不出后，我修复无果，也懒得折腾了，在初步调研后，准备使用&lt;a href="https://gohugo.io">hugo&lt;/a>和&lt;a href="https://www.gohugothemes.com/theme/yihui-hugo-xmin/">Hugo Xmin&lt;/a>&lt;/p>
@@ -98,7 +98,7 @@ hexo 和next 框架 变更实在是太快了，最近在github 的页面编译�
 &lt;/table>
 &lt;h2 id="添加评论-使用-giscusapp">添加评论 使用 giscus.app&lt;/h2>
 &lt;p>按 giscus.app 官方进行操作即可
-&lt;a href="https://giscus.app/">https://giscus.app/&lt;/a>&lt;/p></description></item><item><title>「转」基于 Readeck 搭建个人稍后读/书签服务</title><link>https://example.com/post/c7-toolchain/readeck-tips/</link><pubDate>Thu, 06 Jun 2024 12:00:00 +0000</pubDate><guid>https://example.com/post/c7-toolchain/readeck-tips/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
+&lt;a href="https://giscus.app/">https://giscus.app/&lt;/a>&lt;/p></description></item><item><title>「转」基于 Readeck 搭建个人稍后读/书签服务</title><link>https://talengu.github.io/post/c7-toolchain/readeck-tips/</link><pubDate>Thu, 06 Jun 2024 12:00:00 +0000</pubDate><guid>https://talengu.github.io/post/c7-toolchain/readeck-tips/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
 &lt;blockquote>
 &lt;p>本文由 &lt;a href="http://ksria.com/simpread/">简悦 SimpRead&lt;/a> 转码， 原文地址 &lt;a href="https://sspai.com/post/89289">https://sspai.com/post/89289&lt;/a>&lt;/p>&lt;/blockquote>
 &lt;!-- more -->
@@ -147,7 +147,7 @@ hexo 和next 框架 变更实在是太快了，最近在github 的页面编译�
  style="width:80%;" 
 />
 &lt;/div>&lt;/p>
-&lt;p>接下来我们就打开 Portainer 来进行服务容器的部署，这里打开并登录 Portainer，然后从左侧边栏中点击 Stacks，然后点击页面右上角的 &lt;code>Add Stack&lt;/code>来添加。&lt;/p></description></item><item><title>rss翻译github脚本</title><link>https://example.com/post/c7-toolchain/rss_translate/</link><pubDate>Wed, 21 Dec 2022 12:39:04 +0000</pubDate><guid>https://example.com/post/c7-toolchain/rss_translate/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
+&lt;p>接下来我们就打开 Portainer 来进行服务容器的部署，这里打开并登录 Portainer，然后从左侧边栏中点击 Stacks，然后点击页面右上角的 &lt;code>Add Stack&lt;/code>来添加。&lt;/p></description></item><item><title>rss翻译github脚本</title><link>https://talengu.github.io/post/c7-toolchain/rss_translate/</link><pubDate>Wed, 21 Dec 2022 12:39:04 +0000</pubDate><guid>https://talengu.github.io/post/c7-toolchain/rss_translate/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
 &lt;p>自动翻译 rss，我利用github action开发了一下， 供大家玩乐。&lt;/p>
 &lt;p>比如将：
  &lt;a href="http://www.mckinsey.com/insights/rss">http://www.mckinsey.com/insights/rss&lt;/a> -&amp;gt; &lt;a href="https://talengu.github.io/rss-translate/rss/mckinsey_rss.xml">mckinsey_rss.xml&lt;/a>
@@ -212,7 +212,7 @@ hexo 和next 框架 变更实在是太快了，最近在github 的页面编译�
 &lt;li>更新周期为1天，且为随机时间点。通过github action实现，见 &lt;a href="https://github.com/talengu/rss-translate/blob/main/.github/cron_random.py">random.py&lt;/a>&lt;/li>
 &lt;li>多语言支持 action = “auto”，这里可以换成多种语言，支持语言列表见 &lt;a href="https://pygtrans.readthedocs.io/zh_CN/latest/index.html">pygtrans&lt;/a> 如：action = &amp;ldquo;en-&amp;gt;zh-CN&amp;rdquo;&lt;/li>
 &lt;/ul>
-&lt;p>欢迎大家使用！！！🐱&lt;/p></description></item><item><title>rss统计 基于ttrss的PostgresQL数据库</title><link>https://example.com/post/c7-toolchain/rss-ttrss-statics/</link><pubDate>Sun, 08 May 2022 22:00:04 +0000</pubDate><guid>https://example.com/post/c7-toolchain/rss-ttrss-statics/</guid><description>&lt;p>&lt;strong>前言&lt;/strong>
+&lt;p>欢迎大家使用！！！🐱&lt;/p></description></item><item><title>rss统计 基于ttrss的PostgresQL数据库</title><link>https://talengu.github.io/post/c7-toolchain/rss-ttrss-statics/</link><pubDate>Sun, 08 May 2022 22:00:04 +0000</pubDate><guid>https://talengu.github.io/post/c7-toolchain/rss-ttrss-statics/</guid><description>&lt;p>&lt;strong>前言&lt;/strong>
 统计ttrss的使用数据。&lt;/p>
 &lt;ul>
 &lt;li>月度mark文件分析 OK&lt;/li>
@@ -287,7 +287,7 @@ hexo 和next 框架 变更实在是太快了，最近在github 的页面编译�
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>D&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;C:&lt;/span>&lt;span style="color:#ae81ff">\\&lt;/span>&lt;span style="color:#e6db74">Users&lt;/span>&lt;span style="color:#ae81ff">\\&lt;/span>&lt;span style="color:#e6db74">talen&lt;/span>&lt;span style="color:#ae81ff">\\&lt;/span>&lt;span style="color:#e6db74">Desktop&lt;/span>&lt;span style="color:#ae81ff">\\&lt;/span>&lt;span style="color:#e6db74">&amp;#34;&lt;/span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">with&lt;/span> open(D&lt;span style="color:#f92672">+&lt;/span>&lt;span style="color:#e6db74">&amp;#34;cc.md&amp;#34;&lt;/span>,&lt;span style="color:#e6db74">&amp;#39;w&amp;#39;&lt;/span>,encoding&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#e6db74">&amp;#39;utf-8&amp;#39;&lt;/span>) &lt;span style="color:#66d9ef">as&lt;/span> f:
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> f&lt;span style="color:#f92672">.&lt;/span>write(g_content)
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>使用脚本将英文rss转成中文rss</title><link>https://example.com/post/c7-toolchain/rss-google-translate/</link><pubDate>Sun, 08 May 2022 22:00:04 +0000</pubDate><guid>https://example.com/post/c7-toolchain/rss-google-translate/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>使用脚本将英文rss转成中文rss</title><link>https://talengu.github.io/post/c7-toolchain/rss-google-translate/</link><pubDate>Sun, 08 May 2022 22:00:04 +0000</pubDate><guid>https://talengu.github.io/post/c7-toolchain/rss-google-translate/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
 &lt;p>本文中我们将英文rss 自动转成中文 rss供ttrss使用。（利用谷歌翻译）&lt;/p>
 &lt;p>方便在手机上进行阅读或者收听。&lt;/p>
 &lt;center>&lt;img src="rss-google-translate/20220508-22-28-27.png" width="30%">
@@ -406,7 +406,7 @@ hexo 和next 框架 变更实在是太快了，最近在github 的页面编译�
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>tran_nature()
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="定时任务">定时任务&lt;/h3>
 &lt;blockquote>
-&lt;p>注意激活一下miniconda3 这个命令&lt;code>source /home/xxx/miniconda3/bin/activate&lt;/code>&lt;/p></description></item><item><title>本地安装rss</title><link>https://example.com/post/c7-toolchain/rss-local-install/</link><pubDate>Sat, 16 Apr 2022 12:39:04 +0000</pubDate><guid>https://example.com/post/c7-toolchain/rss-local-install/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
+&lt;p>注意激活一下miniconda3 这个命令&lt;code>source /home/xxx/miniconda3/bin/activate&lt;/code>&lt;/p></description></item><item><title>本地安装rss</title><link>https://talengu.github.io/post/c7-toolchain/rss-local-install/</link><pubDate>Sat, 16 Apr 2022 12:39:04 +0000</pubDate><guid>https://talengu.github.io/post/c7-toolchain/rss-local-install/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
 &lt;p>在 “&lt;a href="c0-life/talk-rss-2020.md">二零年RSS杂谈&lt;/a>”中说到，我想建立一种信息的获取系统，免受广告和推荐算法的困扰。&lt;/p>
 &lt;p>我希望其的功能包括：&lt;/p>
 &lt;ul>
@@ -529,7 +529,7 @@ hexo 和next 框架 变更实在是太快了，最近在github 的页面编译�
  
  style="width:80%;" 
 />
-&lt;/div>&lt;/p></description></item><item><title>知识记忆软件anki的使用</title><link>https://example.com/post/c7-toolchain/anki-tips/</link><pubDate>Thu, 14 Apr 2022 12:39:04 +0000</pubDate><guid>https://example.com/post/c7-toolchain/anki-tips/</guid><description>&lt;h2 id="anki使用---自建-anki--server">anki使用 - 自建 anki server&lt;/h2>
+&lt;/div>&lt;/p></description></item><item><title>知识记忆软件anki的使用</title><link>https://talengu.github.io/post/c7-toolchain/anki-tips/</link><pubDate>Thu, 14 Apr 2022 12:39:04 +0000</pubDate><guid>https://talengu.github.io/post/c7-toolchain/anki-tips/</guid><description>&lt;h2 id="anki使用---自建-anki--server">anki使用 - 自建 anki server&lt;/h2>
 &lt;p>当初想设计好用的英语背诵软件，现在发现了anki人家功能全部实现，还要啥自行车。&lt;/p>
 &lt;p>我当时设计的单词勇士开源Android软件：
 &lt;a href="https://github.com/talengu/WordWarrior">https://github.com/talengu/WordWarrior&lt;/a>
@@ -560,7 +560,7 @@ hexo 和next 框架 变更实在是太快了，最近在github 的页面编译�
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="客户端">客户端&lt;/h2>
 &lt;img src="anki-tips/image-20200424005627732.png" alt="image-20200424005627732" style="zoom:33%;" />
 &lt;h3 id="macwin-客户端">mac/win 客户端&lt;/h3>
-&lt;p>从官网下载 anki mac版本 2.1.21 (f1734a47) / Windows PC 客户端&lt;/p></description></item><item><title>二零年RSS杂谈</title><link>https://example.com/post/c0-life/talk-rss-2020/</link><pubDate>Fri, 14 Jan 2022 01:02:57 +0000</pubDate><guid>https://example.com/post/c0-life/talk-rss-2020/</guid><description>&lt;p>2020年了，笔者还是使用RSS的原始人。RSS，Really Simple Syndication是一种信息聚合工具。在5G时代信息即将大爆炸之前，我来谈谈rss的杂七杂八吧。我们来打个赌，你不会看完这篇文章。&lt;/p>
+&lt;p>从官网下载 anki mac版本 2.1.21 (f1734a47) / Windows PC 客户端&lt;/p></description></item><item><title>二零年RSS杂谈</title><link>https://talengu.github.io/post/c0-life/talk-rss-2020/</link><pubDate>Fri, 14 Jan 2022 01:02:57 +0000</pubDate><guid>https://talengu.github.io/post/c0-life/talk-rss-2020/</guid><description>&lt;p>2020年了，笔者还是使用RSS的原始人。RSS，Really Simple Syndication是一种信息聚合工具。在5G时代信息即将大爆炸之前，我来谈谈rss的杂七杂八吧。我们来打个赌，你不会看完这篇文章。&lt;/p>
 &lt;!-- more -->
 &lt;p>软件的交互设计有很多心理学理论的应用。比如微信、QQ的三级页面设计，一般经过3次点击就能到达功能或设置。这符合认知原理，人认知记忆能力一般为3-5个的组合。日常生活中要记电话号码，可以3-4-4这样记。软件交互中还有利用人的习惯奖励机制的提醒红点的设计，吸引你去点击，获取红点消失的奖励。对我来说，较难控制住不受这些设计的影响。在《习惯的力量》一书了解到，直接逃离这些环境可有效解决控制不住的问题。比如工作的时候，把手机关进柜子，工作1个小时，然后再回复信息，当然重要电话还是要立即接的。&lt;/p>
 &lt;p>铺天盖地的广告，马路上，电视中，手机里，PC页面充斥着各种广告等等。大多数人可能养成了自动过滤的广告的习惯，然而我的情况是一直在用去广告的插件，并没有养成自动忽略广告的习惯。可怜兮兮，难道只有我是有广告洁癖的嘛？广告有点浪费生命。&lt;/p>
@@ -575,7 +575,7 @@ hexo 和next 框架 变更实在是太快了，最近在github 的页面编译�
 &lt;p>看来all in one 势在必行，RSS被谷歌放弃后，很多网站傲娇地不提供RSS服务了，毕竟流量至上，钱要赚的，我一直想做一个这种爬的工具，但我不希望有大量使用爬，也就是我们还是要尊重网站的盈利以及持续发展的，这也是仅仅方便个人的信息处理，优化你的自动信息的处理，再也不用一个个打开网站，然后看信息看广告，还要被推荐不重用的信息。这也算我个人的想法。人在于折腾，于是我开始折腾ttrss rsshub等开源软件。&lt;/p>
 &lt;p>自由软件的好处，在于自由定制，参与发展，利益化会尽量变慢或者没有，方便的同时并不忘隐私保护。&lt;/p>
 &lt;p>我想说的是，&lt;strong>技术应当给人们带来自由和发展，而非接管人们的注意力，浪费宝贵的时间。&lt;/strong>&lt;/p>
-&lt;p>写在5G信息大爆发前，与大家共同反思与成长。&lt;/p></description></item><item><title>RSS跟踪github文件更新+某管子更新</title><link>https://example.com/post/c7-toolchain/rss-github-file/</link><pubDate>Sat, 24 Jul 2021 12:00:00 +0000</pubDate><guid>https://example.com/post/c7-toolchain/rss-github-file/</guid><description>&lt;p>&lt;strong>前言&lt;/strong>&lt;/p>
+&lt;p>写在5G信息大爆发前，与大家共同反思与成长。&lt;/p></description></item><item><title>RSS跟踪github文件更新+某管子更新</title><link>https://talengu.github.io/post/c7-toolchain/rss-github-file/</link><pubDate>Sat, 24 Jul 2021 12:00:00 +0000</pubDate><guid>https://talengu.github.io/post/c7-toolchain/rss-github-file/</guid><description>&lt;p>&lt;strong>前言&lt;/strong>&lt;/p>
 &lt;p>好久没有更新博客了。RSS这种形式的信息获取方式，似乎又流行起来。&lt;/p>
 &lt;!-- more -->
 &lt;h2 id="github文件更新">github文件更新&lt;/h2>
@@ -671,7 +671,7 @@ hexo 和next 框架 变更实在是太快了，最近在github 的页面编译�
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">for&lt;/span> _d &lt;span style="color:#f92672">in&lt;/span> _now[:&lt;span style="color:#f92672">-&lt;/span>&lt;span style="color:#ae81ff">5&lt;/span>]:
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> os&lt;span style="color:#f92672">.&lt;/span>popen(&lt;span style="color:#e6db74">&amp;#34;rm -rf &lt;/span>&lt;span style="color:#e6db74">%s&lt;/span>&lt;span style="color:#e6db74">&amp;#34;&lt;/span>&lt;span style="color:#f92672">%&lt;/span>_d)
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>在linux亦可使用&lt;a href="https://www.runoob.com/w3cnote/linux-crontab-tasks.html">crontab&lt;/a>定时启动下载任务。在 &lt;code>/etc/cron.hourly/&lt;/code> 设置即可。&lt;/p></description></item><item><title>Jupyter notebook的配置</title><link>https://example.com/post/c7-toolchain/jupyter-notebook/</link><pubDate>Mon, 03 Jul 2017 16:00:04 +0000</pubDate><guid>https://example.com/post/c7-toolchain/jupyter-notebook/</guid><description>&lt;p>&lt;strong>前言&lt;/strong>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>在linux亦可使用&lt;a href="https://www.runoob.com/w3cnote/linux-crontab-tasks.html">crontab&lt;/a>定时启动下载任务。在 &lt;code>/etc/cron.hourly/&lt;/code> 设置即可。&lt;/p></description></item><item><title>Jupyter notebook的配置</title><link>https://talengu.github.io/post/c7-toolchain/jupyter-notebook/</link><pubDate>Mon, 03 Jul 2017 16:00:04 +0000</pubDate><guid>https://talengu.github.io/post/c7-toolchain/jupyter-notebook/</guid><description>&lt;p>&lt;strong>前言&lt;/strong>
 本文介绍jupyter notebook的安装配置过程和实用技巧。
 &lt;a href="https://jupyter.readthedocs.io/en/latest/index.html">jupyter.readthedocs教程&lt;/a>&lt;/p>
 &lt;!-- more -->
@@ -729,7 +729,7 @@ c.ServerApp.password = &amp;#39;&amp;#39;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>jupyter contrib nbextension install --user
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>jupyter nbextensions_configurator enable --user
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="13-安装插件管理">1.3 安装插件管理&lt;/h3>
-&lt;p>jupyter_contrib_nbextensions 为 jupyter notebook 扩展插件管理器，下面简称nbextensions。&lt;/p></description></item><item><title>hexo个人主页搭建</title><link>https://example.com/post/c7-toolchain/hexo-blog/</link><pubDate>Thu, 22 Dec 2016 12:39:04 +0000</pubDate><guid>https://example.com/post/c7-toolchain/hexo-blog/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
+&lt;p>jupyter_contrib_nbextensions 为 jupyter notebook 扩展插件管理器，下面简称nbextensions。&lt;/p></description></item><item><title>hexo个人主页搭建</title><link>https://talengu.github.io/post/c7-toolchain/hexo-blog/</link><pubDate>Thu, 22 Dec 2016 12:39:04 +0000</pubDate><guid>https://talengu.github.io/post/c7-toolchain/hexo-blog/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
 &lt;p>本文主要内容为博客搭建的记录与分享，我采用了Hexo博客框架，NexT主题和Gitment评论系统。本文中记录了我博客的安装流程和使用过程中的改进细节。&lt;/p>
 &lt;p>对Next主题版本的一些说明：我使用的是&lt;code>version: 5.1.0&lt;/code>。而使用新版本的NexT v6 主题的同学，有些功能如gitment已经实现，可以直接使用V6。此V6版本对于图片的使用可能会出现问题。仅需看看我下面的2.2小节。&lt;/p>
 &lt;p>有时间我会将我修改后的hexo Next theme 基于&lt;code>version: 5.1.0&lt;/code>主题，给个独立的git仓，放到github 上。&lt;/p>
@@ -763,7 +763,7 @@ NexT Github &lt;a href="https://github.com/iissnan/hexo-theme-next">https://gith
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$ cd blog
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$ npm install
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$ hexo server
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>ok，安装完的目录结构。&lt;/p></description></item><item><title>SRT中英文合并Python脚本</title><link>https://example.com/post/c7-toolchain/python-youtube-src-combine/</link><pubDate>Thu, 14 Apr 2016 12:39:04 +0000</pubDate><guid>https://example.com/post/c7-toolchain/python-youtube-src-combine/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>ok，安装完的目录结构。&lt;/p></description></item><item><title>SRT中英文合并Python脚本</title><link>https://talengu.github.io/post/c7-toolchain/python-youtube-src-combine/</link><pubDate>Thu, 14 Apr 2016 12:39:04 +0000</pubDate><guid>https://talengu.github.io/post/c7-toolchain/python-youtube-src-combine/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
 &lt;p>从YouTube上看只有中文或英文分开的字幕，下载好视频，想要中英文字幕。可从 &lt;a href="http://mo.dbxdb.com/Yang/setting.html">Getting Youtube subtitles&lt;/a> 获取中或英文字幕，然后将其合并，即成中英文双字幕。下面是Python脚本。&lt;/p>
 &lt;!-- more -->
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-python" data-lang="python">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74">&amp;#39;&amp;#39;&amp;#39;
@@ -811,7 +811,7 @@ NexT Github &lt;a href="https://github.com/iissnan/hexo-theme-next">https://gith
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> print(name)
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> name[&lt;span style="color:#f92672">-&lt;/span>&lt;span style="color:#ae81ff">6&lt;/span>:&lt;span style="color:#f92672">-&lt;/span>&lt;span style="color:#ae81ff">4&lt;/span>]&lt;span style="color:#f92672">==&lt;/span>&lt;span style="color:#e6db74">&amp;#39;zh&amp;#39;&lt;/span>:
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> hebing(name)
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Windows笔记本开共享wifi</title><link>https://example.com/post/c7-toolchain/cmd-windowns-share-wifi/</link><pubDate>Tue, 14 Apr 2015 12:39:04 +0000</pubDate><guid>https://example.com/post/c7-toolchain/cmd-windowns-share-wifi/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Windows笔记本开共享wifi</title><link>https://talengu.github.io/post/c7-toolchain/cmd-windowns-share-wifi/</link><pubDate>Tue, 14 Apr 2015 12:39:04 +0000</pubDate><guid>https://talengu.github.io/post/c7-toolchain/cmd-windowns-share-wifi/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
 &lt;p>网上有很多用笔记本设置无线热点的批处理，我中和了一下。复制下面代码到记事本，改后缀为bat就行了。其中，mssid和mkey可自定义&lt;/p>
 &lt;!-- more -->
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-shell" data-lang="shell">&lt;span style="display:flex;">&lt;span>
@@ -840,7 +840,7 @@ NexT Github &lt;a href="https://github.com/iissnan/hexo-theme-next">https://gith
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">if&lt;/span> %var%&lt;span style="color:#f92672">==&lt;/span>set netsh wlan set hostednetwork mode&lt;span style="color:#f92672">=&lt;/span>allow ssid&lt;span style="color:#f92672">=&lt;/span>%mssid% key&lt;span style="color:#f92672">=&lt;/span>%mkey% &lt;span style="color:#f92672">&amp;amp;&amp;amp;&lt;/span> echo 网络名字:%mssid% 密码:%mkey% &lt;span style="color:#f92672">&amp;amp;&amp;amp;&lt;/span> GOTO start
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">if&lt;/span> %var%&lt;span style="color:#f92672">==&lt;/span>e pause
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="播放声音">播放声音&lt;/h2>
-&lt;p>保存为&lt;code>播放声音.vbs&lt;/code>,可以播放声音&lt;/p></description></item><item><title>博客模版</title><link>https://example.com/post/template/</link><pubDate>Fri, 01 Jan 2010 12:00:00 +0000</pubDate><guid>https://example.com/post/template/</guid><description>&lt;p>文件head，设置标题、日期、分类、标签、评论、版权、是否使用公式，如下。&lt;/p>
+&lt;p>保存为&lt;code>播放声音.vbs&lt;/code>,可以播放声音&lt;/p></description></item><item><title>博客模版</title><link>https://talengu.github.io/post/template/</link><pubDate>Fri, 01 Jan 2010 12:00:00 +0000</pubDate><guid>https://talengu.github.io/post/template/</guid><description>&lt;p>文件head，设置标题、日期、分类、标签、评论、版权、是否使用公式，如下。&lt;/p>
 &lt;pre tabindex="0">&lt;code>---
 title: 模版文件
 date: 2019-07-25 12:00:00

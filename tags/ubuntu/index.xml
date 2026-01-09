@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Ubuntu on 一塘</title><link>https://example.com/tags/ubuntu/</link><description>Recent content in Ubuntu on 一塘</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Fri, 01 Apr 2022 18:00:04 +0000</lastBuildDate><atom:link href="https://example.com/tags/ubuntu/index.xml" rel="self" type="application/rss+xml"/><item><title>「转」Ubuntu完全教程</title><link>https://example.com/post/c5-linux/linux/ubuntu-tour/</link><pubDate>Fri, 01 Apr 2022 18:00:04 +0000</pubDate><guid>https://example.com/post/c5-linux/linux/ubuntu-tour/</guid><description>&lt;blockquote>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Ubuntu on 一塘</title><link>https://talengu.github.io/tags/ubuntu/</link><description>Recent content in Ubuntu on 一塘</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Fri, 01 Apr 2022 18:00:04 +0000</lastBuildDate><atom:link href="https://talengu.github.io/tags/ubuntu/index.xml" rel="self" type="application/rss+xml"/><item><title>「转」Ubuntu完全教程</title><link>https://talengu.github.io/post/c5-linux/linux/ubuntu-tour/</link><pubDate>Fri, 01 Apr 2022 18:00:04 +0000</pubDate><guid>https://talengu.github.io/post/c5-linux/linux/ubuntu-tour/</guid><description>&lt;blockquote>
 &lt;p>ref:&lt;a href="http://www.cnblogs.com/dutlei/archive/2012/11/20/2778327.html">Ubuntu完全教程，让你成为Ubuntu高手！&lt;/a>
 todo整理&lt;/p>&lt;/blockquote>
 &lt;h2 id="ubuntu的发音">Ubuntu的发音&lt;/h2>
@@ -16,7 +16,7 @@ todo整理&lt;/p>&lt;/blockquote>
 &lt;p>Ubuntu 完全基于 Linux 操作系统， 可以免费得到社区及专业机构的支持。庞大的社区是它成长的沃土，请向这片动人的热忱敞开心扉。&lt;/p>
 &lt;p>Ubuntu 社区恪守 Ubuntu 理念：自由！软件应是自由的，应尊重人类的自由意志，它与人类之间不应有任何隔膜。本地语种，功能限制，自主改进的权利……都不应成为使用的障碍或负担。&lt;/p>
 &lt;p>自由，让 Ubuntu 与传统的私有软件从根本上不同: 免费不能用来遮羞，您有权修正它，直到满意为止。&lt;/p>
-&lt;p>Ubuntu 适合桌面和服务器。当前 Ubuntu 发布版支持 PC (Intel x86), 64-bit PC (AMD64) 和 PowerPC (Apple iBook 和 Powerbook, G4 和 G5) 架构。&lt;/p></description></item><item><title>Ubuntu引导修复</title><link>https://example.com/post/c5-linux/linux/boot-recovery/</link><pubDate>Wed, 14 Jun 2017 16:00:04 +0000</pubDate><guid>https://example.com/post/c5-linux/linux/boot-recovery/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
+&lt;p>Ubuntu 适合桌面和服务器。当前 Ubuntu 发布版支持 PC (Intel x86), 64-bit PC (AMD64) 和 PowerPC (Apple iBook 和 Powerbook, G4 和 G5) 架构。&lt;/p></description></item><item><title>Ubuntu引导修复</title><link>https://talengu.github.io/post/c5-linux/linux/boot-recovery/</link><pubDate>Wed, 14 Jun 2017 16:00:04 +0000</pubDate><guid>https://talengu.github.io/post/c5-linux/linux/boot-recovery/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
 &lt;p>本文记录修复ubuntu引导，并修改ubuntu盘的大小过程。
 参考：&lt;a href="http://www.cnblogs.com/jloveu/p/Ubuntu-partition-expansion-record.html">http://www.cnblogs.com/jloveu/p/Ubuntu-partition-expansion-record.html&lt;/a>
 工具：Ubuntu 的live U盘，带有gparted分区工具，和grub修复工具&lt;/p>
@@ -61,7 +61,7 @@ todo整理&lt;/p>&lt;/blockquote>
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="ubuntu下如何修复grub引导">Ubuntu下如何修复Grub引导&lt;/h2>
 &lt;p>&lt;a href="https://mp.weixin.qq.com/s/NDZPPA-0FhqSzRndQOhNEw">link&lt;/a>&lt;/p>
 &lt;p>本文以 Ubuntu Live CD 修复 Grub 引导为例，已在 /dev/sda3 安装 Fedora。&lt;/p>
-&lt;p>首先制作 Ubuntu 启动 USB&lt;/p></description></item><item><title>Ubuntu的优化与设置</title><link>https://example.com/post/c5-linux/linux/ubuntu-init/</link><pubDate>Mon, 22 May 2017 18:00:04 +0000</pubDate><guid>https://example.com/post/c5-linux/linux/ubuntu-init/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
+&lt;p>首先制作 Ubuntu 启动 USB&lt;/p></description></item><item><title>Ubuntu的优化与设置</title><link>https://talengu.github.io/post/c5-linux/linux/ubuntu-init/</link><pubDate>Mon, 22 May 2017 18:00:04 +0000</pubDate><guid>https://talengu.github.io/post/c5-linux/linux/ubuntu-init/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
 &lt;ul>
 &lt;li>
 &lt;h2 id="窗口颜色设置浅绿色">窗口颜色设置浅绿色&lt;/h2>

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>网络 on 一塘</title><link>https://example.com/categories/%E7%BD%91%E7%BB%9C/</link><description>Recent content in 网络 on 一塘</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Thu, 08 Dec 2022 12:00:00 +0000</lastBuildDate><atom:link href="https://example.com/categories/%E7%BD%91%E7%BB%9C/index.xml" rel="self" type="application/rss+xml"/><item><title>tcp ip 协议族</title><link>https://example.com/post/c6-network/tcp-ip/</link><pubDate>Thu, 08 Dec 2022 12:00:00 +0000</pubDate><guid>https://example.com/post/c6-network/tcp-ip/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>网络 on 一塘</title><link>https://talengu.github.io/categories/%E7%BD%91%E7%BB%9C/</link><description>Recent content in 网络 on 一塘</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Thu, 08 Dec 2022 12:00:00 +0000</lastBuildDate><atom:link href="https://talengu.github.io/categories/%E7%BD%91%E7%BB%9C/index.xml" rel="self" type="application/rss+xml"/><item><title>tcp ip 协议族</title><link>https://talengu.github.io/post/c6-network/tcp-ip/</link><pubDate>Thu, 08 Dec 2022 12:00:00 +0000</pubDate><guid>https://talengu.github.io/post/c6-network/tcp-ip/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
 &lt;p>tcp ip 协议族&lt;/p>
 &lt;!-- more -->
 &lt;p>
@@ -15,7 +15,7 @@
  
  style="width:80%;" 
 />
-&lt;/div>&lt;/p></description></item><item><title>「转」连接跟踪（conntrack）：原理、应用及 Linux 内核实现</title><link>https://example.com/post/c6-network/conntrack/</link><pubDate>Sun, 04 Dec 2022 12:00:00 +0000</pubDate><guid>https://example.com/post/c6-network/conntrack/</guid><description>&lt;h2 id="摘要">摘要&lt;/h2>
+&lt;/div>&lt;/p></description></item><item><title>「转」连接跟踪（conntrack）：原理、应用及 Linux 内核实现</title><link>https://talengu.github.io/post/c6-network/conntrack/</link><pubDate>Sun, 04 Dec 2022 12:00:00 +0000</pubDate><guid>https://talengu.github.io/post/c6-network/conntrack/</guid><description>&lt;h2 id="摘要">摘要&lt;/h2>
 &lt;p>本文介绍连接跟踪（connection tracking，conntrack，CT）的原理，应用，及其在 Linux 内核中的实现。&lt;/p>
 &lt;p>代码分析基于内核 &lt;code>4.19&lt;/code>。为使行文简洁，所贴代码只保留了核心逻辑，但都给出了代码 所在的源文件，如有需要请查阅。&lt;/p>
 &lt;p>水平有限，文中不免有错误之处，欢迎指正交流。&lt;/p>
@@ -67,7 +67,7 @@
 &lt;/ul>
 &lt;/li>
 &lt;/ul>
-&lt;p>本文中用到 “连接” 一词时，大部分情况下指的都是后者，即 “连接跟踪” 中的“连接”。&lt;/p></description></item><item><title>「转」GRE隧道测试</title><link>https://example.com/post/c6-network/gre-test/</link><pubDate>Thu, 05 May 2022 22:52:28 +0000</pubDate><guid>https://example.com/post/c6-network/gre-test/</guid><description>&lt;blockquote>
+&lt;p>本文中用到 “连接” 一词时，大部分情况下指的都是后者，即 “连接跟踪” 中的“连接”。&lt;/p></description></item><item><title>「转」GRE隧道测试</title><link>https://talengu.github.io/post/c6-network/gre-test/</link><pubDate>Thu, 05 May 2022 22:52:28 +0000</pubDate><guid>https://talengu.github.io/post/c6-network/gre-test/</guid><description>&lt;blockquote>
 &lt;p>本文由 &lt;a href="http://ksria.com/simpread/">简悦 SimpRead&lt;/a> 转码， 原文地址 &lt;a href="https://juejin.cn/post/6988645230987706398">juejin.cn&lt;/a>&lt;/p>&lt;/blockquote>
 &lt;p>
 
@@ -105,7 +105,7 @@
 />
 &lt;/div>&lt;/p>
 &lt;h2 id="1-linux-内核支持的隧道类型">1. Linux 内核支持的隧道类型&lt;/h2>
-&lt;p>目前 Linux 内核已经支持多种隧道类型，包括：IPIP 隧道，GRE 隧道，&amp;hellip; 。其余这几个我也没见过。当然除了这几种，还有 ipsec 协议，l2tp 协议，可以的是我目前都还没有用过，实在是暴殄天物，罪过罪过&lt;/p></description></item><item><title>「转」爱立信的百年沉浮</title><link>https://example.com/post/c6-network/history-ericsson/</link><pubDate>Fri, 01 Apr 2022 12:39:04 +0000</pubDate><guid>https://example.com/post/c6-network/history-ericsson/</guid><description>&lt;blockquote>
+&lt;p>目前 Linux 内核已经支持多种隧道类型，包括：IPIP 隧道，GRE 隧道，&amp;hellip; 。其余这几个我也没见过。当然除了这几种，还有 ipsec 协议，l2tp 协议，可以的是我目前都还没有用过，实在是暴殄天物，罪过罪过&lt;/p></description></item><item><title>「转」爱立信的百年沉浮</title><link>https://talengu.github.io/post/c6-network/history-ericsson/</link><pubDate>Fri, 01 Apr 2022 12:39:04 +0000</pubDate><guid>https://talengu.github.io/post/c6-network/history-ericsson/</guid><description>&lt;blockquote>
 &lt;p>文章来源：&lt;br>
 鲜枣课堂（ID：xzclasscom）
 &lt;a href="https://mp.weixin.qq.com/s?__biz=MjM5NTY1MjY0MQ==&amp;amp;mid=2650814278&amp;amp;idx=1&amp;amp;sn=26083fed8d8dd76340e063fd42a59dea">原文&lt;/a>&lt;/p>&lt;/blockquote>
@@ -152,7 +152,7 @@
 &lt;p>拉什 · 爱立信 1846 年 5 月 5 日出生于瑞典中部瓦姆兰省的一个小农场里。他的家庭条件贫困，自己在 9 个兄弟姐妹中排行第六。&lt;/p>
 &lt;p>11 岁时，由于父亲病逝，他不得不外出工作，养家糊口。这期间，他当过矿工，修过铁路，还在铁匠铺做了很长时间的学徒。&lt;/p>
 &lt;p>1867 年，拉什 · 爱立信终于攒够了路费，来到他梦寐以求的瑞典首都——斯德哥尔摩。经过一周的试用后，他成功加入了奥勒公司，成为一名修理工。&lt;/p>
-&lt;p>尽管这份工作的工资微薄，拉什 · 爱立信仍然感到十分满足。他后来回忆说：“（这份工作）足以满足我的需求，让我庆幸地看到生活比以往任何时候都更加光明，我心中第一次感受到了生活的快乐。”&lt;/p></description></item><item><title>「转」桥初始化（一）</title><link>https://example.com/post/c6-network/br_init/</link><pubDate>Thu, 02 Dec 2021 12:00:00 +0000</pubDate><guid>https://example.com/post/c6-network/br_init/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
+&lt;p>尽管这份工作的工资微薄，拉什 · 爱立信仍然感到十分满足。他后来回忆说：“（这份工作）足以满足我的需求，让我庆幸地看到生活比以往任何时候都更加光明，我心中第一次感受到了生活的快乐。”&lt;/p></description></item><item><title>「转」桥初始化（一）</title><link>https://talengu.github.io/post/c6-network/br_init/</link><pubDate>Thu, 02 Dec 2021 12:00:00 +0000</pubDate><guid>https://talengu.github.io/post/c6-network/br_init/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
 &lt;p>注：章节中的源代码，基于 linux 内核 4.7.4&lt;/p>
 &lt;p>网桥的背景到处都有，在这里就不浪费的时间说废话了。&lt;/p>
 &lt;p>桥接程序的初始化，桥接程序既可以集成在内核中，也可以编译成独立模块。初始化函数br_init和清理函数br_deinit的定义在/net/bridge/br.c中&lt;/p>

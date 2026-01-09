@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Linux on 一塘</title><link>https://example.com/categories/linux/</link><description>Recent content in Linux on 一塘</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Sun, 11 Dec 2022 12:00:00 +0000</lastBuildDate><atom:link href="https://example.com/categories/linux/index.xml" rel="self" type="application/rss+xml"/><item><title>「转」九张图一览 Linux 性能工具 全景图</title><link>https://example.com/post/c5-linux/linux/linux_tools/</link><pubDate>Sun, 11 Dec 2022 12:00:00 +0000</pubDate><guid>https://example.com/post/c5-linux/linux/linux_tools/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Linux on 一塘</title><link>https://talengu.github.io/categories/linux/</link><description>Recent content in Linux on 一塘</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Sun, 11 Dec 2022 12:00:00 +0000</lastBuildDate><atom:link href="https://talengu.github.io/categories/linux/index.xml" rel="self" type="application/rss+xml"/><item><title>「转」九张图一览 Linux 性能工具 全景图</title><link>https://talengu.github.io/post/c5-linux/linux/linux_tools/</link><pubDate>Sun, 11 Dec 2022 12:00:00 +0000</pubDate><guid>https://talengu.github.io/post/c5-linux/linux/linux_tools/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
 &lt;p>当今时代，绝大多数企业的应用都是运行在 Linux 操作系统上，所以对应用进行性能诊断和性能优化时，离不开 Linux 的各种性能观测工具和性能优化工具。&lt;/p>
 &lt;p>笔者使用过的常见的 Linux 性能观测和性能优化工具有：&lt;/p>
 &lt;ul>
@@ -140,7 +140,7 @@
  
  style="width:80%;" 
 />
-&lt;/div>&lt;/p></description></item><item><title>「转」Linux内核数据包bridge上转发流程</title><link>https://example.com/post/c5-linux/linux/linux-bridge-forward/</link><pubDate>Wed, 06 Jul 2022 16:00:04 +0000</pubDate><guid>https://example.com/post/c5-linux/linux/linux-bridge-forward/</guid><description>&lt;blockquote>
+&lt;/div>&lt;/p></description></item><item><title>「转」Linux内核数据包bridge上转发流程</title><link>https://talengu.github.io/post/c5-linux/linux/linux-bridge-forward/</link><pubDate>Wed, 06 Jul 2022 16:00:04 +0000</pubDate><guid>https://talengu.github.io/post/c5-linux/linux/linux-bridge-forward/</guid><description>&lt;blockquote>
 &lt;p>原文地址 &lt;a href="https://blog.csdn.net/hhhhhyyyyy8/article/details/102133863">blog.csdn.net&lt;/a>
 @hhhhhyyyyy8 @4.15.1&lt;/p>&lt;/blockquote>
 &lt;h2 id="前言">前言&lt;/h2>
@@ -340,7 +340,7 @@
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	}
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	&lt;span style="color:#66d9ef">return&lt;/span> RX_HANDLER_CONSUMED;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>相关函数&lt;/p></description></item><item><title>「转」tcpdump是在哪儿抓到的包？</title><link>https://example.com/post/c5-linux/linux/how-tcpdump/</link><pubDate>Fri, 01 Jul 2022 16:00:04 +0000</pubDate><guid>https://example.com/post/c5-linux/linux/how-tcpdump/</guid><description>&lt;blockquote>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>相关函数&lt;/p></description></item><item><title>「转」tcpdump是在哪儿抓到的包？</title><link>https://talengu.github.io/post/c5-linux/linux/how-tcpdump/</link><pubDate>Fri, 01 Jul 2022 16:00:04 +0000</pubDate><guid>https://talengu.github.io/post/c5-linux/linux/how-tcpdump/</guid><description>&lt;blockquote>
 &lt;p>原文地址 &lt;a href="https://cloud.tencent.com/developer/article/1879646">cloud.tencent.com&lt;/a>&lt;/p>&lt;/blockquote>
 &lt;blockquote>
 &lt;p>最近使用 tcpdump 的时候突然想到这个问题。因为我之前只存在一些一知半解的认识：比如直接镜像了网卡的包、在数据包进入内核前就获取了。但这些认识真的正确么？针对&amp;hellip;&lt;/p>&lt;/blockquote>
@@ -366,7 +366,7 @@
 &lt;p>先来看看，普通的套接字的收包路径在内核中是怎么样。&lt;/p>
 &lt;p>以最常见的以太网网卡，当网卡接口接收到了一个帧，那么接受者知道它一定包含了一个 Ethernet 报头。封包在协议栈向上传递过程中，一定会在报头中包含一个字段，指出下一阶段的处理应该使用哪一个协议。 以太网卡拥有特定的 MAC 地址，在监听数据帧的时候，当看到帧的目的 MAC 地址与自己的地址或者链路层广播地址（FF:FF:FF:FF:FF:FF）相匹配，就会通过 DMA 把该帧读取到内存中的 ring buffer。&lt;/p>
 &lt;p>当一个数据帧被写入到内存后，将产生一个硬件中断请求，以通知 CPU 收到了数据包。操作系统为了减少硬中断产生的次数，会采用一个软中断 (softirq) 唤醒 NAPI 子系统。这样会产生一个单独的线程，调用网卡驱动注册的 poll 方法收包，同时禁止网卡产生新的硬中断，这样的效果便是一次中断可以接收多个包。一旦软终端代码判断有 softirq 处于 pending 状态，便会调用软终端处理函数 net_rx_action。&lt;/p>
-&lt;p>中断处理函数会在处理循环中调用 NAPI poll 来接收数据包。poll 方法会分配一个 sk_buff 数据结构（include/linux/skbuff.h），表示该数据包的内核视图。然后将数据从缓冲区提取到新建的 sk_buff 中，并对其中的 protocol 字段做初始化，该字段用以识别特定的协议。之后这个字段会被 netif_receive_skb 内核函数查询，用来确定该执行哪个函数来处理三层的封包。字段涉及协议的值都列在了 include/uapi/linux/if_ether.h 中，名字形如 ETH_P_XXX，比如 ip 协议为 ETH_P_IP。而有一种特殊情况，单一封包可以传递给多个处理函数，这就是 tcpdump 等网络嗅探应用会用到的 ETH_P_ALL。&lt;/p></description></item><item><title>「转」Ubuntu完全教程</title><link>https://example.com/post/c5-linux/linux/ubuntu-tour/</link><pubDate>Fri, 01 Apr 2022 18:00:04 +0000</pubDate><guid>https://example.com/post/c5-linux/linux/ubuntu-tour/</guid><description>&lt;blockquote>
+&lt;p>中断处理函数会在处理循环中调用 NAPI poll 来接收数据包。poll 方法会分配一个 sk_buff 数据结构（include/linux/skbuff.h），表示该数据包的内核视图。然后将数据从缓冲区提取到新建的 sk_buff 中，并对其中的 protocol 字段做初始化，该字段用以识别特定的协议。之后这个字段会被 netif_receive_skb 内核函数查询，用来确定该执行哪个函数来处理三层的封包。字段涉及协议的值都列在了 include/uapi/linux/if_ether.h 中，名字形如 ETH_P_XXX，比如 ip 协议为 ETH_P_IP。而有一种特殊情况，单一封包可以传递给多个处理函数，这就是 tcpdump 等网络嗅探应用会用到的 ETH_P_ALL。&lt;/p></description></item><item><title>「转」Ubuntu完全教程</title><link>https://talengu.github.io/post/c5-linux/linux/ubuntu-tour/</link><pubDate>Fri, 01 Apr 2022 18:00:04 +0000</pubDate><guid>https://talengu.github.io/post/c5-linux/linux/ubuntu-tour/</guid><description>&lt;blockquote>
 &lt;p>ref:&lt;a href="http://www.cnblogs.com/dutlei/archive/2012/11/20/2778327.html">Ubuntu完全教程，让你成为Ubuntu高手！&lt;/a>
 todo整理&lt;/p>&lt;/blockquote>
 &lt;h2 id="ubuntu的发音">Ubuntu的发音&lt;/h2>
@@ -384,7 +384,7 @@ todo整理&lt;/p>&lt;/blockquote>
 &lt;p>Ubuntu 完全基于 Linux 操作系统， 可以免费得到社区及专业机构的支持。庞大的社区是它成长的沃土，请向这片动人的热忱敞开心扉。&lt;/p>
 &lt;p>Ubuntu 社区恪守 Ubuntu 理念：自由！软件应是自由的，应尊重人类的自由意志，它与人类之间不应有任何隔膜。本地语种，功能限制，自主改进的权利……都不应成为使用的障碍或负担。&lt;/p>
 &lt;p>自由，让 Ubuntu 与传统的私有软件从根本上不同: 免费不能用来遮羞，您有权修正它，直到满意为止。&lt;/p>
-&lt;p>Ubuntu 适合桌面和服务器。当前 Ubuntu 发布版支持 PC (Intel x86), 64-bit PC (AMD64) 和 PowerPC (Apple iBook 和 Powerbook, G4 和 G5) 架构。&lt;/p></description></item><item><title>「转」一文看懂Linux内核！Linux内核架构和工作原理详解</title><link>https://example.com/post/c5-linux/linux/linux-in-one/</link><pubDate>Thu, 23 Dec 2021 22:45:31 +0000</pubDate><guid>https://example.com/post/c5-linux/linux/linux-in-one/</guid><description>&lt;p>全文导读&lt;/p>
+&lt;p>Ubuntu 适合桌面和服务器。当前 Ubuntu 发布版支持 PC (Intel x86), 64-bit PC (AMD64) 和 PowerPC (Apple iBook 和 Powerbook, G4 和 G5) 架构。&lt;/p></description></item><item><title>「转」一文看懂Linux内核！Linux内核架构和工作原理详解</title><link>https://talengu.github.io/post/c5-linux/linux/linux-in-one/</link><pubDate>Thu, 23 Dec 2021 22:45:31 +0000</pubDate><guid>https://talengu.github.io/post/c5-linux/linux/linux-in-one/</guid><description>&lt;p>全文导读&lt;/p>
 &lt;ul>
 &lt;li>&lt;a href="">Linux 内核预备工作&lt;/a>&lt;/li>
 &lt;li>&lt;a href="">Linux 内核体系结构简析&lt;/a>&lt;/li>
@@ -439,7 +439,7 @@ todo整理&lt;/p>&lt;/blockquote>
 &lt;ol start="3">
 &lt;li>
 &lt;p>进程的调度。确认哪个进程运行多长的时间。&lt;br>
-Linux 进程&lt;/p></description></item><item><title>linux代理的使用</title><link>https://example.com/post/c5-linux/linux/linux-proxy/</link><pubDate>Tue, 24 Jul 2018 22:00:00 +0000</pubDate><guid>https://example.com/post/c5-linux/linux/linux-proxy/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
+Linux 进程&lt;/p></description></item><item><title>linux代理的使用</title><link>https://talengu.github.io/post/c5-linux/linux/linux-proxy/</link><pubDate>Tue, 24 Jul 2018 22:00:00 +0000</pubDate><guid>https://talengu.github.io/post/c5-linux/linux/linux-proxy/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
 &lt;p>最近要下载一个在youtube上的数据库，用来训练神经网络。走国内通道下载比较慢。于是，我使用了vps代理方式下载，速度取决于你的机器连接vps的网速。本文的主要内容有，实现shadowsocks 代理 ，tsocks 代理工具使用，可组合使用的一些下载工具如wget 和axel等。&lt;/p>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># 举个栗子&lt;/span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$ tsocks wget -c https://www.dropbox.com/s/minpyv59crdifk9/datasets.zip
@@ -480,7 +480,7 @@ Linux 进程&lt;/p></description></item><item><title>linux代理的使用</title
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
 &lt;li>执行&lt;code>ssserver -c server_shadowsocks.json&lt;/code>&lt;/li>
 &lt;/ul>
-&lt;p>说一点: 由于我们的下载任务是临时的，开个screen（终端复用工具）放在后台。当然你也可以设置为开机自启动，这里不再赘述。&lt;/p></description></item><item><title>终端中bash、vim、tmux等的配置</title><link>https://example.com/post/c5-linux/linux/bash-bashrc/</link><pubDate>Thu, 12 Jul 2018 16:00:04 +0000</pubDate><guid>https://example.com/post/c5-linux/linux/bash-bashrc/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
+&lt;p>说一点: 由于我们的下载任务是临时的，开个screen（终端复用工具）放在后台。当然你也可以设置为开机自启动，这里不再赘述。&lt;/p></description></item><item><title>终端中bash、vim、tmux等的配置</title><link>https://talengu.github.io/post/c5-linux/linux/bash-bashrc/</link><pubDate>Thu, 12 Jul 2018 16:00:04 +0000</pubDate><guid>https://talengu.github.io/post/c5-linux/linux/bash-bashrc/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
 &lt;p>使用终端有一段时间了，现在主力的平台是Ubuntu16.04，本文对bash、vim、tmux配置的一些记录。&lt;/p>
 &lt;!-- more -->
 &lt;p>在&lt;code>cd ~&lt;/code>下建立talen_bashrc文件&lt;/p>
@@ -505,7 +505,7 @@ Linux 进程&lt;/p></description></item><item><title>linux代理的使用</title
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> export VIMINIT&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;let &amp;amp;rtp=&amp;#39;xxxx/.vim,&amp;#39; . &amp;amp;rtp
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74"> so &lt;/span>$MYVIMRC&lt;span style="color:#e6db74">&amp;#34;&lt;/span>
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>python环境使用的是anaconda（或者minicoonda）添加激活环境。
-在&lt;code>~/.bashrc&lt;/code>中加入&lt;/p></description></item><item><title>Why Software Should Not Have Owners</title><link>https://example.com/post/c5-linux/why-gnu/</link><pubDate>Fri, 11 May 2018 12:00:00 +0000</pubDate><guid>https://example.com/post/c5-linux/why-gnu/</guid><description>&lt;p>&lt;a href="http://www.gnu.org/philosophy/why-free.html">Why Software Should Not Have Owners&lt;/a>
+在&lt;code>~/.bashrc&lt;/code>中加入&lt;/p></description></item><item><title>Why Software Should Not Have Owners</title><link>https://talengu.github.io/post/c5-linux/why-gnu/</link><pubDate>Fri, 11 May 2018 12:00:00 +0000</pubDate><guid>https://talengu.github.io/post/c5-linux/why-gnu/</guid><description>&lt;p>&lt;a href="http://www.gnu.org/philosophy/why-free.html">Why Software Should Not Have Owners&lt;/a>
 为什么软件不应有主人
 作者︰&lt;a href="https://www.stallman.org/">Richard Stallman&lt;/a>&lt;/p>
 &lt;!-- more -->
@@ -566,7 +566,7 @@ Linux 进程&lt;/p></description></item><item><title>linux代理的使用</title
 &lt;p>自由软件开发者自从八十年代尝试过许多寻求财源的方法，稍有小成。我们不需要让任何人致富，典型的收入，足以吸引人做很多比编程少满足感的工作。&lt;/p>
 &lt;p>多年以来，我一直靠改进自己编写的自由软件为生，直到获得研究经费。每次改进我都会添加到标準发佈版本，使得大众受益。客户为我付费，这样我就会优先完成他们需求，自己的变成次要。&lt;/p>
 &lt;p>一些自由软件开发者通过支援服务赚钱。1994年，Cygnus 有近50个员工，估计有大约百分之十五的员工从事自由软件开发︰对一间软件公司而言，这是个了不起的比例。&lt;/p>
-&lt;p>九十年代，Intel、Motorola、Texas Instruments 和 Analog Devices 等公司联合赞助持续发展的GNU C语言编译器。现在大部份开发GCC的人工作还是受薪的开发者完成的。GNU的Ada语言编译器受美国空军赞助，之后成立专属公司延续过个项目。&lt;/p></description></item><item><title>Ubuntu引导修复</title><link>https://example.com/post/c5-linux/linux/boot-recovery/</link><pubDate>Wed, 14 Jun 2017 16:00:04 +0000</pubDate><guid>https://example.com/post/c5-linux/linux/boot-recovery/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
+&lt;p>九十年代，Intel、Motorola、Texas Instruments 和 Analog Devices 等公司联合赞助持续发展的GNU C语言编译器。现在大部份开发GCC的人工作还是受薪的开发者完成的。GNU的Ada语言编译器受美国空军赞助，之后成立专属公司延续过个项目。&lt;/p></description></item><item><title>Ubuntu引导修复</title><link>https://talengu.github.io/post/c5-linux/linux/boot-recovery/</link><pubDate>Wed, 14 Jun 2017 16:00:04 +0000</pubDate><guid>https://talengu.github.io/post/c5-linux/linux/boot-recovery/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
 &lt;p>本文记录修复ubuntu引导，并修改ubuntu盘的大小过程。
 参考：&lt;a href="http://www.cnblogs.com/jloveu/p/Ubuntu-partition-expansion-record.html">http://www.cnblogs.com/jloveu/p/Ubuntu-partition-expansion-record.html&lt;/a>
 工具：Ubuntu 的live U盘，带有gparted分区工具，和grub修复工具&lt;/p>
@@ -611,7 +611,7 @@ Linux 进程&lt;/p></description></item><item><title>linux代理的使用</title
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="ubuntu下如何修复grub引导">Ubuntu下如何修复Grub引导&lt;/h2>
 &lt;p>&lt;a href="https://mp.weixin.qq.com/s/NDZPPA-0FhqSzRndQOhNEw">link&lt;/a>&lt;/p>
 &lt;p>本文以 Ubuntu Live CD 修复 Grub 引导为例，已在 /dev/sda3 安装 Fedora。&lt;/p>
-&lt;p>首先制作 Ubuntu 启动 USB&lt;/p></description></item><item><title>Ubuntu的优化与设置</title><link>https://example.com/post/c5-linux/linux/ubuntu-init/</link><pubDate>Mon, 22 May 2017 18:00:04 +0000</pubDate><guid>https://example.com/post/c5-linux/linux/ubuntu-init/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
+&lt;p>首先制作 Ubuntu 启动 USB&lt;/p></description></item><item><title>Ubuntu的优化与设置</title><link>https://talengu.github.io/post/c5-linux/linux/ubuntu-init/</link><pubDate>Mon, 22 May 2017 18:00:04 +0000</pubDate><guid>https://talengu.github.io/post/c5-linux/linux/ubuntu-init/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
 &lt;ul>
 &lt;li>
 &lt;h2 id="窗口颜色设置浅绿色">窗口颜色设置浅绿色&lt;/h2>

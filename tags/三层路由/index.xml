@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>三层路由 on 一塘</title><link>https://example.com/tags/%E4%B8%89%E5%B1%82%E8%B7%AF%E7%94%B1/</link><description>Recent content in 三层路由 on 一塘</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Thu, 08 Dec 2022 12:00:00 +0000</lastBuildDate><atom:link href="https://example.com/tags/%E4%B8%89%E5%B1%82%E8%B7%AF%E7%94%B1/index.xml" rel="self" type="application/rss+xml"/><item><title>tcp ip 协议族</title><link>https://example.com/post/c6-network/tcp-ip/</link><pubDate>Thu, 08 Dec 2022 12:00:00 +0000</pubDate><guid>https://example.com/post/c6-network/tcp-ip/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>三层路由 on 一塘</title><link>https://talengu.github.io/tags/%E4%B8%89%E5%B1%82%E8%B7%AF%E7%94%B1/</link><description>Recent content in 三层路由 on 一塘</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Thu, 08 Dec 2022 12:00:00 +0000</lastBuildDate><atom:link href="https://talengu.github.io/tags/%E4%B8%89%E5%B1%82%E8%B7%AF%E7%94%B1/index.xml" rel="self" type="application/rss+xml"/><item><title>tcp ip 协议族</title><link>https://talengu.github.io/post/c6-network/tcp-ip/</link><pubDate>Thu, 08 Dec 2022 12:00:00 +0000</pubDate><guid>https://talengu.github.io/post/c6-network/tcp-ip/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
 &lt;p>tcp ip 协议族&lt;/p>
 &lt;!-- more -->
 &lt;p>
@@ -15,7 +15,7 @@
  
  style="width:80%;" 
 />
-&lt;/div>&lt;/p></description></item><item><title>「转」连接跟踪（conntrack）：原理、应用及 Linux 内核实现</title><link>https://example.com/post/c6-network/conntrack/</link><pubDate>Sun, 04 Dec 2022 12:00:00 +0000</pubDate><guid>https://example.com/post/c6-network/conntrack/</guid><description>&lt;h2 id="摘要">摘要&lt;/h2>
+&lt;/div>&lt;/p></description></item><item><title>「转」连接跟踪（conntrack）：原理、应用及 Linux 内核实现</title><link>https://talengu.github.io/post/c6-network/conntrack/</link><pubDate>Sun, 04 Dec 2022 12:00:00 +0000</pubDate><guid>https://talengu.github.io/post/c6-network/conntrack/</guid><description>&lt;h2 id="摘要">摘要&lt;/h2>
 &lt;p>本文介绍连接跟踪（connection tracking，conntrack，CT）的原理，应用，及其在 Linux 内核中的实现。&lt;/p>
 &lt;p>代码分析基于内核 &lt;code>4.19&lt;/code>。为使行文简洁，所贴代码只保留了核心逻辑，但都给出了代码 所在的源文件，如有需要请查阅。&lt;/p>
 &lt;p>水平有限，文中不免有错误之处，欢迎指正交流。&lt;/p>

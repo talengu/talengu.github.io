@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Rss on 一塘</title><link>https://example.com/tags/rss/</link><description>Recent content in Rss on 一塘</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Thu, 06 Jun 2024 12:00:00 +0000</lastBuildDate><atom:link href="https://example.com/tags/rss/index.xml" rel="self" type="application/rss+xml"/><item><title>「转」基于 Readeck 搭建个人稍后读/书签服务</title><link>https://example.com/post/c7-toolchain/readeck-tips/</link><pubDate>Thu, 06 Jun 2024 12:00:00 +0000</pubDate><guid>https://example.com/post/c7-toolchain/readeck-tips/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Rss on 一塘</title><link>https://talengu.github.io/tags/rss/</link><description>Recent content in Rss on 一塘</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Thu, 06 Jun 2024 12:00:00 +0000</lastBuildDate><atom:link href="https://talengu.github.io/tags/rss/index.xml" rel="self" type="application/rss+xml"/><item><title>「转」基于 Readeck 搭建个人稍后读/书签服务</title><link>https://talengu.github.io/post/c7-toolchain/readeck-tips/</link><pubDate>Thu, 06 Jun 2024 12:00:00 +0000</pubDate><guid>https://talengu.github.io/post/c7-toolchain/readeck-tips/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
 &lt;blockquote>
 &lt;p>本文由 &lt;a href="http://ksria.com/simpread/">简悦 SimpRead&lt;/a> 转码， 原文地址 &lt;a href="https://sspai.com/post/89289">https://sspai.com/post/89289&lt;/a>&lt;/p>&lt;/blockquote>
 &lt;!-- more -->
@@ -47,7 +47,7 @@
  style="width:80%;" 
 />
 &lt;/div>&lt;/p>
-&lt;p>接下来我们就打开 Portainer 来进行服务容器的部署，这里打开并登录 Portainer，然后从左侧边栏中点击 Stacks，然后点击页面右上角的 &lt;code>Add Stack&lt;/code>来添加。&lt;/p></description></item><item><title>rss翻译github脚本</title><link>https://example.com/post/c7-toolchain/rss_translate/</link><pubDate>Wed, 21 Dec 2022 12:39:04 +0000</pubDate><guid>https://example.com/post/c7-toolchain/rss_translate/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
+&lt;p>接下来我们就打开 Portainer 来进行服务容器的部署，这里打开并登录 Portainer，然后从左侧边栏中点击 Stacks，然后点击页面右上角的 &lt;code>Add Stack&lt;/code>来添加。&lt;/p></description></item><item><title>rss翻译github脚本</title><link>https://talengu.github.io/post/c7-toolchain/rss_translate/</link><pubDate>Wed, 21 Dec 2022 12:39:04 +0000</pubDate><guid>https://talengu.github.io/post/c7-toolchain/rss_translate/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
 &lt;p>自动翻译 rss，我利用github action开发了一下， 供大家玩乐。&lt;/p>
 &lt;p>比如将：
  &lt;a href="http://www.mckinsey.com/insights/rss">http://www.mckinsey.com/insights/rss&lt;/a> -&amp;gt; &lt;a href="https://talengu.github.io/rss-translate/rss/mckinsey_rss.xml">mckinsey_rss.xml&lt;/a>
@@ -112,7 +112,7 @@
 &lt;li>更新周期为1天，且为随机时间点。通过github action实现，见 &lt;a href="https://github.com/talengu/rss-translate/blob/main/.github/cron_random.py">random.py&lt;/a>&lt;/li>
 &lt;li>多语言支持 action = “auto”，这里可以换成多种语言，支持语言列表见 &lt;a href="https://pygtrans.readthedocs.io/zh_CN/latest/index.html">pygtrans&lt;/a> 如：action = &amp;ldquo;en-&amp;gt;zh-CN&amp;rdquo;&lt;/li>
 &lt;/ul>
-&lt;p>欢迎大家使用！！！🐱&lt;/p></description></item><item><title>rss统计 基于ttrss的PostgresQL数据库</title><link>https://example.com/post/c7-toolchain/rss-ttrss-statics/</link><pubDate>Sun, 08 May 2022 22:00:04 +0000</pubDate><guid>https://example.com/post/c7-toolchain/rss-ttrss-statics/</guid><description>&lt;p>&lt;strong>前言&lt;/strong>
+&lt;p>欢迎大家使用！！！🐱&lt;/p></description></item><item><title>rss统计 基于ttrss的PostgresQL数据库</title><link>https://talengu.github.io/post/c7-toolchain/rss-ttrss-statics/</link><pubDate>Sun, 08 May 2022 22:00:04 +0000</pubDate><guid>https://talengu.github.io/post/c7-toolchain/rss-ttrss-statics/</guid><description>&lt;p>&lt;strong>前言&lt;/strong>
 统计ttrss的使用数据。&lt;/p>
 &lt;ul>
 &lt;li>月度mark文件分析 OK&lt;/li>
@@ -187,7 +187,7 @@
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>D&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;C:&lt;/span>&lt;span style="color:#ae81ff">\\&lt;/span>&lt;span style="color:#e6db74">Users&lt;/span>&lt;span style="color:#ae81ff">\\&lt;/span>&lt;span style="color:#e6db74">talen&lt;/span>&lt;span style="color:#ae81ff">\\&lt;/span>&lt;span style="color:#e6db74">Desktop&lt;/span>&lt;span style="color:#ae81ff">\\&lt;/span>&lt;span style="color:#e6db74">&amp;#34;&lt;/span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">with&lt;/span> open(D&lt;span style="color:#f92672">+&lt;/span>&lt;span style="color:#e6db74">&amp;#34;cc.md&amp;#34;&lt;/span>,&lt;span style="color:#e6db74">&amp;#39;w&amp;#39;&lt;/span>,encoding&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#e6db74">&amp;#39;utf-8&amp;#39;&lt;/span>) &lt;span style="color:#66d9ef">as&lt;/span> f:
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> f&lt;span style="color:#f92672">.&lt;/span>write(g_content)
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>使用脚本将英文rss转成中文rss</title><link>https://example.com/post/c7-toolchain/rss-google-translate/</link><pubDate>Sun, 08 May 2022 22:00:04 +0000</pubDate><guid>https://example.com/post/c7-toolchain/rss-google-translate/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>使用脚本将英文rss转成中文rss</title><link>https://talengu.github.io/post/c7-toolchain/rss-google-translate/</link><pubDate>Sun, 08 May 2022 22:00:04 +0000</pubDate><guid>https://talengu.github.io/post/c7-toolchain/rss-google-translate/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
 &lt;p>本文中我们将英文rss 自动转成中文 rss供ttrss使用。（利用谷歌翻译）&lt;/p>
 &lt;p>方便在手机上进行阅读或者收听。&lt;/p>
 &lt;center>&lt;img src="rss-google-translate/20220508-22-28-27.png" width="30%">
@@ -306,7 +306,7 @@
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>tran_nature()
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="定时任务">定时任务&lt;/h3>
 &lt;blockquote>
-&lt;p>注意激活一下miniconda3 这个命令&lt;code>source /home/xxx/miniconda3/bin/activate&lt;/code>&lt;/p></description></item><item><title>本地安装rss</title><link>https://example.com/post/c7-toolchain/rss-local-install/</link><pubDate>Sat, 16 Apr 2022 12:39:04 +0000</pubDate><guid>https://example.com/post/c7-toolchain/rss-local-install/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
+&lt;p>注意激活一下miniconda3 这个命令&lt;code>source /home/xxx/miniconda3/bin/activate&lt;/code>&lt;/p></description></item><item><title>本地安装rss</title><link>https://talengu.github.io/post/c7-toolchain/rss-local-install/</link><pubDate>Sat, 16 Apr 2022 12:39:04 +0000</pubDate><guid>https://talengu.github.io/post/c7-toolchain/rss-local-install/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
 &lt;p>在 “&lt;a href="c0-life/talk-rss-2020.md">二零年RSS杂谈&lt;/a>”中说到，我想建立一种信息的获取系统，免受广告和推荐算法的困扰。&lt;/p>
 &lt;p>我希望其的功能包括：&lt;/p>
 &lt;ul>
@@ -429,7 +429,7 @@
  
  style="width:80%;" 
 />
-&lt;/div>&lt;/p></description></item><item><title>二零年RSS杂谈</title><link>https://example.com/post/c0-life/talk-rss-2020/</link><pubDate>Fri, 14 Jan 2022 01:02:57 +0000</pubDate><guid>https://example.com/post/c0-life/talk-rss-2020/</guid><description>&lt;p>2020年了，笔者还是使用RSS的原始人。RSS，Really Simple Syndication是一种信息聚合工具。在5G时代信息即将大爆炸之前，我来谈谈rss的杂七杂八吧。我们来打个赌，你不会看完这篇文章。&lt;/p>
+&lt;/div>&lt;/p></description></item><item><title>二零年RSS杂谈</title><link>https://talengu.github.io/post/c0-life/talk-rss-2020/</link><pubDate>Fri, 14 Jan 2022 01:02:57 +0000</pubDate><guid>https://talengu.github.io/post/c0-life/talk-rss-2020/</guid><description>&lt;p>2020年了，笔者还是使用RSS的原始人。RSS，Really Simple Syndication是一种信息聚合工具。在5G时代信息即将大爆炸之前，我来谈谈rss的杂七杂八吧。我们来打个赌，你不会看完这篇文章。&lt;/p>
 &lt;!-- more -->
 &lt;p>软件的交互设计有很多心理学理论的应用。比如微信、QQ的三级页面设计，一般经过3次点击就能到达功能或设置。这符合认知原理，人认知记忆能力一般为3-5个的组合。日常生活中要记电话号码，可以3-4-4这样记。软件交互中还有利用人的习惯奖励机制的提醒红点的设计，吸引你去点击，获取红点消失的奖励。对我来说，较难控制住不受这些设计的影响。在《习惯的力量》一书了解到，直接逃离这些环境可有效解决控制不住的问题。比如工作的时候，把手机关进柜子，工作1个小时，然后再回复信息，当然重要电话还是要立即接的。&lt;/p>
 &lt;p>铺天盖地的广告，马路上，电视中，手机里，PC页面充斥着各种广告等等。大多数人可能养成了自动过滤的广告的习惯，然而我的情况是一直在用去广告的插件，并没有养成自动忽略广告的习惯。可怜兮兮，难道只有我是有广告洁癖的嘛？广告有点浪费生命。&lt;/p>
@@ -444,7 +444,7 @@
 &lt;p>看来all in one 势在必行，RSS被谷歌放弃后，很多网站傲娇地不提供RSS服务了，毕竟流量至上，钱要赚的，我一直想做一个这种爬的工具，但我不希望有大量使用爬，也就是我们还是要尊重网站的盈利以及持续发展的，这也是仅仅方便个人的信息处理，优化你的自动信息的处理，再也不用一个个打开网站，然后看信息看广告，还要被推荐不重用的信息。这也算我个人的想法。人在于折腾，于是我开始折腾ttrss rsshub等开源软件。&lt;/p>
 &lt;p>自由软件的好处，在于自由定制，参与发展，利益化会尽量变慢或者没有，方便的同时并不忘隐私保护。&lt;/p>
 &lt;p>我想说的是，&lt;strong>技术应当给人们带来自由和发展，而非接管人们的注意力，浪费宝贵的时间。&lt;/strong>&lt;/p>
-&lt;p>写在5G信息大爆发前，与大家共同反思与成长。&lt;/p></description></item><item><title>RSS跟踪github文件更新+某管子更新</title><link>https://example.com/post/c7-toolchain/rss-github-file/</link><pubDate>Sat, 24 Jul 2021 12:00:00 +0000</pubDate><guid>https://example.com/post/c7-toolchain/rss-github-file/</guid><description>&lt;p>&lt;strong>前言&lt;/strong>&lt;/p>
+&lt;p>写在5G信息大爆发前，与大家共同反思与成长。&lt;/p></description></item><item><title>RSS跟踪github文件更新+某管子更新</title><link>https://talengu.github.io/post/c7-toolchain/rss-github-file/</link><pubDate>Sat, 24 Jul 2021 12:00:00 +0000</pubDate><guid>https://talengu.github.io/post/c7-toolchain/rss-github-file/</guid><description>&lt;p>&lt;strong>前言&lt;/strong>&lt;/p>
 &lt;p>好久没有更新博客了。RSS这种形式的信息获取方式，似乎又流行起来。&lt;/p>
 &lt;!-- more -->
 &lt;h2 id="github文件更新">github文件更新&lt;/h2>

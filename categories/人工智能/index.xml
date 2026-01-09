@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>人工智能 on 一塘</title><link>https://example.com/categories/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/</link><description>Recent content in 人工智能 on 一塘</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Fri, 19 Apr 2024 12:00:00 +0000</lastBuildDate><atom:link href="https://example.com/categories/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/index.xml" rel="self" type="application/rss+xml"/><item><title>「转」人人都是开发者</title><link>https://example.com/post/c3-ai/everyone-developer/</link><pubDate>Fri, 19 Apr 2024 12:00:00 +0000</pubDate><guid>https://example.com/post/c3-ai/everyone-developer/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>人工智能 on 一塘</title><link>https://talengu.github.io/categories/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/</link><description>Recent content in 人工智能 on 一塘</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Fri, 19 Apr 2024 12:00:00 +0000</lastBuildDate><atom:link href="https://talengu.github.io/categories/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/index.xml" rel="self" type="application/rss+xml"/><item><title>「转」人人都是开发者</title><link>https://talengu.github.io/post/c3-ai/everyone-developer/</link><pubDate>Fri, 19 Apr 2024 12:00:00 +0000</pubDate><guid>https://talengu.github.io/post/c3-ai/everyone-developer/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
 &lt;p>“自然语言会成为下一代的编程语言，人人都能成为开发者。”&lt;/p>
 &lt;p>4月16日，Create 2024百度AI开发者大会在深圳召开，百度创始人、董事长兼首席执行官李彦宏发表了《人人都是开发者》的主题演讲，描述了一个不再局限于编码技能的世界，而是以自然语言为媒介，人人都能参与创造的时代。&lt;/p>
 &lt;!-- more -->
@@ -57,7 +57,7 @@
 &lt;p>索菲亚商家智能体上线以来，有效线索成本下降了30%。也就是说，它获得一个有效客户，如果过去的成本是100块，现在只需要70块了。&lt;/p>
 &lt;p>目前，已有超过1万个百度的客户拥有了商家智能体，涵盖了教育培训、房产家居、机械设备、商务服务等超过30个行业。&lt;/p>
 &lt;p>上面，通过三个Demo，我展示了开发者和商家，如何利用AgentBuilder，制作不同行业智能体的过程。&lt;/p>
-&lt;p>现在，制作一个智能体，真的就是分分钟的事。但问题来了！如果没流量、没分发、找不到、没人用，那么开发者和商家就没有收益，没有收益就没有动力。怎么解决这个痛点呢？&lt;/p></description></item><item><title>机器学习系列</title><link>https://example.com/post/c3-ai/machine-leanring-summary/</link><pubDate>Tue, 23 Jul 2019 12:00:00 +0000</pubDate><guid>https://example.com/post/c3-ai/machine-leanring-summary/</guid><description>&lt;p>&lt;strong>前言&lt;/strong>&lt;/p>
+&lt;p>现在，制作一个智能体，真的就是分分钟的事。但问题来了！如果没流量、没分发、找不到、没人用，那么开发者和商家就没有收益，没有收益就没有动力。怎么解决这个痛点呢？&lt;/p></description></item><item><title>机器学习系列</title><link>https://talengu.github.io/post/c3-ai/machine-leanring-summary/</link><pubDate>Tue, 23 Jul 2019 12:00:00 +0000</pubDate><guid>https://talengu.github.io/post/c3-ai/machine-leanring-summary/</guid><description>&lt;p>&lt;strong>前言&lt;/strong>&lt;/p>
 &lt;p>路漫漫其修远兮，吾将上下而求索。2013年，大二接触人工智能课，讲逻辑推理，专家系统等等，神经网络只是一部分，打开当时老师的ppt，还能看到BP等算法。接着在2015年，上了模式识别课程，有一些启发式算法，KNN K-means等算法，同时神经网络也已经有了 GoogLeNet 等深层网络，热门的GAN网络也在2014年被提出。后面，机遇巧合，本科毕业时选了人工智能的坑，直到3年后的现在算是明白了一点。接下来的三年的目标还是 &lt;a href="https://talengu.github.io/public/2018/10/01/AI/how_algorithm_engineer/">成为一名优秀的算法工程师&lt;/a>。&lt;/p>
 &lt;p>回望入坑 &lt;strong>机器学习&lt;/strong>，没有系统地整理过相关知识。于是想着手整理一份自己笔记系列。本文为序。&lt;/p>
 &lt;blockquote>
@@ -112,7 +112,7 @@
 &lt;li>案例分析&lt;/li>
 &lt;li>利用python写出代码，先用scilearn写。&lt;/li>
 &lt;li>总结，预告。&lt;/li>
-&lt;/ul></description></item><item><title>正则化「一」机器学习中的正则化</title><link>https://example.com/post/c3-ai/regulation-baysian/</link><pubDate>Wed, 17 Jul 2019 12:00:00 +0000</pubDate><guid>https://example.com/post/c3-ai/regulation-baysian/</guid><description>&lt;p>&lt;strong>前言&lt;/strong>
+&lt;/ul></description></item><item><title>正则化「一」机器学习中的正则化</title><link>https://talengu.github.io/post/c3-ai/regulation-baysian/</link><pubDate>Wed, 17 Jul 2019 12:00:00 +0000</pubDate><guid>https://talengu.github.io/post/c3-ai/regulation-baysian/</guid><description>&lt;p>&lt;strong>前言&lt;/strong>
 本&lt;strong>正则化系列&lt;/strong>文章我们将讨论&lt;strong>正则化技术在机器学习和深度学习的应用&lt;/strong>。本文为该系列的第一篇，主要介绍&lt;strong>机器学习正则化的概念，原理和应用实例&lt;/strong>。&lt;/p>
 &lt;p>&lt;a href="https://en.wikipedia.org/wiki/Regularization_%28mathematics%29">正则化&lt;/a> 技术广泛应用在机器学习和深度学习算法中，本质作用是&lt;strong>防止过拟合、提高模型泛化能力&lt;/strong>。其中过拟合的简单理解就是训练的算法模型太过复杂，模型过分考虑了当前样本的结构。&lt;/p>
 &lt;p>在早期的机器学习领域一般只是将范数惩罚叫做正则化技术，而在深度学习领域认为，能够显著减少方差，而不过度增加偏差的策略都可以认为是正则化技术。故&lt;strong>推广的正则化技术&lt;/strong>还有：扩增样本集、早停止、Dropout、集成学习、多任务学习、对抗训练、参数共享等。(具体见“花书 第七章 &lt;a href="http://www.deeplearningbook.org/contents/regularization.html">Regularization for Deep Learning&lt;/a>”），关于&lt;strong>深度学习正则化&lt;/strong>会在下一篇正则化文章中重点分析。&lt;/p>
@@ -161,7 +161,7 @@ $$
 $$
 {s.t.}{|| \theta ||}_2^2 \leq C\\
 \tag{4}
-$$&lt;/p></description></item><item><title>「转」怎样成为一名优秀的算法工程师</title><link>https://example.com/post/c3-ai/how-algorithm-engineer/</link><pubDate>Mon, 01 Oct 2018 12:00:00 +0000</pubDate><guid>https://example.com/post/c3-ai/how-algorithm-engineer/</guid><description>&lt;blockquote>
+$$&lt;/p></description></item><item><title>「转」怎样成为一名优秀的算法工程师</title><link>https://talengu.github.io/post/c3-ai/how-algorithm-engineer/</link><pubDate>Mon, 01 Oct 2018 12:00:00 +0000</pubDate><guid>https://talengu.github.io/post/c3-ai/how-algorithm-engineer/</guid><description>&lt;blockquote>
 &lt;p>转载 原创： AI学习与实践平台
 TODO: 看完里面的文章，对每篇文章做个总结，实验+文章。&lt;/p>&lt;/blockquote>
 &lt;h2 id="1-导言">1. 导言&lt;/h2>
