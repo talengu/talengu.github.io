@@ -1,11 +1,11 @@
-baseURL = "https://example.com/"
+baseURL = "https://talengu.github.io/"
 languageCode = "zh-cn"
 title = "一塘"
 theme = "hugo-xmin"
 
 [outputs]
-home = ["HTML"]
-section = ["HTML","JSON"]   # 让每个 section 支持 JSON 输出
+home = ["HTML","RSS"]
+section = ["HTML","RSS","JSON"]   # 让每个 section 支持 JSON 输出
 
 [params]
   paginate = 10
