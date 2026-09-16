@@ -9,6 +9,9 @@ section = ["HTML","RSS","JSON"]   # 让每个 section 支持 JSON 输出
 
 [params]
   paginate = 10
+  # 列表隐藏规则：隐藏的文章仅在首页和 post 列表不显示，分类/标签页面正常显示
+  hideTitleKeywords = ["「转」"]        # 标题含这些关键词的文章隐藏
+  hideTags = ["转载", "月度汇报"]       # 带这些 tag 的文章隐藏
 #  postAssetDir = false
   footer = "&copy; 2025"
   footer_about = "一塘"

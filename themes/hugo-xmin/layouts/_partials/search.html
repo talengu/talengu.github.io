@@ -1,4 +1,4 @@
-<li style="float:right; position:relative; margin-left:1em;">
+<li class="search-li">
   <input type="text" id="search-box" placeholder="搜索文章..." 
          style="padding:0.3em 0.6em; border-radius:4px; border:1px solid #ccc; width:150px; min-width:100px; max-width:250px;">
   <ul id="search-results" 
@@ -10,6 +10,13 @@
 <!-- CSS 可以放在 partial 里或单独引用 -->
 <style>
 /* ===== 搜索结果基础样式 ===== */
+
+/* 桌面端：搜索框靠右浮动 */
+.search-li {
+  float: right;
+  position: relative;
+  margin-left: 1em;
+}
 
 .search-item {
   padding: 0.4em 0.6em;
@@ -39,6 +46,37 @@
 /* hover 效果 */
 .search-item:hover {
   background-color: rgba(0, 0, 0, 0.05);
+}
+
+/* ===== 📱 手机端适配：搜索框与结果列表 ===== */
+@media (max-width: 600px) {
+  /* 搜索框换行时取消浮动，整行居中 */
+  .search-li {
+    float: none;
+    display: block;
+    margin: 0.6em auto 0;
+    text-align: center;
+  }
+  #search-box {
+    width: 110px;
+  }
+  #search-results {
+    /* 不超过屏幕宽度，避免溢出 */
+    width: min(250px, calc(100vw - 1.6em));
+    right: -0.3em;
+    max-height: 40vh;
+  }
+  .search-item {
+    padding: 0.3em 0.4em;
+  }
+  /* 摘要最多显示2行，控制单项高度 */
+  .search-snippet {
+    font-size: 0.78em;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
 }
 
 /* ===== 🌙 自动深色模式 ===== */

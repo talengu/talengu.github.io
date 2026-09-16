@@ -39,6 +39,20 @@ window.MathJax = {
 {{ .Content }}
 </main>
 
+{{/* 文末分类与标签，可跳转到对应的 list 页 */}}
+{{ with .GetTerms "categories" }}
+<div class="post-taxonomy" style="margin-top:2em;font-size:.9em;color:#666;">
+  <span>分类：</span>
+  {{ range . }}<a href="{{ .RelPermalink }}" style="margin-right:.6em;text-decoration:none;">#{{ .LinkTitle }}</a>{{ end }}
+</div>
+{{ end }}
+{{ with .GetTerms "tags" }}
+<div class="post-taxonomy" style="margin-top:.4em;font-size:.9em;color:#666;">
+  <span>标签：</span>
+  {{ range . }}<a href="{{ .RelPermalink }}" style="margin-right:.6em;text-decoration:none;">#{{ .LinkTitle }}</a>{{ end }}
+</div>
+{{ end }}
+
 {{ if .Params.comments }}
 <script src="https://giscus.app/client.js"
         data-repo="talengu/talengu.github.io"

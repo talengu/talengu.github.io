@@ -6,17 +6,31 @@
 
 {{ .Content }}
 
+{{/*
+  可配置隐藏规则（见 config.toml [params]）：
+    hideTitleKeywords : 标题含任一关键词的文章隐藏
+    hideTags          : 带任一 tag 的文章隐藏
+  仅在首页和 post 列表隐藏；分类/标签具体页面(kind=term)正常显示
+*/}}
+{{ $isTaxonomy := or (eq .Kind "term") (eq .Kind "terms") }}
+{{ $hideTitleKeywords := default (slice) site.Params.hideTitleKeywords }}
+{{ $hideTags := default (slice) site.Params.hideTags }}
 <ul>
   {{ $pages := .Pages }}
   {{ if .IsHome }}{{ $pages = .Site.RegularPages }}{{ end }}
   {{ range (where $pages "Section" "!=" "") }}
-  {{/* 对 post 类型文章排除标题含「转」，其他 section 保留 */}}
-    {{ if or (ne .Section "post") (and (eq .Section "post") (not (strings.Contains .Title "「转」"))) }}
+    {{ $p := . }}
+    {{ $hide := false }}
+    {{ if and (not $isTaxonomy) (eq $p.Section "post") }}
+      {{ range $kw := $hideTitleKeywords }}{{ if strings.Contains $p.Title $kw }}{{ $hide = true }}{{ end }}{{ end }}
+      {{ if not $hide }}{{ range $t := $hideTags }}{{ if in $p.Params.tags $t }}{{ $hide = true }}{{ end }}{{ end }}{{ end }}
+    {{ end }}
+    {{ if not $hide }}
   <li>
     <span class="date">{{ .Date.Format "2006/01/02" }}</span>
     <a href="{{ .RelPermalink }}">{{ .Title | markdownify }}</a>
   </li>
-  {{ end }}
+    {{ end }}
   {{ end }}
 </ul>
 

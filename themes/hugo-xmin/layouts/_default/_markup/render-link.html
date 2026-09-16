@@ -1,17 +1,29 @@
-{{- $url := .Destination -}}
-{{- $text := .Text -}}
-{{- $page := .Page -}}
-<!-- 修复本地markdown自引用 -->
-{{- if strings.HasSuffix $url ".md" -}}
-
-  {{- /* 尝试解析为 Hugo 页面 */ -}}
-  {{- with site.GetPage $url -}}
-    <a href="{{ .RelPermalink }}">{{ $text }}</a>
-  {{- else -}}
-    {{- /* 找不到页面：当普通相对链接 */ -}}
-    <a href="{{ $url }}">{{ $text }}</a>
+{{- /* 将 Markdown 中指向 .md 文件的站内相对链接自动解析为对应页面的 permalink */ -}}
+{{- $href := .Destination -}}
+{{- $dst := .Destination -}}
+{{- /* 仅处理：无协议头(非 http://、mailto: 等) 且以 .md 结尾(可带 #锚点) 的链接 */ -}}
+{{- if and (not (findRE `^[a-zA-Z][a-zA-Z0-9+.\-]*:` $dst)) (findRE `(?i)^[^#]*\.md(#.*)?$` $dst) -}}
+  {{- $pathPart := $dst -}}
+  {{- $frag := "" -}}
+  {{- if strings.Contains $dst "#" -}}
+    {{- $pathPart = index (split $dst "#") 0 -}}
+    {{- $frag = index (split $dst "#") 1 -}}
   {{- end -}}
-
-{{- else -}}
-  <a href="{{ $url }}">{{ $text }}</a>
+  {{- $page := $.Page.GetPage $pathPart -}}
+  {{- if not $page -}}
+    {{- with $.Page.File -}}
+      {{- $page = $.Page.Site.GetPage (path.Join .Dir $pathPart) -}}
+    {{- end -}}
+  {{- end -}}
+  {{- if not $page -}}
+    {{- /* 兼容相对 _posts 根目录(即 content/post)的写法，如 c0-life/xxx.md */ -}}
+    {{- $page = $.Page.Site.GetPage (path.Join "/post" $pathPart) -}}
+  {{- end -}}
+  {{- with $page -}}
+    {{- $href = .RelPermalink -}}
+    {{- if $frag -}}{{ $href = printf "%s#%s" $href $frag }}{{- end -}}
+  {{- else -}}
+    {{- warnf "render-link: 无法解析链接 %q (页面: %s)" $dst (or $.Page.File.Path "unknown") -}}
+  {{- end -}}
 {{- end -}}
+<a href="{{ $href | safeURL }}"{{ with .Title }} title="{{ . }}"{{ end }}>{{ .Text | safeHTML }}</a>
