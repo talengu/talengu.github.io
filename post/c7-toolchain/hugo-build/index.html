@@ -8,7 +8,7 @@
               ${s(o,e)}
             </div>
           </li>
-        `}).join(""),t.style.display=n.length?"block":"none"}),document.addEventListener("click",e=>{!n.contains(e.target)&&!t.contains(e.target)&&(t.style.display="none")})})</script></ul><hr></nav><div class=article-meta><h1><span class=title>Hugo搭建</span></h1></div><div class=post-stats style=text-align:right>2025/12/22</div><div id=toc><nav id=TableOfContents><ul><li><a href=#hugo-安装>hugo 安装</a></li><li><a href=#hugo-使用>hugo 使用</a></li><li><a href=#分类布局>分类布局</a></li><li><a href=#添加评论-使用-giscusapp>添加评论 使用 giscus.app</a></li><li><a href=#添加搜索>添加搜索</a></li></ul></nav></div><main><p>从2015年开始，我使用Hexo框架Next主题搭建，个人博客系统，正好十年。
+        `}).join(""),t.style.display=n.length?"block":"none"}),document.addEventListener("click",e=>{!n.contains(e.target)&&!t.contains(e.target)&&(t.style.display="none")})})</script></ul><hr></nav><div class=article-meta><h1><span class=title>Hugo搭建</span></h1></div><div class=post-stats style=text-align:right>2025/12/22</div><div id=toc><nav id=TableOfContents><ul><li><a href=#hugo-安装>hugo 安装</a></li><li><a href=#debian系统>debian系统</a></li><li><a href=#hugo-使用>hugo 使用</a></li><li><a href=#分类布局>分类布局</a></li><li><a href=#添加评论-使用-giscusapp>添加评论 使用 giscus.app</a></li><li><a href=#添加搜索>添加搜索</a></li></ul></nav></div><main><p>从2015年开始，我使用Hexo框架Next主题搭建，个人博客系统，正好十年。
 框架和主题配置完成后，我只要关注markdown内容即可。</p><p>在这使用过程中，遇到过一次大规模的js投毒，那一次hexo 编译不出。
 hexo 和next 框架 变更实在是太快了，最近在github 的页面编译不出后，我修复无果，也懒得折腾了，在初步调研后，准备使用<a href=https://gohugo.io>hugo</a>和<a href=https://www.gohugothemes.com/theme/yihui-hugo-xmin/>Hugo Xmin</a></p><p>使用的是 hugo 与 hugo-xmin</p><h2 id=hugo-安装>hugo 安装</h2><p>hugo 可以直接下载二进制文件 <a href="https://github.com/gohugoio/hugo/releases?page=3">https://github.com/gohugoio/hugo/releases?page=3</a></p><p>hugo v0.146.7</p><p>hugo-xmin 从git库中下载</p><p><a href=https://github.com/yihui/hugo-xmin>https://github.com/yihui/hugo-xmin</a></p><p>c871e5665f5eceb919c8fdb284b73c7a07012646</p><p>我个人是mac，使用的是docker debian镜像，在它上面安装二进制文件</p><pre tabindex=0><code>docker pull --platform linux/arm64 debian:12-slim
 </code></pre><pre tabindex=0><code>services:
@@ -23,7 +23,7 @@ hexo 和next 框架 变更实在是太快了，最近在github 的页面编译�
     command: ./hugo_0.146.7_arm64 server --bind 0.0.0.0
     stdin_open: true
     tty: true
-</code></pre><p>其他docker镜像可使用 <a href="https://hub.docker.com/r/klakegg/hugo/tags?name=debian">klakegg/hugo</a></p><h2 id=hugo-使用>hugo 使用</h2><p>./hugo server &ndash;bind 0.0.0.0
+</code></pre><p>其他docker镜像可使用 <a href="https://hub.docker.com/r/klakegg/hugo/tags?name=debian">klakegg/hugo</a></p><h2 id=debian系统>debian系统</h2><p><a href=https://github.com/gohugoio/hugo/releases/download/v0.146.7/hugo_0.146.7_linux-amd64.tar.gz>https://github.com/gohugoio/hugo/releases/download/v0.146.7/hugo_0.146.7_linux-amd64.tar.gz</a></p><h2 id=hugo-使用>hugo 使用</h2><p>./hugo server &ndash;bind 0.0.0.0
 ./hugo build</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>cd public
 </span></span><span style=display:flex><span>git init
 </span></span><span style=display:flex><span>git remote add origin git@github.com:talengu/talengu.github.io.git

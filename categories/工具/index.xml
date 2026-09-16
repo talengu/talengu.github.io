@@ -24,6 +24,8 @@ hexo 和next 框架 变更实在是太快了，最近在github 的页面编译�
  stdin_open: true
  tty: true
 &lt;/code>&lt;/pre>&lt;p>其他docker镜像可使用 &lt;a href="https://hub.docker.com/r/klakegg/hugo/tags?name=debian">klakegg/hugo&lt;/a>&lt;/p>
+&lt;h2 id="debian系统">debian系统&lt;/h2>
+&lt;p>&lt;a href="https://github.com/gohugoio/hugo/releases/download/v0.146.7/hugo_0.146.7_linux-amd64.tar.gz">https://github.com/gohugoio/hugo/releases/download/v0.146.7/hugo_0.146.7_linux-amd64.tar.gz&lt;/a>&lt;/p>
 &lt;h2 id="hugo-使用">hugo 使用&lt;/h2>
 &lt;p>./hugo server &amp;ndash;bind 0.0.0.0
 ./hugo build&lt;/p>
