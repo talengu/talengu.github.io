@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Rss on 一塘</title><link>https://talengu.github.io/tags/rss/</link><description>Recent content in Rss on 一塘</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Thu, 06 Jun 2024 12:00:00 +0000</lastBuildDate><atom:link href="https://talengu.github.io/tags/rss/index.xml" rel="self" type="application/rss+xml"/><item><title>「转」基于 Readeck 搭建个人稍后读/书签服务</title><link>https://talengu.github.io/post/c7-toolchain/readeck-tips/</link><pubDate>Thu, 06 Jun 2024 12:00:00 +0000</pubDate><guid>https://talengu.github.io/post/c7-toolchain/readeck-tips/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
 &lt;blockquote>
-&lt;p>本文由 &lt;a href="http://ksria.com/simpread/">简悦 SimpRead&lt;/a> 转码， 原文地址 &lt;a href="https://sspai.com/post/89289">https://sspai.com/post/89289&lt;/a>&lt;/p>&lt;/blockquote>
+&lt;p>本文由 &lt;a href="http://ksria.com/simpread/">简悦 SimpRead&lt;/a>
+ 转码， 原文地址 &lt;a href="https://sspai.com/post/89289">https://sspai.com/post/89289&lt;/a>
+&lt;/p>&lt;/blockquote>
 &lt;!-- more -->
 &lt;hr>
 &lt;p>作为喜欢阅读互联网长文的「上世代互联网遗老」，我一直保持着一个和现在互联网快消时代格格不入的爱好：偏爱长内容，这包括了我喜欢观看哪些具有丰富知识内容的长视频，收听播客节目以及阅读长篇的文章。尤其是长篇文章，往往是在我在碎片化的时间浏览公众号或者 RSS 订阅时，然后就会把这篇长文发到我的稍后读应用或者推送到我的 Kindle 邮箱中，等晚上做到书桌前仔细深度阅读。&lt;/p>
@@ -50,7 +52,9 @@
 &lt;p>接下来我们就打开 Portainer 来进行服务容器的部署，这里打开并登录 Portainer，然后从左侧边栏中点击 Stacks，然后点击页面右上角的 &lt;code>Add Stack&lt;/code>来添加。&lt;/p></description></item><item><title>rss翻译github脚本</title><link>https://talengu.github.io/post/c7-toolchain/rss_translate/</link><pubDate>Wed, 21 Dec 2022 12:39:04 +0000</pubDate><guid>https://talengu.github.io/post/c7-toolchain/rss_translate/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
 &lt;p>自动翻译 rss，我利用github action开发了一下， 供大家玩乐。&lt;/p>
 &lt;p>比如将：
- &lt;a href="http://www.mckinsey.com/insights/rss">http://www.mckinsey.com/insights/rss&lt;/a> -&amp;gt; &lt;a href="https://talengu.github.io/rss-translate/rss/mckinsey_rss.xml">mckinsey_rss.xml&lt;/a>
+ &lt;a href="http://www.mckinsey.com/insights/rss">http://www.mckinsey.com/insights/rss&lt;/a>
+ -&amp;gt; &lt;a href="https://talengu.github.io/rss-translate/rss/mckinsey_rss.xml">mckinsey_rss.xml&lt;/a>
+
  
 
 
@@ -68,7 +72,8 @@
 />
 &lt;/div>&lt;/p>
 &lt;!-- more -->
-&lt;p>将需要翻译的rss 连接放到 &lt;a href="https://github.com/talengu/rss-translate/edit/main/test.ini">test.ini&lt;/a> 配置 ，并提交。&lt;/p>
+&lt;p>将需要翻译的rss 连接放到 &lt;a href="https://github.com/talengu/rss-translate/edit/main/test.ini">test.ini&lt;/a>
+ 配置 ，并提交。&lt;/p>
 &lt;p>
 
 
@@ -88,9 +93,11 @@
 &lt;li>name：输出的xml名字&lt;/li>
 &lt;li>url：需要转换的url&lt;/li>
 &lt;li>max：输出xml 最大item数&lt;/li>
-&lt;li>action：设置语言转换，默认auto转中文。多语言支持 action = “auto”，这里可以换成多种语言，支持语言列表见 &lt;a href="https://pygtrans.readthedocs.io/zh_CN/latest/index.html">pygtrans&lt;/a> 如：action = &amp;ldquo;en-&amp;gt;zh-CN&amp;rdquo;&lt;/li>
+&lt;li>action：设置语言转换，默认auto转中文。多语言支持 action = “auto”，这里可以换成多种语言，支持语言列表见 &lt;a href="https://pygtrans.readthedocs.io/zh_CN/latest/index.html">pygtrans&lt;/a>
+ 如：action = &amp;ldquo;en-&amp;gt;zh-CN&amp;rdquo;&lt;/li>
 &lt;/ul>
-&lt;p>在 &lt;a href="https://talengu.github.io/rss-translate/">https://talengu.github.io/rss-translate/&lt;/a> 等待生成连接即可。&lt;/p>
+&lt;p>在 &lt;a href="https://talengu.github.io/rss-translate/">https://talengu.github.io/rss-translate/&lt;/a>
+ 等待生成连接即可。&lt;/p>
 &lt;p>
 
 
@@ -109,8 +116,10 @@
 &lt;p>注：&lt;/p>
 &lt;ul>
 &lt;li>需要github账号，修改配置文件。&lt;/li>
-&lt;li>更新周期为1天，且为随机时间点。通过github action实现，见 &lt;a href="https://github.com/talengu/rss-translate/blob/main/.github/cron_random.py">random.py&lt;/a>&lt;/li>
-&lt;li>多语言支持 action = “auto”，这里可以换成多种语言，支持语言列表见 &lt;a href="https://pygtrans.readthedocs.io/zh_CN/latest/index.html">pygtrans&lt;/a> 如：action = &amp;ldquo;en-&amp;gt;zh-CN&amp;rdquo;&lt;/li>
+&lt;li>更新周期为1天，且为随机时间点。通过github action实现，见 &lt;a href="https://github.com/talengu/rss-translate/blob/main/.github/cron_random.py">random.py&lt;/a>
+&lt;/li>
+&lt;li>多语言支持 action = “auto”，这里可以换成多种语言，支持语言列表见 &lt;a href="https://pygtrans.readthedocs.io/zh_CN/latest/index.html">pygtrans&lt;/a>
+ 如：action = &amp;ldquo;en-&amp;gt;zh-CN&amp;rdquo;&lt;/li>
 &lt;/ul>
 &lt;p>欢迎大家使用！！！🐱&lt;/p></description></item><item><title>rss统计 基于ttrss的PostgresQL数据库</title><link>https://talengu.github.io/post/c7-toolchain/rss-ttrss-statics/</link><pubDate>Sun, 08 May 2022 22:00:04 +0000</pubDate><guid>https://talengu.github.io/post/c7-toolchain/rss-ttrss-statics/</guid><description>&lt;p>&lt;strong>前言&lt;/strong>
 统计ttrss的使用数据。&lt;/p>
@@ -197,6 +206,7 @@
 &lt;p>国外有很多不错的rss源，比如:&lt;/p>
 &lt;ul>
 &lt;li>&lt;a href="http://www.mckinsey.com/insights/rss">McKinsey Insights &amp;amp; Publications&lt;/a>
+
  &lt;center>&lt;img src="rss-google-translate/20220508-22-18-23.png" width="50%">
 &lt;/li>
 &lt;/ul>
@@ -206,7 +216,8 @@
 &lt;/center>
 &lt;ul>
 &lt;li>
-&lt;p>&lt;a href="http://rss.acast.com/nature">Nature Podcast&lt;/a>&lt;/p>
+&lt;p>&lt;a href="http://rss.acast.com/nature">Nature Podcast&lt;/a>
+&lt;/p>
  &lt;center>&lt;img src="rss-google-translate/20220508-22-25-04.png" width="50%">
 &lt;/li>
 &lt;/ul>
@@ -307,7 +318,8 @@
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="定时任务">定时任务&lt;/h3>
 &lt;blockquote>
 &lt;p>注意激活一下miniconda3 这个命令&lt;code>source /home/xxx/miniconda3/bin/activate&lt;/code>&lt;/p></description></item><item><title>本地安装rss</title><link>https://talengu.github.io/post/c7-toolchain/rss-local-install/</link><pubDate>Sat, 16 Apr 2022 12:39:04 +0000</pubDate><guid>https://talengu.github.io/post/c7-toolchain/rss-local-install/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
-&lt;p>在 “&lt;a href="c0-life/talk-rss-2020.md">二零年RSS杂谈&lt;/a>”中说到，我想建立一种信息的获取系统，免受广告和推荐算法的困扰。&lt;/p>
+&lt;p>在 “&lt;a href="https://talengu.github.io/post/c0-life/talk-rss-2020/">二零年RSS杂谈&lt;/a>
+”中说到，我想建立一种信息的获取系统，免受广告和推荐算法的困扰。&lt;/p>
 &lt;p>我希望其的功能包括：&lt;/p>
 &lt;ul>
 &lt;li>多终端 Web、PC、 mobile的同步&lt;/li>
@@ -349,7 +361,8 @@
 />
 &lt;/div>&lt;/p>
 &lt;h2 id="docker-windows安装">docker windows安装&lt;/h2>
-&lt;p>从&lt;a href="https://www.docker.com/products/docker-desktop">docker 官网&lt;/a> 下载windows版本安装。完成后，在图标区会有一个鲸鱼船。&lt;/p>
+&lt;p>从&lt;a href="https://www.docker.com/products/docker-desktop">docker 官网&lt;/a>
+ 下载windows版本安装。完成后，在图标区会有一个鲸鱼船。&lt;/p>
 &lt;p>
 
 
@@ -540,4 +553,5 @@
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">for&lt;/span> _d &lt;span style="color:#f92672">in&lt;/span> _now[:&lt;span style="color:#f92672">-&lt;/span>&lt;span style="color:#ae81ff">5&lt;/span>]:
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> os&lt;span style="color:#f92672">.&lt;/span>popen(&lt;span style="color:#e6db74">&amp;#34;rm -rf &lt;/span>&lt;span style="color:#e6db74">%s&lt;/span>&lt;span style="color:#e6db74">&amp;#34;&lt;/span>&lt;span style="color:#f92672">%&lt;/span>_d)
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>在linux亦可使用&lt;a href="https://www.runoob.com/w3cnote/linux-crontab-tasks.html">crontab&lt;/a>定时启动下载任务。在 &lt;code>/etc/cron.hourly/&lt;/code> 设置即可。&lt;/p></description></item></channel></rss>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>在linux亦可使用&lt;a href="https://www.runoob.com/w3cnote/linux-crontab-tasks.html">crontab&lt;/a>
+定时启动下载任务。在 &lt;code>/etc/cron.hourly/&lt;/code> 设置即可。&lt;/p></description></item></channel></rss>

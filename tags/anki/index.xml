@@ -2,6 +2,7 @@
 &lt;p>当初想设计好用的英语背诵软件，现在发现了anki人家功能全部实现，还要啥自行车。&lt;/p>
 &lt;p>我当时设计的单词勇士开源Android软件：
 &lt;a href="https://github.com/talengu/WordWarrior">https://github.com/talengu/WordWarrior&lt;/a>
+
 现在已弃坑。&lt;/p>
 &lt;p>我们当然选用docker compose 来安装，相当丝滑。&lt;/p>
 &lt;p>在使用Anki过程中，主要工作是制作卡组，我们可以只关心内容而不关心技术。&lt;/p>

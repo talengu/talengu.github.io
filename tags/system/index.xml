@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>System on 一塘</title><link>https://talengu.github.io/tags/system/</link><description>Recent content in System on 一塘</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Fri, 11 May 2018 12:00:00 +0000</lastBuildDate><atom:link href="https://talengu.github.io/tags/system/index.xml" rel="self" type="application/rss+xml"/><item><title>Why Software Should Not Have Owners</title><link>https://talengu.github.io/post/c5-linux/why-gnu/</link><pubDate>Fri, 11 May 2018 12:00:00 +0000</pubDate><guid>https://talengu.github.io/post/c5-linux/why-gnu/</guid><description>&lt;p>&lt;a href="http://www.gnu.org/philosophy/why-free.html">Why Software Should Not Have Owners&lt;/a>
+
 为什么软件不应有主人
-作者︰&lt;a href="https://www.stallman.org/">Richard Stallman&lt;/a>&lt;/p>
+作者︰&lt;a href="https://www.stallman.org/">Richard Stallman&lt;/a>
+&lt;/p>
 &lt;!-- more -->
 &lt;p>数字资讯科技令大众更容易复制和变更资料。然而不是所有人都希望这样。版权制度容许软件有「主人」。他们主要目的在于从公众夺取软件的潜在利益。他们希望独占这些软件的复制、更改权利。&lt;/p>
 &lt;p>版权制度随著印刷技术而发展——印刷是一种大量制作副本的技术。版权很适合这项技术，因为它只限制了大规模的复制。它并没有剥夺图书读者的自由。一般读者没有印刷机，他们只能用笔墨抄写作品，所以很少有读者因此而被控告。&lt;/p>

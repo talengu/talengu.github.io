@@ -1,13 +1,17 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Hugo on 一塘</title><link>https://talengu.github.io/tags/hugo/</link><description>Recent content in Hugo on 一塘</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Mon, 22 Dec 2025 12:39:04 +0000</lastBuildDate><atom:link href="https://talengu.github.io/tags/hugo/index.xml" rel="self" type="application/rss+xml"/><item><title>Hugo搭建</title><link>https://talengu.github.io/post/c7-toolchain/hugo-build/</link><pubDate>Mon, 22 Dec 2025 12:39:04 +0000</pubDate><guid>https://talengu.github.io/post/c7-toolchain/hugo-build/</guid><description>&lt;p>从2015年开始，我使用Hexo框架Next主题搭建，个人博客系统，正好十年。
 框架和主题配置完成后，我只要关注markdown内容即可。&lt;/p>
 &lt;p>在这使用过程中，遇到过一次大规模的js投毒，那一次hexo 编译不出。
-hexo 和next 框架 变更实在是太快了，最近在github 的页面编译不出后，我修复无果，也懒得折腾了，在初步调研后，准备使用&lt;a href="https://gohugo.io">hugo&lt;/a>和&lt;a href="https://www.gohugothemes.com/theme/yihui-hugo-xmin/">Hugo Xmin&lt;/a>&lt;/p>
+hexo 和next 框架 变更实在是太快了，最近在github 的页面编译不出后，我修复无果，也懒得折腾了，在初步调研后，准备使用&lt;a href="https://gohugo.io">hugo&lt;/a>
+和&lt;a href="https://www.gohugothemes.com/theme/yihui-hugo-xmin/">Hugo Xmin&lt;/a>
+&lt;/p>
 &lt;p>使用的是 hugo 与 hugo-xmin&lt;/p>
 &lt;h2 id="hugo-安装">hugo 安装&lt;/h2>
-&lt;p>hugo 可以直接下载二进制文件 &lt;a href="https://github.com/gohugoio/hugo/releases?page=3">https://github.com/gohugoio/hugo/releases?page=3&lt;/a>&lt;/p>
+&lt;p>hugo 可以直接下载二进制文件 &lt;a href="https://github.com/gohugoio/hugo/releases?page=3">https://github.com/gohugoio/hugo/releases?page=3&lt;/a>
+&lt;/p>
 &lt;p>hugo v0.146.7&lt;/p>
 &lt;p>hugo-xmin 从git库中下载&lt;/p>
-&lt;p>&lt;a href="https://github.com/yihui/hugo-xmin">https://github.com/yihui/hugo-xmin&lt;/a>&lt;/p>
+&lt;p>&lt;a href="https://github.com/yihui/hugo-xmin">https://github.com/yihui/hugo-xmin&lt;/a>
+&lt;/p>
 &lt;p>c871e5665f5eceb919c8fdb284b73c7a07012646&lt;/p>
 &lt;p>我个人是mac，使用的是docker debian镜像，在它上面安装二进制文件&lt;/p>
 &lt;pre tabindex="0">&lt;code>docker pull --platform linux/arm64 debian:12-slim
@@ -23,9 +27,11 @@ hexo 和next 框架 变更实在是太快了，最近在github 的页面编译�
  command: ./hugo_0.146.7_arm64 server --bind 0.0.0.0
  stdin_open: true
  tty: true
-&lt;/code>&lt;/pre>&lt;p>其他docker镜像可使用 &lt;a href="https://hub.docker.com/r/klakegg/hugo/tags?name=debian">klakegg/hugo&lt;/a>&lt;/p>
+&lt;/code>&lt;/pre>&lt;p>其他docker镜像可使用 &lt;a href="https://hub.docker.com/r/klakegg/hugo/tags?name=debian">klakegg/hugo&lt;/a>
+&lt;/p>
 &lt;h2 id="debian系统">debian系统&lt;/h2>
-&lt;p>&lt;a href="https://github.com/gohugoio/hugo/releases/download/v0.146.7/hugo_0.146.7_linux-amd64.tar.gz">https://github.com/gohugoio/hugo/releases/download/v0.146.7/hugo_0.146.7_linux-amd64.tar.gz&lt;/a>&lt;/p>
+&lt;p>&lt;a href="https://github.com/gohugoio/hugo/releases/download/v0.146.7/hugo_0.146.7_linux-amd64.tar.gz">https://github.com/gohugoio/hugo/releases/download/v0.146.7/hugo_0.146.7_linux-amd64.tar.gz&lt;/a>
+&lt;/p>
 &lt;h2 id="hugo-使用">hugo 使用&lt;/h2>
 &lt;p>./hugo server &amp;ndash;bind 0.0.0.0
 ./hugo build&lt;/p>
@@ -100,4 +106,5 @@ hexo 和next 框架 变更实在是太快了，最近在github 的页面编译�
 &lt;/table>
 &lt;h2 id="添加评论-使用-giscusapp">添加评论 使用 giscus.app&lt;/h2>
 &lt;p>按 giscus.app 官方进行操作即可
-&lt;a href="https://giscus.app/">https://giscus.app/&lt;/a>&lt;/p></description></item></channel></rss>
+&lt;a href="https://giscus.app/">https://giscus.app/&lt;/a>
+&lt;/p></description></item></channel></rss>

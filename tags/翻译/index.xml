@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>翻译 on 一塘</title><link>https://talengu.github.io/tags/%E7%BF%BB%E8%AF%91/</link><description>Recent content in 翻译 on 一塘</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Wed, 21 Dec 2022 12:39:04 +0000</lastBuildDate><atom:link href="https://talengu.github.io/tags/%E7%BF%BB%E8%AF%91/index.xml" rel="self" type="application/rss+xml"/><item><title>rss翻译github脚本</title><link>https://talengu.github.io/post/c7-toolchain/rss_translate/</link><pubDate>Wed, 21 Dec 2022 12:39:04 +0000</pubDate><guid>https://talengu.github.io/post/c7-toolchain/rss_translate/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
 &lt;p>自动翻译 rss，我利用github action开发了一下， 供大家玩乐。&lt;/p>
 &lt;p>比如将：
- &lt;a href="http://www.mckinsey.com/insights/rss">http://www.mckinsey.com/insights/rss&lt;/a> -&amp;gt; &lt;a href="https://talengu.github.io/rss-translate/rss/mckinsey_rss.xml">mckinsey_rss.xml&lt;/a>
+ &lt;a href="http://www.mckinsey.com/insights/rss">http://www.mckinsey.com/insights/rss&lt;/a>
+ -&amp;gt; &lt;a href="https://talengu.github.io/rss-translate/rss/mckinsey_rss.xml">mckinsey_rss.xml&lt;/a>
+
  
 
 
@@ -19,7 +21,8 @@
 />
 &lt;/div>&lt;/p>
 &lt;!-- more -->
-&lt;p>将需要翻译的rss 连接放到 &lt;a href="https://github.com/talengu/rss-translate/edit/main/test.ini">test.ini&lt;/a> 配置 ，并提交。&lt;/p>
+&lt;p>将需要翻译的rss 连接放到 &lt;a href="https://github.com/talengu/rss-translate/edit/main/test.ini">test.ini&lt;/a>
+ 配置 ，并提交。&lt;/p>
 &lt;p>
 
 
@@ -39,9 +42,11 @@
 &lt;li>name：输出的xml名字&lt;/li>
 &lt;li>url：需要转换的url&lt;/li>
 &lt;li>max：输出xml 最大item数&lt;/li>
-&lt;li>action：设置语言转换，默认auto转中文。多语言支持 action = “auto”，这里可以换成多种语言，支持语言列表见 &lt;a href="https://pygtrans.readthedocs.io/zh_CN/latest/index.html">pygtrans&lt;/a> 如：action = &amp;ldquo;en-&amp;gt;zh-CN&amp;rdquo;&lt;/li>
+&lt;li>action：设置语言转换，默认auto转中文。多语言支持 action = “auto”，这里可以换成多种语言，支持语言列表见 &lt;a href="https://pygtrans.readthedocs.io/zh_CN/latest/index.html">pygtrans&lt;/a>
+ 如：action = &amp;ldquo;en-&amp;gt;zh-CN&amp;rdquo;&lt;/li>
 &lt;/ul>
-&lt;p>在 &lt;a href="https://talengu.github.io/rss-translate/">https://talengu.github.io/rss-translate/&lt;/a> 等待生成连接即可。&lt;/p>
+&lt;p>在 &lt;a href="https://talengu.github.io/rss-translate/">https://talengu.github.io/rss-translate/&lt;/a>
+ 等待生成连接即可。&lt;/p>
 &lt;p>
 
 
@@ -60,7 +65,9 @@
 &lt;p>注：&lt;/p>
 &lt;ul>
 &lt;li>需要github账号，修改配置文件。&lt;/li>
-&lt;li>更新周期为1天，且为随机时间点。通过github action实现，见 &lt;a href="https://github.com/talengu/rss-translate/blob/main/.github/cron_random.py">random.py&lt;/a>&lt;/li>
-&lt;li>多语言支持 action = “auto”，这里可以换成多种语言，支持语言列表见 &lt;a href="https://pygtrans.readthedocs.io/zh_CN/latest/index.html">pygtrans&lt;/a> 如：action = &amp;ldquo;en-&amp;gt;zh-CN&amp;rdquo;&lt;/li>
+&lt;li>更新周期为1天，且为随机时间点。通过github action实现，见 &lt;a href="https://github.com/talengu/rss-translate/blob/main/.github/cron_random.py">random.py&lt;/a>
+&lt;/li>
+&lt;li>多语言支持 action = “auto”，这里可以换成多种语言，支持语言列表见 &lt;a href="https://pygtrans.readthedocs.io/zh_CN/latest/index.html">pygtrans&lt;/a>
+ 如：action = &amp;ldquo;en-&amp;gt;zh-CN&amp;rdquo;&lt;/li>
 &lt;/ul>
 &lt;p>欢迎大家使用！！！🐱&lt;/p></description></item></channel></rss>

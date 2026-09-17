@@ -1,13 +1,17 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>博客搭建 on 一塘</title><link>https://talengu.github.io/tags/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/</link><description>Recent content in 博客搭建 on 一塘</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Mon, 22 Dec 2025 12:39:04 +0000</lastBuildDate><atom:link href="https://talengu.github.io/tags/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/index.xml" rel="self" type="application/rss+xml"/><item><title>Hugo搭建</title><link>https://talengu.github.io/post/c7-toolchain/hugo-build/</link><pubDate>Mon, 22 Dec 2025 12:39:04 +0000</pubDate><guid>https://talengu.github.io/post/c7-toolchain/hugo-build/</guid><description>&lt;p>从2015年开始，我使用Hexo框架Next主题搭建，个人博客系统，正好十年。
 框架和主题配置完成后，我只要关注markdown内容即可。&lt;/p>
 &lt;p>在这使用过程中，遇到过一次大规模的js投毒，那一次hexo 编译不出。
-hexo 和next 框架 变更实在是太快了，最近在github 的页面编译不出后，我修复无果，也懒得折腾了，在初步调研后，准备使用&lt;a href="https://gohugo.io">hugo&lt;/a>和&lt;a href="https://www.gohugothemes.com/theme/yihui-hugo-xmin/">Hugo Xmin&lt;/a>&lt;/p>
+hexo 和next 框架 变更实在是太快了，最近在github 的页面编译不出后，我修复无果，也懒得折腾了，在初步调研后，准备使用&lt;a href="https://gohugo.io">hugo&lt;/a>
+和&lt;a href="https://www.gohugothemes.com/theme/yihui-hugo-xmin/">Hugo Xmin&lt;/a>
+&lt;/p>
 &lt;p>使用的是 hugo 与 hugo-xmin&lt;/p>
 &lt;h2 id="hugo-安装">hugo 安装&lt;/h2>
-&lt;p>hugo 可以直接下载二进制文件 &lt;a href="https://github.com/gohugoio/hugo/releases?page=3">https://github.com/gohugoio/hugo/releases?page=3&lt;/a>&lt;/p>
+&lt;p>hugo 可以直接下载二进制文件 &lt;a href="https://github.com/gohugoio/hugo/releases?page=3">https://github.com/gohugoio/hugo/releases?page=3&lt;/a>
+&lt;/p>
 &lt;p>hugo v0.146.7&lt;/p>
 &lt;p>hugo-xmin 从git库中下载&lt;/p>
-&lt;p>&lt;a href="https://github.com/yihui/hugo-xmin">https://github.com/yihui/hugo-xmin&lt;/a>&lt;/p>
+&lt;p>&lt;a href="https://github.com/yihui/hugo-xmin">https://github.com/yihui/hugo-xmin&lt;/a>
+&lt;/p>
 &lt;p>c871e5665f5eceb919c8fdb284b73c7a07012646&lt;/p>
 &lt;p>我个人是mac，使用的是docker debian镜像，在它上面安装二进制文件&lt;/p>
 &lt;pre tabindex="0">&lt;code>docker pull --platform linux/arm64 debian:12-slim
@@ -23,9 +27,11 @@ hexo 和next 框架 变更实在是太快了，最近在github 的页面编译�
  command: ./hugo_0.146.7_arm64 server --bind 0.0.0.0
  stdin_open: true
  tty: true
-&lt;/code>&lt;/pre>&lt;p>其他docker镜像可使用 &lt;a href="https://hub.docker.com/r/klakegg/hugo/tags?name=debian">klakegg/hugo&lt;/a>&lt;/p>
+&lt;/code>&lt;/pre>&lt;p>其他docker镜像可使用 &lt;a href="https://hub.docker.com/r/klakegg/hugo/tags?name=debian">klakegg/hugo&lt;/a>
+&lt;/p>
 &lt;h2 id="debian系统">debian系统&lt;/h2>
-&lt;p>&lt;a href="https://github.com/gohugoio/hugo/releases/download/v0.146.7/hugo_0.146.7_linux-amd64.tar.gz">https://github.com/gohugoio/hugo/releases/download/v0.146.7/hugo_0.146.7_linux-amd64.tar.gz&lt;/a>&lt;/p>
+&lt;p>&lt;a href="https://github.com/gohugoio/hugo/releases/download/v0.146.7/hugo_0.146.7_linux-amd64.tar.gz">https://github.com/gohugoio/hugo/releases/download/v0.146.7/hugo_0.146.7_linux-amd64.tar.gz&lt;/a>
+&lt;/p>
 &lt;h2 id="hugo-使用">hugo 使用&lt;/h2>
 &lt;p>./hugo server &amp;ndash;bind 0.0.0.0
 ./hugo build&lt;/p>
@@ -100,7 +106,8 @@ hexo 和next 框架 变更实在是太快了，最近在github 的页面编译�
 &lt;/table>
 &lt;h2 id="添加评论-使用-giscusapp">添加评论 使用 giscus.app&lt;/h2>
 &lt;p>按 giscus.app 官方进行操作即可
-&lt;a href="https://giscus.app/">https://giscus.app/&lt;/a>&lt;/p></description></item><item><title>hexo个人主页搭建</title><link>https://talengu.github.io/post/c7-toolchain/hexo-blog/</link><pubDate>Thu, 22 Dec 2016 12:39:04 +0000</pubDate><guid>https://talengu.github.io/post/c7-toolchain/hexo-blog/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
+&lt;a href="https://giscus.app/">https://giscus.app/&lt;/a>
+&lt;/p></description></item><item><title>hexo个人主页搭建</title><link>https://talengu.github.io/post/c7-toolchain/hexo-blog/</link><pubDate>Thu, 22 Dec 2016 12:39:04 +0000</pubDate><guid>https://talengu.github.io/post/c7-toolchain/hexo-blog/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
 &lt;p>本文主要内容为博客搭建的记录与分享，我采用了Hexo博客框架，NexT主题和Gitment评论系统。本文中记录了我博客的安装流程和使用过程中的改进细节。&lt;/p>
 &lt;p>对Next主题版本的一些说明：我使用的是&lt;code>version: 5.1.0&lt;/code>。而使用新版本的NexT v6 主题的同学，有些功能如gitment已经实现，可以直接使用V6。此V6版本对于图片的使用可能会出现问题。仅需看看我下面的2.2小节。&lt;/p>
 &lt;p>有时间我会将我修改后的hexo Next theme 基于&lt;code>version: 5.1.0&lt;/code>主题，给个独立的git仓，放到github 上。&lt;/p>
@@ -114,16 +121,23 @@ hexo 和next 框架 变更实在是太快了，最近在github 的页面编译�
 &lt;p>使用新版本的 &lt;code>NexT v6&lt;/code> 主题即可，有些功能如 &lt;code>gitment&lt;/code> 已经实现。对于图片的使用可能会出现问题。仅需看看我下面的2.2小节。我使用的是 &lt;code>version: 5.1.0&lt;/code> 。&lt;/p>
 &lt;h3 id="12-从头安装">1.2 从头安装&lt;/h3>
 &lt;ul>
-&lt;li>安装 nodejs，从nodejs 官网下载安装包 &lt;a href="https://nodejs.org/en/download/">download page&lt;/a>&lt;/li>
-&lt;li>安装git客户端 &lt;a href="https://git-scm.com/">git&lt;/a>&lt;/li>
+&lt;li>安装 nodejs，从nodejs 官网下载安装包 &lt;a href="https://nodejs.org/en/download/">download page&lt;/a>
+&lt;/li>
+&lt;li>安装git客户端 &lt;a href="https://git-scm.com/">git&lt;/a>
+&lt;/li>
 &lt;li>安装Hexo &lt;code>npm install -g hexo-cli&lt;/code>
 &lt;a href="https://hexo.io/zh-cn/docs/">hexo 中文安装文档&lt;/a>
-&lt;a href="https://hexo.io/zh-cn/">Hexo中文网站&lt;/a>&lt;/li>
+
+&lt;a href="https://hexo.io/zh-cn/">Hexo中文网站&lt;/a>
+&lt;/li>
 &lt;li>安装NexT ，NexT是一个比较火的主题。
 按官网教程NexT安装即可，官网安装和配置教程比较美滋滋。
 &lt;a href="http://theme-next.iissnan.com/getting-started.html">http://theme-next.iissnan.com/getting-started.html&lt;/a>
+
 NexT Github &lt;a href="https://github.com/iissnan/hexo-theme-next">https://github.com/iissnan/hexo-theme-next&lt;/a>
-另外，NexT开发者的博客（最近Next 变成组织了，祝贺）&lt;a href="http://notes.iissnan.com">http://notes.iissnan.com&lt;/a>&lt;/li>
+
+另外，NexT开发者的博客（最近Next 变成组织了，祝贺）&lt;a href="http://notes.iissnan.com">http://notes.iissnan.com&lt;/a>
+&lt;/li>
 &lt;/ul>
 &lt;blockquote>
 &lt;p>&lt;strong>Ubuntu安装记录&lt;/strong>&lt;/p>&lt;/blockquote>

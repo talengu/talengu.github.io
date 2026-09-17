@@ -1,13 +1,17 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>工具 on 一塘</title><link>https://talengu.github.io/categories/%E5%B7%A5%E5%85%B7/</link><description>Recent content in 工具 on 一塘</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Mon, 22 Dec 2025 12:39:04 +0000</lastBuildDate><atom:link href="https://talengu.github.io/categories/%E5%B7%A5%E5%85%B7/index.xml" rel="self" type="application/rss+xml"/><item><title>Hugo搭建</title><link>https://talengu.github.io/post/c7-toolchain/hugo-build/</link><pubDate>Mon, 22 Dec 2025 12:39:04 +0000</pubDate><guid>https://talengu.github.io/post/c7-toolchain/hugo-build/</guid><description>&lt;p>从2015年开始，我使用Hexo框架Next主题搭建，个人博客系统，正好十年。
 框架和主题配置完成后，我只要关注markdown内容即可。&lt;/p>
 &lt;p>在这使用过程中，遇到过一次大规模的js投毒，那一次hexo 编译不出。
-hexo 和next 框架 变更实在是太快了，最近在github 的页面编译不出后，我修复无果，也懒得折腾了，在初步调研后，准备使用&lt;a href="https://gohugo.io">hugo&lt;/a>和&lt;a href="https://www.gohugothemes.com/theme/yihui-hugo-xmin/">Hugo Xmin&lt;/a>&lt;/p>
+hexo 和next 框架 变更实在是太快了，最近在github 的页面编译不出后，我修复无果，也懒得折腾了，在初步调研后，准备使用&lt;a href="https://gohugo.io">hugo&lt;/a>
+和&lt;a href="https://www.gohugothemes.com/theme/yihui-hugo-xmin/">Hugo Xmin&lt;/a>
+&lt;/p>
 &lt;p>使用的是 hugo 与 hugo-xmin&lt;/p>
 &lt;h2 id="hugo-安装">hugo 安装&lt;/h2>
-&lt;p>hugo 可以直接下载二进制文件 &lt;a href="https://github.com/gohugoio/hugo/releases?page=3">https://github.com/gohugoio/hugo/releases?page=3&lt;/a>&lt;/p>
+&lt;p>hugo 可以直接下载二进制文件 &lt;a href="https://github.com/gohugoio/hugo/releases?page=3">https://github.com/gohugoio/hugo/releases?page=3&lt;/a>
+&lt;/p>
 &lt;p>hugo v0.146.7&lt;/p>
 &lt;p>hugo-xmin 从git库中下载&lt;/p>
-&lt;p>&lt;a href="https://github.com/yihui/hugo-xmin">https://github.com/yihui/hugo-xmin&lt;/a>&lt;/p>
+&lt;p>&lt;a href="https://github.com/yihui/hugo-xmin">https://github.com/yihui/hugo-xmin&lt;/a>
+&lt;/p>
 &lt;p>c871e5665f5eceb919c8fdb284b73c7a07012646&lt;/p>
 &lt;p>我个人是mac，使用的是docker debian镜像，在它上面安装二进制文件&lt;/p>
 &lt;pre tabindex="0">&lt;code>docker pull --platform linux/arm64 debian:12-slim
@@ -23,9 +27,11 @@ hexo 和next 框架 变更实在是太快了，最近在github 的页面编译�
  command: ./hugo_0.146.7_arm64 server --bind 0.0.0.0
  stdin_open: true
  tty: true
-&lt;/code>&lt;/pre>&lt;p>其他docker镜像可使用 &lt;a href="https://hub.docker.com/r/klakegg/hugo/tags?name=debian">klakegg/hugo&lt;/a>&lt;/p>
+&lt;/code>&lt;/pre>&lt;p>其他docker镜像可使用 &lt;a href="https://hub.docker.com/r/klakegg/hugo/tags?name=debian">klakegg/hugo&lt;/a>
+&lt;/p>
 &lt;h2 id="debian系统">debian系统&lt;/h2>
-&lt;p>&lt;a href="https://github.com/gohugoio/hugo/releases/download/v0.146.7/hugo_0.146.7_linux-amd64.tar.gz">https://github.com/gohugoio/hugo/releases/download/v0.146.7/hugo_0.146.7_linux-amd64.tar.gz&lt;/a>&lt;/p>
+&lt;p>&lt;a href="https://github.com/gohugoio/hugo/releases/download/v0.146.7/hugo_0.146.7_linux-amd64.tar.gz">https://github.com/gohugoio/hugo/releases/download/v0.146.7/hugo_0.146.7_linux-amd64.tar.gz&lt;/a>
+&lt;/p>
 &lt;h2 id="hugo-使用">hugo 使用&lt;/h2>
 &lt;p>./hugo server &amp;ndash;bind 0.0.0.0
 ./hugo build&lt;/p>
@@ -100,9 +106,12 @@ hexo 和next 框架 变更实在是太快了，最近在github 的页面编译�
 &lt;/table>
 &lt;h2 id="添加评论-使用-giscusapp">添加评论 使用 giscus.app&lt;/h2>
 &lt;p>按 giscus.app 官方进行操作即可
-&lt;a href="https://giscus.app/">https://giscus.app/&lt;/a>&lt;/p></description></item><item><title>「转」基于 Readeck 搭建个人稍后读/书签服务</title><link>https://talengu.github.io/post/c7-toolchain/readeck-tips/</link><pubDate>Thu, 06 Jun 2024 12:00:00 +0000</pubDate><guid>https://talengu.github.io/post/c7-toolchain/readeck-tips/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
+&lt;a href="https://giscus.app/">https://giscus.app/&lt;/a>
+&lt;/p></description></item><item><title>「转」基于 Readeck 搭建个人稍后读/书签服务</title><link>https://talengu.github.io/post/c7-toolchain/readeck-tips/</link><pubDate>Thu, 06 Jun 2024 12:00:00 +0000</pubDate><guid>https://talengu.github.io/post/c7-toolchain/readeck-tips/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
 &lt;blockquote>
-&lt;p>本文由 &lt;a href="http://ksria.com/simpread/">简悦 SimpRead&lt;/a> 转码， 原文地址 &lt;a href="https://sspai.com/post/89289">https://sspai.com/post/89289&lt;/a>&lt;/p>&lt;/blockquote>
+&lt;p>本文由 &lt;a href="http://ksria.com/simpread/">简悦 SimpRead&lt;/a>
+ 转码， 原文地址 &lt;a href="https://sspai.com/post/89289">https://sspai.com/post/89289&lt;/a>
+&lt;/p>&lt;/blockquote>
 &lt;!-- more -->
 &lt;hr>
 &lt;p>作为喜欢阅读互联网长文的「上世代互联网遗老」，我一直保持着一个和现在互联网快消时代格格不入的爱好：偏爱长内容，这包括了我喜欢观看哪些具有丰富知识内容的长视频，收听播客节目以及阅读长篇的文章。尤其是长篇文章，往往是在我在碎片化的时间浏览公众号或者 RSS 订阅时，然后就会把这篇长文发到我的稍后读应用或者推送到我的 Kindle 邮箱中，等晚上做到书桌前仔细深度阅读。&lt;/p>
@@ -152,7 +161,9 @@ hexo 和next 框架 变更实在是太快了，最近在github 的页面编译�
 &lt;p>接下来我们就打开 Portainer 来进行服务容器的部署，这里打开并登录 Portainer，然后从左侧边栏中点击 Stacks，然后点击页面右上角的 &lt;code>Add Stack&lt;/code>来添加。&lt;/p></description></item><item><title>rss翻译github脚本</title><link>https://talengu.github.io/post/c7-toolchain/rss_translate/</link><pubDate>Wed, 21 Dec 2022 12:39:04 +0000</pubDate><guid>https://talengu.github.io/post/c7-toolchain/rss_translate/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
 &lt;p>自动翻译 rss，我利用github action开发了一下， 供大家玩乐。&lt;/p>
 &lt;p>比如将：
- &lt;a href="http://www.mckinsey.com/insights/rss">http://www.mckinsey.com/insights/rss&lt;/a> -&amp;gt; &lt;a href="https://talengu.github.io/rss-translate/rss/mckinsey_rss.xml">mckinsey_rss.xml&lt;/a>
+ &lt;a href="http://www.mckinsey.com/insights/rss">http://www.mckinsey.com/insights/rss&lt;/a>
+ -&amp;gt; &lt;a href="https://talengu.github.io/rss-translate/rss/mckinsey_rss.xml">mckinsey_rss.xml&lt;/a>
+
  
 
 
@@ -170,7 +181,8 @@ hexo 和next 框架 变更实在是太快了，最近在github 的页面编译�
 />
 &lt;/div>&lt;/p>
 &lt;!-- more -->
-&lt;p>将需要翻译的rss 连接放到 &lt;a href="https://github.com/talengu/rss-translate/edit/main/test.ini">test.ini&lt;/a> 配置 ，并提交。&lt;/p>
+&lt;p>将需要翻译的rss 连接放到 &lt;a href="https://github.com/talengu/rss-translate/edit/main/test.ini">test.ini&lt;/a>
+ 配置 ，并提交。&lt;/p>
 &lt;p>
 
 
@@ -190,9 +202,11 @@ hexo 和next 框架 变更实在是太快了，最近在github 的页面编译�
 &lt;li>name：输出的xml名字&lt;/li>
 &lt;li>url：需要转换的url&lt;/li>
 &lt;li>max：输出xml 最大item数&lt;/li>
-&lt;li>action：设置语言转换，默认auto转中文。多语言支持 action = “auto”，这里可以换成多种语言，支持语言列表见 &lt;a href="https://pygtrans.readthedocs.io/zh_CN/latest/index.html">pygtrans&lt;/a> 如：action = &amp;ldquo;en-&amp;gt;zh-CN&amp;rdquo;&lt;/li>
+&lt;li>action：设置语言转换，默认auto转中文。多语言支持 action = “auto”，这里可以换成多种语言，支持语言列表见 &lt;a href="https://pygtrans.readthedocs.io/zh_CN/latest/index.html">pygtrans&lt;/a>
+ 如：action = &amp;ldquo;en-&amp;gt;zh-CN&amp;rdquo;&lt;/li>
 &lt;/ul>
-&lt;p>在 &lt;a href="https://talengu.github.io/rss-translate/">https://talengu.github.io/rss-translate/&lt;/a> 等待生成连接即可。&lt;/p>
+&lt;p>在 &lt;a href="https://talengu.github.io/rss-translate/">https://talengu.github.io/rss-translate/&lt;/a>
+ 等待生成连接即可。&lt;/p>
 &lt;p>
 
 
@@ -211,8 +225,10 @@ hexo 和next 框架 变更实在是太快了，最近在github 的页面编译�
 &lt;p>注：&lt;/p>
 &lt;ul>
 &lt;li>需要github账号，修改配置文件。&lt;/li>
-&lt;li>更新周期为1天，且为随机时间点。通过github action实现，见 &lt;a href="https://github.com/talengu/rss-translate/blob/main/.github/cron_random.py">random.py&lt;/a>&lt;/li>
-&lt;li>多语言支持 action = “auto”，这里可以换成多种语言，支持语言列表见 &lt;a href="https://pygtrans.readthedocs.io/zh_CN/latest/index.html">pygtrans&lt;/a> 如：action = &amp;ldquo;en-&amp;gt;zh-CN&amp;rdquo;&lt;/li>
+&lt;li>更新周期为1天，且为随机时间点。通过github action实现，见 &lt;a href="https://github.com/talengu/rss-translate/blob/main/.github/cron_random.py">random.py&lt;/a>
+&lt;/li>
+&lt;li>多语言支持 action = “auto”，这里可以换成多种语言，支持语言列表见 &lt;a href="https://pygtrans.readthedocs.io/zh_CN/latest/index.html">pygtrans&lt;/a>
+ 如：action = &amp;ldquo;en-&amp;gt;zh-CN&amp;rdquo;&lt;/li>
 &lt;/ul>
 &lt;p>欢迎大家使用！！！🐱&lt;/p></description></item><item><title>rss统计 基于ttrss的PostgresQL数据库</title><link>https://talengu.github.io/post/c7-toolchain/rss-ttrss-statics/</link><pubDate>Sun, 08 May 2022 22:00:04 +0000</pubDate><guid>https://talengu.github.io/post/c7-toolchain/rss-ttrss-statics/</guid><description>&lt;p>&lt;strong>前言&lt;/strong>
 统计ttrss的使用数据。&lt;/p>
@@ -299,6 +315,7 @@ hexo 和next 框架 变更实在是太快了，最近在github 的页面编译�
 &lt;p>国外有很多不错的rss源，比如:&lt;/p>
 &lt;ul>
 &lt;li>&lt;a href="http://www.mckinsey.com/insights/rss">McKinsey Insights &amp;amp; Publications&lt;/a>
+
  &lt;center>&lt;img src="rss-google-translate/20220508-22-18-23.png" width="50%">
 &lt;/li>
 &lt;/ul>
@@ -308,7 +325,8 @@ hexo 和next 框架 变更实在是太快了，最近在github 的页面编译�
 &lt;/center>
 &lt;ul>
 &lt;li>
-&lt;p>&lt;a href="http://rss.acast.com/nature">Nature Podcast&lt;/a>&lt;/p>
+&lt;p>&lt;a href="http://rss.acast.com/nature">Nature Podcast&lt;/a>
+&lt;/p>
  &lt;center>&lt;img src="rss-google-translate/20220508-22-25-04.png" width="50%">
 &lt;/li>
 &lt;/ul>
@@ -409,7 +427,8 @@ hexo 和next 框架 变更实在是太快了，最近在github 的页面编译�
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="定时任务">定时任务&lt;/h3>
 &lt;blockquote>
 &lt;p>注意激活一下miniconda3 这个命令&lt;code>source /home/xxx/miniconda3/bin/activate&lt;/code>&lt;/p></description></item><item><title>本地安装rss</title><link>https://talengu.github.io/post/c7-toolchain/rss-local-install/</link><pubDate>Sat, 16 Apr 2022 12:39:04 +0000</pubDate><guid>https://talengu.github.io/post/c7-toolchain/rss-local-install/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
-&lt;p>在 “&lt;a href="c0-life/talk-rss-2020.md">二零年RSS杂谈&lt;/a>”中说到，我想建立一种信息的获取系统，免受广告和推荐算法的困扰。&lt;/p>
+&lt;p>在 “&lt;a href="https://talengu.github.io/post/c0-life/talk-rss-2020/">二零年RSS杂谈&lt;/a>
+”中说到，我想建立一种信息的获取系统，免受广告和推荐算法的困扰。&lt;/p>
 &lt;p>我希望其的功能包括：&lt;/p>
 &lt;ul>
 &lt;li>多终端 Web、PC、 mobile的同步&lt;/li>
@@ -451,7 +470,8 @@ hexo 和next 框架 变更实在是太快了，最近在github 的页面编译�
 />
 &lt;/div>&lt;/p>
 &lt;h2 id="docker-windows安装">docker windows安装&lt;/h2>
-&lt;p>从&lt;a href="https://www.docker.com/products/docker-desktop">docker 官网&lt;/a> 下载windows版本安装。完成后，在图标区会有一个鲸鱼船。&lt;/p>
+&lt;p>从&lt;a href="https://www.docker.com/products/docker-desktop">docker 官网&lt;/a>
+ 下载windows版本安装。完成后，在图标区会有一个鲸鱼船。&lt;/p>
 &lt;p>
 
 
@@ -535,6 +555,7 @@ hexo 和next 框架 变更实在是太快了，最近在github 的页面编译�
 &lt;p>当初想设计好用的英语背诵软件，现在发现了anki人家功能全部实现，还要啥自行车。&lt;/p>
 &lt;p>我当时设计的单词勇士开源Android软件：
 &lt;a href="https://github.com/talengu/WordWarrior">https://github.com/talengu/WordWarrior&lt;/a>
+
 现在已弃坑。&lt;/p>
 &lt;p>我们当然选用docker compose 来安装，相当丝滑。&lt;/p>
 &lt;p>在使用Anki过程中，主要工作是制作卡组，我们可以只关心内容而不关心技术。&lt;/p>
@@ -673,9 +694,11 @@ hexo 和next 框架 变更实在是太快了，最近在github 的页面编译�
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">for&lt;/span> _d &lt;span style="color:#f92672">in&lt;/span> _now[:&lt;span style="color:#f92672">-&lt;/span>&lt;span style="color:#ae81ff">5&lt;/span>]:
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> os&lt;span style="color:#f92672">.&lt;/span>popen(&lt;span style="color:#e6db74">&amp;#34;rm -rf &lt;/span>&lt;span style="color:#e6db74">%s&lt;/span>&lt;span style="color:#e6db74">&amp;#34;&lt;/span>&lt;span style="color:#f92672">%&lt;/span>_d)
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>在linux亦可使用&lt;a href="https://www.runoob.com/w3cnote/linux-crontab-tasks.html">crontab&lt;/a>定时启动下载任务。在 &lt;code>/etc/cron.hourly/&lt;/code> 设置即可。&lt;/p></description></item><item><title>Jupyter notebook的配置</title><link>https://talengu.github.io/post/c7-toolchain/jupyter-notebook/</link><pubDate>Mon, 03 Jul 2017 16:00:04 +0000</pubDate><guid>https://talengu.github.io/post/c7-toolchain/jupyter-notebook/</guid><description>&lt;p>&lt;strong>前言&lt;/strong>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>在linux亦可使用&lt;a href="https://www.runoob.com/w3cnote/linux-crontab-tasks.html">crontab&lt;/a>
+定时启动下载任务。在 &lt;code>/etc/cron.hourly/&lt;/code> 设置即可。&lt;/p></description></item><item><title>Jupyter notebook的配置</title><link>https://talengu.github.io/post/c7-toolchain/jupyter-notebook/</link><pubDate>Mon, 03 Jul 2017 16:00:04 +0000</pubDate><guid>https://talengu.github.io/post/c7-toolchain/jupyter-notebook/</guid><description>&lt;p>&lt;strong>前言&lt;/strong>
 本文介绍jupyter notebook的安装配置过程和实用技巧。
-&lt;a href="https://jupyter.readthedocs.io/en/latest/index.html">jupyter.readthedocs教程&lt;/a>&lt;/p>
+&lt;a href="https://jupyter.readthedocs.io/en/latest/index.html">jupyter.readthedocs教程&lt;/a>
+&lt;/p>
 &lt;!-- more -->
 &lt;h2 id="1-安装与配置">1 安装与配置&lt;/h2>
 &lt;h3 id="11-安装-jupyter">1.1 安装 jupyter&lt;/h3>
@@ -703,7 +726,8 @@ In [2]: passwd()
  Verify password:
  Out[2]: &amp;#39;sha1:67xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&amp;#39;
 &lt;/code>&lt;/pre>&lt;/blockquote>
-&lt;p>我选用的是password密码登陆jupyter的方案，其他的密码登陆方案见 &lt;a href="https://zhuanlan.zhihu.com/p/23110830">link&lt;/a>&lt;/p>
+&lt;p>我选用的是password密码登陆jupyter的方案，其他的密码登陆方案见 &lt;a href="https://zhuanlan.zhihu.com/p/23110830">link&lt;/a>
+&lt;/p>
 &lt;blockquote>
 &lt;p>新的方法
 from notebook.auth import passwd; passwd()&lt;/p>&lt;/blockquote>
@@ -745,16 +769,23 @@ c.ServerApp.password = &amp;#39;&amp;#39;
 &lt;p>使用新版本的 &lt;code>NexT v6&lt;/code> 主题即可，有些功能如 &lt;code>gitment&lt;/code> 已经实现。对于图片的使用可能会出现问题。仅需看看我下面的2.2小节。我使用的是 &lt;code>version: 5.1.0&lt;/code> 。&lt;/p>
 &lt;h3 id="12-从头安装">1.2 从头安装&lt;/h3>
 &lt;ul>
-&lt;li>安装 nodejs，从nodejs 官网下载安装包 &lt;a href="https://nodejs.org/en/download/">download page&lt;/a>&lt;/li>
-&lt;li>安装git客户端 &lt;a href="https://git-scm.com/">git&lt;/a>&lt;/li>
+&lt;li>安装 nodejs，从nodejs 官网下载安装包 &lt;a href="https://nodejs.org/en/download/">download page&lt;/a>
+&lt;/li>
+&lt;li>安装git客户端 &lt;a href="https://git-scm.com/">git&lt;/a>
+&lt;/li>
 &lt;li>安装Hexo &lt;code>npm install -g hexo-cli&lt;/code>
 &lt;a href="https://hexo.io/zh-cn/docs/">hexo 中文安装文档&lt;/a>
-&lt;a href="https://hexo.io/zh-cn/">Hexo中文网站&lt;/a>&lt;/li>
+
+&lt;a href="https://hexo.io/zh-cn/">Hexo中文网站&lt;/a>
+&lt;/li>
 &lt;li>安装NexT ，NexT是一个比较火的主题。
 按官网教程NexT安装即可，官网安装和配置教程比较美滋滋。
 &lt;a href="http://theme-next.iissnan.com/getting-started.html">http://theme-next.iissnan.com/getting-started.html&lt;/a>
+
 NexT Github &lt;a href="https://github.com/iissnan/hexo-theme-next">https://github.com/iissnan/hexo-theme-next&lt;/a>
-另外，NexT开发者的博客（最近Next 变成组织了，祝贺）&lt;a href="http://notes.iissnan.com">http://notes.iissnan.com&lt;/a>&lt;/li>
+
+另外，NexT开发者的博客（最近Next 变成组织了，祝贺）&lt;a href="http://notes.iissnan.com">http://notes.iissnan.com&lt;/a>
+&lt;/li>
 &lt;/ul>
 &lt;blockquote>
 &lt;p>&lt;strong>Ubuntu安装记录&lt;/strong>&lt;/p>&lt;/blockquote>
@@ -766,7 +797,8 @@ NexT Github &lt;a href="https://github.com/iissnan/hexo-theme-next">https://gith
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$ npm install
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$ hexo server
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>ok，安装完的目录结构。&lt;/p></description></item><item><title>SRT中英文合并Python脚本</title><link>https://talengu.github.io/post/c7-toolchain/python-youtube-src-combine/</link><pubDate>Thu, 14 Apr 2016 12:39:04 +0000</pubDate><guid>https://talengu.github.io/post/c7-toolchain/python-youtube-src-combine/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
-&lt;p>从YouTube上看只有中文或英文分开的字幕，下载好视频，想要中英文字幕。可从 &lt;a href="http://mo.dbxdb.com/Yang/setting.html">Getting Youtube subtitles&lt;/a> 获取中或英文字幕，然后将其合并，即成中英文双字幕。下面是Python脚本。&lt;/p>
+&lt;p>从YouTube上看只有中文或英文分开的字幕，下载好视频，想要中英文字幕。可从 &lt;a href="http://mo.dbxdb.com/Yang/setting.html">Getting Youtube subtitles&lt;/a>
+ 获取中或英文字幕，然后将其合并，即成中英文双字幕。下面是Python脚本。&lt;/p>
 &lt;!-- more -->
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-python" data-lang="python">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74">&amp;#39;&amp;#39;&amp;#39;
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74">本脚本完成了中英文srt合并的功能

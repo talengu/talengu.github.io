@@ -2,6 +2,7 @@
 &lt;p>当初想设计好用的英语背诵软件，现在发现了anki人家功能全部实现，还要啥自行车。&lt;/p>
 &lt;p>我当时设计的单词勇士开源Android软件：
 &lt;a href="https://github.com/talengu/WordWarrior">https://github.com/talengu/WordWarrior&lt;/a>
+
 现在已弃坑。&lt;/p>
 &lt;p>我们当然选用docker compose 来安装，相当丝滑。&lt;/p>
 &lt;p>在使用Anki过程中，主要工作是制作卡组，我们可以只关心内容而不关心技术。&lt;/p>
@@ -31,6 +32,7 @@
 &lt;h3 id="macwin-客户端">mac/win 客户端&lt;/h3>
 &lt;p>从官网下载 anki mac版本 2.1.21 (f1734a47) / Windows PC 客户端&lt;/p></description></item><item><title>「转」Ubuntu完全教程</title><link>https://talengu.github.io/post/c5-linux/linux/ubuntu-tour/</link><pubDate>Fri, 01 Apr 2022 18:00:04 +0000</pubDate><guid>https://talengu.github.io/post/c5-linux/linux/ubuntu-tour/</guid><description>&lt;blockquote>
 &lt;p>ref:&lt;a href="http://www.cnblogs.com/dutlei/archive/2012/11/20/2778327.html">Ubuntu完全教程，让你成为Ubuntu高手！&lt;/a>
+
 todo整理&lt;/p>&lt;/blockquote>
 &lt;h2 id="ubuntu的发音">Ubuntu的发音&lt;/h2>
 &lt;p>Ubuntu，源于非洲祖鲁人和科萨人的语言，发作 oo-boon-too 的音。了解发音是有意义的，您不是第一个为此困惑的人，当然，也不会是最后一个：）&lt;/p>
@@ -128,4 +130,5 @@ todo整理&lt;/p>&lt;/blockquote>
 &lt;/li>
 &lt;/ul>
 &lt;h3 id="设备使用率指示">设备使用率指示&lt;/h3>
-&lt;p>&lt;a href="https://github.com/fossfreedom/indicator-sysmonitor">https://github.com/fossfreedom/indicator-sysmonitor&lt;/a>&lt;/p></description></item></channel></rss>
+&lt;p>&lt;a href="https://github.com/fossfreedom/indicator-sysmonitor">https://github.com/fossfreedom/indicator-sysmonitor&lt;/a>
+&lt;/p></description></item></channel></rss>

@@ -124,7 +124,8 @@
 />
 &lt;/div>&lt;/p>
 &lt;ul>
-&lt;li>&lt;a href="https://www.zhihu.com/search?q=linux%20bcc&amp;amp;search_source=Entity&amp;amp;hybrid_search_source=Entity&amp;amp;hybrid_search_extra=%7B%22sourceType%22%3A%22answer%22%2C%22sourceId%22%3A2795830055%7D">linux bcc&lt;/a>/BPF Tracing tools&lt;/li>
+&lt;li>&lt;a href="https://www.zhihu.com/search?q=linux%20bcc&amp;amp;search_source=Entity&amp;amp;hybrid_search_source=Entity&amp;amp;hybrid_search_extra=%7B%22sourceType%22%3A%22answer%22%2C%22sourceId%22%3A2795830055%7D">linux bcc&lt;/a>
+/BPF Tracing tools&lt;/li>
 &lt;/ul>
 &lt;p>
 
@@ -142,11 +143,14 @@
 />
 &lt;/div>&lt;/p></description></item><item><title>「转」Linux内核数据包bridge上转发流程</title><link>https://talengu.github.io/post/c5-linux/linux/linux-bridge-forward/</link><pubDate>Wed, 06 Jul 2022 16:00:04 +0000</pubDate><guid>https://talengu.github.io/post/c5-linux/linux/linux-bridge-forward/</guid><description>&lt;blockquote>
 &lt;p>原文地址 &lt;a href="https://blog.csdn.net/hhhhhyyyyy8/article/details/102133863">blog.csdn.net&lt;/a>
+
 @hhhhhyyyyy8 @4.15.1&lt;/p>&lt;/blockquote>
 &lt;h2 id="前言">前言&lt;/h2>
 &lt;p>linux 内核源代码变动怎么这么大，handle_bridge 函数居然没有了，本来接着准备以 3.9.1 分析的，但发现和后面的又变了，还是以 4.15.1 现在电脑上用的版本分析吧。&lt;/p>
 &lt;p>&lt;strong>linux kernel：4.15.1&lt;/strong>&lt;/p>
-&lt;p>best of best [&lt;a href="url">link&lt;/a>](&lt;a href="https://upload.wikimedia.org/wikipedia/commons/3/37/Netfilter-packet-flow.svg">https://upload.wikimedia.org/wikipedia/commons/3/37/Netfilter-packet-flow.svg&lt;/a>)&lt;/p>
+&lt;p>best of best [&lt;a href="url">link&lt;/a>
+](&lt;a href="https://upload.wikimedia.org/wikipedia/commons/3/37/Netfilter-packet-flow.svg">https://upload.wikimedia.org/wikipedia/commons/3/37/Netfilter-packet-flow.svg&lt;/a>
+)&lt;/p>
 &lt;p>
 
 
@@ -169,6 +173,7 @@
 
 
 
+
  
 
 
@@ -185,6 +190,7 @@
 
 
 
+
  
 
 
@@ -196,6 +202,7 @@
 />
 &lt;/div>&lt;/p>
 &lt;p>&lt;a href="https://www.cnblogs.com/xuanxuanBOSS/p/11424290.html">IMG 浅析ebtables的概念和一些基本应用&lt;/a>
+
 
 
 
@@ -341,7 +348,8 @@
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	&lt;span style="color:#66d9ef">return&lt;/span> RX_HANDLER_CONSUMED;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>相关函数&lt;/p></description></item><item><title>「转」tcpdump是在哪儿抓到的包？</title><link>https://talengu.github.io/post/c5-linux/linux/how-tcpdump/</link><pubDate>Fri, 01 Jul 2022 16:00:04 +0000</pubDate><guid>https://talengu.github.io/post/c5-linux/linux/how-tcpdump/</guid><description>&lt;blockquote>
-&lt;p>原文地址 &lt;a href="https://cloud.tencent.com/developer/article/1879646">cloud.tencent.com&lt;/a>&lt;/p>&lt;/blockquote>
+&lt;p>原文地址 &lt;a href="https://cloud.tencent.com/developer/article/1879646">cloud.tencent.com&lt;/a>
+&lt;/p>&lt;/blockquote>
 &lt;blockquote>
 &lt;p>最近使用 tcpdump 的时候突然想到这个问题。因为我之前只存在一些一知半解的认识：比如直接镜像了网卡的包、在数据包进入内核前就获取了。但这些认识真的正确么？针对&amp;hellip;&lt;/p>&lt;/blockquote>
 &lt;p>最近使用 tcpdump 的时候突然想到这个问题。因为我之前只存在一些一知半解的认识：比如直接镜像了网卡的包、在数据包进入内核前就获取了。但这些认识真的正确么？针对这个问题，我进行了一番学习探究。&lt;/p>
@@ -368,6 +376,7 @@
 &lt;p>当一个数据帧被写入到内存后，将产生一个硬件中断请求，以通知 CPU 收到了数据包。操作系统为了减少硬中断产生的次数，会采用一个软中断 (softirq) 唤醒 NAPI 子系统。这样会产生一个单独的线程，调用网卡驱动注册的 poll 方法收包，同时禁止网卡产生新的硬中断，这样的效果便是一次中断可以接收多个包。一旦软终端代码判断有 softirq 处于 pending 状态，便会调用软终端处理函数 net_rx_action。&lt;/p>
 &lt;p>中断处理函数会在处理循环中调用 NAPI poll 来接收数据包。poll 方法会分配一个 sk_buff 数据结构（include/linux/skbuff.h），表示该数据包的内核视图。然后将数据从缓冲区提取到新建的 sk_buff 中，并对其中的 protocol 字段做初始化，该字段用以识别特定的协议。之后这个字段会被 netif_receive_skb 内核函数查询，用来确定该执行哪个函数来处理三层的封包。字段涉及协议的值都列在了 include/uapi/linux/if_ether.h 中，名字形如 ETH_P_XXX，比如 ip 协议为 ETH_P_IP。而有一种特殊情况，单一封包可以传递给多个处理函数，这就是 tcpdump 等网络嗅探应用会用到的 ETH_P_ALL。&lt;/p></description></item><item><title>「转」Ubuntu完全教程</title><link>https://talengu.github.io/post/c5-linux/linux/ubuntu-tour/</link><pubDate>Fri, 01 Apr 2022 18:00:04 +0000</pubDate><guid>https://talengu.github.io/post/c5-linux/linux/ubuntu-tour/</guid><description>&lt;blockquote>
 &lt;p>ref:&lt;a href="http://www.cnblogs.com/dutlei/archive/2012/11/20/2778327.html">Ubuntu完全教程，让你成为Ubuntu高手！&lt;/a>
+
 todo整理&lt;/p>&lt;/blockquote>
 &lt;h2 id="ubuntu的发音">Ubuntu的发音&lt;/h2>
 &lt;p>Ubuntu，源于非洲祖鲁人和科萨人的语言，发作 oo-boon-too 的音。了解发音是有意义的，您不是第一个为此困惑的人，当然，也不会是最后一个：）&lt;/p>
@@ -386,14 +395,22 @@ todo整理&lt;/p>&lt;/blockquote>
 &lt;p>自由，让 Ubuntu 与传统的私有软件从根本上不同: 免费不能用来遮羞，您有权修正它，直到满意为止。&lt;/p>
 &lt;p>Ubuntu 适合桌面和服务器。当前 Ubuntu 发布版支持 PC (Intel x86), 64-bit PC (AMD64) 和 PowerPC (Apple iBook 和 Powerbook, G4 和 G5) 架构。&lt;/p></description></item><item><title>「转」一文看懂Linux内核！Linux内核架构和工作原理详解</title><link>https://talengu.github.io/post/c5-linux/linux/linux-in-one/</link><pubDate>Thu, 23 Dec 2021 22:45:31 +0000</pubDate><guid>https://talengu.github.io/post/c5-linux/linux/linux-in-one/</guid><description>&lt;p>全文导读&lt;/p>
 &lt;ul>
-&lt;li>&lt;a href="">Linux 内核预备工作&lt;/a>&lt;/li>
-&lt;li>&lt;a href="">Linux 内核体系结构简析&lt;/a>&lt;/li>
-&lt;li>&lt;a href="">Linux 体系结构和内核结构区别&lt;/a>&lt;/li>
-&lt;li>&lt;a href="">Linux 驱动的 platform 机制&lt;/a>&lt;/li>
-&lt;li>&lt;a href="">Linux 内核体系结构&lt;/a>&lt;/li>
-&lt;li>&lt;a href="">内核模块&lt;/a>&lt;/li>
-&lt;li>&lt;a href="">Linux 内核学习经验总结&lt;/a>&lt;/li>
-&lt;li>&lt;a href="">结尾&lt;/a>&lt;/li>
+&lt;li>&lt;a href="">Linux 内核预备工作&lt;/a>
+&lt;/li>
+&lt;li>&lt;a href="">Linux 内核体系结构简析&lt;/a>
+&lt;/li>
+&lt;li>&lt;a href="">Linux 体系结构和内核结构区别&lt;/a>
+&lt;/li>
+&lt;li>&lt;a href="">Linux 驱动的 platform 机制&lt;/a>
+&lt;/li>
+&lt;li>&lt;a href="">Linux 内核体系结构&lt;/a>
+&lt;/li>
+&lt;li>&lt;a href="">内核模块&lt;/a>
+&lt;/li>
+&lt;li>&lt;a href="">Linux 内核学习经验总结&lt;/a>
+&lt;/li>
+&lt;li>&lt;a href="">结尾&lt;/a>
+&lt;/li>
 &lt;/ul>
 &lt;!-- more -->
 &lt;h2 id="linux-内核预备工作">Linux 内核预备工作&lt;/h2>
@@ -456,7 +473,8 @@ Linux 进程&lt;/p></description></item><item><title>linux代理的使用</title
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># 或者&lt;/span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$ pip install git+https://github.com/shadowsocks/shadowsocks.git@master
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>pip安装完之后，可能要重启终端，我们就有ssserver和sslocal小工具了。下面配置server或者client。一般，server配置在国外的vps上，client配置在本地国内机器上。&lt;/p>
-&lt;p>PS：其他平台安装 参考 shadowsocks官方 &lt;a href="https://github.com/shadowsocks/shadowsocks/tree/master#install">install&lt;/a>&lt;/p>
+&lt;p>PS：其他平台安装 参考 shadowsocks官方 &lt;a href="https://github.com/shadowsocks/shadowsocks/tree/master#install">install&lt;/a>
+&lt;/p>
 &lt;h3 id="11-配置-shadowsocks-server">1.1 配置 Shadowsocks server&lt;/h3>
 &lt;p>按下面的三步走，即可。&lt;/p>
 &lt;ul>
@@ -506,8 +524,10 @@ Linux 进程&lt;/p></description></item><item><title>linux代理的使用</title
 &lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74"> so &lt;/span>$MYVIMRC&lt;span style="color:#e6db74">&amp;#34;&lt;/span>
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>python环境使用的是anaconda（或者minicoonda）添加激活环境。
 在&lt;code>~/.bashrc&lt;/code>中加入&lt;/p></description></item><item><title>Why Software Should Not Have Owners</title><link>https://talengu.github.io/post/c5-linux/why-gnu/</link><pubDate>Fri, 11 May 2018 12:00:00 +0000</pubDate><guid>https://talengu.github.io/post/c5-linux/why-gnu/</guid><description>&lt;p>&lt;a href="http://www.gnu.org/philosophy/why-free.html">Why Software Should Not Have Owners&lt;/a>
+
 为什么软件不应有主人
-作者︰&lt;a href="https://www.stallman.org/">Richard Stallman&lt;/a>&lt;/p>
+作者︰&lt;a href="https://www.stallman.org/">Richard Stallman&lt;/a>
+&lt;/p>
 &lt;!-- more -->
 &lt;p>数字资讯科技令大众更容易复制和变更资料。然而不是所有人都希望这样。版权制度容许软件有「主人」。他们主要目的在于从公众夺取软件的潜在利益。他们希望独占这些软件的复制、更改权利。&lt;/p>
 &lt;p>版权制度随著印刷技术而发展——印刷是一种大量制作副本的技术。版权很适合这项技术，因为它只限制了大规模的复制。它并没有剥夺图书读者的自由。一般读者没有印刷机，他们只能用笔墨抄写作品，所以很少有读者因此而被控告。&lt;/p>
@@ -569,6 +589,7 @@ Linux 进程&lt;/p></description></item><item><title>linux代理的使用</title
 &lt;p>九十年代，Intel、Motorola、Texas Instruments 和 Analog Devices 等公司联合赞助持续发展的GNU C语言编译器。现在大部份开发GCC的人工作还是受薪的开发者完成的。GNU的Ada语言编译器受美国空军赞助，之后成立专属公司延续过个项目。&lt;/p></description></item><item><title>Ubuntu引导修复</title><link>https://talengu.github.io/post/c5-linux/linux/boot-recovery/</link><pubDate>Wed, 14 Jun 2017 16:00:04 +0000</pubDate><guid>https://talengu.github.io/post/c5-linux/linux/boot-recovery/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
 &lt;p>本文记录修复ubuntu引导，并修改ubuntu盘的大小过程。
 参考：&lt;a href="http://www.cnblogs.com/jloveu/p/Ubuntu-partition-expansion-record.html">http://www.cnblogs.com/jloveu/p/Ubuntu-partition-expansion-record.html&lt;/a>
+
 工具：Ubuntu 的live U盘，带有gparted分区工具，和grub修复工具&lt;/p>
 &lt;!-- more -->
 &lt;h2 id="修复启动">修复启动&lt;/h2>
@@ -585,6 +606,7 @@ Linux 进程&lt;/p></description></item><item><title>linux代理的使用</title
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>exit
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="修改ubuntu多系统的默认启动顺序">修改Ubuntu多系统的默认启动顺序&lt;/h2>
 &lt;p>&lt;a href="http://jingyan.baidu.com/article/f71d60379e16021ab641d1ab.html">link&lt;/a>
+
 打开该配置文件&amp;quot;/etc/default/grub&amp;quot;&lt;/p>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-shell" data-lang="shell">&lt;span style="display:flex;">&lt;span>sudo vim /etc/default/grub
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>sudo update-grub
@@ -605,11 +627,13 @@ Linux 进程&lt;/p></description></item><item><title>linux代理的使用</title
 />
 &lt;/div>&lt;/p>
 &lt;h2 id="去除多余grub启动项直接">去除多余GRUB启动项（直接）&lt;/h2>
-&lt;p>&lt;a href="https://zhidao.baidu.com/question/472571337.html">link&lt;/a>&lt;br>
+&lt;p>&lt;a href="https://zhidao.baidu.com/question/472571337.html">link&lt;/a>
+&lt;br>
 注释掉“/boot/grub/grub.cfg”中对应&lt;/p>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-shell" data-lang="shell">&lt;span style="display:flex;">&lt;span>sudo gedit /boot/grub/grub.cfg
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="ubuntu下如何修复grub引导">Ubuntu下如何修复Grub引导&lt;/h2>
-&lt;p>&lt;a href="https://mp.weixin.qq.com/s/NDZPPA-0FhqSzRndQOhNEw">link&lt;/a>&lt;/p>
+&lt;p>&lt;a href="https://mp.weixin.qq.com/s/NDZPPA-0FhqSzRndQOhNEw">link&lt;/a>
+&lt;/p>
 &lt;p>本文以 Ubuntu Live CD 修复 Grub 引导为例，已在 /dev/sda3 安装 Fedora。&lt;/p>
 &lt;p>首先制作 Ubuntu 启动 USB&lt;/p></description></item><item><title>Ubuntu的优化与设置</title><link>https://talengu.github.io/post/c5-linux/linux/ubuntu-init/</link><pubDate>Mon, 22 May 2017 18:00:04 +0000</pubDate><guid>https://talengu.github.io/post/c5-linux/linux/ubuntu-init/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
 &lt;ul>
@@ -692,4 +716,5 @@ Linux 进程&lt;/p></description></item><item><title>linux代理的使用</title
 &lt;/li>
 &lt;/ul>
 &lt;h3 id="设备使用率指示">设备使用率指示&lt;/h3>
-&lt;p>&lt;a href="https://github.com/fossfreedom/indicator-sysmonitor">https://github.com/fossfreedom/indicator-sysmonitor&lt;/a>&lt;/p></description></item></channel></rss>
+&lt;p>&lt;a href="https://github.com/fossfreedom/indicator-sysmonitor">https://github.com/fossfreedom/indicator-sysmonitor&lt;/a>
+&lt;/p></description></item></channel></rss>

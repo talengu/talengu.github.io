@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Netfilter框架 on 一塘</title><link>https://talengu.github.io/tags/netfilter%E6%A1%86%E6%9E%B6/</link><description>Recent content in Netfilter框架 on 一塘</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Wed, 06 Jul 2022 16:00:04 +0000</lastBuildDate><atom:link href="https://talengu.github.io/tags/netfilter%E6%A1%86%E6%9E%B6/index.xml" rel="self" type="application/rss+xml"/><item><title>「转」Linux内核数据包bridge上转发流程</title><link>https://talengu.github.io/post/c5-linux/linux/linux-bridge-forward/</link><pubDate>Wed, 06 Jul 2022 16:00:04 +0000</pubDate><guid>https://talengu.github.io/post/c5-linux/linux/linux-bridge-forward/</guid><description>&lt;blockquote>
 &lt;p>原文地址 &lt;a href="https://blog.csdn.net/hhhhhyyyyy8/article/details/102133863">blog.csdn.net&lt;/a>
+
 @hhhhhyyyyy8 @4.15.1&lt;/p>&lt;/blockquote>
 &lt;h2 id="前言">前言&lt;/h2>
 &lt;p>linux 内核源代码变动怎么这么大，handle_bridge 函数居然没有了，本来接着准备以 3.9.1 分析的，但发现和后面的又变了，还是以 4.15.1 现在电脑上用的版本分析吧。&lt;/p>
 &lt;p>&lt;strong>linux kernel：4.15.1&lt;/strong>&lt;/p>
-&lt;p>best of best [&lt;a href="url">link&lt;/a>](&lt;a href="https://upload.wikimedia.org/wikipedia/commons/3/37/Netfilter-packet-flow.svg">https://upload.wikimedia.org/wikipedia/commons/3/37/Netfilter-packet-flow.svg&lt;/a>)&lt;/p>
+&lt;p>best of best [&lt;a href="url">link&lt;/a>
+](&lt;a href="https://upload.wikimedia.org/wikipedia/commons/3/37/Netfilter-packet-flow.svg">https://upload.wikimedia.org/wikipedia/commons/3/37/Netfilter-packet-flow.svg&lt;/a>
+)&lt;/p>
 &lt;p>
 
 
@@ -27,6 +30,7 @@
 
 
 
+
  
 
 
@@ -43,6 +47,7 @@
 
 
 
+
  
 
 
@@ -54,6 +59,7 @@
 />
 &lt;/div>&lt;/p>
 &lt;p>&lt;a href="https://www.cnblogs.com/xuanxuanBOSS/p/11424290.html">IMG 浅析ebtables的概念和一些基本应用&lt;/a>
+
 
 
 

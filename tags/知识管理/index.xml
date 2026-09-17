@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>知识管理 on 一塘</title><link>https://talengu.github.io/tags/%E7%9F%A5%E8%AF%86%E7%AE%A1%E7%90%86/</link><description>Recent content in 知识管理 on 一塘</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Thu, 06 Jun 2024 12:00:00 +0000</lastBuildDate><atom:link href="https://talengu.github.io/tags/%E7%9F%A5%E8%AF%86%E7%AE%A1%E7%90%86/index.xml" rel="self" type="application/rss+xml"/><item><title>「转」基于 Readeck 搭建个人稍后读/书签服务</title><link>https://talengu.github.io/post/c7-toolchain/readeck-tips/</link><pubDate>Thu, 06 Jun 2024 12:00:00 +0000</pubDate><guid>https://talengu.github.io/post/c7-toolchain/readeck-tips/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
 &lt;blockquote>
-&lt;p>本文由 &lt;a href="http://ksria.com/simpread/">简悦 SimpRead&lt;/a> 转码， 原文地址 &lt;a href="https://sspai.com/post/89289">https://sspai.com/post/89289&lt;/a>&lt;/p>&lt;/blockquote>
+&lt;p>本文由 &lt;a href="http://ksria.com/simpread/">简悦 SimpRead&lt;/a>
+ 转码， 原文地址 &lt;a href="https://sspai.com/post/89289">https://sspai.com/post/89289&lt;/a>
+&lt;/p>&lt;/blockquote>
 &lt;!-- more -->
 &lt;hr>
 &lt;p>作为喜欢阅读互联网长文的「上世代互联网遗老」，我一直保持着一个和现在互联网快消时代格格不入的爱好：偏爱长内容，这包括了我喜欢观看哪些具有丰富知识内容的长视频，收听播客节目以及阅读长篇的文章。尤其是长篇文章，往往是在我在碎片化的时间浏览公众号或者 RSS 订阅时，然后就会把这篇长文发到我的稍后读应用或者推送到我的 Kindle 邮箱中，等晚上做到书桌前仔细深度阅读。&lt;/p>
@@ -132,6 +134,7 @@
 &lt;p>国外有很多不错的rss源，比如:&lt;/p>
 &lt;ul>
 &lt;li>&lt;a href="http://www.mckinsey.com/insights/rss">McKinsey Insights &amp;amp; Publications&lt;/a>
+
  &lt;center>&lt;img src="rss-google-translate/20220508-22-18-23.png" width="50%">
 &lt;/li>
 &lt;/ul>
@@ -141,7 +144,8 @@
 &lt;/center>
 &lt;ul>
 &lt;li>
-&lt;p>&lt;a href="http://rss.acast.com/nature">Nature Podcast&lt;/a>&lt;/p>
+&lt;p>&lt;a href="http://rss.acast.com/nature">Nature Podcast&lt;/a>
+&lt;/p>
  &lt;center>&lt;img src="rss-google-translate/20220508-22-25-04.png" width="50%">
 &lt;/li>
 &lt;/ul>
@@ -242,7 +246,8 @@
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="定时任务">定时任务&lt;/h3>
 &lt;blockquote>
 &lt;p>注意激活一下miniconda3 这个命令&lt;code>source /home/xxx/miniconda3/bin/activate&lt;/code>&lt;/p></description></item><item><title>本地安装rss</title><link>https://talengu.github.io/post/c7-toolchain/rss-local-install/</link><pubDate>Sat, 16 Apr 2022 12:39:04 +0000</pubDate><guid>https://talengu.github.io/post/c7-toolchain/rss-local-install/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
-&lt;p>在 “&lt;a href="c0-life/talk-rss-2020.md">二零年RSS杂谈&lt;/a>”中说到，我想建立一种信息的获取系统，免受广告和推荐算法的困扰。&lt;/p>
+&lt;p>在 “&lt;a href="https://talengu.github.io/post/c0-life/talk-rss-2020/">二零年RSS杂谈&lt;/a>
+”中说到，我想建立一种信息的获取系统，免受广告和推荐算法的困扰。&lt;/p>
 &lt;p>我希望其的功能包括：&lt;/p>
 &lt;ul>
 &lt;li>多终端 Web、PC、 mobile的同步&lt;/li>
@@ -284,7 +289,8 @@
 />
 &lt;/div>&lt;/p>
 &lt;h2 id="docker-windows安装">docker windows安装&lt;/h2>
-&lt;p>从&lt;a href="https://www.docker.com/products/docker-desktop">docker 官网&lt;/a> 下载windows版本安装。完成后，在图标区会有一个鲸鱼船。&lt;/p>
+&lt;p>从&lt;a href="https://www.docker.com/products/docker-desktop">docker 官网&lt;/a>
+ 下载windows版本安装。完成后，在图标区会有一个鲸鱼船。&lt;/p>
 &lt;p>
 
 
@@ -368,6 +374,7 @@
 &lt;p>当初想设计好用的英语背诵软件，现在发现了anki人家功能全部实现，还要啥自行车。&lt;/p>
 &lt;p>我当时设计的单词勇士开源Android软件：
 &lt;a href="https://github.com/talengu/WordWarrior">https://github.com/talengu/WordWarrior&lt;/a>
+
 现在已弃坑。&lt;/p>
 &lt;p>我们当然选用docker compose 来安装，相当丝滑。&lt;/p>
 &lt;p>在使用Anki过程中，主要工作是制作卡组，我们可以只关心内容而不关心技术。&lt;/p>
@@ -491,7 +498,8 @@
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">for&lt;/span> _d &lt;span style="color:#f92672">in&lt;/span> _now[:&lt;span style="color:#f92672">-&lt;/span>&lt;span style="color:#ae81ff">5&lt;/span>]:
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> os&lt;span style="color:#f92672">.&lt;/span>popen(&lt;span style="color:#e6db74">&amp;#34;rm -rf &lt;/span>&lt;span style="color:#e6db74">%s&lt;/span>&lt;span style="color:#e6db74">&amp;#34;&lt;/span>&lt;span style="color:#f92672">%&lt;/span>_d)
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>在linux亦可使用&lt;a href="https://www.runoob.com/w3cnote/linux-crontab-tasks.html">crontab&lt;/a>定时启动下载任务。在 &lt;code>/etc/cron.hourly/&lt;/code> 设置即可。&lt;/p></description></item><item><title>hexo个人主页搭建</title><link>https://talengu.github.io/post/c7-toolchain/hexo-blog/</link><pubDate>Thu, 22 Dec 2016 12:39:04 +0000</pubDate><guid>https://talengu.github.io/post/c7-toolchain/hexo-blog/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>在linux亦可使用&lt;a href="https://www.runoob.com/w3cnote/linux-crontab-tasks.html">crontab&lt;/a>
+定时启动下载任务。在 &lt;code>/etc/cron.hourly/&lt;/code> 设置即可。&lt;/p></description></item><item><title>hexo个人主页搭建</title><link>https://talengu.github.io/post/c7-toolchain/hexo-blog/</link><pubDate>Thu, 22 Dec 2016 12:39:04 +0000</pubDate><guid>https://talengu.github.io/post/c7-toolchain/hexo-blog/</guid><description>&lt;h2 id="前言">前言&lt;/h2>
 &lt;p>本文主要内容为博客搭建的记录与分享，我采用了Hexo博客框架，NexT主题和Gitment评论系统。本文中记录了我博客的安装流程和使用过程中的改进细节。&lt;/p>
 &lt;p>对Next主题版本的一些说明：我使用的是&lt;code>version: 5.1.0&lt;/code>。而使用新版本的NexT v6 主题的同学，有些功能如gitment已经实现，可以直接使用V6。此V6版本对于图片的使用可能会出现问题。仅需看看我下面的2.2小节。&lt;/p>
 &lt;p>有时间我会将我修改后的hexo Next theme 基于&lt;code>version: 5.1.0&lt;/code>主题，给个独立的git仓，放到github 上。&lt;/p>
@@ -505,16 +513,23 @@
 &lt;p>使用新版本的 &lt;code>NexT v6&lt;/code> 主题即可，有些功能如 &lt;code>gitment&lt;/code> 已经实现。对于图片的使用可能会出现问题。仅需看看我下面的2.2小节。我使用的是 &lt;code>version: 5.1.0&lt;/code> 。&lt;/p>
 &lt;h3 id="12-从头安装">1.2 从头安装&lt;/h3>
 &lt;ul>
-&lt;li>安装 nodejs，从nodejs 官网下载安装包 &lt;a href="https://nodejs.org/en/download/">download page&lt;/a>&lt;/li>
-&lt;li>安装git客户端 &lt;a href="https://git-scm.com/">git&lt;/a>&lt;/li>
+&lt;li>安装 nodejs，从nodejs 官网下载安装包 &lt;a href="https://nodejs.org/en/download/">download page&lt;/a>
+&lt;/li>
+&lt;li>安装git客户端 &lt;a href="https://git-scm.com/">git&lt;/a>
+&lt;/li>
 &lt;li>安装Hexo &lt;code>npm install -g hexo-cli&lt;/code>
 &lt;a href="https://hexo.io/zh-cn/docs/">hexo 中文安装文档&lt;/a>
-&lt;a href="https://hexo.io/zh-cn/">Hexo中文网站&lt;/a>&lt;/li>
+
+&lt;a href="https://hexo.io/zh-cn/">Hexo中文网站&lt;/a>
+&lt;/li>
 &lt;li>安装NexT ，NexT是一个比较火的主题。
 按官网教程NexT安装即可，官网安装和配置教程比较美滋滋。
 &lt;a href="http://theme-next.iissnan.com/getting-started.html">http://theme-next.iissnan.com/getting-started.html&lt;/a>
+
 NexT Github &lt;a href="https://github.com/iissnan/hexo-theme-next">https://github.com/iissnan/hexo-theme-next&lt;/a>
-另外，NexT开发者的博客（最近Next 变成组织了，祝贺）&lt;a href="http://notes.iissnan.com">http://notes.iissnan.com&lt;/a>&lt;/li>
+
+另外，NexT开发者的博客（最近Next 变成组织了，祝贺）&lt;a href="http://notes.iissnan.com">http://notes.iissnan.com&lt;/a>
+&lt;/li>
 &lt;/ul>
 &lt;blockquote>
 &lt;p>&lt;strong>Ubuntu安装记录&lt;/strong>&lt;/p>&lt;/blockquote>

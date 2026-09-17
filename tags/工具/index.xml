@@ -15,7 +15,8 @@
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># 或者&lt;/span>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$ pip install git+https://github.com/shadowsocks/shadowsocks.git@master
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>pip安装完之后，可能要重启终端，我们就有ssserver和sslocal小工具了。下面配置server或者client。一般，server配置在国外的vps上，client配置在本地国内机器上。&lt;/p>
-&lt;p>PS：其他平台安装 参考 shadowsocks官方 &lt;a href="https://github.com/shadowsocks/shadowsocks/tree/master#install">install&lt;/a>&lt;/p>
+&lt;p>PS：其他平台安装 参考 shadowsocks官方 &lt;a href="https://github.com/shadowsocks/shadowsocks/tree/master#install">install&lt;/a>
+&lt;/p>
 &lt;h3 id="11-配置-shadowsocks-server">1.1 配置 Shadowsocks server&lt;/h3>
 &lt;p>按下面的三步走，即可。&lt;/p>
 &lt;ul>

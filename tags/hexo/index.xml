@@ -12,16 +12,23 @@
 &lt;p>使用新版本的 &lt;code>NexT v6&lt;/code> 主题即可，有些功能如 &lt;code>gitment&lt;/code> 已经实现。对于图片的使用可能会出现问题。仅需看看我下面的2.2小节。我使用的是 &lt;code>version: 5.1.0&lt;/code> 。&lt;/p>
 &lt;h3 id="12-从头安装">1.2 从头安装&lt;/h3>
 &lt;ul>
-&lt;li>安装 nodejs，从nodejs 官网下载安装包 &lt;a href="https://nodejs.org/en/download/">download page&lt;/a>&lt;/li>
-&lt;li>安装git客户端 &lt;a href="https://git-scm.com/">git&lt;/a>&lt;/li>
+&lt;li>安装 nodejs，从nodejs 官网下载安装包 &lt;a href="https://nodejs.org/en/download/">download page&lt;/a>
+&lt;/li>
+&lt;li>安装git客户端 &lt;a href="https://git-scm.com/">git&lt;/a>
+&lt;/li>
 &lt;li>安装Hexo &lt;code>npm install -g hexo-cli&lt;/code>
 &lt;a href="https://hexo.io/zh-cn/docs/">hexo 中文安装文档&lt;/a>
-&lt;a href="https://hexo.io/zh-cn/">Hexo中文网站&lt;/a>&lt;/li>
+
+&lt;a href="https://hexo.io/zh-cn/">Hexo中文网站&lt;/a>
+&lt;/li>
 &lt;li>安装NexT ，NexT是一个比较火的主题。
 按官网教程NexT安装即可，官网安装和配置教程比较美滋滋。
 &lt;a href="http://theme-next.iissnan.com/getting-started.html">http://theme-next.iissnan.com/getting-started.html&lt;/a>
+
 NexT Github &lt;a href="https://github.com/iissnan/hexo-theme-next">https://github.com/iissnan/hexo-theme-next&lt;/a>
-另外，NexT开发者的博客（最近Next 变成组织了，祝贺）&lt;a href="http://notes.iissnan.com">http://notes.iissnan.com&lt;/a>&lt;/li>
+
+另外，NexT开发者的博客（最近Next 变成组织了，祝贺）&lt;a href="http://notes.iissnan.com">http://notes.iissnan.com&lt;/a>
+&lt;/li>
 &lt;/ul>
 &lt;blockquote>
 &lt;p>&lt;strong>Ubuntu安装记录&lt;/strong>&lt;/p>&lt;/blockquote>

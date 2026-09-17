@@ -68,7 +68,9 @@
 &lt;/li>
 &lt;/ul>
 &lt;p>本文中用到 “连接” 一词时，大部分情况下指的都是后者，即 “连接跟踪” 中的“连接”。&lt;/p></description></item><item><title>「转」GRE隧道测试</title><link>https://talengu.github.io/post/c6-network/gre-test/</link><pubDate>Thu, 05 May 2022 22:52:28 +0000</pubDate><guid>https://talengu.github.io/post/c6-network/gre-test/</guid><description>&lt;blockquote>
-&lt;p>本文由 &lt;a href="http://ksria.com/simpread/">简悦 SimpRead&lt;/a> 转码， 原文地址 &lt;a href="https://juejin.cn/post/6988645230987706398">juejin.cn&lt;/a>&lt;/p>&lt;/blockquote>
+&lt;p>本文由 &lt;a href="http://ksria.com/simpread/">简悦 SimpRead&lt;/a>
+ 转码， 原文地址 &lt;a href="https://juejin.cn/post/6988645230987706398">juejin.cn&lt;/a>
+&lt;/p>&lt;/blockquote>
 &lt;p>
 
 
@@ -108,7 +110,8 @@
 &lt;p>目前 Linux 内核已经支持多种隧道类型，包括：IPIP 隧道，GRE 隧道，&amp;hellip; 。其余这几个我也没见过。当然除了这几种，还有 ipsec 协议，l2tp 协议，可以的是我目前都还没有用过，实在是暴殄天物，罪过罪过&lt;/p></description></item><item><title>「转」爱立信的百年沉浮</title><link>https://talengu.github.io/post/c6-network/history-ericsson/</link><pubDate>Fri, 01 Apr 2022 12:39:04 +0000</pubDate><guid>https://talengu.github.io/post/c6-network/history-ericsson/</guid><description>&lt;blockquote>
 &lt;p>文章来源：&lt;br>
 鲜枣课堂（ID：xzclasscom）
-&lt;a href="https://mp.weixin.qq.com/s?__biz=MjM5NTY1MjY0MQ==&amp;amp;mid=2650814278&amp;amp;idx=1&amp;amp;sn=26083fed8d8dd76340e063fd42a59dea">原文&lt;/a>&lt;/p>&lt;/blockquote>
+&lt;a href="https://mp.weixin.qq.com/s?__biz=MjM5NTY1MjY0MQ==&amp;amp;mid=2650814278&amp;amp;idx=1&amp;amp;sn=26083fed8d8dd76340e063fd42a59dea">原文&lt;/a>
+&lt;/p>&lt;/blockquote>
 &lt;p>19 世纪中叶，电报业务在欧洲大陆逐渐开始普及。&lt;/p>
 &lt;p>1853 年，北欧小国瑞典动用 “海盗基金”（不是海盗的钱，是政府用来打海盗的钱），架设了自己的第一条电报线路，从首都斯德哥尔摩到乌普萨拉。&lt;/p>
 &lt;p>为了确保负责这条线路的正常运营，瑞典政府还成立了自己的第一家电报公司，名字叫 Televerket。&lt;/p>
